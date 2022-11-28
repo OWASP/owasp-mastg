@@ -16,17 +16,17 @@ This chapter focuses on following best practices for the use of cryptography in 
 
 - only use approved cryptographic algorithms (dont't roll your own crypto; assures crypto strength)
 - use validated cryptographic modules (implementation correctness assurance)
-- use the algorithms properly
-- manage keys properly
+- use the algorithms properly (avoid common configuration issues)
+- manage keys properly (generate with proper strength, protect in storage or transport, etc.)
 
 ## Cryptographic Algorithms
 
 We will define Cryptographic Algorithms based on the definitions from the NIST ["Guideline for Using
 Cryptographic Standards in the Federal Government: Cryptographic Mechanisms (NIST SP 800-175B Rev.1)"](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-175Br1.pdf).
 
-### Cryptographic Hash Functions
+### Hash Algorithms
 
-A hash function (or hash algorithm) is a cryptographic primitive algorithm consisting of a one-way function that takes an input of arbitrary length and outputs a value with a predetermined length called hash value or message digest. It's easy to compute the hash from the input, but extremely difficult to determine the original input. Additionally, the hash will completely change when even a single bit of the input changes.
+A hash algorithm (or hash function) is a cryptographic primitive algorithm consisting of a one-way function that takes an input of arbitrary length and outputs a value with a predetermined length called hash value or message digest. It's easy to compute the hash from the input, but extremely difficult to determine the original input. Additionally, the hash will completely change when even a single bit of the input changes.
 
 Hash functions are used for integrity verification, but don't provide an authenticity guarantee. They are usually used in higher-level algorithms, including:
 
@@ -76,7 +76,6 @@ Asymmetric algorithms are used, for example, for:
 
 - Digital signatures to provide source, identity, and integrity authentication services.
 - Key-Establishment using key-agreement and key-transport algorithms.
-- Bulk encryption algorithms to encrypt the symmetric keys that encrypt the payloads (asymmetric encryption is several times slower than symmetric).
 
 #### Digital Signature Algorithms
 
@@ -117,32 +116,46 @@ symmetric key-wrapping keys that are known by both the sender and receiver. The 
 
 Key wrapping differs from simple encryption in that the wrapping process includes both encryption and integrity protection. During the unwrapping process, a method for integrity verification is used to detect accidental or intentional modifications to the wrapped keying material.
 
-## Proven Cryptography Implementations
+### Random Bit Generation
+
+Random bit generators (RBGs) (also called random number generators (RNGs)) generate sequences of random bits (e.g., 010011)and are required for the generation of keying material (e.g., keys and IVs).
+
+The term "entropy" is used to describe the amount of randomness in a value, and the amount of entropy determines how hard it is to guess that value. RBGs rely on entropy sources to provide unpredictable bits, which are acquired from some physical source, such as thermal noise, ring oscillators, or hard-drive seek times.
+
+There are two classes of random bit generators (RBGs):
+
+- Non-Deterministic Random Bit Generators (NRBGs), or true RBG, are directly dependent on the availability of new bits produced by the entropy source for every output.
+- Deterministic Random Bit Generators (DRBGs), or pseudo RBG, must be initially "seeded" with entropy produced by an entropy source or using an approved method that depends on an entropy source (e.g., using an NRBG).
+
+## Cryptography Implementations
 
 ### Validated Cryptographic Modules
 
-Whenever cryptography is used for the protection of sensitive information, for example encryption, an **approved cryptographic algorithm** (e.g. AES) must be selected and used following the best practices and avoididng common configuration issues. But that's not enough, according to NIST, only cryptographic modules containing validated implementations of these algorithms must be used. The use of a **validated cryptographic module**, such as those validated by [FIPS 140](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-3.pdf), provides a minimum level of assurance that the product's stated security claim is valid.
+Whenever cryptography is used for the protection of sensitive information, for example encryption, an **approved cryptographic algorithm** (e.g. AES) must be selected and used following the best practices and avoididng common configuration issues. But that's not enough, according to NIST, only cryptographic modules containing validated implementations of these algorithms must be used.
 
-This FIPS 140 standard covers implementations of cryptographic modules including, but not limited to, hardware components or modules, software/firmware programs or modules or any combination thereof.
+The use of a **validated cryptographic module**, such as those validated by [FIPS 140](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-3.pdf), provides a minimum level of assurance that the product's stated security claim is valid. This FIPS 140 standard covers implementations of cryptographic modules including, but not limited to, hardware components or modules, software/firmware programs or modules or any combination thereof.
 
-See "5.4.5 Use Validated Algorithms and Cryptographic Modules" in [NIST SP 800-175B Rev. 1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-175Br1.pdf) for more information.
+See "5.4.5 Use Validated Algorithms and Cryptographic Modules" in [NIST SP 800-175B Rev. 1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-175Br1.pdf) for more information and consult NIST's [Cryptographic Module Validation Program (CMVP) database](https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search) to find validated cryptographic modules (for instance [BoringCrypto Android (aka. BoringSSL)](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/3753) or [Apple corecrypto User Space Module for ARM](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/3856)).
 
 ### Platform-Provided Cryptographic APIs vs Custom Implementations of Cryptography
 
-Inventing proprietary cryptographic functions is time consuming, difficult, and likely to fail. Instead, we can use well-known algorithms that are widely regarded as secure. Mobile operating systems offer standard cryptographic APIs that implement those algorithms.
+Inventing proprietary cryptographic functions is time consuming, difficult, and likely to fail. For instance, among other things you'd need to follow appropriate standards such as ["FIPS PUB 140-2 - Security Requirements for Cryptographic Modules"](https://csrc.nist.gov/csrc/media/publications/fips/140/2/final/documents/fips1402.pdf). If you take a short look at the standard and some of the companion documents such as the ["Implementation Guidance for FIPS 140-2 and the Cryptographic Module Validation Program"](https://csrc.nist.gov/csrc/media/projects/cryptographic-module-validation-program/documents/fips140-2/fips1402ig.pdf) you can get a feeling of how complex this process is.
+
+Instead of implementing cryptographic modules yourself, you should better rely on well-known standard compliant cryptographic modules such as those offered by the mobile operating systems. Those modules are usually available via platform-provided cryptographic APIs.
+
+- Android uses [conscrypt](https://source.android.com/docs/core/architecture/modular-system/conscrypt) which relies on [BoringCrypto Android (aka. BoringSSL)](https://boringssl.googlesource.com/boringssl/) which is [FIPS-2 certified](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/3753).
+- iOS uses [CryptoKit](https://developer.apple.com/documentation/CryptoKit) which is based on [corecrypto](https://developer.apple.com/security/) which is [FIPS-2 certified](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/3856).
+
+These modules will take care of the complexity for you, for instance Apple states that you should avoid using lower-level interfaces and use CryptoKit instead since it frees your app from managing raw pointers, and automatically handles tasks that make your app more secure, like overwriting sensitive data during memory deallocation. So unless you are dealing with a very specific cryptography requirement where [CryptoKit is not enough](https://www.andyibanez.com/posts/cryptokit-not-enough/), you can always resort to other lower level APIs such as CommonCrypto or as a last resort to third-party libraries. For instance, CryptoKit offers AES-GCM but you might need to use AES-CBC for some reason. On that case, it would be understandable that the app rely on CommonCrypto.
 
 When analyzing mobile apps, you must carefully inspect all the cryptographic methods used within the source code, especially those that are directly applied to sensitive data.
 
+- Try to use the highest level of the pre-existing framework implementation that can support your use case.
 - All cryptographic operations should use standard cryptographic APIs for Android and iOS.
 - Any cryptographic operations that don't invoke standard routines from known providers should be closely inspected.
 - Pay close attention to standard algorithms that have been modified.
 - Remember that encoding isn't the same as encryption!
 - Always investigate further when you find bit manipulation operators like XOR (exclusive OR).
-
-At all implementations of cryptography, you need to ensure that the following always takes place:
-
-- Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption or in case of error.
-- The inner state of a cipher should be removed from memory as soon as possible.
 
 ## Common Cryptography Configuration Issues
 
@@ -151,6 +164,10 @@ At all implementations of cryptography, you need to ensure that the following al
 Even the most secure encryption algorithm becomes vulnerable to brute-force attacks when that algorithm uses an insufficient key size.
 
 Ensure that the key length fulfills [accepted industry standards](https://www.enisa.europa.eu/publications/algorithms-key-size-and-parameters-report-2014 "ENISA Algorithms, key size and parameters report 2014").
+
+### Key Reuse
+
+Never reuse the key(pair) for another purpose: this might allow leaking information about the key: have a separate key pair for signing and a separate key(pair) for encryption.
 
 ### Weak Key Generation Functions
 
@@ -317,3 +334,5 @@ Learn more:
 - [The Padding Oracle Attack](https://robertheaton.com/2013/07/29/padding-oracle-attack "The Padding Oracle Attack")
 - [The CBC Padding Oracle Problem](https://eklitzke.org/the-cbc-padding-oracle-problem "The CBC Padding Oracle Problem")
 - [Cryptocoding Guidelines by veorq](https://github.com/veorq/cryptocoding "The Cryptocoding Guidelines by veorq")
+- [Mitigating Cryptographic Mistakes by Design](https://svs.informatik.uni-hamburg.de/publications/2019/2019-09-05-crypto-api-design-muc2019.pdf "Mitigating Cryptographic Mistakes by Design")
+- [CRYLOGGER: Detecting Crypto Misuses Dynamically](https://arxiv.org/pdf/2007.01061.pdf "CRYLOGGER: Detecting Crypto Misuses Dynamically")
