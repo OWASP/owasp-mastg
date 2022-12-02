@@ -1,5 +1,7 @@
 # Android Cryptographic APIs
 
+## Overview
+
 In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
 We can identify key components of cryptography system in Android:
@@ -10,6 +12,82 @@ We can identify key components of cryptography system in Android:
 
 Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers") that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages. In addition, there are Android specific packages `android.security.*` and `android.security.keystore.*`.
 
+### Cryptography Implementations
+
+#### Platform-Provided APIs
+
+Google provides libraries that include implementations of most common cryptographic algorithms. The ["Android Cryptography Guide"](https://developer.android.com/guide/topics/security/cryptography "Cryptography") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
+
+#### Third Party Libraries
+
+There are various third party libraries available, such as:
+
+- **LibSodium**: Sodium is a modern, easy-to-use software library for encryption, decryption, signatures, password hashing and more. It is a portable, cross-compilable, installable, packageable fork of [NaCl](http://nacl.cr.yp.to/), with a compatible API, and an extended API to improve usability even further. See [LibSodiums documentation](https://download.libsodium.org/doc/installation "LibSodium docs") for more details. There are some wrapper libraries, such as [libsodium for Android](https://github.com/terl/lazysodium-android).
+- **Tink**: Tink was built by Google on top of existing libraries such as BoringSSL and Java Cryptography Architecture, but includes countermeasures to many weaknesses in these libraries. Google explains its reasoning behind the library [on its security blog](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink"). The sources can be found at [Tinks GitHub repository](https://github.com/google/tink "Tink at GitHub").
+- **Themis**: [Themis](https://github.com/cossacklabs/themis "Themis") is a library for storage and messaging which uses LibreSSL/OpenSSL engine libcrypto as a dependency. It supports Java and Kotlin for key generation, secure messaging (e.g. payload encryption and signing), secure storage and setting up a secure session. See [their wiki](https://docs.cossacklabs.com/themis/languages/kotlin/ "Themis wiki") for more details.
+
+**IMPORTANT NOTE:** This is by no means a complete overview of all existing cryptographic libraries nor it's a list of recommended libraries. The app developers are solely responsible for choosing secure and well-maintained libraries.
+
+#### Custom Cryptographic Implementations
+
+An increasing amount of developers have created their own implementation of a cipher or a cryptographic function. This practice is _highly_ discouraged and should be vetted very thoroughly by a cryptography expert if used.
+
+#### Android Security Provider
+
+Android relies on a security [`Provider`](https://developer.android.com/reference/java/security/Provider) to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography. This provider implements some or all parts of Java Security such as:
+
+- Algorithms (such as DSA, RSA, MD5 or SHA-1).
+- Key generation, conversion, and management facilities (such as for algorithm-specific keys).
+
+These are some general recommendations regarding the Android Security provider:
+
+- Apps should avoid specifying a security provider and use the default implementation (AndroidOpenSSL, Conscrypt).
+- Apps should avoid using Crypto security provider and its `SHA1PRNG` as they are deprecated.
+- Apps should specify a security provider only for the Android Keystore system.
+
+**Listing Security Providers:**
+
+The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
+
+Apps can list the set of existing security providers using following code:
+
+```java
+StringBuilder builder = new StringBuilder();
+for (Provider provider : Security.getProviders()) {
+    builder.append("provider: ")
+            .append(provider.getName())
+            .append(" ")
+            .append(provider.getVersion())
+            .append("(")
+            .append(provider.getInfo())
+            .append(")\n");
+}
+String providers = builder.toString();
+//now display the string on the screen or in the logs for debugging.
+```
+
+Below you can find the output of a running Android 9 (API level 28) in an emulator with Google Play APIs:
+
+```default
+provider: AndroidNSSP 1.0(Android Network Security Policy Provider)
+provider: AndroidOpenSSL 1.0(Android's OpenSSL-backed security provider)
+provider: CertPathProvider 1.0(Provider of CertPathBuilder and CertPathVerifier)
+provider: AndroidKeyStoreBCWorkaround 1.0(Android KeyStore security provider to work around Bouncy Castle)
+provider: BC 1.57(BouncyCastle Security Provider v1.57)
+provider: HarmonyJSSE 1.0(Harmony JSSE Provider)
+provider: AndroidKeyStore 1.0(Android KeyStore security provider)
+```
+
+**Updating security provider:**
+
+Keeping up-to-date and patched components is an essential security principle. Apps should check if the used Android Security Provider is up-to-date and if not, [update it](https://developer.android.com/training/articles/security-gms-provider "Updating security provider"). Testing the Android Security Provider should be done along with the test ["Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)"](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries).
+
+**Older Android versions:**
+
+For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
+
+### Key Management
+
 KeyStore and KeyChain provide APIs for storing and using keys (behind the scene, KeyChain API uses KeyStore system). These systems allow to administer the full lifecycle of the cryptographic keys. Requirements and guidance for implementation of cryptographic key management can be found in [Key Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html "Key Management Cheat Sheet"). We can identify following phases:
 
 - generating a key
@@ -17,14 +95,6 @@ KeyStore and KeyChain provide APIs for storing and using keys (behind the scene,
 - storing a key
 - archiving a key
 - deleting a key
-
-> Please note that storing of a key is analyzed in the chapter "[Testing Data Storage](0x05d-Testing-Data-Storage.md)".
-
-These phases are managed by the Keystore/KeyChain system. However how the system works depends on how the application developer implemented it. For the analysis process you should focus on functions which are used by the application developer. You should identify and verify the following functions:
-
-- [Key generation](0x05e-Testing-Cryptography.md#key-generation)
-- [Random number generation](0x05e-Testing-Cryptography.md#random-number-generation)
-- Key rotation
 
 Apps that target modern API levels, went through the following changes:
 
@@ -43,78 +113,33 @@ Apps that target modern API levels, went through the following changes:
   - The `Crypto` security provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") lists all network security changes.
 
-## Recommendations
+#### Key Storage
 
-The following list of recommendations should be considered during app examination:
+##### Avoid Storing Keys by using Key Derivation
 
-- You should ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed.
-- You should ensure that security provider has the latest updates - [Updating security provider](https://developer.android.com/training/articles/security-gms-provider "Updating security provider").
-- You should stop specifying a security provider and use the default implementation (AndroidOpenSSL, Conscrypt).
-- You should stop using Crypto security provider and its `SHA1PRNG` as they are deprecated.
-- You should specify a security provider only for the Android Keystore system.
-- You should stop using Password-based encryption ciphers without IV.
-- You should use KeyGenParameterSpec instead of KeyPairGeneratorSpec.
+Not storing a key at all will ensure that no key material can be dumped. This can be achieved by using a Password [Key Derivation](#key-derivation) function, such as PKBDF-2. Note that if you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key.
 
-### Security provider
+##### Using the KeyStore
 
-Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
+If you need to store a key for repeated use, it is a best practice to use the Android KeyStore, that provides long term storage and retrieval of cryptographic keys. Key Storage using the Android KeyStore is analyzed in the chapter ["Testing Data Storage"](0x05d-Testing-Data-Storage.md).
 
-The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
+##### Hardcoded Keys
 
-You can list the set of existing security providers using following code:
+Apps must avoid hardcoding encryption keys, as this would mean that every instance of the application uses the same encryption key. An attacker needs only to do the work once in order to extract the key from the source code (whether stored natively or in Objective-C/Swift). Consequently, the attacker can decrypt any other data that was encrypted by the application.
 
-```java
-StringBuilder builder = new StringBuilder();
-for (Provider provider : Security.getProviders()) {
-    builder.append("provider: ")
-            .append(provider.getName())
-            .append(" ")
-            .append(provider.getVersion())
-            .append("(")
-            .append(provider.getInfo())
-            .append(")\n");
-}
-String providers = builder.toString();
-//now display the string on the screen or in the logs for debugging.
-```
+However, note that there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 and the keys extracted with the help of Frida or the combination of both: [r2frida](0x08a-Testing-Tools.md#r2frida) (see sections "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")", "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")" and "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android" for more details).
 
-Below you can find the output of a running Android 4.4 (API level 19) in an emulator with Google Play APIs, after the security provider has been patched:
+From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers").
 
-```default
-provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider)
-provider: AndroidOpenSSL1.0 (Android's OpenSSL-backed security provider)
-provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7)
-provider: BC1.49 (BouncyCastle Security Provider v1.49)
-provider: Crypto1.0 (HARMONY (SHA1 digest; SecureRandom; SHA1withDSA signature))
-provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
-provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
-```
-
-Below you can find the output of a running Android 9 (API level 28) in an emulator with Google Play APIs:
-
-```default
-provider: AndroidNSSP 1.0(Android Network Security Policy Provider)
-provider: AndroidOpenSSL 1.0(Android's OpenSSL-backed security provider)
-provider: CertPathProvider 1.0(Provider of CertPathBuilder and CertPathVerifier)
-provider: AndroidKeyStoreBCWorkaround 1.0(Android KeyStore security provider to work around Bouncy Castle)
-provider: BC 1.57(BouncyCastle Security Provider v1.57)
-provider: HarmonyJSSE 1.0(Harmony JSSE Provider)
-provider: AndroidKeyStore 1.0(Android KeyStore security provider)
-```
-
-#### Updating security provider
-
-Keeping up-to-date and patched component is one of security principles. The same applies to `provider`. Application should check if used security provider is up-to-date and if not, [update it](https://developer.android.com/training/articles/security-gms-provider "Updating security provider"). It is related to [Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries).
-
-#### Older Android versions
-
-For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
-
-### Key Generation
+#### Key Generation
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
-Here's an example of using AES/CBC/PKCS7Padding on API 23+:
+##### AES Keys
+
+Prior to Android 6.0 (API level 23), AES key generation was not supported. As a result, many implementations chose to use RSA and generated a public-private key pair for asymmetric encryption using `KeyPairGeneratorSpec` or used `SecureRandom` to generate AES keys.
+
+Here's an example of using AES/CBC/PKCS7Padding on Android 6.0 (API level 23):
 
 ```java
 String keyAlias = "MySecretKey";
@@ -139,6 +164,8 @@ GCM is another AES block mode that provides additional security benefits over ot
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
+**Encryption:**
+
 Here's an example of using that key to encrypt:
 
 ```java
@@ -158,7 +185,9 @@ byte[] iv = cipher.getIV();
 // save both the IV and the encryptedBytes
 ```
 
-Both the IV (initialization vector) and the encrypted bytes need to be stored; otherwise decryption is not possible.
+Since the IV (initialization vector) is randomly generated each time, it should be saved along with the cipher text (`encryptedBytes`); otherwise decryption is not possible.
+
+**Decryption:**
 
 Here's how that cipher text would be decrypted. The `input` is the encrypted byte array and `iv` is the initialization vector from the encryption step:
 
@@ -174,9 +203,7 @@ cipher.init(Cipher.DECRYPT_MODE, key, params);
 byte[] result = cipher.doFinal(input);
 ```
 
-Since the IV is randomly generated each time, it should be saved along with the cipher text (`encryptedBytes`) in order to decrypt it later.
-
-Prior to Android 6.0 (API level 23), AES key generation was not supported. As a result, many implementations chose to use RSA and generated a public-private key pair for asymmetric encryption using `KeyPairGeneratorSpec` or used `SecureRandom` to generate AES keys.
+##### RSA Key Pair
 
 Here's an example of `KeyPairGenerator` and `KeyPairGeneratorSpec` used to create the RSA key pair:
 
@@ -203,10 +230,12 @@ KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 This sample creates the RSA key pair with a key size of 4096-bit (i.e. modulus size). Elliptic Curve (EC) keys can also be generated in a similar way. However as of Android 11 (API level 30), [AndroidKeyStore does not support encryption or decryption with EC keys](https://developer.android.com/guide/topics/security/cryptography#SupportedCipher). They can only be used for signatures.
 
-A symmetric encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDF2). This cryptographic protocol is designed to generate cryptographic keys, which can be used for cryptography purpose. Input parameters for the algorithm are adjusted according to [weak key generation function](0x04g-Testing-Cryptography.md#weak-key-generation-functions) section. The code listing below illustrates how to generate a strong encryption key based on a password.
+#### Key Derivation
+
+A symmetric encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDF2). This cryptographic protocol is designed to generate cryptographic keys, which can be safely used for cryptography. Input parameters for the algorithm are adjusted according to [weak key generation function](0x04g-Testing-Cryptography.md#weak-key-generation-functions) section. The code listing below illustrates how to generate a strong encryption key based on a password.
 
 ```java
-public static SecretKey generateStrongAESKey(char[] password, int keyLength)
+public static SecretKey generatePasswordBasedAESKey(char[] password, int keyLength)
 {
     //Initialize objects and variables for later use
     int iterationCount = 10000;
@@ -224,11 +253,9 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 
 The above method requires a character array containing the password and the needed key length in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10,000 rounds which will be used by the PBKDF2 algorithm. Increasing number of iteration significantly increases the workload for a brute-force attack on password, however it can affect performance as more computational power is required for key derivation. We define the salt size equal to the key length, we divide by 8 to take care of the bit to byte conversion. We use the `SecureRandom` class to randomly generate a salt. Obviously, the salt is something you want to keep constant to ensure the same encryption key is generated time after time for the same supplied password. Note that you can store the salt privately in `SharedPreferences`. It is recommended to exclude the salt from the Android backup mechanism to prevent synchronization in case of higher risk data.
 
-> Note that if you take a rooted device or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key that is placed in the `AndroidKeystore`. The Password-Based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm, till Android 8.0 (API level 26). For higher API levels, it is best to use `PBKDF2withHmacSHA256`, which will end up with a longer hash value.
+> Note that if you take a rooted device or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key that is placed in the Android Keystore. The Password-Based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm, till Android 8.0 (API level 26). For higher API levels, it is best to use `PBKDF2withHmacSHA256`, which will end up with a longer hash value.
 
-Note: there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanism is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 and the keys extracted with the help of Frida or the combination of both: [r2frida](0x08a-Testing-Tools.md#r2frida) (see sections "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")", "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")" and "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android" for more details). From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
-
-### Random number generation
+### Random Number Generation
 
 Cryptography requires secure pseudo random number generation (PRNG). Standard Java classes as `java.util.Random` do not provide sufficient randomness and in fact may make it possible for an attacker to guess the next value that will be generated, and use this guess to impersonate another user or access sensitive information.
 
@@ -236,7 +263,12 @@ In general, `SecureRandom` should be used. However, if the Android versions belo
 
 Most developers should instantiate `SecureRandom` via the default constructor without any arguments. Other constructors are for more advanced uses and, if used incorrectly, can lead to decreased randomness and security. The PRNG provider backing `SecureRandom` uses the `SHA1PRNG` from `AndroidOpenSSL` (Conscrypt) provider.
 
-## Testing Symmetric Cryptography (MSTG-CRYPTO-1)
+In general, if a PRNG is not advertised as being cryptographically secure (e.g. `java.util.Random`), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
+Pseudo-random number generators [can produce predictable numbers](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded "Proper seeding of SecureRandom") if the generator is known and the seed can be guessed. A 128-bit seed is a good starting point for producing a "random enough" number.
+
+Once an attacker knows what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write a proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the app and inspect the algorithm.
+
+## Testing for Symmetric Cryptography Using Hardcoded Keys (MSTG-CRYPTO-1)
 
 ### Overview
 
@@ -278,29 +310,51 @@ This will return all classes using the `SecretKeySpec` class. Now examine those 
 
 You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of [RMS - Runtime Mobile Security](0x08a-Testing-Tools.md#RMS-Runtime-Mobile-Security).
 
-## Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
+## Testing for Insecure Cryptography Implementations (MSTG-CRYPTO-2)
 
 ### Overview
 
-These test cases focus on implementation and use of cryptographic primitives. Following checks should be performed:
-
-- identify all instance of cryptography primitives and their implementation (library or custom implementation)
-- verify how cryptography primitives are used and how they are configured
-- verify if cryptographic protocols and algorithms used are not deprecated for security purposes.
+This test checks if the app uses any potentially insecure cryptographic implementations. You can find more information in section "Cryptography Implementations" in the chapter ["Cryptography for Mobile Apps"](0x04g-Testing-Cryptography.md).
 
 ### Static Analysis
 
-Identify all the instances of the cryptographic primitives in code. Identify all custom cryptography implementations. You can look for:
+First of of check if the app mostly relies on **platform-provided** cryptographic implementations. See section ["Platform-Provided APIs"](#platform-provided-apis) for more information.
 
 - classes `Cipher`, `Mac`, `MessageDigest`, `Signature`
 - interfaces `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
 - functions `getInstance`, `generateKey`
 - exceptions `KeyStoreException`, `CertificateException`, `NoSuchAlgorithmException`
-- classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
+- classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages
 
-Identify that all calls to getInstance use default `provider` of security services by not specifying it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
+Check the specified security providers:
 
-Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed. Look at [insecure and deprecated algorithms](0x04g-Testing-Cryptography.md#identifying-insecure-and/or-deprecated-cryptographic-algorithms) and [common configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
+- Check calls to `getInstance` and ensure that they **are not** specifying any security provider. By doing this it is ensured that they are using the default security provider (AndroidOpenSSL aka Conscrypt).
+- Check code using the `android.security.keystore.*` package and ensure that `KeyStore` is specified as `provider`. If another provider is specified it should be verified according to situation and business case (i.e. Android API version), and that provider should be examined against potential vulnerabilities.
+
+Check the list of **third-party** libraries used by the app. You should have a list of them after performing the test in ["Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)"](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries). You can also use the references we provide in section ["Third-Party Libraries"](#third-party-libraries) as a starting point.
+
+Lastly, check if the app has any **custom** cryptographic implementations (aka. _rolls its own crypto_), for instance by searching for well-known cryptographic constants (find more information [here](https://www.mi.fu-berlin.de/inf/groups/ag-idm/members/8_ehemalige-Mitarbeiter_innen/Tim-Ohlendorf/ma_ohlendorf_tim.pdf)). Pay attention to how data structures holding cryptographic keys and plaintext are defined and how they are cleaned up (wiped or zeroized).
+
+## Testing for Common Cryptography Configuration Issues (MSTG-CRYPTO-3)
+
+### Overview
+
+This test focuses on verifying if cryptography primitives are configured and used according to current best practices.
+
+### Static Analysis
+
+Identify all the uses of cryptography within code.
+
+For all platform-provided APIs found, ensure that they are using according to all platform best practices specified in the ["Android Cryptography Guide"](https://developer.android.com/guide/topics/security/cryptography) and the ["Android Security Tips for Cryptography"](https://developer.android.com/training/articles/security-tips#Crypto). For example:
+
+- Check if the app uses the algorithms recommended by Google:
+  - Cipher: AES in either CBC or GCM mode with 256-bit keys (such as AES/GCM/NoPadding)
+  - MessageDigest: SHA-2 family (such as SHA-256)
+  - Mac: SHA-2 family HMAC (such as HMACSHA256)
+  - Signature: SHA-2 family with ECDSA (such as SHA256withECDSA)
+- Check for any [deprecated functionality](https://developer.android.com/guide/topics/security/cryptography#deprecated-functionality) in use.
+
+Ensure that all other general best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed.
 
 ### Dynamic Analysis
 
@@ -310,7 +364,7 @@ You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-t
 
 ### Overview
 
-This test case focuses on verification of purpose and reusage of the same cryptographic keys. The following checks should be performed:
+This test case focuses on verification of purpose and reuse of cryptographic keys. The following checks should be performed:
 
 - identify all instances where cryptography is used
 - identify the purpose of the cryptographic material (to protect data in use, in transit or at rest)
@@ -355,24 +409,22 @@ This test case focuses on random values used by application. The following check
 - identify all instances where random values are used
 - verify if random number generators are not considered as being cryptographically secure
 - verify how random number generators are used
-- verify randomness of the generated random values
+- verify randomness of the generated random values (optional)
 
 ### Static Analysis
 
 Identify all the instances of random number generators and look for either custom or well-known insecure classes. For instance, `java.util.Random` produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable. Instead a well-vetted algorithm should be chosen that is currently considered to be strong by experts in the field, and a well-tested implementations with adequate length seeds should be used.
 
-Identify all instances of `SecureRandom` that are not created using the default constructor. Specifying the seed value may reduce randomness. Prefer the [no-argument constructor of `SecureRandom`](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers "Generation of Strong Random Numbers") that uses the system-specified seed value to generate a 128-byte-long random number.
+If the app is using `SecureRandom`:
 
-In general, if a PRNG is not advertised as being cryptographically secure (e.g. `java.util.Random`), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
-Pseudo-random number generators [can produce predictable numbers](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded "Proper seeding of SecureRandom") if the generator is known and the seed can be guessed. A 128-bit seed is a good starting point for producing a "random enough" number.
+- Identify all instances of `SecureRandom` that are not created using the default constructor. Specifying the seed value may reduce randomness.
+- Check if it uses the [no-argument constructor of `SecureRandom`](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers "Generation of Strong Random Numbers") that uses the system-specified seed value to generate a 128-byte-long random number.
 
-Once an attacker knows what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write a proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
-
-If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp\'s Sequencer") to see how good the quality of the randomness is.
+Note (optional): If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp\'s Sequencer") to see how good the quality of the randomness is.
 
 ### Dynamic Analysis
 
-You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on the mentioned classes and methods to determine input / output values being used.
+You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on the mentioned classes and methods to determine input/output values being used.
 
 ## References
 
@@ -422,6 +474,5 @@ You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-t
 - MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
 - MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-- MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered deprecated for security purposes."
 - MSTG-CRYPTO-5: "The app doesn't re-use the same cryptographic key for multiple purposes."
 - MSTG-CRYPTO-6: "All random values are generated using a sufficiently secure random number generator."
