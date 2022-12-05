@@ -215,7 +215,7 @@ The [JADX decompiler](#jadx) (v1.3.3 and above) can generate Frida snippets thro
 
 <img src="Images/Chapters/0x08a/jadx_copy_frida_snippet.png" width="100%" />
 
-The above steps place the following output in pasteboard to be pasted in a `.js` file and fed into `frida -U -l`.
+The above steps place the following output in the pasteboard, which you can then paste in a JavaScript file and feed into `frida -U -l`.
 
 ```java
 let a = Java.use("sg.vantagepoint.a.a");
