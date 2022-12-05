@@ -211,6 +211,24 @@ Java.perform(function () {
 
 The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function implementation prints a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
 
+The [JADX decompiler](#jadx) (v1.3.3 and above) can generate Frida snippets through its graphical code browser. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1):
+
+<img src="Images/Chapters/0x08a/jadx_copy_frida_snippet.png" width="100%" />
+
+The above steps place the following output in the pasteboard, which you can then paste in a JavaScript file and feed into `frida -U -l`.
+
+```javascript
+let a = Java.use("sg.vantagepoint.a.a");
+a["a"].implementation = function (bArr, bArr2) {
+    console.log('a is called' + ', ' + 'bArr: ' + bArr + ', ' + 'bArr2: ' + bArr2);
+    let ret = this.a(bArr, bArr2);
+    console.log('a ret value is ' + ret);
+    return ret;
+};
+```
+
+The above code hooks the `a` method within the `sg.vantagepoint.a.a` class and logs its input parameters and return values.
+
 Frida also lets you search for and work with instantiated objects that are on the heap. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
 
 ```java
@@ -1296,7 +1314,7 @@ Termux is a terminal emulator for Android that provides a Linux environment that
 
 ### Xposed
 
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a framework that allows to modify the system or application aspect and behavior at runtime, without modifying any Android application package (APK) or re-flashing. Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
+[Xposed](https://f-droid.org/de/packages/de.robv.android.xposed.installer/ "Xposed Installer") is a framework that allows to modify the system or application aspect and behavior at runtime, without modifying any Android application package (APK) or re-flashing. Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
 
 To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers Xposed framework hub](https://www.xda-developers.com/xposed-framework-hub/ "Xposed framework hub from XDA"). Modules can be installed through the Xposed Installer app, and they can be toggled on and off through the GUI.
 
