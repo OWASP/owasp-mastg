@@ -211,7 +211,7 @@ Java.perform(function () {
 
 The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function implementation prints a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
 
-The [JADX decompiler](https://github.com/skylot/jadx) can generate Frida snippets through it's graphical code browser which print method entry and exit parameters via a `Java.use` call. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG `UnCrackable-Level1.apk` app:
+The [JADX decompiler](#jadx) (v1.3.3 and above) can generate Frida snippets through its graphical code browser. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1):
 
 <img src="Images/Chapters/0x08a/jadx_copy_frida_snippet.png" width="100%" />
 
