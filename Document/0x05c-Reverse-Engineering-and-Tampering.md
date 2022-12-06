@@ -1395,7 +1395,7 @@ Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show 
 
 #### Patching React Native applications
 
-If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.
+If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retrieved, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.
 
 The following approach can be used in order to patch the JavaScript file:
 
@@ -1404,11 +1404,11 @@ The following approach can be used in order to patch the JavaScript file:
 3. Use `JStillery` to beautify and deobfuscate the content of the temporary file.
 4. Identify where the code should be patched in the temporary file and implement the changes.
 5. Put the _patched code_ on a single line and copy it in the original `assets/index.android.bundle` file.
-6. Repack the APK archive using `apktool` tool and sign it before to install it on the target device/emulator.
+6. Repack the APK archive using `apktool` tool and sign it before installing it on the target device/emulator.
 
 #### Library Injection
 
-In the previous section we learned about patching application code to assist in our analysis, but this approach has several limitations. For instance, you'd like to log everything that's being sent over the network without having to perform a MITM attack. For this you'd have to patch all possible calls to the network APIs, which can quickly become impracticable when dealing with large applications. In addition, the fact that patching is unique to each application can be also considered a shortcoming, as this code cannot be easily reused.
+In the previous section we learned about patching application code to assist in our analysis, but this approach has several limitations. For instance, you'd like to log everything that's being sent over the network without having to perform a MITM attack. For this you'd have to patch all possible calls to the network APIs, which can quickly become impractical when dealing with large applications. In addition, the fact that patching is unique to each application can also be considered a shortcoming, as this code cannot be easily reused.
 
 Using library injection you can develop reusable libraries and inject them to different applications, effectively making them behave differently without having to modify their original source code. This is known as DLL injection on Windows (broadly used to modify and bypass anti-cheat mechanisms in games), `LD_PRELOAD` on Linux and `DYLD_INSERT_LIBRARIES` on macOS. On Android and iOS, a common example is using the Frida Gadget whenever Frida's so-called [Injected mode](https://frida.re/docs/modes/#injected "Frida Injected Mode") of operation isn’t suitable (i.e. you cannot run the Frida server on the target device). In this situation, you can [inject the Gadget](https://frida.re/docs/gadget/ "Frida Gadget") library by using the same methods you're going to learn in this section.
 
@@ -1433,7 +1433,7 @@ invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 
 Ideally you should insert the above code early in the [application lifecycle](https://developer.android.com/guide/components/activities/activity-lifecycle "Understand the Activity Lifecycle"), for instance in the `onCreate` method. It is important to remember to add the library libinject.so in the respective architecture folder (armeabi-v7a, arm64-v8a, x86) of the `lib` folder in the APK. Finally, you need to re-sign the application before using it.
 
-A well-known use case of this technique is loading the Frida gadget to an application, specially while working on a non-rooted device (this is what [`objection patchapk`](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") basically does).
+A well-known use case of this technique is loading the Frida gadget to an application, especially while working on a non-rooted device (this is what [`objection patchapk`](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") basically does).
 
 ##### Patching Application's Native Library
 
