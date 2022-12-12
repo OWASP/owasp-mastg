@@ -1842,7 +1842,7 @@ Once in the r2frida session, all commands start with `\`. For example, in radare
 
 ##### Memory Maps and Inspection
 
-You can retrieve the app's memory maps by running `\dm`, The output in Android can get very long (e.g. between 1500 and 2000 lines), to narrow your search and see only what directly belongs to the app apply a grep (`~`) by package name `\dm~<package_name>`:
+You can retrieve the app's memory maps by running `\dm`. The output in Android can get very long (e.g. between 1500 and 2000 lines), to narrow your search and see only what directly belongs to the app apply a grep (`~`) by package name `\dm~<package_name>`:
 
 ```bash
 [0x00000000]> \dm~sg.vantagepoint.helloworldjni
@@ -1862,9 +1862,9 @@ You can retrieve the app's memory maps by running `\dm`, The output in Android c
 0x0000007dc05db000 - 0x0000007dc05dc000 r-- /data/app/sg.vantagepoint.helloworldjni-1/oat/arm64/base.art
 ```
 
-While you're searching or exploring the app memory, you can always verify where you're located in each moment (where your current offset is located) in the memory map. Instead of noting and searching for the memory address in this list you can simply run `\dm.`. You'll find an example in the following section "In-Memory Search".
+While you're searching or exploring the app memory, you can always verify where you're located at each moment (where your current offset is located) in the memory map. Instead of noting and searching for the memory address in this list you can simply run `\dm.`. You'll find an example in the following section "In-Memory Search".
 
-If you're only interested into the modules (binaries and libraries) that the app has loaded, you can use the command `\il` to list them all:
+If you're only interested in the modules (binaries and libraries) that the app has loaded, you can use the command `\il` to list them all:
 
 ```bash
 [0x00000000]> \il
@@ -1954,7 +1954,7 @@ hits: 11
 0x7d3aa4d274 hit0_10 Hello
 ```
 
-Now you'd like to know where are these addresses actually. You may do so by running the `\dm.` command for all `@@` hits matching the glob `hit0_*`:
+Now you'd like to know where these addresses actually are. You may do so by running the `\dm.` command for all `@@` hits matching the glob `hit0_*`:
 
 ```bash
 [0x00000000]> \dm.@@ hit0_*
