@@ -2001,9 +2001,9 @@ In addition, you could use this approach to locate and extract cryptographic key
 
 ##### Memory Dump
 
-You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Rooted Devices](#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices"). To use these tools on a rooted phone, simply have frida-server installed and running.
+You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section [Dynamic Analysis on Non-Rooted Devices](#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices"). To use these tools on a rooted phone, simply have frida-server installed and running.
 
-> Note: When using these tools, you might get several memory access violation errors which can be normally ignored. These tools inject a Frida agent and try to dump all the mapped memory of the app regardless of the access permissions (read/write/execute). Therefore, when the injected Frida agent tries to read a region that's not readable, it'll return the corresponding _memory access violation errors_. Refer to previous section "Memory Maps and Inspection" for more details.
+> Note: When using these tools, you might get several memory access violation errors which can normally be ignored. These tools inject a Frida agent and try to dump all the mapped memory of the app regardless of the access permissions (read/write/execute). Therefore, when the injected Frida agent tries to read a region that's not readable, it'll return the corresponding _memory access violation errors_. Refer to previous section "Memory Maps and Inspection" for more details.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
@@ -2187,7 +2187,7 @@ Next, imagine that you are interested into the method exported by libnative-lib.
 
 Note that the line tagged with `; hit0_4` corresponds to the string that we've previously found: `0x7d1c499560 hit0_4 Hello from C++`.
 
-To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
+To learn more, please refer to the [r2frida wiki](https://github.com/nowsecure/r2frida/wiki "r2frida Wiki").
 
 ## Customizing Android for Reverse Engineering
 
