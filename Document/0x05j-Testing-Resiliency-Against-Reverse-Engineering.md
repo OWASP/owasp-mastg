@@ -1,12 +1,376 @@
 # Android Anti-Reversing Defenses
 
-## Testing Root Detection (MSTG-RESILIENCE-1)
+## Overview
 
-### Overview
+### Root Detection
 
 In the context of anti-reversing, the goal of root detection is to make running the app on a rooted device a bit more difficult, which in turn blocks some of the tools and techniques reverse engineers like to use. Like most other defenses, root detection is not very effective by itself, but implementing multiple root checks that are scattered throughout the app can improve the effectiveness of the overall anti-tampering scheme.
 
 For Android, we define "root detection" a bit more broadly, including custom ROMs detection, i.e., determining whether the device is a stock Android build or a custom build.
+
+### Anti-Debugging Detection
+
+Debugging is a highly effective way to analyze runtime app behavior. It allows the reverse engineer to step through the code, stop app execution at arbitrary points, inspect the state of variables, read and modify memory, and a lot more.
+
+Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging prevents the debugger from attaching in the first place; reactive anti-debugging involves detecting debuggers and reacting to them in some way (e.g., terminating the app or triggering hidden behavior). The "more-is-better" rule applies: to maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are well distributed throughout the app.
+
+As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two debugging protocols on Android: we can debug on the Java level with JDWP or on the native layer via a ptrace-based debugger. A good anti-debugging scheme should defend against both types of debugging.
+
+### File Integrity Checks
+
+There are two topics related to file integrity:
+
+ 1. _Code integrity checks:_ In the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this bypassing process more involved, a protection scheme can be augmented with CRC checks on the app bytecode, native libraries, and important data files. These checks can be implemented on both the Java and the native layer. The idea is to have additional controls in place so that the app only runs correctly in its unmodified state, even if the code signature is valid.
+ 2. _The file storage integrity checks:_ The integrity of files that the application stores on the SD card or public storage and the integrity of key-value pairs that are stored in `SharedPreferences` should be protected.
+
+#### Sample Implementation - Application Source Code
+
+Integrity checks often calculate a checksum or hash over selected files. Commonly protected files include
+
+- AndroidManifest.xml,
+- class files *.dex,
+- native libraries (*.so).
+
+The following [sample implementation from the Android Cracking blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html "anti-tampering with crc check") calculates a CRC over `classes.dex` and compares it to the expected value.
+
+```java
+private void crcTest() throws IOException {
+ boolean modified = false;
+ // required dex crc value stored as a text string.
+ // it could be any invisible layout element
+ long dexCrc = Long.parseLong(Main.MyContext.getString(R.string.dex_crc));
+
+ ZipFile zf = new ZipFile(Main.MyContext.getPackageCodePath());
+ ZipEntry ze = zf.getEntry("classes.dex");
+
+ if ( ze.getCrc() != dexCrc ) {
+  // dex has been modified
+  modified = true;
+ }
+ else {
+  // dex not tampered with
+  modified = false;
+ }
+}
+```
+
+#### Sample Implementation - Storage
+
+When providing integrity on the storage itself, you can either create an HMAC over a given key-value pair (as for the Android `SharedPreferences`) or create an HMAC over a complete file that's provided by the file system.
+
+When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+
+Complete the following procedure when generating an HMAC with BouncyCastle:
+
+1. Make sure BouncyCastle or SpongyCastle is registered as a security provider.
+2. Initialize the HMAC with a key (which can be stored in a keystore).
+3. Get the byte array of the content that needs an HMAC.
+4. Call `doFinal` on the HMAC with the bytecode.
+5. Append the HMAC to the bytearray obtained in step 3.
+6. Store the result of step 5.
+
+Complete the following procedure when verifying the HMAC with BouncyCastle:
+
+1. Make sure that BouncyCastle or SpongyCastle is registered as a security provider.
+2. Extract the message and the HMAC-bytes as separate arrays.
+3. Repeat steps 1-4 of the procedure for generating an HMAC.
+4. Compare the extracted HMAC-bytes to the result of step 3.
+
+When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android Keystore"), then it is best to only do this for Android 6.0 (API level 23) and higher.
+
+The following is a convenient HMAC implementation without `AndroidKeyStore`:
+
+```java
+public enum HMACWrapper {
+    HMAC_512("HMac-SHA512"), //please note that this is the spec for the BC provider
+    HMAC_256("HMac-SHA256");
+
+    private final String algorithm;
+
+    private HMACWrapper(final String algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public Mac createHMAC(final SecretKey key) {
+        try {
+            Mac e = Mac.getInstance(this.algorithm, "BC");
+            SecretKeySpec secret = new SecretKeySpec(key.getKey().getEncoded(), this.algorithm);
+            e.init(secret);
+            return e;
+        } catch (NoSuchProviderException | InvalidKeyException | NoSuchAlgorithmException e) {
+            //handle them
+        }
+    }
+
+    public byte[] hmac(byte[] message, SecretKey key) {
+        Mac mac = this.createHMAC(key);
+        return mac.doFinal(message);
+    }
+
+    public boolean verify(byte[] messageWithHMAC, SecretKey key) {
+        Mac mac = this.createHMAC(key);
+        byte[] checksum = extractChecksum(messageWithHMAC, mac.getMacLength());
+        byte[] message = extractMessage(messageWithHMAC, mac.getMacLength());
+        byte[] calculatedChecksum = this.hmac(message, key);
+        int diff = checksum.length ^ calculatedChecksum.length;
+
+        for (int i = 0; i < checksum.length && i < calculatedChecksum.length; ++i) {
+            diff |= checksum[i] ^ calculatedChecksum[i];
+        }
+
+        return diff == 0;
+    }
+
+    public byte[] extractMessage(byte[] messageWithHMAC) {
+        Mac hmac = this.createHMAC(SecretKey.newKey());
+        return extractMessage(messageWithHMAC, hmac.getMacLength());
+    }
+
+    private static byte[] extractMessage(byte[] body, int checksumLength) {
+        if (body.length >= checksumLength) {
+            byte[] message = new byte[body.length - checksumLength];
+            System.arraycopy(body, 0, message, 0, message.length);
+            return message;
+        } else {
+            return new byte[0];
+        }
+    }
+
+    private static byte[] extractChecksum(byte[] body, int checksumLength) {
+        if (body.length >= checksumLength) {
+            byte[] checksum = new byte[checksumLength];
+            System.arraycopy(body, body.length - checksumLength, checksum, 0, checksumLength);
+            return checksum;
+        } else {
+            return new byte[0];
+        }
+    }
+
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+}
+
+```
+
+Another way to provide integrity is to sign the byte array you obtained and add the signature to the original byte array.
+
+#### Bypassing File Integrity Checks
+
+##### Bypassing the application-source integrity checks
+
+1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
+2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
+3. Use the kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
+
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
+
+##### Bypassing the storage integrity checks
+
+1. Retrieve the data from the device, as described in the "[Testing Device Binding](#testing-device-binding-mstg-resilience-10 "Testing Device Binding")" section.
+2. Alter the retrieved data and then put it back into storage.
+
+### Reverse Engineering Tools Detection
+
+The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
+
+### Emulator Detection
+
+In the context of anti-reversing, the goal of emulator detection is to increase the difficulty of running the app on an emulated device, which impedes some tools and techniques reverse engineers like to use. This increased difficulty forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
+
+### Runtime Integrity Checks
+
+Controls in this category verify the integrity of the app's memory space to defend the app against memory patches applied during runtime. Such patches include unwanted changes to binary code, bytecode, function pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified by:
+
+1. comparing the contents of memory or a checksum over the contents to good values,
+2. searching memory for the signatures of unwanted modifications.
+
+There's some overlap with the category "detecting reverse engineering tools and frameworks", and, in fact, we demonstrated the signature-based approach in that chapter when we showed how to search process memory for Frida-related strings. Below are a few more examples of various kinds of integrity monitoring.
+
+#### Runtime Integrity Check Examples
+
+##### Detecting tampering with the Java Runtime
+
+This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
+
+```java
+try {
+  throw new Exception();
+}
+catch(Exception e) {
+  int zygoteInitCallCount = 0;
+  for(StackTraceElement stackTraceElement : e.getStackTrace()) {
+    if(stackTraceElement.getClassName().equals("com.android.internal.os.ZygoteInit")) {
+      zygoteInitCallCount++;
+      if(zygoteInitCallCount == 2) {
+        Log.wtf("HookDetection", "Substrate is active on the device.");
+      }
+    }
+    if(stackTraceElement.getClassName().equals("com.saurik.substrate.MS$2") &&
+        stackTraceElement.getMethodName().equals("invoked")) {
+      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Substrate.");
+    }
+    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
+        stackTraceElement.getMethodName().equals("main")) {
+      Log.wtf("HookDetection", "Xposed is active on the device.");
+    }
+    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
+        stackTraceElement.getMethodName().equals("handleHookedMethod")) {
+      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Xposed.");
+    }
+
+  }
+}
+```
+
+##### Detecting Native Hooks
+
+By using ELF binaries, native function hooks can be installed by overwriting function pointers in memory (e.g., Global Offset Table or PLT hooking) or patching parts of the function code itself (inline hooking). Checking the integrity of the respective memory regions is one way to detect this kind of hook.
+
+The Global Offset Table (GOT) is used to resolve library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. _GOT hooks_ overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code. This type of hook can be detected by enumerating the process memory map and verifying that each GOT entry points to a legitimately loaded library.
+
+In contrast to GNU `ld`, which resolves symbol addresses only after they are needed for the first time (lazy binding), the Android linker resolves all external functions and writes the respective GOT entries immediately after a library is loaded (immediate binding). You can therefore expect all GOT entries to point to valid memory locations in the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify this.
+
+_Inline hooks_ work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. You can detect inline hooks by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
+
+### Obfuscation
+
+The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
+
+Android apps can implement some of those obfuscation techniques using different tooling. For example, [ProGuard](0x08a-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
+
+> Decompiling Java classes is trivial, therefore it is recommended to always applying some basic obfuscation to the production bytecode.
+
+Learn more about Android obfuscation techniques:
+
+- ["Security Hardening of Android Native Code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind
+- ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) by Eduardo Novella
+- ["Challenges of Native Android Applications: Obfuscation and Vulnerabilities"](https://www.theses.fr/2020REN1S047.pdf) by Pierre Graux
+
+#### Using ProGuard
+
+Developers use the build.gradle file to enable obfuscation. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with `-keepclassmembers` and `-keep class`) is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder.
+
+Further information on how to shrink, obfuscate, and optimize your app can be found in the [Android developer documentation](https://developer.android.com/studio/build/shrink-code "Shrink, obfuscate, and optimize your app").
+
+> When you build your project using Android Studio 3.4 or Android Gradle plugin 3.4.0 or higher, the plugin no longer uses ProGuard to perform compile-time code optimization. Instead, the plugin uses the R8 compiler. R8 works with all of your existing ProGuard rules files, so updating the Android Gradle plugin to use R8 should not require you to change your existing rules.
+
+R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
+
+```default
+android {
+    buildTypes {
+        release {
+            // Enables code shrinking, obfuscation, and optimization for only
+            // your project's release build type.
+            minifyEnabled true
+
+            // Includes the default ProGuard rules files that are packaged with
+            // the Android Gradle plugin. To learn more, go to the section about
+            // R8 configuration files.
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+    ...
+}
+```
+
+The file `proguard-rules.pro` is where you define custom ProGuard rules. With the flag `-keep` you can keep certain code that is not being removed by R8, which might otherwise produce errors. For example to keep common Android classes, as in our sample configuration `proguard-rules.pro` file:
+
+```default
+...
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+...
+```
+
+You can define this more granularly on specific classes or libraries in your project with the [following syntax](https://developer.android.com/studio/build/shrink-code#configuration-files "Customize which code to keep"):
+
+```default
+-keep public class MyClass
+```
+
+Obfuscation often carries a cost in runtime performance, therefore it is usually only applied to certain very specific parts of the code, typically those dealing with security and runtime protection.
+
+### Device Binding
+
+The goal of device binding is to impede an attacker who tries to both copy an app and its state from device A to device B and continue executing the app on device B. After device A has been determined trustworthy, it may have more privileges than device B. These differential privileges should not change when an app is copied from device A to device B.
+
+Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods that allow device binding:
+
+- Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
+
+- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would extract such data from a device, it wouldn't be possible to decrypt the data, as the key is not accessible. Implementing this, takes the following steps:
+
+  - Generate the key pair in the Android Keystore using `KeyGenParameterSpec` API.
+
+    ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
+    keyPairGenerator.initialize(
+            new KeyGenParameterSpec.Builder(
+                    "key1",
+                    KeyProperties.PURPOSE_DECRYPT)
+                    .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
+                    .build());
+    KeyPair keyPair = keyPairGenerator.generateKeyPair();
+    Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+    cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+    ...
+
+    // The key pair can also be obtained from the Android Keystore any time as follows:
+    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+    keyStore.load(null);
+    PrivateKey privateKey = (PrivateKey) keyStore.getKey("key1", null);
+    PublicKey publicKey = keyStore.getCertificate("key1").getPublicKey();
+    ```
+
+  - Generating a secret key for AES-GCM:
+
+    ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+    KeyGenerator keyGenerator = KeyGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+    keyGenerator.init(
+            new KeyGenParameterSpec.Builder("key2",
+                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .build());
+    SecretKey key = keyGenerator.generateKey();
+
+    // The key can also be obtained from the Android Keystore any time as follows:
+    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+    keyStore.load(null);
+    key = (SecretKey) keyStore.getKey("key2", null);
+    ```
+
+  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data:
+
+    ```java
+    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+    final byte[] nonce = new byte[GCM_NONCE_LENGTH];
+    random.nextBytes(nonce);
+    GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH * 8, nonce);
+    cipher.init(Cipher.ENCRYPT_MODE, key, spec);
+    byte[] aad = "<deviceidentifierhere>".getBytes();;
+    cipher.updateAAD(aad);
+    cipher.init(Cipher.ENCRYPT_MODE, key);
+
+    //use the cipher to encrypt the authentication data see 0x50e for more details.
+    ```
+
+  - Encrypt the secret key using the public key stored in Android Keystore and store the encrypted secret key in the private storage of the application.
+  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android Keystore and then use the decrypted secret key to decrypt the ciphertext.
+
+- Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
+
+## Testing Root Detection (MSTG-RESILIENCE-1)
 
 ### Common Root Detection Methods
 
@@ -224,14 +588,6 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.
 
 ## Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
-
-### Overview
-
-Debugging is a highly effective way to analyze runtime app behavior. It allows the reverse engineer to step through the code, stop app execution at arbitrary points, inspect the state of variables, read and modify memory, and a lot more.
-
-Anti-debugging features can be preventive or reactive. As the name implies, preventive anti-debugging prevents the debugger from attaching in the first place; reactive anti-debugging involves detecting debuggers and reacting to them in some way (e.g., terminating the app or triggering hidden behavior). The "more-is-better" rule applies: to maximize effectiveness, defenders combine multiple methods of prevention and detection that operate on different API layers and are well distributed throughout the app.
-
-As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two debugging protocols on Android: we can debug on the Java level with JDWP or on the native layer via a ptrace-based debugger. A good anti-debugging scheme should defend against both types of debugging.
 
 ### JDWP Anti-Debugging
 
@@ -613,160 +969,6 @@ If anti-debugging mechanisms are missing or too easily bypassed, make suggestion
 
 ## Testing File Integrity Checks (MSTG-RESILIENCE-3)
 
-### Overview
-
-There are two topics related to file integrity:
-
- 1. _Code integrity checks:_ In the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this bypassing process more involved, a protection scheme can be augmented with CRC checks on the app bytecode, native libraries, and important data files. These checks can be implemented on both the Java and the native layer. The idea is to have additional controls in place so that the app only runs correctly in its unmodified state, even if the code signature is valid.
- 2. _The file storage integrity checks:_ The integrity of files that the application stores on the SD card or public storage and the integrity of key-value pairs that are stored in `SharedPreferences` should be protected.
-
-#### Sample Implementation - Application Source Code
-
-Integrity checks often calculate a checksum or hash over selected files. Commonly protected files include
-
-- AndroidManifest.xml,
-- class files *.dex,
-- native libraries (*.so).
-
-The following [sample implementation from the Android Cracking blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html "anti-tampering with crc check") calculates a CRC over `classes.dex` and compares it to the expected value.
-
-```java
-private void crcTest() throws IOException {
- boolean modified = false;
- // required dex crc value stored as a text string.
- // it could be any invisible layout element
- long dexCrc = Long.parseLong(Main.MyContext.getString(R.string.dex_crc));
-
- ZipFile zf = new ZipFile(Main.MyContext.getPackageCodePath());
- ZipEntry ze = zf.getEntry("classes.dex");
-
- if ( ze.getCrc() != dexCrc ) {
-  // dex has been modified
-  modified = true;
- }
- else {
-  // dex not tampered with
-  modified = false;
- }
-}
-```
-
-#### Sample Implementation - Storage
-
-When providing integrity on the storage itself, you can either create an HMAC over a given key-value pair (as for the Android `SharedPreferences`) or create an HMAC over a complete file that's provided by the file system.
-
-When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
-
-Complete the following procedure when generating an HMAC with BouncyCastle:
-
-1. Make sure BouncyCastle or SpongyCastle is registered as a security provider.
-2. Initialize the HMAC with a key (which can be stored in a keystore).
-3. Get the byte array of the content that needs an HMAC.
-4. Call `doFinal` on the HMAC with the bytecode.
-5. Append the HMAC to the bytearray obtained in step 3.
-6. Store the result of step 5.
-
-Complete the following procedure when verifying the HMAC with BouncyCastle:
-
-1. Make sure that BouncyCastle or SpongyCastle is registered as a security provider.
-2. Extract the message and the HMAC-bytes as separate arrays.
-3. Repeat steps 1-4 of the procedure for generating an HMAC.
-4. Compare the extracted HMAC-bytes to the result of step 3.
-
-When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android Keystore"), then it is best to only do this for Android 6.0 (API level 23) and higher.
-
-The following is a convenient HMAC implementation without `AndroidKeyStore`:
-
-```java
-public enum HMACWrapper {
-    HMAC_512("HMac-SHA512"), //please note that this is the spec for the BC provider
-    HMAC_256("HMac-SHA256");
-
-    private final String algorithm;
-
-    private HMACWrapper(final String algorithm) {
-        this.algorithm = algorithm;
-    }
-
-    public Mac createHMAC(final SecretKey key) {
-        try {
-            Mac e = Mac.getInstance(this.algorithm, "BC");
-            SecretKeySpec secret = new SecretKeySpec(key.getKey().getEncoded(), this.algorithm);
-            e.init(secret);
-            return e;
-        } catch (NoSuchProviderException | InvalidKeyException | NoSuchAlgorithmException e) {
-            //handle them
-        }
-    }
-
-    public byte[] hmac(byte[] message, SecretKey key) {
-        Mac mac = this.createHMAC(key);
-        return mac.doFinal(message);
-    }
-
-    public boolean verify(byte[] messageWithHMAC, SecretKey key) {
-        Mac mac = this.createHMAC(key);
-        byte[] checksum = extractChecksum(messageWithHMAC, mac.getMacLength());
-        byte[] message = extractMessage(messageWithHMAC, mac.getMacLength());
-        byte[] calculatedChecksum = this.hmac(message, key);
-        int diff = checksum.length ^ calculatedChecksum.length;
-
-        for (int i = 0; i < checksum.length && i < calculatedChecksum.length; ++i) {
-            diff |= checksum[i] ^ calculatedChecksum[i];
-        }
-
-        return diff == 0;
-    }
-
-    public byte[] extractMessage(byte[] messageWithHMAC) {
-        Mac hmac = this.createHMAC(SecretKey.newKey());
-        return extractMessage(messageWithHMAC, hmac.getMacLength());
-    }
-
-    private static byte[] extractMessage(byte[] body, int checksumLength) {
-        if (body.length >= checksumLength) {
-            byte[] message = new byte[body.length - checksumLength];
-            System.arraycopy(body, 0, message, 0, message.length);
-            return message;
-        } else {
-            return new byte[0];
-        }
-    }
-
-    private static byte[] extractChecksum(byte[] body, int checksumLength) {
-        if (body.length >= checksumLength) {
-            byte[] checksum = new byte[checksumLength];
-            System.arraycopy(body, body.length - checksumLength, checksum, 0, checksumLength);
-            return checksum;
-        } else {
-            return new byte[0];
-        }
-    }
-
-    static {
-        Security.addProvider(new BouncyCastleProvider());
-    }
-}
-
-```
-
-Another way to provide integrity is to sign the byte array you obtained and add the signature to the original byte array.
-
-#### Bypassing File Integrity Checks
-
-##### Bypassing the application-source integrity checks
-
-1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
-2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
-3. Use the kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
-
-Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
-
-##### Bypassing the storage integrity checks
-
-1. Retrieve the data from the device, as described in the "[Testing Device Binding](#testing-device-binding-mstg-resilience-10 "Testing Device Binding")" section.
-2. Alter the retrieved data and then put it back into storage.
-
 ### Effectiveness Assessment
 
 **Application-source integrity checks:**
@@ -788,10 +990,6 @@ An approach similar to that for application-source integrity checks applies. Ans
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
 ## Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
-
-### Overview
-
-The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
 ### Detection Methods
 
@@ -860,10 +1058,6 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 
 ## Testing Emulator Detection (MSTG-RESILIENCE-5)
 
-### Overview
-
-In the context of anti-reversing, the goal of emulator detection is to increase the difficulty of running the app on an emulated device, which impedes some tools and techniques reverse engineers like to use. This increased difficulty forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
-
 ### Emulator Detection Examples
 
 There are several indicators that the device in question is being emulated. Although all these API calls can be hooked, these indicators provide a modest first line of defense.
@@ -930,61 +1124,6 @@ Work on bypassing the defenses and answer the following questions:
 
 ## Testing Runtime Integrity Checks (MSTG-RESILIENCE-6)
 
-### Overview
-
-Controls in this category verify the integrity of the app's memory space to defend the app against memory patches applied during runtime. Such patches include unwanted changes to binary code, bytecode, function pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified by:
-
-1. comparing the contents of memory or a checksum over the contents to good values,
-2. searching memory for the signatures of unwanted modifications.
-
-There's some overlap with the category "detecting reverse engineering tools and frameworks", and, in fact, we demonstrated the signature-based approach in that chapter when we showed how to search process memory for Frida-related strings. Below are a few more examples of various kinds of integrity monitoring.
-
-#### Runtime Integrity Check Examples
-
-##### Detecting tampering with the Java Runtime
-
-This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
-
-```java
-try {
-  throw new Exception();
-}
-catch(Exception e) {
-  int zygoteInitCallCount = 0;
-  for(StackTraceElement stackTraceElement : e.getStackTrace()) {
-    if(stackTraceElement.getClassName().equals("com.android.internal.os.ZygoteInit")) {
-      zygoteInitCallCount++;
-      if(zygoteInitCallCount == 2) {
-        Log.wtf("HookDetection", "Substrate is active on the device.");
-      }
-    }
-    if(stackTraceElement.getClassName().equals("com.saurik.substrate.MS$2") &&
-        stackTraceElement.getMethodName().equals("invoked")) {
-      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Substrate.");
-    }
-    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
-        stackTraceElement.getMethodName().equals("main")) {
-      Log.wtf("HookDetection", "Xposed is active on the device.");
-    }
-    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
-        stackTraceElement.getMethodName().equals("handleHookedMethod")) {
-      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Xposed.");
-    }
-
-  }
-}
-```
-
-##### Detecting Native Hooks
-
-By using ELF binaries, native function hooks can be installed by overwriting function pointers in memory (e.g., Global Offset Table or PLT hooking) or patching parts of the function code itself (inline hooking). Checking the integrity of the respective memory regions is one way to detect this kind of hook.
-
-The Global Offset Table (GOT) is used to resolve library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. _GOT hooks_ overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code. This type of hook can be detected by enumerating the process memory map and verifying that each GOT entry points to a legitimately loaded library.
-
-In contrast to GNU `ld`, which resolves symbol addresses only after they are needed for the first time (lazy binding), the Android linker resolves all external functions and writes the respective GOT entries immediately after a library is loaded (immediate binding). You can therefore expect all GOT entries to point to valid memory locations in the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify this.
-
-_Inline hooks_ work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. You can detect inline hooks by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
-
 ### Effectiveness Assessment
 
 Make sure that all file-based detection of reverse engineering tools is disabled. Then, inject code by using Xposed, Frida, and Substrate, and attempt to install native hooks and Java method hooks. The app should detect the "hostile" code in its memory and respond accordingly.
@@ -997,68 +1136,6 @@ Work on bypassing the checks with the following techniques:
 Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
 
 ## Testing Obfuscation (MSTG-RESILIENCE-9)
-
-### Overview
-
-The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
-
-Android apps can implement some of those obfuscation techniques using different tooling. For example, [ProGuard](0x08a-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
-
-> Decompiling Java classes is trivial, therefore it is recommended to always applying some basic obfuscation to the production bytecode.
-
-Learn more about Android obfuscation techniques:
-
-- ["Security Hardening of Android Native Code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind
-- ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) by Eduardo Novella
-- ["Challenges of Native Android Applications: Obfuscation and Vulnerabilities"](https://www.theses.fr/2020REN1S047.pdf) by Pierre Graux
-
-#### Using ProGuard
-
-Developers use the build.gradle file to enable obfuscation. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with `-keepclassmembers` and `-keep class`) is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder.
-
-Further information on how to shrink, obfuscate, and optimize your app can be found in the [Android developer documentation](https://developer.android.com/studio/build/shrink-code "Shrink, obfuscate, and optimize your app").
-
-> When you build your project using Android Studio 3.4 or Android Gradle plugin 3.4.0 or higher, the plugin no longer uses ProGuard to perform compile-time code optimization. Instead, the plugin uses the R8 compiler. R8 works with all of your existing ProGuard rules files, so updating the Android Gradle plugin to use R8 should not require you to change your existing rules.
-
-R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
-
-```default
-android {
-    buildTypes {
-        release {
-            // Enables code shrinking, obfuscation, and optimization for only
-            // your project's release build type.
-            minifyEnabled true
-
-            // Includes the default ProGuard rules files that are packaged with
-            // the Android Gradle plugin. To learn more, go to the section about
-            // R8 configuration files.
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
-        }
-    }
-    ...
-}
-```
-
-The file `proguard-rules.pro` is where you define custom ProGuard rules. With the flag `-keep` you can keep certain code that is not being removed by R8, which might otherwise produce errors. For example to keep common Android classes, as in our sample configuration `proguard-rules.pro` file:
-
-```default
-...
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
-...
-```
-
-You can define this more granularly on specific classes or libraries in your project with the [following syntax](https://developer.android.com/studio/build/shrink-code#configuration-files "Customize which code to keep"):
-
-```default
--keep public class MyClass
-```
-
-Obfuscation often carries a cost in runtime performance, therefore it is usually only applied to certain very specific parts of the code, typically those dealing with security and runtime protection.
 
 ### Static Analysis
 
@@ -1125,81 +1202,6 @@ apkid owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk
 In this case it detects that the app has unreadable field names and method names, among other things.
 
 ## Testing Device Binding (MSTG-RESILIENCE-10)
-
-### Overview
-
-The goal of device binding is to impede an attacker who tries to both copy an app and its state from device A to device B and continue executing the app on device B. After device A has been determined trustworthy, it may have more privileges than device B. These differential privileges should not change when an app is copied from device A to device B.
-
-Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods that allow device binding:
-
-- Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
-
-- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would extract such data from a device, it wouldn't be possible to decrypt the data, as the key is not accessible. Implementing this, takes the following steps:
-
-  - Generate the key pair in the Android Keystore using `KeyGenParameterSpec` API.
-
-    ```java
-    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
-    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
-    keyPairGenerator.initialize(
-            new KeyGenParameterSpec.Builder(
-                    "key1",
-                    KeyProperties.PURPOSE_DECRYPT)
-                    .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
-                    .build());
-    KeyPair keyPair = keyPairGenerator.generateKeyPair();
-    Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
-    cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
-    ...
-
-    // The key pair can also be obtained from the Android Keystore any time as follows:
-    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-    keyStore.load(null);
-    PrivateKey privateKey = (PrivateKey) keyStore.getKey("key1", null);
-    PublicKey publicKey = keyStore.getCertificate("key1").getPublicKey();
-    ```
-
-  - Generating a secret key for AES-GCM:
-
-    ```java
-    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
-    KeyGenerator keyGenerator = KeyGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-    keyGenerator.init(
-            new KeyGenParameterSpec.Builder("key2",
-                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                    .build());
-    SecretKey key = keyGenerator.generateKey();
-
-    // The key can also be obtained from the Android Keystore any time as follows:
-    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-    keyStore.load(null);
-    key = (SecretKey) keyStore.getKey("key2", null);
-    ```
-
-  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data:
-
-    ```java
-    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-    final byte[] nonce = new byte[GCM_NONCE_LENGTH];
-    random.nextBytes(nonce);
-    GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH * 8, nonce);
-    cipher.init(Cipher.ENCRYPT_MODE, key, spec);
-    byte[] aad = "<deviceidentifierhere>".getBytes();;
-    cipher.updateAAD(aad);
-    cipher.init(Cipher.ENCRYPT_MODE, key);
-
-    //use the cipher to encrypt the authentication data see 0x50e for more details.
-    ```
-
-  - Encrypt the secret key using the public key stored in Android Keystore and store the encrypted secret key in the private storage of the application.
-  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android Keystore and then use the decrypted secret key to decrypt the ciphertext.
-
-- Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
 ### Static Analysis
 
