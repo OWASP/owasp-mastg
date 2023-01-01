@@ -1,5 +1,7 @@
 # Android Data Storage
 
+## Overview
+
 Protecting authentication tokens, private information, and other sensitive data is key to mobile security. In this chapter, you will learn about the APIs Android offers for local data storage and best practices for using them.
 
 The guidelines for saving data can be summarized quite easily: Public data should be available to everyone, but sensitive and private data must be protected, or, better yet, kept out of device storage.
@@ -7,8 +9,6 @@ The guidelines for saving data can be summarized quite easily: Public data shoul
 This chapter is broken into two sections, the first of which focuses on the theory of data storage from a security perspective as well as a brief explanation and example of the various methods of data storage on Android.
 
 The second section focuses on the testing of these data storage solutions through the usage of test cases that utilize both static and dynamic analysis.
-
-## Theory Overview
 
 [Storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential to many mobile apps. Conventional wisdom suggests that as little sensitive data as possible should be stored on permanent local storage. In most practical scenarios, however, some type of user data must be stored. For example, asking the user to enter a very complex password every time the app starts isn't a great idea in terms of usability. Most apps must locally cache some kind of authentication token to avoid this. Personally identifiable information (PII) and other types of sensitive data may also be saved if a given scenario calls for it.
 
@@ -20,7 +20,7 @@ Disclosing sensitive information has several consequences, including decrypted i
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation usually ranges from checking for the correct data types to using additional cryptographic controls, such as an HMAC, you can validate the integrity of the data.
 
-## Data Storage Methods Overview
+### Data Storage Methods Overview
 
 Android provides a number of methods for [data storage](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") depending on the needs of the user, developer, and application. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently for this use case in several ways. The following list of persistent storage techniques are widely used on the Android platform:
 
@@ -42,7 +42,7 @@ In addition to this, there are a number of other functions in Android built for 
 
 It is important to understand each relevant data storage function in order to correctly perform the appropriate test cases. This overview aims to provide a brief outline of each of these data storage methods, as well as point testers to further relevant documentation.
 
-### Shared Preferences
+#### Shared Preferences
 
 The [SharedPreferences](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
@@ -88,11 +88,11 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 
 > Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated starting on API level 17. Although newer devices may not be affected by this, applications compiled with an `android:targetSdkVersion` value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (API level 17).
 
-### Databases
+#### Databases
 
 The Android platform provides a number of database options as aforementioned in the previous list. Each database option has its own quirks and methods that need to be understood.
 
-#### SQLite Database (Unencrypted)
+##### SQLite Database (Unencrypted)
 
 SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has [built-in support](https://developer.android.com/training/data-storage/sqlite "SQLite Documentation") for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
 For example, you may use the following code to store sensitive information within an activity:
@@ -124,7 +124,7 @@ The database's directory may contain several files besides the SQLite database:
 
 Sensitive information should not be stored in unencrypted SQLite databases.
 
-#### SQLite Databases (Encrypted)
+##### SQLite Databases (Encrypted)
 
 With the library [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQLCipher"), SQLite databases can be password-encrypted.
 
@@ -151,7 +151,7 @@ Secure ways to retrieve the database key include:
 - Asking the user to decrypt the database with a PIN or password once the app is opened (weak passwords and PINs are vulnerable to brute force attacks)
 - Storing the key on the server and allowing it to be accessed from a web service only (so that the app can be used only when the device is online)
 
-#### Firebase Real-time Databases
+##### Firebase Real-time Databases
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
@@ -167,7 +167,7 @@ python FirebaseScanner.py -p <pathOfAPKFile>
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
 
-#### Realm Databases
+##### Realm Databases
 
 The [Realm Database for Java](https://mongodb.com/docs/realm/sdk/java/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
@@ -183,7 +183,7 @@ Realm realm = Realm.getInstance(config);
 
 If the database _is not_ encrypted, you should be able to obtain the data. If the database _is_ encrypted, determine whether the key is hard-coded in the source or resources and whether it is stored unprotected in shared preferences or some other location.
 
-### Internal Storage
+#### Internal Storage
 
 You can save files to the device's [internal storage](https://developer.android.com/guide/topics/data/data-storage.html#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
 The following code snippets would persistently store sensitive data to internal storage.
@@ -216,7 +216,7 @@ You should check the file mode to make sure that only the app can access the fil
 
 Search for the class `FileInputStream` to find out which files are opened and read within the app.
 
-### External Storage
+#### External Storage
 
 Every Android-compatible device supports [shared external storage](https://developer.android.com/guide/topics/data/data-storage.html#filesExternal "Using External Storage"). This storage may be removable (such as an SD card) or internal (non-removable).
 Files saved to external storage are world-readable. The user can modify them when USB mass storage is enabled.
@@ -247,7 +247,7 @@ The file will be created and the data will be stored in a clear text file in ext
 It's also worth knowing that files stored outside the application folder (`data/data/<package-name>/`) will not be deleted when the user uninstalls the application.
 Finally, it's worth noting that the external storage can be used by an attacker to allow for arbitrary control of the application in some cases. For more information: [see the blog from Checkpoint](https://blog.checkpoint.com/2018/08/12/man-in-the-disk-a-new-attack-surface-for-android-apps/ "Man in the disk").
 
-### KeyStore
+#### KeyStore
 
 The [Android KeyStore](https://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/ "Use Android KeyStore") supports relatively secure credential storage. As of Android 4.3 (API level 18), it provides public APIs for storing and using app-private keys. An app can use a public key to create a new private/public key pair for encrypting application secrets, and it can decrypt the secrets with the private key.
 
@@ -447,7 +447,7 @@ There are several different open-source libraries that offer encryption capabili
 
 > Please keep in mind that as long as the key is not stored in the KeyStore, it is always possible to easily retrieve the key on a rooted device and then decrypt the values you are trying to protect.
 
-### Logs
+#### Logs
 
 There are many legitimate reasons to create log files on a mobile device, such as keeping track of crashes, errors, and usage statistics. Log files can be stored locally when the app is offline and sent to the endpoint once the app is online. However, logging sensitive data may expose the data to attackers or malicious applications, and it might also violate user confidentiality.
 You can create log files in several ways. The following list includes two classes that are available for Android:
@@ -455,7 +455,7 @@ You can create log files in several ways. The following list includes two classe
 - [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class")
 - [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class")
 
-### Backups
+#### Backups
 
 Android provides users with an auto-backup feature. The backups usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
 
@@ -472,7 +472,7 @@ Android provides users with an auto-backup feature. The backups usually include 
 
 Apps must carefully ensure that sensitive user data doesn't end within these backups as this may allow an attacker to extract it.
 
-### Process Memory
+#### Process Memory
 
 All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible.
 
@@ -480,9 +480,7 @@ The investigation of an application's memory can be done from memory dumps, and 
 
 This is further explained in the 'Testing Memory for Sensitive Data' section.
 
-## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
-
-### Overview
+### Local Storage for Sensitive Data
 
 This test case focuses on identifying potentially sensitive data stored by an application and verifying if it is securely stored. The following checks should be performed:
 
@@ -492,6 +490,77 @@ This test case focuses on identifying potentially sensitive data stored by an ap
   - This includes SharedPreferences, SQL databases, Realm Databases, Internal Storage, External Storage, etc.
   
 In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox. If achievable for the application, sensitive data should be stored off device or, even better, not stored at all.
+
+### Local Storage for Input Validation
+
+For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
+
+> Note: Similar holds for private accessible data on a rooted device
+
+### Logs for Sensitive Data
+
+This test case focuses on identifying any sensitive application data within both system and application logs. The following checks should be performed:
+
+- Analyze source code for logging related code.
+- Check application data directory for log files.
+- Gather system messages and logs and analyze for any sensitive data.
+
+As a general recommendation to avoid potential sensitive application data leakage, logging statements should be removed from production releases unless deemed necessary to the application or explicitly identified as safe, e.g. as a result of a security audit.
+
+### Determining Whether Sensitive Data Is Shared with Third Parties
+
+Sensitive information might be leaked to third parties by several means.
+
+### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields
+
+When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
+
+### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms
+
+As part of Android's IPC mechanisms, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, these mechanisms may leak sensitive data.
+
+### Checking for Sensitive Data Disclosure Through the User Interface
+
+Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
+
+In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
+
+Carefully review all UI components that either show such information or take it as input. Search for any traces of sensitive information and evaluate if it should be masked or completely removed.
+
+### Backups for Sensitive Data
+
+This test case focuses on ensuring that backups do not store sensitive application specific data. The following checks should be performed:
+
+- Check `AndroidManifest.xml` for relevant backup flags.
+- Attempt to backup the application and inspect the backup for sensitive data.
+
+### Finding Sensitive Information in Auto-Generated Screenshots
+
+Manufacturers want to provide device users with an aesthetically pleasing experience at application startup and exit, so they introduced the screenshot-saving feature for use when the application is backgrounded. This feature may pose a security risk. Sensitive data may be exposed if the user deliberately screenshots the application while sensitive data is displayed. A malicious application that is running on the device and able to continuously capture the screen may also expose data. Screenshots are written to local storage, from which they may be recovered by a rogue application (if the device is rooted) or someone who has stolen the device.
+
+For example, capturing a screenshot of a banking application may reveal information about the user's account, credit, transactions, and so on.
+
+### Memory for Sensitive Data
+
+Analyzing memory can help developers identify the root causes of several problems, such as application crashes. However, it can also be used to access sensitive data. This section describes how to check for data disclosure via process memory.
+
+First identify sensitive information that is stored in memory. Sensitive assets have likely been loaded into memory at some point. The objective is to verify that this information is exposed as briefly as possible.
+
+To investigate an application's memory, you must first create a memory dump. You can also analyze the memory in real-time, e.g., via a debugger. Regardless of your approach, memory dumping is a very error-prone process in terms of verification because each dump contains the output of executed functions. You may miss executing critical scenarios. In addition, overlooking data during analysis is probable unless you know the data's footprint (either the exact value or the data format). For example, if the app encrypts with a randomly generated symmetric key, you likely won't be able to spot it in memory unless you can recognize the key's value in another context.
+
+Therefore, you are better off starting with static analysis.
+
+### Device-Access-Security Policy
+
+Apps that process or query sensitive information should run in a trusted and secure environment. To create this environment, the app can check the device for the following:
+
+- PIN- or password-protected device locking
+- Recent Android OS version
+- USB Debugging activation
+- Device encryption
+- Device rooting (see also "Testing Root Detection")
+
+## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 ### Static Analysis
 
@@ -605,7 +674,7 @@ Install and use the app, executing all functions at least once. Data can be gene
 - Check both internal and external local storage for any files created by the application that contain sensitive data.
 - Identify development files, backup files, and old files that shouldn't be included with a production release.
 - Determine whether SQLite databases are available and whether they contain sensitive information. SQLite databases are stored in `/data/data/<package-name>/databases`.
-- Identify if SQLite databases are encrypted. If so, determine how the database password is generated and stored and if this is sufficiently protected as described in the "[Storing a Key](#storing-a-key)" section of the Keystore overview.
+- Identify if SQLite databases are encrypted. If so, determine how the database password is generated and stored and if this is sufficiently protected as described in the "[Storing a Key](#storing-a-cryptographic-key-techniques)" section of the Keystore overview.
 - Check Shared Preferences that are stored as XML files (in `/data/data/<package-name>/shared_prefs`) for sensitive information. Shared Preferences are insecure and unencrypted by default. Some apps might opt to use [secure-preferences](https://github.com/scottyab/secure-preferences "Secure-preferences encrypts the values of Shared Preferences") to encrypt the values stored in Shared Preferences.
 - Check the permissions of the files in `/data/data/<package-name>`. Only the user and group created when you installed the app (e.g., u0_a82) should have user read, write, and execute permissions (`rwx`). Other users should not have permission to access files, but they may have execute permissions for directories.
 - Check for the usage of any Firebase Real-time databases and attempt to identify if they are misconfigured by making the following network call:
@@ -613,12 +682,6 @@ Install and use the app, executing all functions at least once. Data can be gene
 - Determine whether a Realm database is available in `/data/data/<package-name>/files/`, whether it is unencrypted, and whether it contains sensitive information. By default, the file extension is `realm` and the file name is `default`. Inspect the Realm database with the [Realm Browser](https://github.com/realm/realm-browser-osx "Realm Browser for macOS").
 
 ## Testing Local Storage for Input Validation (MSTG-PLATFORM-2)
-
-### Overview
-
-For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
-
-> Note: Similar holds for private accessible data on a rooted device
 
 ### Static analysis
 
@@ -635,16 +698,6 @@ In all cases, having the content HMACed can help to ensure that no additions and
 In case other public storage mechanisms (than the `SharedPreferences.Editor`) are used, the data needs to be validated the moment it is read from the storage mechanism.
 
 ## Testing Logs for Sensitive Data (MSTG-STORAGE-3)
-
-### Overview
-
-This test case focuses on identifying any sensitive application data within both system and application logs. The following checks should be performed:
-
-- Analyze source code for logging related code.
-- Check application data directory for log files.
-- Gather system messages and logs and analyze for any sensitive data.
-
-As a general recommendation to avoid potential sensitive application data leakage, logging statements should be removed from production releases unless deemed necessary to the application or explicitly identified as safe, e.g. as a result of a security audit.
 
 ### Static Analysis
 
@@ -732,11 +785,7 @@ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 You may also want to apply further filters or regular expressions (using `logcat`'s regex flags `-e <expr>, --regex=<expr>` for example) if you expect certain strings or patterns to come up in the logs.
 
-## Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
-
-### Overview
-
-Sensitive information might be leaked to third parties by several means, which include but are not limited to the following:
+## Testing Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
 
 ### Third-party Services Embedded in the App
 
@@ -782,11 +831,7 @@ To intercept traffic between the client and server, you can perform dynamic anal
 
 Run the application and start tracing all calls to functions related to the notifications creation, e.g. `setContentTitle` or `setContentText` from [`NotificationCompat.Builder`](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder). Observe the trace in the end and evaluate if it contains any sensitive information which another app might have eavesdropped.
 
-## Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
-
-### Overview
-
-When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
+## Testing Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
 
 ### Static Analysis
 
@@ -817,11 +862,7 @@ Finally, check the minimum required SDK version in the Android Manifest (`androi
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
 
-## Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6)
-
-### Overview
-
-As part of Android's IPC mechanisms, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, these mechanisms may leak sensitive data.
+## Testing Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6)
 
 ### Static Analysis
 
@@ -1068,15 +1109,7 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-## Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
-
-### Overview
-
-Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
-
-In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
-
-Carefully review all UI components that either show such information or take it as input. Search for any traces of sensitive information and evaluate if it should be masked or completely removed.
+## Testing Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
 
 ### Static Analysis
 
@@ -1111,13 +1144,6 @@ To identify the usage of notifications run through the entire application and al
 While running the application you may want to start tracing all calls to functions related to the notifications creation, e.g. `setContentTitle` or `setContentText` from [`NotificationCompat.Builder`](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder). Observe the trace in the end and evaluate if it contains any sensitive information.
 
 ## Testing Backups for Sensitive Data (MSTG-STORAGE-8)
-
-### Overview
-
-This test case focuses on ensuring that backups do not store sensitive application specific data. The following checks should be performed:
-
-- Check `AndroidManifest.xml` for relevant backup flags.
-- Attempt to backup the application and inspect the backup for sensitive data.
 
 ### Static Analysis
 
@@ -1221,13 +1247,7 @@ Extract the tar file to your working directory.
 tar xvf mybackup.tar
 ```
 
-## Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
-
-### Overview
-
-Manufacturers want to provide device users with an aesthetically pleasing experience at application startup and exit, so they introduced the screenshot-saving feature for use when the application is backgrounded. This feature may pose a security risk. Sensitive data may be exposed if the user deliberately screenshots the application while sensitive data is displayed. A malicious application that is running on the device and able to continuously capture the screen may also expose data. Screenshots are written to local storage, from which they may be recovered by a rogue application (if the device is rooted) or someone who has stolen the device.
-
-For example, capturing a screenshot of a banking application may reveal information about the user's account, credit, transactions, and so on.
+## Testing Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
 
 ### Static Analysis
 
@@ -1267,16 +1287,6 @@ On devices supporting [file-based encryption (FBE)](https://source.android.com/s
 > Accessing these folders and the snapshots requires root.
 
 ## Testing Memory for Sensitive Data (MSTG-STORAGE-10)
-
-### Overview
-
-Analyzing memory can help developers identify the root causes of several problems, such as application crashes. However, it can also be used to access sensitive data. This section describes how to check for data disclosure via process memory.
-
-First identify sensitive information that is stored in memory. Sensitive assets have likely been loaded into memory at some point. The objective is to verify that this information is exposed as briefly as possible.
-
-To investigate an application's memory, you must first create a memory dump. You can also analyze the memory in real-time, e.g., via a debugger. Regardless of your approach, memory dumping is a very error-prone process in terms of verification because each dump contains the output of executed functions. You may miss executing critical scenarios. In addition, overlooking data during analysis is probable unless you know the data's footprint (either the exact value or the data format). For example, if the app encrypts with a randomly generated symmetric key, you likely won't be able to spot it in memory unless you can recognize the key's value in another context.
-
-Therefore, you are better off starting with static analysis.
 
 ### Static Analysis
 
@@ -1669,16 +1679,6 @@ During your analysis, search for:
 Repeating tests and memory dumps will help you obtain statistics about the length of data exposure. Furthermore, observing the way a particular memory segment (e.g., a byte array) changes may lead you to some otherwise unrecognizable sensitive data (more on this in the "Remediation" section below).
 
 ## Testing the Device-Access-Security Policy (MSTG-STORAGE-11)
-
-### Overview
-
-Apps that process or query sensitive information should run in a trusted and secure environment. To create this environment, the app can check the device for the following:
-
-- PIN- or password-protected device locking
-- Recent Android OS version
-- USB Debugging activation
-- Device encryption
-- Device rooting (see also "Testing Root Detection")
 
 ### Static Analysis
 
