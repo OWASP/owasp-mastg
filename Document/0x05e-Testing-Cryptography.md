@@ -108,7 +108,17 @@ Keeping up-to-date and patched component is one of security principles. The same
 
 #### Older Android versions
 
-For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
+For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Conscrypt library is a good choice in this situation to keep the cryptography consistent accross the different API levels and avoid having to import [Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java") which is a heavier library.
+[Conscrypt for Android](https://github.com/google/conscrypt#android) can be import this way:
+```groovy
+dependencies {
+  implementation 'org.conscrypt:conscrypt-android:last_version'
+}
+```
+Next, the provider must be registered by calling:
+```kotlin
+Security.addProvider(Conscrypt.newProvider())
+```
 
 ### Key Generation
 
