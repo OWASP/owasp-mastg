@@ -109,7 +109,7 @@ Keeping up-to-date and patched component is one of security principles. The same
 #### Older Android versions
 
 For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Conscrypt library is a good choice in this situation to keep the cryptography consistent accross the different API levels and avoid having to import [Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java") which is a heavier library.
-[Conscrypt for Android](https://github.com/google/conscrypt#android) can be import this way:
+[Conscrypt for Android](https://github.com/google/conscrypt#android "Conscrypt - A Java Security Provider") can be import this way:
 ```groovy
 dependencies {
   implementation 'org.conscrypt:conscrypt-android:last_version'
