@@ -2,6 +2,7 @@ import yaml
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.drawing.image import Image
+from enum import IntEnum
 
 import excel_styles_and_validation
 
@@ -54,21 +55,33 @@ MASVSCOMMIT = ""
 TEST_CASE_ALIAS = "Test Case"
 STATUS_ALIAS = "Status"
 
+class Position(IntEnum):
+    ID = 2
+    MSTG_ID = 3
+    TEXT = 4
+    L1 = 5
+    L2 = 6
+    R = 7
+    LINK_COMMON = 8
+    LINK_ANDROID = 9
+    LINK_IOS = 10
+    STATUS_ANDROID = 11
+    STATUS_IOS = 12
+
 WS_BASE_CONFIG = {
     "start_row": 6,
-    "start_col": 2,
     "columns": [
-        {"col": "B", "position": 2, "name": "ID", "width": 10, "style": "gray_header"},
-        {"col": "C", "position": 3, "name": "MASVS-ID", "width": 25, "style": "gray_header"},
-        {"col": "D", "position": 4, "name": "Detailed Verification Requirement",  "width": 80, "style": "gray_header"},
-        {"col": "E", "position": 5, "name": "L1", "width": 5, "style": "gray_header"},
-        {"col": "F", "position": 6, "name": "L2", "width": 5, "style": "gray_header"},
-        {"col": "G", "position": 7, "name": "R", "width": 5, "style": "gray_header"},
-        {"col": "H", "position": 8, "name": "Common", "width": 10, "style": "gray_header"},
-        {"col": "I", "position": 9, "name": "Android", "width": 10, "style": "gray_header"},
-        {"col": "J", "position": 10, "name": "iOS", "width": 10, "style": "gray_header"},
-        {"col": "K", "position": 11, "name": "Android", "width": 10, "style": "gray_header"},
-        {"col": "L", "position": 12, "name": "iOS", "width": 10, "style": "gray_header"},
+        {"col": "B", "position": Position.ID, "name": "ID", "width": 10, "style": "gray_header"},
+        {"col": "C", "position": Position.MSTG_ID, "name": "MASVS-ID", "width": 25, "style": "gray_header"},
+        {"col": "D", "position": Position.TEXT, "name": "Detailed Verification Requirement",  "width": 80, "style": "gray_header"},
+        {"col": "E", "position": Position.L1, "name": "L1", "width": 5, "style": "gray_header"},
+        {"col": "F", "position": Position.L2, "name": "L2", "width": 5, "style": "gray_header"},
+        {"col": "G", "position": Position.R, "name": "R", "width": 5, "style": "gray_header"},
+        {"col": "H", "position": Position.LINK_COMMON, "name": "Common", "width": 10, "style": "gray_header"},
+        {"col": "I", "position": Position.LINK_ANDROID, "name": "Android", "width": 10, "style": "gray_header"},
+        {"col": "J", "position": Position.LINK_IOS, "name": "iOS", "width": 10, "style": "gray_header"},
+        {"col": "K", "position": Position.STATUS_ANDROID, "name": "Android", "width": 10, "style": "gray_header"},
+        {"col": "L", "position": Position.STATUS_IOS, "name": "iOS", "width": 10, "style": "gray_header"},
     ]
 }
 
@@ -102,13 +115,13 @@ def set_columns_width(ws):
 
 
 def set_table_headers(row, ws):
-    ws.merge_cells(start_row=row, start_column=8, end_row=row, end_column=10)
-    ws.cell(row=row, column=8).value = TEST_CASE_ALIAS
-    ws.cell(row=row, column=8).style = "gray_header"
+    ws.merge_cells(start_row=row, start_column=Position.LINK_COMMON, end_row=row, end_column=Position.LINK_IOS)
+    ws.cell(row=row, column=Position.LINK_COMMON).value = TEST_CASE_ALIAS
+    ws.cell(row=row, column=Position.LINK_COMMON).style = "gray_header"
 
-    ws.merge_cells(start_row=row, start_column=11, end_row=row, end_column=12)
-    ws.cell(row=row, column=11).value = STATUS_ALIAS
-    ws.cell(row=row, column=11).style = "gray_header"
+    ws.merge_cells(start_row=row, start_column=Position.STATUS_ANDROID, end_row=row, end_column=Position.STATUS_IOS)
+    ws.cell(row=row, column=Position.STATUS_ANDROID).value = STATUS_ALIAS
+    ws.cell(row=row, column=Position.STATUS_ANDROID).style = "gray_header"
 
     row = row + 1
     for col in WS_BASE_CONFIG["columns"]:
@@ -149,18 +162,7 @@ def create_security_requirements_sheet(wb):
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
 
-    row = 6
-    col_id = 2
-    col_mstg_id = 3
-    col_text = 4
-    col_l1 = 5
-    col_l2 = 6
-    col_r = 7
-    col_link_common = 8
-    col_link_android = 9
-    col_link_ios = 10
-    col_status_android= 11
-    col_status_ios= 12
+    row = WS_BASE_CONFIG["start_row"]
 
     for mstg_id, req in MASVS.items():
         req_id = req["id"].split(".")
@@ -173,7 +175,7 @@ def create_security_requirements_sheet(wb):
             category_id = f"V{category}"
             category_title = MASVS_TITLES[category_id]
 
-            write_title(ws, row, col_id, col_status_ios, category_title)
+            write_title(ws, row, Position.ID, Position.STATUS_IOS, category_title)
 
             row = row + 1
 
@@ -187,21 +189,21 @@ def create_security_requirements_sheet(wb):
 
         # End header
 
-        ws.cell(row=row, column=col_id).value = req["id"]
-        ws.cell(row=row, column=col_id).style = "center"
+        ws.cell(row=row, column=Position.ID).value = req["id"]
+        ws.cell(row=row, column=Position.ID).style = "center"
 
-        ws.cell(row=row, column=col_mstg_id).value = mstg_id
-        ws.cell(row=row, column=col_mstg_id).style = "center"
+        ws.cell(row=row, column=Position.MSTG_ID).value = mstg_id
+        ws.cell(row=row, column=Position.MSTG_ID).style = "center"
 
-        ws.cell(row=row, column=col_text).value = req["text"]
-        ws.cell(row=row, column=col_text).style = "text"
+        ws.cell(row=row, column=Position.TEXT).value = req["text"]
+        ws.cell(row=row, column=Position.TEXT).style = "text"
 
         if req["L1"]:
-            ws.cell(row=row, column=col_l1).style = "blue"
+            ws.cell(row=row, column=Position.L1).style = "blue"
         if req["L2"]:
-            ws.cell(row=row, column=col_l2).style = "green"
+            ws.cell(row=row, column=Position.L2).style = "green"
         if req["R"]:
-            ws.cell(row=row, column=col_r).style = "orange"
+            ws.cell(row=row, column=Position.R).style = "orange"
 
         # ws.cell(row=row, column=col_link_common).value = "N/A"
         # ws.cell(row=row, column=col_link_common).style = "gray_header"
@@ -218,17 +220,17 @@ def create_security_requirements_sheet(wb):
             link_ios = get_link_for(req["links"], "0x06")
 
             if link_common:
-                write_testcase(ws, row, col_link_common, link_common)
+                write_testcase(ws, row, Position.LINK_COMMON, link_common)
             if link_android:
-                write_testcase(ws, row, col_link_android, link_android)
+                write_testcase(ws, row, Position.LINK_ANDROID, link_android)
             if link_ios:
-                write_testcase(ws, row, col_link_ios, link_ios)
+                write_testcase(ws, row, Position.LINK_IOS, link_ios)
 
         ws.row_dimensions[row].height = 55  # points
 
-        status_android_cell = ws.cell(row=row, column=col_status_android).coordinate
+        status_android_cell = ws.cell(row=row, column=Position.STATUS_ANDROID).coordinate
         excel_styles_and_validation.status_validation.add(status_android_cell)
-        status_ios_cell = ws.cell(row=row, column=col_status_ios).coordinate
+        status_ios_cell = ws.cell(row=row, column=Position.STATUS_IOS).coordinate
         excel_styles_and_validation.status_validation.add(status_ios_cell)
 
         row = row + 1
