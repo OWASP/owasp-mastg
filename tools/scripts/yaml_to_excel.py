@@ -52,6 +52,7 @@ MASTGCOMMIT = ""
 MASVSVERSION = ""
 MASVSCOMMIT = ""
 TEST_CASE_ALIAS = "Test Case"
+STATUS_ALIAS = "Status"
 
 WS_BASE_CONFIG = {
     "start_row": 6,
@@ -66,9 +67,9 @@ WS_BASE_CONFIG = {
         {"col": "H", "position": 8, "name": "Common", "width": 10, "style": "gray_header"},
         {"col": "I", "position": 9, "name": "Android", "width": 10, "style": "gray_header"},
         {"col": "J", "position": 10, "name": "iOS", "width": 10, "style": "gray_header"},
-        {"col": "K", "position": 11, "name": "Status", "width": 10, "style": "gray_header"},
+        {"col": "K", "position": 11, "name": "Android", "width": 10, "style": "gray_header"},
+        {"col": "L", "position": 12, "name": "iOS", "width": 10, "style": "gray_header"},
     ]
-        
 }
 
 
@@ -101,6 +102,15 @@ def set_columns_width(ws):
 
 
 def set_table_headers(row, ws):
+    ws.merge_cells(start_row=row, start_column=8, end_row=row, end_column=10)
+    ws.cell(row=row, column=8).value = TEST_CASE_ALIAS
+    ws.cell(row=row, column=8).style = "gray_header"
+
+    ws.merge_cells(start_row=row, start_column=11, end_row=row, end_column=12)
+    ws.cell(row=row, column=11).value = STATUS_ALIAS
+    ws.cell(row=row, column=11).style = "gray_header"
+
+    row = row + 1
     for col in WS_BASE_CONFIG["columns"]:
         ws.cell(row=row, column=col.get("position")).value = col.get("name")
         ws.cell(row=row, column=col.get("position")).style = col.get("style")
@@ -134,7 +144,7 @@ def create_security_requirements_sheet(wb):
     write_header(ws)
     set_columns_width(ws)
 
-    status_cells = 'K11:K400'
+    status_cells = 'K11:L400'
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
@@ -149,7 +159,8 @@ def create_security_requirements_sheet(wb):
     col_link_common = 8
     col_link_android = 9
     col_link_ios = 10
-    col_status = 11
+    col_status_android= 11
+    col_status_ios= 12
 
     for mstg_id, req in MASVS.items():
         req_id = req["id"].split(".")
@@ -162,11 +173,13 @@ def create_security_requirements_sheet(wb):
             category_id = f"V{category}"
             category_title = MASVS_TITLES[category_id]
 
-            write_title(ws, row, col_id, col_status, category_title)
+            write_title(ws, row, col_id, col_status_ios, category_title)
 
-            row = row + 2
+            row = row + 1
 
             set_table_headers(row, ws)
+
+            row = row + 1
 
             ws.add_data_validation(excel_styles_and_validation.status_validation)
 
@@ -192,7 +205,7 @@ def create_security_requirements_sheet(wb):
 
         # ws.cell(row=row, column=col_link_common).value = "N/A"
         # ws.cell(row=row, column=col_link_common).style = "gray_header"
-        
+
         # ws.cell(row=row, column=col_link_android).value = "N/A"
         # ws.cell(row=row, column=col_link_android).style = "gray_header"
 
@@ -212,9 +225,11 @@ def create_security_requirements_sheet(wb):
                 write_testcase(ws, row, col_link_ios, link_ios)
 
         ws.row_dimensions[row].height = 55  # points
-        
-        status_cell = ws.cell(row=row, column=col_status).coordinate
-        excel_styles_and_validation.status_validation.add(status_cell)
+
+        status_android_cell = ws.cell(row=row, column=col_status_android).coordinate
+        excel_styles_and_validation.status_validation.add(status_android_cell)
+        status_ios_cell = ws.cell(row=row, column=col_status_ios).coordinate
+        excel_styles_and_validation.status_validation.add(status_ios_cell)
 
         row = row + 1
 
