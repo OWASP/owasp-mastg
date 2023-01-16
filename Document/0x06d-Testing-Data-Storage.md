@@ -117,7 +117,6 @@ if userDefaults.bool(forKey: "hasRunBefore") == false {
 
     // Update the flag indicator
     userDefaults.set(true, forKey: "hasRunBefore")
-    userDefaults.synchronize() // Forces the app to update UserDefaults
 }
 ```
 
