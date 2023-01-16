@@ -1,12 +1,14 @@
 # Mobile App Authentication Architectures
 
+## Overview
+
 Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://owasp.org/www-project-top-ten/).
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the backend service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
 
 Since the basic concepts are identical on iOS and Android, we'll discuss prevalent authentication and authorization architectures and pitfalls in this generic guide. OS-specific authentication issues, such as local and biometric authentication, will be discussed in the respective OS-specific chapters.
 
-## General Guidelines on Testing Authentication
+### General Guidelines on Testing Authentication
 
 There's no one-size-fits-all approach to authentication. When reviewing the authentication architecture of an app, you should first consider whether the authentication method(s) used are appropriate in the given context. Authentication can be based on one or more of the following:
 
@@ -32,7 +34,7 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 
 You can find details on how to test for the requirements above in the following sections.
 
-### Stateful vs. Stateless Authentication
+#### Stateful vs. Stateless Authentication
 
 You'll usually find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so there must be a way to associate a user's subsequent HTTP requests with that user. Otherwise, the user's log in credentials would have to be sent with every request. Also, both the server and client need to keep track of user data (e.g., the user's privileges or role). This can be done in two different ways:
 
@@ -47,7 +49,7 @@ Web applications commonly use stateful authentication with a random session ID t
 
 As a mobile security tester, you should be familiar with both types of authentication.
 
-### Supplementary Authentication
+#### Supplementary Authentication
 
 Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for
 Multi-factor Authentication"), which can incorporate:
@@ -59,7 +61,7 @@ Multi-factor Authentication"), which can incorporate:
 
 Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
 
-## Verifying that Appropriate Authentication is in Place (MSTG-ARCH-2 and MSTG-AUTH-1)
+## Testing to verify that Appropriate Authentication is in Place (MSTG-ARCH-2 and MSTG-AUTH-1)
 
 Perform the following steps when testing authentication and authorization:
 
