@@ -2,7 +2,7 @@
 
 _First of all,_ [⭐ Give us a Star in GitHub](https://github.com/OWASP/owasp-mastg)!
 
-<a href="https://github.com/OWASP/owasp-mastg"><img src="../../assets/starring.png" width="300px"/></a>
+<a href="https://github.com/OWASP/owasp-mastg"><img src="./assets/starring.png" width="300px"/></a>
 
 <br>
 

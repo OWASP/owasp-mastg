@@ -17,7 +17,7 @@ Today we are rebranding our project to “OWASP Mobile App Security (MAS)”. Th
 - OWASP MAS Crackmes (incl. Hacking playground)
 
 <center>
-<img style="width: 80%; border-radius: 5px" src="../assets/news/mas-rebranding.png"/>
+<img style="width: 80%; border-radius: 5px" src="./assets/news/mas-rebranding.png"/>
 </center>
 
 We see MAS reflecting all the consistency, structure and transparency that we’re bringing with our 2.0 versions.

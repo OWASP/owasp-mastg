@@ -1,6 +1,6 @@
 # OWASP MASTG
 
-<a href="../MASTG/Intro/0x01-Foreword"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="../assets/mastg_cover.png" /></a>
+<a href="../MASTG/Intro/0x01-Foreword"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="./assets/mastg_cover.png" /></a>
 
 <a href="https://github.com/OWASP/owasp-mastg/">:material-github: GitHub Repo</a>
 

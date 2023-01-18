@@ -1,6 +1,6 @@
 # OWASP MASVS
 
-<a href="../MASVS/Intro/0x01-Foreword"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="../assets/masvs_cover.png"></a>
+<a href="../MASVS/Intro/0x01-Foreword"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="./assets/masvs_cover.png"></a>
 
 <a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
 
