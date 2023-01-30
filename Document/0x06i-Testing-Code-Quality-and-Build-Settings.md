@@ -55,51 +55,48 @@ At first you need to determine the mode in which your app is to be generated to 
 - Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
-Alternatively, you can use codesign or ldid to show the entitlements of the binary to check if the application is debuggable. if the value of [get-task-allow](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues, "Resolving common notarization issues") key is set to true, other processes (such as debuggers) can attach to that app.
+To test if the app is debuggable you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues, "Resolving common notarization issues") key is set to `true`.
 
-- codesign
+Using codesign:
 
-    ```bash
-    $ codesign -d --entitlements - TargetApp.app
+```bash
+$ codesign -d --entitlements - iGoat-Swift.app
+Executable=/Users/owasp/iGoat-Swift/Payload/iGoat-Swift.app/iGoat-Swift
+[Dict]
+	[Key] application-identifier
+	[Value]
+		[String] TNAJ496RHB.OWASP.iGoat-Swift
+	[Key] com.apple.developer.team-identifier
+	[Value]
+		[String] TNAJ496RHB
+	[Key] get-task-allow
+	[Value]
+		[Bool] true
+	[Key] keychain-access-groups
+	[Value]
+		[Array]
+			[String] TNAJ496RHB.OWASP.iGoat-Swift
 
-    Executable=/Users/owasp/TargetApp.app/TargetApp
-    [Dict]
-        [Key] application-identifier
-        [Value]
-            [String] XXXXXXXXXX.YY.ZZ.TargetApp
-        [Key] com.apple.developer.team-identifier
-        [Value]
-            [String] XXXXXXXXXX
-        [Key] get-task-allow
-        [Value]
-            [Bool] true
-        [Key] keychain-access-groups
-        [Value]
-            [Array]
-                [String] XXXXXXXXXX.YY.ZZ.TargetApp
-    ```
+Using ldid
 
-- ldid
-
-    ```bash
-    $ ldid -e TargetApp.app/TargetApp
-
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-        <key>application-identifier</key>
-        <string>XXXXXXXXXX.YY.ZZ.TargetApp</string>
-        <key>com.apple.developer.team-identifier</key>
-        <string>XXXXXXXXXX</string>
-        <key>get-task-allow</key>
-        <true/>
-        <key>keychain-access-groups</key>
-        <array>
-            <string>XXXXXXXXXX.YY.ZZ.TargetApp</string>
-        </array>
-    </dict>
-    ```
+```bash
+$ ldid -e iGoat-Swift.app/iGoat-Swift
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>application-identifier</key>
+	<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+	<key>com.apple.developer.team-identifier</key>
+	<string>TNAJ496RHB</string>
+	<key>get-task-allow</key>
+	<true/>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+	</array>
+</dict>
+</plist>
 
 ### Dynamic Analysis
 
