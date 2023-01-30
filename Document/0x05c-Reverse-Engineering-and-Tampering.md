@@ -2343,7 +2343,7 @@ adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
 adb pull /data/local/tmp/boot.img
 ```
 
-Next, extract the ramdisk and information about the structure of the boot image. There are various tools that can do this;  I used Gilles Grandou's abootimg tool. Install the tool and run the following command on your boot image:
+Next, extract the ramdisk and information about the structure of the boot image. There are various tools that can do this;  here, Gilles Grandou's [abootimg tool](https://github.com/ggrandou/abootimg "abootimg tool") was used. Install the tool and run the following command on your boot image:
 
 ```bash
 abootimg -x boot.img
@@ -2395,7 +2395,7 @@ ABCD
 
 It's time to write the kernel module. For file-hiding, you'll need to hook one of the system calls used to open (or check for the existence of) files. There are many of these: `open`, `openat`, `access`, `accessat`, `facessat`, `stat`, `fstat`, etc. For now, you'll only hook the `openat` system call.  This is the syscall that the /bin/cat program uses when accessing a file, so the call should be suitable for a demonstration.
 
-You can find the function prototypes for all system calls in the kernel header file arch/arm/include/asm/unistd.h. Create a file called kernel_hook.c with the following code:
+You can find the function prototypes for all system calls in the kernel header file `arch/arm/include/asm/unistd.h`. Create a file called `kernel_hook.c` with the following code:
 
 ```c
 #include <linux/kernel.h>
@@ -2452,7 +2452,7 @@ clean:
         make -C $(KERNEL) M=$(shell pwd) clean
 ```
 
-Run `make` to compile the code, which should create the file kernel_hook.ko. Copy kernel_hook.ko to the device and load it with the `insmod` command. Using the `lsmod` command, verify that the module has been loaded successfully.
+Run `make` to compile the code, which should create the file `kernel_hook.ko`. Copy `kernel_hook.ko` to the device and load it with the `insmod` command. Using the `lsmod` command, verify that the module has been loaded successfully.
 
 ```bash
 $ make
@@ -2464,7 +2464,7 @@ $ adb shell lsmod
 kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
 ```
 
-Now you'll access /dev/kmem to overwrite the original function pointer in `sys_call_table` with the address of your newly injected function (this could have been done directly in the kernel module, but /dev/kmem provides an easy way to toggle your hooks on and off). We've have adapted the code from Dong-Hoon You's Phrack article for this purpose. However, you can use the file interface instead of `mmap` because the latter might cause kernel panics. Create a file called kmem_util.c with the following code:
+Now you'll access `/dev/kmem` to overwrite the original function pointer in `sys_call_table` with the address of your newly injected function (this could have been done directly in the kernel module, but `/dev/kmem` provides an easy way to toggle your hooks on and off). We've have adapted the code from [Dong-Hoon You's Phrack article](http://phrack.org/issues/68/6.html) for this purpose. However, you can use the file interface instead of `mmap` because the latter might cause kernel panics. Create a file called `kmem_util.c` with the following code:
 
 ```c
 #include <stdio.h>
@@ -2522,7 +2522,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device:
+Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build `kmem_util.c` with the prebuilt toolchain and copy it to the device:
 
 ```bash
 /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
@@ -2530,21 +2530,21 @@ adb push kmem_util /data/local/tmp/
 adb shell chmod 755 /data/local/tmp/kmem_util
 ```
 
-Before you start accessing kernel memory, you still need to know the correct offset into the system call table. The `openat` system call is defined in unistd.h, which is in the kernel sources:
+Before you start accessing kernel memory, you still need to know the correct offset into the system call table. The `openat` system call is defined in `unistd.h`, which is in the kernel sources:
 
 ```bash
 $ grep -r "__NR_openat" arch/arm/include/asm/unistd.h
 \#define __NR_openat            (__NR_SYSCALL_BASE+322)
 ```
 
-The final piece of the puzzle is the address of your replacement-`openat`. Again, you can get this address from /proc/kallsyms.
+The final piece of the puzzle is the address of your replacement - `openat`. Again, you can get this address from `/proc/kallsyms`.
 
 ```bash
 $ adb shell cat /proc/kallsyms | grep new_openat
 bf000000 t new_openat    [kernel_hook]
 ```
 
-Now you have everything you need to overwrite the `sys_call_table` entry. The syntax for kmem_util is:
+Now you have everything you need to overwrite the `sys_call_table` entry. The syntax for `kmem_util` is:
 
 ```bash
 ./kmem_util <syscall_table_base_address> <offset> <func_addr>
@@ -2558,7 +2558,7 @@ Original value: c017a390
 New value: bf000000
 ```
 
-Assuming that everything worked, /bin/cat shouldn't be able to _see_ the file.
+Assuming that everything worked, `/bin/cat` shouldn't be able to _see_ the file.
 
 ```bash
 $ adb shell su -c cat /data/local/tmp/nowyouseeme
@@ -2567,13 +2567,13 @@ tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
 
 Voilà! The file "nowyouseeme" is now somewhat hidden from all _user mode_ processes. Note that the file can easily be found using other syscalls, and you need to do a lot more to properly hide a file, including hooking `stat`, `access`, and other system calls.
 
-File-hiding is of course only the tip of the iceberg: you can accomplish a lot using kernel modules, including bypassing many root detection measures, integrity checks, and anti-debugging measures. You can find more examples in the "case studies" section of Bernhard Mueller's Hacking Soft Tokens Paper [#mueller].
+File-hiding is of course only the tip of the iceberg: you can accomplish a lot using kernel modules, including bypassing many root detection measures, integrity checks, and anti-debugging measures. You can find more examples in the "case studies" section of Bernhard Mueller's [Hacking Soft Tokens paper](https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf "hacking soft tokens paper").
 
 ## References
 
-- Bionic - <https://github.com/android/platform_bionic>
-- Attacking Android Applications with Debuggers (19 January 2015) - <https://blog.netspi.com/attacking-android-applications-with-debuggers/>
-- [#josse] Sébastien Josse, Dynamic Malware Recompilation (6 January 2014) - <http://ieeexplore.ieee.org/document/6759227/>
+- Bionic - <https://github.com/aosp-mirror/platform_bionic>
+- Attacking Android Applications with Debuggers (19 January 2015) - <https://www.netspi.com/blog/technical/mobile-application-penetration-testing/attacking-android-applications-with-debuggers/>
+- Sébastien Josse, Malware Dynamic Recompilation (6 January 2014) - <http://ieeexplore.ieee.org/document/6759227/>
 - Update on Development of Xposed for Nougat - <https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/>
-- Android Platform based Linux kernel rootkit (4 April 2011 - Phrack Magazine)
-- [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android (2016) - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
+- Android Platform based Linux kernel rootkit (4 April 2011 - Phrack Magazine) - <http://phrack.org/issues/68/6.html>
+- Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android (2016) - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
