@@ -464,7 +464,8 @@ private FileItem getFileItemFromUri(Context, context, Uri uri){
 ```
 
 The following is the source of a malicious app that exploits the above vulnerable code.
-<br>AndroidManifest.xml
+
+AndroidManifest.xml
 
 ```xml
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
