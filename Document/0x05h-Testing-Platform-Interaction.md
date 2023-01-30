@@ -411,7 +411,8 @@ An alternative to validation functions is type conversion, with, for example, `I
 
 [Implicit intents](https://developer.android.com/guide/components/intents-filters#ExampleSend "Implicit intents") are useful when the user want to use an external functionality of another app without requiring the developer to specify a particular app in the intent. For example, if the user clicks on an e-mail address within an app, an e-mail app should open and prepare a draft to the given e-mail address. However, the calling app does not want to specify a concrete e-mail app but leaves this choice to the user.
 This can always lead to a security risk if the calling app processes the return value of the implicit intent without verifying it. A blog post by [oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents/ "Interception of Android implicit intents"), describes the mentioned problem with concrete attack scenarios.
-<br>Explicit Intent
+
+Explicit Intent
 
 ```java
 // Note the specification of a concrete component (DownloadActivity) that is started by the intent.
