@@ -549,7 +549,7 @@ public class EvilContentActivity extends Activity{
 }
 ```
 
-A full description of the attack is included in the [blog article by oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents "Current attacks on implicit intents")
+A full description of the attack is included in the [following blog article](https://blog.oversecured.com/Interception-of-Android-implicit-intents "Current attacks on implicit intents")
 
 ### Dynamic Analysis
 
