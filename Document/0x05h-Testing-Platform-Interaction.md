@@ -491,7 +491,7 @@ public class EvilContentActivity extends Activity{
 }
 ```
 
-If the user selects the malicious app to handle his intent, the attacker can now steal the session.xml file from the app's internal storage. In the previous example, the victim must explicitly select the attacker's malicious app in a dialog. However, it could be that the developers suppress this selection dialog and automatically determine a recipient for the intent. This would enable the attack without additional user interaction.
+If the user selects the malicious app to handle his intent, the attacker can now steal the `session.xml` file from the app's internal storage. In the previous example, the victim must explicitly select the attacker's malicious app in a dialog. However, it could be that the developers suppress this selection dialog and automatically determine a recipient for the intent. This would enable the attack without additional user interaction.
 The following code sample implements this automatic selection of the recipient. By specifying a priority in the malicious app's intent filter, the attacker can influence the selection sequence.
 
 ```java
