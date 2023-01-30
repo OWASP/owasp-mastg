@@ -2464,7 +2464,7 @@ $ adb shell lsmod
 kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
 ```
 
-Now you'll access `/dev/kmem` to overwrite the original function pointer in `sys_call_table` with the address of your newly injected function (this could have been done directly in the kernel module, but `/dev/kmem` provides an easy way to toggle your hooks on and off). We've have adapted the code from Dong-Hoon You's Phrack article for this purpose. However, you can use the file interface instead of `mmap` because the latter might cause kernel panics. Create a file called `kmem_util.c` with the following code:
+Now you'll access `/dev/kmem` to overwrite the original function pointer in `sys_call_table` with the address of your newly injected function (this could have been done directly in the kernel module, but `/dev/kmem` provides an easy way to toggle your hooks on and off). We've have adapted the code from [Dong-Hoon You's Phrack article](http://phrack.org/issues/68/6.html) for this purpose. However, you can use the file interface instead of `mmap` because the latter might cause kernel panics. Create a file called `kmem_util.c` with the following code:
 
 ```c
 #include <stdio.h>
