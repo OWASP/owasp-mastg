@@ -442,7 +442,7 @@ Intent intent = new Intent();
       startActivityForResult(Intent.createChooser(intent, ""), REQUEST_IMAGE);
 ```
 
-Subsequently, the tester should check how the return value of this intent is handled by searching for the `onActivityResult()` method. If the return value of the intent isn't properly checked an attacker can read arbitrary files from within the app's internal storage *(/data/data/\<appname>)*.
+Subsequently, the tester should check how the return value of this intent is handled by searching for the `onActivityResult()` method. If the return value of the intent isn't properly checked an attacker can read arbitrary files from within the app's internal storage `/data/data/<appname>`.
 The `performAction()` method in the following example reads the implicit intents return value, which can be an attacker provided URI and hands it to `getFileItemFromUir()`. This method copies the file to a temp folder, which is usual if this file is displayed internally. But if the app stores the URI provided file in an external temp directory e.g by calling `getExternalCacheDir` or `getExternalFilesDir` an attacker can read this file if he sets the permission `android.permission.READ_EXTERNAL_STORAGE`.
 
 ```java
