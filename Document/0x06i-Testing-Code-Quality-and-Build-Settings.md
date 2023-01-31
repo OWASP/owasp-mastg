@@ -53,7 +53,7 @@ While debugging is a useful feature when developing an app, it has to be turned 
 
 ### Static Analysis
 
-To test if the app is debuggable you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues, "Resolving common notarization issues") key is set to `true`.
+To test if the app is debuggable you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key is set to `true`.
 
 Using codesign:
 
