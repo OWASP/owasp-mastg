@@ -55,6 +55,7 @@ For this you need an IDE or text editor and git on your machine. We recommend us
 2. [Clone your fork repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#about-cloning-a-repository) and [add the remote upstream repo](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#remotes-and-forks), e.g. for owasp-masvs:
     ```bash
     $ git clone https://github.com/<your_github_user>/owasp-masvs.git
+    $ cd owasp-masvs/
     $ git remote add upstream git@github.com:OWASP/owasp-masvs.git
     ```
 3. Create a branch.

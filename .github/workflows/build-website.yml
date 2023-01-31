@@ -30,4 +30,6 @@ jobs:
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
       - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
       
+      - run: python3 tools/scripts/populate_dynamic_pages.py
+      
       - run: mkdocs gh-deploy --force --clean --verbose

@@ -60,9 +60,13 @@ A vulnerable Android app with vulnerabilities similar to the test cases describe
 
 Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
 
-### MASTG Hacking Playground (Kotlin)
+#### MASTG Hacking Playground (Kotlin)
 
 Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
+
+### OVAA
+
+An Android app that aggregates all the platform's known and popular security vulnerabilities - <https://github.com/oversecured/ovaa>
 
 ## iOS
 
@@ -97,6 +101,10 @@ An iOS Objective-C app serving as a learning tool for iOS developers (iPhone, iP
 ### iGoat-Swift
 
 A Swift version of original iGoat project - <https://github.com/owasp/igoat-swift>
+
+### OVIA
+
+An iOS app that aggregates all the platform's known and popular security vulnerabilities - <https://github.com/oversecured/ovia>
 
 ### UnSAFE Bank
 
