@@ -42,7 +42,7 @@ There are various ways to distribute your app as described at [the Apple documen
 
 ### Overview
 
-To test if the app is [debugging](0x06c-Reverse-Engineering-and-Tampering.md#debugging) you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues, "Resolving common notarization issues") key is set to `true`.
+To test if the app is [debuggable](0x06c-Reverse-Engineering-and-Tampering.md#debugging) you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key is set to `true`.
 
 While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program. To do that you need to determine the mode in which your app is to be generated to check the flags in the environment:
 
@@ -53,7 +53,7 @@ While debugging is a useful feature when developing an app, it has to be turned 
 
 ### Static Analysis
 
-To test if the app is debuggable you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key is set to `true`.
+Inspect the app entitlements and check the value of `get-task-allow` key. If it is set to `true`, the app is debuggable.
 
 Using codesign:
 
