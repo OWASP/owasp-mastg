@@ -8,7 +8,7 @@ As stated before in chapter "[Mobile App Authentication Architectures](0x04e-Tes
 
 On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication "Local Authentication framework") provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [keychain](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html "Keychain Services") for implementing local authentication.
 
-Fingerprint authentication on iOS is known as *Touch ID*. The fingerprint ID sensor is operated by the [SecureEnclave security coprocessor](https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf "Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang") and does not expose fingerprint data to any other parts of the system. Next to Touch ID, Apple introduced *Face ID*: which allows authentication based on facial recognition. Both use similar APIs on an application level, the actual method of storing the data and retrieving the data (e.g. facial data or fingerprint related data is different).
+Fingerprint authentication on iOS is known as _Touch ID_. The fingerprint ID sensor is operated by the [SecureEnclave security coprocessor](https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf "Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang") and does not expose fingerprint data to any other parts of the system. Next to Touch ID, Apple introduced _Face ID_: which allows authentication based on facial recognition. Both use similar APIs on an application level, the actual method of storing the data and retrieving the data (e.g. facial data or fingerprint related data is different).
 
 Developers have two options for incorporating Touch ID/Face ID authentication:
 
@@ -48,7 +48,7 @@ context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pas
 }
 ```
 
-*Touch ID authentication in Swift using the Local Authentication Framework (official code sample from Apple).*
+- _Touch ID authentication in Swift using the Local Authentication Framework (official code sample from Apple)._
 
 ### Using Keychain Services for Local Authentication
 
@@ -61,7 +61,7 @@ In the following example we will save the string "test_strong_password" to the k
 #### Swift
 
 ```default
-// 1. create AccessControl object that will represent authentication settings
+// 1. Create the AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
 
@@ -74,7 +74,7 @@ guard let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
     return
 }
 
-// 2. define keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
+// 2. Create the keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 
 var query: [String: Any] = [:]
 
@@ -84,7 +84,7 @@ query[kSecAttrAccount as String] = "OWASP Account" as CFString
 query[kSecValueData as String] = "test_strong_password".data(using: .utf8)! as CFData
 query[kSecAttrAccessControl as String] = accessControl
 
-// 3. save item
+// 3. Save the item
 
 let status = SecItemAdd(query as CFDictionary, nil)
 
@@ -93,45 +93,10 @@ if status == noErr {
 } else {
     // error while saving
 }
-```
 
-#### Objective-C
+// 4. Now we can request the saved item from the keychain. Keychain services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
 
-```objectivec
-
-    // 1. create AccessControl object that will represent authentication settings
-    CFErrorRef *err = nil;
-
-    SecAccessControlRef sacRef = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-        kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-        kSecAccessControlUserPresence,
-        err);
-
-    // 2. define keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
-    NSDictionary* query = @{
-        (_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-        (__bridge id)kSecAttrLabel: @"com.me.myapp.password",
-        (__bridge id)kSecAttrAccount: @"OWASP Account",
-        (__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
-        (__bridge id)kSecAttrAccessControl: (__bridge_transfer id)sacRef
-    };
-
-    // 3. save item
-    OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, nil);
-
-    if (status == noErr) {
-        // successfully saved
-    } else {
-        // error while saving
-    }
-```
-
-Now we can request the saved item from the keychain. Keychain services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
-
-#### Swift
-
-```default
-// 1. define query
+// 5. Create the query
 var query = [String: Any]()
 query[kSecClass as String] = kSecClassGenericPassword
 query[kSecReturnData as String] = kCFBooleanTrue
@@ -139,7 +104,7 @@ query[kSecAttrAccount as String] = "My Name" as CFString
 query[kSecAttrLabel as String] = "com.me.myapp.password" as CFString
 query[kSecUseOperationPrompt as String] = "Please, pass authorisation to enter this area" as CFString
 
-// 2. get item
+// 6. Get the item
 var queryResult: AnyObject?
 let status = withUnsafeMutablePointer(to: &queryResult) {
     SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
@@ -151,19 +116,48 @@ if status == noErr {
 } else {
     // authorization not passed
 }
+
 ```
 
 #### Objective-C
 
 ```objectivec
-// 1. define query
+// 1. Create the AccessControl object that will represent authentication settings
+CFErrorRef *err = nil;
+
+SecAccessControlRef sacRef = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
+    kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+    kSecAccessControlUserPresence,
+    err);
+
+// 2. Create the keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
+NSDictionary* query = @{
+    (_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+    (__bridge id)kSecAttrLabel: @"com.me.myapp.password",
+    (__bridge id)kSecAttrAccount: @"OWASP Account",
+    (__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
+    (__bridge id)kSecAttrAccessControl: (__bridge_transfer id)sacRef
+};
+
+// 3. Save the item
+OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, nil);
+
+if (status == noErr) {
+    // successfully saved
+} else {
+    // error while saving
+}
+
+// 4. Now we can request the saved item from the keychain. Keychain services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
+
+// 5. Create the query
 NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecReturnData: @YES,
     (__bridge id)kSecAttrAccount: @"My Name1",
     (__bridge id)kSecAttrLabel: @"com.me.myapp.password",
     (__bridge id)kSecUseOperationPrompt: @"Please, pass authorisation to enter this area" };
 
-// 2. get item
+// 6. Get the item
 CFTypeRef queryResult = NULL;
 OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &queryResult);
 
@@ -176,10 +170,10 @@ if (status == noErr){
 }
 ```
 
-Usage of frameworks in an app can also be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using otool:
+The usage of frameworks in an app can also be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using [otool](0x08a-Testing-Tools.md#otool):
 
 ```bash
-$ otool -L <AppName>.app/<AppName>
+otool -L <AppName>.app/<AppName>
 ```
 
 If `LocalAuthentication.framework` is used in an app, the output will contain both of the following lines (remember that `LocalAuthentication.framework` uses `Security.framework` under the hood):

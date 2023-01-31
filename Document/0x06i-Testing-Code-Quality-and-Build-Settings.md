@@ -4,7 +4,7 @@
 
 ### Overview
 
-Code signing your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide").
+[Code signing](0x06a-Platform-Overview.md#code-signing) your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a non-jailbroken device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide").
 
 ### Static Analysis
 
@@ -198,7 +198,7 @@ In case [Swift Package Manager](https://swift.org/package-manager "Swift Package
 First, at the root of the project, where the Package.swift file is located, type
 
 ```bash
-$ swift build
+swift build
 ```
 
 Next, check the file Package.resolved for the actual versions used and inspect the given libraries for known vulnerabilities.
@@ -206,7 +206,7 @@ Next, check the file Package.resolved for the actual versions used and inspect t
 You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [Swift Package Manager Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html "dependency-check - SWIFT Package Manager Analyzer") to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") naming scheme of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/ "CVE") entries. Scan the application's Package.swift file and generate a report of known vulnerable libraries with the following command:
 
 ```bash
-$ dependency-check  --enableExperimental --out . --scan Package.swift
+dependency-check  --enableExperimental --out . --scan Package.swift
 ```
 
 ##### CocoaPods
@@ -216,15 +216,15 @@ In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing 
 First, at the root of the project, where the Podfile is located, execute the following commands:
 
 ```bash
-$ sudo gem install cocoapods
-$ pod install
+sudo gem install cocoapods
+pod install
 ```
 
 Next, now that the dependency tree has been built, you can create an overview of the dependencies and their versions by running the following commands:
 
 ```bash
-$ sudo gem install cocoapods-dependencies
-$ pod dependencies
+sudo gem install cocoapods-dependencies
+pod dependencies
 ```
 
 The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
@@ -239,7 +239,7 @@ You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-depen
 to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") naming scheme of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/ "CVE") entries. Scan the application's \*.podspec and/or Podfile.lock files and generate a report of known vulnerable libraries with the following command:
 
 ```bash
-$ dependency-check  --enableExperimental --out . --scan Podfile.lock
+dependency-check  --enableExperimental --out . --scan Podfile.lock
 ```
 
 ##### Carthage
@@ -249,8 +249,8 @@ In case [Carthage](https://github.com/Carthage/Carthage "Carthage on GitHub") is
 First, at the root of the project, where the Cartfile is located, type
 
 ```bash
-$ brew install carthage
-$ carthage update --platform iOS
+brew install carthage
+carthage update --platform iOS
 ```
 
 Next, check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
@@ -284,7 +284,7 @@ In order to ensure that the copyright laws are not infringed, one can best check
 When the application sources are available and Swift Package Manager is used, execute the following code in the root directory of the project, where the Package.swift file is located:
 
 ```bash
-$ swift build
+swift build
 ```
 
 The sources of each of the dependencies have now been downloaded to `/.build/checkouts/` folder in the project. Here you can find the license for each of the libraries in their respective folder.
@@ -295,8 +295,8 @@ When the application sources are available and CocoaPods is used, then execute t
 First, at the root of the project, where the Podfile is located, type
 
 ```bash
-$ sudo gem install CocoaPods
-$ pod install
+sudo gem install CocoaPods
+pod install
 ```
 
 This will create a Pods folder where all libraries are installed, each in their own folder. You can now check the licenses for each of the libraries by inspecting the license files in each of the folders.
@@ -306,8 +306,8 @@ This will create a Pods folder where all libraries are installed, each in their 
 When the application sources are available and Carthage is used, execute the following code in the root directory of the project, where the Cartfile is located:
 
 ```bash
-$ brew install carthage
-$ carthage update --platform iOS
+brew install carthage
+carthage update --platform iOS
 ```
 
 The sources of each of the dependencies have now been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
@@ -490,7 +490,7 @@ enum RequestError: Error {
 }
 
 func getMSTGInfo() {
-    guard let url = URL(string: "https://raw.githubusercontent.com/OWASP/owasp-mstg/master/book.json") else {
+    guard let url = URL(string: "https://raw.githubusercontent.com/OWASP/owasp-mastg/master/book.json") else {
         return
     }
 
@@ -614,15 +614,26 @@ There are various well written explanations which can help with taking care of m
 
 ### Overview
 
-Although Xcode enables all binary security features by default, it may be relevant to verify this for an old application or to check for the misconfiguration of compilation options. The following features are applicable:
+The tests used to detect the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
-- **ARC** - Automatic Reference Counting - A memory management feature that adds retain and release messages when required
-- **Stack Canary** - Stack-smashing protection - Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
-- **PIE** - Position Independent Executable - enables full ASLR for the executable binary (not applicable for libraries).
+Although Xcode enables all binary security features by default, it may be relevant to verify this for old applications or to check for compiler flag misconfigurations. The following features are applicable:
 
-Tests to detect the presence of these protection mechanisms heavily depend on the language used for developing the application. For example, existing techniques for detecting the presence of stack canaries do not work for pure Swift apps. For more details, please check the online article "[On iOS Binary Protections](https://sensepost.com/blog/2021/on-ios-binary-protections/ "On iOS Binary Protection")".
+- [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
+  - PIE applies to executable binaries (Mach-O type `MH_EXECUTE`).
+  - However it's not applicable for libraries (Mach-O type `MH_DYLIB`).
+- [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
+  - Both pure Objective-C, Swift and hybrid binaries should have ARC (Automatic Reference Counting) enabled.
+  - For C/C++ libraries, the developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+- [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection): For pure Objective-C binaries, this should always be enabled. Since Swift is designed to be memory safe, if a library is purely written in Swift, and stack canaries weren’t enabled, the risk will be minimal.
 
-### Static Analysis
+Learn more:
+
+- [OS X ABI Mach-O File Format Reference](https://github.com/aidansteele/osx-abi-macho-file-format-reference)
+- [On iOS Binary Protections](https://sensepost.com/blog/2021/on-ios-binary-protections/)
+- [Security of runtime process in iOS and iPadOS](https://support.apple.com/en-gb/guide/security/sec15bfe098e/web)
+- [Mach-O Programming Topics - Position-Independent Code](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/MachOTopics/1-Articles/dynamic_code.html)
+
+Tests to detect the presence of these protection mechanisms heavily depend on the language used for developing the application. For example, existing techniques for detecting the presence of stack canaries do not work for pure Swift apps.
 
 #### Xcode Project Settings
 
@@ -640,8 +651,8 @@ Steps for building an iOS application as PIE:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
 2. Set the iOS Deployment Target to iOS 4.3 or later.
-3. Make sure that "Generate Position-Dependent Code" is set to its default value ("NO").
-4. Make sure that "Don't Create Position Independent Executables" is set to its default value ("NO").
+3. Make sure that "Generate Position-Dependent Code" (section "Apple Clang - Code Generation") is set to its default value ("NO").
+4. Make sure that "Generate Position-Dependent Executable" (section "Linking") is set to its default value ("NO").
 
 ##### ARC protection
 
@@ -652,9 +663,9 @@ ARC is automatically enabled for Swift apps by the `swiftc` compiler. However, f
 
 See the [Technical Q&A QA1788 Building a Position Independent Executable](https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
-#### With otool
+### Static Analysis
 
-Below are procedures for checking the binary security features described above. All the features are enabled in these examples.
+You can use [otool](0x08a-Testing-Tools.md#otool) to check the binary security features described above. All the features are enabled in these examples.
 
 - PIE:
 
@@ -711,7 +722,7 @@ Below are procedures for checking the binary security features described above. 
 
 ### Dynamic Analysis
 
-These checks can be performed dynamically using [objection](0x08-Testing-Tools.md#objection). Here's one example:
+These checks can be performed dynamically using [objection](0x08a-Testing-Tools.md#objection). Here's one example:
 
 ```bash
 com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary

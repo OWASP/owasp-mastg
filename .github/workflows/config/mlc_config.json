@@ -44,6 +44,36 @@
         },
         {
             "pattern": "^http://damnvulnerableiosapp.com/"
+        },
+        {
+            "pattern": "http://owaspsummit.org"
+        },
+        {
+            "pattern": "^https://docs.github.com"
+        },
+        {
+            "pattern": "^https://busybox.net"
+        },
+        {
+            "pattern": "http://newandroidbook.com/"
+        },
+        {
+            "pattern": "^https://oauth.net"
+        },
+        {
+            "pattern": "^https://www.bsi.bund.de"
+        },
+        {
+            "pattern": "^https://secrary.com/"
+        },
+        {
+            "pattern": "^MASTG/"
+        },
+        {
+            "pattern": "^MASVS/"
+        },
+        {
+            "pattern": "^https://linkedin.com/in/"
         }
     ],
     "httpHeaders": [

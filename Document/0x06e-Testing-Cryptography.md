@@ -1,6 +1,6 @@
 # iOS Cryptographic APIs
 
-In the "Cryptography for Mobile Apps" chapter, we introduced general cryptography best practices and described typical problems that may occur when cryptography is used incorrectly. In this chapter, we'll detail the cryptography APIs available for iOS. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When you're reviewing code, compare the cryptographic parameters with the current best practices linked in this guide.
+In the ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md) chapter, we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on iOS's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
 ## Verifying the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2 and MSTG-CRYPTO-3)
 
@@ -10,29 +10,32 @@ Apple provides libraries that include implementations of most common cryptograph
 
 #### CryptoKit
 
-Apple CryptoKit was released with iOS 13 and is built on top of Apple's native cryptographic library `corecrypto`. The Swift framework provides a strongly typed API interface, has effective memory management, conforms to equatable, and supports generics. CryptoKit contains secure algorithms for hashing, symmetric-key cryptography, and public-key cryptography. The framework can also utilize the hardware based key manager from the Secure Enclave.
+Apple CryptoKit was released with iOS 13 and is built on top of Apple's native cryptographic library corecrypto which is [FIPS 140-2 validated](https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/3856). The Swift framework provides a strongly typed API interface, has effective memory management, conforms to equatable, and supports generics. CryptoKit contains secure algorithms for hashing, symmetric-key cryptography, and public-key cryptography. The framework can also utilize the hardware based key manager from the Secure Enclave.
 
 Apple CryptoKit contains the following algorithms:
 
-*Hashes*
-    - MD5 (Insecure Module)
-        - SHA1 (Insecure Module)
-        - SHA-2 256-bit digest
-        - SHA-2 384-bit digest
-        - SHA-2 512-bit digest
+**Hashes:**
 
-*Symmetric-Key*
-    - Message Authentication Codes (HMAC)
-    - Authenticated Encryption
-        - AES-GCM
-        - ChaCha20-Poly1305
+- MD5 (Insecure Module)
+- SHA1 (Insecure Module)
+- SHA-2 256-bit digest
+- SHA-2 384-bit digest
+- SHA-2 512-bit digest
 
-*Public-Key*
-    - Key Agreement
-        - Curve25519
-        - NIST P-256
-        - NIST P-384
-        - NIST P-512
+**Symmetric-Key:**
+
+- Message Authentication Codes (HMAC)
+- Authenticated Encryption
+  - AES-GCM
+  - ChaCha20-Poly1305
+
+**Public-Key:**
+
+- Key Agreement
+  - Curve25519
+  - NIST P-256
+  - NIST P-384
+  - NIST P-512
 
 Examples:
 
@@ -59,7 +62,7 @@ For more information about Apple CryptoKit, please visit the following resources
 - [WWDC 2019 session 709 | Cryptography and Your Apps](https://developer.apple.com/videos/play/wwdc19/709/ "Cryptography and Your Apps from WWDC 2019 session 709")
 - [How to calculate the SHA hash of a String or Data instance | Hacking with Swift](https://www.hackingwithswift.com/example-code/cryptokit/how-to-calculate-the-sha-hash-of-a-string-or-data-instance "How to calculate the SHA hash of a String or Data instance from Hacking with Swift")
 
-#### CommonCrypto, SecKeyEncrypt and Wrapper libraries
+#### CommonCrypto, SecKey and Wrapper libraries
 
 The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
 
@@ -71,7 +74,7 @@ The most commonly used Class for cryptographic operations is the CommonCrypto, w
 
 Unfortunately, CommonCryptor lacks a few types of operations in its public APIs, such as: GCM mode is only available in its private APIs See [its source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
-Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption "Using keys for encryption") on how to use this.
+Next, for asymmetric operations, Apple provides [SecKey](https://developer.apple.com/documentation/security/seckey "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption "Using keys for encryption") on how to use this.
 
 As noted before: some wrapper-libraries exist for both in order to provide convenience. Typical libraries that are used are, for instance:
 
@@ -183,8 +186,7 @@ func testKeyDerivation() {
 }
 ```
 
- *Source: [https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios](https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios "PBKDF2 using CommonCrypto on iOS
-"), tested in the test suite of the `Arcane` library*
+- _Source: [https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios](https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios "PBKDF2 using CommonCrypto on iOS"), tested in the test suite of the `Arcane` library_
 
 When you need to store the key, it is recommended to use the Keychain as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, property list files or by any other sink from Core Data or Realm, is usually less secure than using the KeyChain.
 Even when the sync of Core Data or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
@@ -197,7 +199,7 @@ Next, when you have a predictable key derivation function based on identifiers w
 Two more notions you should never forget when it comes to cryptography:
 
 1. Always encrypt/verify with the public key and always decrypt/sign with the private key.
-2. Never reuse the key(pair) for another purpose: this might allow leaking information about the key: have a separate keypair for signing and a separate key(pair) for encryption.
+2. Never reuse the key(pair) for another purpose: this might allow leaking information about the key: have a separate key pair for signing and a separate key(pair) for encryption.
 
 ### Static Analysis
 

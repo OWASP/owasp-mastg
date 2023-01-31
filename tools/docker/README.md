@@ -1,11 +1,11 @@
-# MSTG PDFs Generation with Docker
+# MASTG PDFs Generation with Docker
 
-The MSTG document generation is based on pandocker: [https://github.com/dalibo/pandocker/blob/latest/LICENSE](https://github.com/dalibo/pandocker/blob/latest/LICENSE).
+The MASTG document generation is based on pandocker: [https://github.com/dalibo/pandocker/blob/latest/LICENSE](https://github.com/dalibo/pandocker/blob/latest/LICENSE).
 
 ## On your Machine
 
 - Install Docker
-- `cd` to the MSTG root folder `owasp-mstg/`
+- `cd` to the MASTG root folder `owasp-mastg/`
 - Run the `pandoc_makedocs.sh` script with the language folder and an optional version number (**do not `cd` into `tools/docker` to run it**):
 
     ```sh
@@ -16,9 +16,9 @@ The MSTG document generation is based on pandocker: [https://github.com/dalibo/p
 
 ## On GitHub
 
-Each time you push to GitHub the workflows in the [MSTG GitHub Actions](https://github.com/OWASP/owasp-mstg/actions "MSTG GitHub Actions") will be triggered. You can check what will be executed inside the folder `owasp-mstg/.github/workflows`, where `docgenerator.yml` takes care of building the Docker image and running the generation script once per language inside the container.
+Each time you push to GitHub the workflows in the [MASTG GitHub Actions](https://github.com/OWASP/owasp-mastg/actions "MASTG GitHub Actions") will be triggered. You can check what will be executed inside the folder `owasp-mastg/.github/workflows`, where `docgenerator.yml` takes care of building the Docker image and running the generation script once per language inside the container.
 
-See the results in: <https://github.com/OWASP/owasp-mstg/actions>
+See the results in: <https://github.com/OWASP/owasp-mastg/actions>
 
 ## Generation Steps
 
@@ -52,4 +52,4 @@ Given a new version:
   - Reads the `metadata.md` for the Document folder
   - Using that metadata creates the cover dynamically including language and version (no GIMP required anymore!)
   - For more details, read the inline comments in `pandoc_makedocs.sh`.
-- The PDFs will be generated in the MSTG root folder.
+- The PDFs will be generated in the MASTG root folder.

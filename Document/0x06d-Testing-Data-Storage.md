@@ -8,7 +8,7 @@ As little sensitive data as possible should be saved in permanent local storage.
 
 ### Data Protection API
 
-App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access control for user data stored in flash memory. The APIs are built on top of the Secure Enclave Processor (SEP), which was introduced with the iPhone 5S. The SEP is a coprocessor that provides cryptographic operations for data protection and key management. A device-specific hardware key-the device UID (Unique ID)-is embedded in the secure enclave, ensuring the integrity of data protection even when the operating system kernel is compromised.
+App developers can leverage the iOS _Data Protection_ APIs to implement fine-grained access control for user data stored in flash memory. The APIs are built on top of the Secure Enclave Processor (SEP), which was introduced with the iPhone 5S. The SEP is a coprocessor that provides cryptographic operations for data protection and key management. A device-specific hardware key-the device UID (Unique ID)-is embedded in the secure enclave, ensuring the integrity of data protection even when the operating system kernel is compromised.
 
 The data protection architecture is based on a hierarchy of keys. The UID and the user passcode key (which is derived from the user's passphrase via the PBKDF2 algorithm) sit at the top of this hierarchy. Together, they can be used to "unlock" so-called class keys, which are associated with different device states (e.g., device locked/unlocked).
 
@@ -16,7 +16,7 @@ Every file stored on the iOS file system is encrypted with its own per-file key,
 
 The following illustration shows the [iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide").
 
-![OWASP MSTG](Images/Chapters/0x06d/key_hierarchy_apple.jpg) \
+<img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="100%" />
 
 Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"):
 
@@ -117,7 +117,6 @@ if userDefaults.bool(forKey: "hasRunBefore") == false {
 
     // Update the flag indicator
     userDefaults.set(true, forKey: "hasRunBefore")
-    userDefaults.synchronize() // Forces the app to update UserDefaults
 }
 ```
 
@@ -125,7 +124,13 @@ if userDefaults.bool(forKey: "hasRunBefore") == false {
 
 ### Static Analysis
 
-When you have access to the source code of an iOS app, try to spot sensitive data that's saved and processed throughout the app. This includes passwords, secret keys, and personally identifiable information (PII), but it may as well include other data identified as sensitive by industry regulations, laws, and company policies. Look for this data being saved via any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in `NSUserDefaults` without additional encryption.
+When you have access to the source code of an iOS app, identify sensitive data that's saved and processed throughout the app. This includes passwords, secret keys, and personally identifiable information (PII), but it may as well include other data identified as sensitive by industry regulations, laws, and company policies. Look for this data being saved via any of the local storage APIs listed below.
+
+Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in `NSUserDefaults` without additional encryption. Also avoid storing encryption keys in `.plist` files, hardcoded as strings in code, or generated using a predictable obfuscation function or key derivation function based on stable attributes.
+
+Sensitive data should be stored by using the Keychain API (that stores them inside the Secure Enclave), or stored encrypted using envelope encryption. Envelope encryption, or key wrapping, is a cryptographic construct that uses symmetric encryption to encapsulate key material. Data encryption keys (DEK) can be encrypted with key encryption keys (KEK) which must be securely stored in the Keychain. Encrypted DEK can be stored in `NSUserDefaults` or written in files. When required, application reads KEK, then decrypts DEK. Refer to [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#encrypting-stored-keys "OWASP Cryptographic Storage Cheat Sheet: Encrypting Stored Keys") to learn more about encrypting cryptographic keys.
+
+#### Keychain
 
 The encryption must be implemented so that the secret key is stored in the Keychain with secure settings, ideally `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`. This ensures the usage of hardware-backed storage mechanisms. Make sure that the `AccessControlFlags` are set according to the security policy of the keys in the KeyChain.
 
@@ -306,7 +311,7 @@ awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
 The command above will automatically find the UUID of the latest simulator started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
 
 ```bash
-$ grep -iRn keyword .
+grep -iRn keyword .
 ```
 
 Then you can monitor and verify the changes in the filesystem of the app and investigate if any sensitive information is stored within the files while using the app.
@@ -365,7 +370,7 @@ DocumentDirectory  /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-87
 LibraryDirectory   /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Library
 ```
 
-Go to Documents directory and list files there by *ls* command.
+Go to the Documents directory and list all files using `ls`.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ls
@@ -380,7 +385,7 @@ Unknown           384  n/a                                   True    True     mo
 Readable: True  Writable: True
 ```
 
-Execute the *ios plist cat userInfo.plist* command to inspect the content of userInfo.plist file.
+Execute the `ios plist cat` command to inspect the content of userInfo.plist file.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios plist cat userInfo.plist
@@ -509,7 +514,7 @@ All data that's sent to third-party services should be anonymized to prevent exp
 ### Dynamic Analysis
 
 Check all requests to external services for embedded sensitive information.
-To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
+To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08a-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
 ## Finding Sensitive Data in the Keyboard Cache (MSTG-STORAGE-5)
 
@@ -759,8 +764,8 @@ Therefore, it's not straightforward to navigate through it and you will not find
 Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but you can try searching for sensitive data that you have keyed in while using the app before you made the backup. For example: the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
 
 ```bash
-$ ~/Library/Application Support/MobileSync/Backup/<UDID>
-$ grep -iRn "password" .
+~/Library/Application Support/MobileSync/Backup/<UDID>
+grep -iRn "password" .
 ```
 
 As described in the Static Analysis section, any sensitive data that you're able to find should be excluded from the backup, encrypted properly by using the Keychain or not stored on the device in the first place.
@@ -782,15 +787,14 @@ To identify if a backup is encrypted, you can check the key named "IsEncrypted" 
 
 In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes/Finder versions and might need to be tweaked.
 
-You can also use the tool [iOSbackup](0x08-Testing-Tools.md#iosbackup) to easily read and extract files from a password-encrypted iOS backup.
+You can also use the tool [iOSbackup](0x08a-Testing-Tools.md#iosbackup) to easily read and extract files from a password-encrypted iOS backup.
 
 #### Proof of Concept: Removing UI Lock with Tampered Backup
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
-![OWASP MSTG](Images/Chapters/0x06d/bither_demo_enable_pin.png) \
-
-![OWASP MSTG](Images/Chapters/0x06d/bither_demo_pin_screen.png) \
+<img src="Images/Chapters/0x06d/bither_demo_enable_pin.png" width="300px" />
+<img src="Images/Chapters/0x06d/bither_demo_pin_screen.png" width="300px" />
 
 After you enable the pin, use iMazing to perform a device backup:
 
@@ -806,7 +810,7 @@ Next you can open the backup to view app container files within your target app:
 
 At this point you can view all the backed up content for Bither.
 
-![OWASP MSTG](Images/Chapters/0x06d/bither_demo_imazing_1.png) \
+<img src="Images/Chapters/0x06d/bither_demo_imazing_1.png" width="100%" />
 
 This is where you can begin parsing through the files looking for sensitive data. In the screenshot you'll see the `net.bither.plist` file which contains the `pin_code` attribute. To remove the UI lock restriction, simply delete the `pin_code` attribute and save the changes.
 
@@ -822,7 +826,7 @@ Binary file ./13/135416dd5f251f9251e0f07206277586b7eac6f6 matches
 
 You'll see there was a match on a binary file with an obfuscated name. This is your `net.bither.plist` file. Go ahead and rename the file giving it a plist extension so Xcode can easily open it up for you.
 
-![OWASP MSTG](Images/Chapters/0x06d/bither_demo_plist.png) \
+<img src="Images/Chapters/0x06d/bither_demo_plist.png" width="100%" />
 
 Again, remove the `pin_code` attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extension) and perform your backup restore. When the restore is complete you'll see that Bither no longer prompts you for the PIN code when launched.
 
@@ -909,7 +913,9 @@ Understanding the application's architecture and its interaction with the OS wil
 
 However, if sensitive data _does_ need to be exposed via memory, make sure that your app exposes as few copies of this data as possible for as little time as possible. In other words, you want centralized handling of sensitive data, based on primitive and mutable data structures.
 
-Such data structures give developers direct access to memory. Make sure that this access is used to overwrite the sensitive data with dummy data (which is typically zeroes). Examples of preferable data types include `char []` and `int []`, but not `NSString` or `String`. Whenever you try to modify an immutable object, such as a `String`, you actually create a copy and change the copy.
+Such data structures give developers direct access to memory. Make sure that this access is used to overwrite the sensitive data and cryptographic keys with zeroes. [Apple Secure Coding Guide](https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/SecurityDevelopmentChecklists/SecurityDevelopmentChecklists.html "Security Development Checklists") suggests zeroing sensitive data after usage, but provides no recommended ways of doing this.
+
+Examples of preferable data types include `char []` and `int []`, but not `NSString` or `String`. Whenever you try to modify an immutable object, such as a `String`, you actually create a copy and change the copy. Consider using `NSMutableData` for storing secrets on Swift/Objective-C and use [`resetBytes(in:)` method](https://developer.apple.com/documentation/foundation/nsmutabledata/1415526-resetbytes "NSMutableData resetBytes(in:) API reference") for zeroing. Also, see [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data") for reference.
 
 Avoid Swift data types other than collections regardless of whether they are considered mutable. Many Swift data types hold their data by value, not by reference. Although this allows modification of the memory allocated to simple types like `char` and `int`, handling a complex type such as `String` by value involves a hidden layer of objects, structures, or primitive arrays whose memory can't be directly accessed or modified. Certain types of usage may seem to create a mutable data object (and even be documented as doing so), but they actually create a mutable identifier (variable) instead of an immutable identifier (constant). For example, many think that the following results in a mutable `String` in Swift, but this is actually an example of a variable whose complex value can be changed (replaced, not modified in place):
 
@@ -947,7 +953,7 @@ There are several approaches and tools available for dynamically testing the mem
 
 #### Retrieving and Analyzing a Memory Dump
 
-Wether you are using a jailbroken or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in the section "[Memory Dump](0x06c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")", in the chapter "Tampering and Reverse Engineering on iOS".
+Whether you are using a jailbroken or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in the section "[Memory Dump](0x06c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")", in the chapter "Tampering and Reverse Engineering on iOS".
 
 After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
 
@@ -983,7 +989,7 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 
 #### Runtime Memory Analysis
 
-By using [r2frida](0x08-Testing-Tools.md#r2frida) you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
+By using [r2frida](0x08a-Testing-Tools.md#r2frida) you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
 For more information, options and approaches, please refer to section "[In-Memory Search](0x06c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on iOS".
 

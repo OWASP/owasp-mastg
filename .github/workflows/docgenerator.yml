@@ -1,31 +1,51 @@
 name: Documents Build
 
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'Document/**.md'
+  push:
+    branches:
+      - master
+    tags:
+      - v*.*.*
+    paths:
+      - 'Document/**.md'
+
+permissions:
+  contents: read
 
 jobs:
 
-  Generate-MSTG-Documents:
+  Generate-MASTG-Documents:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
 
-    - name: Set VERSION to env 
-      run: echo "VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mstg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
+    - name: Set MASTG_VERSION to env 
+      run: echo "MASTG_VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mastg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
 
-    - name: Set DEV VERSION if it's not a tag
+    - name: Set DEV MASTG_VERSION if it's not a tag
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      run: echo "VERSION=${{env.VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      run: echo "MASTG_VERSION=${{env.MASTG_VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+    - name: Get Latest MASVS Release Tag
+      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
+
+    - name: Process Files
+      run: python3 tools/scripts/transform_files.py
 
     - name: Generate English PDF
-      run: ./tools/docker/pandoc_makedocs.sh Document ${{env.VERSION}}
+      run: ./tools/docker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: OWASP_MSTG-${{env.VERSION}}
-        path: OWASP_MSTG-${{env.VERSION}}*
+        name: OWASP_MASTG-${{env.MASTG_VERSION}}
+        path: OWASP_MASTG-${{env.MASTG_VERSION}}*
   
   Generate-Checklists:
     runs-on: ubuntu-latest
@@ -39,21 +59,21 @@ jobs:
     - name: Listing repo recursive
       run: ls -lR
 
-    - name: Set MSTG_VERSION to env 
-      # run: echo "MSTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
-      run: echo "MSTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-mstg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
+    - name: Set MASTG_VERSION to env 
+      # run: echo "MASTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+      run: echo "MASTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-mastg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Set DEV VERSION if it's not a tag
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      run: echo "MSTG_VERSION=${{env.MSTG_VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      run: echo "MASTG_VERSION=${{env.MASTG_VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-    - name: Confirm MSTG Current Tag
-      run: echo ${{env.MSTG_VERSION}}
+    - name: Confirm MASTG Current Tag
+      run: echo ${{env.MASTG_VERSION}}
 
-    - name: Get MSTG Current Commit ID
-      run: echo "MSTG_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-    - name: Confirm MSTG Current Commit ID
-      run: echo ${{env.MSTG_COMMIT}}
+    - name: Get MASTG Current Commit ID
+      run: echo "MASTG_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+    - name: Confirm MASTG Current Commit ID
+      run: echo ${{env.MASTG_COMMIT}}
     
     - name: Get Latest MASVS Release Tag
       run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
@@ -70,7 +90,7 @@ jobs:
 
     - name: Get MASVS Current Commit ID
       run: cd tools/scripts/owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-    - name: Confirm MSTG Current Commit ID
+    - name: Confirm MASTG Current Commit ID
       run: echo ${{env.MASVS_COMMIT}}
 
     - name: Listing of scripts directory
@@ -82,14 +102,14 @@ jobs:
     - name: Show openpyxl Version
       run: pip3 show openpyxl
 
-    - name: Convert MSTG Testing Chapters to HTML
+    - name: Convert MASTG Testing Chapters to HTML
       run: . tools/scripts/mstg_to_html.sh
 
-    - name: List MSTG HTML
+    - name: List MASTG HTML
       run: ls -l tools/scripts/generated/html/
 
-    - name: Export YAML, enhance with MSTG and generate Excel
-      run: cd tools/scripts && ./gen_all_excel.sh ${{env.MSTG_VERSION}} ${{env.MSTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
+    - name: Export YAML, enhance with MASTG and generate Excel
+      run: cd tools/scripts && ./gen_all_excel.sh ${{env.MASTG_VERSION}} ${{env.MASTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
 
     - name: Upload Enhanced MASVS YAML
       uses: actions/upload-artifact@v2
@@ -105,12 +125,12 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: [Generate-MSTG-Documents, Generate-Checklists]
+    needs: [Generate-MASTG-Documents, Generate-Checklists]
     if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
     steps:
       - uses: actions/download-artifact@v2
       - name: List Downloaded document (sampling of download-artifact)
-        run: ls -l OWASP_MSTG*
+        run: ls -l OWASP_MASTG*
 
       - name: print working directory
         run: pwd 
@@ -125,9 +145,8 @@ jobs:
           generate_release_notes: true
           discussion_category_name: Announcements
           files: |
-            OWASP_MSTG-*/OWASP_MSTG-*.pdf
-            OWASP_MSTG-*/OWASP_MSTG-*.epub
-            OWASP_MSTG-*/OWASP_MSTG-*.docx
+            OWASP_MASTG-*/OWASP_MASTG-*.pdf
+            OWASP_MASTG-*/OWASP_MASTG-*.epub
             Checklists/*.xlsx
             Enhanced-MASVS-YAML-Files/*.yaml
         env:

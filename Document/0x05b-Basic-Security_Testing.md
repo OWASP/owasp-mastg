@@ -8,11 +8,11 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 ### Host Device
 
-At the very least, you'll need [Android Studio](0x08-Testing-Tools.md#android-studio) (which comes with the [Android SDK](0x08-Testing-Tools.md#android-sdk)) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
+At the very least, you'll need [Android Studio](0x08a-Testing-Tools.md#android-studio) (which comes with the [Android SDK](0x08a-Testing-Tools.md#android-sdk)) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
 
-In addition, you may want to complete your host setup by installing the [Android NDK](0x08-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
+In addition, you may want to complete your host setup by installing the [Android NDK](0x08a-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
 
-Sometimes it can be useful to display or control devices from the computer. To achieve this, you can use [Scrcpy](0x08-Testing-Tools.md#scrcpy).
+Sometimes it can be useful to display or control devices from the computer. To achieve this, you can use [Scrcpy](0x08a-Testing-Tools.md#scrcpy).
 
 ### Testing Device
 
@@ -43,7 +43,7 @@ Alternatively, Google's [Android One](https://www.android.com/one/ "Android One"
 
 Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
-When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the [ADB](0x08-Testing-Tools.md#adb) debugging interface. Since Android 4.2 (API level 16), the **Developer options** sub menu in the Settings app is hidden by default. To activate it, tap the **Build number** section of the **About phone** view seven times. Note that the build number field's location varies slightly by device. For example, on LG Phones, it is under **About phone** -> **Software information**. Once you have done this, **Developer options** will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the **USB debugging** switch.
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the [ADB](0x08a-Testing-Tools.md#adb) debugging interface. Since Android 4.2 (API level 16), the **Developer options** sub menu in the Settings app is hidden by default. To activate it, tap the **Build number** section of the **About phone** view seven times. Note that the build number field's location varies slightly by device. For example, on LG Phones, it is under **About phone** -> **Software information**. Once you have done this, **Developer options** will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the **USB debugging** switch.
 
 #### Testing on an Emulator
 
@@ -56,17 +56,17 @@ Free emulators:
 
 Commercial emulators:
 
-- [Genymotion](https://www.genymotion.com/fun-zone/ "Genymotion") - Mature emulator with many features, both as local and cloud-based solution. Free version available for non-commercial use.
+- [Genymotion](https://www.genymotion.com/download/ "Genymotion") - Mature emulator with many features, both as local and cloud-based solution. Free version available for non-commercial use.
 - [Corellium](https://corellium.com/ "Corellium") - Offers custom device virtualization through a cloud-based or on-prem solution.
 
 Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others. In the remainder of this guide, we will use the official AVD to perform tests.
 
-AVD supports some hardware emulation, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation"), [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS") and [motion sensors](https://developer.android.com/guide/topics/sensors/sensors_overview#test-with-the-android-emulator "Testing motion sensors on emulators").
+AVD supports some hardware emulation, such as GPS or SMS through its so-called [Extended Controls](https://developer.android.com/studio/run/advanced-emulator-usage#extended "Extended Controls") as well as [motion sensors](https://developer.android.com/guide/topics/sensors/sensors_overview#test-with-the-android-emulator "Testing motion sensors on emulators").
 
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
 ```bash
-$ ./android avd
+./android avd
 ```
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
@@ -74,11 +74,11 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
-Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the end of this book.
+Please also verify the "[Testing Tools](0x08a-Testing-Tools.md)" chapter at the end of this book.
 
 #### Getting Privileged Access
 
-*Rooting* (i.e., modifying the OS so that you can run commands as the root user) is recommended for testing on a real device. This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. These privileges in turn allow you to use techniques like code injection and function hooking more easily.
+_Rooting_ (i.e., modifying the OS so that you can run commands as the root user) is recommended for testing on a real device. This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. These privileges in turn allow you to use techniques like code injection and function hooking more easily.
 
 Note that rooting is risky, and three main consequences need to be clarified before you proceed. Rooting can have the following negative effects:
 
@@ -98,11 +98,11 @@ To root a mobile device, first unlock its boot loader. The unlocking procedure d
 
 ##### Rooting with Magisk
 
-Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
+Magisk ("Magic Mask") is one way to root your Android device. Its specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/ota.html "OTA Installation").
 
-Furthermore, developers can use the power of Magisk to create custom modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [Xposed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
+Furthermore, developers can use the power of Magisk to create custom modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [Xposed Framework](0x08a-Testing-Tools.md#xposed) (available for SDK versions up to 27).
 
 ##### Root Detection
 
@@ -118,20 +118,19 @@ One of the most common things you do when testing an app is accessing the device
 
 #### Remote Shell
 
-In order to connect to the shell of an Android device from your host computer, [adb](0x08-Testing-Tools.md#adb) is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
+In order to connect to the shell of an Android device from your host computer, [adb](0x08a-Testing-Tools.md#adb) is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
 
 For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
 ```bash
-$ adb shell
+adb shell
 ```
 
 > press Control + D or type `exit` to quit
 
-If your device is rooted or you're using the emulator, you can get root access by running `su` once in the remote shell:
+Once in the remote shell, if your device is rooted or you're using the emulator, you can get root access by running `su`:
 
 ```bash
-$ adb shell
 bullhead:/ $ su
 bullhead:/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
@@ -144,7 +143,7 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 If you have more than one device, remember to include the `-s` flag followed by the device serial ID on all your `adb` commands (e.g. `adb -s emulator-5554 shell` or `adb -s 00b604081540b7c6 shell`). You can get a list of all connected devices and their serial IDs by using the following command:
 
 ```bash
-$ adb devices
+adb devices
 List of devices attached
 00c907098530a82c    device
 emulator-5554    device
@@ -166,20 +165,20 @@ See the full instructions and considerations in the [Android Developers Document
 
 ##### Connect to a Device via SSH
 
-If you prefer, you can also enable SSH access. A convenient option is to use [Termux](0x08-Testing-Tools.md#termux), which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
+If you prefer, you can also enable SSH access. A convenient option is to use [Termux](0x08a-Testing-Tools.md#termux), which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
 #### On-device Shell App
 
-While usually using an on-device shell (terminal emulator) such as [Termux](0x08-Testing-Tools.md#termux) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
+While usually using an on-device shell (terminal emulator) such as [Termux](0x08a-Testing-Tools.md#termux) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or to check some configuration.
 
 ### Host-Device Data Transfer
 
 #### Using adb
 
-You can copy files to and from a device by using the [adb](0x08-Testing-Tools.md#adb) commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
+You can copy files to and from a device by using the [adb](0x08a-Testing-Tools.md#adb) commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```bash
-$ adb push foo.txt /sdcard/foo.txt
+adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your host computer.
@@ -193,7 +192,7 @@ $ adb pull /sdcard
 
 Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
-![OWASP MSTG](Images/Chapters/0x05b/android-studio-file-device-explorer.png) \
+<img src="Images/Chapters/0x05b/android-studio-file-device-explorer.png" width="400px" />
 
 If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 
@@ -201,7 +200,7 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
+First, connect to the app with Objection as explained in "[Recommended Tools - Objection](0x08a-Testing-Tools.md#objection "Testing Tools - Objection")". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
 ```bash
 $ frida-ps -U | grep -i owasp
@@ -244,11 +243,11 @@ Successfully downloaded ... to sg.vp.owasp_mobile.omtg_android_preferences.xml
 
 ```
 
-The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of e.g. taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
+The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of for example taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
 
 #### Using Termux
 
-If you have a rooted device, have [Termux](0x08-Testing-Tools.md#termux) installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
+If you have a rooted device, have [Termux](0x08a-Testing-Tools.md#termux) installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
 ```bash
 $ sftp -P 8022 root@localhost
@@ -263,7 +262,7 @@ sg.vp.owasp_mobile.omtg_android
 
 Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
-![OWASP MSTG](Images/Chapters/0x05b/sftp-with-filezilla.png) \
+<img src="Images/Chapters/0x05b/sftp-with-filezilla.png" width="400px" />
 
 Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
@@ -282,7 +281,7 @@ Beware that you do not have control over these sites and you cannot guarantee wh
 
 #### Using gplaycli
 
-You can use [gplaycli](0x08-Testing-Tools.md#gplaycli) to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
+You can use [gplaycli](0x08a-Testing-Tools.md#gplaycli) to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
 
 ```bash
 $ gplaycli -p -v -d com.google.android.keep
@@ -307,19 +306,19 @@ Obtaining app packages from the device is the recommended method as we can guara
 Use `adb pull` to retrieve the APK. If you don't know the package name, the first step is to list all the applications installed on the device:
 
 ```bash
-$ adb shell pm list packages
+adb shell pm list packages
 ```
 
 Once you have located the package name of the application, you need the full path where it is stored on the system to download it.
 
 ```bash
-$ adb shell pm path <package name>
+adb shell pm path <package name>
 ```
 
 With the full path to the APK, you can now simply use `adb pull` to extract it.
 
 ```bash
-$ adb pull <apk path>
+adb pull <apk path>
 ```
 
 The APK will be downloaded in your working directory.
@@ -337,7 +336,7 @@ The combination of these can lead to insecure decisions, such as: stripping too 
 
 Note: Instant apps require an App Bundle. App Bundles are described in the "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" section of the "Android Platform Overview" chapter.
 
-#### Static Analysis Considerations
+**Static Analysis Considerations:**
 
 Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the App Bundle. When you analyze the App Bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entry points, which entry points are set (by means of `<data android:path="</PATH/HERE>" />`).
 
@@ -347,14 +346,14 @@ Now follow the entry points, like you would do for any Activity and check:
 - Are all communications secured?
 - When you need more functionalities, are the right security controls downloaded as well?
 
-### Dynamic Analysis Considerations
+**Dynamic Analysis Considerations:**
 
 There are multiple ways to start the dynamic analysis of your instant app. In all cases, you will first have to install the support for instant apps and add the `ia` executable to your `$PATH`.
 
 The installation of instant app support is taken care off through the following command:
 
 ```bash
-$ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
+cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
 ```
 
 Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
@@ -365,7 +364,7 @@ After the preparation, you can test instant apps locally on a device running And
   Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
   
   ```bash
-  $ ia run output-from-build-command <app-artifact>
+  ia run output-from-build-command <app-artifact>
   ```
 
 - Test the app using the Play Console:
@@ -378,6 +377,20 @@ Now that you can test the app, check whether:
 - There are any data which require privacy controls and whether these controls are in place.
 - All communications are sufficiently secured.
 - When you need more functionalities, are the right security controls downloaded as well for these functionalities?
+
+### Repackaging Apps
+
+If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.
+
+Use a computer to perform all the steps indicated in the article ["Patching Android Applications"](https://github.com/sensepost/objection/wiki/Patching-Android-Applications) from the objection Wiki. Once you're done you'll be able to patch an APK by calling the objection command:
+
+```bash
+objection patchapk --source app-release.apk
+```
+
+The patched application then needs to be installed using adb, as explained in ["Installing Apps"](#installing-apps).
+
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["Android Tampering and Reverse Engineering - Patching, Repackaging and Re-Signing"](0x05c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing).
 
 ### Installing Apps
 
@@ -447,36 +460,42 @@ Note that this also shows the PID of the apps that are running at the moment. Ta
 
 #### Exploring the App Package
 
-Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](#obtaining-and-extracting-apps).
 
-APK files are actually ZIP files that can be unpacked using a standard unarchiver:
+APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using [apktool](0x08a-Testing-Tools.md#apktool) which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
 
 ```bash
-$ unzip base.apk
-$ ls -lah
--rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
-drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
-drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
--rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
-drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
-drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
--rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
+$ apktool d UnCrackable-Level3.apk
+$ tree
+.
+├── AndroidManifest.xml
+├── apktool.yml
+├── lib
+├── original
+│   ├── AndroidManifest.xml
+│   └── META-INF
+│       ├── CERT.RSA
+│       ├── CERT.SF
+│       └── MANIFEST.MF
+├── res
+...
+└── smali
 ```
 
 The following files are unpacked:
 
 - AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
-- META-INF: contains the app's metadata
+- original/META-INF: contains the app's metadata
   - MANIFEST.MF: stores hashes of the app resources
   - CERT.RSA: the app's certificate(s)
   - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
-- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager "AssetMaanger") can retrieve
-- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
-- lib: directory containing 3rd party libraries that are part of the APK.
+- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager) can retrieve
+- classes.dex: classes compiled in the DEX file format, that Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
+- lib: directory containing 3rd party libraries that are part of the APK
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, it's better to unpack the APK using [apktool](0x08a-Testing-Tools.md#apktool).
 
 ```bash
 $ ls -alh
@@ -498,10 +517,10 @@ The Android Manifest is the main source of information, it includes a lot of int
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
-- App permissions: `permission` (see "Android Platform APIs")
-- Backup allowance: `android:allowBackup` (see "Data Storage on Android")
-- App components: `activity`, `service`, `provider`, `receiver` (see "Android Platform APIs" and "Data Storage on Android")
-- Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
+- App permissions: `permission` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")")
+- Backup allowance: `android:allowBackup` (see "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
+- App components: `activity`, `service`, `provider`, `receiver` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")" and "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
+- Debuggable flag: `debuggable` (see "[Code Quality and Build Settings of Android Apps](0x05i-Testing-Code-Quality-and-Build-Settings.md "Testing Code Quality and Build Settings")")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
@@ -510,6 +529,26 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 As seen above in "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
 
 Refer to the section "[Reviewing Decompiled Java Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more information about how to reverse engineer DEX files.
+
+##### Compiled App Binary
+
+In some cases it might be useful to retrieve the compiled app binary (.odex).
+
+First get the path to the app's data directory:
+
+```bash
+adb shell pm path com.example.myapplication
+package:/data/app/~~DEMFPZh7R4qfUwwwh1czYA==/com.example.myapplication-pOslqiQkJclb_1Vk9-WAXg==/base.apk
+```
+
+Remove the `/base.apk` part, add `/oat/arm64/base.odex` and use the resulting path to pull the base.odex from the device:
+
+```bash
+adb root
+adb pull /data/app/~~DEMFPZh7R4qfUwwwh1czYA==/com.example.myapplication-pOslqiQkJclb_1Vk9-WAXg==/oat/arm64/base.odex
+```
+
+Note that the exact directory will be different based on your Android version. If the `/oat/arm64/base.odex` file can't be found, manually search in the directory returned by `pm path`.
 
 ##### Native Libraries
 
@@ -601,7 +640,7 @@ Each folder has its own purpose:
 
 However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
 
-Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+Refer to the "[Testing Data Storage](0x05d-Testing-Data-Storage.md "Testing Data Storage")" chapter for more information and best practices on securely storing sensitive data.
 
 #### Monitoring System Logs
 
@@ -609,42 +648,42 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
-![OWASP MSTG](Images/Chapters/0x05b/log_output_Android_Studio.png) \
+<img src="Images/Chapters/0x05b/log_output_Android_Studio.png" width="100%" />
 
 - You can execute Logcat with adb to store the log output permanently:
 
 ```bash
-$ adb logcat > logcat.log
+adb logcat > logcat.log
 ```
 
 With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for `ps` to be able to get its PID.
 
 ```bash
-$ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
+adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 
 ## Setting up a Network Testing Environment
 
 ### Basic Network Monitoring/Sniffing
 
-[Remotely sniffing all Android traffic in real-time is possible](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark") with [tcpdump](0x08-Testing-Tools.md#tcpdump), netcat (nc), and [Wireshark](0x08-Testing-Tools.md#wireshark). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
+[Remotely sniffing all Android traffic in real-time is possible](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark") with [tcpdump](0x08a-Testing-Tools.md#tcpdump), netcat (nc), and [Wireshark](0x08a-Testing-Tools.md#wireshark). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
 ```bash
-$ adb root
-$ adb remount
-$ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
+adb root
+adb remount
+adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
 ```
 
 If execution of `adb root` returns the error `adbd cannot run as root in production builds`, install tcpdump as follows:
 
 ```bash
-$ adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
-$ adb shell
-$ su
-$ mount -o rw,remount /system;
-$ cp /data/local/tmp/tcpdump /system/xbin/
-$ cd /system/xbin
-$ chmod 755 tcpdump
+adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
+adb shell
+su
+mount -o rw,remount /system;
+cp /data/local/tmp/tcpdump /system/xbin/
+cd /system/xbin
+chmod 755 tcpdump
 ```
 
 In certain production builds, you might encounter an error `mount: '/system' not in /proc/mounts`.
@@ -671,7 +710,7 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
 To remotely sniff the Android phone's network traffic, first execute `tcpdump` and pipe its output to `netcat` (nc):
 
 ```bash
-$ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
+tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
 ```
 
 The tcpdump command above involves
@@ -685,22 +724,22 @@ By using the pipe (`|`), we sent all output from tcpdump to netcat, which opens 
 To access port 11111, you need to forward the port to your host computer via adb.
 
 ```bash
-$ adb forward tcp:11111 tcp:11111
+adb forward tcp:11111 tcp:11111
 ```
 
 The following command connects you to the forwarded port via netcat and piping to Wireshark.
 
 ```bash
-$ nc localhost 11111 | wireshark -k -S -i -
+nc localhost 11111 | wireshark -k -S -i -
 ```
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-![OWASP MSTG](Images/Chapters/0x05b/Android_Wireshark.png) \
+<img src="Images/Chapters/0x05b/Android_Wireshark.png" width="100%" />
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-![OWASP MSTG](Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png) \
+<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" width="400px" />
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
@@ -708,7 +747,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM-notifications-overview.png) \
+<img src="Images/Chapters/0x05b/FCM-notifications-overview.png" width="100%" />
 
 Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
@@ -755,7 +794,7 @@ The interception proxy must listen to the port specified in the port forwarding 
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM_Intercept.png) \
+<img src="Images/Chapters/0x05b/FCM_Intercept.png" width="100%" />
 
 ##### End-to-End Encryption for Push Notifications
 
@@ -763,7 +802,7 @@ As an additional layer of security, push notifications can be encrypted by using
 
 ### Setting Up an Interception Proxy
 
-Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) and [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
+Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) and [Burp Suite](0x08a-Testing-Tools.md#burp-suite) Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
 
 #### Interception Proxy for a Virtual Device
 
@@ -781,14 +820,14 @@ The following procedure, which works on the Android emulator that ships with And
     - Enter "127.0.0.1" in the **Host Name** field and your proxy port in the **Port number** field (e.g., "8080")
     - Tap **Apply**
 
-![OWASP MSTG](Images/Chapters/0x05b/emulator-proxy.png) \
+<img src="Images/Chapters/0x05b/emulator-proxy.png" width="100%" />
 
 HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 
-A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
+A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and sets a proxy to 127.0.0.1 and port 8080.
 
 ```bash
-$ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
+emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
 ```
 
 ##### Installing a CA Certificate on the Virtual Device
@@ -800,7 +839,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 3. Push the file to the emulator:
 
     ```bash
-    $ adb push cacert.cer /sdcard/
+    adb push cacert.cer /sdcard/
     ```
 
 4. Navigate to **Settings** -> **Security** -> **Install from SD Card**.
@@ -808,21 +847,28 @@ An easy way to install a CA certificate is to push the certificate to the device
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
+This installs the certificate in the user certificate store (tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
+
+1. Run adb as root with `adb root` and `adb shell`.
+2. Locate the newly installed certificate at `/data/misc/user/0/cacerts-added/`.
+3. Copy the certificate to the following folder `/system/etc/security/cacerts/`.
+4. Reboot the Android VM.
+
 For Android 7.0 (API level 24) and above follow the same procedure described in the "[Bypassing the Network Security Configuration](#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" section.
 
 #### Interception Proxy for a Physical Device
 
-The available network setup options must be evaluated first. The mobile device used for testing and the host computer running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
+The available network setup options must be evaluated first. The mobile device used for testing and the host computer running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://portswigger.net/support/creating-an-ad-hoc-wireless-network-in-os-x "Creating an Ad-hoc Wireless Network in OS X").
 
 Once you've configured the network and established a connection between the testing host computer and the mobile device, several steps remain.
 
-- The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
+- The proxy must be [configured to point to the interception proxy](https://portswigger.net/support/configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp").
+- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://portswigger.net/support/installing-burp-suites-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
 - Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in this [blog post](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
-> A video of setting up [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
+> A video of setting up [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
 
 A few other differences: from Android 8.0 (API level 26) onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 (API level 28) onward, the SSLSocket and SSLEngine will behave a little bit different in terms of error handling when something goes wrong during the handshakes.
 
@@ -830,25 +876,9 @@ As mentioned before, starting with Android 7.0 (API level 24), the Android OS wi
 
 #### Bypassing the Network Security Configuration
 
-From Android 7.0 (API level 24) onwards, the Network Security Configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
+In this section we will present several methods to bypass Android's [Network Security Configuration](0x05g-Testing-Network-Communication.md#android-network-security-configuration).
 
-In order to implement the Network Security Configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in the [Android Network Security Configuration training](https://developer.android.com/training/articles/security-config "Android Network Security Configuration training").
-
-After the creation, the apps must also include an entry in the manifest file to point to the new Network Security Configuration file.
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<manifest ... >
-    <application android:networkSecurityConfig="@xml/network_security_config"
-                    ... >
-        ...
-    </application>
-</manifest>
-```
-
-The Network Security Configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
-
-##### Adding the User Certificates to the Network Security Configuration
+##### Adding Custom User Certificates to the Network Security Configuration
 
 There are different configurations available for the Network Security Configuration to [add non-system Certificate Authorities](https://developer.android.com/training/articles/security-config#CustomTrust "Custom Trust") via the src attribute:
 
@@ -859,9 +889,9 @@ There are different configurations available for the Network Security Configurat
 
 Each certificate can be one of the following:
 
-- a "raw resource" ID pointing to a file containing X.509 certificates
-- "system" for the pre-installed system CA certificates
-- "user" for user-added CA certificates
+- `"raw resource"` is an ID pointing to a file containing X.509 certificates
+- `"system"` for the pre-installed system CA certificates
+- `"user"` for user-added CA certificates
 
 The CA certificates trusted by the app can be a system trusted CA as well as a user CA. Usually you will have added the certificate of your interception proxy already as additional CA in Android. Therefore we will focus on the "user" setting, which allows you to force the Android app to trust this certificate with the following Network Security Configuration below:
 
@@ -881,14 +911,14 @@ To implement this new setting you must follow the steps below:
 - Decompile the app using a decompilation tool like apktool:
 
     ```bash
-    $ apktool d <filename>.apk
+    apktool d <filename>.apk
     ```
 
 - Make the application trust user certificates by creating a Network Security Configuration that includes `<certificates src="user" />` as explained above
 - Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
 
     ```bash
-    $ apktool b
+    apktool b
     ```
 
 - You need to repackage the app, as explained in the "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" section of the "Reverse Engineering and Tampering" chapter. For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
@@ -988,7 +1018,7 @@ What to do if the Wi-Fi we need for testing has client isolation?
 You can configure the proxy on your Android device to point to 127.0.0.1:8080, connect your phone via USB to your host computer and use adb to make a reverse port forwarding:
 
 ```bash
-$ adb reverse tcp:8080 tcp:8080
+adb reverse tcp:8080 tcp:8080
 ```
 
 Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your host computer and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wi-Fis that have client isolation.
@@ -1011,7 +1041,7 @@ You could also use an access point that is under your control to redirect the tr
 You can use iptables on the Android device to redirect all traffic to your interception proxy. The following command would redirect port 80 to your proxy running on port 8080
 
 ```bash
-$ iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080
+iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080
 ```
 
 Verify the iptables settings and check the IP and port.
@@ -1041,12 +1071,12 @@ target     prot opt source               destination
 In case you want to reset the iptables configuration you can flush the rules:
 
 ```bash
-$ iptables -t nat -F
+iptables -t nat -F
 ```
 
 ##### bettercap
 
-Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running bettercap.
+Read the chapter "[Testing Network Communication](0x04f-Testing-Network-Communication.md "Testing Network Communication")" and the test case "[Simulating a Man-in-the-Middle Attack](0x04f-Testing-Network-Communication.md#simulating-a-man-in-the-middle-attack-with-bettercap "Simulating a MitM Attack")" for further preparation and instructions for running bettercap.
 
 The host computer where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP address below (X.X.X.X) with the IP address of your Android device.
 
@@ -1081,11 +1111,84 @@ setTimeout(function(){
 });
 ```
 
-#### Certificate Pinning
+### Bypassing Certificate Pinning
 
 Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
 
-For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
+For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered by these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
+
+This section describes various ways to bypass SSL Pinning and gives guidance about what you should do when the existing tools don't help.
+
+#### Bypassing Methods
+
+There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
+
+- Cydia Substrate: Install the [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller") package.
+- Frida: Use the [frida-multiple-unpinning](https://codeshare.frida.re/@akabe1/frida-multiple-unpinning/ "Project: frida-multiple-unpinning") script.
+- Objection: Use the `android sslpinning disable` command.
+- Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
+
+If you have a rooted device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08a-Testing-Tools.md#objection) command ([repackage your app](#repackaging-apps) if you're using a non-rooted device):
+
+```bash
+android sslpinning disable
+```
+
+Here's an example of the output:
+
+![objection Android SSL Pinning Bypass](Images/Chapters/0x05b/android_ssl_pinning_bypass.png)
+
+See also [Objection's help on Disabling SSL Pinning for Android](https://github.com/sensepost/objection/blob/master/objection/console/helpfiles/android.sslpinning.disable.txt) for further information and inspect the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/android/pinning.ts "pinning.ts") file to understand how the bypass works.
+
+#### Bypass Custom Certificate Pinning Statically
+
+Somewhere in the application, both the endpoint and the certificate (or its hash) must be defined. After decompiling the application, you can search for:
+
+- Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
+- Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
+- Truststore files: `find ./ -type f \( -iname \*.jks -o -iname \*.bks \)`. Add your proxy's certificates to the truststore and make sure they are in the correct format.
+
+> Keep in mind that an app might contain files without extension. The most common file locations are `assets` and `res` directories, which should also be investigated.
+
+As an example, let's say that you find an application which uses a BKS (BouncyCastle) truststore and it's stored in the file `res/raw/truststore.bks`. To bypass SSL Pinning you need to add your proxy's certificate to the truststore with the command line tool `keytool`. `Keytool` comes with the Java SDK and the following values are needed to execute the command:
+
+- password - Password for the keystore. Look in the decompiled app code for the hardcoded password.
+- providerpath - Location of the BouncyCastle Provider jar file. You can download it from [The Legion of the Bouncy Castle](https://www.bouncycastle.org/latest_releases.html "https://www.bouncycastle.org/latest_releases.html").
+- proxy.cer - Your proxy's certificate.
+- aliascert - Unique value which will be used as alias for your proxy's certificate.
+
+To add your proxy's certificate use the following command:
+
+```bash
+keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
+```
+
+To list certificates in the BKS truststore use the following command:
+
+```bash
+keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
+```
+
+After making these modifications, repackage the application using apktool and install it on your device.
+
+If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.wordpress.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
+
+#### Bypass Custom Certificate Pinning Dynamically
+
+Bypassing the pinning logic dynamically makes it more convenient as there is no need to bypass any integrity checks and it's much faster to perform trial & error attempts.
+
+Finding the correct method to hook is typically the hardest part and can take quite some time depending on the level of obfuscation. As developers typically reuse existing libraries, it is a good approach to search for strings and license files that identify the used library. Once the library has been identified, examine the non-obfuscated source code to find methods which are suited for dynamic instrumentation.
+
+As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the `CertificatePinner.Builder` class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways, as explained in [this blog post](https://blog.nviso.eu/2019/04/02/circumventing-ssl-pinning-in-obfuscated-apps-with-okhttp/) by Jeroen Beckers:
+
+- Search for hashes and domain names as explained in the previous section. The actual pinning method will typically be used or defined in close proximity to these strings
+- Search for the method signature in the SMALI code
+
+For the Builder.add method, you can find the possible methods by running the following grep command: `grep -ri java/lang/String;\[Ljava/lang/String;)L ./`
+
+This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
+
+Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
 
 ## References
 
@@ -1093,7 +1196,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
 - Android Network Security Configuration training - <https://developer.android.com/training/articles/security-config>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
-- Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 - Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
 - Codenames, Tags and Build Numbers - <https://source.android.com/setup/start/build-numbers>
@@ -1102,7 +1204,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - API Levels - <https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels>
 - AssetManager - <https://developer.android.com/reference/android/content/res/AssetManager>
 - SharedPreferences APIs - <https://developer.android.com/training/basics/data-storage/shared-preferences.html>
-- Debugging with Logcat - <https://developer.android.com/tools/debugging/debugging-log.html>
-- Android's APK format - <https://en.wikipedia.org/wiki/Android_application_package>
+- Debugging with Logcat - <https://developer.android.com/studio/command-line/logcat>
+- Android's APK format - <https://en.wikipedia.org/wiki/Apk_(file_format)>
 - Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
 - Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>

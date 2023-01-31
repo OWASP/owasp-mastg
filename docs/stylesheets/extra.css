@@ -1,0 +1,89 @@
+:root {
+  --md-primary-fg-color: #499FFF;
+}
+
+@keyframes pump {
+  0%, 40%, 80%, 100% {
+    transform: scale(1);
+  }
+  20%, 60% {
+    transform: scale(1.15);
+  }
+}
+
+.mas-chip {
+  border: solid 1px var(--md-primary-fg-color);
+  outline:none;
+  text-decoration:none;
+  border-radius: 1.2em;
+  min-width: 5.5em;
+  max-height: 1.6em;
+  padding-left: 0.5em;
+  padding-right: 0.4em;
+}
+
+.mas-dot-blue {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #33CCCC;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mas-dot-green {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #99CC00;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mas-dot-orange {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #FF9900;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.md-footer__inner:not([hidden]){
+  display: none;
+}
+
+.mas-blue-hue {
+  filter: sepia(100%) hue-rotate(190deg) saturate(500%);
+}
+
+.mas-mini-app {
+  border-radius: 5px;
+}
+
+.mas-app-row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1em;
+}
+
+.mas-apps-container {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  margin-left: 20px;
+}
+
+.mas-flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 800px) {
+  .mas-flex-container {
+    flex-direction: column;
+  }
+}
+
+.pump {
+  animation: pump 1000ms ease-out;
+}
+
+.grow:hover { transform: scale(1.05); transition: 0.2s;}

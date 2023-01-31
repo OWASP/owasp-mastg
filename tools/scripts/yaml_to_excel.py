@@ -2,10 +2,11 @@ import yaml
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.drawing.image import Image
+from enum import IntEnum
 
 import excel_styles_and_validation
 
-""" Tool for exporting the MASVS requirements as a checklist including MSTG coverage.
+""" Tool for exporting the MASVS requirements as a checklist including MASTG coverage.
 
     By Carlos Holguera
 
@@ -47,26 +48,41 @@ MASVS_TITLES = {
 
 MASVS = None
 LANG = ""
-MSTGVERSION = ""
-MSTGCOMMIT = ""
+MASTGVERSION = ""
+MASTGCOMMIT = ""
 MASVSVERSION = ""
 MASVSCOMMIT = ""
+TEST_CASE_ALIAS = "Test Case"
+STATUS_ALIAS = "Status"
+
+class Position(IntEnum):
+    ID = 2
+    MSTG_ID = 3
+    TEXT = 4
+    L1 = 5
+    L2 = 6
+    R = 7
+    LINK_COMMON = 8
+    LINK_ANDROID = 9
+    LINK_IOS = 10
+    STATUS_ANDROID = 11
+    STATUS_IOS = 12
 
 WS_BASE_CONFIG = {
     "start_row": 6,
-    "start_col": 2,
     "columns": [
-        {"col": "B", "position": 2, "name": "ID", "width": 10, "style": "gray_header"},
-        {"col": "C", "position": 3, "name": "MSTG-ID", "width": 25, "style": "gray_header"},
-        {"col": "D", "position": 4, "name": "Detailed Verification Requirement",  "width": 80, "style": "gray_header"},
-        {"col": "E", "position": 5, "name": "L1", "width": 5, "style": "gray_header"},
-        {"col": "F", "position": 6, "name": "L2", "width": 5, "style": "gray_header"},
-        {"col": "G", "position": 7, "name": "R", "width": 5, "style": "gray_header"},
-        {"col": "H", "position": 8, "name": "Android", "width": 10, "style": "gray_header"},
-        {"col": "I", "position": 9, "name": "iOS", "width": 10, "style": "gray_header"},
-        {"col": "J", "position": 10, "name": "Status", "width": 10, "style": "gray_header"},
+        {"col": "B", "position": Position.ID, "name": "ID", "width": 10, "style": "gray_header"},
+        {"col": "C", "position": Position.MSTG_ID, "name": "MASVS-ID", "width": 25, "style": "gray_header"},
+        {"col": "D", "position": Position.TEXT, "name": "Detailed Verification Requirement",  "width": 80, "style": "gray_header"},
+        {"col": "E", "position": Position.L1, "name": "L1", "width": 5, "style": "gray_header"},
+        {"col": "F", "position": Position.L2, "name": "L2", "width": 5, "style": "gray_header"},
+        {"col": "G", "position": Position.R, "name": "R", "width": 5, "style": "gray_header"},
+        {"col": "H", "position": Position.LINK_COMMON, "name": "Common", "width": 10, "style": "gray_header"},
+        {"col": "I", "position": Position.LINK_ANDROID, "name": "Android", "width": 10, "style": "gray_header"},
+        {"col": "J", "position": Position.LINK_IOS, "name": "iOS", "width": 10, "style": "gray_header"},
+        {"col": "K", "position": Position.STATUS_ANDROID, "name": "Android", "width": 10, "style": "gray_header"},
+        {"col": "L", "position": Position.STATUS_IOS, "name": "iOS", "width": 10, "style": "gray_header"},
     ]
-        
 }
 
 
@@ -88,7 +104,7 @@ def write_header(ws):
     ws["D2"].value = "Mobile Application Security Verification Standard"
     ws["D2"].style = "big_title"
 
-    ws["D3"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{MSTGVERSION}", "OWASP MSTG {MSTGVERSION} (commit: {MSTGCOMMIT})")'
+    ws["D3"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mastg/releases/tag/{MASTGVERSION}", "OWASP MASTG {MASTGVERSION} (commit: {MASTGCOMMIT})")'
     ws["D3"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
     ws["D4"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
     ws["D4"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
@@ -99,6 +115,15 @@ def set_columns_width(ws):
 
 
 def set_table_headers(row, ws):
+    ws.merge_cells(start_row=row, start_column=Position.LINK_COMMON, end_row=row, end_column=Position.LINK_IOS)
+    ws.cell(row=row, column=Position.LINK_COMMON).value = TEST_CASE_ALIAS
+    ws.cell(row=row, column=Position.LINK_COMMON).style = "gray_header"
+
+    ws.merge_cells(start_row=row, start_column=Position.STATUS_ANDROID, end_row=row, end_column=Position.STATUS_IOS)
+    ws.cell(row=row, column=Position.STATUS_ANDROID).value = STATUS_ALIAS
+    ws.cell(row=row, column=Position.STATUS_ANDROID).style = "gray_header"
+
+    row = row + 1
     for col in WS_BASE_CONFIG["columns"]:
         ws.cell(row=row, column=col.get("position")).value = col.get("name")
         ws.cell(row=row, column=col.get("position")).style = col.get("style")
@@ -114,6 +139,11 @@ def write_title(ws, row, start_column, end_column, title):
 
     ws.row_dimensions[row].height = 25  # points
 
+def write_testcase(ws, row, column, url_string):
+    ws.cell(row=row, column=column).value = f'=HYPERLINK("{url_string}", "{TEST_CASE_ALIAS}")'
+    ws.cell(row=row, column=column).style = "Hyperlink"
+    ws.cell(row=row, column=column).alignment = excel_styles_and_validation.align_center
+
 def get_link_for(links, type):
     for link in links:
         if type in link:
@@ -127,21 +157,12 @@ def create_security_requirements_sheet(wb):
     write_header(ws)
     set_columns_width(ws)
 
-    status_cells = 'J11:J400'
+    status_cells = 'K11:L400'
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
 
-    row = 6
-    col_id = 2
-    col_mstg_id = 3
-    col_text = 4
-    col_l1 = 5
-    col_l2 = 6
-    col_r = 7
-    col_link_android = 8
-    col_link_ios = 9
-    col_status = 10
+    row = WS_BASE_CONFIG["start_row"]
 
     for mstg_id, req in MASVS.items():
         req_id = req["id"].split(".")
@@ -154,11 +175,13 @@ def create_security_requirements_sheet(wb):
             category_id = f"V{category}"
             category_title = MASVS_TITLES[category_id]
 
-            write_title(ws, row, col_id, col_status, category_title)
+            write_title(ws, row, Position.ID, Position.STATUS_IOS, category_title)
 
-            row = row + 2
+            row = row + 1
 
             set_table_headers(row, ws)
+
+            row = row + 1
 
             ws.add_data_validation(excel_styles_and_validation.status_validation)
 
@@ -166,48 +189,49 @@ def create_security_requirements_sheet(wb):
 
         # End header
 
-        ws.cell(row=row, column=col_id).value = req["id"]
-        ws.cell(row=row, column=col_id).style = "center"
+        ws.cell(row=row, column=Position.ID).value = req["id"]
+        ws.cell(row=row, column=Position.ID).style = "center"
 
-        ws.cell(row=row, column=col_mstg_id).value = mstg_id
-        ws.cell(row=row, column=col_mstg_id).style = "center"
+        ws.cell(row=row, column=Position.MSTG_ID).value = mstg_id
+        ws.cell(row=row, column=Position.MSTG_ID).style = "center"
 
-        ws.cell(row=row, column=col_text).value = req["text"]
-        ws.cell(row=row, column=col_text).style = "text"
+        ws.cell(row=row, column=Position.TEXT).value = req["text"]
+        ws.cell(row=row, column=Position.TEXT).style = "text"
 
         if req["L1"]:
-            ws.cell(row=row, column=col_l1).style = "blue"
+            ws.cell(row=row, column=Position.L1).style = "blue"
         if req["L2"]:
-            ws.cell(row=row, column=col_l2).style = "green"
+            ws.cell(row=row, column=Position.L2).style = "green"
         if req["R"]:
-            ws.cell(row=row, column=col_r).style = "orange"
-        
+            ws.cell(row=row, column=Position.R).style = "orange"
+
+        # ws.cell(row=row, column=col_link_common).value = "N/A"
+        # ws.cell(row=row, column=col_link_common).style = "gray_header"
+
+        # ws.cell(row=row, column=col_link_android).value = "N/A"
+        # ws.cell(row=row, column=col_link_android).style = "gray_header"
+
+        # ws.cell(row=row, column=col_link_ios).value = "N/A"
+        # ws.cell(row=row, column=col_link_ios).style = "gray_header"
+
         if req.get("links"):
-            # We only get the first link because there should be actually only one per platform.
+            link_common = get_link_for(req["links"], "0x04")
             link_android = get_link_for(req["links"], "0x05")
             link_ios = get_link_for(req["links"], "0x06")
 
+            if link_common:
+                write_testcase(ws, row, Position.LINK_COMMON, link_common)
             if link_android:
-                ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_android}", "Test Case")'
-                ws.cell(row=row, column=col_link_android).style = "Hyperlink"
-                ws.cell(row=row, column=col_link_android).alignment = excel_styles_and_validation.align_center
-            else:
-                ws.cell(row=row, column=col_link_android).value = "N/A"
-                ws.cell(row=row, column=col_link_android).style = "gray_header"
-            
+                write_testcase(ws, row, Position.LINK_ANDROID, link_android)
             if link_ios:
-                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_ios}", "Test Case")'
-                ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
-                ws.cell(row=row, column=col_link_ios).alignment = excel_styles_and_validation.align_center
-
-            else:
-                ws.cell(row=row, column=col_link_ios).value = "N/A"
-                ws.cell(row=row, column=col_link_ios).style = "gray_header"
+                write_testcase(ws, row, Position.LINK_IOS, link_ios)
 
         ws.row_dimensions[row].height = 55  # points
-        
-        status_cell = ws.cell(row=row, column=col_status).coordinate
-        excel_styles_and_validation.status_validation.add(status_cell)
+
+        status_android_cell = ws.cell(row=row, column=Position.STATUS_ANDROID).coordinate
+        excel_styles_and_validation.status_validation.add(status_android_cell)
+        status_ios_cell = ws.cell(row=row, column=Position.STATUS_IOS).coordinate
+        excel_styles_and_validation.status_validation.add(status_ios_cell)
 
         row = row + 1
 
@@ -227,12 +251,12 @@ def create_about_sheet(wb):
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "The OWASP Mobile Security Testing Guide is an OWASP flagship project led by Carlos Holguera and Sven Schleier which defines the industry standard for mobile application security."
+    ws.cell(row=row, column=first_col).value = "The OWASP Mobile Application Security (MAS) flagship project led by Carlos Holguera and Sven Schleier defines the industry standard for mobile application security."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://owasp.org/www-project-mobile-security-testing-guide/"
+    url = "https://owasp.org/mas/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -242,17 +266,17 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mstg/"
+    url = "https://mas.owasp.org/MASTG/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "The OWASP MSTG (Mobile Security Testing Guide) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the MASVS."
+    ws.cell(row=row, column=first_col).value = "The OWASP MASTG (Mobile Application Security Testing Guide) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the MASVS."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-masvs/"
+    url = "https://mas.owasp.org/MASVS/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -266,7 +290,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mstg/discussions/categories/ideas"
+    url = "https://github.com/OWASP/owasp-mastg/discussions/categories/ideas"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -280,7 +304,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mstg/blob/master/License.md"
+    url = "https://github.com/OWASP/owasp-mastg/blob/master/License.md"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
 
@@ -296,15 +320,15 @@ def generate_spreadsheet(output_file):
 
 
 def main():
-    global MASVS, LANG, MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
+    global MASVS, LANG, MASTGVERSION, MASTGCOMMIT, MASVSVERSION, MASVSCOMMIT
     import argparse
 
     parser = argparse.ArgumentParser(description="Export the MASVS requirements as Excel. Default language is en.")
     parser.add_argument("-m", "--masvs", required=True)
     parser.add_argument("-l", "--lang", required=True)
     parser.add_argument("-o", "--outputfile", required=True)
-    parser.add_argument("-v1", "--mstgversion", required=True)
-    parser.add_argument("-c1", "--mstgcommit", required=True)
+    parser.add_argument("-v1", "--mastgversion", required=True)
+    parser.add_argument("-c1", "--mastgcommit", required=True)
     parser.add_argument("-v2", "--masvsversion", required=True)
     parser.add_argument("-c2", "--masvscommit", required=True)
 
@@ -313,12 +337,12 @@ def main():
     # set global vars
     MASVS = yaml.safe_load(open(args.masvs))
     LANG = args.lang
-    MSTGVERSION = args.mstgversion
-    MSTGCOMMIT = args.mstgcommit
+    MASTGVERSION = args.mastgversion
+    MASTGCOMMIT = args.mastgcommit
     MASVSVERSION = args.masvsversion
     MASVSCOMMIT = args.masvscommit
 
-    print(f"Generating {LANG.upper()} Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
+    print(f"Generating {LANG.upper()} Checklist for MASTG {MASTGVERSION} ({MASTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
 
     generate_spreadsheet(args.outputfile)
 
