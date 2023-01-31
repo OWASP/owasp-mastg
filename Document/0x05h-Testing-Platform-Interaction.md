@@ -233,6 +233,43 @@ The following is a list of Android IPC Mechanisms that may expose sensitive data
 - [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
 - [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
 
+#### Pending Intents
+
+Often while dealing with complex flows during app development, there are situations where an app A wants another app B to perform a certain action in the future, on app A's behalf. Trying to implement this by only using `Intent`s leads to various security problems, like having multiple exported components. To handle this use case in a secure manner, Android provides the [`PendingIntent`](https://developer.android.com/reference/android/app/PendingIntent "PendingIntent") API.
+
+`PendingIntent` are most commonly used for [notifications](https://developer.android.com/develop/ui/views/notifications "Android Notifications"), [app widgets](https://developer.android.com/develop/ui/views/appwidgets/advanced#user-interaction "app widgets"), [media browser services](https://developer.android.com/guide/topics/media-apps/audio-app/building-a-mediabrowserservice "media browser services"), etc. When used for notifications, `PendingIntent` is used to declare an intent to be executed when a user performs an action with an application's notification. The notification requires a callback to the application to trigger an action when the user clicks on it.
+
+Internally, a `PendingIntent` object wraps a normal `Intent` object (referred as base intent) that will eventually be used to invoke an action. For example, the base intent specifies that an activity A should be started in an application. The receiving application of the `PendingIntent`, will unwrap and retrieve this base intent and invoke the activity A by calling the `PendingIntent.send()` function.
+
+A typical implementation for using `PendingIntent` is below:
+
+```java
+Intent intent = new Intent(applicationContext, SomeActivity.class);     // base intent
+
+// create a pending intent
+PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+// send the pending intent to another app
+Intent anotherIntent = new Intent();
+anotherIntent.setClassName("other.app", "other.app.MainActivity");
+anotherIntent.putExtra("pendingIntent", pendingIntent);
+startActivity(anotherIntent);
+```
+
+What makes a `PendingIntent` secure is that, unlike a normal `Intent`, it grants permission to a foreign application to use the `Intent` (the base intent) it contains, as if it were being executed by your application's own process. This allows an application to freely use them to create callbacks without the need to create exported activities.
+
+If not implemented correctly, a malicious application can **hijack** a `PendingIntent`. For example, in the notification example above, a malicious application with `android.permission.BIND_NOTIFICATION_LISTENER_SERVICE` can bind to the notification listener service and retrieve the pending intent.
+
+There are certain security pitfalls when implementing `PendingIntent`s, which are listed below:
+
+- **Mutable fields**: A `PendingIntent` can have mutable and empty fields that can be filled by a malicious application. This can lead to a malicious application gaining access to non-exported application components. Using the [`PendingIntent.FLAG_IMMUTABLE` flag](https://developer.android.com/reference/android/app/PendingIntent#FLAG_IMMUTABLE "FLAG_IMMUTABLE") makes the `PendingIntent` immutable and prevents any changes to the fields. Prior to Android 12 (API level 31), the `PendingIntent` was mutable by default, while since Android 12 (API level 31) it is changed to [immutable by default](https://developer.android.com/reference/android/app/PendingIntent#FLAG_MUTABLE "immutable by default") to prevent accidental vulnerabilities.
+
+- **Use of implicit intent**: A malicious application can receive a `PendingIntent` and then update the base intent to target the component and package within the malicious application. As a mitigation, ensure that you explicitly specify the exact package, action and component that will receive the base intent.
+
+The most common case of `PendingIntent` attack is when a malicious application is able to intercept it.
+
+For further details, check the Android documentation on [using a pending intent](https://developer.android.com/guide/components/intents-filters#PendingIntent "using a pending intent").
+
 ### Object Persistence
 
 There are several ways to persist an object on Android:
@@ -1448,40 +1485,7 @@ Intent { act=theBroadcast flg=0x400010 (has extras) }
 
 ### Overview
 
-Often while dealing with complex flows during app development, there are situations where an app A wants another app B to perform a certain action in the future, on app A's behalf. Trying to implement this by only using `Intent`s leads to various security problems, like having multiple exported components. To handle this use case in a secure manner, Android exposes [`PendingIntent`](https://developer.android.com/reference/android/app/PendingIntent "PendingIntent") API.
-
-`PendingIntent` are most commonly used in case of [notification](https://developer.android.com/develop/ui/views/notifications "notification"), [app widgets](https://developer.android.com/develop/ui/views/appwidgets/advanced#user-interaction "app widgets"), [media browser services](https://developer.android.com/guide/topics/media-apps/audio-app/building-a-mediabrowserservice "media browser services") etc. In case of notifications, `PendingIntent` is used in declaring an intent to be executed when a user performs an action with an app's notification. Notification requires a callback into the application, to trigger an action whenever user clicks the notification.
-
-Internally, a `PendingIntent` object wraps a normal `Intent` object (referred as base intent), which will eventually be used for invoking an action. For example, the base intent specifies to start an activity A in an application. The receiving application of the `PendingIntent`, will unwrap and get this base intent, and invoke the activity A, by calling `PendingIntent.send()` function.
-
-A typical implementation for using `PendingIntent` is below:
-
-```java
-Intent intent = new Intent(applicationContext, SomeActivity.class);     // base intent
-
-// create a pending intent
-PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-// send the pending intent to another app
-Intent anotherIntent = new Intent();
-anotherIntent.setClassName("other.app", "other.app.MainActivity");
-anotherIntent.putExtra("pendingIntent", pendingIntent);
-startActivity(anotherIntent);
-```
-
-What makes a `PendingIntent` secure is that, it grants permission to a foreign application to use the contained `Intent` (the base intent) as if it was executed from your app's own process, unlike an ordinary `Intent`. Thus, an application can freely use them for creating callbacks, without a need to create exported activities.
-
-If not implemented properly, a malicious application can **hijack** a `PendingIntent`. For instance, in the notification example above, a malicious application with `android.permission.BIND_NOTIFICATION_LISTENER_SERVICE` can bind to the notification listener service and can fetch the pending intent.
-
-There are certain security pitfalls while implementing `PendingIntent`s, and are listed below:
-
-- **Mutable fields**: A `PendingIntent` can have mutable and unfilled fields, which can be filled by a malicious application. This can lead to leaking access to non-exported app components to malicious application. By using the flag [`PendingIntent.FLAG_IMMUTABLE`](https://developer.android.com/reference/android/app/PendingIntent#FLAG_IMMUTABLE "FLAG_IMMUTABLE"), makes the `PendingIntent` immutable and prevents any changes to the fields. Prior to Android 12 (API level 31) the `PendingIntent`s were mutable by default, while from Android 12 (API 31) onwards, it is changed to [immutable by default](https://developer.android.com/reference/android/app/PendingIntent#FLAG_MUTABLE "immutable by default"). This change prevents any accidental vulnerabilities.
-
-- **Use of implicit intent**: A malicious application can receive a `PendingIntent` and then update the base intent to target the component and package within the malicious app. As a mitigation, ensure to explicitly set the exact package, action and component that will receive the base intent.
-
-The most common case of attacking `PendingIntent` is when a malicious application is able to intercept
-
-For further details, check the Android documentation on [using a pending intent](https://developer.android.com/guide/components/intents-filters#PendingIntent "using a pending intent").
+When testing [Pending Intents](#pending-intents) you must ensure that they are immutable and that the app explicitly specifies the exact package, action, and component that will receive the base intent.
 
 ### Static Analysis
 
@@ -1496,7 +1500,7 @@ PendingIntent getForegroundService(Context, int, Intent, int)
 PendingIntent getService(Context, int, Intent, int)
 ```
 
-Once any of the above function is spotted, check the implementation of the base intent and the `PendingIntent` for the security pitfalls listed above.
+Once any of the above function is spotted, check the implementation of the base intent and the `PendingIntent` for the security pitfalls listed in the [Pending Intents](#pending-intents) section.
 
 For example, in [A-156959408](https://android.googlesource.com/platform/frameworks/base/+/6ae2bd0e59636254c32896f7f01379d1d704f42d "A-156959408")(CVE-2020-0389), the base intent is implicit and also the `PendingIntent` is mutable, thus making it exploitable.
 
@@ -1526,9 +1530,9 @@ Notification.Builder builder = new Notification.Builder(this, CHANNEL_ID)
 
 ### Dynamic Analysis
 
-Frida can be used for hooking the APIs used for obtaining a `PendingIntent`. This information can be used in determining the call site, and which can be further used for performing static analysis at the call site, as described above.
+Frida can be used to hook the APIs used to get a `PendingIntent`. This information can be used to determine the code location of the call, which can be further used to perform static analysis as described above.
 
-A Frida script hooking `PendingIntent.getActivity` function, may look like following:
+Here's an example of such a Frida script that can be used to hook the `PendingIntent.getActivity` function:
 
 ```javascript
 var pendingIntent = Java.use('android.app.PendingIntent');
@@ -1544,7 +1548,7 @@ getActivity_1.implementation = function(context, requestCode, intent, flags){
 }
 ```
 
-This approach can be helpful when dealing with applications with large code base, where determining the control flow can be tricky sometimes.
+This approach can be helpful when dealing with applications with large code bases, where determining the control flow can sometimes be tricky.
 
 ## Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)
 
