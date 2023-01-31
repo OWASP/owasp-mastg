@@ -42,18 +42,16 @@ There are various ways to distribute your app as described at [the Apple documen
 
 ### Overview
 
-Debugging iOS applications can be done using Xcode, which embeds a powerful debugger called lldb. Lldb is the default debugger since Xcode5 where it replaced GNU tools like gdb and is fully integrated in the development environment. While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program.
+To test if the app is [debugging](0x06c-Reverse-Engineering-and-Tampering.md#debugging) you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues, "Resolving common notarization issues") key is set to `true`.
 
-Generating an app in Build or Release mode depends on build settings in Xcode; when an app is generated in Debug mode, a DEBUG flag is inserted in the generated files.
-
-### Static Analysis
-
-At first you need to determine the mode in which your app is to be generated to check the flags in the environment:
+While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program. To do that you need to determine the mode in which your app is to be generated to check the flags in the environment:
 
 - Select the build settings of the project
 - Under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
 - Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
+
+### Static Analysis
 
 To test if the app is debuggable you need to inspect the app entitlements and check if the value of [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues, "Resolving common notarization issues") key is set to `true`.
 
@@ -61,42 +59,46 @@ Using codesign:
 
 ```bash
 $ codesign -d --entitlements - iGoat-Swift.app
+
 Executable=/Users/owasp/iGoat-Swift/Payload/iGoat-Swift.app/iGoat-Swift
 [Dict]
-	[Key] application-identifier
-	[Value]
-		[String] TNAJ496RHB.OWASP.iGoat-Swift
-	[Key] com.apple.developer.team-identifier
-	[Value]
-		[String] TNAJ496RHB
-	[Key] get-task-allow
-	[Value]
-		[Bool] true
-	[Key] keychain-access-groups
-	[Value]
-		[Array]
-			[String] TNAJ496RHB.OWASP.iGoat-Swift
+    [Key] application-identifier
+    [Value]
+        [String] TNAJ496RHB.OWASP.iGoat-Swift
+    [Key] com.apple.developer.team-identifier
+    [Value]
+        [String] TNAJ496RHB
+    [Key] get-task-allow
+    [Value]
+        [Bool] true
+    [Key] keychain-access-groups
+    [Value]
+        [Array]
+            [String] TNAJ496RHB.OWASP.iGoat-Swift
+````
 
-Using ldid
+Using ldid:
 
-```bash
+```xml
 $ ldid -e iGoat-Swift.app/iGoat-Swift
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>application-identifier</key>
-	<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-	<key>com.apple.developer.team-identifier</key>
-	<string>TNAJ496RHB</string>
-	<key>get-task-allow</key>
-	<true/>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-	</array>
+    <key>application-identifier</key>
+    <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+    <key>com.apple.developer.team-identifier</key>
+    <string>TNAJ496RHB</string>
+    <key>get-task-allow</key>
+    <true/>
+    <key>keychain-access-groups</key>
+    <array>
+        <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+    </array>
 </dict>
 </plist>
+```
 
 ### Dynamic Analysis
 
