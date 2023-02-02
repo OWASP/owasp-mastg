@@ -8,7 +8,7 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 
 <br>
 
-[:material-download: Download the MASVS](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-en.pdf){ .md-button .md-button--primary }
+[:material-download: Download the MASVS](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-en.pdf){ .md-button .md-button--primary }
 
 <br>
 
@@ -22,17 +22,19 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 >
 > :material-download: Download international PDFs:
 >
-> [Deutsch](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-de.pdf) |
-> [Español](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-es.pdf) |
-> [François](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-fr.pdf) |
-> [فارسى](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-fa.pdf) |
-> [हिन्दी](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-hi.pdf) |
-> [日本語](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ja.pdf) |
-> [한국어](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ko.pdf) |
-> [português (br)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptbr.pdf) |
-> [português (pt)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptpt.pdf) |
-> [Русский](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ru.pdf) |
-> [中文 (cn)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-zhcn.pdf) |
-> [中文 (tw)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-zhtw.pdf)
+> [Deutsch](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-de.pdf) |
+> [Español](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-es.pdf) |
+> [François](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-fr.pdf) |
+> [فارسى](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-fa.pdf) |
+> [हिन्दी](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-hi.pdf) |
+> [日本語](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ja.pdf) |
+> [한국어](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ko.pdf) |
+> [português (br)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ptbr.pdf) |
+> [português (pt)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ptpt.pdf) |
+> [Русский](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ru.pdf) |
+> [Türk](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-tr.pdf) |
+> [Ελληνικά](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-gr.pdf) |
+> [中文 (cn)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-zhcn.pdf) |
+> [中文 (tw)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-zhtw.pdf)
 
 <br>
