@@ -27,5 +27,5 @@ We thank our donators for providing the funds to support us on our project activ
 **The OWASP Foundation is very grateful for the support by the individuals and organizations listed. However please note, the OWASP Foundation is strictly vendor neutral and does not endorse any of its supporters. Donations do not influence the content of the MASVS or MASTG in any way.**
 
 <br><br>
-<img style="border-radius: 15px;" src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/Donators/donators.png"/>
+<img style="border-radius: 15px;" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Donators/donators.png"/>
 <br><br>
