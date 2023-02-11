@@ -30,60 +30,72 @@ In the following section, we list some common root detection methods you'll enco
 
 Root detection can also be implemented through libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer").
 
-#### SafetyNet
+#### Google Play Integrity
 
-SafetyNet is an Android API that provides a set of services and creates profiles of devices according to software and hardware information. This profile is then compared to a list of accepted device models that have passed Android compatibility testing. Google [recommends](https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet "SafetyNet Documentation") using the feature as "an additional in-depth defense signal as part of an anti-abuse system".
+Google has launched the [Google Play Integrity API](https://developer.android.com/google/play/integrity/overview "Google Play Integrity API") to improve the security and integrity of apps and games on Android starting from Android 4.4 (level 19). The previous official API, [SafetyNet](https://developer.android.com/training/safetynet), did not cover all the security needs that Google wanted for the platform, so Play Integrity was developed with the basic functions of the previous API and integrated additional features. This change aims to protect users against dangerous and fraudulent interactions.
 
-How exactly SafetyNet works is not well documented and may change at any time. When you call this API, SafetyNet downloads a binary package containing the device validation code provided from Google, and the code is then dynamically executed via reflection. An [analysis by John Kozyrakis](https://koz.io/inside-safetynet/ "SafetyNet: Google's tamper detection for Android") showed that SafetyNet also attempts to detect whether the device is rooted, but exactly how that's determined is unclear.
+**Google Play Integrity offers the following safeguards:**
 
-To use the API, an app may call the `SafetyNetApi.attest` method (which returns a JWS message with the _Attestation Result_) and then check the following fields:
+- Verification of genuine Android device: It verifies that the application is running on a legitimate Android device.
+- User license validation: It indicates whether the user installed or purchased the application or game through the Google Play Store.  
+- Unmodified binary verification: It determines whether the application is interacting with the original binary recognized by Google Play.
 
-- `ctsProfileMatch`: If 'true', the device profile matches one of Google's listed devices.
-- `basicIntegrity`: If 'true', the device running the app likely hasn't been tampered with.
-- `nonces`: To match the response to its request.
-- `timestampMs`: To check how much time has passed since you made the request and you got the response. A delayed response may suggest suspicious activity.
-- `apkPackageName`, `apkCertificateDigestSha256`, `apkDigestSha256`: Provide information about the APK, which is used to verify the identity of the calling app. These parameters are absent if the API cannot reliably determine the APK information.
+The API provides four macro categories of information to help the security team make a decision. These categories include:
 
-The following is a sample attestation result:
+1. **Request Details**: In this section, details are obtained about the app package that requested the integrity check, including  its format (my.package.com), a base64-encoded ID provided by the developer to establish a link between the request and the integrity certificate, and the time of the request execution in milliseconds.
+
+2. **App Integrity**: This section provides information about the integrity of the app, including the result of the verification (denominated verdict), which indicates whether the app's installation source is trusted (via Play Store) or unknown/suspicious. If the installation source is considered secure, the app version will also be displayed.
+
+3. **Account Details**: This category provides information about the app licensing status. The result can be `LICENSED`, indicating that the user purchased or installed the app on the Google Play Store; `UNLICENSED`, meaning that the user does not own the app or did not acquire it through the Google Play Store; or `UNEVALUATED`, which means that the licensing details could not be evaluated because a necessary requirement is missing, that is, the device may not be trustworthy enough or the installed app version is not recognized by the Google Play Store.
+
+4. **Device Integrity**: This section presents information that verifies the authenticity of the Android environment in which the app is running.
+
+- `MEETS_DEVICE_INTEGRITY`: Running on Android Device with Google Play Services: The app is running on an Android device with Google Play Services. This device passed system integrity checks and meets the Android compatibility requirements.
+- `MEETS_BASIC_INTEGRITY`: Running on Device without Google Play Services: The app is running on a device that passed basic system integrity checks. This may occur because the device may be running an unrecognized version of Android, has an unlocked bootloader, or has not been certified by the manufacturer.
+- `MEETS_STRONG_INTEGRITY`: The app is running on an Android device equipped with Google Play Services technology, ensuring a strong system integrity such as a hardware-protected boot process.
+- `MEETS_VIRTUAL_INTEGRITY`: Running on Emulator with Google Play Services: In this scenario, the app is running in a simulated environment of an Android device that has Google Play Services. The emulator was checked and approved for system integrity and meets the necessary Android compatibility requirements.
+
+**API Errors:**
+
+The API can return local errors such as `APP_NOT_INSTALLED` and `APP_UID_MISMATCH`, which can indicate a fraud attempt or attack. In addition, outdated Google Play Services or Play Store can also cause errors, and it is important to check these situations to ensure proper integrity verification functionality and to ensure the environment is not intentionally set up for an attack. You can find more details on the [official page](https://developer.android.com/google/play/integrity/error-codes).
+
+**Best practices:**
+
+1. Although Play Integrity provides an additional layer of security for Android applications, it is not a single security solution. It is important to have complementary measures in place, such as input data validation, user authentication and anti-fraud protection.
+2. It is important to avoid querying the Play Protect API too frequently in order to minimize the impact on device resources. Furthermore, it is good practice to use the API only in situations where device integrity verification is truly necessary.
+
+3. By including a `NONCE` in the request, the verification server can ensure that the response matches the original request and has not been tampered with by third parties. It is a random value generated by the app (or server) and sent with the integrity verification request.
+
+**Limitations:**  
+It is important to note that there is a daily limit for the Google Play Services Integrity Verification API requests. By default, up to 10,000 requests are allowed per day, but for applications that require a higher number of requests, it is necessary to contact Google to request an expansion of this limit.
+
+**Example:**  
 
 ```json
-{
-  "nonce": "R2Rra24fVm5xa2Mg",
-  "timestampMs": 9860437986543,
-  "apkPackageName": "com.package.name.of.requesting.app",
-  "apkCertificateDigestSha256": ["base64 encoded, SHA-256 hash of the
-                                  certificate used to sign requesting app"],
-  "apkDigestSha256": "base64 encoded, SHA-256 hash of the app's APK",
-  "ctsProfileMatch": true,
-  "basicIntegrity": true,
-}
+{  
+   "requestDetails": {  
+     "requestPackageName": "com.example.your.package",  
+     "timestampMillis": "1666025823025",  
+     "nonce": "kx7QEkGebwQfBalJ4...Xwjhak7o3uHDDQTTqI"  
+   },  
+   "appIntegrity": {  
+     "appRecognitionVerdict": "UNRECOGNIZED_VERSION",  
+     "packageName": "com.example.your.package",  
+     "certificateSha256Digest": [  
+       "vNsB0...ww1U"  
+     ],  
+     "versionCode": "1"  
+   },  
+   "deviceIntegrity": {  
+     "deviceRecognitionVerdict": [  
+       "MEETS_DEVICE_INTEGRITY"  
+     ]  
+   },  
+   "accountDetails": {  
+     "appLicensingVerdict": "UNEVALUATED"  
+   }  
+ }  
 ```
-
-##### ctsProfileMatch Vs basicIntegrity
-
-The SafetyNet Attestation API initially provided a single value called `basicIntegrity` to help developers determine the integrity of a device. As the API evolved, Google introduced a new, stricter check whose results appear in a value called `ctsProfileMatch`, which allows developers to more finely evaluate the devices on which their app is running.
-
-In broad terms, `basicIntegrity` gives you a signal about the general integrity of the device and its API. Many Rooted devices fail `basicIntegrity`, as do emulators, virtual devices, and devices with signs of tampering, such as API hooks.
-
-On the other hand, `ctsProfileMatch` gives you a much stricter signal about the compatibility of the device. Only unmodified devices that have been certified by Google can pass `ctsProfileMatch`. Devices that will fail `ctsProfileMatch` include the following:
-
-- Devices that fail `basicIntegrity`
-- Devices with an unlocked bootloader
-- Devices with a custom system image (custom ROM)
-- Devices for which the manufacturer didn't apply for, or pass, Google certification
-- Devices with a system image built directly from the Android Open Source Program source files
-- Devices with a system image distributed as part of a beta or developer preview program (including the Android Beta Program)
-
-##### Recommendations when using `SafetyNetApi.attest`
-
-- Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
-- Trust APK information (`apkPackageName`, `apkCertificateDigestSha256` and `apkDigestSha256`) only if the value of `ctsProfileMatch` is true.
-- The entire JWS response should be sent to your server, using a secure connection, for verification. It isn't recommended to perform the verification directly in the app because, in that case, there is no guarantee that the verification logic itself hasn't been modified.
-- The `verify` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.
-- The SafetyNet Attestation API gives you a snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommended to plan a strategy to use the least amount of attestations required to satisfy the use case.
-- To prevent inadvertently reaching your `SafetyNetApi.attest` quota and getting attestation errors, you should build a system that monitors your usage of the API and warns you well before you reach your quota so you can get it increased. You should also be prepared to handle attestation failures because of an exceeded quota and avoid blocking all your users in this situation. If you are close to reaching your quota, or expect a short-term spike that may lead you to exceed your quota, you can submit this [form](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request") to request short or long-term increases to the quota for your API key. This process, as well as the additional quota, is free of charge.
-
-Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklist "attestation checklist") to ensure that you've completed each of the steps needed to integrate the `SafetyNetApi.attest` API into the app.
 
 #### Programmatic Detection
 
