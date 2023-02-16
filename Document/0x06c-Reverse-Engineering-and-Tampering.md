@@ -349,6 +349,7 @@ Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-
 RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
                                                                       ...ystem/Library/Frameworks/IOKit.framework
 ...
+```
 
 #### Open Connections
 
