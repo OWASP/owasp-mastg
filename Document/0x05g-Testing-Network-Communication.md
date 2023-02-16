@@ -1,10 +1,10 @@
 # Android Network Communication
 
+## Overview
+
 Almost every Android app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
 
 Most modern mobile apps use variants of HTTP-based web services, as these protocols are well-documented and supported.
-
-## Overview
 
 ### Android Network Security Configuration
 
@@ -128,6 +128,8 @@ Refer to section ["Verifying the TLS Settings"](0x04f-Testing-Network-Communicat
 
 ## Testing Endpoint Identify Verification (MSTG-NETWORK-3)
 
+### Static Analysis
+
 Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://saschafahl.de/static/paper/androidssl2012.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
 
 Two key issues should be addressed:
@@ -138,8 +140,6 @@ Two key issues should be addressed:
 Make sure that the hostname and the certificate itself are verified correctly. Examples and common pitfalls are available in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL"). Search the code for examples of `TrustManager` and `HostnameVerifier` usage. In the sections below, you can find examples of the kind of insecure usage that you should look for.
 
 > Note that from Android 8.0 (API level 26) onward, there is no support for SSLv3 and `HttpsURLConnection` will no longer perform a fallback to an insecure TLS/SSL protocol.
-
-### Static Analysis
 
 #### Verifying the Target SDK Version
 
@@ -287,12 +287,6 @@ To test improper certificate verification launch a MITM attack using an intercep
 If you're still not able to see any decrypted HTTPS traffic, your application might be implementing [certificate pinning](#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4).
 
 ## Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
-
-### Overview
-
-This test verifies if the app properly implements identity pinning (certificate or public key pinning).
-
-For more details refer to section ["Identity Pinning"](0x04f-Testing-Network-Communication.md#identity-pinning) in the general chapter "Mobile App Network Communication".
 
 ### Static Analysis
 
