@@ -1,8 +1,6 @@
 # Android Code Quality and Build Settings
 
-## Making Sure That the App is Properly Signed (MSTG-CODE-1)
-
-### Overview
+## App Signing
 
 Android requires all APKs to be digitally signed with a certificate before they are installed or run. The digital signature is used to verify the owner's identity for application updates. This process can prevent an app from being tampered with or modified to include malicious code.
 
@@ -22,6 +20,104 @@ The v2 signature, which is supported by Android 7.0 (API level 24) and above, of
 The V3 signature, which is supported by Android 9 (API level 28) and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used. Note that it is only available via apksigner at the time of writing.
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
+
+## Third-Party Libraries
+
+Android apps often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
+
+- Libraries that are not (or should not) be packed within the actual production application, such as `Mockito` used for testing and libraries like `JavaAssist` used to compile certain other libraries.
+- Libraries that are packed within the actual production application, such as `Okhttp3`.
+
+These libraries can lead to unwanted side-effects:
+
+- A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain pollution was possible to bypass SSL pinning.
+- A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.
+- A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its sourcecode. This can endanger the intellectual property (IP) of the application.
+
+Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
+
+## Memory Corruption Bugs
+
+Android applications run on a VM where most of the memory corruption issues have been taken care off. This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the Stagefright attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefright").
+
+Memory leaks are often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helper classes.
+
+## Binary Protection Mechanisms
+
+Detecting the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
+
+In general all binaries should be tested, which includes both the main app executable as well as all libraries/dependencies. However, on Android we will focus on native libraries since the main executables are considered safe as we will see next.
+
+Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Basic-Security_Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
+
+The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
+
+- [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
+  - Since Android 7.0 (API level 24), PIC compilation is [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
+  - With Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50) and since then, PIE is [enforced by the linker](https://cs.android.com/android/platform/superproject/+/master:bionic/linker/linker_main.cpp;l=430).
+- [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
+  - Garbage Collection will simply run for the main binaries and there's nothing to be checked on the binaries themselves.
+  - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+- [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection):
+  - Android apps get compiled to Dalvik bytecode which is considered memory safe (at least for mitigating buffer overflows). Other frameworks such as Flutter will not compile using stack canaries because of the way their language, in this case Dart, mitigates buffer overflows.
+  - It must be enabled for Android native libraries but it might be difficult to fully determine it.
+    - NDK libraries should have it enabled since the compiler does it by default.
+    - Other custom C/C++ libraries might not have it enabled.
+
+Learn more:
+
+- [Android executable formats](https://lief-project.github.io/doc/latest/tutorials/10_android_formats.html)
+- [Android runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works)
+- [Android NDK](https://developer.android.com/ndk/guides)
+- [Android linker changes for NDK developers](https://android.googlesource.com/platform/bionic/+/master/android-changes-for-ndk-developers.md)
+
+## Debuggable Apps
+
+Debugging is an essential process for developers to identify and fix errors or bugs in their Android app. By using a debugger, developers can select the device to debug their app on and set breakpoints in their Java, Kotlin, and C/C++ code. This allows them to analyze variables and evaluate expressions at runtime, which helps them to identify the root cause of many issues. By debugging their app, developers can improve the functionality and user experience of their app, ensuring that it runs smoothly without any errors or crashes.
+
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` attribute in the [`Application` element](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") within the Android Manifest.
+
+## Debugging Symbols
+
+Generally, you should provide compiled code with as little explanation as possible. Some metadata, such as debugging information, line numbers, and descriptive function or method names, make the binary or bytecode easier for the reverse engineer to understand, but these aren't needed in a release build and can therefore be safely omitted without impacting the app's functionality.
+
+To inspect native binaries, use a standard tool like `nm` or `objdump` to examine the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unnecessary dynamic symbols is also recommended.
+
+## Debugging Code and Error Logging
+
+### StrictMode
+
+StrictMode is a developer tool for detecting violations, e.g. accidental disk or network access on the application's main thread. It can also be used to check for good coding practices, such as implementing performant code.
+
+Here is [an example of `StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html "StrictMode Class") with policies enabled for disk and network access to the main thread:
+
+```java
+public void onCreate() {
+     if (DEVELOPER_MODE) {
+         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                 .detectDiskReads()
+                 .detectDiskWrites()
+                 .detectNetwork()   // or .detectAll() for all detectable problems
+                 .penaltyLog()
+                 .build());
+         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                 .detectLeakedSqlLiteObjects()
+                 .detectLeakedClosableObjects()
+                 .penaltyLog()
+                 .penaltyDeath()
+                 .build());
+     }
+     super.onCreate();
+ }
+```
+
+Inserting the policy in the `if` statement with the `DEVELOPER_MODE` condition is recommended. To disable `StrictMode`, `DEVELOPER_MODE` must be disabled for the release build.
+
+## Exception Handling
+
+Exceptions occur when an application gets into an abnormal or error state. Both Java and C++ may throw exceptions. Testing exception handling is about ensuring that the app will handle an exception and transition to a safe state without exposing sensitive information via the UI or the app's logging mechanisms.
+
+## Making Sure that the App is Properly Signed (MSTG-CODE-1)
 
 ### Static Analysis
 
@@ -72,11 +168,7 @@ Last but not least: make sure that the application is never deployed with your i
 
 Static analysis should be used to verify the APK signature.
 
-## Testing Whether the App is Debuggable (MSTG-CODE-2)
-
-### Overview
-
-The `android:debuggable` attribute in the [`Application` element](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") that is defined in the Android manifest determines whether the app can be debugged or not.
+## Testing whether the App is Debuggable (MSTG-CODE-2)
 
 ### Static Analysis
 
@@ -162,12 +254,6 @@ A few notes about debugging:
 
 ## Testing for Debugging Symbols (MSTG-CODE-3)
 
-### Overview
-
-Generally, you should provide compiled code with as little explanation as possible. Some metadata, such as debugging information, line numbers, and descriptive function or method names, make the binary or bytecode easier for the reverse engineer to understand, but these aren't needed in a release build and can therefore be safely omitted without impacting the app's functionality.
-
-To inspect native binaries, use a standard tool like `nm` or `objdump` to examine the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unnecessary dynamic symbols is also recommended.
-
 ### Static Analysis
 
 Symbols are usually stripped during the build process, so you need the compiled bytecode and libraries to make sure that unnecessary metadata has been discarded.
@@ -211,34 +297,6 @@ Static analysis should be used to verify debugging symbols.
 
 ## Testing for Debugging Code and Verbose Error Logging (MSTG-CODE-4)
 
-### Overview
-
-StrictMode is a developer tool for detecting violations, e.g. accidental disk or network access on the application's main thread. It can also be used to check for good coding practices, such as implementing performant code.
-
-Here is [an example of `StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html "StrictMode Class") with policies enabled for disk and network access to the main thread:
-
-```java
-public void onCreate() {
-     if (DEVELOPER_MODE) {
-         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                 .detectDiskReads()
-                 .detectDiskWrites()
-                 .detectNetwork()   // or .detectAll() for all detectable problems
-                 .penaltyLog()
-                 .build());
-         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                 .detectLeakedSqlLiteObjects()
-                 .detectLeakedClosableObjects()
-                 .penaltyLog()
-                 .penaltyDeath()
-                 .build());
-     }
-     super.onCreate();
- }
-```
-
-Inserting the policy in the `if` statement with the `DEVELOPER_MODE` condition is recommended. To disable `StrictMode`, `DEVELOPER_MODE` must be disabled for the release build.
-
 ### Static Analysis
 
 To determine whether `StrictMode` is enabled, you can look for the `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy` methods. Most likely, they will be in the `onCreate` method.
@@ -271,24 +329,7 @@ There are several ways of detecting `StrictMode`; the best choice depends on how
 
 ## Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)
 
-### Overview
-
-Android apps often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
-
-- Libraries that are not (or should not) be packed within the actual production application, such as `Mockito` used for testing and libraries like `JavaAssist` used to compile certain other libraries.
-- Libraries that are packed within the actual production application, such as `Okhttp3`.
-
-These libraries can lead to unwanted side-effects:
-
-- A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain pollution was possible to bypass SSL pinning.
-- A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.
-- A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its sourcecode. This can endanger the intellectual property (IP) of the application.
-
-Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
-
 ### Static Analysis
-
-#### Detecting vulnerabilities of third party libraries
 
 Detecting vulnerabilities in third party dependencies can be done by means of the OWASP Dependency checker. This is best done by using a gradle plugin, such as [`dependency-check-gradle`](https://github.com/jeremylong/dependency-check-gradle "dependency-check-gradle").
 In order to use the plugin, the following steps need to be applied:
@@ -331,46 +372,11 @@ When the sources are not available, one can decompile the app and check the JAR 
 
 If the application is a high-risk application, you will end up vetting the library manually. In that case, there are specific requirements for native code, which you can find in the chapter "[Testing Code Quality](0x04h-Testing-Code-Quality.md)". Next to that, it is good to vet whether all best practices for software engineering are applied.
 
-#### Detecting the Licenses Used by the Libraries of the Application
-
-In order to ensure that the copyright laws are not infringed, one can best check the dependencies by using a plugin which can iterate over the different libraries, such as `License Gradle Plugin`. This plugin can be used by taking the following steps.
-
-In your `build.gradle` file add:
-
-```default
-plugins {
-    id "com.github.hierynomus.license-report" version"{license_plugin_version}"
-}
-```
-
-Now, after the plugin is picked up, use the following commands:
-
-```bash
-gradle assemble
-gradle downloadLicenses
-```
-
-Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreements to see whether a copyright notice needs to be included into the app and whether the license type requires to open-source the code of the application.
-
-Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as [Sonatype Nexus IQ](https://www.sonatype.com/nexus/iqserver "Nexus IQ"), [Sourceclear](https://www.sourceclear.com/ "Sourceclear"), [Snyk](https://snyk.io/ "Snyk") or [Blackduck](https://www.blackducksoftware.com/ "Blackduck").
-
-> Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist.
-
-When a library contains a license in which the application IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
-
-Note: In case of a hybrid app, please check the build tools used: most of them do have a license enumeration plugin to find the licenses being used.
-
-When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or [ProGuard](0x08a-Testing-Tools.md#proguard) are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
-
 ### Dynamic Analysis
 
 The dynamic analysis of this section comprises validating whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
-## Testing Exception Handling (MSTG-CODE-6 and MSTG-CODE-7)
-
-### Overview
-
-Exceptions occur when an application gets into an abnormal or error state. Both Java and C++ may throw exceptions. Testing exception handling is about ensuring that the app will handle an exception and transition to a safe state without exposing sensitive information via the UI or the app's logging mechanisms.
+## Testing Exception Handling (MSTG-CODE-6)
 
 ### Static Analysis
 
@@ -454,11 +460,6 @@ The application should never crash; it should
 
 ## Memory Corruption Bugs (MSTG-CODE-8)
 
-Android applications often run on a VM where most of the memory corruption issues have been taken care off.
-This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the Stagefright attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefright").
-
-A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helper classes.
-
 ### Static Analysis
 
 There are various items to look for:
@@ -481,35 +482,6 @@ There are various steps to take:
 - Check with the [Android Java Deserialization Vulnerability Tester](https://github.com/modzero/modjoda "Android Java Deserialization Vulnerability Tester"), for serialization vulnerabilities.
 
 ## Make Sure That Free Security Features Are Activated (MSTG-CODE-9)
-
-### Overview
-
-The tests used to detect the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
-
-In general all binaries should be tested, which includes both the main app executable as well as all libraries/dependencies. However, on Android we will focus on native libraries since the main executables are considered safe as we will see next.
-
-Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Basic-Security_Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
-
-The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
-
-- [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
-  - Since Android 7.0 (API level 24), PIC compilation is [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
-  - With Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50) and since then, PIE is [enforced by the linker](https://cs.android.com/android/platform/superproject/+/master:bionic/linker/linker_main.cpp;l=430).
-- [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
-  - Garbage Collection will simply run for the main binaries and there's nothing to be checked on the binaries themselves.
-  - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
-- [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection):
-  - Android apps get compiled to Dalvik bytecode which is considered memory safe (at least for mitigating buffer overflows). Other frameworks such as Flutter will not compile using stack canaries because of the way their language, in this case Dart, mitigates buffer overflows.
-  - It must be enabled for Android native libraries but it might be difficult to fully determine it.
-    - NDK libraries should have it enabled since the compiler does it by default.
-    - Other custom C/C++ libraries might not have it enabled.
-
-Learn more:
-
-- [Android executable formats](https://lief-project.github.io/doc/latest/tutorials/10_android_formats.html)
-- [Android runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works)
-- [Android NDK](https://developer.android.com/ndk/guides)
-- [Android linker changes for NDK developers](https://android.googlesource.com/platform/bionic/+/master/android-changes-for-ndk-developers.md)
 
 ### Static Analysis
 
@@ -550,13 +522,3 @@ In this example, `libtool-checker.so` must be recompiled with stack smashing pro
 - MSTG-CODE-7: "Error handling logic in security controls denies access by default."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 - MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-### Memory Analysis References
-
-- A brief history of Android deserialization vulnerabilities - <https://securitylab.github.com/research/android-deserialization-vulnerabilities>
-- 9 ways to avoid memory leaks in Android - <https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e>
-- Memory Leak Patterns in Android - <https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570>
-
-### Android Documentation
-
-- APK signature scheme with key rotation - <https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation>
