@@ -1,8 +1,305 @@
 # iOS Platform APIs
 
-## Testing App Permissions (MSTG-PLATFORM-1)
+## Overview
 
-### Overview
+### Enforced Updating
+
+Enforced updating can be helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Additionally, vulnerabilities are easily patched by means of forced updates.
+
+The challenge with iOS however, is that Apple does not provide any APIs yet to automate this process, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libraries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truly there.
+
+Please note that newer versions of an application will not fix security issues that are living in the backends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
+Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
+
+### Object Persistence
+
+There are several ways to persist an object on iOS:
+
+#### Object Encoding
+
+iOS comes with two protocols for object encoding and decoding for Objective-C or `NSObject`s: `NSCoding` and `NSSecureCoding`. When a class conforms to either of the protocols, the data is serialized to `NSData`: a wrapper for byte buffers. Note that `Data` in Swift is the same as `NSData` or its mutable counterpart: `NSMutableData`. The `NSCoding` protocol declares the two methods that must be implemented in order to encode/decode its instance-variables. A class using `NSCoding` needs to implement `NSObject` or be annotated as an @objc class. The `NSCoding` protocol requires to implement encode and init as shown below.
+
+```swift
+class CustomPoint: NSObject, NSCoding {
+
+    //required by NSCoding:
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(x, forKey: "x")
+        aCoder.encode(name, forKey: "name")
+    }
+
+    var x: Double = 0.0
+    var name: String = ""
+
+    init(x: Double, name: String) {
+            self.x = x
+            self.name = name
+    }
+
+    // required by NSCoding: initialize members using a decoder.
+    required convenience init?(coder aDecoder: NSCoder) {
+            guard let name = aDecoder.decodeObject(forKey: "name") as? String
+                    else {return nil}
+            self.init(x:aDecoder.decodeDouble(forKey:"x"),
+                                name:name)
+    }
+
+    //getters/setters/etc.
+}
+```
+
+The issue with `NSCoding` is that the object is often already constructed and inserted before you can evaluate the class-type. This allows an attacker to easily inject all sorts of data. Therefore, the `NSSecureCoding` protocol has been introduced. When conforming to [`NSSecureCoding`](https://developer.apple.com/documentation/foundation/NSSecureCoding "NSSecureCoding") you need to include:
+
+```swift
+
+static var supportsSecureCoding: Bool {
+        return true
+}
+```
+
+when `init(coder:)` is part of the class. Next, when decoding the object, a check should be made, e.g.:
+
+```swift
+let obj = decoder.decodeObject(of:MyClass.self, forKey: "myKey")
+```
+
+The conformance to `NSSecureCoding` ensures that objects being instantiated are indeed the ones that were expected. However, there are no additional integrity checks done over the data and the data is not encrypted. Therefore, any secret data needs additional encryption and data of which the integrity must be protected, should get an additional HMAC.
+
+Note, when `NSData` (Objective-C) or the keyword `let` (Swift) is used: then the data is immutable in memory and cannot be easily removed.
+
+#### Object Archiving with NSKeyedArchiver
+
+`NSKeyedArchiver` is a concrete subclass of `NSCoder` and provides a way to encode objects and store them in a file. The `NSKeyedUnarchiver` decodes the data and recreates the original data. Let's take the example of the `NSCoding` section and now archive and unarchive them:
+
+```swift
+
+// archiving:
+NSKeyedArchiver.archiveRootObject(customPoint, toFile: "/path/to/archive")
+
+// unarchiving:
+guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/archive") as?
+    CustomPoint else { return nil }
+
+```
+
+When decoding a keyed archive, because values are requested by name, values can be decoded out of sequence or not at all. Keyed archives, therefore, provide better support for forward and backward compatibility. This means that an archive on disk could actually contain additional data which is not detected by the program, unless the key for that given data is provided at a later stage.
+
+Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
+
+#### Codable
+
+With Swift 4, the `Codable` type alias arrived: it is a combination of the `Decodable` and `Encodable` protocols. A `String`, `Int`, `Double`, `Date`, `Data` and `URL` are `Codable` by nature: meaning they can easily be encoded and decoded without any additional work. Let's take the following example:
+
+```swift
+struct CustomPointStruct:Codable {
+    var x: Double
+    var name: String
+}
+```
+
+By adding `Codable` to the inheritance list for the `CustomPointStruct` in the example, the methods `init(from:)` and `encode(to:)` are automatically supported. Fore more details about the workings of `Codable` check [the Apple Developer Documentation](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types "Encoding and Decoding Custom Types").
+The `Codable`s can easily be encoded / decoded into various representations: `NSData` using `NSCoding`/`NSSecureCoding`, JSON, Property Lists, XML, etc. See the subsections below for more details.
+
+#### JSON and Codable
+
+There are various ways to encode and decode JSON within iOS by using different 3rd party libraries:
+
+- [Mantle](https://github.com/Mantle/Mantle "Mantle")
+- [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel")
+- [SwiftyJSON library](https://github.com/SwiftyJSON/SwiftyJSON "SwiftyJSON")
+- [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper "ObjectMapper library")
+- [JSONKit](https://github.com/johnezang/JSONKit "JSONKit")
+- [JSONModel](https://github.com/JSONModel/JSONModel "JSONModel")
+- [YYModel](https://github.com/ibireme/YYModel "YYModel")
+- [SBJson 5](https://github.com/ibireme/YYModel "SBJson 5")
+- [Unbox](https://github.com/JohnSundell/Unbox "Unbox")
+- [Gloss](https://github.com/hkellaway/Gloss "Gloss")
+- [Mapper](https://github.com/lyft/mapper "Mapper")
+- [JASON](https://github.com/delba/JASON "JASON")
+- [Arrow](https://github.com/freshOS/Arrow "Arrow")
+
+The libraries differ in their support for certain versions of Swift and Objective-C, whether they return (im)mutable results, speed, memory consumption and actual library size.
+Again, note in case of immutability: confidential information cannot be removed from memory easily.
+
+Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
+
+```swift
+struct CustomPointStruct: Codable {
+    var point: Double
+    var name: String
+}
+
+let encoder = JSONEncoder()
+encoder.outputFormatting = .prettyPrinted
+
+let test = CustomPointStruct(point: 10, name: "test")
+let data = try encoder.encode(test)
+let stringData = String(data: data, encoding: .utf8)
+
+// stringData = Optional ({
+// "point" : 10,
+// "name" : "test"
+// })
+```
+
+JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
+
+#### Property Lists and Codable
+
+You can persist objects to _property lists_ (also called plists in previous sections). You can find two examples below of how to use it:
+
+```swift
+
+// archiving:
+let data = NSKeyedArchiver.archivedDataWithRootObject(customPoint)
+NSUserDefaults.standardUserDefaults().setObject(data, forKey: "customPoint")
+
+// unarchiving:
+
+if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") as? NSData {
+    let customPoint = NSKeyedUnarchiver.unarchiveObjectWithData(data)
+}
+
+```
+
+In this first example, the `NSUserDefaults` are used, which is the primary _property list_. We can do the same with the `Codable` version:
+
+```swift
+struct CustomPointStruct: Codable {
+        var point: Double
+        var name: String
+    }
+
+    var points: [CustomPointStruct] = [
+        CustomPointStruct(point: 1, name: "test"),
+        CustomPointStruct(point: 2, name: "test"),
+        CustomPointStruct(point: 3, name: "test"),
+    ]
+
+    UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey: "points")
+    if let data = UserDefaults.standard.value(forKey: "points") as? Data {
+        let points2 = try? PropertyListDecoder().decode([CustomPointStruct].self, from: data)
+    }
+```
+
+Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
+
+#### XML
+
+There are multiple ways to do XML encoding. Similar to JSON parsing, there are various third party libraries, such as:
+
+- [Fuzi](https://github.com/cezheng/Fuzi "Fuzi")
+- [Ono](https://github.com/mattt/Ono "Ono")
+- [AEXML](https://github.com/tadija/AEXML "AEXML")
+- [RaptureXML](https://github.com/ZaBlanc/RaptureXML "RaptureXML")
+- [SwiftyXMLParser](https://github.com/yahoojapan/SwiftyXMLParser "SwiftyXMLParser")
+- [SWXMLHash](https://github.com/drmohundro/SWXMLHash "SWXMLHash")
+
+They vary in terms of speed, memory usage, object persistence and more important: differ in how they handle XML external entities. See [XXE in the Apple iOS Office viewer](https://nvd.nist.gov/vuln/detail/CVE-2015-3784 "CVE-2015-3784") as an example. Therefore, it is key to disable external entity parsing if possible. See the [OWASP XXE prevention cheatsheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html "XXE Prevention Cheatsheet") for more details.
+Next to the libraries, you can make use of Apple's [`XMLParser` class](https://developer.apple.com/documentation/foundation/xmlparser "XMLParser")
+
+When not using third party libraries, but Apple's `XMLParser`, be sure to let `shouldResolveExternalEntities` return `false`.
+
+#### Object-Relational Mapping (CoreData and Realm)
+
+There are various ORM-like solutions for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documentation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Encryption with Realm"). This allows for handling secure data. Note that the encryption is turned off by default.
+
+Apple itself supplies `CoreData`, which is well explained in the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1, "CoreData"). It supports various storage backends as described in [Apple's Persistent Store Types and Behaviors documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/PersistentStoreFeatures.html "PersistentStoreFeatures"). The issue with the storage backends recommended by Apple, is that none of the type of data stores is encrypted, nor checked for integrity. Therefore, additional actions are necessary in case of confidential data. An alternative can be found in [project iMas](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data"), which does supply out of the box encryption.
+
+#### Protocol Buffers
+
+[Protocol Buffers](https://developers.google.com/protocol-buffers/ "Google Documentation") by Google, are a platform- and language-neutral mechanism for serializing structured data by means of the [Binary Data Format](https://developers.google.com/protocol-buffers/docs/encoding "Protocol Buffers Encoding"). They are available for iOS by means of the [Protobuf](https://github.com/apple/swift-protobuf "Apple\'s swift-protobuf Plugin and Runtime library") library.
+There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
+Note that **Protocol Buffers do not provide any protection for confidentiality** as no built-in encryption is available.
+
+
+### WebViews
+
+WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and Cross-Site Scripting attacks can affect them.
+
+#### Types of WebViews
+There are multiple ways to include a WebView in an iOS application:
+
+- UIWebView
+- WKWebView
+- SFSafariViewController
+
+##### UIWebView
+
+[`UIWebView`](https://developer.apple.com/reference/uikit/uiwebview "UIWebView") is deprecated starting on iOS 12 and should not be used. Make sure that either `WKWebView` or `SFSafariViewController` are used to embed web content. In addition to that, JavaScript cannot be disabled for `UIWebView` which is another reason to refrain from using it.
+
+##### WKWebView
+
+[`WKWebView`](https://developer.apple.com/reference/webkit/wkwebview "WKWebView") was introduced with iOS 8 and is the appropriate choice for extending app functionality, controlling displayed content (i.e., prevent the user from navigating to arbitrary URLs) and customizing. `WKWebView` also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#thiel2].
+
+`WKWebView` comes with several security advantages over `UIWebView`:
+
+- JavaScript is enabled by default but thanks to the `javaScriptEnabled` property of `WKWebView`, it can be completely disabled, preventing all script injection flaws.
+- The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
+- The `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
+- `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
+
+A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "[Determining Whether Native Methods Are Exposed Through WebViews](#determining-whether-native-methods-are-exposed-through-webviews-mstg-platform-7 "Determining Whether Native Methods Are Exposed Through WebViews")" below for more information.
+
+##### SFSafariViewController
+
+[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller "SFSafariViewController") is available starting on iOS 9 and should be used to provide a generalized web viewing experience. These WebViews can be easily spotted as they have a characteristic layout which includes the following elements:
+
+- A read-only address field with a security indicator.
+- An Action ("Share") button.
+- A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
+
+<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="400px" />
+
+There are a couple of things to consider:
+
+- JavaScript cannot be disabled in `SFSafariViewController` and this is one of the reasons why the usage of `WKWebView` is recommended when the goal is extending the app's user interface.
+- `SFSafariViewController` also shares cookies and other website data with Safari.
+- The user's activity and interaction with a `SFSafariViewController` are not visible to the app, which cannot access AutoFill data, browsing history, or website data.
+- According to the App Store Review Guidelines, `SFSafariViewController`s may not be hidden or obscured by other views or layers.
+
+This should be sufficient for an app analysis and therefore, `SFSafariViewController`s are out of scope for the Static and Dynamic Analysis sections.
+
+#### Safari Web Inspector
+
+Enabling Safari web inspection on iOS allows you to inspect the contents of a WebView remotely from a macOS device. By default, you can view the contents of any page loaded into the Safari app because the Safari app has the `get-task-allowed` entitlement. Applications installed from the App store will however not have this entitlement, and so cannot be attached to. On jailbroken devices, this entitlement can be added to any application by installing the [Inspectorplus tweak from the BigBoss repo](https://www.ios-repo-updates.com/repository/bigboss/package/li.oldman.inspectorplus/).
+
+Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html) is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
+
+To activate the web inspection you have to follow these steps:
+
+1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on _Web Inspector_.
+2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable _Show Develop menu in menu bar_.
+3. Connect your iOS device to the macOS device and unlock it: the iOS device name should appear in the _Develop_ menu.
+4. (If not yet trusted) On macOS's Safari, go to the _Develop_ menu, click on the iOS device name, then on "Use for Development" and enable trust.
+
+To open the web inspector and debug a WebView:
+
+1. In iOS, open the app and navigate to the screen that should contain a WebView.
+2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView based context. Click on it to open the Web Inspector.
+
+Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
+
+#### Native Functionality Exposed Through WebViews
+
+In iOS 7, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious scripts into the WebView (e.g., through a successful Cross-Site Scripting attack).
+
+Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView.
+
+##### Native Functionality Exposed Through UIWebView
+
+There are two fundamental ways of how native code and JavaScript can communicate:
+
+- **JSContext**: When an Objective-C or Swift block is assigned to an identifier in a `JSContext`, JavaScriptCore automatically wraps the block in a JavaScript function.
+- **JSExport protocol**: Properties, instance methods and class methods declared in a `JSExport`-inherited protocol are mapped to JavaScript objects that are available to all JavaScript code. Modifications of objects that are in the JavaScript environment are reflected in the native environment.
+
+Note that only class members defined in the `JSExport` protocol are made accessible to JavaScript code.
+
+##### Native Functionality Exposed Through WKWebView
+
+JavaScript code in a `WKWebView` can still send messages back to the native app but in contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system and using the `postMessage` function, which automatically serializes JavaScript objects into native Objective-C or Swift objects. Message handlers are configured using the method [`add(_ scriptMessageHandler:name:)`](https://developer.apple.com/documentation/webkit/wkusercontentcontroller/1537172-add "WKUserContentController add(_ scriptMessageHandler:name:)").
+
+### App Permissions
 
 In contrast to Android, where each app runs on its own user ID, iOS makes all third-party apps run under the non-privileged `mobile` user. Each app has a unique home directory and is sandboxed, so that they cannot access protected system resources or files stored by the system or by other apps. These restrictions are implemented via sandbox policies (aka. _profiles_), which are enforced by the [Trusted BSD (MAC) Mandatory Access Control Framework](http://www.trustedbsd.org/mac.html "TrustedBSD Mandatory Access Control (MAC) Framework") via a kernel extension. iOS applies a generic sandbox profile to all third-party apps called _container_. Access to protected resources or data (some also known as [app capabilities](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities")) is possible, but it's strictly controlled via special permissions known as _entitlements_.
 
@@ -27,9 +324,9 @@ Some permissions can be configured by the app's developers (e.g. Data Protection
 
 Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many of them for non-obvious reasons.
 
-Some permissions such as Camera, Photos, Calendar Data, Motion, Contacts or Speech Recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. Let's consider the following examples ragarding the Photos permission, which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos):
+Some permissions such as Camera, Photos, Calendar Data, Motion, Contacts or Speech Recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. Let's consider the following examples regarding the Photos permission, which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos):
 
-- The typical QR Code scanning app obviously requires the camera to function but might be requesting the photos permission as well. If storage is explicitly required, and depending on the sensitivity of the pictures being taken, these apps might better opt to use the app sandbox storage to avoid other apps (having the photos permission) to access them. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more information reagarding storage of sensitive data.
+- The typical QR Code scanning app obviously requires the camera to function but might be requesting the photos permission as well. If storage is explicitly required, and depending on the sensitivity of the pictures being taken, these apps might better opt to use the app sandbox storage to avoid other apps (having the photos permission) to access them. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more information regarding storage of sensitive data.
 - Some apps require photo uploads (e.g. for profile pictures). Recent versions of iOS introduce new APIs such as [`UIImagePickerController`](https://developer.apple.com/documentation/uikit/uiimagepickercontroller "UIImagePickerController") (iOS 11+) and its modern [replacement](https://developer.apple.com/videos/play/wwdc2020/10652/ "replacement") [`PHPickerViewController`](https://developer.apple.com/documentation/photokit/phpickerviewcontroller "PHPickerViewController") (iOS 14+). These APIs run on a separate process from your app and by using them, the app gets read-only access exclusively to the images selected by the user instead of to the whole "Camera Roll". This is considered a best practice to avoid requesting unnecessary permissions.
 
 Other permissions like Bluetooth or Location require deeper verification steps. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected. For more information and some examples please refer to the "[Source Code Inspection](#source-code-inspection "Source Code Inspection")" in the "Static Analysis" section below and to the "Dynamic Analysis" section.
@@ -45,11 +342,11 @@ Device capabilities are used by the App Store to ensure that only compatible dev
 ```xml
 <key>UIRequiredDeviceCapabilities</key>
 <array>
-    <string>armv7</string>
+    <string>arm64</string>
 </array>
 ```
 
-> Typically you'll find the `armv7` capability, meaning that the app is compiled only for the armv7 instruction set, or if it’s a 32/64-bit universal app.
+> Typically you'll find the `arm64` capability, meaning that the app is compiled for the arm64 instruction set.
 
 For example, an app might be completely dependent on NFC to work (e.g. a ["NFC Tag Reader"](https://itunes.apple.com/us/app/nfc-taginfo-by-nxp/id1246143596 "NFC TagInfo by NXP") app). According to the [archived iOS Device Compatibility Reference](https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html "iOS Device Compatibility Matrix"), NFC is only available starting on the iPhone 7 (and iOS 11). A developer might want to exclude all incompatible devices by setting the `nfc` device capability.
 
@@ -102,18 +399,6 @@ For example, if you want to set the "Default Data Protection" capability, you wo
 
 For other capabilities such as HealthKit, the user has to be asked for permission, therefore it is not enough to add the entitlements, special keys and strings have to be added to the `Info.plist` file of the app.
 
-The following sections go more into detail about the mentioned files and how to perform static and dynamic analysis using them.
-
-### Static Analysis
-
-Since iOS 10, these are the main areas which you need to inspect for permissions:
-
-- Purpose Strings in the Info.plist File
-- Code Signing Entitlements File
-- Embedded Provisioning Profile File
-- Entitlements Embedded in the Compiled App Binary
-- Source Code Inspection
-
 #### Purpose Strings in the Info.plist File
 
 [_Purpose strings_](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037322 "Provide a Purpose String") or_usage description strings_ are custom texts that are offered to users in the system's permission request alert when requesting permission to access protected data or resources.
@@ -122,45 +407,7 @@ Since iOS 10, these are the main areas which you need to inspect for permissions
 
 If linking on or after iOS 10, developers are required to include purpose strings in their app's [`Info.plist`](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW5 "The Information Property List File") file. Otherwise, if the app attempts to access protected data or resources without having provided the corresponding purpose string, [the access will fail and the app might even crash](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources").
 
-If having the original source code, you can verify the permissions included in the `Info.plist` file:
-
-- Open the project with Xcode.
-- Find and open the `Info.plist` file in the default editor and search for the keys starting with `"Privacy -"`.
-
-You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
-
-<img src="Images/Chapters/0x06h/purpose_strings_xcode.png" width="100%" />
-
-If only having the IPA:
-
-- Unzip the IPA.
-- The `Info.plist` is located in `Payload/<appname>.app/Info.plist`.
-- Convert it if needed (e.g. `plutil -convert xml1 Info.plist`) as explained in the chapter "iOS Basic Security Testing", section "The Info.plist File".
-- Inspect all _purpose strings Info.plist keys_, usually ending with `UsageDescription`:
-
-    ```xml
-    <plist version="1.0">
-    <dict>
-        <key>NSLocationWhenInUseUsageDescription</key>
-        <string>Your location is used to provide turn-by-turn directions to your destination.</string>
-    ```
-
 For an overview of the different _purpose strings Info.plist keys_ available see Table 1-2 at the [Apple App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings"). Click on the provided links to see the full description of each key in the [CocoaKeys reference](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Cocoa Keys").
-
-Following these guidelines should make it relatively simple to evaluate each and every entry in the `Info.plist` file to check if the permission makes sense.
-
-For example, imagine the following lines were extracted from a `Info.plist` file used by a Solitaire game:
-
-```xml
-<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
-<string>Share your health data with us!</string>
-<key>NSCameraUsageDescription</key>
-<string>We want to access your camera</string>
-```
-
-It should be suspicious that a regular solitaire game requests this kind of resource access as it probably does not have any need for [accessing the camera](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24 "NSCameraUsageDescription") nor a [user's health-records](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW76 "NSHealthClinicalHealthRecordsShareUsageDescription").
-
-Apart from simply checking if the permissions make sense, further analysis steps might be derived from analyzing purpose strings e.g. if they are related to storage sensitive data. For example, `NSPhotoLibraryUsageDescription` can be considered as a storage permission giving access to files that are outside of the app's sandbox and might also be accessible by other apps. In this case, it should be tested that no sensitive data is being stored there (photos in this case). For other purpose strings like `NSLocationAlwaysUsageDescription`, it must be also considered if the app is storing this data securely. Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
 #### Code Signing Entitlements File
 
@@ -188,9 +435,213 @@ The entitlement outlined above does not require any additional permissions from 
 As documented at [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group"), the App Groups entitlement is required to share information between different apps through IPC or a shared file container, which means that data can be shared on the device directly between the apps.
 This entitlement is also required if an app extension requires to [share information with its containing app](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html "Sharing Data with Your Containing App").
 
-Depending on the data to-be-shared it might be more appropriate to share it using another method such as through a backend where this data could be potentially verified, avoiding tampering by e.g. the user himself.
+Depending on the data to-be-shared it might be more appropriate to share it using another method such as through a backend where this data could be potentially verified, avoiding tampering by e.g. the user themselves.
 
-#### Embedded Provisioning Profile File
+### Inter-Process Communication (IPC)
+
+During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
+
+In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers some rather limited options for communication between apps. In fact, there's no way for apps to communicate directly. In this section we will present the different types of indirect communication offered by iOS and how to test them. Here's an overview:
+
+- Custom URL Schemes
+- Universal Links
+- UIActivity Sharing
+- App Extensions
+- UIPasteboard
+
+#### Custom URL Schemes
+
+Custom URL schemes [allow apps to communicate via a custom protocol](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW1 "Using URL Schemes to Communicate with Apps"). An app must declare support for the schemes and handle incoming URLs that use those schemes.
+
+Apple warns about the improper use of custom URL schemes in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app "Defining a Custom URL Scheme for Your App"):
+
+> URL schemes offer a potential attack vector into your app, so make sure to validate all URL parameters and discard any malformed URLs. In addition, limit the available actions to those that do not risk the user’s data. For example, do not allow other apps to directly delete content or access sensitive information about the user. When testing your URL-handling code, make sure your test cases include improperly formatted URLs.
+
+They also suggest using universal links instead, if the purpose is to implement deep linking:
+
+> While custom URL schemes are an acceptable form of deep linking, universal links are strongly recommended as a best practice.
+
+Supporting a custom URL scheme is done by:
+
+- defining the format for the app's URLs,
+- registering the scheme so that the system directs appropriate URLs to the app,
+- handling the URLs that the app receives.
+
+Security issues arise when an app processes calls to its URL scheme without properly validating the URL and its parameters and when users aren't prompted for confirmation before triggering an important action.
+
+One example is the following [bug in the Skype Mobile app](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html "Insecure Handling of URL Schemes in Apple’s iOS"), discovered in 2010: The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask users for permission before placing the calls, so any app could call arbitrary numbers without the user's knowledge. Attackers exploited this vulnerability by putting an invisible `<iframe src="skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who inadvertently visited a malicious website called the premium number.
+
+As a developer, you should carefully validate any URL before calling it. You can allow only certain applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
+
+All URLs are passed to the app delegate, either at launch time or while the app is running or in the background. To handle incoming URLs, the delegate should implement methods to:
+
+- retrieve information about the URL and decide whether you want to open it,
+- open the resource specified by the URL.
+
+More information can be found in the [archived App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW13 "Handling URL Requests") and in the [Apple Secure Coding Guide](https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/Articles/ValidatingInput.html "Validating Input and Interprocess Communication").
+
+In addition, an app may also want to send URL requests (aka. queries) to other apps. This is done by:
+
+- registering the application query schemes that the app wants to query,
+- optionally querying other apps to know if they can open a certain URL,
+- sending the URL requests.
+
+#### Universal Links
+
+Universal links are the iOS equivalent to Android App Links (aka. Digital Asset Links) and are used for deep linking. When tapping a universal link (to the app's website), the user will seamlessly be redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
+
+Universal links are standard web links (HTTP/HTTPS) and are not to be confused with custom URL schemes, which originally were also used for deep linking.
+
+For example, the Telegram app supports both custom URL schemes and universal links:
+
+- `tg://resolve?domain=fridadotre` is a custom URL scheme and uses the `tg://` scheme.
+- `https://telegram.me/fridadotre` is a universal link and uses the `https://` scheme.
+
+Both result in the same action, the user will be redirected to the specified chat in Telegram ("fridadotre" in this case). However, universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking, according to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html "Universal Links"). Specifically, universal links are:
+
+- **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website. They were introduced as a way to _prevent_ URL scheme hijacking attacks (an app installed after the original app may declare the same scheme and the system might target all new requests to the last installed app).
+- **Secure**: When users install the app, iOS downloads and checks a file (the Apple App Site Association or AASA) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the legitimate owners of the URL can upload this file, so the association of their website with the app is secure.
+- **Flexible**: Universal links work even when the app is not installed. Tapping a link to the website would open the content in Safari, as users expect.
+- **Simple**: One URL works for both the website and the app.
+- **Private**: Other apps can communicate with the app without needing to know whether it is installed.
+
+#### UIActivity Sharing
+
+Starting on iOS 6 it is possible for third-party apps to share data (items) via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide "Share Activity Sheet" that appears after clicking on the "Share" button.
+
+<img src="Images/Chapters/0x06h/share_activity_sheet.png" width="100%" />
+
+The available built-in sharing mechanisms (aka. Activity Types) include:
+
+- airDrop
+- assignToContact
+- copyToPasteboard
+- mail
+- message
+- postToFacebook
+- postToTwitter
+
+A full list can be found in [UIActivity.ActivityType](https://developer.apple.com/documentation/uikit/uiactivity/activitytype "UIActivity ActivityType"). If not considered appropriate for the app, the developers have the possibility to exclude some of these sharing mechanisms.
+
+#### App extensions
+
+Together with iOS 8, Apple introduced App Extensions. According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1 "App Extensions Increase Your Impact"), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
+
+Depending on the task, the app extension will have a particular type (and only one), the so-called _extension points_. Some notable ones are:
+
+- Custom Keyboard: replaces the iOS system keyboard with a custom keyboard for use in all apps.
+- Share: post to a sharing website or share content with others.
+- Today: also called widgets, they offer content or perform quick tasks in the Today view of Notification Center.
+
+##### How do app extensions interact with other apps
+
+There are three important elements here:
+
+- App extension: is the one bundled inside a containing app. Host apps interact with it.
+- Host app: is the (third-party) app that triggers the app extension of another app.
+- Containing app: is the app that contains the app extension bundled into it.
+
+For example, the user selects text in the _host app_, clicks on the "Share" button and selects one "app" or action from the list. This triggers the _app extension_ of the _containing app_. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13 "An app extension can communicate indirectly with its containing app") which pretty good summarizes this:
+
+<img src="Images/Chapters/0x06h/app_extensions_communication.png" width="100%" />
+
+##### Security Considerations
+
+From the security point of view it is important to note that:
+
+- An app extension does never communicate directly with its containing app (typically, it isn’t even running while the contained app extension is running).
+- An app extension and the host app communicate via inter-process communication.
+- An app extension’s containing app and the host app don’t communicate at all.
+- A Today widget (and no other app extension type) can ask the system to open its containing app by calling the `openURL:completionHandler:` method of the `NSExtensionContext` class.
+- Any app extension and its containing app can access shared data in a privately defined shared container.
+
+In addition:
+
+- App extensions cannot access some APIs, for example, HealthKit.
+- They cannot receive data using AirDrop but do can send data.
+- No long-running background tasks are allowed but uploads or downloads can be initiated.
+- App extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
+
+
+#### UIPasteboard
+
+When typing data into input fields, the clipboard can be used to copy in data. The clipboard is accessible system-wide and is therefore shared by apps. This sharing can be misused by malicious apps to get sensitive data that has been stored in the clipboard.
+
+When using an app you should be aware that other apps might be reading the clipboard continuously, as the [Facebook app](https://www.thedailybeast.com/facebook-is-spying-on-your-clipboard "Facebook Is Spying On Your Clipboard") did. Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, pasteboard content is accessible to apps in the foreground only, which reduces the attack surface of password sniffing from the clipboard dramatically. Still, copy-pasting passwords is a security risk you should be aware of, but also cannot be solved by an app.
+
+- Preventing pasting into input fields of an app, does not prevent that a user will copy sensitive information anyway. Since the information has already been copied before the user notices that it's not possible to paste it in, a malicious app has already sniffed the clipboard.
+- If pasting is disabled on password fields users might even choose weaker passwords that they can remember and they cannot use password managers anymore, which would contradict the original intention of making the app more secure.
+
+The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard "UIPasteboard") enables sharing data within an app, and from an app to other apps. There are two kinds of pasteboards:
+
+- **systemwide general pasteboard**: for sharing data with any app. Persistent by default across device restarts and app uninstalls (since iOS 10).
+- **custom / named pasteboards**: for sharing data with another app (having the same team ID as the app to share from) or with the app itself (they are only available in the process that creates them). Non-persistent by default (since iOS 10), that is, they exist only until the owning (creating) app quits.
+
+##### Security Considerations
+
+Some security considerations:
+
+- Users cannot grant or deny permission for apps to read the pasteboard.
+- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the _malicious_ app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
+- [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used.
+- Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data.
+
+
+## Testing App Permissions (MSTG-PLATFORM-1)
+
+### Static Analysis
+
+Since iOS 10, these are the main areas which you need to inspect for permissions:
+
+- Purpose Strings in the Info.plist File
+- Code Signing Entitlements File
+- Embedded Provisioning Profile File
+- Entitlements Embedded in the Compiled App Binary
+- Source Code Inspection
+
+#### Review application source code
+
+If having the original source code, you can verify the permissions included in the `Info.plist` file:
+
+- Open the project with Xcode.
+- Find and open the `Info.plist` file in the default editor and search for the keys starting with `"Privacy -"`.
+
+You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
+
+<img src="Images/Chapters/0x06h/purpose_strings_xcode.png" width="100%" />
+
+#### Review Info.plist
+
+If only having the IPA:
+
+- Unzip the IPA.
+- The `Info.plist` is located in `Payload/<appname>.app/Info.plist`.
+- Convert it if needed (e.g. `plutil -convert xml1 Info.plist`) as explained in the chapter "iOS Basic Security Testing", section "The Info.plist File".
+- Inspect all _purpose strings Info.plist keys_, usually ending with `UsageDescription`:
+
+    ```xml
+    <plist version="1.0">
+    <dict>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>Your location is used to provide turn-by-turn directions to your destination.</string>
+    ```
+
+For each purpose string in the `Info.plist` file, check if the permission makes sense.
+
+For example, imagine the following lines were extracted from a `Info.plist` file used by a Solitaire game:
+
+```xml
+<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+<string>Share your health data with us!</string>
+<key>NSCameraUsageDescription</key>
+<string>We want to access your camera</string>
+```
+
+It should be suspicious that a regular solitaire game requests this kind of resource access as it probably does not have any need for [accessing the camera](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24 "NSCameraUsageDescription") nor a [user's health-records](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW76 "NSHealthClinicalHealthRecordsShareUsageDescription").
+
+Apart from simply checking if the permissions make sense, further analysis steps might be derived from analyzing purpose strings e.g. if they are related to storage sensitive data. For example, `NSPhotoLibraryUsageDescription` can be considered as a storage permission giving access to files that are outside of the app's sandbox and might also be accessible by other apps. In this case, it should be tested that no sensitive data is being stored there (photos in this case). For other purpose strings like `NSLocationAlwaysUsageDescription`, it must be also considered if the app is storing this data securely. Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+
+#### Review Embedded Provisioning Profile File
 
 When you do not have the original source code, you should analyze the IPA and search inside for the _embedded provisioning profile_ that is usually located in the root app bundle folder (`Payload/<appname>.app/`) under the name `embedded.mobileprovision`.
 
@@ -202,7 +653,7 @@ security cms -D -i embedded.mobileprovision
 
 and then search for the Entitlements key region (`<key>Entitlements</key>`).
 
-#### Entitlements Embedded in the Compiled App Binary
+#### Review Entitlements Embedded in the Compiled App Binary
 
 If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself (which you've previously obtained as explained in the "iOS Basic Security Testing" chapter, section ["Acquiring the App Binary"](0x06b-Basic-Security-Testing.md#acquiring-the-app-binary)).
 
@@ -210,7 +661,7 @@ The following steps should work even when targeting an encrypted binary. If for 
 
 ##### Extracting the Entitlements Plist from the App Binary
 
-If you have the app binary in your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
+If you have the app binary on your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
 ```bash
 $ binwalk -e -y=xml ./Telegram\ X
@@ -373,40 +824,7 @@ For example, in the previous example, the "Location" entry was not being listed 
 
 ## Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
-During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
-
-In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers some rather limited options for communication between apps. In fact, there's no way for apps to communicate directly. In this section we will present the different types of indirect communication offered by iOS and how to test them. Here's an overview:
-
-- Custom URL Schemes
-- Universal Links
-- UIActivity Sharing
-- App Extensions
-- UIPasteboard
-
-### Custom URL Schemes
-
-Please refer to the section "[Testing Custom URL Schemes](#testing-custom-url-schemes-mstg-platform-3 "Testing Custom URL Schemes")" for more information on what custom URL schemes are and how to test them.
-
-### Universal Links
-
-#### Overview
-
-Universal links are the iOS equivalent to Android App Links (aka. Digital Asset Links) and are used for deep linking. When tapping a universal link (to the app's website), the user will seamlessly be redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
-
-Universal links are standard web links (HTTP/HTTPS) and are not to be confused with custom URL schemes, which originally were also used for deep linking.
-
-For example, the Telegram app supports both custom URL schemes and universal links:
-
-- `tg://resolve?domain=fridadotre` is a custom URL scheme and uses the `tg://` scheme.
-- `https://telegram.me/fridadotre` is a universal link and uses the `https://` scheme.
-
-Both result in the same action, the user will be redirected to the specified chat in Telegram ("fridadotre" in this case). However, universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking, according to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html "Universal Links"). Specifically, universal links are:
-
-- **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website. They were introduced as a way to _prevent_ URL scheme hijacking attacks (an app installed after the original app may declare the same scheme and the system might target all new requests to the last installed app).
-- **Secure**: When users install the app, iOS downloads and checks a file (the Apple App Site Association or AASA) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the legitimate owners of the URL can upload this file, so the association of their website with the app is secure.
-- **Flexible**: Universal links work even when the app is not installed. Tapping a link to the website would open the content in Safari, as users expect.
-- **Simple**: One URL works for both the website and the app.
-- **Private**: Other apps can communicate with the app without needing to know whether it is installed.
+### Testing Universal Links
 
 #### Static Analysis
 
@@ -602,6 +1020,8 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep openURL
 As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to "[Identifying and Hooking the URL Handler Method](#identifying-and-hooking-the-url-handler-method "Identifying and Hooking the URL Handler Method")" in the "Dynamic Analysis" of "Testing Custom URL Schemes" section for some examples on hooking and tracing this method.
 
 #### Dynamic Analysis
+
+##### Testing Universal Links
 
 If an app is implementing universal links, you should have the following outputs from the static analysis:
 
@@ -902,25 +1322,7 @@ In the detailed output above you can see that `NSUserActivity` object we've rece
 
 This knowledge should help you when testing apps supporting Handoff.
 
-### UIActivity Sharing
-
-#### Overview
-
-Starting on iOS 6 it is possible for third-party apps to share data (items) via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide "Share Activity Sheet" that appears after clicking on the "Share" button.
-
-<img src="Images/Chapters/0x06h/share_activity_sheet.png" width="100%" />
-
-The available built-in sharing mechanisms (aka. Activity Types) include:
-
-- airDrop
-- assignToContact
-- copyToPasteboard
-- mail
-- message
-- postToFacebook
-- postToTwitter
-
-A full list can be found in [UIActivity.ActivityType](https://developer.apple.com/documentation/uikit/uiactivity/activitytype "UIActivity ActivityType"). If not considered appropriate for the app, the developers have the possibility to exclude some of these sharing mechanisms.
+### Testing UIActivity Sharing
 
 #### Static Analysis
 
@@ -1216,48 +1618,8 @@ If you look at the stack trace, you can see how `application:openURL:options:` c
 
 A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to the "[Testing Custom URL Schemes](#testing-custom-url-schemes-mstg-platform-3 "Testing Custom URL Schemes")" section for more information.
 
-### App Extensions
+### Testing App Extensions
 
-#### Overview
-
-##### What are app extensions
-
-Together with iOS 8, Apple introduced App Extensions. According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1 "App Extensions Increase Your Impact"), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
-
-Depending on the task, the app extension will have a particular type (and only one), the so-called _extension points_. Some notable ones are:
-
-- Custom Keyboard: replaces the iOS system keyboard with a custom keyboard for use in all apps.
-- Share: post to a sharing website or share content with others.
-- Today: also called widgets, they offer content or perform quick tasks in the Today view of Notification Center.
-
-##### How do app extensions interact with other apps
-
-There are three important elements here:
-
-- App extension: is the one bundled inside a containing app. Host apps interact with it.
-- Host app: is the (third-party) app that triggers the app extension of another app.
-- Containing app: is the app that contains the app extension bundled into it.
-
-For example, the user selects text in the _host app_, clicks on the "Share" button and selects one "app" or action from the list. This triggers the _app extension_ of the _containing app_. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13 "An app extension can communicate indirectly with its containing app") which pretty good summarizes this:
-
-<img src="Images/Chapters/0x06h/app_extensions_communication.png" width="100%" />
-
-##### Security Considerations
-
-From the security point of view it is important to note that:
-
-- An app extension does never communicate directly with its containing app (typically, it isn’t even running while the contained app extension is running).
-- An app extension and the host app communicate via inter-process communication.
-- An app extension’s containing app and the host app don’t communicate at all.
-- A Today widget (and no other app extension type) can ask the system to open its containing app by calling the `openURL:completionHandler:` method of the `NSExtensionContext` class.
-- Any app extension and its containing app can access shared data in a privately defined shared container.
-
-In addition:
-
-- App extensions cannot access some APIs, for example, HealthKit.
-- They cannot receive data using AirDrop but do can send data.
-- No long-running background tasks are allowed but uploads or downloads can be initiated.
-- App extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
 
 #### Static Analysis
 
@@ -1413,28 +1775,7 @@ As you can see there are two app extensions involved:
 
 If you want to learn more about what's happening under-the-hood in terms of XPC, we recommend to take a look at the internal calls from "libxpc.dylib". For example you can use [`frida-trace`](https://www.frida.re/docs/frida-trace/ "frida-trace") and then dig deeper into the methods that you find more interesting by extending the automatically generated stubs.
 
-### UIPasteboard
-
-#### Overview
-
-When typing data into input fields, the clipboard can be used to copy in data. The clipboard is accessible system-wide and is therefore shared by apps. This sharing can be misused by malicious apps to get sensitive data that has been stored in the clipboard.
-
-When using an app you should be aware that other apps might be reading the clipboard continuously, as the [Facebook app](https://www.thedailybeast.com/facebook-is-spying-on-your-clipboard "Facebook Is Spying On Your Clipboard") did. Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, pasteboard content is accessible to apps in the foreground only, which reduces the attack surface of password sniffing from the clipboard dramatically. Still, copy-pasting passwords is a security risk you should be aware of, but also cannot be solved by an app.
-
-- Preventing pasting into input fields of an app, does not prevent that a user will copy sensitive information anyway. Since the information has already been copied before the user notices that it's not possible to paste it in, a malicious app has already sniffed the clipboard.
-- If pasting is disabled on password fields users might even choose weaker passwords that they can remember and they cannot use password managers anymore, which would contradict the original intention of making the app more secure.
-
-The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard "UIPasteboard") enables sharing data within an app, and from an app to other apps. There are two kinds of pasteboards:
-
-- **systemwide general pasteboard**: for sharing data with any app. Persistent by default across device restarts and app uninstalls (since iOS 10).
-- **custom / named pasteboards**: for sharing data with another app (having the same team ID as the app to share from) or with the app itself (they are only available in the process that creates them). Non-persistent by default (since iOS 10), that is, they exist only until the owning (creating) app quits.
-
-Some security considerations:
-
-- Users cannot grant or deny permission for apps to read the pasteboard.
-- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the _malicious_ app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
-- [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used.
-- Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data.
+### Testing UIPasteboard
 
 #### Static Analysis
 
@@ -1535,48 +1876,9 @@ You see that first a text was copied including the string "hola", after that a U
 
 ## Testing Custom URL Schemes (MSTG-PLATFORM-3)
 
-### Overview
-
-Custom URL schemes [allow apps to communicate via a custom protocol](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW1 "Using URL Schemes to Communicate with Apps"). An app must declare support for the schemes and handle incoming URLs that use those schemes.
-
-Apple warns about the improper use of custom URL schemes in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app "Defining a Custom URL Scheme for Your App"):
-
-> URL schemes offer a potential attack vector into your app, so make sure to validate all URL parameters and discard any malformed URLs. In addition, limit the available actions to those that do not risk the user’s data. For example, do not allow other apps to directly delete content or access sensitive information about the user. When testing your URL-handling code, make sure your test cases include improperly formatted URLs.
-
-They also suggest using universal links instead, if the purpose is to implement deep linking:
-
-> While custom URL schemes are an acceptable form of deep linking, universal links are strongly recommended as a best practice.
-
-Supporting a custom URL scheme is done by:
-
-- defining the format for the app's URLs,
-- registering the scheme so that the system directs appropriate URLs to the app,
-- handling the URLs that the app receives.
-
-Security issues arise when an app processes calls to its URL scheme without properly validating the URL and its parameters and when users aren't prompted for confirmation before triggering an important action.
-
-One example is the following [bug in the Skype Mobile app](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html "Insecure Handling of URL Schemes in Apple’s iOS"), discovered in 2010: The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask users for permission before placing the calls, so any app could call arbitrary numbers without the user's knowledge. Attackers exploited this vulnerability by putting an invisible `<iframe src="skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who inadvertently visited a malicious website called the premium number.
-
-As a developer, you should carefully validate any URL before calling it. You can allow only certain applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
-
-All URLs are passed to the app delegate, either at launch time or while the app is running or in the background. To handle incoming URLs, the delegate should implement methods to:
-
-- retrieve information about the URL and decide whether you want to open it,
-- open the resource specified by the URL.
-
-More information can be found in the [archived App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW13 "Handling URL Requests") and in the [Apple Secure Coding Guide](https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/Articles/ValidatingInput.html "Validating Input and Interprocess Communication").
-
-In addition, an app may also want to send URL requests (aka. queries) to other apps. This is done by:
-
-- registering the application query schemes that the app wants to query,
-- optionally querying other apps to know if they can open a certain URL,
-- sending the URL requests.
-
-All of this presents a wide attack surface that we will address in the static and dynamic analysis sections.
-
 ### Static Analysis
 
-There are a couple of things that we can do in the static analysis. In the next sections we will see the following:
+There are a couple of things that we can do using static analysis. In the next sections we will see the following:
 
 - Testing custom URL schemes registration
 - Testing application query schemes registration
@@ -2168,7 +2470,7 @@ The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb "FuzzDB") project offers f
 
 ##### Using Frida
 
-Doing this with Frida is pretty easy, you can refer to this [blog post](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html "Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida") to see an example that fuzzes the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app (working on iOS 11.1.2).
+Doing this with Frida is pretty easy, as explained in this [blog post](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html "Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida") to see an example that fuzzes the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app (working on iOS 11.1.2).
 
 Before running the fuzzer we need the URL schemes as inputs. From the static analysis we know that the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app supports the following URL scheme and parameters: `iGoat://?contactNumber={0}&message={0}`.
 
@@ -2227,65 +2529,6 @@ OK!
 The script will detect if a crash occurred. On this run it did not detect any crashed but for other apps this could be the case. We would be able to inspect the crash reports in `/private/var/mobile/Library/Logs/CrashReporter` or in `/tmp` if it was moved by the script.
 
 ## Testing iOS WebViews (MSTG-PLATFORM-5)
-
-### Overview
-
-WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and Cross-Site Scripting attacks can affect them.
-
-#### UIWebView
-
-[`UIWebView`](https://developer.apple.com/reference/uikit/uiwebview "UIWebView") is deprecated starting on iOS 12 and should not be used. Make sure that either `WKWebView` or `SFSafariViewController` are used to embed web content. In addition to that, JavaScript cannot be disabled for `UIWebView` which is another reason to refrain from using it.
-
-#### WKWebView
-
-[`WKWebView`](https://developer.apple.com/reference/webkit/wkwebview "WKWebView") was introduced with iOS 8 and is the appropriate choice for extending app functionality, controlling displayed content (i.e., prevent the user from navigating to arbitrary URLs) and customizing. `WKWebView` also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#thiel2].
-
-`WKWebView` comes with several security advantages over `UIWebView`:
-
-- JavaScript is enabled by default but thanks to the `javaScriptEnabled` property of `WKWebView`, it can be completely disabled, preventing all script injection flaws.
-- The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
-- The `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
-- `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
-
-A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "[Determining Whether Native Methods Are Exposed Through WebViews](#determining-whether-native-methods-are-exposed-through-webviews-mstg-platform-7 "Determining Whether Native Methods Are Exposed Through WebViews")" below for more information.
-
-#### SFSafariViewController
-
-[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller "SFSafariViewController") is available starting on iOS 9 and should be used to provide a generalized web viewing experience. These WebViews can be easily spotted as they have a characteristic layout which includes the following elements:
-
-- A read-only address field with a security indicator.
-- An Action ("Share") button.
-- A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
-
-<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="400px" />
-
-There are a couple of things to consider:
-
-- JavaScript cannot be disabled in `SFSafariViewController` and this is one of the reasons why the usage of `WKWebView` is recommended when the goal is extending the app's user interface.
-- `SFSafariViewController` also shares cookies and other website data with Safari.
-- The user's activity and interaction with a `SFSafariViewController` are not visible to the app, which cannot access AutoFill data, browsing history, or website data.
-- According to the App Store Review Guidelines, `SFSafariViewController`s may not be hidden or obscured by other views or layers.
-
-This should be sufficient for an app analysis and therefore, `SFSafariViewController`s are out of scope for the Static and Dynamic Analysis sections.
-
-#### Safari Web Inspector
-
-Enabling Safari web inspection on iOS allows you to inspect the contents of a WebView remotely from a macOS device and it does not require a jailbroken iOS device.
-Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html) is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
-
-To activate the web inspection you have to follow these steps:
-
-1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on _Web Inspector_.
-2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable _Show Develop menu in menu bar_.
-3. Connect your iOS device to the macOS device and unlock it: the iOS device name should appear in the _Develop_ menu.
-4. (If not yet trusted) On macOS's Safari, go to the _Develop_ menu, click on the iOS device name, then on "Use for Development" and enable trust.
-
-To open the web inspector and debug a WebView:
-
-1. In iOS, open the app and navigate to the screen that should contain a WebView.
-2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView based context. Click on it to open the Web Inspector.
-
-Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
 
 ### Static Analysis
 
@@ -2536,21 +2779,6 @@ Make sure that the WebView's URI cannot be manipulated by the user in order to l
 
 ## Testing WebView Protocol Handlers (MSTG-PLATFORM-6)
 
-### Overview
-
-Several default schemes are available that are being interpreted in a WebView on iOS, for example:
-
-- http(s)://
-- file://
-- tel://
-
-WebViews can load remote content from an endpoint, but they can also load local content from the app data directory. If the local content is loaded, the user shouldn't be able to influence the filename or the path used to load the file, and users shouldn't be able to edit the loaded file.
-
-Use the following best practices as defensive-in-depth measures:
-
-- Create a list that defines local and remote web pages and URL schemes that are allowed to be loaded.
-- Create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_%28programming%29) "Minification (programming)") to make them harder to read.
-
 ### Static Analysis
 
 - Testing how WebViews are loaded
@@ -2776,24 +3004,11 @@ allowFileAccessFromFileURLs:  1
 
 ## Determining Whether Native Methods Are Exposed Through WebViews (MSTG-PLATFORM-7)
 
-### Overview
-
-Since iOS 7, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious scripts into the WebView (e.g., through a successful Cross-Site Scripting attack).
-
 ### Static Analysis
-
-Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView.
 
 #### Testing UIWebView JavaScript to Native Bridges
 
-There are two fundamental ways of how native code and JavaScript can communicate:
-
-- **JSContext**: When an Objective-C or Swift block is assigned to an identifier in a `JSContext`, JavaScriptCore automatically wraps the block in a JavaScript function.
-- **JSExport protocol**: Properties, instance methods and class methods declared in a `JSExport`-inherited protocol are mapped to JavaScript objects that are available to all JavaScript code. Modifications of objects that are in the JavaScript environment are reflected in the native environment.
-
-Note that only class members defined in the `JSExport` protocol are made accessible to JavaScript code.
-
-Look out for code that maps native objects to the `JSContext` associated with a WebView and analyze what functionality it exposes, for example no sensitive data should be accessible and exposed to WebViews.
+Search for code that maps native objects to the `JSContext` associated with a WebView and analyze what functionality it exposes, for example no sensitive data should be accessible and exposed to WebViews.
 
 In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
@@ -2805,15 +3020,13 @@ In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as fol
 
 #### Testing WKWebView JavaScript to Native Bridges
 
-JavaScript code in a `WKWebView` can still send messages back to the native app but in contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system and using the `postMessage` function, which automatically serializes JavaScript objects into native Objective-C or Swift objects. Message handlers are configured using the method [`add(_ scriptMessageHandler:name:)`](https://developer.apple.com/documentation/webkit/wkusercontentcontroller/1537172-add "WKUserContentController add(_ scriptMessageHandler:name:)").
-
 Verify if a JavaScript to native bridge exists by searching for `WKScriptMessageHandler` and check all exposed methods. Then verify how the methods are called.
 
 The following example from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/WKWebViewPreferencesManager.swift#L98 "Where\'s My Browser? WKWebViewPreferencesManager.swift Line 98") demonstrates this.
 
 First we see how the JavaScript bridge is enabled:
 
-```default
+```swift
 func enableJavaScriptBridge(_ enabled: Bool) {
     options_dict["javaScriptBridge"]?.value = enabled
     let userContentController = wkWebViewConfiguration.userContentController
@@ -2838,7 +3051,7 @@ function invokeNativeOperation() {
 
 The called function resides in [`JavaScriptBridgeMessageHandler.swift`](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/JavaScriptBridgeMessageHandler.swift#L29 "Where\'s My Browser? JavaScriptBridgeMessageHandler.swift Line 29"):
 
-```default
+```swift
 class JavaScriptBridgeMessageHandler: NSObject, WKScriptMessageHandler {
 
 //...
@@ -2856,7 +3069,7 @@ message.webView?.evaluateJavaScript(javaScriptCallBack, completionHandler: nil)
 
 The problem here is that the `JavaScriptBridgeMessageHandler` not only contains that function, it also exposes a sensitive function:
 
-```default
+```swift
 case "getSecret":
         result = "XSRSOGKC342"
 ```
@@ -2889,207 +3102,6 @@ See another example for a vulnerable iOS app and function that is exposed to a W
 
 ## Testing Object Persistence (MSTG-PLATFORM-8)
 
-### Overview
-
-There are several ways to persist an object on iOS:
-
-#### Object Encoding
-
-iOS comes with two protocols for object encoding and decoding for Objective-C or `NSObject`s: `NSCoding` and `NSSecureCoding`. When a class conforms to either of the protocols, the data is serialized to `NSData`: a wrapper for byte buffers. Note that `Data` in Swift is the same as `NSData` or its mutable counterpart: `NSMutableData`. The `NSCoding` protocol declares the two methods that must be implemented in order to encode/decode its instance-variables. A class using `NSCoding` needs to implement `NSObject` or be annotated as an @objc class. The `NSCoding` protocol requires to implement encode and init as shown below.
-
-```default
-class CustomPoint: NSObject, NSCoding {
-
-    //required by NSCoding:
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(x, forKey: "x")
-        aCoder.encode(name, forKey: "name")
-    }
-
-    var x: Double = 0.0
-    var name: String = ""
-
-    init(x: Double, name: String) {
-            self.x = x
-            self.name = name
-    }
-
-    // required by NSCoding: initialize members using a decoder.
-    required convenience init?(coder aDecoder: NSCoder) {
-            guard let name = aDecoder.decodeObject(forKey: "name") as? String
-                    else {return nil}
-            self.init(x:aDecoder.decodeDouble(forKey:"x"),
-                                name:name)
-    }
-
-    //getters/setters/etc.
-}
-```
-
-The issue with `NSCoding` is that the object is often already constructed and inserted before you can evaluate the class-type. This allows an attacker to easily inject all sorts of data. Therefore, the `NSSecureCoding` protocol has been introduced. When conforming to [`NSSecureCoding`](https://developer.apple.com/documentation/foundation/NSSecureCoding "NSSecureCoding") you need to include:
-
-```default
-
-static var supportsSecureCoding: Bool {
-        return true
-}
-```
-
-when `init(coder:)` is part of the class. Next, when decoding the object, a check should be made, e.g.:
-
-```default
-let obj = decoder.decodeObject(of:MyClass.self, forKey: "myKey")
-```
-
-The conformance to `NSSecureCoding` ensures that objects being instantiated are indeed the ones that were expected. However, there are no additional integrity checks done over the data and the data is not encrypted. Therefore, any secret data needs additional encryption and data of which the integrity must be protected, should get an additional HMAC.
-
-Note, when `NSData` (Objective-C) or the keyword `let` (Swift) is used: then the data is immutable in memory and cannot be easily removed.
-
-#### Object Archiving with NSKeyedArchiver
-
-`NSKeyedArchiver` is a concrete subclass of `NSCoder` and provides a way to encode objects and store them in a file. The `NSKeyedUnarchiver` decodes the data and recreates the original data. Let's take the example of the `NSCoding` section and now archive and unarchive them:
-
-```default
-
-// archiving:
-NSKeyedArchiver.archiveRootObject(customPoint, toFile: "/path/to/archive")
-
-// unarchiving:
-guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/archive") as?
-    CustomPoint else { return nil }
-
-```
-
-When decoding a keyed archive, because values are requested by name, values can be decoded out of sequence or not at all. Keyed archives, therefore, provide better support for forward and backward compatibility. This means that an archive on disk could actually contain additional data which is not detected by the program, unless the key for that given data is provided at a later stage.
-
-Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
-
-#### Codable
-
-With Swift 4, the `Codable` type alias arrived: it is a combination of the `Decodable` and `Encodable` protocols. A `String`, `Int`, `Double`, `Date`, `Data` and `URL` are `Codable` by nature: meaning they can easily be encoded and decoded without any additional work. Let's take the following example:
-
-```default
-struct CustomPointStruct:Codable {
-    var x: Double
-    var name: String
-}
-```
-
-By adding `Codable` to the inheritance list for the `CustomPointStruct` in the example, the methods `init(from:)` and `encode(to:)` are automatically supported. Fore more details about the workings of `Codable` check [the Apple Developer Documentation](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types "Encoding and Decoding Custom Types").
-The `Codable`s can easily be encoded / decoded into various representations: `NSData` using `NSCoding`/`NSSecureCoding`, JSON, Property Lists, XML, etc. See the subsections below for more details.
-
-#### JSON and Codable
-
-There are various ways to encode and decode JSON within iOS by using different 3rd party libraries:
-
-- [Mantle](https://github.com/Mantle/Mantle "Mantle")
-- [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel")
-- [SwiftyJSON library](https://github.com/SwiftyJSON/SwiftyJSON "SwiftyJSON")
-- [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper "ObjectMapper library")
-- [JSONKit](https://github.com/johnezang/JSONKit "JSONKit")
-- [JSONModel](https://github.com/JSONModel/JSONModel "JSONModel")
-- [YYModel](https://github.com/ibireme/YYModel "YYModel")
-- [SBJson 5](https://github.com/ibireme/YYModel "SBJson 5")
-- [Unbox](https://github.com/JohnSundell/Unbox "Unbox")
-- [Gloss](https://github.com/hkellaway/Gloss "Gloss")
-- [Mapper](https://github.com/lyft/mapper "Mapper")
-- [JASON](https://github.com/delba/JASON "JASON")
-- [Arrow](https://github.com/freshOS/Arrow "Arrow")
-
-The libraries differ in their support for certain versions of Swift and Objective-C, whether they return (im)mutable results, speed, memory consumption and actual library size.
-Again, note in case of immutability: confidential information cannot be removed from memory easily.
-
-Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
-
-```default
-struct CustomPointStruct: Codable {
-    var point: Double
-    var name: String
-}
-
-let encoder = JSONEncoder()
-encoder.outputFormatting = .prettyPrinted
-
-let test = CustomPointStruct(point: 10, name: "test")
-let data = try encoder.encode(test)
-let stringData = String(data: data, encoding: .utf8)
-
-// stringData = Optional ({
-// "point" : 10,
-// "name" : "test"
-// })
-```
-
-JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
-
-#### Property Lists and Codable
-
-You can persist objects to _property lists_ (also called plists in previous sections). You can find two examples below of how to use it:
-
-```default
-
-// archiving:
-let data = NSKeyedArchiver.archivedDataWithRootObject(customPoint)
-NSUserDefaults.standardUserDefaults().setObject(data, forKey: "customPoint")
-
-// unarchiving:
-
-if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") as? NSData {
-    let customPoint = NSKeyedUnarchiver.unarchiveObjectWithData(data)
-}
-
-```
-
-In this first example, the `NSUserDefaults` are used, which is the primary _property list_. We can do the same with the `Codable` version:
-
-```default
-struct CustomPointStruct: Codable {
-        var point: Double
-        var name: String
-    }
-
-    var points: [CustomPointStruct] = [
-        CustomPointStruct(point: 1, name: "test"),
-        CustomPointStruct(point: 2, name: "test"),
-        CustomPointStruct(point: 3, name: "test"),
-    ]
-
-    UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey: "points")
-    if let data = UserDefaults.standard.value(forKey: "points") as? Data {
-        let points2 = try? PropertyListDecoder().decode([CustomPointStruct].self, from: data)
-    }
-```
-
-Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
-
-#### XML
-
-There are multiple ways to do XML encoding. Similar to JSON parsing, there are various third party libraries, such as:
-
-- [Fuzi](https://github.com/cezheng/Fuzi "Fuzi")
-- [Ono](https://github.com/mattt/Ono "Ono")
-- [AEXML](https://github.com/tadija/AEXML "AEXML")
-- [RaptureXML](https://github.com/ZaBlanc/RaptureXML "RaptureXML")
-- [SwiftyXMLParser](https://github.com/yahoojapan/SwiftyXMLParser "SwiftyXMLParser")
-- [SWXMLHash](https://github.com/drmohundro/SWXMLHash "SWXMLHash")
-
-They vary in terms of speed, memory usage, object persistence and more important: differ in how they handle XML external entities. See [XXE in the Apple iOS Office viewer](https://nvd.nist.gov/vuln/detail/CVE-2015-3784 "CVE-2015-3784") as an example. Therefore, it is key to disable external entity parsing if possible. See the [OWASP XXE prevention cheatsheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html "XXE Prevention Cheatsheet") for more details.
-Next to the libraries, you can make use of Apple's [`XMLParser` class](https://developer.apple.com/documentation/foundation/xmlparser "XMLParser")
-
-When not using third party libraries, but Apple's `XMLParser`, be sure to let `shouldResolveExternalEntities` return `false`.
-
-#### Object-Relational Mapping (CoreData and Realm)
-
-There are various ORM-like solutions for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documentation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Encryption with Realm"). This allows for handling secure data. Note that the encryption is turned off by default.
-
-Apple itself supplies `CoreData`, which is well explained in the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1, "CoreData"). It supports various storage backends as described in [Apple's Persistent Store Types and Behaviors documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/PersistentStoreFeatures.html "PersistentStoreFeatures"). The issue with the storage backends recommended by Apple, is that none of the type of data stores is encrypted, nor checked for integrity. Therefore, additional actions are necessary in case of confidential data. An alternative can be found in [project iMas](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data"), which does supply out of the box encryption.
-
-#### Protocol Buffers
-
-[Protocol Buffers](https://developers.google.com/protocol-buffers/ "Google Documentation") by Google, are a platform- and language-neutral mechanism for serializing structured data by means of the [Binary Data Format](https://developers.google.com/protocol-buffers/docs/encoding "Protocol Buffers Encoding"). They are available for iOS by means of the [Protobuf](https://github.com/apple/swift-protobuf "Apple\'s swift-protobuf Plugin and Runtime library") library.
-There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
-Note that **Protocol Buffers do not provide any protection for confidentiality** as no built-in encryption is available.
-
 ### Static Analysis
 
 All different flavors of object persistence share the following concerns:
@@ -3109,12 +3121,6 @@ There are several ways to perform dynamic analysis:
 - For the serialization itself: Use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
 ## Testing enforced updating (MSTG-ARCH-9)
-
-Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
-The challenge with iOS however, is that Apple does not provide any APIs yet to automate this process, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libraries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truly there.
-
-Please note that newer versions of an application will not fix security issues that are living in the backends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
-Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
 
 ### Static Analysis
 
