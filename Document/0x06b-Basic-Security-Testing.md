@@ -1,139 +1,3 @@
-# iOS Basic Security Testing
-
-In the previous chapter, we provided an overview of the iOS platform and described the structure of its apps. In this chapter, we'll talk about setting up a security testing environment and introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes are the foundation for the test cases outlined in the following chapters.
-
-## iOS Testing Setup
-
-Although you can use a Linux or Windows host computer for testing, you'll find that many tasks are difficult or impossible on these platforms. In addition, the Xcode development environment and the iOS SDK are only available for macOS. This means that you'll definitely want to work on macOS for source code analysis and debugging (it also makes black box testing easier).
-
-### Host Device
-
-The following is the most basic iOS app testing setup:
-
-- Ideally macOS host computer with admin rights
-- [Xcode](0x08a-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08a-Testing-Tools.md#xcode-command-line-tools) installed.
-- Wi-Fi network that permits client-to-client traffic.
-- At least one jailbroken iOS device (of the desired iOS version).
-- [Burp Suite](0x08a-Testing-Tools.md#burp-suite) or other interception proxy tool.
-
-### Testing Device
-
-#### Getting the UDID of an iOS device
-
-The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Open Finder and select the connected iOS device in the sidebar.
-
-<img src="Images/Chapters/0x06b/finder_ipad_view.png" width="100%" />
-
-Click on the text containing the model, storage capacity, and battery information, and it will display the serial number, UDID, and model instead:
-
-<img src="Images/Chapters/0x06b/finder_unveil_udid.png" width="100%" />
-
-You can copy the UDID by right clicking on it.
-
-It is also possible to get the UDID via various command line tools on macOS while the device is attached via USB:
-
-- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg`:
-
-    ```sh
-    $ ioreg -p IOUSB -l | grep "USB Serial"
-    |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
-    ```
-
-- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (also available on Linux):
-
-    ```sh
-    $ brew install ideviceinstaller
-    $ idevice_id -l
-    316f01bd160932d2bf2f95f1f142bc29b1c62dbc
-    ```
-
-- By using the system_profiler:
-
-    ```sh
-    $ system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p;/iPhone/,/Serial/p;/iPod/,/Serial/p' | grep "Serial Number:"
-    2019-09-08 10:18:03.920 system_profiler[13251:1050356] SPUSBDevice: IOCreatePlugInInterfaceForService failed 0xe00002be
-                Serial Number: 64655621de6ef5e56a874d63f1e1bdd14f7103b1
-    ```
-
-- By using instruments:
-
-    ```sh
-    instruments -s devices
-    ```
-
-#### Testing on a real device (Jailbroken)
-
-You should have a jailbroken iPhone or iPad for running tests. These devices allow root access and tool installation, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
-
-#### Testing on the iOS Simulator
-
-Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level _simulation_ of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
-
-#### Testing on an Emulator
-
-[Corellium](0x06c-Reverse-Engineering-and-Tampering.md#corellium) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
-
-#### Getting Privileged Access
-
-iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
-
-- **Rooting**: This typically involves installing the `su` binary on the system or replacing the whole system with a rooted custom ROM. Exploits aren't required to obtain root access as long as the bootloader is accessible.
-- **Flashing custom ROMs**: This allows you to replace the OS that's running on the device after you unlock the bootloader. The bootloader may require an exploit to unlock it.
-
-On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
-
-The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08a-Testing-Tools.md#cydia) or [Sileo](0x08a-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
-
-Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
-
-Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapter ["iOS Anti-Reversing Defenses"](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md).
-
-##### Benefits of Jailbreaking
-
-End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
-
-- Root access to the file system.
-- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
-- Unrestricted debugging and dynamic analysis.
-- Access to the Objective-C or Swift runtime.
-
-##### Jailbreak Types
-
-There are _tethered_, _semi-tethered_, _semi-untethered_, and _untethered_ jailbreaks.
-
-- Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks requires the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
-
-- Semi-tethered jailbreaks can't be re-applied unless the device is connected to a computer during reboot. The device can also boot into non-jailbroken mode on its own.
-
-- Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches (or user-land modifications) for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website (not requiring a connection to a computer, hence the term untethered).
-
-- Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken.
-
-##### Caveats and Considerations
-
-Developing a jailbreak for iOS is becoming more and more complicated as Apple continues to harden their OS. Whenever Apple becomes aware of a vulnerability, it is patched and a system update is pushed out to all users. As it is not possible to downgrade to a specific version of iOS, and since Apple only allows you to update to the latest iOS version, it is a challenge to have a device which is running a version of iOS for which a jailbreak is available. Some vulnerabilities cannot be patched by software, such as the [checkm8 exploit](https://www.theiphonewiki.com/wiki/Checkm8_Exploit "Checkm8 exploit") affecting the BootROM of all CPUs until A12.
-
-If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you only have a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
-
-iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
-
-For some devices and iOS versions, it is possible to downgrade to older versions in case the SHSH blobs for that device were collected when the signing window was active. More information on this can be found on the [cfw iOS Guide - Saving Blobs](https://ios.cfw.guide/saving-blobs/)
-
-##### Which Jailbreaking Tool to Use
-
-Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://appledb.dev/ "Apple DB"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
-
-The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
-
-- [AppleDB](https://appledb.dev/ "AppleDB")
-- [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
-- [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
-- [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
-
-> Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
-
-## Basic Testing Operations
-
 ### Accessing the Device Shell
 
 One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the iOS shell both remotely from your host computer with/without a USB cable and locally from the device itself.
@@ -176,7 +40,7 @@ If you forget your password and want to reset it to the default `alpine`:
 3. Change `xxxxxxxxx` to `/smx7MYTQIi2M` (which is the hashed password `alpine`)
 4. Save and exit
 
-##### Connect to a Device via SSH over USB
+#### Connect to a Device via SSH over USB
 
 During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](0x08a-Testing-Tools.md#usbmuxd) to connect to your device's SSH server via USB.
 
@@ -300,7 +164,7 @@ Save the IPA file locally with the following command:
 # itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
 ```
 
-#### Acquiring the App Binary
+##### Acquiring the App Binary
 
 1. From an IPA:
 
@@ -348,7 +212,7 @@ In order to retrieve the unencrypted version, you can use tools such as [frida-i
 
 >**IMPORTANT NOTE:** In the United States, the Digital Millennium Copyright Act 17 U.S.C. 1201, or DMCA, makes it illegal and actionable to circumvent certain types of DRM. However, the DMCA also provides exemptions, such as for certain kinds of security research. A qualified attorney can help you determine if your research qualifies under the DMCA exemptions. (Source: [Corellium](https://support.corellium.com/en/articles/6181345-testing-third-party-ios-apps))
 
-##### Using Clutch
+###### Using Clutch
 
 Build [Clutch](0x08a-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through `scp`. Run Clutch with the `-i` flag to list all installed applications:
 
@@ -407,7 +271,7 @@ struct CGPoint {
 
 Note: when you use [Clutch](0x08a-Testing-Tools.md#clutch) on iOS 12, please check [Clutch Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
 
-##### Using Frida-ios-dump
+###### Using Frida-ios-dump
 
 First, make sure that the configuration in [Frida-ios-dump](0x08a-Testing-Tools.md#frida-ios-dump) `dump.py` is set to either localhost with port 2222 when using [iproxy](0x08a-Testing-Tools.md#iproxy), or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
 
@@ -558,7 +422,6 @@ This bypass might not work if the application requires capabilities that are spe
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
 
-### Information Gathering
 
 One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your host computer or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 
@@ -569,7 +432,7 @@ One fundamental step when analyzing apps is information gathering. This can be d
 - Does the app allow any unsecured connections?
 - Does the app create any new files when being installed?
 
-#### Listing Installed Apps
+### Listing Installed Apps
 
 When targeting apps that are installed on the device, you'll first have to figure out the correct bundle identifier of the application you want to analyze. You can use `frida-ps -Uai` to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
 
@@ -592,7 +455,7 @@ You can also directly open passionfruit and after selecting your iOS device you'
 
 <img src="Images/Chapters/0x06b/passionfruit_installed_apps.png" width="400px" />
 
-#### Exploring the App Package
+### Exploring the App Package
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in [Basic Testing Operations - Obtaining and Extracting Apps](#obtaining-and-extracting-apps "Obtaining and Extracting Apps").
 
@@ -643,7 +506,7 @@ The most relevant items are:
 - [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
 - Various resources such as images/icons, `*.nib` files (storing the user interfaces of iOS app), localized content (`<language>.lproj`), text files, audio files, etc.
 
-##### The Info.plist File
+#### The Info.plist File
 
 The information property list or `Info.plist` (named by convention) is the main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (app extensions, frameworks and apps) are expected to have an `Info.plist` file. You can find all possible keys in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
 
@@ -671,13 +534,13 @@ Here's a non-exhaustive list of some info and the corresponding keywords that yo
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
-##### App Binary
+#### App Binary
 
 iOS app binaries are fat binaries (they can be deployed on all devices 32- and 64-bit). In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled.
 
 Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md) for more details.
 
-##### Native Libraries
+#### Native Libraries
 
 iOS apps can make their codebase modular by using different elements. In the MASTG we will refer to all of them as native libraries, but they can come in different forms:
 
@@ -723,13 +586,13 @@ Please note that this might not be the complete list of native code elements bei
 
 For now this is all information you can get about the Frameworks unless you start reverse engineering them. Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md) for more information about how to reverse engineer Frameworks.
 
-##### Other App Resources
+#### Other App Resources
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
 <img src="Images/Chapters/0x06b/passionfruit_db_view.png" width="100%" />
 
-#### Accessing App Data Directories
+### Accessing App Data Directories
 
 Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
 
@@ -866,7 +729,7 @@ As well as the Data directory in **Files** -> **Data**:
 
 Refer to the [Testing Data Storage](0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
 
-#### Monitoring System Logs
+### Monitoring System Logs
 
 Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode **Devices** window as follows:
 
@@ -904,11 +767,11 @@ Additionally, Passionfruit offers a view of all the NSLog-based application logs
 
 <img src="Images/Chapters/0x06b/passionfruit_console_logs.png" width="100%" />
 
-#### Dumping KeyChain Data
+### Dumping KeyChain Data
 
 Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
 
-##### Objection (Jailbroken / non-Jailbroken)
+#### Objection (Jailbroken / non-Jailbroken)
 
 The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
@@ -933,13 +796,13 @@ Note that currently, the latest versions of frida-server and objection do not co
 
 Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
 
-##### Passionfruit (Jailbroken / non-Jailbroken)
+#### Passionfruit (Jailbroken / non-Jailbroken)
 
 With [Passionfruit](0x08a-Testing-Tools.md#passionfruit) it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" width="100%" />
 
-##### Keychain-dumper (Jailbroken)
+#### Keychain-dumper (Jailbroken)
 
 You can use [Keychain-dumper](0x08a-Testing-Tools.md#keychain-dumper) dump the jailbroken device's KeyChain contents. Once you have it running on your device:
 
@@ -969,8 +832,6 @@ Keychain Data: WOg1DfuH
 
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to _all_ items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
-
-## Setting Up a Network Testing Environment
 
 ### Basic Network Monitoring/Sniffing
 
@@ -1079,15 +940,3 @@ If you don't have access to the source, you can try binary patching:
 - If OpenSSL certificate pinning is used, you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
 - Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware of the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
 - If you can access the source code you could try to disable certificate pinning and recompile the app, look for API calls for `NSURLSession`, `CFStream`, and `AFNetworking` and methods/strings containing words like "pinning", "X.509", "Certificate", etc.
-
-## References
-
-- Jailbreak Exploits - <https://www.theiphonewiki.com/wiki/Jailbreak_Exploits>
-- limera1n exploit - <https://www.theiphonewiki.com/wiki/Limera1n>
-- IPSW Downloads website - <https://ipsw.me>
-- Can I Jailbreak? - <https://canijailbreak.com/>
-- The iPhone Wiki - <https://www.theiphonewiki.com/>
-- Redmond Pie - <https://www.redmondpie.com/>
-- Reddit Jailbreak - <https://www.reddit.com/r/jailbreak/>
-- Information Property List - <https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc>
-- UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>
