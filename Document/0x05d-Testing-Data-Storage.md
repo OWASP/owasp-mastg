@@ -156,7 +156,7 @@ The _firebaseProjectName_ can be retrieved from the mobile application by revers
 ```bash
 python FirebaseScanner.py -p <pathOfAPKFile>
 
-python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
+python FirebaseScanner.py -f <commaSeparatedFirebaseProjectNames>
 ```
 
 ### Realm Databases
@@ -259,7 +259,7 @@ The keys of a software-only implementation are encrypted with a [per-user encryp
 
 ### Hardware-backed Android KeyStore
 
-As mentioned before, hardware-backed Android KeyStore gives another layer to defense-in-depth security concept for Android. Keymaster Hardware Abstraction Layer (HAL) was introduced with Android 6 (API level 23). Applications can verify if the key is stored inside the security hardware (by checking if `KeyInfo.isinsideSecureHardware` returns `true`). Devices running Android 9 (API level 28) and higher can have a `StrongBox Keymaster` module, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random number generator and a mechanism to resist package tampering. To use this feature, `true` must be passed to the `setIsStrongBoxBacked` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime, check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which gets thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key. Description of features on hardware-based keystore can be found on [AOSP pages](https://source.android.com/security/keystore "AOSP Hardware-based KeyStore").
+The hardware-backed Android KeyStore gives another layer to defense-in-depth security concept for Android. Keymaster Hardware Abstraction Layer (HAL) was introduced with Android 6 (API level 23). Applications can verify if the key is stored inside the security hardware (by checking if `KeyInfo.isinsideSecureHardware` returns `true`). Devices running Android 9 (API level 28) and higher can have a `StrongBox Keymaster` module, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random number generator and a mechanism to resist package tampering. To use this feature, `true` must be passed to the `setIsStrongBoxBacked` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime, check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which gets thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key. Description of features on hardware-based keystore can be found on [AOSP pages](https://source.android.com/security/keystore "AOSP Hardware-based KeyStore").
 
 Keymaster HAL is an interface to hardware-backed components - Trusted Execution Environment (TEE) or a Secure Element (SE), which is used by Android Keystore. An example of such a hardware-backed component is [Titan M](https://android-developers.googleblog.com/2018/10/building-titan-better-security-through.html "Building a Titan: Better security through a tiny chip").
 
@@ -401,7 +401,7 @@ Note that some ciphers do not properly clean up their byte-arrays. For instance,
 
 #### Storing Keys using Android KeyStore API
 
-More user-friendly and recommended way is to use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API") system (itself or through KeyChain) to store key material. If it is possible, hardware-backed storage should be used. Otherwise, it should fallback to software implementation of Android Keystore. However, be aware that the `AndroidKeyStore` API has been changed significantly throughout various versions of Android. In earlier versions, the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since Android 6.0 (API level 23). As a result, a developer needs to handle the different Android API levels to securely store symmetric keys.
+A more user-friendly and recommended way is to use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API") system (itself or through KeyChain) to store key material. If it is possible, hardware-backed storage should be used. Otherwise, it should fallback to software implementation of Android Keystore. However, be aware that the `AndroidKeyStore` API has been changed significantly throughout various versions of Android. In earlier versions, the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since Android 6.0 (API level 23). As a result, a developer needs to handle the different Android API levels to securely store symmetric keys.
 
 #### Storing keys by encrypting them with other keys
 
@@ -464,6 +464,15 @@ Android provides users with an auto-backup feature. The backups usually include 
 
 Apps must carefully ensure that sensitive user data doesn't end within these backups as this may allow an attacker to extract it.
 
+### ADB Backup Support
+
+Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute") to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup`.
+
+To prevent the app data backup, set the `android:allowBackup` attribute to **false**. When this attribute is unavailable, the allowBackup setting is enabled by default, and backup must be manually deactivated.
+
+> Note: If the device was encrypted, then the backup files will be encrypted as well.
+
+
 ## Process Memory
 
 All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible.
@@ -504,7 +513,7 @@ User-provided data (credentials, social security numbers, credit card informatio
 
 ## Third-party Services Embedded in the App
 
-The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
+The features provided by third-party services can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
 
 The downside is that developers don't usually know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
 
@@ -517,7 +526,7 @@ Most third-party services are implemented in two ways:
 
 ### UI Components
 
-Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
+At various points in time, the user will have to enter sensitive information into the application. This data may be financial information such as credit card data or user account passwords, or maybe healthcare data. The data may be exposed if the app doesn't properly mask it while it is being typed.
 
 In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
 
@@ -539,7 +548,7 @@ For this reason all notification usage should be inspected for confidential or h
 
 ### Keyboard Cache
 
-When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
+When users enter information in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
 
 ## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
@@ -650,7 +659,7 @@ Verify common locations of secrets:
 - build configs, such as in local.properties or gradle.properties
   Example:
 
-  ```default
+  ```json
   buildTypes {
     debug {
       minifyEnabled true
@@ -679,7 +688,7 @@ Install and use the app, executing all functions at least once. Data can be gene
 
 For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
 
-> Note: Similar holds for private accessible data on a rooted device
+> Note: The same is true for private accessible data on a rooted device
 
 ### Static analysis
 
@@ -724,7 +733,7 @@ Applications will often use the [Log Class](https://developer.android.com/refere
 
 While preparing the production release, you can use tools like [ProGuard](0x08a-Testing-Tools.md#proguard) (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
-```java
+```default
 -assumenosideeffects class android.util.Log
 {
   public static boolean isLoggable(java.lang.String, int);
@@ -1024,7 +1033,7 @@ You can also use Drozer to insert, update, and delete records from a vulnerable 
 
 The Android platform promotes SQLite databases for storing user data. Because these databases are based on SQL, they may be vulnerable to SQL injection. You can use the Drozer module `app.provider.query` to test for SQL injection by manipulating the projection and selection fields that are passed to the content provider:
 
-```bash
+```default
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "'"
 unrecognized token: "' FROM Passwords" (code 1): , while compiling: SELECT ' FROM Passwords
 
@@ -1034,7 +1043,7 @@ unrecognized token: "')" (code 1): , while compiling: SELECT * FROM Passwords WH
 
 If an application is vulnerable to SQL Injection, it will return a verbose error message. SQL Injection on Android may be used to modify or query data from the vulnerable content provider. In the following example, the Drozer module `app.provider.query` is used to list all the database tables:
 
-```bash
+```default
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "*
 FROM SQLITE_MASTER WHERE type='table';--"
 | type  | name             | tbl_name         | rootpage | sql              |
@@ -1045,7 +1054,7 @@ FROM SQLITE_MASTER WHERE type='table';--"
 
 SQL Injection may also be used to retrieve data from otherwise protected tables:
 
-```bash
+```default
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "* FROM Key;--"
 | Password | pin |
 | thisismypassword | 9876 |
@@ -1053,7 +1062,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 
 You can automate these steps with the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
 
-```bash
+```default
 dz> run scanner.provider.injection -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Injection in Projection:
@@ -1070,14 +1079,14 @@ Injection in Selection:
 
 Content providers can provide access to the underlying filesystem. This allows apps to share files (the Android sandbox normally prevents this). You can use the Drozer modules `app.provider.read` and `app.provider.download` to read and download files, respectively, from exported file-based content providers. These content providers are susceptible to directory traversal, which allows otherwise protected files in the target application's sandbox to be read.
 
-```bash
+```default
 dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
 Written 24488 bytes
 ```
 
 Use the `scanner.provider.traversal` module to automate the process of finding content providers that are susceptible to directory traversal:
 
-```bash
+```default
 dz> run scanner.provider.traversal -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Vulnerable Providers:
@@ -1135,12 +1144,6 @@ While running the application you may want to start tracing all calls to functio
 ### Static Analysis
 
 #### Local
-
-Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute") to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup`.
-
-To prevent the app data backup, set the `android:allowBackup` attribute to **false**. When this attribute is unavailable, the allowBackup setting is enabled by default, and backup must be manually deactivated.
-
-> Note: If the device was encrypted, then the backup files will be encrypted as well.
 
 Check the `AndroidManifest.xml` file for the following flag:
 
