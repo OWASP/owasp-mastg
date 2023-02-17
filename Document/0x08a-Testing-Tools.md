@@ -1771,7 +1771,7 @@ PortSwigger provides good tutorials on setting up both Android as iOS devices to
 
 Please refer to the section "Setting up an Interception Proxy" in the [Android](0x05b-Basic-Security_Testing.md#setting-up-an-interception-proxy "Setting up an Interception Proxy") and [iOS](0x06b-Basic-Security-Testing.md#setting-up-an-interception-proxy "Setting up an Interception Proxy") "Basic Security Testing" chapters for more information.
 
-### mitmproxy 
+### mitmproxy
 
 [mitmproxy](https://mitmproxy.org/) is an interactive, SSL/TLS-capable intercepting proxy with a console interface and a web interface for HTTP/1, HTTP/2, and WebSockets. - <https://mitmproxy.org/>
 
