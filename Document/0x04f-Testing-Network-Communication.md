@@ -93,6 +93,113 @@ Pinning is a recommended practice, especially for MASVS-L2 apps. However, develo
 - ["Android Security: SSL Pinning"](https://appmattus.medium.com/android-security-ssl-pinning-1db8acb6621e)
 - [OWASP Certificate Pinning Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Pinning_Cheat_Sheet.html)
 
+## Verifying the TLS Settings
+
+One of the core mobile app functions is sending/receiving data over untrusted networks like the Internet. If the data is not properly protected in transit, an attacker with access to any part of the network infrastructure (e.g., a Wi-Fi access point) may intercept, read, or modify it. This is why plaintext network protocols are rarely advisable.
+
+The vast majority of apps rely on HTTP for communication with the backend. HTTPS wraps HTTP in an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer (SSL); SSL is the deprecated predecessor of TLS). TLS allows authentication of the backend service and ensures confidentiality and integrity of the network data.
+
+### Recommended TLS Settings
+
+Ensuring proper TLS configuration on the server side is also important. The SSL protocol is deprecated and should no longer be used.
+Also TLS v1.0 and TLS v1.1 have [known vulnerabilities](https://portswigger.net/daily-swig/the-end-is-nigh-browser-makers-ditch-support-for-aging-tls-1-0-1-1-protocols "Browser-makers ditch support for aging TLS 1.0, 1.1 protocols") and their usage is deprecated in all major browsers by 2020.
+TLS v1.2 and TLS v1.3 are considered best practice for secure transmission of data. Starting with Android 10 (API level 29) TLS v1.3 will be enabled by default for faster and secure communication. The [major change with TLS v1.3](https://developer.android.com/about/versions/10/behavior-changes-all#tls-1.3 "TLS 1.3 enabled by default") is that customizing cipher suites is no longer possible and that all of them are enabled when TLS v1.3 is enabled, whereas Zero Round Trip (0-RTT) mode isn't supported.
+
+When both the client and server are controlled by the same organization and used only for communicating with one another, you can increase security by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
+
+If a mobile application connects to a specific server, its networking stack can be tuned to ensure the highest possible security level for the server's configuration. Lack of support in the underlying operating system may force the mobile application to use a weaker configuration.
+
+### Cipher Suites Terminology
+
+Cipher suites have the following structure:
+
+```txt
+Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm
+```
+
+This structure includes:
+
+- A **Protocol** used by the cipher
+- A **Key Exchange Algorithm** used by the server and the client to authenticate during the TLS handshake
+- A **Block Cipher** used to encrypt the message stream
+- A **Integrity Check Algorithm** used to authenticate messages
+
+Example: `TLS_RSA_WITH_3DES_EDE_CBC_SHA`
+
+In the example above the cipher suites uses:
+
+- TLS as protocol
+- RSA Asymmetric encryption for Authentication
+- 3DES for Symmetric encryption with EDE_CBC mode
+- SHA Hash algorithm for integrity
+
+Note that in TLSv1.3 the Key Exchange Algorithm is not part of the cipher suite, instead it is determined during the TLS handshake.
+
+In the following listing, we’ll present the different algorithms of each part of the cipher suite.
+
+**Protocols:**
+
+- `SSLv1`
+- `SSLv2` - [RFC 6176](https://tools.ietf.org/html/rfc6176 "RFC 6176")
+- `SSLv3` - [RFC 6101](https://tools.ietf.org/html/rfc6101 "RFC 6101")
+- `TLSv1.0` - [RFC 2246](https://tools.ietf.org/rfc/rfc2246 "RFC 2246")
+- `TLSv1.1` - [RFC 4346](https://tools.ietf.org/html/rfc4346 "RFC 4346")
+- `TLSv1.2` - [RFC 5246](https://tools.ietf.org/html/rfc5246 "RFC 5246")
+- `TLSv1.3` - [RFC 8446](https://tools.ietf.org/html/rfc8446 "RFC 8446")
+
+**Key Exchange Algorithms:**
+
+- `DSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
+- `ECDSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
+- `RSA` - [RFC 8017](https://tools.ietf.org/html/rfc8017 "RFC 8017")
+- `DHE` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `ECDHE` - [RFC 4492](https://tools.ietf.org/html/rfc4492 "RFC 4492")
+- `PSK` - [RFC 4279](https://tools.ietf.org/html/rfc4279 "RFC 4279")
+- `DSS` - [FIPS186-4](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf "FIPS186-4")
+- `DH_anon` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DHE_RSA` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DHE_DSS` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `ECDHE_ECDSA` - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
+- `ECDHE_PSK`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")  - [RFC 5489](https://tools.ietf.org/html/rfc5489 "RFC 5489")
+- `ECDHE_RSA`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
+
+**Block Ciphers:**
+
+- `DES`  - [RFC 4772](https://tools.ietf.org/html/rfc4772 "RFC 4772")
+- `DES_CBC`  - [RFC 1829](https://tools.ietf.org/html/rfc1829 "RFC 1829")
+- `3DES`  - [RFC 2420](https://tools.ietf.org/html/rfc2420 "RFC 2420")
+- `3DES_EDE_CBC` - [RFC 2420](https://tools.ietf.org/html/rfc2420 "RFC 2420")
+- `AES_128_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268 "RFC 3268")
+- `AES_128_GCM`  - [RFC 5288](https://tools.ietf.org/html/rfc5288 "RFC 5288")
+- `AES_256_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268 "RFC 3268")
+- `AES_256_GCM` - [RFC 5288](https://tools.ietf.org/html/rfc5288 "RFC 5288")
+- `RC4_40`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
+- `RC4_128`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
+- `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905 "RFC 7905")  - [RFC 7539](https://tools.ietf.org/html/rfc7539 "RFC 7539")
+
+**Integrity Check Algorithms:**
+
+- `MD5`  - [RFC 6151](https://tools.ietf.org/html/rfc6151 "RFC 6151")
+- `SHA`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
+- `SHA256`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
+- `SHA384`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
+
+Note that the efficiency of a cipher suite depends on the efficiency of its algorithms.
+
+The following resources contain the latest recommended cipher suites to use with TLS:
+
+- IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
+- OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
+
+Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#cipher-suites "Cipher suites") and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc "SSL Cipher Suite Values") versions and choose the top supported cipher suites.
+
+If you want to verify whether your server supports the right cipher suites, there are various tools you can use:
+
+- nscurl - see [iOS Network Communication](0x06g-Testing-Network-Communication.md) for more details.
+- [testssl.sh](https://github.com/drwetter/testssl.sh "testssl.sh") which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
+
+Finally, verify that the server or termination proxy at which the HTTPS connection terminates is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.md "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
+
 ## Intercepting HTTP(S) Traffic
 
 In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an _interception proxy_ running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
@@ -394,166 +501,9 @@ Start using the app and trigger its functions. You should see HTTP messages show
 
 > When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
 
-## Verifying the TLS Settings
-
-One of the core mobile app functions is sending/receiving data over untrusted networks like the Internet. If the data is not properly protected in transit, an attacker with access to any part of the network infrastructure (e.g., a Wi-Fi access point) may intercept, read, or modify it. This is why plaintext network protocols are rarely advisable.
-
-The vast majority of apps rely on HTTP for communication with the backend. HTTPS wraps HTTP in an encrypted connection (the acronym HTTPS originally referred to HTTP over Secure Socket Layer (SSL); SSL is the deprecated predecessor of TLS). TLS allows authentication of the backend service and ensures confidentiality and integrity of the network data.
-
-### Recommended TLS Settings
-
-Ensuring proper TLS configuration on the server side is also important. The SSL protocol is deprecated and should no longer be used.
-Also TLS v1.0 and TLS v1.1 have [known vulnerabilities](https://portswigger.net/daily-swig/the-end-is-nigh-browser-makers-ditch-support-for-aging-tls-1-0-1-1-protocols "Browser-makers ditch support for aging TLS 1.0, 1.1 protocols") and their usage is deprecated in all major browsers by 2020.
-TLS v1.2 and TLS v1.3 are considered best practice for secure transmission of data. Starting with Android 10 (API level 29) TLS v1.3 will be enabled by default for faster and secure communication. The [major change with TLS v1.3](https://developer.android.com/about/versions/10/behavior-changes-all#tls-1.3 "TLS 1.3 enabled by default") is that customizing cipher suites is no longer possible and that all of them are enabled when TLS v1.3 is enabled, whereas Zero Round Trip (0-RTT) mode isn't supported.
-
-When both the client and server are controlled by the same organization and used only for communicating with one another, you can increase security by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
-
-If a mobile application connects to a specific server, its networking stack can be tuned to ensure the highest possible security level for the server's configuration. Lack of support in the underlying operating system may force the mobile application to use a weaker configuration.
-
-### Cipher Suites Terminology
-
-Cipher suites have the following structure:
-
-```txt
-Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm
-```
-
-This structure includes:
-
-- A **Protocol** used by the cipher
-- A **Key Exchange Algorithm** used by the server and the client to authenticate during the TLS handshake
-- A **Block Cipher** used to encrypt the message stream
-- A **Integrity Check Algorithm** used to authenticate messages
-
-Example: `TLS_RSA_WITH_3DES_EDE_CBC_SHA`
-
-In the example above the cipher suites uses:
-
-- TLS as protocol
-- RSA Asymmetric encryption for Authentication
-- 3DES for Symmetric encryption with EDE_CBC mode
-- SHA Hash algorithm for integrity
-
-Note that in TLSv1.3 the Key Exchange Algorithm is not part of the cipher suite, instead it is determined during the TLS handshake.
-
-In the following listing, we’ll present the different algorithms of each part of the cipher suite.
-
-**Protocols:**
-
-- `SSLv1`
-- `SSLv2` - [RFC 6176](https://tools.ietf.org/html/rfc6176 "RFC 6176")
-- `SSLv3` - [RFC 6101](https://tools.ietf.org/html/rfc6101 "RFC 6101")
-- `TLSv1.0` - [RFC 2246](https://tools.ietf.org/rfc/rfc2246 "RFC 2246")
-- `TLSv1.1` - [RFC 4346](https://tools.ietf.org/html/rfc4346 "RFC 4346")
-- `TLSv1.2` - [RFC 5246](https://tools.ietf.org/html/rfc5246 "RFC 5246")
-- `TLSv1.3` - [RFC 8446](https://tools.ietf.org/html/rfc8446 "RFC 8446")
-
-**Key Exchange Algorithms:**
-
-- `DSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
-- `ECDSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
-- `RSA` - [RFC 8017](https://tools.ietf.org/html/rfc8017 "RFC 8017")
-- `DHE` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
-- `ECDHE` - [RFC 4492](https://tools.ietf.org/html/rfc4492 "RFC 4492")
-- `PSK` - [RFC 4279](https://tools.ietf.org/html/rfc4279 "RFC 4279")
-- `DSS` - [FIPS186-4](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf "FIPS186-4")
-- `DH_anon` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
-- `DHE_RSA` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
-- `DHE_DSS` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
-- `ECDHE_ECDSA` - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
-- `ECDHE_PSK`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")  - [RFC 5489](https://tools.ietf.org/html/rfc5489 "RFC 5489")
-- `ECDHE_RSA`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
-
-**Block Ciphers:**
-
-- `DES`  - [RFC 4772](https://tools.ietf.org/html/rfc4772 "RFC 4772")
-- `DES_CBC`  - [RFC 1829](https://tools.ietf.org/html/rfc1829 "RFC 1829")
-- `3DES`  - [RFC 2420](https://tools.ietf.org/html/rfc2420 "RFC 2420")
-- `3DES_EDE_CBC` - [RFC 2420](https://tools.ietf.org/html/rfc2420 "RFC 2420")
-- `AES_128_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268 "RFC 3268")
-- `AES_128_GCM`  - [RFC 5288](https://tools.ietf.org/html/rfc5288 "RFC 5288")
-- `AES_256_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268 "RFC 3268")
-- `AES_256_GCM` - [RFC 5288](https://tools.ietf.org/html/rfc5288 "RFC 5288")
-- `RC4_40`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
-- `RC4_128`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
-- `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905 "RFC 7905")  - [RFC 7539](https://tools.ietf.org/html/rfc7539 "RFC 7539")
-
-**Integrity Check Algorithms:**
-
-- `MD5`  - [RFC 6151](https://tools.ietf.org/html/rfc6151 "RFC 6151")
-- `SHA`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
-- `SHA256`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
-- `SHA384`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
-
-Note that the efficiency of a cipher suite depends on the efficiency of its algorithms.
-
-The following resources contain the latest recommended cipher suites to use with TLS:
-
-- IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
-- OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
-
-Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#cipher-suites "Cipher suites") and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc "SSL Cipher Suite Values") versions and choose the top supported cipher suites.
-
-If you want to verify whether your server supports the right cipher suites, there are various tools you can use:
-
-- nscurl - see [iOS Network Communication](0x06g-Testing-Network-Communication.md) for more details.
-- [testssl.sh](https://github.com/drwetter/testssl.sh "testssl.sh") which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
-
-Finally, verify that the server or termination proxy at which the HTTPS connection terminates is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.md "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
-
 ## References
 
 ### OWASP MASVS
 
 - MSTG-NETWORK-1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
-
-### Android
-
-- Android supported Cipher suites - <https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites>
-- Android documentation: Android 10 Changes - <https://developer.android.com/about/versions/10/behavior-changes-all>
-
-### iOS
-
-- iOS supported Cipher suites - <https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc>
-
-### IANA Transport Layer Security (TLS) Parameters
-
-- TLS Cipher Suites - <https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4>
-
-### OWASP TLS Cipher String Cheat Sheet
-
-- Recommendations for a cipher string - <https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md>
-
-### NIST
-
-- FIPS PUB 186 - Digital Signature Standard (DSS)
-
-### IETF
-
-- RFC 6176 - <https://tools.ietf.org/html/rfc6176>
-- RFC 6101 - <https://tools.ietf.org/html/rfc6101>
-- RFC 2246 - <https://tools.ietf.org/rfc/rfc2246>
-- RFC 4346 - <https://tools.ietf.org/html/rfc4346>
-- RFC 5246 - <https://tools.ietf.org/html/rfc5246>
-- RFC 8446 - <https://tools.ietf.org/html/rfc8446>
-- RFC 6979 - <https://tools.ietf.org/html/rfc6979>
-- RFC 8017 - <https://tools.ietf.org/html/rfc8017>
-- RFC 2631 - <https://tools.ietf.org/html/rfc2631>
-- RFC 7919 - <https://tools.ietf.org/html/rfc7919>
-- RFC 4492 - <https://tools.ietf.org/html/rfc4492>
-- RFC 4279 - <https://tools.ietf.org/html/rfc4279>
-- RFC 2631 - <https://tools.ietf.org/html/rfc2631>
-- RFC 8422 - <https://tools.ietf.org/html/rfc8422>
-- RFC 5489 - <https://tools.ietf.org/html/rfc5489>
-- RFC 4772 - <https://tools.ietf.org/html/rfc4772>
-- RFC 1829 - <https://tools.ietf.org/html/rfc1829>
-- RFC 2420 - <https://tools.ietf.org/html/rfc2420>
-- RFC 3268 - <https://tools.ietf.org/html/rfc3268>
-- RFC 5288 - <https://tools.ietf.org/html/rfc5288>
-- RFC 7465 - <https://tools.ietf.org/html/rfc7465>
-- RFC 7905 - <https://tools.ietf.org/html/rfc7905>
-- RFC 7539 - <https://tools.ietf.org/html/rfc7539>
-- RFC 6151 - <https://tools.ietf.org/html/rfc6151>
-- RFC 6234 - <https://tools.ietf.org/html/rfc6234>
-- RFC 8447 - <https://tools.ietf.org/html/rfc8447>

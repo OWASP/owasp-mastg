@@ -142,6 +142,25 @@ In the following example, ATS is globally enabled (there's no global `NSAllowsAr
 
 For more information on ATS exceptions please consult section "Configure Exceptions Only When Needed; Prefer Server Fixes" from the article "Preventing Insecure Network Connections" in the [Apple Developer Documentation](https://developer.apple.com/documentation/security/preventing_insecure_network_connections#3138482) and the [blog post on ATS](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS").
 
+### Server Trust Evaluation
+
+ATS imposes extended security checks that supplement the default server trust evaluation prescribed by the Transport Layer Security (TLS) protocol. Loosening ATS restrictions reduces the security of the app. Apps should prefer alternative ways to improve server security before adding ATS exceptions.
+
+The [Apple Developer Documentation](https://developer.apple.com/documentation/security/preventing_insecure_network_connections) explains that an app can use `URLSession` to automatically handle server trust evaluation. However, apps are also able to customize that process, for example they can:
+
+- bypass or customize certificate expiry.
+- loosen/extend trust: accept server credentials that would otherwise be rejected by the system, e.g. to make secure connections to a development server using self-signed certificates embedded in the app.
+- tighten trust: reject credentials that would otherwise be accepted by the system (see ["Testing Custom Certificate Stores and Certificate Pinning"](#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4)).
+- etc.
+
+<img src="Images/Chapters/0x06g/manual-server-trust-evaluation.png" width="100%" />
+
+References:
+
+- [Preventing Insecure Network Connections](https://developer.apple.com/documentation/security/preventing_insecure_network_connections)
+- [Performing Manual Server Trust Authentication](https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication)
+- [Certificate, Key, and Trust Services](https://developer.apple.com/documentation/security/certificate_key_and_trust_services)
+
 ### iOS Network APIs
 
 Since iOS 12.0 the [Network](https://developer.apple.com/documentation/network) framework and the [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession) class provide methods to load network and URL requests asynchronously and synchronously. Older iOS versions can utilize the [Sockets API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html).
@@ -240,32 +259,19 @@ Refer to section "Verifying the TLS Settings" in chapter [Testing Network Commun
 
 ## Testing Endpoint Identity Verification (MSTG-NETWORK-3)
 
-### Overview
-
-ATS imposes extended security checks that supplement the default server trust evaluation prescribed by the Transport Layer Security (TLS) protocol. You should test if the app is loosening ATS restrictions because that reduces the security of the app. Apps should prefer alternative ways to improve server security before adding ATS exceptions.
-
-The [Apple Developer Documentation](https://developer.apple.com/documentation/security/preventing_insecure_network_connections) explains that an app can use `URLSession` to automatically handle server trust evaluation. However, apps are also able to customize that process, for example they can:
-
-- bypass or customize certificate expiry.
-- loosen/extend trust: accept server credentials that would otherwise be rejected by the system, e.g. to make secure connections to a development server using self-signed certificates embedded in the app.
-- tighten trust: reject credentials that would otherwise be accepted by the system (see ["Testing Custom Certificate Stores and Certificate Pinning"](#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4)).
-- etc.
-
-<img src="Images/Chapters/0x06g/manual-server-trust-evaluation.png" width="100%" />
-
-References:
-
-- [Preventing Insecure Network Connections](https://developer.apple.com/documentation/security/preventing_insecure_network_connections)
-- [Performing Manual Server Trust Authentication](https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication)
-- [Certificate, Key, and Trust Services](https://developer.apple.com/documentation/security/certificate_key_and_trust_services)
-
 ### Static Analysis
 
-In this section we present several static analysis checks. However, we highly recommend supporting them with the dynamic analysis. If you don't have the source code or the app is difficult to reverse engineer, having a solid dynamic analysis strategy can definitely help. In that case you won't know if the app uses low or high-level APIs but you can still test for different trust evaluation scenarios (e.g. "does the app accept a self-signed certificate?").
+Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions make it into the production version, potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
 
-#### Check the OS Version
+These are some of the issues should be addressed:
 
-If the app links against an SDK older than iOS 9.0, ATS is disabled no matter which version of the OS the app runs on.
+- Check if the app links against an SDK older than iOS 9.0. In that case ATS is disabled no matter which version of the OS the app runs on.
+- Verify that a certificate comes from a trusted source, i.e. a trusted CA (Certificate Authority).
+- Determine whether the endpoint server presents the right certificate.
+
+Make sure that the hostname and the certificate itself are verified correctly. Examples and common pitfalls are available in the [official Apple documentation](https://developer.apple.com/documentation/security/preventing_insecure_network_connections "Preventing Insecure Network Connections").
+
+We highly recommend supporting static analysis with the dynamic analysis. If you don't have the source code or the app is difficult to reverse engineer, having a solid dynamic analysis strategy can definitely help. In that case you won't know if the app uses low or high-level APIs but you can still test for different trust evaluation scenarios (e.g. "does the app accept a self-signed certificate?").
 
 ### Dynamic Analysis
 
@@ -277,12 +283,6 @@ Our test approach is to gradually relax security of the SSL handshake negotiatio
 If executing the instructions from the previous step doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to the section ["Bypassing Certificate Pinning"](0x06b-Basic-Security-Testing.md#bypassing-certificate-pinning) for more information on this.
 
 ## Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
-
-### Overview
-
-This test verifies if the app properly implements identity pinning (certificate or public key pinning).
-
-For more details refer to section "Identity Pinning" in the general chapter ["Mobile App Network Communication"](0x04f-Testing-Network-Communication.md#identity-pinning).
 
 ### Static Analysis
 
@@ -306,7 +306,7 @@ The following third-party libraries include pinning functionality:
 
 #### Server certificate pinning
 
-Follow the instructions from ["Testing Endpoint Identify Verification > Dynamic Analysis > Server certificate validation"](#server-certificate-validation). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
+Follow the instructions from the Dynamic Analysis section of ["Testing Endpoint Identify Verification](#testing-endpoint-identity-verification-mstg-network-3). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
 
 As a quick smoke test, you can try to bypass certificate pinning using [objection](0x08a-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](0x06b-Basic-Security-Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
 
