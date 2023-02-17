@@ -99,7 +99,7 @@ In the context of _native apps_, XSS risks are far less prevalent for the simple
 
 An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance](https://superevr.com/blog/2011/xss-in-skype-for-ios "XSS in Skype for iOS"). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
 
-### Static Analysis Security Testing Considerations
+### Static Analysis - Security Testing Considerations
 
 Take a close look at any WebViews present and investigate for untrusted input rendered by the app.
 
@@ -198,7 +198,7 @@ Consider how data will be rendered in a response. For example, if data is render
 
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html "OWASP XSS Prevention Cheat Sheet").
 
-### Dynamic Analysis Security Testing Considerations
+### Dynamic Analysis - Security Testing Considerations
 
 XSS issues can be best detected using manual and/or automated input fuzzing, i.e. injecting HTML tags and special characters into all available input fields to verify the web application denies invalid inputs or escapes the HTML meta-characters in its output.
 
