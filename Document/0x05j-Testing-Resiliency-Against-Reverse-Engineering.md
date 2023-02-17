@@ -668,7 +668,7 @@ public enum HMACWrapper {
 
 Another way to provide integrity is to sign the byte array you obtained and add the signature to the original byte array.
 
-### Detection of Reverse Engineering
+### Detection of Reverse Engineering Tools
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
@@ -757,7 +757,7 @@ TelephonyManager.getVoiceMailNumber()                   15552175049             
 
 Keep in mind that a hooking framework, such as Xposed or Frida, can hook this API to provide false data.
 
-### Verify Runtime Integrity
+### Runtime Integrity Verification
 
 Controls in this category verify the integrity of the app's memory space to defend the app against memory patches applied during runtime. Such patches include unwanted changes to binary code, bytecode, function pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified by:
 
@@ -766,9 +766,7 @@ Controls in this category verify the integrity of the app's memory space to defe
 
 There's some overlap with the category "detecting reverse engineering tools and frameworks", and, in fact, we demonstrated the signature-based approach in that chapter when we showed how to search process memory for Frida-related strings. Below are a few more examples of various kinds of integrity monitoring.
 
-#### Runtime Integrity Check Examples
-
-##### Detecting tampering with the Java Runtime
+#### Detecting Tampering with the Java Runtime
 
 This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
 
@@ -802,7 +800,7 @@ catch(Exception e) {
 }
 ```
 
-##### Detecting Native Hooks
+#### Detecting Native Hooks
 
 By using ELF binaries, native function hooks can be installed by overwriting function pointers in memory (e.g., Global Offset Table or PLT hooking) or patching parts of the function code itself (inline hooking). Checking the integrity of the respective memory regions is one way to detect this kind of hook.
 
