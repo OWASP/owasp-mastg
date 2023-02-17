@@ -45,7 +45,7 @@ Apps that target modern API levels, went through the following changes:
   - The `Crypto` security provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") lists all network security changes.
 
-## Recommendations
+### General Recommendations
 
 The following list of recommendations should be considered during app examination:
 
@@ -57,7 +57,7 @@ The following list of recommendations should be considered during app examinatio
 - You should stop using Password-based encryption ciphers without IV.
 - You should use KeyGenParameterSpec instead of KeyPairGeneratorSpec.
 
-### Security provider
+### Security Provider
 
 Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
 
@@ -303,8 +303,6 @@ Identify all the instances of the cryptographic primitives in code. Identify all
 Identify that all calls to getInstance use default `provider` of security services by not specifying it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
 
 Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed. Look at [insecure and deprecated algorithms](0x04g-Testing-Cryptography.md#identifying-insecure-and/or-deprecated-cryptographic-algorithms) and [common configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
-
-Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues) and the [list of insecure and/or deprecated cryptographic algorithms](0x04g-Testing-Cryptography/#identifying-insecure-andor-deprecated-cryptographic-algorithms).
 
 ### Dynamic Analysis
 
