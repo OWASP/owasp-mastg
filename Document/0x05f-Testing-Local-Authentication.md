@@ -302,11 +302,9 @@ Validate the duration of time (seconds) for which the key is authorized to be us
 
 ## Testing Biometric Authentication (MSTG-AUTH-8)
 
-
 ### Static Analysis
 
 Note that there are quite some vendor/third party SDKs, which provide biometric support, but which have their own insecurities. Be very cautious when using third party SDKs to handle sensitive authentication logic.
-
 
 ### Dynamic Analysis
 

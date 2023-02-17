@@ -17,7 +17,6 @@ Developers have two options for incorporating Touch ID/Face ID authentication:
 
 Please be aware that using either the `LocalAuthentication.framework` or the `Security.framework`, will be a control that can be bypassed by an attacker as it does only return a boolean and no data to proceed with. See [Don't touch me that way, by David Lindner et al](https://www.youtube.com/watch?v=XhXIHVGCFFM "Don\'t Touch Me That Way - David Lindner") for more details.
 
-
 ### Local Authentication Framework
 
 The Local Authentication framework provides facilities for requesting a passphrase or Touch ID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class.
@@ -172,7 +171,6 @@ if (status == noErr){
 ### Note regarding temporariness of keys in the Keychain
 
 Unlike macOS and Android, iOS does not support temporariness of an item's accessibility in the keychain: when there is no additional security check when entering the keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
-
 
 ## Testing Local Authentication (MSTG-AUTH-8 and MSTG-STORAGE-11)
 
