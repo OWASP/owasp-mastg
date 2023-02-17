@@ -1,10 +1,10 @@
 # iOS Network Communication
 
-## Overview
-
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
 
 Most modern mobile apps use variants of HTTP-based web services, as these protocols are well-documented and supported.
+
+## Overview
 
 ### iOS App Transport Security
 
@@ -236,7 +236,7 @@ Remember to [inspect the corresponding justifications](https://developer.apple.c
 
 It is possible to verify which ATS settings can be used when communicating to a certain endpoint. On macOS the command line utility `nscurl` can be used. A permutation of different settings will be executed and verified against the specified endpoint. If the default ATS secure connection test is passing, ATS can be used in its default secure configuration. If there are any fails in the nscurl output, please change the server side configuration of TLS to make the server side more secure, rather than weakening the configuration in ATS on the client. See the article "Identifying the Source of Blocked Connections" in the [Apple Developer Documentation](https://developer.apple.com/documentation/security/preventing_insecure_network_connections/identifying_the_source_of_blocked_connections) for more details.
 
-Refer to section "Verifying the TLS Settings" in chapter [Testing Network Communication](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings-mstg-network-2) for details.
+Refer to section "Verifying the TLS Settings" in chapter [Testing Network Communication](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings) for details.
 
 ## Testing Endpoint Identity Verification (MSTG-NETWORK-3)
 
