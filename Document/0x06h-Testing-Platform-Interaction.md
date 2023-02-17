@@ -286,7 +286,7 @@ In iOS 7, Apple introduced APIs that allow communication between the JavaScript 
 
 Both `UIWebView` and `WKWebView` provide a means of communication between the WebView and the native app. Any important data or native functionality exposed to the WebView JavaScript engine would also be accessible to rogue JavaScript running in the WebView.
 
-##### Native Functionality Exposed Through UIWebView
+**UIWebView:**
 
 There are two fundamental ways of how native code and JavaScript can communicate:
 
@@ -295,7 +295,7 @@ There are two fundamental ways of how native code and JavaScript can communicate
 
 Note that only class members defined in the `JSExport` protocol are made accessible to JavaScript code.
 
-##### Native Functionality Exposed Through WKWebView
+**WKWebView:**
 
 JavaScript code in a `WKWebView` can still send messages back to the native app but in contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system and using the `postMessage` function, which automatically serializes JavaScript objects into native Objective-C or Swift objects. Message handlers are configured using the method [`add(_ scriptMessageHandler:name:)`](https://developer.apple.com/documentation/webkit/wkusercontentcontroller/1537172-add "WKUserContentController add(_ scriptMessageHandler:name:)").
 
@@ -562,7 +562,6 @@ In addition:
 - No long-running background tasks are allowed but uploads or downloads can be initiated.
 - App extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
 
-
 #### UIPasteboard
 
 When typing data into input fields, the clipboard can be used to copy in data. The clipboard is accessible system-wide and is therefore shared by apps. This sharing can be misused by malicious apps to get sensitive data that has been stored in the clipboard.
@@ -577,15 +576,12 @@ The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboar
 - **systemwide general pasteboard**: for sharing data with any app. Persistent by default across device restarts and app uninstalls (since iOS 10).
 - **custom / named pasteboards**: for sharing data with another app (having the same team ID as the app to share from) or with the app itself (they are only available in the process that creates them). Non-persistent by default (since iOS 10), that is, they exist only until the owning (creating) app quits.
 
-##### Security Considerations
-
-Some security considerations:
+**Security Considerations:**
 
 - Users cannot grant or deny permission for apps to read the pasteboard.
 - Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the _malicious_ app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
 - [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used.
 - Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data.
-
 
 ## Testing App Permissions (MSTG-PLATFORM-1)
 
