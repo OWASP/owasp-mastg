@@ -172,7 +172,7 @@ The Randomization Services API uses the `SecRandomCopyBytes` function to generat
 
 ### Static Analysis
 
-For each of the libraries that are used by the application, the used algorithms and cryptographic configurations needs to be verified to make sure they are not deprecated and used correctly.
+For each of the libraries that are used by the application, the used algorithms and cryptographic configurations need to be verified to make sure they are not deprecated and used correctly.
 
 Pay attention to how-to-be-removed key-holding datastructures and plain-text data structures are defined. If the keyword `let` is used, then you create an immutable structure which is harder to wipe from memory. Make sure that it is part of a parent structure which can be easily removed from memory (e.g. a `struct` that lives temporally).
 
