@@ -980,7 +980,7 @@ Network traffic can be captured into [Wireshark](0x08a-Testing-Tools.md#wireshar
 
 #### Network Traffic Capture with a USB Cable and macOS
 
-You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First, make sure you have [Wireshark](0x08a-Testing-Tools.md#wireshark) installed on your macOS host computer.
+You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://developer.apple.com/documentation/network/recording_a_packet_trace "Recording a Packet Trace") for your iOS device. First, make sure you have [Wireshark](0x08a-Testing-Tools.md#wireshark) installed on your macOS host computer.
 
 1. Connect your iOS device to your macOS host computer via USB.
 2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section ["Getting the UDID of an iOS device"](#getting-the-udid-of-an-ios-device) on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
