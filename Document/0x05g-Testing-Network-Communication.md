@@ -1,10 +1,10 @@
 # Android Network Communication
 
+## Overview
+
 Almost every Android app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
 
 Most modern mobile apps use variants of HTTP-based web services, as these protocols are well-documented and supported.
-
-## Overview
 
 ### Android Network Security Configuration
 
@@ -83,6 +83,44 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 </base-config>
 ```
 
+#### Certificate Pinning
+
+The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
+
+When attempting to establish a connection to a remote endpoint, the system will:
+
+- Get and validate the incoming certificate.
+- Extract the public key.
+- Calculate a digest over the extracted public key.
+- Compare the digest with the set of local pins.
+
+If at least one of the pinned digests matches, the certificate chain will be considered valid and the connection will proceed.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        Use certificate pinning for OWASP website access including sub domains
+        <domain includeSubdomains="true">owasp.org</domain>
+        <pin-set expiration="2018/8/10">
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Intermediate CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Root CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
+```
+
+### Security Provider
+
+Android relies on a [security provider](https://developer.android.com/training/articles/security-gms-provider.html "Update your security provider to protect against SSL exploits") to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
+
+To avoid known vulnerabilities, developers need to make sure that the application will install a proper security provider.
+Since July 11, 2016, Google [has been rejecting Play Store application submissions](https://support.google.com/faqs/answer/6376725?hl=en "How to address OpenSSL vulnerabilities in your apps") (both new applications and updates) that use vulnerable versions of OpenSSL.
+
 ## Testing Data Encryption on the Network (MSTG-NETWORK-1)
 
 ### Static Analysis
@@ -124,9 +162,11 @@ For more details refer to:
 
 ## Testing the TLS Settings (MSTG-NETWORK-2)
 
-Refer to section ["Verifying the TLS Settings"](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings-mstg-network-2) in chapter "Mobile App Network Communication" for details.
+Refer to section ["Verifying the TLS Settings"](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings) in chapter "Mobile App Network Communication" for details.
 
 ## Testing Endpoint Identify Verification (MSTG-NETWORK-3)
+
+### Static Analysis
 
 Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://saschafahl.de/static/paper/androidssl2012.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
 
@@ -138,8 +178,6 @@ Two key issues should be addressed:
 Make sure that the hostname and the certificate itself are verified correctly. Examples and common pitfalls are available in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL"). Search the code for examples of `TrustManager` and `HostnameVerifier` usage. In the sections below, you can find examples of the kind of insecure usage that you should look for.
 
 > Note that from Android 8.0 (API level 26) onward, there is no support for SSLv3 and `HttpsURLConnection` will no longer perform a fallback to an insecure TLS/SSL protocol.
-
-### Static Analysis
 
 #### Verifying the Target SDK Version
 
@@ -288,46 +326,11 @@ If you're still not able to see any decrypted HTTPS traffic, your application mi
 
 ## Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
 
-### Overview
-
-This test verifies if the app properly implements identity pinning (certificate or public key pinning).
-
-For more details refer to section ["Identity Pinning"](0x04f-Testing-Network-Communication.md#identity-pinning) in the general chapter "Mobile App Network Communication".
-
 ### Static Analysis
 
-#### Certificate Pinning in the Network Security Configuration
+#### Network Security Configuration
 
-The [Network Security Configuration](#android-network-security-configuration) can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
-
-When attempting to establish a connection to a remote endpoint, the system will:
-
-- Get and validate the incoming certificate.
-- Extract the public key.
-- Calculate a digest over the extracted public key.
-- Compare the digest with the set of local pins.
-
-If at least one of the pinned digests matches, the certificate chain will be considered valid and the connection will proceed.
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <domain-config>
-        Use certificate pinning for OWASP website access including sub domains
-        <domain includeSubdomains="true">owasp.org</domain>
-        <pin-set expiration="2018/8/10">
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Intermediate CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Root CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
-        </pin-set>
-    </domain-config>
-</network-security-config>
-```
-
-Inspect the `<pin-set>` elements for any `expiration` date. If expired, certificate pinning will be disabled for the affected domains.
+Inspect the Network Security Configuration looking for any `<pin-set>` elements. Check their `expiration` date, if any. If expired, certificate pinning will be disabled for the affected domains.
 
 > **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](0x05b-Basic-Security_Testing.md#monitoring-system-logs):
 
@@ -404,9 +407,9 @@ Alternatively, it is better to use an OkHttpClient with configured pins and let 
 
 #### Xamarin Applications
 
-Applications developed in Xamarin will typically use ServicePointManager to implement pinning.
+Applications developed in Xamarin will typically use `ServicePointManager` to implement pinning.
 
-Normally a function is created to check the certificate(s) and return the boolean value to the method ServerCertificateValidationCallback:
+Normally a function is created to check the certificate(s) and return the boolean value to the method `ServerCertificateValidationCallback`:
 
 ```cs
 [Activity(Label = "XamarinPinning", MainLauncher = true)]
@@ -440,13 +443,18 @@ Normally a function is created to check the certificate(s) and return the boolea
 
 In this particular example we are pinning the intermediate CA of the certificate chain. The output of the HTTP response will be available in the system logs.
 
-Sample Xamarin app with the previous example can be obtained on the [MSTG repository](https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk "Xamarin app with certificate pinning")
+Sample Xamarin app with the previous example can be obtained on the [MASTG repository](https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk "Xamarin app with certificate pinning")
 
 After decompressing the APK file, use a .NET decompiler like dotPeak, ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 
+Learn more:
+
+- Certificate and Public Key Pinning with Xamarin - <https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin>
+- ServicePointManager - <https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx>
+
 #### Cordova Applications
 
-Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is PhoneGap SSL Certificate Checker. The `check` method is used to confirm the fingerprint and callbacks will determine the next steps.
+Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is [PhoneGap SSL Certificate Checker](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin "PhoneGap SSL Certificate Checker plugin"). The `check` method is used to confirm the fingerprint and callbacks will determine the next steps.
 
 ```javascript
   // Endpoint to verify against certificate pinning.
@@ -495,152 +503,13 @@ In both cases, the app or some of its components might implement custom pinning 
 
 ## Testing the Security Provider (MSTG-NETWORK-6)
 
-### Overview
-
-Android relies on a security provider to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
-To avoid known vulnerabilities, developers need to make sure that the application will install a proper security provider.
-Since July 11, 2016, Google [has been rejecting Play Store application submissions](https://support.google.com/faqs/answer/6376725?hl=en "How to address OpenSSL vulnerabilities in your apps") (both new applications and updates) that use vulnerable versions of OpenSSL.
-
 ### Static Analysis
 
-Applications based on the Android SDK should depend on GooglePlayServices. For example, in the gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block. You need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded` or `installIfNeededAsync`. `ProviderInstaller` needs to be called by a component of the application as early as possible. Exceptions thrown by these methods should be caught and handled correctly.
-If the application cannot patch its security provider, it can either inform the API of its less secure state or restrict user actions (because all HTTPS traffic should be deemed riskier in this situation).
+Applications based on the Android SDK should depend on GooglePlayServices. For example, in the gradle build file, you will find `compile 'com.google.android.gms:play-services-gcm:x.x.x'` in the dependencies block. You need to make sure that the `ProviderInstaller` class is called with either `installIfNeeded` or `installIfNeededAsync`. `ProviderInstaller` needs to be called by a component of the application as early as possible. Exceptions thrown by these methods should be caught and handled correctly. If the application cannot patch its security provider, it can either inform the API of its less secure state or restrict user actions (because all HTTPS traffic should be deemed riskier in this situation).
 
-Here are two [examples from the Android Developer documentation](https://developer.android.com/training/articles/security-gms-provider.html "Updating Your Security Provider to Protect Against SSL Exploits") that show how to update Security Provider to prevent SSL exploits. In both cases, the developer needs to handle the exceptions properly, and reporting to the backend when the application is working with an unpatched security provider may be wise.
+If you have access to the source code, check if the app handle any exceptions related to the security provider updates properly, and if it reports to the backend when the application is working with an unpatched security provider. The Android Developer documentation provides different examples showing [how to update the Security Provider to prevent SSL exploits](https://developer.android.com/training/articles/security-gms-provider.html "Updating Your Security Provider to Protect Against SSL Exploits").
 
-Patching Synchronously:
-
-```java
-//this is a sync adapter that runs in the background, so you can run the synchronous patching.
-public class SyncAdapter extends AbstractThreadedSyncAdapter {
-
-  ...
-
-  // This is called each time a sync is attempted; this is okay, since the
-  // overhead is negligible if the security provider is up-to-date.
-  @Override
-  public void onPerformSync(Account account, Bundle extras, String authority,
-      ContentProviderClient provider, SyncResult syncResult) {
-    try {
-      ProviderInstaller.installIfNeeded(getContext());
-    } catch (GooglePlayServicesRepairableException e) {
-
-      // Indicates that Google Play services is out of date, disabled, etc.
-
-      // Prompt the user to install/update/enable Google Play services.
-      GooglePlayServicesUtil.showErrorNotification(
-          e.getConnectionStatusCode(), getContext());
-
-      // Notify the SyncManager that a soft error occurred.
-      syncResult.stats.numIOExceptions++;
-      return;
-
-    } catch (GooglePlayServicesNotAvailableException e) {
-      // Indicates a non-recoverable error; the ProviderInstaller is not able
-      // to install an up-to-date Provider.
-
-      // Notify the SyncManager that a hard error occurred.
-      //in this case: make sure that you inform your API of it.
-      syncResult.stats.numAuthExceptions++;
-      return;
-    }
-
-    // If this is reached, you know that the provider was already up-to-date,
-    // or was successfully updated.
-  }
-}
-```
-
-Patching Asynchronously:
-
-```java
-//This is the mainactivity/first activity of the application that's there long enough to make the async installing of the securityprovider work.
-public class MainActivity extends Activity
-    implements ProviderInstaller.ProviderInstallListener {
-
-  private static final int ERROR_DIALOG_REQUEST_CODE = 1;
-
-  private boolean mRetryProviderInstall;
-
-  //Update the security provider when the activity is created.
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ProviderInstaller.installIfNeededAsync(this, this);
-  }
-
-  /**
-   * This method is only called if the provider is successfully updated
-   * (or is already up-to-date).
-   */
-  @Override
-  protected void onProviderInstalled() {
-    // Provider is up-to-date, app can make secure network calls.
-  }
-
-  /**
-   * This method is called if updating fails; the error code indicates
-   * whether the error is recoverable.
-   */
-  @Override
-  protected void onProviderInstallFailed(int errorCode, Intent recoveryIntent) {
-    if (GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
-      // Recoverable error. Show a dialog prompting the user to
-      // install/update/enable Google Play services.
-      GooglePlayServicesUtil.showErrorDialogFragment(
-          errorCode,
-          this,
-          ERROR_DIALOG_REQUEST_CODE,
-          new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-              // The user chose not to take the recovery action
-              onProviderInstallerNotAvailable();
-            }
-          });
-    } else {
-      // Google Play services is not available.
-      onProviderInstallerNotAvailable();
-    }
-  }
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode,
-      Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
-      // Adding a fragment via GooglePlayServicesUtil.showErrorDialogFragment
-      // before the instance state is restored throws an error. So instead,
-      // set a flag here, which will cause the fragment to delay until
-      // onPostResume.
-      mRetryProviderInstall = true;
-    }
-  }
-
-  /**
-   * On resume, check to see if we flagged that we need to reinstall the
-   * provider.
-   */
-  @Override
-  protected void onPostResume() {
-    super.onPostResult();
-    if (mRetryProviderInstall) {
-      // We can now safely retry installation.
-      ProviderInstall.installIfNeededAsync(this, this);
-    }
-    mRetryProviderInstall = false;
-  }
-
-  private void onProviderInstallerNotAvailable() {
-    // This is reached if the provider cannot be updated for some reason.
-    // App should consider all HTTP communication to be vulnerable, and take
-    // appropriate action (e.g. inform backend, block certain high-risk actions, etc.).
-  }
-}
-
-```
-
-Make sure that NDK-based applications bind only to a recent and properly patched library that provides SSL/TLS functionality.
+Lastly, make sure that NDK-based applications bind only to a recent and properly patched library that provides SSL/TLS functionality.
 
 ### Dynamic Analysis
 
@@ -665,17 +534,3 @@ When you do not have the source code:
 - MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - MSTG-NETWORK-4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 - MSTG-NETWORK-6: "The app only depends on up-to-date connectivity and security libraries."
-
-### Android Developer Documentation
-
-- Network Security Configuration - <https://developer.android.com/training/articles/security-config>
-- Network Security Configuration (cached alternative) - <https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl>
-
-### Xamarin Certificate Pinning
-
-- Certificate and Public Key Pinning with Xamarin - <https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin>
-- ServicePointManager - <https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx>
-
-### Cordova Certificate Pinning
-
-- PhoneGap SSL Certificate Checker plugin - <https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin>
