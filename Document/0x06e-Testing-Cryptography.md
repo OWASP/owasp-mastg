@@ -176,6 +176,8 @@ For each of the libraries that are used by the application, the used algorithms 
 
 Pay attention to how-to-be-removed key-holding datastructures and plain-text data structures are defined. If the keyword `let` is used, then you create an immutable structure which is harder to wipe from memory. Make sure that it is part of a parent structure which can be easily removed from memory (e.g. a `struct` that lives temporally).
 
+Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
+
 #### CommonCryptor
 
 If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
@@ -220,6 +222,8 @@ Always make sure that:
 - keys are not derived from stable features of the device.
 - keys are not hidden by use of lower level languages (e.g. C/C++).
 - keys are not imported from unsafe locations.
+
+Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
 
 Most of the recommendations for static analysis can already be found in chapter "Testing Data Storage for iOS". Next, you can read up on it at the following pages:
 

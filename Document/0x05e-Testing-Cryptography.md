@@ -262,6 +262,8 @@ Identify all the instances of symmetric key encryption in code and look for any 
 - specifications for a key generator (such as `KeyGenParameterSpec`, `KeyPairGeneratorSpec`, `KeyPairGenerator`, `KeyGenerator`, `KeyProperties`, etc.)
 - classes importing `java.security.*`, `javax.crypto.*`, `android.security.*`, `android.security.keystore.*`
 
+Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
+
 For each identified instance verify if the used symmetric keys:
 
 - are not part of the application resources
@@ -301,6 +303,8 @@ Identify all the instances of the cryptographic primitives in code. Identify all
 Identify that all calls to getInstance use default `provider` of security services by not specifying it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
 
 Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed. Look at [insecure and deprecated algorithms](0x04g-Testing-Cryptography.md#identifying-insecure-and/or-deprecated-cryptographic-algorithms) and [common configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
+
+Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues) and the [list of insecure and/or deprecated cryptographic algorithms](0x04g-Testing-Cryptography/#identifying-insecure-andor-deprecated-cryptographic-algorithms).
 
 ### Dynamic Analysis
 
