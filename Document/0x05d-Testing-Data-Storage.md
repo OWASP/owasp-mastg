@@ -472,7 +472,6 @@ To prevent the app data backup, set the `android:allowBackup` attribute to **fal
 
 > Note: If the device was encrypted, then the backup files will be encrypted as well.
 
-
 ## Process Memory
 
 All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible.
