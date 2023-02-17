@@ -1,93 +1,20 @@
 # Android Local Authentication
 
+## Overview
+
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password or biometric characteristics such as face or fingerprint, which is verified by referencing local data. Generally, this is done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
 As stated before in chapter "[Mobile App Authentication Architectures](0x04e-Testing-Authentication-and-Session-Management.md)": The tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
 
-In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
+On Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
-## Testing Confirm Credentials (MSTG-AUTH-1 and MSTG-STORAGE-11)
-
-### Overview
+### Confirm Credential Flow
 
 The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to the device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked the device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise the device needs to be unlocked again.
 
 Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
 
-### Static Analysis
-
-Reassure that the lock screen is set:
-
-```java
-KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-if (!mKeyguardManager.isKeyguardSecure()) {
-    // Show a message that the user hasn't set up a lock screen.
-}
-```
-
-- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked the device in the last X seconds, or the device needs to be unlocked again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
-
-    ```java
-    try {
-        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-        keyStore.load(null);
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(
-                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-
-        // Set the alias of the entry in Android KeyStore where the key will appear
-        // and the constrains (purposes) in the constructor of the Builder
-        keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_NAME,
-                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                .setUserAuthenticationRequired(true)
-                        // Require that the user has unlocked in the last 30 seconds
-                .setUserAuthenticationValidityDurationSeconds(30)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .build());
-        keyGenerator.generateKey();
-    } catch (NoSuchAlgorithmException | NoSuchProviderException
-            | InvalidAlgorithmParameterException | KeyStoreException
-            | CertificateException | IOException e) {
-        throw new RuntimeException("Failed to create a symmetric key", e);
-    }
-    ```
-
-- Setup the lock screen to confirm:
-
-    ```java
-    private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
-    Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
-    if (intent != null) {
-        startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
-    }
-    ```
-
-- Use the key after lock screen:
-
-    ```java
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
-            // Challenge completed, proceed with using cipher
-            if (resultCode == RESULT_OK) {
-                //use the key for the actual authentication flow
-            } else {
-                // The user canceled or didn’t complete the lock screen
-                // operation. Go to error/cancellation flow.
-            }
-        }
-    }
-    ```
-
-Make sure that the unlocked key is used during the application flow. For example, the key may be used to decrypt local storage or a message received from a remote endpoint. If the application simply checks whether the user has unlocked the key or not, the application may be vulnerable to a local authentication bypass.
-
-### Dynamic Analysis
-
-Validate the duration of time (seconds) for which the key is authorized to be used after the user is successfully authenticated. This is only needed if `setUserAuthenticationRequired` is used.
-
-## Testing Biometric Authentication (MSTG-AUTH-8)
-
-### Overview
+### Biometric Authentication Flow
 
 Biometric authentication is a convenient mechanism for authentication, but also introduces an additional attack surface when using it. The Android developer documentation gives an interesting overview and indicators for [measuring biometric unlock security](https://source.android.com/security/biometric/measure#strong-weak-unlocks "Measuring Biometric Unlock Security").
 
@@ -107,7 +34,7 @@ This is different to the `FingerprintManager` class which only supports fingerpr
 
 A very detailed overview and explanation of the Biometric API on Android was published on the [Android Developer Blog](https://android-developers.googleblog.com/2019/10/one-biometric-api-over-all-android.html "One Biometric API Over all Android").
 
-#### FingerprintManager (deprecated in Android 9 (API level 28))
+### FingerprintManager (deprecated in Android 9 (API level 28))
 
 Android 6.0 (API level 23) introduced public APIs for authenticating users via fingerprint, but is deprecated in Android 9 (API level 28). Access to the fingerprint hardware is provided through the [`FingerprintManager`](https://developer.android.com/reference/android/hardware/fingerprint/ "FingerprintManager") class. An app can request fingerprint authentication by instantiating a `FingerprintManager` object and calling its `authenticate` method. The caller registers callback methods to handle possible outcomes of the authentication process (i.e. success, failure, or error). Note that this method doesn't constitute strong proof that fingerprint authentication has actually been performed - for example, the authentication step could be patched out by an attacker, or the "success" callback could be overloaded using dynamic instrumentation.
 
@@ -115,13 +42,7 @@ You can achieve better security by using the fingerprint API in conjunction with
 
 An even more secure option is using asymmetric cryptography. Here, the mobile app creates an asymmetric key pair in the KeyStore and enrolls the public key on the server backend. Later transactions are then signed with the private key and verified by the server using the public key.
 
-### Static Analysis
-
-Note that there are quite some vendor/third party SDKs, which provide biometric support, but which have their own insecurities. Be very cautious when using third party SDKs to handle sensitive authentication logic.
-
-The following sections explain the different biometric authentication classes.
-
-#### Biometric Library
+### Biometric Library
 
 Android provides a library called [Biometric](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") which offers a compatibility version of the `BiometricPrompt` and `BiometricManager` APIs, as implemented in Android 10, with full feature support back to Android 6.0 (API 23).
 
@@ -140,7 +61,7 @@ If `CryptoObject` is not used as part of the authenticate method, it can be bypa
 
 Developers can use several [validation classes](https://source.android.com/security/biometric#validation "Validation of Biometric Auth") offered by Android to test the implementation of biometric authentication in their app.
 
-#### FingerprintManager
+### FingerprintManager
 
 > This section describes how to implement biometric authentication by using the `FingerprintManager` class. Please keep in mind that this class is deprecated and the [Biometric library](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") should be used instead as a best practice. This section is just for reference, in case you come across such an implementation and need to analyze it.
 
@@ -291,7 +212,7 @@ byte[] signed = signature.sign();
 - Note that in cases where transactions are signed, a random nonce should be generated and added to the signed data. Otherwise, an attacker could replay the transaction.
 - To implement authentication using symmetric fingerprint authentication, use a challenge-response protocol.
 
-#### Additional Security Features
+### Additional Security Features
 
 Android 7.0 (API level 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to `true` (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving they key even if they are able to enroll an additional fingerprint.
 
@@ -300,9 +221,90 @@ Android 8.0 (API level 26) adds two additional error codes:
 - `FINGERPRINT_ERROR_LOCKOUT_PERMANENT`: The user has tried too many times to unlock their device using the fingerprint reader.
 - `FINGERPRINT_ERROR_VENDOR`: A vendor-specific fingerprint reader error occurred.
 
-#### Third party SDKs
+### Implementing biometric authentication
+
+Reassure that the lock screen is set:
+
+```java
+KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+if (!mKeyguardManager.isKeyguardSecure()) {
+    // Show a message that the user hasn't set up a lock screen.
+}
+```
+
+- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked the device in the last X seconds, or the device needs to be unlocked again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
+
+    ```java
+    try {
+        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+        keyStore.load(null);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+
+        // Set the alias of the entry in Android KeyStore where the key will appear
+        // and the constrains (purposes) in the constructor of the Builder
+        keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_NAME,
+                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                .setUserAuthenticationRequired(true)
+                        // Require that the user has unlocked in the last 30 seconds
+                .setUserAuthenticationValidityDurationSeconds(30)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                .build());
+        keyGenerator.generateKey();
+    } catch (NoSuchAlgorithmException | NoSuchProviderException
+            | InvalidAlgorithmParameterException | KeyStoreException
+            | CertificateException | IOException e) {
+        throw new RuntimeException("Failed to create a symmetric key", e);
+    }
+    ```
+
+- Set up the lock screen to confirm:
+
+    ```java
+    private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
+    Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
+    if (intent != null) {
+        startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
+    }
+    ```
+
+- Use the key after lock screen:
+
+    ```java
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
+            // Challenge completed, proceed with using cipher
+            if (resultCode == RESULT_OK) {
+                //use the key for the actual authentication flow
+            } else {
+                // The user canceled or didn’t complete the lock screen
+                // operation. Go to error/cancellation flow.
+            }
+        }
+    }
+    ```
+
+### Third party SDKs
 
 Make sure that fingerprint authentication and/or other types of biometric authentication are exclusively based on the Android SDK and its APIs. If this is not the case, ensure that the alternative SDK has been properly vetted for any weaknesses. Make sure that the SDK is backed by the TEE/SE which unlocks a (cryptographic) secret based on the biometric authentication. This secret should not be unlocked by anything else, but a valid biometric entry. That way, it should never be the case that the fingerprint logic can be bypassed.
+
+## Testing Confirm Credentials (MSTG-AUTH-1 and MSTG-STORAGE-11)
+
+### Static Analysis
+
+Make sure that the unlocked key is used during the application flow. For example, the key may be used to decrypt local storage or a message received from a remote endpoint. If the application simply checks whether the user has unlocked the key or not, the application may be vulnerable to a local authentication bypass.
+
+### Dynamic Analysis
+
+Validate the duration of time (seconds) for which the key is authorized to be used after the user is successfully authenticated. This is only needed if `setUserAuthenticationRequired` is used.
+
+## Testing Biometric Authentication (MSTG-AUTH-8)
+
+### Static Analysis
+
+Note that there are quite some vendor/third party SDKs, which provide biometric support, but which have their own insecurities. Be very cautious when using third party SDKs to handle sensitive authentication logic.
 
 ### Dynamic Analysis
 
