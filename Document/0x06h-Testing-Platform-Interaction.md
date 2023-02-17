@@ -212,12 +212,12 @@ Apple itself supplies `CoreData`, which is well explained in the [Apple Develope
 There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
 Note that **Protocol Buffers do not provide any protection for confidentiality** as no built-in encryption is available.
 
-
 ### WebViews
 
 WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and Cross-Site Scripting attacks can affect them.
 
 #### Types of WebViews
+
 There are multiple ways to include a WebView in an iOS application:
 
 - UIWebView
@@ -1615,7 +1615,6 @@ If you look at the stack trace, you can see how `application:openURL:options:` c
 A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to the "[Testing Custom URL Schemes](#testing-custom-url-schemes-mstg-platform-3 "Testing Custom URL Schemes")" section for more information.
 
 ### Testing App Extensions
-
 
 #### Static Analysis
 
