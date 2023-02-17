@@ -60,7 +60,7 @@ For more information about Apple CryptoKit, please visit the following resources
 - [WWDC 2019 session 709 | Cryptography and Your Apps](https://developer.apple.com/videos/play/wwdc19/709/ "Cryptography and Your Apps from WWDC 2019 session 709")
 - [How to calculate the SHA hash of a String or Data instance | Hacking with Swift](https://www.hackingwithswift.com/example-code/cryptokit/how-to-calculate-the-sha-hash-of-a-string-or-data-instance "How to calculate the SHA hash of a String or Data instance from Hacking with Swift")
 
-#### CommonCrypto, SecKey and Wrapper libraries
+### CommonCrypto, SecKey and Wrapper libraries
 
 The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
 
@@ -82,7 +82,7 @@ As noted before: some wrapper-libraries exist for both in order to provide conve
 - [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor")
 - [Arcane](https://github.com/onmyway133/Arcane "Arcane")
 
-#### Third party libraries
+### Third party libraries
 
 There are various third party libraries available, such as:
 
@@ -172,7 +172,8 @@ The Randomization Services API uses the `SecRandomCopyBytes` function to generat
 
 ### Static Analysis
 
-A lot has been said about deprecated algorithms and cryptographic configurations in the previous section. Obviously, these should be verified for each of the mentioned libraries in this chapter.
+For each of the libraries that are used by the application, the used algorithms and cryptographic configurations need to be verified to make sure they are not deprecated and used correctly.
+
 Pay attention to how-to-be-removed key-holding datastructures and plain-text data structures are defined. If the keyword `let` is used, then you create an immutable structure which is harder to wipe from memory. Make sure that it is part of a parent structure which can be easily removed from memory (e.g. a `struct` that lives temporally).
 
 #### CommonCryptor
