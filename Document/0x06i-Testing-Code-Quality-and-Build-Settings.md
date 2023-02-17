@@ -1,10 +1,12 @@
 # iOS Code Quality and Build Settings
 
-## App Signing
+## Overview
+
+### App Signing
 
 [Code signing](0x06a-Platform-Overview.md#code-signing) your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a non-jailbroken device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide").
 
-## Third-Party Libraries
+### Third-Party Libraries
 
 iOS applications often make use of third party libraries which accelerate development as the developer has to write less code in order to solve a problem. However, third party libraries may contain vulnerabilities, incompatible licensing, or malicious content. Additionally, it is difficult for organizations and developers to manage application dependencies, including monitoring library releases and applying available security patches.
 
@@ -27,7 +29,7 @@ These libraries can lead to unwanted side-effects:
 
 Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
-## Memory Corruption Bugs
+### Memory Corruption Bugs
 
 iOS applications have various ways to run into [memory corruption bugs](0x04h-Testing-Code-Quality.md#memory-corruption-bugs): first there are the native code issues which have been mentioned in the general Memory Corruption Bugs section. Next, there are various unsafe operations with both Objective-C and Swift to actually wrap around native code which can create issues. Last, both Swift and Objective-C implementations can result in memory leaks due to retaining objects which are no longer in use.
 
@@ -37,7 +39,7 @@ Learn more:
 - <https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html>
 - <https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15>
 
-## Binary Protection Mechanisms
+### Binary Protection Mechanisms
 
 Detecting the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
@@ -60,9 +62,9 @@ Learn more:
 
 Tests to detect the presence of these protection mechanisms heavily depend on the language used for developing the application. For example, existing techniques for detecting the presence of stack canaries do not work for pure Swift apps.
 
-### Xcode Project Settings
+#### Xcode Project Settings
 
-#### Stack Canary protection
+##### Stack Canary protection
 
 Steps for enabling stack canary protection in an iOS application:
 
@@ -70,7 +72,7 @@ Steps for enabling stack canary protection in an iOS application:
 2. Make sure that the "-fstack-protector-all" option is selected in the "Other C Flags" section.
 3. Make sure that Position Independent Executables (PIE) support is enabled.
 
-#### PIE protection
+##### PIE protection
 
 Steps for building an iOS application as PIE:
 
@@ -79,7 +81,7 @@ Steps for building an iOS application as PIE:
 3. Make sure that "Generate Position-Dependent Code" (section "Apple Clang - Code Generation") is set to its default value ("NO").
 4. Make sure that "Generate Position-Dependent Executable" (section "Linking") is set to its default value ("NO").
 
-#### ARC protection
+##### ARC protection
 
 ARC is automatically enabled for Swift apps by the `swiftc` compiler. However, for Objective-C apps you'll have ensure that it's enabled by following these steps:
 
@@ -88,7 +90,7 @@ ARC is automatically enabled for Swift apps by the `swiftc` compiler. However, f
 
 See the [Technical Q&A QA1788 Building a Position Independent Executable](https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
-## Debuggable Apps
+### Debuggable Apps
 
 Apps can be made [debuggable](0x06c-Reverse-Engineering-and-Tampering.md#debugging) by adding the [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key to the app entitlements file and setting it to `true`.
 
@@ -99,24 +101,24 @@ While debugging is a useful feature when developing an app, it has to be turned 
 - Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
-## Debugging Symbols
+### Debugging Symbols
 
 As a good practice, as little explanatory information as possible should be provided with a compiled binary. The presence of additional metadata such as debug symbols might provide valuable information about the code, e.g. function names leaking information about what a function does. This metadata is not required to execute the binary and thus it is safe to discard it for the release build, which can be done by using proper compiler configurations. As a tester you should inspect all binaries delivered with the app and ensure that no debugging symbols are present (at least those revealing any valuable information about the code).
 
 When an iOS application is compiled, the compiler generates a list of debug symbols for each binary file in an app (the main app executable, frameworks, and app extensions). These symbols include class names, global variables, and method and function names which are mapped to specific files and line numbers where they're defined. [Debug builds](https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information "Building Your App to Include Debugging Information") of an app place the debug symbols in a compiled binary by default, while release builds of an app place them in a companion _Debug Symbol file_ (dSYM) to reduce the size of the distributed app.
 
-## Debugging Code and Error Logging
+### Debugging Code and Error Logging
 
 To speed up verification and get a better understanding of errors, developers often include debugging code, such as verbose logging statements (using `NSLog`, `println`, `print`, `dump`, and `debugPrint`) about responses from their APIs and about their application's progress and/or state. Furthermore, there may be debugging code for "management-functionality", which is used by developers to set the application's state or mock responses from an API. Reverse engineers can easily use this information to track what's happening with the application. Therefore, debugging code should be removed from the application's release version.
 
-## Exception Handling
+### Exception Handling
 
 Exceptions often occur after an application enters an abnormal or erroneous state.
 Testing exception handling is about making sure that the application will handle the exception and get into a safe state without exposing any sensitive information via its logging mechanisms or the UI.
 
 Bear in mind that exception handling in Objective-C is quite different from exception handling in Swift. Bridging the two approaches in an application that is written in both legacy Objective-C code and Swift code can be problematic.
 
-### Exception Handling in Objective-C
+#### Exception Handling in Objective-C
 
 Objective-C has two types of errors:
 
@@ -144,7 +146,7 @@ Bear in mind that using `NSException` comes with memory management pitfalls: you
 
 `NSError` is used for all other types of [errors](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/ErrorHandling/ErrorHandling.html "Dealing with Errors"). Some Cocoa framework APIs provide errors as objects in their failure callback in case something goes wrong; those that don't provide them pass a pointer to an `NSError` object by reference. It is a good practice to provide a `BOOL` return type to the method that takes a pointer to an `NSError` object to indicate success or failure. If there's a return type, make sure to return `nil` for errors. If `NO` or `nil` is returned, it allows you to inspect the error/reason for failure.
 
-### Exception Handling in Swift
+#### Exception Handling in Swift
 
 Exception handing in Swift (2 - 5) is quite different. The try-catch block is not there to handle `NSException`. The block is used to handle errors that conform to the `Error` (Swift 3) or `ErrorType` (Swift 2) protocol. This can be challenging when Objective-C and Swift code are combined in an application. Therefore, `NSError` is preferable to `NSException` for programs written in both languages. Furthermore, error-handling is opt-in in Objective-C, but `throws` must be explicitly handled in Swift. To convert error-throwing, look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
 Methods that can throw errors use the `throws` keyword. The `Result` type represents a success or failure, see [Result](https://developer.apple.com/documentation/swift/result), [How to use Result in Swift 5](https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift) and [The power of Result types in Swift](https://www.swiftbysundell.com/posts/the-power-of-result-types-in-swift). There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):

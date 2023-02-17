@@ -1,6 +1,8 @@
 # Android Code Quality and Build Settings
 
-## App Signing
+## Overview
+
+### App Signing
 
 Android requires all APKs to be digitally signed with a certificate before they are installed or run. The digital signature is used to verify the owner's identity for application updates. This process can prevent an app from being tampered with or modified to include malicious code.
 
@@ -21,7 +23,7 @@ The V3 signature, which is supported by Android 9 (API level 28) and above, give
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
-## Third-Party Libraries
+### Third-Party Libraries
 
 Android apps often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
 
@@ -36,13 +38,13 @@ These libraries can lead to unwanted side-effects:
 
 Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
-## Memory Corruption Bugs
+### Memory Corruption Bugs
 
 Android applications run on a VM where most of the memory corruption issues have been taken care off. This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the Stagefright attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefright").
 
 Memory leaks are often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helper classes.
 
-## Binary Protection Mechanisms
+### Binary Protection Mechanisms
 
 Detecting the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
@@ -71,21 +73,21 @@ Learn more:
 - [Android NDK](https://developer.android.com/ndk/guides)
 - [Android linker changes for NDK developers](https://android.googlesource.com/platform/bionic/+/master/android-changes-for-ndk-developers.md)
 
-## Debuggable Apps
+### Debuggable Apps
 
 Debugging is an essential process for developers to identify and fix errors or bugs in their Android app. By using a debugger, developers can select the device to debug their app on and set breakpoints in their Java, Kotlin, and C/C++ code. This allows them to analyze variables and evaluate expressions at runtime, which helps them to identify the root cause of many issues. By debugging their app, developers can improve the functionality and user experience of their app, ensuring that it runs smoothly without any errors or crashes.
 
 Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` attribute in the [`Application` element](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") within the Android Manifest.
 
-## Debugging Symbols
+### Debugging Symbols
 
 Generally, you should provide compiled code with as little explanation as possible. Some metadata, such as debugging information, line numbers, and descriptive function or method names, make the binary or bytecode easier for the reverse engineer to understand, but these aren't needed in a release build and can therefore be safely omitted without impacting the app's functionality.
 
 To inspect native binaries, use a standard tool like `nm` or `objdump` to examine the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unnecessary dynamic symbols is also recommended.
 
-## Debugging Code and Error Logging
+### Debugging Code and Error Logging
 
-### StrictMode
+#### StrictMode
 
 StrictMode is a developer tool for detecting violations, e.g. accidental disk or network access on the application's main thread. It can also be used to check for good coding practices, such as implementing performant code.
 
@@ -113,7 +115,7 @@ public void onCreate() {
 
 Inserting the policy in the `if` statement with the `DEVELOPER_MODE` condition is recommended. To disable `StrictMode`, `DEVELOPER_MODE` must be disabled for the release build.
 
-## Exception Handling
+### Exception Handling
 
 Exceptions occur when an application gets into an abnormal or error state. Both Java and C++ may throw exceptions. Testing exception handling is about ensuring that the app will handle an exception and transition to a safe state without exposing sensitive information via the UI or the app's logging mechanisms.
 
