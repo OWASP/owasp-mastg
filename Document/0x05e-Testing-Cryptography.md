@@ -1,5 +1,7 @@
 # Android Cryptographic APIs
 
+## Overview
+
 In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
 We can identify key components of cryptography system in Android:
@@ -43,7 +45,7 @@ Apps that target modern API levels, went through the following changes:
   - The `Crypto` security provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") lists all network security changes.
 
-## Recommendations
+### General Recommendations
 
 The following list of recommendations should be considered during app examination:
 
@@ -55,7 +57,7 @@ The following list of recommendations should be considered during app examinatio
 - You should stop using Password-based encryption ciphers without IV.
 - You should use KeyGenParameterSpec instead of KeyPairGeneratorSpec.
 
-### Security provider
+### Security Provider
 
 Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
 
@@ -252,14 +254,6 @@ Most developers should instantiate `SecureRandom` via the default constructor wi
 
 ## Testing Symmetric Cryptography (MSTG-CRYPTO-1)
 
-### Overview
-
-This test case focuses on hardcoded symmetric cryptography as the only method of encryption. The following checks should be performed:
-
-- identify all instances of symmetric cryptography
-- for each identified instance verify if there are any hardcoded symmetric keys
-- verify if hardcoded symmetric cryptography is not used as the only method of encryption
-
 ### Static Analysis
 
 Identify all the instances of symmetric key encryption in code and look for any mechanism which loads or provides a symmetric key. You can look for:
@@ -267,6 +261,8 @@ Identify all the instances of symmetric key encryption in code and look for any 
 - symmetric algorithms (such as `DES`, `AES`, etc.)
 - specifications for a key generator (such as `KeyGenParameterSpec`, `KeyPairGeneratorSpec`, `KeyPairGenerator`, `KeyGenerator`, `KeyProperties`, etc.)
 - classes importing `java.security.*`, `javax.crypto.*`, `android.security.*`, `android.security.keystore.*`
+
+Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
 
 For each identified instance verify if the used symmetric keys:
 
@@ -294,14 +290,6 @@ You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-t
 
 ## Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
 
-### Overview
-
-These test cases focus on implementation and use of cryptographic primitives. Following checks should be performed:
-
-- identify all instance of cryptography primitives and their implementation (library or custom implementation)
-- verify how cryptography primitives are used and how they are configured
-- verify if cryptographic protocols and algorithms used are not deprecated for security purposes.
-
 ### Static Analysis
 
 Identify all the instances of the cryptographic primitives in code. Identify all custom cryptography implementations. You can look for:
@@ -321,15 +309,6 @@ Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0
 You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of [RMS - Runtime Mobile Security](0x08a-Testing-Tools.md#RMS-Runtime-Mobile-Security).
 
 ## Testing the Purposes of Keys (MSTG-CRYPTO-5)
-
-### Overview
-
-This test case focuses on verification of purpose and reusage of the same cryptographic keys. The following checks should be performed:
-
-- identify all instances where cryptography is used
-- identify the purpose of the cryptographic material (to protect data in use, in transit or at rest)
-- identify type of cryptography
-- verify if cryptography is used according to its purpose
 
 ### Static Analysis
 
@@ -361,15 +340,6 @@ During verification the following checks should be performed:
 You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of [RMS - Runtime Mobile Security](0x08a-Testing-Tools.md#RMS-Runtime-Mobile-Security).
 
 ## Testing Random Number Generation (MSTG-CRYPTO-6)
-
-### Overview
-
-This test case focuses on random values used by application. The following checks should be performed:
-
-- identify all instances where random values are used
-- verify if random number generators are not considered as being cryptographically secure
-- verify how random number generators are used
-- verify randomness of the generated random values
 
 ### Static Analysis
 
