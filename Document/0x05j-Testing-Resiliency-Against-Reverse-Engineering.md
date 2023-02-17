@@ -1,14 +1,20 @@
 # Android Anti-Reversing Defenses
 
-## Testing Root Detection (MSTG-RESILIENCE-1)
+## General Disclaimer
 
-### Overview
+The **lack of any of these measures does not cause a vulnerability** - instead, they are meant to increase the app's resilience against reverse engineering and specific client-side attacks.
+
+None of these measures can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win (given enough time and resources)!
+
+For example, preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
+
+## Overview
+
+### Root Detection and Common Root Detection Methods
 
 In the context of anti-reversing, the goal of root detection is to make running the app on a rooted device a bit more difficult, which in turn blocks some of the tools and techniques reverse engineers like to use. Like most other defenses, root detection is not very effective by itself, but implementing multiple root checks that are scattered throughout the app can improve the effectiveness of the overall anti-tampering scheme.
 
 For Android, we define "root detection" a bit more broadly, including custom ROMs detection, i.e., determining whether the device is a stock Android build or a custom build.
-
-### Common Root Detection Methods
 
 In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [OWASP UnCrackable Apps for Android](0x08b-Reference-Apps.md#android-crackmes) that accompany the OWASP Mobile Testing Guide.
 
@@ -193,39 +199,7 @@ for (int i = 1; ; i = 0)
 
 Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: on stock Android builds, [OTA updates Google's public certificates](https://blog.netspi.com/android-root-detection-techniques/ "Android Root Detection Techniques").
 
-#### Bypassing Root Detection
-
-Run execution traces with jdb, [DDMS](https://developer.android.com/studio/profile/monitor "DDMS"), `strace`, and/or kernel modules to find out what the app is doing. You'll usually see all kinds of suspect interactions with the operating system, such as opening `su` for reading and obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms, one at a time. If you're performing a black box resilience assessment, disabling the root detection mechanisms is your first step.
-
-To bypass these checks, you can use several techniques, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
-
-- Renaming binaries. For example, in some cases simply renaming the `su` binary is enough to defeat root detection (try not to break your environment though!).
-- Unmounting `/proc` to prevent reading of process lists. Sometimes, the unavailability of `/proc` is enough to bypass such checks.
-- Using Frida or Xposed to hook APIs on the Java and native layers. This hides files and processes, hides the contents of files, and returns all kinds of bogus values that the app requests.
-- Hooking low-level APIs by using kernel modules.
-- Patching the app to remove the checks.
-
-### Effectiveness Assessment
-
-Check for root detection mechanisms, including the following criteria:
-
-- Multiple detection methods are scattered throughout the app (as opposed to putting everything into a single method).
-- The root detection mechanisms operate on multiple API layers (Java APIs, native library functions, assembler/system calls).
-- The mechanisms are somehow original (they're not copied and pasted from StackOverflow or other sources).
-
-Develop bypass methods for the root detection mechanisms and answer the following questions:
-
-- Can the mechanisms be easily bypassed with standard tools, such as RootCloak?
-- Is static/dynamic analysis necessary to handle the root detection?
-- Do you need to write custom code?
-- How long did successfully bypassing the mechanisms take?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.
-
-## Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
-
-### Overview
+### Anti-Debugging
 
 Debugging is a highly effective way to analyze runtime app behavior. It allows the reverse engineer to step through the code, stop app execution at arbitrary points, inspect the state of variables, read and modify memory, and a lot more.
 
@@ -233,11 +207,11 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two debugging protocols on Android: we can debug on the Java level with JDWP or on the native layer via a ptrace-based debugger. A good anti-debugging scheme should defend against both types of debugging.
 
-### JDWP Anti-Debugging
+#### JDWP Anti-Debugging
 
 In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java Virtual Machine. We showed that it is easy to enable debugging for any app by patching its manifest file, and changing the `ro.debuggable` system property which enables debugging for all apps. Let's look at a few things developers do to detect and disable JDWP debuggers.
 
-#### Checking the Debuggable Flag in ApplicationInfo
+##### Checking the Debuggable Flag in ApplicationInfo
 
 We have already encountered the `android:debuggable` attribute. This flag in the Android Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically, via the app's `ApplicationInfo` object. If the flag is set, the manifest has been tampered with and allows debugging.
 
@@ -249,7 +223,7 @@ We have already encountered the `android:debuggable` attribute. This flag in the
     }
 ```
 
-#### isDebuggerConnected
+##### isDebuggerConnected
 
 While this might be pretty obvious to circumvent for a reverse engineer, you can use `isDebuggerConnected` from the `android.os.Debug` class to determine whether a debugger is connected.
 
@@ -269,7 +243,7 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 }
 ```
 
-#### Timer Checks
+##### Timer Checks
 
 `Debug.threadCpuTimeNanos` indicates the amount of time that the current thread has been executing code. Because debugging slows down process execution, [you can use the difference in execution time to guess whether a debugger is attached](https://www.yumpu.com/en/document/read/15228183/android-reverse-engineering-defenses-bluebox-labs "Bluebox Security - Android Reverse Engineering & Defenses").
 
@@ -291,7 +265,7 @@ static boolean detect_threadCpuTimeNanos(){
 }
 ```
 
-#### Messing with JDWP-Related Data Structures
+##### Messing with JDWP-Related Data Structures
 
 In Dalvik, the global virtual machine state is accessible via the `DvmGlobals` structure. The global variable gDvm holds a pointer to this structure. `DvmGlobals` contains various variables and pointers that are important for JDWP debugging and can be tampered with.
 
@@ -393,11 +367,11 @@ JNIEXPORT void JNICALL Java_sg_vantagepoint_jdwptest_MainActivity_JDWPfun(
 }
 ```
 
-### Traditional Anti-Debugging
+#### Traditional Anti-Debugging
 
 On Linux, the [`ptrace` system call](http://man7.org/linux/man-pages/man2/ptrace.2.html "Ptrace man page") is used to observe and control the execution of a process (the _tracee_) and to examine and change that process' memory and registers. `ptrace` is the primary way to implement system call tracing and breakpoint debugging in native code. Most JDWP anti-debugging tricks (which may be safe for timer-based checks) won't catch classical debuggers based on `ptrace` and therefore, many Android anti-debugging tricks include `ptrace`, often exploiting the fact that only one debugger at a time can attach to a process.
 
-#### Checking TracerPid
+##### Checking TracerPid
 
 When you debug an app and set a breakpoint on native code, Android Studio will copy the needed files to the target device and start the lldb-server which will use `ptrace` to attach to the process. From this moment on, if you inspect the [status file](http://man7.org/linux/man-pages/man5/proc.5.html "/proc/[pid]/status") of the debugged process (`/proc/<pid>/status` or `/proc/self/status`), you will see that the "TracerPid" field has a value different from 0, which is a sign of debugging.
 
@@ -418,7 +392,7 @@ u0_a271      11839 11837   14024   4548 poll_schedule_timeout 0 S lldb-server
 
 You can see how the status file of com.example.hellojni (PID=11657) contains a TracerPID of 11839, which we can identify as the lldb-server process.
 
-#### Using Fork and ptrace
+##### Using Fork and ptrace
 
 You can prevent debugging of a process by forking a child process and attaching it to the parent as a debugger via code similar to the following simple example code:
 
@@ -555,65 +529,7 @@ Exiting
 
 To bypass this, we must modify the app's behavior slightly (the easiest ways to do so are patching the call to `_exit` with NOPs and hooking the function `_exit` in `libc.so`). At this point, we have entered the proverbial "arms race": implementing more intricate forms of this defense as well as bypassing it are always possible.
 
-### Bypassing Debugger Detection
-
-There's no generic way to bypass anti-debugging: the best method depends on the particular mechanism(s) used to prevent or detect debugging and the other defenses in the overall protection scheme. For example, if there are no integrity checks or you've already deactivated them, patching the app might be the easiest method. In other cases, a hooking framework or kernel modules might be preferable.
-The following methods describe different approaches to bypass debugger detection:
-
-- Patching the anti-debugging functionality: Disable the unwanted behavior by simply overwriting it with NOP instructions. Note that more complex patches may be required if the anti-debugging mechanism is well designed.
-- Using Frida or Xposed to hook APIs on the Java and native layers: manipulate the return values of functions such as `isDebuggable` and `isDebuggerConnected` to hide the debugger.
-- Changing the environment: Android is an open environment. If nothing else works, you can modify the operating system to subvert the assumptions the developers made when designing the anti-debugging tricks.
-
-#### Bypassing Example: UnCrackable App for Android Level 2
-
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [level 2 of the "UnCrackable App for Android"](0x08b-Reference-Apps.md#android-uncrackable-l2).
-
-At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a _native_ method.
-
-```java
-package sg.vantagepoint.uncrackable2;
-
-public class CodeCheck {
-    public CodeCheck() {
-        super();
-    }
-
-    public boolean a(String arg2) {
-        return this.bar(arg2.getBytes());
-    }
-
-    private native boolean bar(byte[] arg1) {
-    }
-}
-
-    static {
-        System.loadLibrary("foo");
-    }
-```
-
-Please see [different proposed solutions for the Android Crackme Level 2](https://mas.owasp.org/crackmes/Android#android-uncrackable-l2 "Solutions Android Crackme Level 2") in GitHub.
-
-### Effectiveness Assessment
-
-Check for anti-debugging mechanisms, including the following criteria:
-
-- Attaching jdb and ptrace-based debuggers fails or causes the app to terminate or malfunction.
-- Multiple detection methods are scattered throughout the app's source code (as opposed to their all being in a single method or function).
-- The anti-debugging defenses operate on multiple API layers (Java, native library functions, assembler/system calls).
-- The mechanisms are somehow original (as opposed to being copied and pasted from StackOverflow or other sources).
-
-Work on bypassing the anti-debugging defenses and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the anti-debugging code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your subjective assessment of the difficulty of bypassing the mechanisms?
-
-If anti-debugging mechanisms are missing or too easily bypassed, make suggestions in line with the effectiveness criteria above. These suggestions may include adding more detection mechanisms and better integration of existing mechanisms with other defenses.
-
-## Testing File Integrity Checks (MSTG-RESILIENCE-3)
-
-### Overview
+### File Integrity Checks
 
 There are two topics related to file integrity:
 
@@ -752,48 +668,9 @@ public enum HMACWrapper {
 
 Another way to provide integrity is to sign the byte array you obtained and add the signature to the original byte array.
 
-#### Bypassing File Integrity Checks
-
-##### Bypassing the application-source integrity checks
-
-1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
-2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
-3. Use the kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
-
-Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
-
-##### Bypassing the storage integrity checks
-
-1. Retrieve the data from the device, as described in the "[Testing Device Binding](#testing-device-binding-mstg-resilience-10 "Testing Device Binding")" section.
-2. Alter the retrieved data and then put it back into storage.
-
-### Effectiveness Assessment
-
-**Application-source integrity checks:**
-
-Run the app in an unmodified state and make sure that everything works. Apply simple patches to `classes.dex` and any .so libraries in the app package. Re-package and re-sign the app as described in the "Basic Security Testing" chapter, then run the app. The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate. Work on bypassing the defenses and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the anti-debugging code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-**Storage integrity checks:**
-
-An approach similar to that for application-source integrity checks applies. Answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value)?
-- How difficult is getting the HMAC key or the asymmetric private key?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-## Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
-
-### Overview
+### Detection of Reverse Engineering
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
-
-### Detection Methods
 
 You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
 
@@ -832,39 +709,9 @@ Please remember that this table is far from exhaustive. We could start talking a
 
 > It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
-### Effectiveness Assessment
-
-Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Xposed, Substrate for Android, RootCloak, Android SSL Trust Killer.
-
-The app should respond in some way to the presence of those tools. For example by:
-
-- Alerting the user and asking for accepting liability.
-- Preventing execution by gracefully terminating.
-- Securely wiping any sensitive data stored on the device.
-- Reporting to a backend server, e.g, for fraud detection.
-
-Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the anti reverse engineering code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-The following steps should guide you when bypassing detection of reverse engineering tools:
-
-1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
-2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file, not the modified file.
-3. Use a kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
-
-Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
-
-## Testing Emulator Detection (MSTG-RESILIENCE-5)
-
-### Overview
+### Emulator Detection
 
 In the context of anti-reversing, the goal of emulator detection is to increase the difficulty of running the app on an emulated device, which impedes some tools and techniques reverse engineers like to use. This increased difficulty forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
-
-### Emulator Detection Examples
 
 There are several indicators that the device in question is being emulated. Although all these API calls can be hooked, these indicators provide a modest first line of defense.
 
@@ -910,27 +757,7 @@ TelephonyManager.getVoiceMailNumber()                   15552175049             
 
 Keep in mind that a hooking framework, such as Xposed or Frida, can hook this API to provide false data.
 
-### Bypassing Emulator Detection
-
-1. Patch the emulator detection functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
-2. Use Frida or Xposed APIs to hook file system APIs on the Java and native layers. Return innocent-looking values (preferably taken from a real device) instead of the telltale emulator values. For example, you can override the `TelephonyManager.getDeviceID` method to return an IMEI value.
-
-Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
-
-### Effectiveness Assessment
-
-Install and run the app in the emulator. The app should detect that it is being executed in an emulator and terminate or refuse to execute the functionality that's meant to be protected.
-
-Work on bypassing the defenses and answer the following questions:
-
-- How difficult is identifying the emulator detection code via static and dynamic analysis?
-- Can the detection mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- Did you need to write custom code to disable the anti-emulation feature(s)? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-## Testing Runtime Integrity Checks (MSTG-RESILIENCE-6)
-
-### Overview
+### Verify Runtime Integrity
 
 Controls in this category verify the integrity of the app's memory space to defend the app against memory patches applied during runtime. Such patches include unwanted changes to binary code, bytecode, function pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified by:
 
@@ -985,20 +812,7 @@ In contrast to GNU `ld`, which resolves symbol addresses only after they are nee
 
 _Inline hooks_ work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. You can detect inline hooks by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
 
-### Effectiveness Assessment
-
-Make sure that all file-based detection of reverse engineering tools is disabled. Then, inject code by using Xposed, Frida, and Substrate, and attempt to install native hooks and Java method hooks. The app should detect the "hostile" code in its memory and respond accordingly.
-
-Work on bypassing the checks with the following techniques:
-
-1. Patch the integrity checks. Disable the unwanted behavior by overwriting the respective bytecode or native code with NOP instructions.
-2. Use Frida or Xposed to hook the APIs used for detection and return fake values.
-
-Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
-
-## Testing Obfuscation (MSTG-RESILIENCE-9)
-
-### Overview
+### Obfuscation
 
 The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
@@ -1060,73 +874,7 @@ You can define this more granularly on specific classes or libraries in your pro
 
 Obfuscation often carries a cost in runtime performance, therefore it is usually only applied to certain very specific parts of the code, typically those dealing with security and runtime protection.
 
-### Static Analysis
-
-[Decompile the APK](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code) and [review it](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code) to determine whether the codebase has been obfuscated.
-
-Below you can find a sample for an obfuscated code block:
-
-```java
-package com.a.a.a;
-
-import com.a.a.b.a;
-import java.util.List;
-
-class a$b
-  extends a
-{
-  public a$b(List paramList)
-  {
-    super(paramList);
-  }
-
-  public boolean areAllItemsEnabled()
-  {
-    return true;
-  }
-
-  public boolean isEnabled(int paramInt)
-  {
-    return true;
-  }
-}
-```
-
-Here are some considerations:
-
-- Meaningful identifiers, such as class names, method names, and variable names, might have been discarded.
-- String resources and strings in binaries might have been encrypted.
-- Code and data related to the protected functionality might be encrypted, packed, or otherwise concealed.
-
-For native code:
-
-- [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
-- [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM") might have been applied to perform ["Control Flow Flattening"](https://github.com/obfuscator-llvm/obfuscator/wiki/Control-Flow-Flattening) or ["Bogus Control Flow"](https://github.com/obfuscator-llvm/obfuscator/wiki/Bogus-Control-Flow).
-
-Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind and in the ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) presentation by Eduardo Novella.
-
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. Tools such as [APKiD](0x08a-Testing-Tools.md#apkid) may give you additional indications about which techniques were used for the target app such as obfuscators, packers and anti-debug measures.
-
-### Dynamic Analysis
-
-You can use [APKiD](0x08a-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
-
-Example using the [UnCrackable App for Android Level 4](0x08b-Reference-Apps.md#android-uncrackable-l4):
-
-```sh
-apkid owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk
-[+] APKiD 2.1.2 :: from RedNaga :: rednaga.io
-[*] owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk!classes.dex
- |-> anti_vm : Build.TAGS check, possible ro.secure check
- |-> compiler : r8
- |-> obfuscator : unreadable field names, unreadable method names
-```
-
-In this case it detects that the app has unreadable field names and method names, among other things.
-
-## Testing Device Binding (MSTG-RESILIENCE-10)
-
-### Overview
+### Device Binding
 
 The goal of device binding is to impede an attacker who tries to both copy an app and its state from device A to device B and continue executing the app on device B. After device A has been determined trustworthy, it may have more privileges than device B. These differential privileges should not change when an app is copied from device A to device B.
 
@@ -1200,6 +948,262 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
   - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android Keystore and then use the decrypted secret key to decrypt the ciphertext.
 
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
+
+## Testing Root Detection (MSTG-RESILIENCE-1)
+
+### Bypassing Root Detection
+
+Run execution traces with jdb, [DDMS](https://developer.android.com/studio/profile/monitor "DDMS"), `strace`, and/or kernel modules to find out what the app is doing. You'll usually see all kinds of suspect interactions with the operating system, such as opening `su` for reading and obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms, one at a time. If you're performing a black box resilience assessment, disabling the root detection mechanisms is your first step.
+
+To bypass these checks, you can use several techniques, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
+
+- Renaming binaries. For example, in some cases simply renaming the `su` binary is enough to defeat root detection (try not to break your environment though!).
+- Unmounting `/proc` to prevent reading of process lists. Sometimes, the unavailability of `/proc` is enough to bypass such checks.
+- Using Frida or Xposed to hook APIs on the Java and native layers. This hides files and processes, hides the contents of files, and returns all kinds of bogus values that the app requests.
+- Hooking low-level APIs by using kernel modules.
+- Patching the app to remove the checks.
+
+### Effectiveness Assessment
+
+Check for root detection mechanisms, including the following criteria:
+
+- Multiple detection methods are scattered throughout the app (as opposed to putting everything into a single method).
+- The root detection mechanisms operate on multiple API layers (Java APIs, native library functions, assembler/system calls).
+- The mechanisms are somehow original (they're not copied and pasted from StackOverflow or other sources).
+
+Develop bypass methods for the root detection mechanisms and answer the following questions:
+
+- Can the mechanisms be easily bypassed with standard tools, such as RootCloak?
+- Is static/dynamic analysis necessary to handle the root detection?
+- Do you need to write custom code?
+- How long did successfully bypassing the mechanisms take?
+- What is your assessment of the difficulty of bypassing the mechanisms?
+
+If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.  
+
+## Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
+
+### Bypassing Debugger Detection
+
+There's no generic way to bypass anti-debugging: the best method depends on the particular mechanism(s) used to prevent or detect debugging and the other defenses in the overall protection scheme. For example, if there are no integrity checks or you've already deactivated them, patching the app might be the easiest method. In other cases, a hooking framework or kernel modules might be preferable.
+The following methods describe different approaches to bypass debugger detection:
+
+- Patching the anti-debugging functionality: Disable the unwanted behavior by simply overwriting it with NOP instructions. Note that more complex patches may be required if the anti-debugging mechanism is well designed.
+- Using Frida or Xposed to hook APIs on the Java and native layers: manipulate the return values of functions such as `isDebuggable` and `isDebuggerConnected` to hide the debugger.
+- Changing the environment: Android is an open environment. If nothing else works, you can modify the operating system to subvert the assumptions the developers made when designing the anti-debugging tricks.
+
+#### Bypassing Example: UnCrackable App for Android Level 2
+
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [level 2 of the "UnCrackable App for Android"](0x08b-Reference-Apps.md#android-uncrackable-l2).
+
+At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a _native_ method.
+
+```java
+package sg.vantagepoint.uncrackable2;
+
+public class CodeCheck {
+    public CodeCheck() {
+        super();
+    }
+
+    public boolean a(String arg2) {
+        return this.bar(arg2.getBytes());
+    }
+
+    private native boolean bar(byte[] arg1) {
+    }
+}
+
+    static {
+        System.loadLibrary("foo");
+    }
+```
+
+Please see [different proposed solutions for the Android Crackme Level 2](https://mas.owasp.org/crackmes/Android#android-uncrackable-l2 "Solutions Android Crackme Level 2") in GitHub.
+
+### Effectiveness Assessment
+
+Check for anti-debugging mechanisms, including the following criteria:
+
+- Attaching jdb and ptrace-based debuggers fails or causes the app to terminate or malfunction.
+- Multiple detection methods are scattered throughout the app's source code (as opposed to their all being in a single method or function).
+- The anti-debugging defenses operate on multiple API layers (Java, native library functions, assembler/system calls).
+- The mechanisms are somehow original (as opposed to being copied and pasted from StackOverflow or other sources).
+
+Work on bypassing the anti-debugging defenses and answer the following questions:
+
+- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
+- How difficult is identifying the anti-debugging code via static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need?
+- What is your subjective assessment of the difficulty of bypassing the mechanisms?
+
+If anti-debugging mechanisms are missing or too easily bypassed, make suggestions in line with the effectiveness criteria above. These suggestions may include adding more detection mechanisms and better integration of existing mechanisms with other defenses.
+
+## Testing File Integrity Checks (MSTG-RESILIENCE-3)
+
+### Bypassing File Integrity Checks
+
+#### Bypassing the application-source integrity checks
+
+1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
+2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
+3. Use the kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
+
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
+
+#### Bypassing the storage integrity checks
+
+1. Retrieve the data from the device, as described in the "[Testing Device Binding](#testing-device-binding-mstg-resilience-10 "Testing Device Binding")" section.
+2. Alter the retrieved data and then put it back into storage.
+
+### Effectiveness Assessment
+
+**Application-source integrity checks:**
+
+Run the app in an unmodified state and make sure that everything works. Apply simple patches to `classes.dex` and any .so libraries in the app package. Re-package and re-sign the app as described in the "Basic Security Testing" chapter, then run the app. The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate. Work on bypassing the defenses and answer the following questions:
+
+- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
+- How difficult is identifying the anti-debugging code via static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need?
+- What is your assessment of the difficulty of bypassing the mechanisms?
+
+**Storage integrity checks:**
+
+An approach similar to that for application-source integrity checks applies. Answer the following questions:
+
+- Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value)?
+- How difficult is getting the HMAC key or the asymmetric private key?
+- Did you need to write custom code to disable the defenses? How much time did you need?
+- What is your assessment of the difficulty of bypassing the mechanisms?
+
+## Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
+
+### Effectiveness Assessment
+
+Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Xposed, Substrate for Android, RootCloak, Android SSL Trust Killer.
+
+The app should respond in some way to the presence of those tools. For example by:
+
+- Alerting the user and asking for accepting liability.
+- Preventing execution by gracefully terminating.
+- Securely wiping any sensitive data stored on the device.
+- Reporting to a backend server, e.g, for fraud detection.
+
+Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
+
+- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
+- How difficult is identifying the anti reverse engineering code via static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need?
+- What is your assessment of the difficulty of bypassing the mechanisms?
+
+The following steps should guide you when bypassing detection of reverse engineering tools:
+
+1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
+2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file, not the modified file.
+3. Use a kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
+
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
+
+## Testing Emulator Detection (MSTG-RESILIENCE-5)
+
+### Bypassing Emulator Detection
+
+1. Patch the emulator detection functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
+2. Use Frida or Xposed APIs to hook file system APIs on the Java and native layers. Return innocent-looking values (preferably taken from a real device) instead of the telltale emulator values. For example, you can override the `TelephonyManager.getDeviceID` method to return an IMEI value.
+
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
+
+### Effectiveness Assessment
+
+Install and run the app in the emulator. The app should detect that it is being executed in an emulator and terminate or refuse to execute the functionality that's meant to be protected.
+
+Work on bypassing the defenses and answer the following questions:
+
+- How difficult is identifying the emulator detection code via static and dynamic analysis?
+- Can the detection mechanisms be bypassed trivially (e.g., by hooking a single API function)?
+- Did you need to write custom code to disable the anti-emulation feature(s)? How much time did you need?
+- What is your assessment of the difficulty of bypassing the mechanisms?
+
+## Testing Runtime Integrity Checks (MSTG-RESILIENCE-6)
+
+### Effectiveness Assessment
+
+Make sure that all file-based detection of reverse engineering tools is disabled. Then, inject code by using Xposed, Frida, and Substrate, and attempt to install native hooks and Java method hooks. The app should detect the "hostile" code in its memory and respond accordingly.
+
+Work on bypassing the checks with the following techniques:
+
+1. Patch the integrity checks. Disable the unwanted behavior by overwriting the respective bytecode or native code with NOP instructions.
+2. Use Frida or Xposed to hook the APIs used for detection and return fake values.
+
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
+
+## Testing Obfuscation (MSTG-RESILIENCE-9)
+
+### Static Analysis
+
+[Decompile the APK](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code) and [review it](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code) to determine whether the codebase has been obfuscated.
+
+Below you can find a sample for an obfuscated code block:
+
+```java
+package com.a.a.a;
+
+import com.a.a.b.a;
+import java.util.List;
+
+class a$b
+  extends a
+{
+  public a$b(List paramList)
+  {
+    super(paramList);
+  }
+
+  public boolean areAllItemsEnabled()
+  {
+    return true;
+  }
+
+  public boolean isEnabled(int paramInt)
+  {
+    return true;
+  }
+}
+```
+
+Here are some considerations:
+
+- Meaningful identifiers, such as class names, method names, and variable names, might have been discarded.
+- String resources and strings in binaries might have been encrypted.
+- Code and data related to the protected functionality might be encrypted, packed, or otherwise concealed.
+
+For native code:
+
+- [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
+- [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM") might have been applied to perform ["Control Flow Flattening"](https://github.com/obfuscator-llvm/obfuscator/wiki/Control-Flow-Flattening) or ["Bogus Control Flow"](https://github.com/obfuscator-llvm/obfuscator/wiki/Bogus-Control-Flow).
+
+Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind and in the ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) presentation by Eduardo Novella.
+
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. Tools such as [APKiD](0x08a-Testing-Tools.md#apkid) may give you additional indications about which techniques were used for the target app such as obfuscators, packers and anti-debug measures.
+
+### Dynamic Analysis
+
+You can use [APKiD](0x08a-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
+
+Example using the [UnCrackable App for Android Level 4](0x08b-Reference-Apps.md#android-uncrackable-l4):
+
+```sh
+apkid owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk
+[+] APKiD 2.1.2 :: from RedNaga :: rednaga.io
+[*] owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk!classes.dex
+ |-> anti_vm : Build.TAGS check, possible ro.secure check
+ |-> compiler : r8
+ |-> obfuscator : unreadable field names, unreadable method names
+```
+
+In this case it detects that the app has unreadable field names and method names, among other things.
+
+## Testing Device Binding (MSTG-RESILIENCE-10)
 
 ### Static Analysis
 

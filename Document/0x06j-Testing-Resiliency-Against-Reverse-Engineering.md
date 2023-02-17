@@ -6,7 +6,7 @@ This chapter covers defense-in-depth measures recommended for apps that process,
 
 These measures should be applied as needed, based on an assessment of the risks caused by unauthorized tampering with the app and/or reverse engineering of the code.
 
-- Apps must never use these measures as a replacement for security controls, and are threfore expected to fulfil other baseline security measures such as the rest of the MASVS security controls.
+- Apps must never use these measures as a replacement for security controls, and are therefore expected to fulfill other baseline security measures such as the rest of the MASVS security controls.
 - Apps should combine these measures cleverly instead of using them individually. The goal is to discourage reverse engineers from performing further analysis.
 - Integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
