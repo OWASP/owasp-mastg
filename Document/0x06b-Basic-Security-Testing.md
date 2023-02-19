@@ -972,9 +972,15 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 
 ## Setting Up a Network Testing Environment
 
-### Basic Network Monitoring/Sniffing
+iOS apps can be monitored at both the *application layer* via **HTTP proxy** and the *data link layer* (and above) via **network traffic capture** in terms of the [OSI model](https://en.wikipedia.org/wiki/OSI_model). Testing with an HTTP proxy is sufficient for apps that exclusively utilize REST APIs or other HTTP communications, however a traffic capture is required to validate if that is the only channel in use and to inspect those channels if not.
 
-You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have [Wireshark](0x08a-Testing-Tools.md#wireshark) installed on your macOS host computer.
+### Low Level Network Monitoring
+
+Network traffic can be captured into [Wireshark](0x08a-Testing-Tools.md#wireshark) at the *data link layer* either through Apple's [Remote Virtual Interface](https://developer.apple.com/documentation/network/recording_a_packet_trace) over USB on macOS, or using `tcpdump` over SSH with a jailbroken iOS device.
+
+#### Network Traffic Capture with a USB Cable and macOS
+
+You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://developer.apple.com/documentation/network/recording_a_packet_trace "Recording a Packet Trace") for your iOS device. First, make sure you have [Wireshark](0x08a-Testing-Tools.md#wireshark) installed on your macOS host computer.
 
 1. Connect your iOS device to your macOS host computer via USB.
 2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section ["Getting the UDID of an iOS device"](#getting-the-udid-of-an-ios-device) on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
@@ -984,8 +990,38 @@ $ rvictl -s <UDID>
 Starting device <UDID> [SUCCEEDED] with interface rvi0
 ```
 
-1. Launch Wireshark and select "rvi0" as the capture interface.
-1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
+Next, launch Wireshark and select "rvi0" as the capture interface.
+
+#### Network Traffic Capture with SSH on a Jailbroken Device
+
+You can remotely sniff traffic in real-time on iOS with [tcpdump and Wireshark](https://blog.jjhayes.net/wp/2019/02/28/capture-iphone-network-traffic-with-tcpdump-and-wireshark/) over the SSH protocol. This method requires a jailbroken iOS device, however it can be performed from any operating system. First, make sure you have [Wireshark](0x08a-Testing-Tools.md#wireshark) installed on your host computer.
+
+1. Open Cydia and install the `tcpdump` and `OpenSSH` packages.
+1. Connect your iOS device and your computer to the same network.
+1. Install and open Wireshark on your host computer.
+1. Select the cog icon next "SSH remote capture: sshdump" at the initial "Capture" UI page.
+1. Within the "Server" tab:
+    1. Enter your iOS device's IP address as "Remote SSH server address".
+    1. Enter `22` as "Remote SSH server port".
+1. Within the "Authentication" tab:
+    1. Enter `root` as the "Remote SSH server username".
+    1. Enter the "SSH server password" (see: [Remote Shell](#remote-shell)).
+1. Within the "Capture" tab:
+    1. Ensure that "Remote capture command selection" is `tcpdump`.
+    2. Optionally, set "Remote capture filter" to `not port 22` to eliminate noise from Wireshark's SSH connection to the iOS device.
+1. Select "Save", double click "SSH remote capture: sshdump" and perform your application testing.
+
+After testing is complete, click the red "Stop" button and use "File" > "Save As" to retain the capture data as a `PCAP` file for later analysis.
+
+#### Decrypting Captured Packets
+
+HTTPS traffic captured in the PCAP can be decrypted for review within Wireshark if testing was performed with an HTTP proxy supporting `SSLKEYLOGFILE` key logging. This is possible with [mitmproxy](https://docs.mitmproxy.org/stable/howto-wireshark-tls/), but not Burp Suite ([request](https://forum.portswigger.net/thread/option-to-create-nss-key-log-file-d57f526f)) or ZAP ([issue](https://github.com/zaproxy/zaproxy/issues/1630)). Navigate to Wireshark's `Preferences > Protocols > TLS` configuration and use the "(Pre)-Master-Secret log filename" field to browse to the `SSLKEYLOGFILE` file prepared by your HTTP proxy.
+
+As an alternative to generating `SSLKEYLOGFILE` from the web proxy, the Frida script ["ios-tls-keylogger.js"](https://codeshare.frida.re/@andydavies/ios-tls-keylogger/) can sometimes be used to generate this file when iOS apps use common SSL/TLS libraries. This is considered a more fragile approach as the `CALLBACK_OFFSET` constant must be [updated in the script](https://www.mustafadur.com/blog/intercepting-ssl-and-https/#sniffing-with-sslkeylogfile) to match your tested iOS version, and not all client-side implementations of SSL/TLS will work.
+
+#### Capture Filters
+
+Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
 ```default
 ip.addr == 192.168.1.1 && http
@@ -995,13 +1031,17 @@ ip.addr == 192.168.1.1 && http
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 
+To get a statistical summary of your packet capture to identify what to filter for, navigate to Statistics > Conversations and flip through the UDP and TCP tabs. You can quicky identify the most heavily used protocols by sorting this data by columns such as port numbers and number of packets.
+
 ### Setting up an Interception Proxy
 
-[Burp Suite](0x08a-Testing-Tools.md#burp-suite) is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+Working at the application layer, [Burp Suite](0x08a-Testing-Tools.md#burp-suite) is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your iOS device and host computer are connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device").
+
+Alternatively, free and open source web proxies which work with iOS apps include [OWASP ZAP](https://www.zaproxy.org/) and [mitmproxy](https://mitmproxy.org/) (see: "[Quick Setup](https://docs.mitmproxy.org/stable/concepts-certificates/#quick-setup)" following installation).
 
 #### Using Burp via USB on a Jailbroken Device
 
