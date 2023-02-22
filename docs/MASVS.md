@@ -8,17 +8,17 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 
 <br>
 
-[:material-download: Download the MASVS](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-en.pdf){ .md-button .md-button--primary }
+[:material-download: Download the MASVS v1.5.0](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-en.pdf){ .md-button .md-button--primary }
 
 <br>
 
-<span>:warning:</span> <span style="color: #fb8323;"> <b>HELP WANTED:</b> We're currently refactoring the MASVS to bring it to version 2.0. This is a community effort and you can also participate. Take a look at it and give your feedback using the button below.</span>
+<span>:new:</span> <span style="color: #33CCCC;"> The MASVS 2.0.0 is already available as a spreadsheet. We're currently working on updating this page and the related documents. Learn more about the refactoring process [here](https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring).</span>
 
-[:material-open-in-new: MASVS Refactoring](https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring){ .md-button }
+[:material-open-in-new: MASVS v2.0.0](https://docs.google.com/spreadsheets/d/1MZIvJ5Aze-zpyzLvQZVwyzF0bKWRPfnEd7nqFeH2PfA/edit?usp=sharing){ .md-button }
 
 <br>
 
-> :material-translate: The OWASP MASVS is also available in [other languages](https://github.com/OWASP/owasp-masvs#masvs-translations). Is your language not here? We'd love to [add it](contributing/4_Add_new_Language.md)!
+> :material-translate: The OWASP MASVS v1.5.0 is also available in [other languages](https://github.com/OWASP/owasp-masvs#masvs-translations). Is your language not here? We'd love to [add it](contributing/4_Add_new_Language.md)!
 >
 > :material-download: Download international PDFs:
 >
