@@ -1272,6 +1272,21 @@ Now you can run the validate binary in your Android device to verify the solutio
 
 To conclude, learning symbolic execution might look a bit intimidating at first, as it requires deep understanding and extensive practice. However, the effort is justified considering the valuable time it can save in contrast to analyzing complex disassembled instructions manually. Typically you'd use hybrid techniques, as in the above example, where we performed manual analysis of the disassembled code to provide the correct criteria to the symbolic execution engine. Please refer to the iOS chapter for more examples on Angr usage.
 
+### Taint Analysis
+
+Taint analysis is a technique to perform information flow analysis. Taint analysis is used for tracking the flow of sensitive information within a program. For example, tracking the usage of geolocation information collected in an Android app - whether it is being sent to 3rd party domains or not.
+
+In taint analysis, from where a sensitive information originates is called a source, while eventually where the information is used is called a sink. For instance in an Android app getDeviceId() and sendTextMessage() function calls are made. Using taint analysis we can determine whether the device ID is being sent out as a text message or not. In this case, getDeviceId() is a source and sendTextMessage() is a sink, and using taint analysis we determine if there is a direct path between the source and the sink. If there is a direct path, then such a flow is called a leak. 
+
+Manual analysis of above stated examples is not scalable for large codebases. Taint analysis provides an excellent alternative to automate such analysis. Taint analysis can be performed both statically and dynamically, with each approach having its own pros and cons. Discussing these pros and cons is beyond the scope of this section.
+
+There are multiple tools which perform taint analysis on native code, like [Triton](https://github.com/jonathansalwan/Triton "Triton"), [bincat](https://github.com/airbus-seclab/bincat "bincat") to name a few. In this section we will focus on Android Java code, and use [FlowDroid](https://github.com/secure-software-engineering/FlowDroid "FlowDroid") to perform taint analysis. Apart from FlowDroid, [GDA](https://github.com/charles2gan/GDA-android-reversing-Tool/wiki/GDA-Static-Taint-Analysis "GDA") also supports taint analysis for Android apps. 
+
+FlowDroid is an open-source tool, built on top of [soot](https://github.com/soot-oss/soot "soot") - a framework for analyzing and transforming Java and Android applications. FlowDroid performs a fully context, object and flow-sensitive taint analysis, while accommodating the Android application lifecycle and UI widgets in the analysis.
+
+
+ 
+
 ## Tampering and Runtime Instrumentation
 
 First, we'll look at some simple ways to modify and instrument mobile apps. _Tampering_ means making patches or runtime changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. _Runtime Instrumentation_ encompasses adding hooks and runtime patches to observe the app's behavior. In mobile application security however, the term loosely refers to all kinds of runtime manipulation, including overriding methods to change behavior.
