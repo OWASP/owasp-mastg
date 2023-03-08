@@ -1282,10 +1282,75 @@ Manual analysis of above stated examples is not scalable for large codebases. Ta
 
 There are multiple tools which perform taint analysis on native code, like [Triton](https://github.com/jonathansalwan/Triton "Triton"), [bincat](https://github.com/airbus-seclab/bincat "bincat") to name a few. In this section we will focus on Android Java code, and use [FlowDroid](https://github.com/secure-software-engineering/FlowDroid "FlowDroid") to perform taint analysis. Apart from FlowDroid, [GDA](https://github.com/charles2gan/GDA-android-reversing-Tool/wiki/GDA-Static-Taint-Analysis "GDA") also supports taint analysis for Android apps. 
 
-FlowDroid is an open-source tool, built on top of [soot](https://github.com/soot-oss/soot "soot") - a framework for analyzing and transforming Java and Android applications. FlowDroid performs a fully context, object and flow-sensitive taint analysis, while accommodating the Android application lifecycle and UI widgets in the analysis.
+FlowDroid is an open-source tool, built on top of [soot](https://github.com/soot-oss/soot "soot") - a framework for analyzing and transforming Java and Android applications. FlowDroid performs a fully context, object and flow-sensitive taint analysis, while accommodating the additional complexity of Android application's lifecycle and UI widgets in the analysis.
 
+FlowDroid tool can be used either as a standalone command line tool or as a library. The former mostly to perform a quick analysis, while later for performing complex analysis. We will use command line tool and perform taint analysis on [InsecureShop v1.0]( https://github.com/hax0rgb/InsecureShop/releases/tag/v1.0 "InsecureShop") application.
 
+In InsecureShop application, the application accepts username and password, and stores them into shared preferences. In this example, we are interested how this stored username and password is used. Username and password is the sensitive information, while reading from shared preferences will become the source. Sink for this analysis can be multiple operations, like sending over the network, sending out in an Intent, storing in an external file etc. For simplicity, let us only consider the scenario where an Intent is sent with username and password as extra parameters.
+
+To use FlowDroid, firstly, we need to provide an input list of possible sources and sinks to evaluate for. For our example, we will use the following (named sources_sink.txt):  
+
+```
+<android.content.SharedPreferences: java.lang.String getString(java.lang.String, java.lang.String)> -> _SOURCE_
+
+<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.CharSequence)> -> _SINK_
+<android.content.Intent: android.content.Intent putExtra(java.lang.String,char)> -> _SINK_
+<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)> -> _SINK_
+```
+
+To invoke FlowDroid, following command can be used:
+
+```
+java -jar soot-infoflow-cmd/target/soot-infoflow-cmd-jar-with-dependencies.jar \
+    -a InsecureShop.apk \
+    -p Android/Sdk/platforms \
+    -s sources_sink.txt
+```
+
+The output of above command will be:
+
+```
+...
+
+[main] INFO soot.jimple.infoflow.android.SetupApplication$InPlaceInfoflow - The sink virtualinvoke r2.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("password", $r5) in method <com.insecureshop.AboutUsActivity: void onSendData(android.view.View)> was called with values from the following sources:
+
+[main] INFO soot.jimple.infoflow.android.SetupApplication$InPlaceInfoflow - - $r1 = interfaceinvoke $r2.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("password", "") in method <com.insecureshop.util.Prefs: java.lang.String getPassword()>
+
+...
+
+[main] INFO soot.jimple.infoflow.android.SetupApplication$InPlaceInfoflow - The sink virtualinvoke r2.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("username", $r4) in method <com.insecureshop.AboutUsActivity: void onSendData(android.view.View)> was called with values from the following sources:
+
+[main] INFO soot.jimple.infoflow.android.SetupApplication$InPlaceInfoflow - - $r1 = interfaceinvoke $r2.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("username", "") in method <com.insecureshop.util.Prefs: java.lang.String getUsername()>
+
+... 
+
+[main] INFO soot.jimple.infoflow.android.SetupApplication - Found 2 leaks
+```
+
+The output indicates there are 2 leaks in the application, with one each corresponding to the username and password. 
+
+Although the above output uses [jimple intermediate representation](https://www.sable.mcgill.ca/soot/doc/soot/jimple/Jimple.html "Jimple") to show the sources and sinks, but it contains enough information to locate the sources and sinks in the application. Since, InsecureShop app is open source, we can look for the source code corresponding to above findings. 
+
+```
+// file: AboutActivity.kt
+
+fun onSendData(view: View) {
+        val userName = Prefs.username!!
+        val password = Prefs.password!!
+
+        val intent = Intent("com.insecureshop.action.BROADCAST")
+        intent.putExtra("username", userName)
+        intent.putExtra("password", password)
+        sendBroadcast(intent)
+
+        textView.text = "InsecureShop is an intentionally designed vulnerable android app built in Kotlin."
+
+    }
+```
+
+FlowDroid can also be used for generating call graphs, as demonstrated in this [blog](https://medium.com/geekculture/generating-call-graphs-in-android-using-flowdroid-pointsto-analysis-7b2e296e6697 "FlowDroid call graphs").
  
+To summarize, taint analysis is an information flow analysis approach. For Android Java code, FlowDroid can be used for performing taint analysis. Taint analysis is especially helpful in automating data flow analysis in big complex applications. With big and complex applications, the accuracy of such tools may vary, thus the human reviewer need to strike a balance between time consumed if analysis done manually and accuracy.
 
 ## Tampering and Runtime Instrumentation
 
