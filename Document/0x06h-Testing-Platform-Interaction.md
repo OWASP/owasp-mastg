@@ -2922,7 +2922,7 @@ For what concerns this section we will learn about:
 
 As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of the WKWebViews is loaded, the app will do so by calling [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") and `loadHTMLString:baseURL`.
 
-To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
+To quickly inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
 ```bash
 $ frida-trace -U "Where's My Browser?"

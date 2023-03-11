@@ -1031,7 +1031,7 @@ ip.addr == 192.168.1.1 && http
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 
-To get a statistical summary of your packet capture to identify what to filter for, navigate to Statistics > Conversations and flip through the UDP and TCP tabs. You can quicky identify the most heavily used protocols by sorting this data by columns such as port numbers and number of packets.
+To get a statistical summary of your packet capture to identify what to filter for, navigate to Statistics > Conversations and flip through the UDP and TCP tabs. You can quickly identify the most heavily used protocols by sorting this data by columns such as port numbers and number of packets.
 
 ### Setting up an Interception Proxy
 
