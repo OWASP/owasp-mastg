@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
@@ -20,7 +20,7 @@ jobs:
       - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: "OWASP/owasp-masvs"
           fetch-depth: 1
