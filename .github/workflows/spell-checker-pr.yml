@@ -1,10 +1,7 @@
-name: Spell Checker
+name: Spell Checker (PR)
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
+  pull_request:
 
 jobs:
   spell-check:
