@@ -42,7 +42,7 @@ jobs:
       run: ./tools/docker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: OWASP_MASTG-${{env.MASTG_VERSION}}
         path: OWASP_MASTG-${{env.MASTG_VERSION}}*
@@ -112,13 +112,13 @@ jobs:
       run: cd tools/scripts && ./gen_all_excel.sh ${{env.MASTG_VERSION}} ${{env.MASTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
 
     - name: Upload Enhanced MASVS YAML
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Enhanced-MASVS-YAML-Files
         path: tools/scripts/masvs_full_*.yaml
 
     - name: Upload Checklists
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Checklists
         path: tools/scripts/*.xlsx
