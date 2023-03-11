@@ -21,7 +21,7 @@ jobs:
   Generate-MASTG-Documents:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 1
 
@@ -52,7 +52,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 1
     
@@ -81,7 +81,7 @@ jobs:
     - name: Confirm MASVS Release Tag
       run: echo ${{env.MASVS_VERSION}}
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         repository: "OWASP/owasp-masvs.git"
         ref: ${{env.MASVS_VERSION}}

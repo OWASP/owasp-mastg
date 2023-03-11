@@ -1,4 +1,4 @@
-name: URLs Checker (PR)
+name: URL Checker (PR)
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
       - name: link-check
@@ -16,6 +16,6 @@ jobs:
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
-          config-file: '.github/workflows/config/mlc_config.json'
+          config-file: '.github/workflows/config/url-checker-config.json'
           folder-path: '.'
           check-modified-files-only: 'yes'
