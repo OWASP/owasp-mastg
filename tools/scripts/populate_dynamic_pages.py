@@ -25,6 +25,12 @@ for element in data:
 
 append_to_file(dict_to_md(data) + "\n\n<br>\n", "docs/talks.md")
 
+# contributors.md
+
+data = yaml.safe_load(open("docs/assets/data/contributors.yaml"))
+append_to_file(dict_to_md(data) + "\n\n<br>\n", "docs/contributors.md")
+
+
 # checklists.md
 
 masvs_full_en = requests.get("https://github.com/OWASP/owasp-mastg/releases/latest/download/masvs_full_en.yaml", stream=True)
