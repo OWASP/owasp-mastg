@@ -1,5 +1,11 @@
 # Acknowledgments
 
+## Contributors
+
+All of our contributors are listed in the Contributing section of the OWASP MAS website:
+
+<https://mas.owasp.org/contributing/>
+
 ## 🥇 MAS Advocates
 
 MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word.
@@ -98,59 +104,6 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
   - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
   - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
   - and more
-
-## Contributors
-
-**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mastg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mastg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
-
-### Top Contributors
-
-Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
-
-- Pawel Rzepa
-- Francesco Stillavato
-- Henry Hoggard
-- Andreas Happe
-- Kyle Benac
-- Paulino Calderon
-- Alexander Anthuk
-- Caleb Kinney
-- Abderrahmane Aftahi
-- Koki Takeyama
-- Wen Bin Kong
-- Abdessamad Temmar
-- Cláudio André
-- Slawomir Kosowski
-- Bolot Kerimbaev
-- Lukasz Wierzbicki
-
-### Contributors
-
-Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository. Their Github handle is listed below:
-
-kryptoknight13, DarioI, luander, oguzhantopgul, Osipion, mpishu, pmilosev, isher-ux, thec00n, ssecteam, jay0301, magicansk, jinkunong, nick-epson, caitlinandrews, dharshin, raulsiles, righettod, karolpiateknet, mkaraoz, Sjord, bugwrangler, jasondoyle, joscandreu, yog3shsharma, ryantzj, rylyade1, shivsahni, diamonddocumentation, 51j0, AnnaSzk, hlhodges, legik, abjurato, serek8, mhelwig, locpv-ibl and ThunderSon.
-
-### Mini Contributors
-
-Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). Their Github handle is listed below:
-
-jonasw234, zehuanli, jadeboer, Isopach, prabhant, jhscheer, meetinthemiddle-be, bet4it, aslamanver, juan-dambra, OWASP-Seoul, hduarte, TommyJ1994, forced-request, D00gs, vasconcedu, mehradn7, whoot, LucasParsy, DotDotSlashRepo, enovella, ionis111, vishalsodani, chame1eon, allRiceOnMe, crazykid95, Ralireza, Chan9390, tamariz-boop, abhaynayar, camgaertner, EhsanMashhadi, fujiokayu, decidedlygray, Ali-Yazdani, Fi5t, MatthiasGabriel, colman-mbuya and anyashka.
-
-### Reviewers
-
-Reviewers have consistently provided useful feedback through GitHub issues and pull request comments.
-
-- Jeroen Beckers
-- Sjoerd Langkemper
-- Anant Shrivastava
-
-### Editors
-
-- Heaven Hodges
-- Caitlin Andrews
-- Nick Epson
-- Anita Diamond
-- Anna Szkudlarek
 
 ### Donators
 
