@@ -38,6 +38,8 @@ All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & C
 
 **Update March 2023: We're creating a new concept for contributions that aligns with the new MASTG v2 workflows. Stay tuned...**
 
+<br>
+
 ### OWASP MAS Project Featured Contributions
 
 - Damien Clochard (Automation in GitHub Actions with pandocker)
@@ -52,6 +54,8 @@ _Coming soon..._
 _Coming soon..._
 
 ### OWASP MASVS V1
+
+The latest version of the MASVS v1 including all translations is available here: <https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0>
 
 | Project Lead | Lead Author | Contributors and Reviewers
 | ------- | --- | ----------------- |
@@ -77,6 +81,8 @@ _Coming soon..._
 | Greek | Panagiotis Yialouris |
 
 ### OWASP MASTG V1
+
+The latest version of the MASTG v1 is available here: <https://github.com/OWASP/owasp-mastg/releases/tag/v1.5.0>
 
 **Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mastg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mastg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
 
