@@ -35,6 +35,9 @@ jobs:
     - name: Get Latest MASVS Release Tag
       run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
+    - name: Assemble Testing Chapters
+      run: python3 tools/scripts/assemble_test_chapters.py
+
     - name: Process Files
       run: python3 tools/scripts/transform_files.py
 

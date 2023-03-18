@@ -14,6 +14,9 @@ jobs:
           python-version: 3.x
       - run: pip install -r requirements.txt
 
+      - name: Assemble Testing Chapters
+        run: python3 tools/scripts/assemble_test_chapters.py
+
       - run: ./tools/scripts/structure_mastg.sh
       - run: python3 tools/scripts/transform_files.py
 
