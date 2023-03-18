@@ -10,7 +10,7 @@ These measures should be applied as needed, based on an assessment of the risks 
 - Apps should combine these measures cleverly instead of using them individually. The goal is to discourage reverse engineers from performing further analysis.
 - Integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
-You can learn more about principles and technical risks of reverse engineering in these OWASP documents:
+You can learn more about principles and technical risks of reverse engineering and code modification in these OWASP documents:
 
 - [OWASP Architectural Principles That Prevent Code Modification or Reverse Engineering](https://wiki.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project "OWASP Architectural Principles That Prevent Code Modification or Reverse Engineering")
 - [OWASP Technical Risks of Reverse Engineering and Unauthorized Code Modification](https://wiki.owasp.org/index.php/Technical_Risks_of_Reverse_Engineering_and_Unauthorized_Code_Modification "OWASP Technical Risks of Reverse Engineering and Unauthorized Code Modification")
