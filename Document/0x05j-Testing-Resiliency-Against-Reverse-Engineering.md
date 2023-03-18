@@ -1,6 +1,8 @@
 # Android Anti-Reversing Defenses
 
-## General Disclaimer
+## Overview
+
+### General Disclaimer
 
 The **lack of any of these measures does not cause a vulnerability** - instead, they are meant to increase the app's resilience against reverse engineering and specific client-side attacks.
 
@@ -12,8 +14,6 @@ You can learn more about principles and technical risks of reverse engineering a
 
 - [OWASP Architectural Principles That Prevent Code Modification or Reverse Engineering](https://wiki.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project "OWASP Architectural Principles That Prevent Code Modification or Reverse Engineering")
 - [OWASP Technical Risks of Reverse Engineering and Unauthorized Code Modification](https://wiki.owasp.org/index.php/Technical_Risks_of_Reverse_Engineering_and_Unauthorized_Code_Modification "OWASP Technical Risks of Reverse Engineering and Unauthorized Code Modification")
-
-## Overview
 
 ### Root Detection and Common Root Detection Methods
 

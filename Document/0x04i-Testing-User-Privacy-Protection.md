@@ -1,8 +1,8 @@
 # Mobile App User Privacy Protection
 
-**IMPORTANT DISCLAIMER:** The MASTG is not a legal handbook. Therefore, we will not deep dive into the GDPR or other possibly relevant legislation here. This chapter is meant to introduce you to the topics and provide you with essential references that you can use to continue researching by yourself. We'll also do our best effort to provide you with tests or guidelines for testing the privacy-related requirements listed in the OWASP MASVS.
-
 ## Overview
+
+**IMPORTANT DISCLAIMER:** The MASTG is not a legal handbook. Therefore, we will not deep dive into the GDPR or other possibly relevant legislation here. This chapter is meant to introduce you to the topics and provide you with essential references that you can use to continue researching by yourself. We'll also do our best effort to provide you with tests or guidelines for testing the privacy-related requirements listed in the OWASP MASVS.
 
 ### The Main Problem
 
