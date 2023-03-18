@@ -500,10 +500,3 @@ If not already done, install the CA certificates in your mobile device which wil
 Start using the app and trigger its functions. You should see HTTP messages showing up in your interception proxy.
 
 > When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
-
-## References
-
-### OWASP MASVS
-
-- MSTG-NETWORK-1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
-- MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."

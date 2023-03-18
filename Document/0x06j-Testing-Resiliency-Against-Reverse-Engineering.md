@@ -10,6 +10,11 @@ These measures should be applied as needed, based on an assessment of the risks 
 - Apps should combine these measures cleverly instead of using them individually. The goal is to discourage reverse engineers from performing further analysis.
 - Integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
+You can learn more about principles and technical risks of reverse engineering in these OWASP documents:
+
+- [OWASP Architectural Principles That Prevent Code Modification or Reverse Engineering](https://wiki.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project "OWASP Architectural Principles That Prevent Code Modification or Reverse Engineering")
+- [OWASP Technical Risks of Reverse Engineering and Unauthorized Code Modification](https://wiki.owasp.org/index.php/Technical_Risks_of_Reverse_Engineering_and_Unauthorized_Code_Modification "OWASP Technical Risks of Reverse Engineering and Unauthorized Code Modification")
+
 ### General Disclaimer
 
 The **lack of any of these measures does not cause a vulnerability** - instead, they are meant to increase the app's resilience against reverse engineering and specific client-side attacks.
@@ -21,6 +26,8 @@ For example, preventing debugging is virtually impossible. If the app is publicl
 ### Jailbreak Detection
 
 Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme.
+
+> You can learn more about Jailbreak/Root Detection in the research study ["Jailbreak/Root Detection Evasion Study on iOS and Android"](https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/Jailbreak-Root-Detection-Evasion-Study-on-iOS-and-Android.pdf "Jailbreak/Root Detection Evasion Study on iOS and Android") by Dana Geist and Marat Nigmatullin.
 
 #### Common Jailbreak Detection Checks
 
@@ -478,185 +485,3 @@ The purpose of device binding is to impede an attacker who tries to copy an app 
 - **Using Google Instance ID**: see the [implementation for iOS here](https://developers.google.com/instance-id/guides/ios-implementation "iOS implementation Google Instance ID").
 
 Any scheme based on these methods will be more secure the moment a passcode and/or Touch ID is enabled, the materials stored in the Keychain or filesystem are protected with protection classes (such as `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`), and the `SecAccessControlCreateFlags` is set either with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode, Face ID or Touch ID), `kSecAccessControlBiometryAny` (Face ID or Touch ID) or `kSecAccessControlBiometryCurrentSet` (Face ID / Touch ID: but current enrolled biometrics only).
-
-## Testing Jailbreak Detection (MSTG-RESILIENCE-1)
-
-To test for jailbreak detection install the app on a jailbroken device.
-
-**Launch the app and see what happens:**
-
-If it implements jailbreak detection, you might notice one of the following things:
-
-- The app crashes and closes immediately, without any notification.
-- A pop-up window indicates that the app won't run on a jailbroken device.
-
-Note that crashes might be an indicator of jailbreak detection but the app may be crashing for any other reasons, e.g. it may have a bug. We recommend to test the app on non-jailbroken device first, especially when you're testing preproduction versions.
-
-**Launch the app and try to bypass Jailbreak Detection using an automated tool:**
-
-If it implements jailbreak detection, you might be able to see indicators of that in the output of the tool. See section ["Automated Jailbreak Detection Bypass"](#automated-jailbreak-detection-bypass).
-
-**Reverse Engineer the app:**
-
-The app might be using techniques that are not implemented in the automated tools that you've used. If that's the case you must reverse engineer the app to find proofs. See section ["Manual Jailbreak Detection Bypass"](#manual-jailbreak-detection-bypass).
-
-## Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
-
-In order to test for anti-debugging detection you can try to attach a debugger to the app and see what happens.
-
-The app should respond in some way. For example by:
-
-- Alerting the user and asking for accepting liability.
-- Preventing execution by gracefully terminating.
-- Securely wiping any sensitive data stored on the device.
-- Reporting to a backend server, e.g, for fraud detection.
-
-Try to hook or reverse engineer the app using the methods from section ["Anti-Debugging Detection"](#anti-debugging-detection).
-
-Next, work on bypassing the detection and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the detection code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-## Testing File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
-
-**Application Source Code Integrity Checks:**
-
-Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter ["iOS Tampering and Reverse Engineering"](0x06c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing), and run it.
-
-The app should respond in some way. For example by:
-
-- Alerting the user and asking for accepting liability.
-- Preventing execution by gracefully terminating.
-- Securely wiping any sensitive data stored on the device.
-- Reporting to a backend server, e.g, for fraud detection.
-
-Work on bypassing the defenses and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the detection code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-**File Storage Integrity Checks:**
-
-Go to the app data directories as indicated in section ["Accessing App Data Directories"](0x06b-Basic-Security-Testing.md#accessing-app-data-directories) and modify some files.
-
-Next, work on bypassing the defenses and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value pair)?
-- How difficult is obtaining the HMAC key or the asymmetric private key?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-## Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
-
-Launch the app with various reverse engineering tools and frameworks installed on your test device, such as Frida, Cydia Substrate, Cycript or SSL Kill Switch.
-
-The app should respond in some way to the presence of those tools. For example by:
-
-- Alerting the user and asking for accepting liability.
-- Preventing execution by gracefully terminating.
-- Securely wiping any sensitive data stored on the device.
-- Reporting to a backend server, e.g, for fraud detection.
-
-Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the detection code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-## Testing Emulator Detection (MSTG-RESILIENCE-5)
-
-In order to test for emulator detection you can try to run the app on different emulators as indicated in section ["Emulator Detection"](#emulator-detection) and see what happens.
-
-The app should respond in some way. For example by:
-
-- Alerting the user and asking for accepting liability.
-- Preventing execution by gracefully terminating.
-- Reporting to a backend server, e.g, for fraud detection.
-
-You can also reverse engineer the app using ideas for strings and methods from section ["Emulator Detection"](#emulator-detection).
-
-Next, work on bypassing this detection and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the detection code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-## Testing Obfuscation (MSTG-RESILIENCE-9)
-
-Attempt to disassemble the Mach-O in the IPA and any included library files in the "Frameworks" directory (.dylib or .framework files), and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that:
-
-- meaningful identifiers, such as class names, method names, and variable names, have been discarded.
-- string resources and strings in binaries are encrypted.
-- code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
-
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
-
-## Testing Device Binding (MSTG-RESILIENCE-10)
-
-### Static Analysis
-
-To test for device binding you can look for:
-
-- MAC addresses: there are several ways to find the MAC address. When you use `CTL_NET` (a network subsystem) or `NET_RT_IFLIST` (getting the configured interfaces) or when the mac-address gets formatted, you'll often see formatting code for printing, such as `"%x:%x:%x:%x:%x:%x"`.
-- UDID usage: `[[[UIDevice currentDevice] identifierForVendor] UUIDString];` and `UIDevice.current.identifierForVendor?.uuidString` in Swift3.
-- Any Keychain- or filesystem-based binding, which isn't protected by `SecAccessControlCreateFlags` or and doesn't use protection classes, such as `kSecAttrAccessibleAlways` and `kSecAttrAccessibleAlwaysThisDeviceOnly`.
-
-### Dynamic Analysis
-
-There are several ways to test the application binding.
-
-**Using A Simulator:**
-
-Take the following steps when you want to verify app-binding in a simulator:
-
-1. Run the application on a simulator.
-2. Make sure you can raise the trust in the application instance (e.g., authenticate in the app).
-3. Retrieve the data from the Simulator:
-    - Because simulators use UUIDs to identify themselves, you can make locating the storage easier by creating a debug point and executing `po NSHomeDirectory()` on that point, which will reveal the location of the simulator's stored contents. You can also execute `find ~/Library/Developer/CoreSimulator/Devices/ | grep <appname>` for the suspected plist file.
-    - Go to the directory indicated by the given command's output.
-    - Copy all three found folders (Documents, Library, tmp).
-    - Copy the contents of the Keychain. Since iOS 8, this has been in `~/Library/Developer/CoreSimulator/Devices/<Simulator Device ID>/data/Library/Keychains`.
-4. Start the application on another simulator and find its data location as described in step 3.
-5. Stop the application on the second simulator. Overwrite the existing data with the data copied in step 3.
-6. Can you continue in an authenticated state? If so, then binding may not be working properly.
-
-We are saying that the binding "may" not be working because not everything is unique in simulators.
-
-**Using Two Jailbroken Devices:**
-
-Take the following steps when you want to verify app-binding with two jailbroken devices:
-
-1. Run the app on your jailbroken device.
-2. Make sure you can raise the trust in the application instance (e.g., authenticate in the app).
-3. Retrieve the data from the jailbroken device:
-    - You can SSH into your device and extract the data (as with a simulator, either use debugging or `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`). The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`.
-    - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
-    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using [Keychain-dumper](0x08a-Testing-Tools.md#keychain-dumper).
-4. Install the application on the second jailbroken device.
-5. Overwrite the application data extracted during step 3. The Keychain data must be added manually.
-6. Can you continue in an authenticated state? If so, then binding may not be working properly.
-
-## References
-
-- OWASP Technical Risks of Reverse Engineering and Unauthorized Code Modification - <https://wiki.owasp.org/index.php/Technical_Risks_of_Reverse_Engineering_and_Unauthorized_Code_Modification>
-- OWASP Architectural Principles That Prevent Code Modification or Reverse Engineering- <https://wiki.owasp.org/index.php/OWASP_Reverse_Engineering_and_Code_Modification_Prevention_Project>
-- [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - <https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/Jailbreak-Root-Detection-Evasion-Study-on-iOS-and-Android.pdf>
-- Jan Seredynski. A security review of 1,300 AppStore applications (5 April 2020) - <https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html>
-
-### OWASP MASVS
-
-- MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-- MSTG-RESILIENCE-2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
-- MSTG-RESILIENCE-3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
-- MSTG-RESILIENCE-4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
-- MSTG-RESILIENCE-5: "The app detects, and responds to, being run in an emulator."
-- MSTG-RESILIENCE-9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
-- MSTG-RESILIENCE-11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
