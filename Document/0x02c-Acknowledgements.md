@@ -23,7 +23,7 @@ We will validate this status according to these categories:
      - etc.
 3. **Spreading the word** and promoting the project with many presentations each year, public trainings, high social media involvement (e.g. liking, re-sharing, doing own posting specifically to promote the project).
 
-_NOTE: You don't need to fulfill each and every bullet point (they are examples). However, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so._
+_NOTE: You have to satisfy all three categories in order to qualify as an MAS Advocate. However, you do not need to fulfill each and every bullet point (they are examples). In general, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so._
 
 ### 🎁 Benefits
 
