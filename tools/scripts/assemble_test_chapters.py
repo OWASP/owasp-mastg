@@ -28,10 +28,10 @@ def concatenate_tests():
                                 # Add title header to content
                                 content += f"\n\n## {title}"
                                 # Add MASVS header to content
-                                content += f"\n\n> MASVS V1: {', '.join(masvs_v1_id)}\n> MASVS V2: {'N/A' if not masvs_v2_id else ', '.join(masvs_v2_id)}"
+                                content += f"\n\n> **MASVS V1:** {', '.join(masvs_v1_id)}\n>\n> **MASVS V2:** {'N/A' if not masvs_v2_id else ', '.join(masvs_v2_id)}"
                                 # Remove yaml frontmatter from test content
                                 test_content = re.sub(r'---\n(.|\n)*?\n---\n', '', test_content)
-                                # use regex to add one more # to all markdown headers in test_content
+                                # Add one nesting level to all headers
                                 test_content = re.sub(r'^#', '##', test_content, flags=re.MULTILINE)
 
                                 content += '\n\n' + test_content.strip()
