@@ -31,9 +31,9 @@ def concatenate_tests():
                                 content += f"\n\n> MASVS V1: {', '.join(masvs_v1_id)}\n> MASVS V2: {'N/A' if not masvs_v2_id else ', '.join(masvs_v2_id)}"
                                 # Remove yaml frontmatter from test content
                                 test_content = re.sub(r'---\n(.|\n)*?\n---\n', '', test_content)
-                                # Append test content to original content
-                                test_content = test_content.replace("### ", "#### ")
-                                test_content = test_content.replace("## ", "### ")
+                                # use regex to add one more # to all markdown headers in test_content
+                                test_content = re.sub(r'^#', '##', test_content, flags=re.MULTILINE)
+
                                 content += '\n\n' + test_content.strip()
 
                 # Write the updated content to the file
