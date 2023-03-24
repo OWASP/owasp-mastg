@@ -25,8 +25,9 @@ def concatenate_tests():
                                 title = yaml_front['title']
                                 masvs_v1_id = yaml_front['masvs_v1_id']
                                 masvs_v2_id = yaml_front['masvs_v2_id']
+                                deprecated = "(DEPRECATED) " if masvs_v2_id == [] else ""
                                 # Add title header to content
-                                content += f"\n\n## {title}"
+                                content += f"\n\n## {deprecated}{title}"
                                 # Add MASVS header to content
                                 content += f"\n\n> **MASVS V1:** {', '.join(masvs_v1_id)}\n>\n> **MASVS V2:** {'N/A' if not masvs_v2_id else ', '.join(masvs_v2_id)}\n"
                                 # Remove yaml frontmatter from test content
