@@ -69,20 +69,7 @@ In order to provide more transparency into the app's security architecture, Goog
 
 Note that the limited nature of testing does not guarantee complete safety of the application. This independent review may not be scoped to verify the accuracy and completeness of a developer's Data safety declarations. Developers remain solely responsible for making complete and accurate declarations in their app's Play store listing.
 
-### How this Relates to Testing Other MASVS Categories
-
-The following is a list of [common privacy violations](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations) that you as a security tester should report (although not an exhaustive list):
-
-- Example 1: An app that accesses a user's inventory of installed apps and doesn't treat this data as personal or sensitive data by sending it over the network (violating MSTG-STORAGE-4) or to another app via IPC mechanisms (violating MSTG-STORAGE-6).
-- Example 2: An app displays sensitive data such as credit card details or user passwords without user authorization e.g. biometrics (violating MSTG-AUTH-10).
-- Example 3: An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data, additionally sending it over an unsecured network connection (violating MSTG-NETWORK-1).
-- Example 4: An app collects device location (which is apparently not required for its proper functioning) and does not have a prominent disclosure explaining which feature uses this data (violating MSTG-PLATFORM-1).
-
-> You can find more common violations in [Google Play Console Help (Policy Centre -> Privacy, deception and device abuse -> User data)](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations).
-
-As you can see this is deeply related to other testing categories. When you're testing them you're often indirectly testing for User Privacy Protection. Keep this in mind since it will help you provide better and more comprehensive reports. Often you'll also be able to reuse evidence from other tests in order to test for User Privacy Protection (see an example of this in ["Testing User Education"](#testing-user-education-mstg-storage-12)).
-
-### Learn More
+### References
 
 You can learn more about this and other privacy related topics here:
 
@@ -94,7 +81,44 @@ You can learn more about this and other privacy related topics here:
 - [Preparing your app for the new Data safety section in Google Play](https://www.youtube.com/watch?v=J7TM0Yy0aTQ)
 - [Android Privacy Best Practices](https://developer.android.com/privacy/best-practices)
 
-### Testing User Education on Security Best Practices
+## Testing for Privacy in Mobile Apps
+
+The following is a list of [common privacy violations](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations) that you as a security tester should report (although not an exhaustive list):
+
+- Example 1: An app that accesses a user's inventory of installed apps and doesn't treat this data as personal or sensitive data by sending it over the network (violating MSTG-STORAGE-4) or to another app via IPC mechanisms (violating MSTG-STORAGE-6).
+- Example 2: An app displays sensitive data such as credit card details or user passwords without user authorization e.g. biometrics (violating MSTG-AUTH-10).
+- Example 3: An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data, additionally sending it over an unsecured network connection (violating MSTG-NETWORK-1).
+- Example 4: An app collects device location (which is apparently not required for its proper functioning) and does not have a prominent disclosure explaining which feature uses this data (violating MSTG-PLATFORM-1).
+
+> You can find more common violations in [Google Play Console Help (Policy Centre -> Privacy, deception and device abuse -> User data)](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations).
+
+As you can see this is deeply related to other testing categories. When you're testing them you're often indirectly testing for User Privacy Protection. Keep this in mind since it will help you provide better and more comprehensive reports. Often you'll also be able to reuse evidence from other tests in order to test for User Privacy Protection).
+
+## Testing User Education on Data Privacy on the App Marketplace
+
+At this point, we're only interested in knowing which privacy-related information is being disclosed by the developers and trying to evaluate if it seems reasonable (similarly as you'd do when testing for permissions).
+
+> It's possible that the developers are not declaring certain information that is indeed being collected and\/or shared, but that's a topic for a different test extending this one here. As part of this test, you are not supposed to provide privacy violation assurance.
+
+### Static Analysis
+
+You can follow these steps:
+
+1. Search for the app in the corresponding app marketplace (e.g. Google Play, App Store).
+2. Go to the section ["Privacy Details"](https://developer.apple.com/app-store/app-privacy-details/) (App Store) or ["Safety Section"](https://developer.android.com/guide/topics/data/collect-share) (Google Play).
+3. Verify if there's any information available at all.
+
+The test passes if the developer has complied with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
+
+### Dynamic analysis
+
+As an optional step, you can also provide some kind of evidence as part of this test. For instance, if you're testing an iOS app you can easily enable app activity recording and export a [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) containing detailed app access to different resources such as photos, contacts, camera, microphone, network connections, etc.
+
+Doing this has actually many advantages for testing other MASVS categories. It provides very useful information that you can use to [test network communication](0x06g-Testing-Network-Communication.md) in MASVS-NETWORK or when [testing app permissions](0x06h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) in MASVS-PLATFORM. While testing these other categories you might have taken similar measurements using other testing tools. You can also provide this as evidence for this test.
+
+> Ideally, the information available should be compared against what the app is actually meant to do. However, that's far from a trivial task that could take from several days to weeks to complete depending on your resources and support from automated tooling. It also heavily depends on the app functionality and context and should be ideally performed on a white box setup working very closely with the app developers.
+
+## Testing User Education on Security Best Practices
 
 Testing this might be especially challenging if you intend to automate it. We recommend using the app extensively and try to answer the following questions whenever applicable:
 
