@@ -12,6 +12,7 @@ nav:
       - General Guide: MASTG/General
       - Android: MASTG/Android
       - iOS: MASTG/iOS
+      - Tests: MASTG/tests
       - Tools: MASTG/Tools
       - References: MASTG/References
   - MASVS:
@@ -19,7 +20,15 @@ nav:
       - Intro: MASVS/Intro
       - Controls: MASVS/Controls
       - Appendix: MASVS/Appendix
-  - "MAS Checklist": MAS_checklist.md
+  - "MAS Checklist":
+     - Overview: MAS_checklist.md
+     - MASVS-STORAGE: checklists/MASVS-STORAGE.md
+     - MASVS-CRYPTO: checklists/MASVS-CRYPTO.md 
+     - MASVS-AUTH: checklists/MASVS-AUTH.md
+     - MASVS-NETWORK: checklists/MASVS-NETWORK.md
+     - MASVS-PLATFORM: checklists/MASVS-PLATFORM.md
+     - MASVS-CODE: checklists/MASVS-CODE.md
+     - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
   - "MAS Crackmes": 
       - crackmes.md
       - crackmes

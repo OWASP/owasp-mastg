@@ -1,12 +1,44 @@
 import pandas
 import yaml
-import requests
+import os
 from pathlib import Path
+import combine_data_for_checklist
 
-def dict_to_md(data, column_titles=None):
+# checklist functions
+
+def get_platform_icon(platform):
+    if platform == "android":
+        return '<span style="font-size: large; color: darkgrey;"> :material-android: </span>'
+    elif platform == "ios":
+        return '<span style="font-size: large; color: darkgrey;"> :material-apple: </span>'
+    elif platform == "general":
+        return '<span style="font-size: large; color: darkgrey;"> :material-asterisk: </span>'
+
+def get_level_icon(level, value):
+    if level == "L1" and value == True:
+        return '<span class="mas-dot-blue"></span>'
+    elif level == "L2" and value == True:
+        return '<span class="mas-dot-green"></span>'
+    elif level == "R" and value == True:
+        return '<span class="mas-dot-orange"></span>'
+
+def set_icons_for_web(checklist):
+    for row in checklist:
+        # if it's a control row, make the MASVS-ID and Control bold
+        if row['MASVS-ID'] != "":
+            row['MASVS-ID'] = f"**{row['MASVS-ID']}**"
+            row['Control / MASTG Test'] = f"**{row['Control / MASTG Test']}**"
+        # if it's a test row, set the icons for platform and levels
+        else:
+            row['Platform'] = get_platform_icon(row['Platform'])
+            row['L1'] = get_level_icon('L1', row['L1'])
+            row['L2'] = get_level_icon('L2', row['L2'])
+            row['R'] = get_level_icon('R', row['R'])
+
+def dict_to_md(data, column_titles=None, column_align=None):
     if column_titles is None: column_titles = {key:key.title() for (key,_) in data[0].items()}
     df = pandas.DataFrame.from_dict(data).rename(columns=column_titles)
-    return df.to_markdown(index=False)
+    return df.to_markdown(index=False, colalign=column_align)
 
 def append_to_file(new_content, file_path):
     file = Path(file_path)
@@ -27,26 +59,19 @@ append_to_file(dict_to_md(data) + "\n\n<br>\n", "docs/talks.md")
 
 # checklists.md
 
-masvs_full_en = requests.get("https://github.com/OWASP/owasp-mastg/releases/latest/download/masvs_full_en.yaml", stream=True)
-data = yaml.safe_load(masvs_full_en.raw)
-data_list = []
-for _, value in data.items():
-    
-    # levels
-    value['L1'] = "<span class='mas-dot-blue'></span>" if value['L1'] == True else ""
-    value['L2'] = "<span class='mas-dot-green'></span>" if value['L2'] == True else ""
-    value['R'] = "<span class='mas-dot-orange'></span>" if value['R'] == True else ""
+CHECKLISTS_DIR = "checklists"
 
-    # tests
-    value["common"] = ""
-    value["android"] = ""
-    value["ios"] = ""
-    if links:=value.get("links"):
-        for link in value.get("links"):
-            value["common"] += f"[Test Case]({link})<br>" if "0x04" in link else ""
-            value["android"] += f"[Test Case]({link})<br>" if "0x05" in link else ""
-            value["ios"] += f"[Test Case]({link})<br>" if "0x06" in link else ""
-        del value["links"]
-    data_list.append(value)
+checklist_dict = combine_data_for_checklist.get_checklist_dict()
 
-append_to_file("\n<br>\n\n" + dict_to_md(data_list) + "\n\n<br>\n", "docs/MAS_checklist.md")
+column_titles = {'MASVS-ID': 'MASVS-ID', 'Platform': "Platform", 'Control / MASTG Test': 'Control / MASTG Test', 'L1': 'L1', 'L2': 'L2', 'R': 'R'}
+column_align=("left", "center", "left", "center", "center", "center")
+
+if not os.path.exists(CHECKLISTS_DIR):
+    os.mkdir(CHECKLISTS_DIR)
+
+for group_id, checklist in checklist_dict.items():
+    set_icons_for_web(checklist)
+    content = dict_to_md(checklist, column_titles, column_align) + "\n\n<br><br>"
+
+    with open(f"docs/{CHECKLISTS_DIR}/{group_id}.md", 'w') as f:
+        f.write(content)
