@@ -8,33 +8,12 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 
 <br>
 
-[:material-download: Download the MASVS v1.5.0](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-en.pdf){ .md-button .md-button--primary }
+[:material-download: Download the MASVS v2](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS.pdf){ .md-button .md-button--primary }
 
 <br>
 
-<span>:new:</span> <span style="color: #33CCCC;"> The MASVS 2.0.0 is already available as a spreadsheet. We're currently working on updating this page and the related documents. Learn more about the refactoring process [here](https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring).</span>
+<span style="color: #33CCCC;"> :material-translate: Starting with MASVS v2.0.0, translations will no longer be included to focus on the development of MASTG v2.0.0. We encourage the community to create and maintain their own translations. Thank you to all the past translators who generously volunteered their time and expertise to make the MASVS accessible to non-English speaking communities. We truly appreciate your contributions and hope to continue working together in the future. The past MASVS v1 translations are still available in the MASVS repo.</span>
 
-[:material-open-in-new: MASVS v2.0.0](https://docs.google.com/spreadsheets/d/1MZIvJ5Aze-zpyzLvQZVwyzF0bKWRPfnEd7nqFeH2PfA/edit?usp=sharing){ .md-button }
-
-<br>
-
-> :material-translate: The OWASP MASVS v1.5.0 is also available in [other languages](https://github.com/OWASP/owasp-masvs#masvs-translations). Is your language not here? We'd love to [add it](contributing/4_Add_new_Language.md)!
->
-> :material-download: Download international PDFs:
->
-> [Deutsch](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-de.pdf) |
-> [Español](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-es.pdf) |
-> [François](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-fr.pdf) |
-> [فارسى](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-fa.pdf) |
-> [हिन्दी](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-hi.pdf) |
-> [日本語](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ja.pdf) |
-> [한국어](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ko.pdf) |
-> [português (br)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ptbr.pdf) |
-> [português (pt)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ptpt.pdf) |
-> [Русский](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-ru.pdf) |
-> [Türk](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-tr.pdf) |
-> [Ελληνικά](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-gr.pdf) |
-> [中文 (cn)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-zhcn.pdf) |
-> [中文 (tw)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-zhtw.pdf)
+[:material-open-in-new: MASVS v1.5.0](https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0){ .md-button }
 
 <br>
