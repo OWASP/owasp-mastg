@@ -92,7 +92,8 @@
   text-decoration: none;
   position: relative;
   border: none;
-  font-size: 14px;
+  font-size: 1em;
+  font-weight: bold;
   font-family: inherit;
   color: #fff;
   min-width: 15em;
