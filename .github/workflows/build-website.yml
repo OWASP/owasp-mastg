@@ -25,6 +25,8 @@ jobs:
           repository: "OWASP/owasp-masvs"
           fetch-depth: 1
           path: owasp-masvs/
+      - name: Populate MASVS Categories Markdown Files
+        run: python3 ./owasp-masvs/tools/populate_masvs_categories_md.py -w
       - run: ./tools/scripts/structure_masvs.sh
       - run: mkdir docs/assets/Images/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
