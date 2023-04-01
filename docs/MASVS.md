@@ -8,7 +8,7 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 
 <br>
 
-[:material-download: Download the MASVS v2](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS.pdf){ .md-button .md-button--primary }
+[:material-download: Download the MASVS v2.0.0](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS.pdf){ .md-button .md-button--primary }
 
 <br>
 
