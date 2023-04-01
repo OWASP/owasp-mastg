@@ -35,7 +35,8 @@ jobs:
       - run: ./tools/scripts/structure_masvs.sh
       - run: mkdir docs/assets/Images/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
-      - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
+      - run: sed -i "s#images/#../../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
+      - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/*.md
       
       - run: python3 tools/scripts/populate_dynamic_pages.py
       
