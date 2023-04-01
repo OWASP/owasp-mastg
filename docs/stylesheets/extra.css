@@ -95,7 +95,7 @@
   font-size: 14px;
   font-family: inherit;
   color: #fff;
-  width: 9em;
+  min-width: 15em;
   height: 3em;
   line-height: 2em;
   text-align: center;
