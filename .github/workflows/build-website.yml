@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 1
           path: owasp-masvs/
       - name: Generate MASVS yaml
-        run: python3 ./tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}}
+        run: python3 ./owasp-masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}}
       - name: Populate MASVS Categories Markdown Files
         run: python3 ./owasp-masvs/tools/populate_masvs_categories_md.py -w
       - run: ./tools/scripts/structure_masvs.sh
