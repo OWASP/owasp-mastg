@@ -1,6 +1,6 @@
 # OWASP MASVS
 
-<a href="../MASVS/Intro/0x01-Foreword"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="../assets/masvs_cover.png"></a>
+<a href="../MASVS/Intro/02-Frontispiece"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="../assets/masvs_cover.png"></a>
 
 <a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
 
@@ -12,7 +12,7 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 
 <br>
 
-<span style="color: #33CCCC;"> :material-translate: Starting with MASVS v2.0.0, translations will no longer be included to focus on the development of MASTG v2.0.0. We encourage the community to create and maintain their own translations. Thank you to all the past translators who generously volunteered their time and expertise to make the MASVS accessible to non-English speaking communities. We truly appreciate your contributions and hope to continue working together in the future. The past MASVS v1 translations are still available in the MASVS repo.</span>
+<span style="color: #499fff; font-size: small"> :material-translate: Starting with MASVS v2.0.0, translations will no longer be included to focus on the development of MASTG v2.0.0. We encourage the community to create and maintain their own translations. Thank you to all the past translators who generously volunteered their time and expertise to make the MASVS accessible to non-English speaking communities. We truly appreciate your contributions and hope to continue working together in the future. The past MASVS v1 translations are still available in the MASVS repo.</span>
 
 [:material-open-in-new: MASVS v1.5.0](https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0){ .md-button }
 
