@@ -124,20 +124,23 @@ def write_title(ws, row, start_column, end_column, title):
     ws.row_dimensions[row].height = 25  # points
 
 def create_security_requirements_sheet(wb):
-    ws = wb.active
-    ws.title = "Security Controls"
-    ws.sheet_view.showGridLines = False
-    write_header(ws)
-    set_columns_width(ws)
-
-    status_cells = 'H8:L400'
-    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
-    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
-    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
-
-    row = WS_BASE_CONFIG["start_row"]
+    first_sheet = wb.active
 
     for group_id, elements in MASVS.items():
+        ws = wb.create_sheet(group_id)
+
+        ws.title = group_id
+        ws.sheet_view.showGridLines = False
+        write_header(ws)
+        set_columns_width(ws)
+
+        status_cells = 'H8:L400'
+        ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
+        ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
+        ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
+
+        row = WS_BASE_CONFIG["start_row"]
+
 
         row = row + 1
 
@@ -189,6 +192,7 @@ def create_security_requirements_sheet(wb):
                 row = row + 1
         
         row = row + 1
+    del wb[first_sheet.title]
 
 def create_about_sheet(wb):
     ws = wb.create_sheet("About")
