@@ -30,6 +30,7 @@ MSTG_BLUE = "499FFF"
 
 styles_metadata = [
     {"name": "text", "font": {'name': FONT}, "alignment": "left", "background": ""},
+    {"name": "text_bold", "font": {'name': FONT, 'bold': True}, "alignment": "left", "background": ""},
     {"name": "center", "font": {'name': FONT}, "alignment": "center", "background": ""},
     {"name": "blue_link", "font": {'name': FONT, 'underline': "single", 'color': MSTG_BLUE}, "alignment": "center", "background": ""},
     {"name": "gray", "font": {'name': FONT}, "alignment": "center", "background": "00C0C0C0"},
@@ -76,6 +77,11 @@ def load_styles(wb):
     gray_header.font = Font(name=FONT, bold=True, color="00C0C0C0")
     gray_header.alignment = align_center
     styles.append(gray_header)
+
+    gray_text = NamedStyle(name="gray_text")
+    gray_text.font = Font(name=FONT, color="00C0C0C0")
+    gray_text.alignment = align_center
+    styles.append(gray_text)
 
     [wb.add_named_style(style) for style in styles]
 
