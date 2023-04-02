@@ -23,15 +23,23 @@ jobs:
       - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
 
+      - name: Get Latest MASVS Release Tag
+        run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
+
       - uses: actions/checkout@v3
         with:
           repository: "OWASP/owasp-masvs"
           fetch-depth: 1
           path: owasp-masvs/
+      - name: Generate MASVS yaml
+        run: python3 ./owasp-masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./owasp-masvs/Document -c ./owasp-masvs/controls
+      - name: Populate MASVS Categories Markdown Files
+        run: python3 ./owasp-masvs/tools/populate_masvs_categories_md.py -d ./owasp-masvs/Document -w
       - run: ./tools/scripts/structure_masvs.sh
       - run: mkdir docs/assets/Images/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
-      - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
+      - run: sed -i "s#images/#../../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
+      - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/*.md
       
       - run: mkdir docs/MASTG/tests
       - run: find tests -type f -exec cp {} docs/MASTG/tests \;

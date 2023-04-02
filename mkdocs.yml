@@ -18,8 +18,14 @@ nav:
   - MASVS:
       - MASVS.md
       - Intro: MASVS/Intro
+      - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
+      - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md
+      - MASVS-AUTH: MASVS/07-MASVS-AUTH.md
+      - MASVS-NETWORK: MASVS/08-MASVS-NETWORK.md
+      - MASVS-PLATFORM: MASVS/09-MASVS-PLATFORM.md
+      - MASVS-CODE: MASVS/10-MASVS-CODE.md
+      - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
       - Controls: MASVS/Controls
-      - Appendix: MASVS/Appendix
   - "MAS Checklist":
      - Overview: MAS_checklist.md
      - MASVS-STORAGE: checklists/MASVS-STORAGE.md
