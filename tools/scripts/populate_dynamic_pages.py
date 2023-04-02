@@ -26,14 +26,17 @@ def set_icons_for_web(checklist):
     for row in checklist:
         # if it's a control row, make the MASVS-ID and Control bold
         if row['MASVS-ID'] != "":
-            row['MASVS-ID'] = f"**{row['MASVS-ID']}**"
+            row['MASVS-ID'] = f"**[{row['MASVS-ID']}]({row['path']})**"
             row['Control / MASTG Test'] = f"**{row['Control / MASTG Test']}**"
         # if it's a test row, set the icons for platform and levels
         else:
             row['Platform'] = get_platform_icon(row['Platform'])
+            row['Control / MASTG Test'] = f"[{row['Control / MASTG Test']}]({row['path']})"
             row['L1'] = get_level_icon('L1', row['L1'])
             row['L2'] = get_level_icon('L2', row['L2'])
             row['R'] = get_level_icon('R', row['R'])
+        
+        del row['path']
 
 def dict_to_md(data, column_titles=None, column_align=None):
     if column_titles is None: column_titles = {key:key.title() for (key,_) in data[0].items()}

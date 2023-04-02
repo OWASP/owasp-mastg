@@ -1,9 +1,20 @@
 import yaml
+import os
 import get_tests_dict
+
+import requests
+
+def retrieve_masvs(version="latest"):
+    url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
+    response = requests.get(url)
+    content = response.content
+
+    return yaml.safe_load(content)
 
 def add_control_row(checklist, control):
     checklist_row = {}
     checklist_row['MASVS-ID'] = control['id']
+    checklist_row['path'] = f"/MASVS/controls/{os.path.basename(control['id'])}"
     checklist_row['Platform'] = ""
     checklist_row['Control / MASTG Test'] = control['statement']
     checklist_row['L1'] = ""
@@ -17,6 +28,7 @@ def add_test_rows(checklist, platform, control):
             levels = test['masvs_v1_levels']
             checklist_row = {}
             checklist_row['MASVS-ID'] = ""
+            checklist_row['path'] = f"/MASTG/tests/{os.path.splitext(os.path.basename(test['path']))[0]}"
             checklist_row['Platform'] = test['platform']
             checklist_row['Control / MASTG Test'] = test['title']
             checklist_row['L1'] = "L1" in levels
@@ -25,7 +37,7 @@ def add_test_rows(checklist, platform, control):
             checklist.append(checklist_row)
 
 def get_checklist_dict():
-    masvs_v2 = yaml.load(open('Document/masvs_v2.0.0.yaml', 'r'), Loader=yaml.FullLoader)
+    masvs_v2 = retrieve_masvs()
 
     mastg_tests = get_tests_dict.get_mastg_tests_dict()
 
