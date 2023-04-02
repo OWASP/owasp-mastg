@@ -38,7 +38,7 @@ def set_icons_for_web(checklist):
         
         del row['path']
 
-def dict_to_md(data, column_titles=None, column_align=None):
+def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
     if column_titles is None: column_titles = {key:key.title() for (key,_) in data[0].items()}
     df = pandas.DataFrame.from_dict(data).rename(columns=column_titles)
     return df.to_markdown(index=False, colalign=column_align)
@@ -58,7 +58,7 @@ for element in data:
     if element['slides'].startswith("http"):
         element['slides'] = f"[:material-file-presentation-box: Slides]({element['slides']})"
 
-append_to_file(dict_to_md(data) + "\n\n<br>\n", "docs/talks.md")
+append_to_file(list_of_dicts_to_md_table(data) + "\n\n<br>\n", "docs/talks.md")
 
 # checklists.md
 
@@ -74,7 +74,7 @@ if not os.path.exists(CHECKLISTS_DIR):
 
 for group_id, checklist in checklist_dict.items():
     set_icons_for_web(checklist)
-    content = dict_to_md(checklist, column_titles, column_align) + "\n\n<br><br>"
+    content = list_of_dicts_to_md_table(checklist, column_titles, column_align) + "\n\n<br><br>"
 
     with open(f"docs/{CHECKLISTS_DIR}/{group_id}.md", 'w') as f:
         f.write(content)
