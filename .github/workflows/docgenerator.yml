@@ -24,12 +24,12 @@ jobs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
-        path: owasp-mastg
+        path: .
 
     - uses: actions/cache@v2
       with:
-        path: owasp-mastg
-        key: ${{ runner.os }}-repo-${{ hashFiles('/owasp-mastg') }}
+        path: .
+        key: ${{ runner.os }}-repo-${{ hashFiles('.') }}
         restore-keys: |
           ${{ runner.os }}-repo-
 
@@ -41,8 +41,8 @@ jobs:
     - name: Use cached repo checkout
       uses: actions/cache@v2
       with:
-        path: owasp-mastg
-        key: ${{ runner.os }}-repo-${{ hashFiles('/owasp-mastg') }}
+        path: .
+        key: ${{ runner.os }}-repo-${{ hashFiles('.') }}
 
     - uses: actions/setup-python@v4
       with:
