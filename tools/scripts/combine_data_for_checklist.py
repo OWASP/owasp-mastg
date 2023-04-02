@@ -8,8 +8,8 @@ def retrieve_masvs(version="latest"):
     url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
     response = requests.get(url)
     content = response.content
-
-    return yaml.safe_load(content)
+    masvs = yaml.safe_load(content)
+    return masvs
 
 def add_control_row(checklist, control):
     checklist_row = {}
