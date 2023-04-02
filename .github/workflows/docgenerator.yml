@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        path: owasp-mastg
     - uses: actions/setup-python@v4
       with:
         python-version: 3.x
@@ -35,9 +38,21 @@ jobs:
     runs-on: ubuntu-latest
     needs: Install-Dependencies
     steps:
-    - uses: actions/checkout@v3
+
+    - name: Use cached repo checkout
+      uses: actions/cache@v2
       with:
-        fetch-depth: 1
+        path: owasp-mastg
+        key: ${{ runner.os }}-owasp-mastg
+
+    - name: Restore pip cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('tools/scripts/requirements.txt') }}
+    
+    - name: Install dependencies
+      run: pip install -r tools/scripts/requirements.txt
 
     - name: Set MASTG_VERSION to env 
       run: echo "MASTG_VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mastg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
