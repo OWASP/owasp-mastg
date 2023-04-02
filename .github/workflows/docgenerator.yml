@@ -70,9 +70,6 @@ jobs:
     - name: Install dependencies
       run: pip install -r tools/scripts/requirements.txt
 
-    - name: Listing repo recursive
-      run: ls -lR
-
     - name: Set MASTG_VERSION to env 
       # run: echo "MASTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
       run: echo "MASTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-mastg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
@@ -120,7 +117,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Checklists
-        path: MAS*.xlsx
+        path: OWASP_MAS_Checklist*.xlsx
 
   release:
     runs-on: ubuntu-latest
