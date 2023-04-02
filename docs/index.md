@@ -34,7 +34,7 @@ title: "Home"
 
 <br>
 
-<a href="https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.5.0-en.pdf" class="md-button md-button--primary" > Download the MASVS</a>
+<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS.pdf';"> Download the MASVS v2.0.0</button>
 
 </center>
 <center>
