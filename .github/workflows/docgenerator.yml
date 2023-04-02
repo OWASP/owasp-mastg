@@ -18,8 +18,15 @@ permissions:
 
 jobs:
 
+  Install-Dependencies:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install pip Requirements
+      run: pip3 install -r tools/scripts/requirements.txt
+
   Generate-MASTG-Documents:
     runs-on: ubuntu-latest
+    needs: Install-Dependencies
     steps:
     - uses: actions/checkout@v3
       with:
@@ -52,7 +59,7 @@ jobs:
   
   Generate-Checklists:
     runs-on: ubuntu-latest
-
+    needs: Install-Dependencies
     steps:
 
     - uses: actions/checkout@v3
@@ -98,12 +105,6 @@ jobs:
 
     - name: Listing of scripts directory
       run: ls -l tools/scripts/
-
-    - name: Install pip Requirements
-      run: pip3 install -r tools/scripts/requirements.txt
-
-    - name: Show openpyxl Version
-      run: pip3 show openpyxl
 
     - name: Convert MASTG Testing Chapters to HTML
       run: . tools/scripts/mstg_to_html.sh
