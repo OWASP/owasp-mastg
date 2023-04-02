@@ -17,38 +17,17 @@ permissions:
   contents: read
 
 jobs:
-
-  Install-Dependencies:
+  Generate-MASTG-Documents:
     runs-on: ubuntu-latest
     steps:
+
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
-        path: .
-
-    - uses: actions/cache@v2
-      with:
-        path: .
-        key: ${{ runner.os }}-repo-${{ hashFiles('.') }}
-        restore-keys: |
-          ${{ runner.os }}-repo-
-
-  Generate-MASTG-Documents:
-    runs-on: ubuntu-latest
-    needs: Install-Dependencies
-    steps:
-
-    - name: Use cached repo checkout
-      uses: actions/cache@v2
-      with:
-        path: .
-        key: ${{ runner.os }}-repo-${{ hashFiles('.') }}
 
     - uses: actions/setup-python@v4
       with:
         python-version: 3.x
-    - name: Listing repo recursive
-      run: ls -lR
     - name: Install dependencies
       run: pip install -r tools/scripts/requirements.txt
 
@@ -79,13 +58,18 @@ jobs:
   
   Generate-Checklists:
     runs-on: ubuntu-latest
-    needs: Install-Dependencies
     steps:
 
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
     
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+    - name: Install dependencies
+      run: pip install -r tools/scripts/requirements.txt
+
     - name: Listing repo recursive
       run: ls -lR
 
