@@ -2,6 +2,8 @@
 hide:
   - navigation
   - toc
+search:
+  exclude: true
 ---
 
 # OWASP MAS Checklist
@@ -17,25 +19,8 @@ The OWASP Mobile Application Security Checklist contains links to the MASTG test
 
 <br>
 
-[:material-download: Download the MAS Checklist](https://github.com/OWASP/owasp-mastg/releases/latest/download/Mobile_App_Security_Checklist_en.xlsx){ .md-button .md-button--primary }
+<span style="color: #fa8a00; font-size: small"> Update 1st April 2023: We're currently updating the OWASP MAS Checklist to support the new MASVS v2.0.0. For now you can access the checklist for MASVS v1.5.0.</span>
 
-<br>
-
-> :material-translate: The OWASP MAS Checklist is also available in [other languages](https://github.com/OWASP/owasp-masvs#masvs-translations). Is your language not here? We'd love to [add it](contributing/4_Add_new_Language.md)!
->
-> :material-download: Download international PDFs:
->
-> [Deutsch](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-de.pdf) |
-> [Español](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-es.pdf) |
-> [François](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-fr.pdf) |
-> [فارسى](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-fa.pdf) |
-> [हिन्दी](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-hi.pdf) |
-> [日本語](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ja.pdf) |
-> [한국어](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ko.pdf) |
-> [português (br)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptbr.pdf) |
-> [português (pt)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptpt.pdf) |
-> [Русский](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ru.pdf) |
-> [中文 (cn)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptbr.pdf) |
-> [中文 (tw)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptpt.pdf)
+[:material-download: Download the MAS Checklist (MASVS v1.5.0)](https://github.com/OWASP/owasp-mastg/releases/latest/download/Mobile_App_Security_Checklist_en.xlsx){ .md-button .md-button--primary }
 
 <br>
