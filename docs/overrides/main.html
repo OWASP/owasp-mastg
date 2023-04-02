@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="masvs-chips">
+        {% if page.meta.masvs_v1_id %}
+        <div class="masvs-v1">
+            <span class="masvs-chips-title">MASVS v1</span>
+            {% for id in page.meta.masvs_v1_id %}
+            <span class="masvs-chip masvs-v1-chip">{{ id }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    
+        {% if page.meta.masvs_v2_id %}
+        <div class="masvs-v2">
+            <span class="masvs-chips-title">MASVS v2</span>
+            {% for id in page.meta.masvs_v2_id %}
+            <a href="https://mas.owasp.org/MASVS/controls/{{ id }}" class="masvs-chip masvs-v2-chip">{{ id }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    {{ super() }}
+{% endblock %}

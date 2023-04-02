@@ -60,7 +60,7 @@ copyright: |
 
 theme:
   name: material
-  # custom_dir: docs/overrides
+  custom_dir: docs/overrides
   logo: assets/logo_circle.png
   favicon: assets/logo_circle.png
   icon:
