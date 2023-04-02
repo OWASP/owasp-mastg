@@ -120,7 +120,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Checklists
-        path: tools/scripts/*.xlsx
+        path: MAS*.xlsx
 
   release:
     runs-on: ubuntu-latest
