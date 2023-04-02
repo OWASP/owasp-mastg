@@ -107,23 +107,14 @@ jobs:
     - name: Confirm MASTG Current Commit ID
       run: echo ${{env.MASVS_COMMIT}}
 
-    - name: Listing of scripts directory
-      run: ls -l tools/scripts/
+    - name: Generate Excel
+      run: python3 yaml_to_excel.py --mastgversion ${{env.MASTG_VERSION}} --mastgcommit ${{env.MASTG_COMMIT}} --masvsversion ${{env.MASVS_VERSION}} --masvscommit ${{env.MASVS_COMMIT}}
 
-    - name: Convert MASTG Testing Chapters to HTML
-      run: . tools/scripts/mstg_to_html.sh
-
-    - name: List MASTG HTML
-      run: ls -l tools/scripts/generated/html/
-
-    - name: Export YAML, enhance with MASTG and generate Excel
-      run: cd tools/scripts && ./gen_all_excel.sh ${{env.MASTG_VERSION}} ${{env.MASTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
-
-    - name: Upload Enhanced MASVS YAML
-      uses: actions/upload-artifact@v3
-      with:
-        name: Enhanced-MASVS-YAML-Files
-        path: tools/scripts/masvs_full_*.yaml
+    # - name: Upload Enhanced MASVS YAML
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: Enhanced-MASVS-YAML-Files
+    #     path: tools/scripts/masvs_full_*.yaml
 
     - name: Upload Checklists
       uses: actions/upload-artifact@v3
