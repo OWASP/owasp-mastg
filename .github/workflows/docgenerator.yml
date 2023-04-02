@@ -108,7 +108,7 @@ jobs:
       run: echo ${{env.MASVS_COMMIT}}
 
     - name: Generate Excel
-      run: python3 yaml_to_excel.py --mastgversion ${{env.MASTG_VERSION}} --mastgcommit ${{env.MASTG_COMMIT}} --masvsversion ${{env.MASVS_VERSION}} --masvscommit ${{env.MASVS_COMMIT}}
+      run: python3 tools/scripts/yaml_to_excel.py --mastgversion ${{env.MASTG_VERSION}} --mastgcommit ${{env.MASTG_COMMIT}} --masvsversion ${{env.MASVS_VERSION}} --masvscommit ${{env.MASVS_COMMIT}}
 
     # - name: Upload Enhanced MASVS YAML
     #   uses: actions/upload-artifact@v3
