@@ -54,7 +54,7 @@ MASTGCOMMIT = ""
 MASVSVERSION = ""
 MASVSCOMMIT = ""
 
-MAS_WEBSITE_ROOT = "https://owasp.org/mas"
+MAS_WEBSITE_ROOT = "https://mas.owasp.org/"
 
 class Position(IntEnum):
     ID = 2

@@ -14,7 +14,7 @@ def retrieve_masvs(version="latest"):
 def add_control_row(checklist, control):
     checklist_row = {}
     checklist_row['MASVS-ID'] = control['id']
-    checklist_row['path'] = f"/MASVS/controls/{os.path.basename(control['id'])}"
+    checklist_row['path'] = f"/MASVS/Controls/{os.path.basename(control['id'])}"
     checklist_row['Platform'] = ""
     checklist_row['Control / MASTG Test'] = control['statement']
     checklist_row['L1'] = ""
