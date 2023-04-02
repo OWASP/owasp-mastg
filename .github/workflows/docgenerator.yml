@@ -25,6 +25,7 @@ jobs:
       with:
         python-version: 3.x
         cache: pip
+        cache-dependency-path: tools/scripts/requirements.txt
     - name: Install pip Requirements
       run: pip3 install -r tools/scripts/requirements.txt
   
