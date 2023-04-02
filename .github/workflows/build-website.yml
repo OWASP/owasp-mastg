@@ -33,6 +33,8 @@ jobs:
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
       - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
       
+      - run: mkdir docs/MASTG/tests
+      - run: find tests -type f -exec cp {} docs/MASTG/tests \;
       - run: python3 tools/scripts/populate_dynamic_pages.py
       
       - run: mkdocs gh-deploy --force --clean --verbose
