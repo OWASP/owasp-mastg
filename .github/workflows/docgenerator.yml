@@ -26,6 +26,13 @@ jobs:
         fetch-depth: 1
         path: owasp-mastg
 
+    - uses: actions/cache@v2
+      with:
+        path: owasp-mastg
+        key: ${{ runner.os }}-repo-${{ hashFiles('/owasp-mastg') }}
+        restore-keys: |
+          ${{ runner.os }}-repo-
+
   Generate-MASTG-Documents:
     runs-on: ubuntu-latest
     needs: Install-Dependencies
@@ -35,7 +42,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: owasp-mastg
-        key: ${{ runner.os }}-owasp-mastg
+        key: ${{ runner.os }}-repo-${{ hashFiles('/owasp-mastg') }}
 
     - uses: actions/setup-python@v4
       with:
