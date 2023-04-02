@@ -1,3 +1,11 @@
+mkdocs
+mkdocs-material
+mkdocs-mermaid2-plugin
+mkdocs-include-dir-to-nav
+pandas
+pyyaml
+tabulate
+requests
 lxml
 bs4
 openpyxl
