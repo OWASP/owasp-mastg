@@ -8,6 +8,10 @@ jobs:
   Install-Dependencies:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+        cache: pip
     - name: Install pip Requirements
       run: pip3 install -r tools/scripts/requirements.txt
   
@@ -16,9 +20,6 @@ jobs:
     needs: Install-Dependencies
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.x
 
       - name: Assemble Testing Chapters
         run: python3 tools/scripts/assemble_test_chapters.py -w

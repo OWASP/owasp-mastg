@@ -21,8 +21,13 @@ jobs:
   Install-Dependencies:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+        cache: pip
     - name: Install pip Requirements
       run: pip3 install -r tools/scripts/requirements.txt
+  
 
   Generate-MASTG-Documents:
     runs-on: ubuntu-latest
