@@ -33,10 +33,21 @@
             "MASVS-RESILIENCE": "317CC0",
             "MASVS-PRIVACY": "8B5F9E",
         }
+        var keys = Object.keys(MASVS_COLORS);
         var elements = document.getElementsByClassName("md-nav__link");
-        for (var i = 0; i < elements.length; i++) {            
-            if (elements[i].innerHTML.trim().startsWith("MASVS-")) {
-                elements[i].style.backgroundColor = "#" + MASVS_COLORS[elements[i].innerHTML.trim()];
+        for (var i = 0; i < elements.length; i++) {
+            var elementKey = elements[i].innerHTML.trim();
+            if (keys.some(key => elementKey.startsWith(key))) {
+                var color = "";
+                if (elementKey.split("-").length === 3) {
+                    var keyParts = elementKey.split('-');
+                    var category = keyParts.slice(0, keyParts.length - 1).join('-');
+                    color = MASVS_COLORS[category]
+                }
+                else {
+                    color = MASVS_COLORS[elementKey];
+                }
+                elements[i].style.backgroundColor = "#" + color;
                 elements[i].style.margin = "0.5em 0.5em 0.5em 0.2em";
                 elements[i].style.borderRadius = "5px";
                 elements[i].style.color = "white";
