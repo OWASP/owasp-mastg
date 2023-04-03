@@ -4,12 +4,22 @@ import get_tests_dict
 
 import requests
 
+MASVS = None
+
 def retrieve_masvs(version="latest"):
+    global MASVS
     url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
     response = requests.get(url)
     content = response.content
-    masvs = yaml.safe_load(content)
-    return masvs
+    MASVS = yaml.safe_load(content)
+    return MASVS
+
+def get_masvs_groups():
+    groups = {}
+    for group in MASVS['groups']:
+        group_id = group['id']
+        groups[group_id] = {'id': group_id, 'title': group['title']}
+    return groups
 
 def add_control_row(checklist, control):
     checklist_row = {}
