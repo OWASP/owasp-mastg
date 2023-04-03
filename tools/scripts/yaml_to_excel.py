@@ -99,9 +99,9 @@ def write_header(ws, category_title, background_color="ffffff", font_color="0000
     ws["C3"].value = category_title
     ws["C3"].style = "medium_title"
 
-    ws["C4"].value = f'OWASP MASTG {MASTGVERSION} (commit: {MASTGCOMMIT})' + "    " + f'OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})'
-    ws["C4"].font = Font(name=mas_styles.FONT, color="ffffff")
-    ws["C4"].style = "versions_white"
+    ws["C5"].value = f'OWASP MASTG {MASTGVERSION} (commit: {MASTGCOMMIT})' + "    " + f'OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})'
+    ws["C5"].font = Font(name=mas_styles.FONT, color="ffffff")
+    ws["C5"].style = "versions_white"
 
     # MAS logo
     ws.merge_cells(start_row=2, end_row=4, start_column=2, end_column=2)
@@ -112,7 +112,7 @@ def write_header(ws, category_title, background_color="ffffff", font_color="0000
     # Sheet title
     ws.merge_cells(start_row=3, end_row=3, start_column=3, end_column=4)
     # Version Info
-    ws.merge_cells(start_row=4, end_row=4, start_column=3, end_column=4)
+    ws.merge_cells(start_row=5, end_row=5, start_column=3, end_column=4)
 
     # Set background color
     for col in WS_BASE_CONFIG.get("columns"):
@@ -189,7 +189,7 @@ def create_security_requirements_sheet(wb):
 
                 row = row + 2
             # MASTG test
-            else:
+            elif element.get("Platform") != "":
 
                 ws.cell(row=row, column=Position.PLATFORM).value = element["Platform"]
                 ws.cell(row=row, column=Position.PLATFORM).style = "gray_text"
@@ -232,7 +232,7 @@ def create_about_sheet(wb):
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "The OWASP Mobile Application Security (MAS) flagship project led by Carlos Holguera and Sven Schleier defines the industry standard for mobile application security."
+    ws.cell(row=row, column=first_col).value = "The OWASP Mobile Application Security (MAS) flagship project led by Carlos Holguera and Sven Schleier \ndefines the industry standard for mobile application security."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
@@ -242,7 +242,7 @@ def create_about_sheet(wb):
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "The OWASP MASVS (Mobile Application Security Verification Standard) is a standard that establishes the security requirements for mobile app security."
+    ws.cell(row=row, column=first_col).value = "The OWASP MASVS (Mobile Application Security Verification Standard) is a standard that establishes the \nsecurity requirements for mobile app security."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
@@ -255,7 +255,7 @@ def create_about_sheet(wb):
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "The OWASP MASTG (Mobile Application Security Testing Guide) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the MASVS."
+    ws.cell(row=row, column=first_col).value = "The OWASP MASTG (Mobile Application Security Testing Guide) is a comprehensive manual for mobile app security testing \nand reverse engineering. It describes technical processes for verifying the controls listed in the MASVS."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
@@ -287,7 +287,7 @@ def create_about_sheet(wb):
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "Copyright © 2023 The OWASP Foundation. This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License. For any reuse or distribution, you must make clear to others the license terms of this work."
+    ws.cell(row=row, column=first_col).value = "Copyright © 2023 The OWASP Foundation. This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License. \nFor any reuse or distribution, you must make clear to others the license terms of this work."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
