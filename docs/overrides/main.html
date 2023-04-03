@@ -22,5 +22,31 @@
         {% endif %}
     </div>
 
+    <script>
+        MASVS_COLORS = {
+            "MASVS-STORAGE": "DF5C8D",
+            "MASVS-CRYPTO": "EA5F33",
+            "MASVS-AUTH": "F1A050",
+            "MASVS-NETWORK": "FABF50",
+            "MASVS-PLATFORM": "4FB991",
+            "MASVS-CODE": "5FACD3",
+            "MASVS-RESILIENCE": "317CC0",
+            "MASVS-PRIVACY": "8B5F9E",
+        }
+        var elements = document.getElementsByClassName("md-nav__link");
+        for (var i = 0; i < elements.length; i++) {            
+            if (elements[i].innerHTML.trim().startsWith("MASVS-")) {
+                elements[i].style.backgroundColor = "#" + MASVS_COLORS[elements[i].innerHTML.trim()];
+                elements[i].style.margin = "0.5em 0.5em 0.5em 0.2em";
+                elements[i].style.borderRadius = "5px";
+                elements[i].style.color = "white";
+                elements[i].style.padding = "0.3em";
+                if (elements[i].classList.contains("md-nav__link--active")) {
+                   elements[i].style.height = "6em";
+                }
+            }
+        }
+    </script>
+
     {{ super() }}
 {% endblock %}
