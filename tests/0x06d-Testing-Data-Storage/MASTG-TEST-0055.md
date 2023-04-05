@@ -1,10 +1,10 @@
 ---
 masvs_v1_id:
-- MSTG-STORAGE-4
+- MSTG-STORAGE-5
 masvs_v2_id:
 - MASVS-STORAGE-2
 platform: ios
-title: Determining Whether Sensitive Data Is Shared with Third Parties
+title: Finding Sensitive Data in the Keyboard Cache
 masvs_v1_levels:
 - L1
 - L2
@@ -12,24 +12,41 @@ masvs_v1_levels:
 
 ## Overview
 
-Sensitive information might be leaked to third parties by several means. On iOS typically via third-party services embedded in the app.
-
-The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
-
-The downside is that developers don't usually know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
-
-Most third-party services are implemented in two ways:
-
-- with a standalone library
-- with a full SDK
-
 ## Static Analysis
 
-To determine whether API calls and functions provided by the third-party library are used according to best practices, review their source code, requested permissions and check for any known vulnerabilities (see ["Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)"](0x06i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries-mstg-code-5)).
+- Search through the source code for similar implementations, such as
 
-All data that's sent to third-party services should be anonymized to prevent exposure of PII (Personal Identifiable Information) that would allow the third party to identify the user account. No other data (such as IDs that can be mapped to a user account or session) should be sent to a third party.
+```objectivec
+  textObject.autocorrectionType = UITextAutocorrectionTypeNo;
+  textObject.secureTextEntry = YES;
+```
+
+- Open xib and storyboard files in the `Interface Builder` of Xcode and verify the states of `Secure Text Entry` and `Correction` in the `Attributes Inspector` for the appropriate object.
+
+The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to `YES`.
+
+```objectivec
+UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
+textField.autocorrectionType = UITextAutocorrectionTypeNo;
+```
 
 ## Dynamic Analysis
 
-Check all requests to external services for embedded sensitive information.
-To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08a-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
+If a jailbroken iPhone is available, execute the following steps:
+
+1. Reset your iOS device keyboard cache by navigating to `Settings > General > Reset > Reset Keyboard Dictionary`.
+2. Use the application and identify the functionalities that allow users to enter sensitive data.
+3. Dump the keyboard cache file `dynamic-text.dat` into the following directory (which might be different for iOS versions before 8.0):
+`/private/var/mobile/Library/Keyboard/`
+4. Look for sensitive data, such as username, passwords, email addresses, and credit card numbers. If the sensitive data can be obtained via the keyboard cache file, the app fails this test.
+
+```objectivec
+UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
+textField.autocorrectionType = UITextAutocorrectionTypeNo;
+```
+
+If you must use a non-jailbroken iPhone:
+
+1. Reset the keyboard cache.
+2. Key in all sensitive data.
+3. Use the app again and determine whether autocorrect suggests previously entered sensitive information.

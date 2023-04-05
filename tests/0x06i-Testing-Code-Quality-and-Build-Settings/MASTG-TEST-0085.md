@@ -1,72 +1,119 @@
 ---
 masvs_v1_id:
-- MSTG-CODE-4
+- MSTG-CODE-5
 masvs_v2_id:
-- MASVS-RESILIENCE-3
+- MASVS-CODE-3
 platform: ios
-title: Testing for Debugging Code and Verbose Error Logging
+title: Checking for Weaknesses in Third Party Libraries
 masvs_v1_levels:
-- R
+- L1
+- L2
 ---
 
 ## Overview
 
 ## Static Analysis
 
-You can take the following static analysis approach for the logging statements:
+### Detecting vulnerabilities of third party libraries
 
-1. Import the application's code into Xcode.
-2. Search the code for the following printing functions: `NSLog`, `println`, `print`, `dump`, `debugPrint`.
-3. When you find one of them, determine whether the developers used a wrapping function around the logging function for better mark up of the statements to be logged; if so, add that function to your search.
-4. For every result of steps 2 and 3, determine whether macros or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how Objective-C can use preprocessor macros:
+In order to ensure that the libraries used by the apps are not carrying vulnerabilities, one can best check the dependencies installed by CocoaPods or Carthage.
 
-```objectivec
-#ifdef DEBUG
-    // Debug-only code
-#endif
+#### Swift Package Manager
+
+In case [Swift Package Manager](https://swift.org/package-manager "Swift Package Manager on Swift.org") is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities:
+
+First, at the root of the project, where the Package.swift file is located, type
+
+```bash
+swift build
 ```
 
-The procedure for enabling this behavior in Swift has changed: you need to either set environment variables in your scheme or set them as custom flags in the target's build settings. Please note that the following functions (which allow you to determine whether the app was built in the Swift 2.1. release-configuration) aren't recommended, as Xcode 8 and Swift 3 don't support these functions:
+Next, check the file Package.resolved for the actual versions used and inspect the given libraries for known vulnerabilities.
 
-- `_isDebugAssertConfiguration`
-- `_isReleaseAssertConfiguration`
-- `_isFastAssertConfiguration`.
+You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [Swift Package Manager Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html "dependency-check - SWIFT Package Manager Analyzer") to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") naming scheme of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/ "CVE") entries. Scan the application's Package.swift file and generate a report of known vulnerable libraries with the following command:
 
-Depending on the application's setup, there may be more logging functions. For example, when [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack "CocoaLumberjack") is used, static analysis is a bit different.
-
-For the "debug-management" code (which is built-in): inspect the storyboards to see whether there are any flows and/or view-controllers that provide functionality different from the functionality the application should support. This functionality can be anything from debug views to printed error messages, from custom stub-response configurations to logs written to files on the application's file system or a remote server.
-
-As a developer, incorporating debug statements into your application's debug version should not be a problem as long as you make sure that the debug statements are never present in the application's release version.
-
-In Objective-C, developers can use preprocessor macros to filter out debug code:
-
-```objectivec
-#ifdef DEBUG
-    // Debug-only code
-#endif
+```bash
+dependency-check  --enableExperimental --out . --scan Package.swift
 ```
 
-In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D". So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
+#### CocoaPods
 
-```default
-#if MSTG-DEBUG
-    // Debug-only code
-#endif
+In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities.
+
+First, at the root of the project, where the Podfile is located, execute the following commands:
+
+```bash
+sudo gem install cocoapods
+pod install
 ```
 
-In Swift 3 (with Xcode 8), you can set Active Compilation Conditions in Build settings/Swift compiler - Custom flags. Instead of a preprocessor, Swift 3 uses [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the defined conditions:
+Next, now that the dependency tree has been built, you can create an overview of the dependencies and their versions by running the following commands:
 
-```default
-#if DEBUG_LOGGING
-    // Debug-only code
-#endif
+```bash
+sudo gem install cocoapods-dependencies
+pod dependencies
 ```
+
+The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
+
+> Note:
+>
+> 1. If the developer packs all dependencies in terms of its own support library using a .podspec file, then this .podspec file can be checked with the experimental CocoaPods podspec checker.
+> 2. If the project uses CocoaPods in combination with Objective-C, SourceClear can be used.
+> 3. Using CocoaPods with HTTP-based links instead of HTTPS might allow for man-in-the-middle attacks during the download of the dependency, allowing an attacker to replace (parts of) the library with other content. Therefore, always use HTTPS.
+
+You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [CocoaPods Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/cocoapods.html "dependency-check - CocoaPods Analyzer")
+to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") naming scheme of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/ "CVE") entries. Scan the application's \*.podspec and/or Podfile.lock files and generate a report of known vulnerable libraries with the following command:
+
+```bash
+dependency-check  --enableExperimental --out . --scan Podfile.lock
+```
+
+#### Carthage
+
+In case [Carthage](https://github.com/Carthage/Carthage "Carthage on GitHub") is used for third party dependencies, then the following steps can be taken to analyze the third party libraries for vulnerabilities.
+
+First, at the root of the project, where the Cartfile is located, type
+
+```bash
+brew install carthage
+carthage update --platform iOS
+```
+
+Next, check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
+
+> Note, at the time of writing this chapter, there is no automated support for Carthage based dependency analysis known to the authors. At least, this feature was already requested for the OWASP DependencyCheck tool but not yet implemented (see the [GitHub issue](https://github.com/jeremylong/DependencyCheck/issues/962 "Add Carthage Analyze for Swift")).
+
+### Discovered library vulnerabilities
+
+When a library is found to contain vulnerabilities, then the following reasoning applies:
+
+- Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the implications of the vulnerability for the build process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
+
+In case frameworks are added manually as linked libraries:
+
+1. Open the xcodeproj file and check the project properties.
+2. Go to the tab **Build Phases** and check the entries in **Link Binary With Libraries** for any of the libraries. See earlier sections on how to obtain similar information using [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF").
+
+In the case of copy-pasted sources: search the header files (in case of using Objective-C) and otherwise the Swift files for known method names for known libraries.
+
+Next, note that for hybrid applications, you will have to check the JavaScript dependencies with [RetireJS](https://retirejs.github.io/retire.js/ "RetireJS"). Similarly for Xamarin, you will have to check the C# dependencies.
+
+Last, if the application is a high-risk application, you will end up vetting the library manually. In that case there are specific requirements for native code, which are similar to the requirements established by the MASVS for the application as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
 
 ## Dynamic Analysis
 
-Dynamic analysis should be executed on both a simulator and a device because developers sometimes use target-based functions (instead of functions based on a release/debug-mode) to execute the debugging code.
+The dynamic analysis of this section comprises of two parts: the actual license verification and checking which libraries are involved in case of missing sources.
 
-1. Run the application on a simulator and check for output in the console during the app's execution.
-2. Attach a device to your Mac, run the application on the device via Xcode, and check for output in the console during the app's execution.
+It need to be validated whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
-For the other "manager-based" debug code: click through the application on both a simulator and a device to see if you can find any functionality that allows an app's profiles to be pre-set, allows the actual server to be selected or allows responses from the API to be selected.
+### Listing Application Libraries
+
+When performing app analysis, it is important to also analyze the app dependencies (usually in form of libraries or so-called iOS Frameworks) and ensure that they don't contain any vulnerabilities. Even when you don't have the source code, you can still identify some of the app dependencies using tools like [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or the `otool -L` command. Objection is the recommended tool, since it provides the most accurate results and it is easy to use. It contains a module to work with iOS Bundles, which offers two commands: `list_bundles` and `list_frameworks`.
+
+The `list_bundles` command lists all of the application’s bundles that are not related to Frameworks. The output contains executable name, bundle id, version of the library and path to the library.
+
+```bash
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
+Executable    Bundle                                       Version  Path

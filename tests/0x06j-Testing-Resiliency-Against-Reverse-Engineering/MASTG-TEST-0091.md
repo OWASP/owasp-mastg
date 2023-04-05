@@ -1,42 +1,28 @@
 ---
 masvs_v1_id:
-- MSTG-RESILIENCE-3
-- MSTG-RESILIENCE-11
+- MSTG-RESILIENCE-4
 masvs_v2_id:
-- MASVS-RESILIENCE-2
+- MASVS-RESILIENCE-4
 platform: ios
-title: Testing File Integrity Checks
+title: Testing Reverse Engineering Tools Detection
 masvs_v1_levels:
 - R
 ---
 
 ## Overview
 
-**Application Source Code Integrity Checks:**
+Launch the app with various reverse engineering tools and frameworks installed on your test device, such as Frida, Cydia Substrate, Cycript or SSL Kill Switch.
 
-Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter ["iOS Tampering and Reverse Engineering"](0x06c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing), and run it.
-
-The app should respond in some way. For example by:
+The app should respond in some way to the presence of those tools. For example by:
 
 - Alerting the user and asking for accepting liability.
 - Preventing execution by gracefully terminating.
 - Securely wiping any sensitive data stored on the device.
 - Reporting to a backend server, e.g, for fraud detection.
 
-Work on bypassing the defenses and answer the following questions:
+Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
 
 - Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
 - How difficult is identifying the detection code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
-
-**File Storage Integrity Checks:**
-
-Go to the app data directories as indicated in section ["Accessing App Data Directories"](0x06b-Basic-Security-Testing.md#accessing-app-data-directories) and modify some files.
-
-Next, work on bypassing the defenses and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value pair)?
-- How difficult is obtaining the HMAC key or the asymmetric private key?
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?

@@ -1,10 +1,10 @@
 ---
 masvs_v1_id:
-- MSTG-STORAGE-5
+- MSTG-STORAGE-6
 masvs_v2_id:
-- MASVS-STORAGE-2
+- MASVS-PLATFORM-1
 platform: ios
-title: Finding Sensitive Data in the Keyboard Cache
+title: Determining Whether Sensitive Data Is Exposed via IPC Mechanisms
 masvs_v1_levels:
 - L1
 - L2
@@ -14,39 +14,44 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-- Search through the source code for similar implementations, such as
+The following section summarizes keywords that you should look for to identify IPC implementations within iOS source code.
 
-```objectivec
-  textObject.autocorrectionType = UITextAutocorrectionTypeNo;
-  textObject.secureTextEntry = YES;
-```
+### XPC Services
 
-- Open xib and storyboard files in the `Interface Builder` of Xcode and verify the states of `Secure Text Entry` and `Correction` in the `Attributes Inspector` for the appropriate object.
+Several classes may be used to implement the NSXPCConnection API:
 
-The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to `YES`.
+- NSXPCConnection
+- NSXPCInterface
+- NSXPCListener
+- NSXPCListenerEndpoint
 
-```objectivec
-UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
-textField.autocorrectionType = UITextAutocorrectionTypeNo;
-```
+You can set [security attributes](https://www.objc.io/issues/14-mac/xpc/#security-attributes-of-the-connection "Security Attributes of NSXPCConnection") for the connection. The attributes should be verified.
+
+Check for the following two files in the Xcode project for the XPC Services API (which is C-based):
+
+- [`xpc.h`](https://developer.apple.com/documentation/xpc/xpc_services_xpc.h "xpc.h")
+- `connection.h`
+
+### Mach Ports
+
+Keywords to look for in low-level implementations:
+
+- mach\_port\_t
+- mach\_msg\_*
+
+Keywords to look for in high-level implementations (Core Foundation and Foundation wrappers):
+
+- CFMachPort
+- CFMessagePort
+- NSMachPort
+- NSMessagePort
+
+### NSFileCoordinator
+
+Keywords to look for:
+
+- NSFileCoordinator
 
 ## Dynamic Analysis
 
-If a jailbroken iPhone is available, execute the following steps:
-
-1. Reset your iOS device keyboard cache by navigating to `Settings > General > Reset > Reset Keyboard Dictionary`.
-2. Use the application and identify the functionalities that allow users to enter sensitive data.
-3. Dump the keyboard cache file `dynamic-text.dat` into the following directory (which might be different for iOS versions before 8.0):
-`/private/var/mobile/Library/Keyboard/`
-4. Look for sensitive data, such as username, passwords, email addresses, and credit card numbers. If the sensitive data can be obtained via the keyboard cache file, the app fails this test.
-
-```objectivec
-UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
-textField.autocorrectionType = UITextAutocorrectionTypeNo;
-```
-
-If you must use a non-jailbroken iPhone:
-
-1. Reset the keyboard cache.
-2. Key in all sensitive data.
-3. Use the app again and determine whether autocorrect suggests previously entered sensitive information.
+Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available to verify IPC usage.

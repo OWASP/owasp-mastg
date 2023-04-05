@@ -1,26 +1,27 @@
 ---
 masvs_v1_id:
-- MSTG-RESILIENCE-4
+- MSTG-RESILIENCE-5
 masvs_v2_id:
-- MASVS-RESILIENCE-4
+- MASVS-RESILIENCE-1
 platform: ios
-title: Testing Reverse Engineering Tools Detection
+title: Testing Emulator Detection
 masvs_v1_levels:
 - R
 ---
 
 ## Overview
 
-Launch the app with various reverse engineering tools and frameworks installed on your test device, such as Frida, Cydia Substrate, Cycript or SSL Kill Switch.
+In order to test for emulator detection you can try to run the app on different emulators as indicated in section ["Emulator Detection"](#emulator-detection) and see what happens.
 
-The app should respond in some way to the presence of those tools. For example by:
+The app should respond in some way. For example by:
 
 - Alerting the user and asking for accepting liability.
 - Preventing execution by gracefully terminating.
-- Securely wiping any sensitive data stored on the device.
 - Reporting to a backend server, e.g, for fraud detection.
 
-Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
+You can also reverse engineer the app using ideas for strings and methods from section ["Emulator Detection"](#emulator-detection).
+
+Next, work on bypassing this detection and answer the following questions:
 
 - Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
 - How difficult is identifying the detection code via static and dynamic analysis?

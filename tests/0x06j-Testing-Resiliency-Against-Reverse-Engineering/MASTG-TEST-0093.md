@@ -1,29 +1,20 @@
 ---
 masvs_v1_id:
-- MSTG-RESILIENCE-5
+- MSTG-RESILIENCE-9
 masvs_v2_id:
-- MASVS-RESILIENCE-1
+- MASVS-RESILIENCE-3
 platform: ios
-title: Testing Emulator Detection
+title: Testing Obfuscation
 masvs_v1_levels:
 - R
 ---
 
 ## Overview
 
-In order to test for emulator detection you can try to run the app on different emulators as indicated in section ["Emulator Detection"](#emulator-detection) and see what happens.
+Attempt to disassemble the Mach-O in the IPA and any included library files in the "Frameworks" directory (.dylib or .framework files), and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that:
 
-The app should respond in some way. For example by:
+- meaningful identifiers, such as class names, method names, and variable names, have been discarded.
+- string resources and strings in binaries are encrypted.
+- code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
 
-- Alerting the user and asking for accepting liability.
-- Preventing execution by gracefully terminating.
-- Reporting to a backend server, e.g, for fraud detection.
-
-You can also reverse engineer the app using ideas for strings and methods from section ["Emulator Detection"](#emulator-detection).
-
-Next, work on bypassing this detection and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the detection code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.

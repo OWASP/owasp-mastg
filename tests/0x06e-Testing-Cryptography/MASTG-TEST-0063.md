@@ -1,11 +1,10 @@
 ---
 masvs_v1_id:
-- MSTG-CRYPTO-1
-- MSTG-CRYPTO-5
+- MSTG-CRYPTO-6
 masvs_v2_id:
-- MASVS-CRYPTO-2
+- MASVS-CRYPTO-1
 platform: ios
-title: Testing Key Management
+title: Testing Random Number Generation
 masvs_v1_levels:
 - L1
 - L2
@@ -15,25 +14,28 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-There are various keywords to look for: check the libraries mentioned in the overview and static analysis of the section "Verifying the Configuration of Cryptographic Standard Algorithms" for which keywords you can best check on how keys are stored.
+In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
 
-Always make sure that:
+```default
+func SecRandomCopyBytes(_ rnd: SecRandomRef?,
+                      _ count: Int,
+                      _ bytes: UnsafeMutablePointer<UInt8>) -> Int32
+```
 
-- keys are not synchronized over devices if it is used to protect high-risk data.
-- keys are not stored without additional protection.
-- keys are not hardcoded.
-- keys are not derived from stable features of the device.
-- keys are not hidden by use of lower level languages (e.g. C/C++).
-- keys are not imported from unsafe locations.
+The [Objective-C version](https://developer.apple.com/reference/security/1399291-secrandomcopybytes?language=objc "SecRandomCopyBytes (Objective-C)") is
 
-Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
+```objectivec
+int SecRandomCopyBytes(SecRandomRef rnd, size_t count, uint8_t *bytes);
+```
 
-Most of the recommendations for static analysis can already be found in chapter "Testing Data Storage for iOS". Next, you can read up on it at the following pages:
+The following is an example of the APIs usage:
 
-- [Apple Developer Documentation: Certificates and keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
-- [Apple Developer Documentation: Generating new keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys "Generating new keys")
-- [Apple Developer Documentation: Key generation attributes](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
+```objectivec
+int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
+```
+
+Note: if other mechanisms are used for random numbers in the code, verify that these are either wrappers around the APIs mentioned above or review them for their secure-randomness. Often this is too hard, which means you can best stick with the implementation above.
 
 ## Dynamic Analysis
 
-Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
+If you want to test for randomness, you can try to capture a large set of numbers and check with [Burp's sequencer plugin](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.

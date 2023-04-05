@@ -1,10 +1,10 @@
 ---
 masvs_v1_id:
-- MSTG-CODE-2
+- MSTG-CODE-3
 masvs_v2_id:
-- MASVS-RESILIENCE-4
+- MASVS-RESILIENCE-3
 platform: ios
-title: Testing whether the App is Debuggable
+title: Testing for Debugging Symbols
 masvs_v1_levels:
 - R
 ---
@@ -13,55 +13,25 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-Inspect the app entitlements and check the value of `get-task-allow` key. If it is set to `true`, the app is debuggable.
+To verify the existence of debug symbols you can use objdump from [binutils](https://www.gnu.org/s/binutils/ "Binutils") or [llvm-objdump](https://llvm.org/docs/CommandGuide/llvm-objdump.html "llvm-objdump") to inspect all of the app binaries.
 
-Using codesign:
+In the following snippet we run objdump over `TargetApp` (the iOS main app executable) to show the typical output of a binary containing debug symbols which are marked with the `d` (debug) flag. Check the [objdump man page](https://www.unix.com/man-page/osx/1/objdump/ "objdump man page") for information about various other symbol flag characters.
 
 ```bash
-$ codesign -d --entitlements - iGoat-Swift.app
+$ objdump --syms TargetApp
 
-Executable=/Users/owasp/iGoat-Swift/Payload/iGoat-Swift.app/iGoat-Swift
-[Dict]
-    [Key] application-identifier
-    [Value]
-        [String] TNAJ496RHB.OWASP.iGoat-Swift
-    [Key] com.apple.developer.team-identifier
-    [Value]
-        [String] TNAJ496RHB
-    [Key] get-task-allow
-    [Value]
-        [Bool] true
-    [Key] keychain-access-groups
-    [Value]
-        [Array]
-            [String] TNAJ496RHB.OWASP.iGoat-Swift
-````
-
-Using ldid:
-
-```xml
-$ ldid -e iGoat-Swift.app/iGoat-Swift
-
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>application-identifier</key>
-    <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-    <key>com.apple.developer.team-identifier</key>
-    <string>TNAJ496RHB</string>
-    <key>get-task-allow</key>
-    <true/>
-    <key>keychain-access-groups</key>
-    <array>
-        <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-    </array>
-</dict>
-</plist>
+0000000100007dc8 l    d  *UND* -[ViewController handleSubmitButton:]
+000000010000809c l    d  *UND* -[ViewController touchesBegan:withEvent:]
+0000000100008158 l    d  *UND* -[ViewController viewDidLoad]
+...
+000000010000916c l    d  *UND* _disable_gdb
+00000001000091d8 l    d  *UND* _detect_injected_dylds
+00000001000092a4 l    d  *UND* _isDebugged
+...
 ```
+
+To prevent the inclusion of debug symbols, set `Strip Debug Symbols During Copy` to `YES` via the XCode project's build settings. Stripping debugging symbols will not only reduce the size of the binary but also increase the difficulty of reverse engineering.
 
 ## Dynamic Analysis
 
-Check whether you can attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
-
-Note: if the application is equipped with anti-reverse engineering controls, then the debugger can be detected and stopped.
+Dynamic analysis is not applicable for finding debugging symbols.

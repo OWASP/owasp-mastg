@@ -1,10 +1,10 @@
 ---
 masvs_v1_id:
-- MSTG-STORAGE-9
+- MSTG-STORAGE-10
 masvs_v2_id:
-- MASVS-PLATFORM-3
+- MASVS-STORAGE-2
 platform: ios
-title: Testing Auto-Generated Screenshots for Sensitive Information
+title: Testing Memory for Sensitive Data
 masvs_v1_levels:
 - L2
 ---
@@ -13,55 +13,59 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-If you have the source code, search for the [`applicationDidEnterBackground`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground) method to determine whether the application sanitizes the screen before being backgrounded.
+When performing static analysis for sensitive data exposed via memory, you should
 
-The following is a sample implementation using a default background image (`overlayImage.png`) whenever the application is backgrounded, overriding the current view:
-
-Swift:
-
-```swift
-private var backgroundImage: UIImageView?
-
-func applicationDidEnterBackground(_ application: UIApplication) {
-    let myBanner = UIImageView(image: #imageLiteral(resourceName: "overlayImage"))
-    myBanner.frame = UIScreen.main.bounds
-    backgroundImage = myBanner
-    window?.addSubview(myBanner)
-}
-
-func applicationWillEnterForeground(_ application: UIApplication) {
-    backgroundImage?.removeFromSuperview()
-}
-```
-
-Objective-C:
-
-```objectivec
-@property (UIImageView *)backgroundImage;
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    UIImageView *myBanner = [[UIImageView alloc] initWithImage:@"overlayImage.png"];
-    self.backgroundImage = myBanner;
-    self.backgroundImage.bounds = UIScreen.mainScreen.bounds;
-    [self.window addSubview:myBanner];
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    [self.backgroundImage removeFromSuperview];
-}
-```
-
-This sets the background image to `overlayImage.png` whenever the application is backgrounded. It prevents sensitive data leaks because `overlayImage.png` will always override the current view.
+- try to identify application components and map where the data is used,
+- make sure that sensitive data is handled with as few components as possible,
+- make sure that object references are properly removed once the object containing sensitive data is no longer needed,
+- make sure that highly sensitive data is overwritten as soon as it is no longer needed,
+- not pass such data via immutable data types, such as `String` and `NSString`,
+- avoid non-primitive data types (because they might leave data behind),
+- overwrite the value in memory before removing references,
+- pay attention to third-party components (libraries and frameworks). Having a public API that handles data according to the recommendations above is a good indicator that developers considered the issues discussed here.
 
 ## Dynamic Analysis
 
-You can use a _visual approach_ to quickly validate this test case using any iOS device (jailbroken or not):
+There are several approaches and tools available for dynamically testing the memory of an iOS app for sensitive data.
 
-1. Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details.
-2. Background the application by hitting the **Home** button on your iOS device.
-3. Verify that a default image is shown as the top view element instead of the view containing the sensitive information.
+### Retrieving and Analyzing a Memory Dump
 
-If required, you may also collect evidence by performing steps 1 to 3 on a jailbroken device or a non-jailbroken device after [repackaging the app with the Frida Gadget](0x06c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-jailbroken-devices). After that, connect to the iOS device [per SSH](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) or [by other means](0x06b-Basic-Security-Testing.md#host-device-data-transfer) and navigate to the Snapshots directory. The location may differ on each iOS version but it's usually inside the app's Library directory. On iOS 14.5:
-    `/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`
+Whether you are using a jailbroken or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in the section "[Memory Dump](0x06c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")", in the chapter "Tampering and Reverse Engineering on iOS".
 
-The screenshots inside that folder should not contain any sensitive information.
+After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
+
+```bash
+# using strings
+$ strings memory > strings.txt
+
+# using rabin2
+$ rabin2 -ZZ memory > strings.txt
+```
+
+Open `strings.txt` in your favorite editor and dig through it to identify sensitive information.
+
+However if you'd like to inspect other kind of data, you'd rather want to use radare2 and its search capabilities. See radare2's help on the search command (`/?`) for more information and a list of options. The following shows only a subset of them:
+
+```bash
+$ r2 <name_of_your_dump_file>
+
+[0x00000000]> /?
+Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
+|Use io.va for searching in non virtual addressing spaces
+| / foo\x00                    search for string 'foo\0'
+| /c[ar]                       search for crypto materials
+| /e /E.F/i                    match regular expression
+| /i foo                       search for string 'foo' ignoring case
+| /m[?][ebm] magicfile         search for magic, filesystems or binary headers
+| /v[1248] value               look for an `cfg.bigendian` 32bit value
+| /w foo                       search for wide string 'f\0o\0o\0'
+| /x ff0033                    search for hex string
+| /z min max                   search for strings of given size
+...
+```
+
+### Runtime Memory Analysis
+
+By using [r2frida](0x08a-Testing-Tools.md#r2frida) you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
+
+For more information, options and approaches, please refer to section "[In-Memory Search](0x06c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on iOS".

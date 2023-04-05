@@ -1,10 +1,10 @@
 ---
 masvs_v1_id:
-- MSTG-STORAGE-6
+- MSTG-STORAGE-7
 masvs_v2_id:
-- MASVS-PLATFORM-1
+- MASVS-PLATFORM-3
 platform: ios
-title: Determining Whether Sensitive Data Is Exposed via IPC Mechanisms
+title: Checking for Sensitive Data Disclosed Through the User Interface
 masvs_v1_levels:
 - L1
 - L2
@@ -14,44 +14,20 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-The following section summarizes keywords that you should look for to identify IPC implementations within iOS source code.
+A text field that masks its input can be configured in two ways:
 
-### XPC Services
+**Storyboard**
+In the iOS project's storyboard, navigate to the configuration options for the text field that takes sensitive data. Make sure that the option "Secure Text Entry" is selected. If this option is activated, dots are shown in the text field in place of the text input.
 
-Several classes may be used to implement the NSXPCConnection API:
+**Source Code**
+If the text field is defined in the source code, make sure that the option [`isSecureTextEntry`](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true". This option obscures the text input by showing dots.
 
-- NSXPCConnection
-- NSXPCInterface
-- NSXPCListener
-- NSXPCListenerEndpoint
-
-You can set [security attributes](https://www.objc.io/issues/14-mac/xpc/#security-attributes-of-the-connection "Security Attributes of NSXPCConnection") for the connection. The attributes should be verified.
-
-Check for the following two files in the Xcode project for the XPC Services API (which is C-based):
-
-- [`xpc.h`](https://developer.apple.com/documentation/xpc/xpc_services_xpc.h "xpc.h")
-- `connection.h`
-
-### Mach Ports
-
-Keywords to look for in low-level implementations:
-
-- mach\_port\_t
-- mach\_msg\_*
-
-Keywords to look for in high-level implementations (Core Foundation and Foundation wrappers):
-
-- CFMachPort
-- CFMessagePort
-- NSMachPort
-- NSMessagePort
-
-### NSFileCoordinator
-
-Keywords to look for:
-
-- NSFileCoordinator
+```swift
+sensitiveTextField.isSecureTextEntry = true
+```
 
 ## Dynamic Analysis
 
-Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available to verify IPC usage.
+To determine whether the application leaks any sensitive information to the user interface, run the application and identify components that either show such information or take it as input.
+
+If the information is masked by, for example, asterisks or dots, the app isn't leaking data to the user interface.

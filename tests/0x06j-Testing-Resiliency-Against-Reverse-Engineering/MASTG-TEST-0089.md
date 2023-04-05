@@ -1,31 +1,30 @@
 ---
 masvs_v1_id:
-- MSTG-RESILIENCE-1
+- MSTG-RESILIENCE-2
 masvs_v2_id:
-- MASVS-RESILIENCE-1
+- MASVS-RESILIENCE-4
 platform: ios
-title: Testing Jailbreak Detection
+title: Testing Anti-Debugging Detection
 masvs_v1_levels:
 - R
 ---
 
 ## Overview
 
-To test for jailbreak detection install the app on a jailbroken device.
+In order to test for anti-debugging detection you can try to attach a debugger to the app and see what happens.
 
-**Launch the app and see what happens:**
+The app should respond in some way. For example by:
 
-If it implements jailbreak detection, you might notice one of the following things:
+- Alerting the user and asking for accepting liability.
+- Preventing execution by gracefully terminating.
+- Securely wiping any sensitive data stored on the device.
+- Reporting to a backend server, e.g, for fraud detection.
 
-- The app crashes and closes immediately, without any notification.
-- A pop-up window indicates that the app won't run on a jailbroken device.
+Try to hook or reverse engineer the app using the methods from section ["Anti-Debugging Detection"](#anti-debugging-detection).
 
-Note that crashes might be an indicator of jailbreak detection but the app may be crashing for any other reasons, e.g. it may have a bug. We recommend to test the app on non-jailbroken device first, especially when you're testing preproduction versions.
+Next, work on bypassing the detection and answer the following questions:
 
-**Launch the app and try to bypass Jailbreak Detection using an automated tool:**
-
-If it implements jailbreak detection, you might be able to see indicators of that in the output of the tool. See section ["Automated Jailbreak Detection Bypass"](#automated-jailbreak-detection-bypass).
-
-**Reverse Engineer the app:**
-
-The app might be using techniques that are not implemented in the automated tools that you've used. If that's the case you must reverse engineer the app to find proofs. See section ["Manual Jailbreak Detection Bypass"](#manual-jailbreak-detection-bypass).
+- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
+- How difficult is identifying the detection code via static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need?
+- What is your assessment of the difficulty of bypassing the mechanisms?
