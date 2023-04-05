@@ -1,6 +1,11 @@
-# Steps
+---
+hide:
+  - toc
+---
 
-## 1. Make your Donation
+# How to Donate
+
+**1. Make your Donation:**
 
 <img align="right" style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="400px" src="../../assets/donations/owasp_donation_form.png" />
 
@@ -14,7 +19,7 @@ Click the button to make your donation directly in the official OWASP website:
 
 <br><br>
 
-## 2. Register your Donation Package (optional)
+**2. Register your Donation Package (optional):**
 
 <img align="right"  style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="400px" src="../../assets/donations/mastg_donation_form.png" />
 

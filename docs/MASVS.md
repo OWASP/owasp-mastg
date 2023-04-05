@@ -1,3 +1,8 @@
+---
+hide:
+  - toc
+---
+
 # OWASP MASVS
 
 <img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" src="../assets/masvs_cover.png">

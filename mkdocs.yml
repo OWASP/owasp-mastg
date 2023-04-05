@@ -82,7 +82,7 @@ theme:
   features:
     - search.suggest
     - search.share
-    - toc.integrate
+    # - toc.integrate
     - navigation.instant
     # - navigation.expand
     - navigation.tabs
