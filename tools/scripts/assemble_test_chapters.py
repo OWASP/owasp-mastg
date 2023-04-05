@@ -32,7 +32,7 @@ def inject_tests_table():
                 for platform in mastg_tests[masvs_id]:
                     for test in mastg_tests[masvs_id][platform]:
                         if base_name in test['path'] and is_test_deprecated(test) == False:
-                            md_link = f"/MASTG/tests/{os.path.splitext(os.path.basename(test['path']))[0]}"
+                            md_link = f"[{test['title']}](/MASTG/tests/{os.path.splitext(os.path.basename(test['path']))[0]})"
                             t = {}
                             t['title'] = md_link
                             t['masvs_v1_id'] = ", ".join(test['masvs_v1_id'])
