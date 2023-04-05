@@ -25,7 +25,7 @@ nav:
       - MASVS-PLATFORM: MASVS/09-MASVS-PLATFORM.md
       - MASVS-CODE: MASVS/10-MASVS-CODE.md
       - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
-      - Controls: MASVS/Controls
+      - Controls: MASVS/controls
   - "MAS Checklist":
      - Overview: MAS_checklist.md
      - MASVS-STORAGE: checklists/MASVS-STORAGE.md
@@ -91,7 +91,7 @@ extra_css:
   - stylesheets/extra.css
 extra_javascript:
   - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
-  - javascripts/tablesort.js
+  - javascripts/tablesorts.js
 plugins:
   - search
   - include_dir_to_nav
