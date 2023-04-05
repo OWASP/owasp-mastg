@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # &#128478; News
 
 !!! tip "Tip: Follow us on Twitter!"
