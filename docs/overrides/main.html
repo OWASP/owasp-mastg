@@ -34,28 +34,37 @@
             "MASVS-PRIVACY": "8B5F9E",
         }
         var keys = Object.keys(MASVS_COLORS);
-        var elements = document.getElementsByClassName("md-nav__link");
-        for (var i = 0; i < elements.length; i++) {
-            var elementKey = elements[i].innerHTML.trim();
-            if (keys.some(key => elementKey.startsWith(key))) {
-                var color = "";
-                if (elementKey.split("-").length === 3) {
-                    var keyParts = elementKey.split('-');
-                    var category = keyParts.slice(0, keyParts.length - 1).join('-');
-                    color = MASVS_COLORS[category] + "b0";
-                }
-                else {
-                    color = MASVS_COLORS[elementKey];
-                    elements[i].style.fontWeight = "bold";
-                    elements[i].style.fontSize = "1.2em";
-                }
-                elements[i].style.backgroundColor = "#" + color;
-                elements[i].style.margin = "0.5em 0.5em 0.5em 0.2em";
-                elements[i].style.borderRadius = "5px";
-                elements[i].style.color = "white";
-                elements[i].style.padding = "0.3em";
-                if (elements[i].classList.contains("md-nav__link--active")) {
-                   elements[i].style.height = "6em";
+        var elements = document.querySelectorAll('.md-nav__link, .masvs-v2-chip');
+        
+        if (elements.length > 0) {
+            for (const element of elements) {
+                var elementKey = element.innerHTML.trim();
+                if (keys.some(key => elementKey.startsWith(key))) {
+                    var color = "";
+                    if (elementKey.split("-").length === 3) {
+                        var keyParts = elementKey.split('-');
+                        var category = keyParts.slice(0, keyParts.length - 1).join('-');
+                        
+                        if (element.classList.contains("masvs-v2-chip")) {
+                            color = MASVS_COLORS[category];
+                        }
+                        else {
+                            color = MASVS_COLORS[category] + "b0";
+                        }
+                    }
+                    else {
+                        color = MASVS_COLORS[elementKey];
+                        element.style.fontWeight = "bold";
+                        element.style.fontSize = "1.2em";
+                    }
+                    element.style.backgroundColor = "#" + color;
+                    element.style.margin = "0.5em 0.5em 0.5em 0.2em";
+                    element.style.borderRadius = "5px";
+                    element.style.color = "white";
+                    element.style.padding = "0.3em";
+                    if (element.classList.contains("md-nav__link--active")) {
+                    element.style.height = "6em";
+                    }
                 }
             }
         }
