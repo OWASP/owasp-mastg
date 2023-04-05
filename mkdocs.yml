@@ -19,13 +19,19 @@ nav:
       - MASVS.md
       - Intro: MASVS/Intro
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
+      - ... | flat | MASVS/controls/MASVS-STORAGE*.md
       - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md
+      - ... | flat | MASVS/controls/MASVS-CRYPTO*.md
       - MASVS-AUTH: MASVS/07-MASVS-AUTH.md
+      - ... | flat | MASVS/controls/MASVS-AUTH*.md
       - MASVS-NETWORK: MASVS/08-MASVS-NETWORK.md
+      - ... | flat | MASVS/controls/MASVS-NETWORK*.md
       - MASVS-PLATFORM: MASVS/09-MASVS-PLATFORM.md
+      - ... | flat | MASVS/controls/MASVS-PLATFORM*.md
       - MASVS-CODE: MASVS/10-MASVS-CODE.md
+      - ... | flat | MASVS/controls/MASVS-CODE*.md
       - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
-      - Controls: MASVS/controls
+      - ... | flat | MASVS/controls/MASVS-RESILIENCE*.md
   - "MAS Checklist":
      - Overview: MAS_checklist.md
      - MASVS-STORAGE: checklists/MASVS-STORAGE.md
@@ -95,6 +101,7 @@ extra_javascript:
 plugins:
   - search
   - include_dir_to_nav
+  - awesome-pages
   - mermaid2
 markdown_extensions:
   - meta

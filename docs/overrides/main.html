@@ -42,10 +42,12 @@
                 if (elementKey.split("-").length === 3) {
                     var keyParts = elementKey.split('-');
                     var category = keyParts.slice(0, keyParts.length - 1).join('-');
-                    color = MASVS_COLORS[category]
+                    color = MASVS_COLORS[category] + "b0";
                 }
                 else {
                     color = MASVS_COLORS[elementKey];
+                    elements[i].style.fontWeight = "bold";
+                    elements[i].style.fontSize = "1.2em";
                 }
                 elements[i].style.backgroundColor = "#" + color;
                 elements[i].style.margin = "0.5em 0.5em 0.5em 0.2em";
