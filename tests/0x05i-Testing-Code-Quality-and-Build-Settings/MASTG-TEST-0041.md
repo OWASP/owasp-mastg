@@ -6,8 +6,7 @@ masvs_v2_id:
 platform: android
 title: Testing for Debugging Code and Verbose Error Logging
 masvs_v1_levels:
-- L1
-- L2
+- R
 ---
 
 ## Overview

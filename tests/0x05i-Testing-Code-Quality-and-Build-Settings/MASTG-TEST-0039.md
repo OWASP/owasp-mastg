@@ -6,8 +6,7 @@ masvs_v2_id:
 platform: android
 title: Testing whether the App is Debuggable
 masvs_v1_levels:
-- L1
-- L2
+- R
 ---
 
 ## Overview

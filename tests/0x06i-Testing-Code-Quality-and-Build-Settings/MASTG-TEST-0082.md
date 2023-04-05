@@ -6,8 +6,7 @@ masvs_v2_id:
 platform: ios
 title: Making Sure that the App Is Properly Signed
 masvs_v1_levels:
-- L1
-- L2
+- R
 ---
 
 ## Overview

@@ -6,8 +6,7 @@ masvs_v2_id:
 platform: ios
 title: Testing for Debugging Symbols
 masvs_v1_levels:
-- L1
-- L2
+- R
 ---
 
 ## Overview
