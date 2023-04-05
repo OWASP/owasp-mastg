@@ -62,7 +62,7 @@ append_to_file(list_of_dicts_to_md_table(data) + "\n\n<br>\n", "docs/talks.md")
 
 # checklists.md
 
-CHECKLISTS_DIR = "checklists"
+CHECKLISTS_DIR = "docs/checklists"
 
 checklist_dict = combine_data_for_checklist.get_checklist_dict()
 
@@ -76,5 +76,5 @@ for group_id, checklist in checklist_dict.items():
     set_icons_for_web(checklist)
     content = list_of_dicts_to_md_table(checklist, column_titles, column_align) + "\n\n<br><br>"
 
-    with open(f"docs/{CHECKLISTS_DIR}/{group_id}.md", 'w') as f:
+    with open(f"{CHECKLISTS_DIR}/{group_id}.md", 'w') as f:
         f.write(content)
