@@ -7,17 +7,25 @@ edit_uri: "" # disable edit button
 nav:
   - Home: index.md
   - MASTG:
-      - MASTG.md
-      - Intro: MASTG/Intro
-      - General Guide: MASTG/General
-      - Android: MASTG/Android
-      - iOS: MASTG/iOS
-      - Tests: MASTG/tests
-      - Tools: MASTG/Tools
-      - References: MASTG/References
+      - Overview: MASTG.md
+      - Intro:
+        - ... | flat | MASTG/Intro/*.md
+      - General Guide:
+        - ... | flat | MASTG/General/*.md
+      - Android:
+        - ... | flat | MASTG/Android/*.md
+      - iOS: 
+        - ... | flat | MASTG/iOS/*.md
+      - Tests:
+        - ... | flat | MASTG/tests/*.md
+      - Tools:
+        - ... | flat | MASTG/Tools/*.md
+      - References:
+        - ... | flat | MASTG/References/*.md
   - MASVS:
-      - MASVS.md
-      - Intro: MASVS/Intro
+      - Overview: MASVS.md
+      - Intro:
+        - ... | flat | MASVS/Intro/*
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
       - ... | flat | MASVS/controls/MASVS-STORAGE*.md
       - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md
@@ -42,16 +50,16 @@ nav:
      - MASVS-CODE: checklists/MASVS-CODE.md
      - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
   - "MAS Crackmes": 
-      - crackmes.md
-      - crackmes
+      - Overview: crackmes.md
+      - ... | flat | crackmes/*.md
   - news.md
   - talks.md
   - "&#11088; Contribute":
       - contributing.md
-      - contributing
+      - ... | flat | contributing/*.md
   - "&#128153; Donate":
       - donate.md
-      - donate
+      - ... | flat | donate/*.md
   - contact.md
 
 copyright: |
@@ -100,7 +108,6 @@ extra_javascript:
   - javascripts/tablesorts.js
 plugins:
   - search
-  - include_dir_to_nav
   - awesome-pages
   - mermaid2
 markdown_extensions:
