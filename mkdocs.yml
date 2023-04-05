@@ -52,11 +52,11 @@ copyright: |
   <div style="float: left; padding-right: 1em;">
     <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
   </div>
-  <span>
+  <span style="font-size: smaller">
     &#169; OWASP Foundation 2023. This work is licensed under 
     <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
-  </span><br><span>OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span>
-  <div style="color: #6a6868"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website designed by Carlos Holguera.</i></div>
+  </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span>
+  <div style="color: #6a6868; font-size: smaller"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website and covers designed by Carlos Holguera.</i></div>
 
 theme:
   name: material
