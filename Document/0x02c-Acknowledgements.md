@@ -60,14 +60,14 @@ If you'd like to apply please contact the project leaders by sending an email to
 ### NowSecure as a MASVS/MASTG Adopter
 
 - Services / Products:
-  - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
-  - [NowSecure Platform for Automated Mobile Security Testing](https://www.nowsecure.com/products/nowsecure-platform/)
+    - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
+    - [NowSecure Platform for Automated Mobile Security Testing](https://www.nowsecure.com/products/nowsecure-platform/)
 - Resources:
-  - [The Essential Guide to the OWASP Mobile Security Project](https://discover.nowsecure.com/c/manager-guide-owasp?x=LIaYZt&xs=90367)
+    - [The Essential Guide to the OWASP Mobile Security Project](https://discover.nowsecure.com/c/manager-guide-owasp?x=LIaYZt&xs=90367)
 - Trainings:
-  - [Standards and Risk Assessment](https://academy.nowsecure.com/standards-and-risk-assessment)
-  - [OWASP MASVS & MASTG Updates](https://academy.nowsecure.com/owasp-masvs-mstg-updates)
-  - [Intro to Mobile App Security](https://academy.nowsecure.com/intro-to-mobile-app-security)
+    - [Standards and Risk Assessment](https://academy.nowsecure.com/standards-and-risk-assessment)
+    - [OWASP MASVS & MASTG Updates](https://academy.nowsecure.com/owasp-masvs-mstg-updates)
+    - [Intro to Mobile App Security](https://academy.nowsecure.com/intro-to-mobile-app-security)
 
 ### NowSecure's Contributions to the MAS Project
 
@@ -89,15 +89,16 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
 **Spreading the Word:**
 
 - **Social media involvement**: continuous Twitter and LinkedIn activity (see [examples](https://twitter.com/search?q=(MASVS%20OR%20MSTG)%20(from%3ANowSecureMobile)&src=typed_query))
+- **Case Study**: [NowSecure Commits to Security Standards](https://drive.google.com/file/d/1cns3Ot6MGdHwMMSx88lDds3brktMhLOM/view?usp=share_link)
 - **Blog Posts**:
-  - [Integrate security into the mobile app software development lifecycle](https://www.scmagazine.com/perspective/devops/integrate-security-into-the-mobile-app-software-development-lifecycle)
-  - [OWASP Mobile Security Testing Checklist Aids Compliance](https://www.nowsecure.com/blog/2022/02/23/owasp-mobile-security-testing-checklist-aids-compliance/)
+    - [Integrate security into the mobile app software development lifecycle](https://www.scmagazine.com/perspective/devops/integrate-security-into-the-mobile-app-software-development-lifecycle)
+    - [OWASP Mobile Security Testing Checklist Aids Compliance](https://www.nowsecure.com/blog/2022/02/23/owasp-mobile-security-testing-checklist-aids-compliance/)
 - **Presentations**:
-  - "Mobile Wanderlust"! Our journey to Version 2.0! (OWASP AppSec EU, Jun 10 2022)
-  - Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Toronto Chapter, Feb 10 2022)
-  - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
-  - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
-  - and more
+    - "Mobile Wanderlust"! Our journey to Version 2.0! (OWASP AppSec EU, Jun 10 2022)
+    - Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Toronto Chapter, Feb 10 2022)
+    - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
+    - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
+    - and more
 
 ## Contributors
 
