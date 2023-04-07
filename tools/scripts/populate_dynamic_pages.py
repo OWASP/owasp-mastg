@@ -77,4 +77,4 @@ for group_id, checklist in checklist_dict.items():
     content = list_of_dicts_to_md_table(checklist, column_titles, column_align) + "\n\n<br><br>"
 
     with open(f"{CHECKLISTS_DIR}/{group_id}.md", 'w') as f:
-        f.write(content)
+        f.write(f"---\nhide:\n  - toc\n---\n\n{content}\n")
