@@ -55,11 +55,11 @@ title: "Home"
 
 <br><br>
 
-<a href="../MAS_checklist"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/checklist_en_filled.png" /></a>
+<a href="../MAS_checklist"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/mas_checklist.png" /></a>
 
 <br><br><br>
 
-<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/Mobile_App_Security_Checklist_en.xlsx" class="md-button md-button--primary" style="margin-top: 0.6em;"> Download the Checklist</a>
+<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MAS_Checklist.xlsx" class="md-button md-button--primary" style="margin-top: 0.6em;"> Download the Checklist</a>
 
 </center>
 
