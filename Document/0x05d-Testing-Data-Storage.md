@@ -276,14 +276,14 @@ Although the key attestation process can be implemented within the application d
 - The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge.
 - The client should call the `setAttestationChallenge` API with the challenge received from the server and should then retrieve the attestation certificate chain using the `KeyStore.getCertificateChain` method.
 - The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
-  - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness. Check the [Certificate Revocation Status List](https://developer.android.com/training/articles/security-key-attestation#root_certificat "Certificate Revocation Status List") maintained by Google, if none of the certificates in the chain was revoked.
-  - Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
-  - Extract the attestation [certificate extension data](https://developer.android.com/training/articles/security-key-attestation#certificate_schema "Certificate extension data schema"), which appears within the first element of the certificate chain and perform the following checks:
-    - Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
-    - Verify the signature in the key attestation response.
-    - Verify the security level of the Keymaster to determine if the device has secure key storage mechanism. Keymaster is a piece of software that runs in the security context and provides all the secure keystore operations. The security level will be one of `Software`, `TrustedEnvironment` or `StrongBox`. The client supports hardware-level key attestation if security level is `TrustedEnvironment` or `StrongBox` and attestation certificate chain contains a root certificate signed with Google attestation root key.
-    - Verify client's status to ensure full chain of trust - verified boot key, locked bootloader and verified boot state.
-    - Additionally, you can verify the key pair's attributes such as purpose, access time, authentication requirement, etc.
+    - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness. Check the [Certificate Revocation Status List](https://developer.android.com/training/articles/security-key-attestation#root_certificat "Certificate Revocation Status List") maintained by Google, if none of the certificates in the chain was revoked.
+    - Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
+    - Extract the attestation [certificate extension data](https://developer.android.com/training/articles/security-key-attestation#certificate_schema "Certificate extension data schema"), which appears within the first element of the certificate chain and perform the following checks:
+        - Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
+        - Verify the signature in the key attestation response.
+        - Verify the security level of the Keymaster to determine if the device has secure key storage mechanism. Keymaster is a piece of software that runs in the security context and provides all the secure keystore operations. The security level will be one of `Software`, `TrustedEnvironment` or `StrongBox`. The client supports hardware-level key attestation if security level is `TrustedEnvironment` or `StrongBox` and attestation certificate chain contains a root certificate signed with Google attestation root key.
+        - Verify client's status to ensure full chain of trust - verified boot key, locked bootloader and verified boot state.
+        - Additionally, you can verify the key pair's attributes such as purpose, access time, authentication requirement, etc.
 
 > Note, if for any reason that process fails, it means that the key is not in security hardware. That does not mean that the key is compromised.
 
@@ -458,9 +458,9 @@ Android provides users with an auto-backup feature. The backups usually include 
 - Google provides a "Back Up My Data" feature that backs up all app data to Google's servers.
 
 - Two Backup APIs are available to app developers:
-  - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
+    - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
 
-  - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (API level 23) and above, Google added the "Auto Backup for Apps feature". This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
+    - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (API level 23) and above, Google added the "Auto Backup for Apps feature". This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
 
 - OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
 

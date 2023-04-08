@@ -41,10 +41,9 @@ ATS will block connections that further fail to meet a set of [minimum security 
 - **When using lower-level APIs:** ATS only applies to the [URL Loading System](https://developer.apple.com/documentation/foundation/url_loading_system) including [URLSession](https://developer.apple.com/reference/foundation/urlsession) and APIs layered on top of them. It does not apply to apps that use lower-level APIs (like BSD Sockets), including those that implement TLS on top of those lower-level APIs (see section ["Using ATS in Apple Frameworks"](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW55) from the Archived Apple Developer Documentation).
 
 - **When connecting to IP addresses, unqualified domain names or local hosts:** ATS applies only to connections made to public host names (see section ["Availability of ATS for Remote and Local Connections"](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW54) from the Archived Apple Developer Documentation). The system does not provide ATS protection to connections made to:
-
-  - Internet protocol (IP) addresses
-  - Unqualified host names
-  - Local hosts employing the .local top-level domain (TLD)
+    - Internet protocol (IP) addresses
+    - Unqualified host names
+    - Local hosts employing the .local top-level domain (TLD)
 
 - **When including ATS Exceptions:** If the app uses the ATS compatible APIs, it can still disable ATS for specific scenarios using [ATS Exceptions](#ats-exceptions).
 
@@ -150,7 +149,7 @@ The [Apple Developer Documentation](https://developer.apple.com/documentation/se
 
 - bypass or customize certificate expiry.
 - loosen/extend trust: accept server credentials that would otherwise be rejected by the system, e.g. to make secure connections to a development server using self-signed certificates embedded in the app.
-- tighten trust: reject credentials that would otherwise be accepted by the system (see ["Testing Custom Certificate Stores and Certificate Pinning"](#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4)).
+- tighten trust: reject credentials that would otherwise be accepted by the system.
 - etc.
 
 <img src="Images/Chapters/0x06g/manual-server-trust-evaluation.png" width="100%" />

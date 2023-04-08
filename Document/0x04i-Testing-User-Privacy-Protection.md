@@ -17,8 +17,8 @@ To ensure that users are properly protected, legislation such as the [General Da
 There are two main dimensions to consider here:
 
 - **Developer Compliance**: Developers need to comply with legal privacy principles since they are enforced by law. Developers need to better comprehend the legal principles in order to know what exactly they need to implement to remain compliant. Ideally, at least, the following must be fulfilled:
-  - **Privacy-by-Design** approach (Art. 25 GDPR, "Data protection by design and by default").
-  - **Principle of Least Privilege** ("Every program and every user of the system should operate using the least set of privileges necessary to complete the job.")
+    - **Privacy-by-Design** approach (Art. 25 GDPR, "Data protection by design and by default").
+    - **Principle of Least Privilege** ("Every program and every user of the system should operate using the least set of privileges necessary to complete the job.")
 - **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure secure handling and processing of their information).
 
 > Note: More often than not apps will claim to handle certain data, but in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://drive.google.com/file/d/1cp7zrqJuVkftJ0DARNN40Ga_m_tEhIrQ/view?usp=sharing) gives a very nice introduction to this topic.
@@ -30,14 +30,14 @@ When an app needs personal information from a user for its business process, the
 Surely you're already familiar with the classic triad of security protection goals: confidentiality, integrity, and availability. However, you might not be aware of the three protection goals that have been proposed to focus on data protection:
 
 - **Unlinkability**:
-  - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain.
-  - Includes: data minimization, anonymization, pseudonymization, etc.
+    - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain.
+    - Includes: data minimization, anonymization, pseudonymization, etc.
 - **Transparency**:
-  - Users should be able to request all information that the application has on them, and receive instructions on how to request this information.
-  - Includes: privacy policies, user education, proper logging and auditing mechanisms, etc.
+    - Users should be able to request all information that the application has on them, and receive instructions on how to request this information.
+    - Includes: privacy policies, user education, proper logging and auditing mechanisms, etc.
 - **Intervenability**:
-  - Users should be able to correct their personal information, request its deletion, withdraw any given consent at any time, and receive instructions on how to do so.
-  - Includes: privacy settings directly in the app, single points of contact for individuals’ intervention requests (e.g. in-app chat, telephone number, e-mail), etc.
+    - Users should be able to correct their personal information, request its deletion, withdraw any given consent at any time, and receive instructions on how to do so.
+    - Includes: privacy settings directly in the app, single points of contact for individuals’ intervention requests (e.g. in-app chat, telephone number, e-mail), etc.
 
 > See Section 5.1.1 "Introduction to data protection goals" in ENISA's ["Privacy and data protection in mobile applications"](https://www.enisa.europa.eu/publications/privacy-and-data-protection-in-mobile-applications "ENISA - Privacy and data protection in mobile applications") for more detailed descriptions.
 

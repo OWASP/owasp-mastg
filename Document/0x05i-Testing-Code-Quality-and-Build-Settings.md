@@ -55,16 +55,16 @@ Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) 
 The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
 
 - [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
-  - Since Android 7.0 (API level 24), PIC compilation is [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
-  - With Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50) and since then, PIE is [enforced by the linker](https://cs.android.com/android/platform/superproject/+/master:bionic/linker/linker_main.cpp;l=430).
+    - Since Android 7.0 (API level 24), PIC compilation is [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
+    - With Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50) and since then, PIE is [enforced by the linker](https://cs.android.com/android/platform/superproject/+/master:bionic/linker/linker_main.cpp;l=430).
 - [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
-  - Garbage Collection will simply run for the main binaries and there's nothing to be checked on the binaries themselves.
-  - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+    - Garbage Collection will simply run for the main binaries and there's nothing to be checked on the binaries themselves.
+    - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs"](0x04h-Testing-Code-Quality.md#memory-corruption-bugs).
 - [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection):
-  - Android apps get compiled to Dalvik bytecode which is considered memory safe (at least for mitigating buffer overflows). Other frameworks such as Flutter will not compile using stack canaries because of the way their language, in this case Dart, mitigates buffer overflows.
-  - It must be enabled for Android native libraries but it might be difficult to fully determine it.
-    - NDK libraries should have it enabled since the compiler does it by default.
-    - Other custom C/C++ libraries might not have it enabled.
+    - Android apps get compiled to Dalvik bytecode which is considered memory safe (at least for mitigating buffer overflows). Other frameworks such as Flutter will not compile using stack canaries because of the way their language, in this case Dart, mitigates buffer overflows.
+    - It must be enabled for Android native libraries but it might be difficult to fully determine it.
+        - NDK libraries should have it enabled since the compiler does it by default.
+        - Other custom C/C++ libraries might not have it enabled.
 
 Learn more:
 

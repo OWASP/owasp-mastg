@@ -24,16 +24,16 @@ Apple CryptoKit contains the following algorithms:
 
 - Message Authentication Codes (HMAC)
 - Authenticated Encryption
-  - AES-GCM
-  - ChaCha20-Poly1305
+    - AES-GCM
+    - ChaCha20-Poly1305
 
 **Public-Key:**
 
 - Key Agreement
-  - Curve25519
-  - NIST P-256
-  - NIST P-384
-  - NIST P-512
+    - Curve25519
+    - NIST P-256
+    - NIST P-384
+    - NIST P-512
 
 Examples:
 

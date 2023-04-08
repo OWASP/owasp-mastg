@@ -710,7 +710,7 @@ Looking at these two _traces_ that Frida _lefts behind_, you might already imagi
 | **Checking For Ports Responding To D-Bus Auth** | `frida-server` uses the D-Bus protocol to communicate, so you can expect it to respond to D-Bus AUTH. Send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself. | This is a fairly robust method of detecting `frida-server`, but Frida offers alternative modes of operation that don't require frida-server. |
 | **Scanning Process Memory for Known Artifacts** | Scan the memory for artifacts found in Frida's libraries, e.g. the string "LIBFRIDA" present in all versions of frida-gadget and frida-agent. For example, use `Runtime.getRuntime().exec` and iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version) searching for the string. | This method is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added and if multiple artifacts are being scanned. However, the chosen artifacts might be patched in the Frida binaries. Find the source code on [Berdhard Mueller's GitHub](https://github.com/muellerberndt/frida-detection-demo/blob/master/AntiFrida/app/src/main/cpp/native-lib.cpp "frida-detection-demo"). |
 
-Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would help detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. Further, the app can try to make it harder to detect the implemented protection mechanisms by using various obfuscation techniques, as discussed below in section "[Testing Resiliency Against Reverse Engineering](#testing-obfuscation-mstg-resilience-9 "Testing Resiliency Against Reverse Engineering")". At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
+Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would help detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. Further, the app can try to make it harder to detect the implemented protection mechanisms by using various obfuscation techniques. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
 
 > It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
@@ -887,67 +887,67 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 - Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would extract such data from a device, it wouldn't be possible to decrypt the data, as the key is not accessible. Implementing this, takes the following steps:
 
-  - Generate the key pair in the Android Keystore using `KeyGenParameterSpec` API.
+    - Generate the key pair in the Android Keystore using `KeyGenParameterSpec` API.
 
-    ```java
-    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
-    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
-    keyPairGenerator.initialize(
-            new KeyGenParameterSpec.Builder(
-                    "key1",
-                    KeyProperties.PURPOSE_DECRYPT)
-                    .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
-                    .build());
-    KeyPair keyPair = keyPairGenerator.generateKeyPair();
-    Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
-    cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
-    ...
+      ```java
+      //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+      KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(
+              KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
+      keyPairGenerator.initialize(
+              new KeyGenParameterSpec.Builder(
+                      "key1",
+                      KeyProperties.PURPOSE_DECRYPT)
+                      .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+                      .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
+                      .build());
+      KeyPair keyPair = keyPairGenerator.generateKeyPair();
+      Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+      cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+      ...
 
-    // The key pair can also be obtained from the Android Keystore any time as follows:
-    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-    keyStore.load(null);
-    PrivateKey privateKey = (PrivateKey) keyStore.getKey("key1", null);
-    PublicKey publicKey = keyStore.getCertificate("key1").getPublicKey();
-    ```
+      // The key pair can also be obtained from the Android Keystore any time as follows:
+      KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+      keyStore.load(null);
+      PrivateKey privateKey = (PrivateKey) keyStore.getKey("key1", null);
+      PublicKey publicKey = keyStore.getCertificate("key1").getPublicKey();
+      ```
 
-  - Generating a secret key for AES-GCM:
+    - Generating a secret key for AES-GCM:
 
-    ```java
-    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
-    KeyGenerator keyGenerator = KeyGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-    keyGenerator.init(
-            new KeyGenParameterSpec.Builder("key2",
-                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                    .build());
-    SecretKey key = keyGenerator.generateKey();
+      ```java
+      //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+      KeyGenerator keyGenerator = KeyGenerator.getInstance(
+              KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+      keyGenerator.init(
+              new KeyGenParameterSpec.Builder("key2",
+                      KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                      .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                      .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                      .build());
+      SecretKey key = keyGenerator.generateKey();
 
-    // The key can also be obtained from the Android Keystore any time as follows:
-    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-    keyStore.load(null);
-    key = (SecretKey) keyStore.getKey("key2", null);
-    ```
+      // The key can also be obtained from the Android Keystore any time as follows:
+      KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+      keyStore.load(null);
+      key = (SecretKey) keyStore.getKey("key2", null);
+      ```
 
-  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data:
+    - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data:
 
-    ```java
-    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-    final byte[] nonce = new byte[GCM_NONCE_LENGTH];
-    random.nextBytes(nonce);
-    GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH * 8, nonce);
-    cipher.init(Cipher.ENCRYPT_MODE, key, spec);
-    byte[] aad = "<deviceidentifierhere>".getBytes();;
-    cipher.updateAAD(aad);
-    cipher.init(Cipher.ENCRYPT_MODE, key);
+      ```java
+      Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+      final byte[] nonce = new byte[GCM_NONCE_LENGTH];
+      random.nextBytes(nonce);
+      GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH * 8, nonce);
+      cipher.init(Cipher.ENCRYPT_MODE, key, spec);
+      byte[] aad = "<deviceidentifierhere>".getBytes();;
+      cipher.updateAAD(aad);
+      cipher.init(Cipher.ENCRYPT_MODE, key);
 
-    //use the cipher to encrypt the authentication data see 0x50e for more details.
-    ```
+      //use the cipher to encrypt the authentication data see 0x50e for more details.
+      ```
 
-  - Encrypt the secret key using the public key stored in Android Keystore and store the encrypted secret key in the private storage of the application.
-  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android Keystore and then use the decrypted secret key to decrypt the ciphertext.
+    - Encrypt the secret key using the public key stored in Android Keystore and store the encrypted secret key in the private storage of the application.
+    - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android Keystore and then use the decrypted secret key to decrypt the ciphertext.
 
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.

@@ -171,7 +171,7 @@ Common uses for OAuth2 include:
 
 According to OAuth 2.0, a mobile client seeking access to a user's resources must first ask the user to authenticate against an _authentication server_. With the users' approval, the authorization server then issues a token that allows the app to act on behalf of the user. Note that the OAuth2 specification doesn't define any particular kind of authentication or access token format.
 
-### Protocol Overview 
+### Protocol Overview
 
 OAuth 2.0 defines four roles:
 
@@ -215,22 +215,22 @@ For additional best practices and detailed information please refer to the follo
 Some of the best practices include but are not limited to:
 
 - **User agent:**
-  - The user should have a way to visually verify trust (e.g., Transport Layer Security (TLS) confirmation, website mechanisms).
-  - To prevent man-in-the-middle attacks, the client should validate the server's fully qualified domain name with the public key the server presented when the connection was established.
+    - The user should have a way to visually verify trust (e.g., Transport Layer Security (TLS) confirmation, website mechanisms).
+    - To prevent man-in-the-middle attacks, the client should validate the server's fully qualified domain name with the public key the server presented when the connection was established.
 - **Type of grant:**
-  - On native apps, code grant should be used instead of implicit grant.
-  - When using code grant, PKCE (Proof Key for Code Exchange) should be implemented to protect the code grant. Make sure that the server also implements it.
-  - The auth "code" should be short-lived and used immediately after it is received. Verify that auth codes only reside on transient memory and aren't stored or logged.
+    - On native apps, code grant should be used instead of implicit grant.
+    - When using code grant, PKCE (Proof Key for Code Exchange) should be implemented to protect the code grant. Make sure that the server also implements it.
+    - The auth "code" should be short-lived and used immediately after it is received. Verify that auth codes only reside on transient memory and aren't stored or logged.
 - **Client secrets:**
-  - Shared secrets should not be used to prove the client's identity because the client could be impersonated ("client_id" already serves as proof). If they do use client secrets, be sure that they are stored in secure local storage.
+    - Shared secrets should not be used to prove the client's identity because the client could be impersonated ("client_id" already serves as proof). If they do use client secrets, be sure that they are stored in secure local storage.
 - **End-User credentials:**
-  - Secure the transmission of end-user credentials with a transport-layer method, such as TLS.
+    - Secure the transmission of end-user credentials with a transport-layer method, such as TLS.
 - **Tokens:**
-  - Keep access tokens in transient memory.
-  - Access tokens must be transmitted over an encrypted connection.
-  - Reduce the scope and duration of access tokens when end-to-end confidentiality can't be guaranteed or the token provides access to sensitive information or transactions.
-  - Remember that an attacker who has stolen tokens can access their scope and all resources associated with them if the app uses access tokens as bearer tokens with no other way to identify the client.
-  - Store refresh tokens in secure local storage; they are long-term credentials.
+    - Keep access tokens in transient memory.
+    - Access tokens must be transmitted over an encrypted connection.
+    - Reduce the scope and duration of access tokens when end-to-end confidentiality can't be guaranteed or the token provides access to sensitive information or transactions.
+    - Remember that an attacker who has stolen tokens can access their scope and all resources associated with them if the app uses access tokens as bearer tokens with no other way to identify the client.
+    - Store refresh tokens in secure local storage; they are long-term credentials.
 
 ## User Logout
 
