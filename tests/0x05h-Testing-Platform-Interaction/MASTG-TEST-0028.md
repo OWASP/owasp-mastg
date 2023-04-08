@@ -220,7 +220,7 @@ deeplinkdemo://load.html?attacker_controlled=<svg onload=alert(1)>
 But there are many other possibilities. Be sure to check the following sections to learn more about what to expect and how to test different scenarios:
 
 - ["Cross-Site Scripting Flaws"](../../Document/0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws).
-- ["Injection Flaws"](../../Document/0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2).
+- ["Injection Flaws"](../../Document/0x04h-Testing-Code-Quality.md#injection-flaws).
 - ["Testing Object Persistence"](MASTG-TEST-0028.md).
 - ["Testing for URL Loading in WebViews"](MASTG-TEST-0027.md)
 - ["Testing JavaScript Execution in WebViews"](MASTG-TEST-0031.md)

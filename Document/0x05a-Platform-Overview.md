@@ -120,7 +120,7 @@ Android implements an extensive permissions system that is used as an access con
 
 Further information is available in the [Android documentation](https://developer.android.com/guide/topics/permissions/overview) including several [considerations](https://developer.android.com/training/permissions/evaluating) and [best practices](https://developer.android.com/training/permissions/usage-notes).
 
-To learn how to test app permissions refer to the [Testing App Permissions](0x05h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) section in the "Android Platform APIs" chapter.
+To learn how to test app permissions refer to the [Testing App Permissions](../tests/0x05h-Testing-Platform-Interaction/MASTG-TEST-0024.md) section in the "Android Platform APIs" chapter.
 
 ### Network security
 
@@ -707,23 +707,3 @@ Apps can be installed on an Android device from a variety of sources: locally vi
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this minimizes the time between the beginning of the publishing process and public app availability.
 
 Publishing an app is quite straightforward; the main operation is making the signed APK file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available at [the official Android documentation](https://play.google.com/console/about/guides/releasewithconfidence/ "Review the checklists to plan your launch").
-
-## Android Application Attack Surface
-
-The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application may be vulnerable to attack if it does not:
-
-- Validate all input by means of IPC communication or URL schemes, see also:
-    - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
-    - [Testing Deep Links](0x05h-Testing-Platform-Interaction.md#testing-deep-links-mstg-platform-3)
-- Validate all input by the user in input fields.
-- Validate the content loaded inside a WebView, see also:
-    - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5)
-    - [Testing WebView Protocol Handlers](0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers-mstg-platform-6)
-    - [Determining Whether Java Objects Are Exposed Through WebViews](0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews-mstg-platform-7)
-- Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application, see also:
-    - [Testing Network Communication](0x04f-Testing-Network-Communication.md#testing-network-communication)
-    - [Android Network Communication](0x05g-Testing-Network-Communication.md)
-- Securely stores all local data, or loads untrusted data from storage, see also:
-    - [Data Storage on Android](0x05d-Testing-Data-Storage.md)
-- Protect itself against compromised environments, repackaging or other local attacks, see also:
-    - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)
