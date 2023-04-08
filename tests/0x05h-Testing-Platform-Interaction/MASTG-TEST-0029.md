@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-To test for [sensitive functionality exposure through IPC](#sensitive-functionality-exposure-through-ipc "Sensitive Functionality Exposure Through IPC") mechanisms you should first enumerate all the IPC mechanisms the app uses and then try to identify whether sensitive data is leaked when the mechanisms are used.
+To test for [sensitive functionality exposure through IPC](../../Document/0x05h-Testing-Platform-Interaction.md#sensitive-functionality-exposure-through-ipc "Sensitive Functionality Exposure Through IPC") mechanisms you should first enumerate all the IPC mechanisms the app uses and then try to identify whether sensitive data is leaked when the mechanisms are used.
 
 ## Static Analysis
 

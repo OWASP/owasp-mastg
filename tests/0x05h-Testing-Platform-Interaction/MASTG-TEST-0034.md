@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-To test for [object persistence](#object-persistence "Object Persistence") being used for storing sensitive information on the device, first identify all instances of object serialization and check if they carry any sensitive data. If yes, check if is properly protected against eavesdropping or unauthorized modification.
+To test for [object persistence](../../Document/0x05h-Testing-Platform-Interaction.md#object-persistence "Object Persistence") being used for storing sensitive information on the device, first identify all instances of object serialization and check if they carry any sensitive data. If yes, check if is properly protected against eavesdropping or unauthorized modification.
 
 There are a few generic remediation steps that you can always take:
 

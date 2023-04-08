@@ -11,7 +11,7 @@ masvs_v1_levels:
 
 ## Overview
 
-To test for [overlay attacks](#overlay-attacks "Overlay Attacks") you need to check the app for usage of certain APIs and attributed typically used to protect against overlay attacks as well as check the Android version that app is targeting.
+To test for [overlay attacks](../../Document/0x05h-Testing-Platform-Interaction.md#overlay-attacks "Overlay Attacks") you need to check the app for usage of certain APIs and attributed typically used to protect against overlay attacks as well as check the Android version that app is targeting.
 
 To mitigate these attacks please carefully read the general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"). For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
 

@@ -33,7 +33,7 @@ The following third-party libraries include pinning functionality:
 
 ### Server certificate pinning
 
-Follow the instructions from the Dynamic Analysis section of ["Testing Endpoint Identify Verification](#testing-endpoint-identity-verification-mstg-network-3). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
+Follow the instructions from the Dynamic Analysis section of ["Testing Endpoint Identity Verification](MASTG-TEST-0067.md). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
 
 As a quick smoke test, you can try to bypass certificate pinning using [objection](0x08a-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](0x06b-Basic-Security-Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
 

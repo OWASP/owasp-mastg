@@ -203,7 +203,7 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep openURL
 0x1000df772 35 34 openURL:options:completionHandler:
 ```
 
-As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to "[Identifying and Hooking the URL Handler Method](#identifying-and-hooking-the-url-handler-method "Identifying and Hooking the URL Handler Method")" in the "Dynamic Analysis" of "Testing Custom URL Schemes" section for some examples on hooking and tracing this method.
+As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to "[Identifying and Hooking the URL Handler Method](MASTG-TEST-0075.md#identifying-and-hooking-the-url-handler-method "Identifying and Hooking the URL Handler Method")" for some examples on hooking and tracing this method.
 
 ## Dynamic Analysis
 
@@ -232,7 +232,7 @@ Unlike custom URL schemes, unfortunately you cannot test universal links from Sa
 
 > To do it from Safari you will have to find an existing link on a website that once clicked, it will be recognized as a Universal Link. This can be a bit time consuming.
 
-Alternatively you can also use Frida for this, see the section "[Performing URL Requests](#performing-url-requests "Performing URL Requests")" for more details.
+Alternatively you can also use Frida for this, see the section "[Performing URL Requests](MASTG-TEST-0075.md#performing-url-requests)" for more details.
 
 ### Identifying Valid Universal Links
 

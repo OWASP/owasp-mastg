@@ -20,7 +20,7 @@ The app should respond in some way. For example by:
 - Securely wiping any sensitive data stored on the device.
 - Reporting to a backend server, e.g, for fraud detection.
 
-Try to hook or reverse engineer the app using the methods from section ["Anti-Debugging Detection"](#anti-debugging-detection).
+Try to hook or reverse engineer the app using the methods from section ["Anti-Debugging Detection"](../../Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#anti-debugging).
 
 Next, work on bypassing the detection and answer the following questions:
 

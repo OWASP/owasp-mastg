@@ -21,7 +21,7 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 
 ### Bypassing the storage integrity checks
 
-1. Retrieve the data from the device, as described in the "[Testing Device Binding](#testing-device-binding-mstg-resilience-10 "Testing Device Binding")" section.
+1. Retrieve the data from the device.
 2. Alter the retrieved data and then put it back into storage.
 
 ## Effectiveness Assessment

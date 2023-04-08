@@ -24,8 +24,8 @@ Note that crashes might be an indicator of jailbreak detection but the app may b
 
 **Launch the app and try to bypass Jailbreak Detection using an automated tool:**
 
-If it implements jailbreak detection, you might be able to see indicators of that in the output of the tool. See section ["Automated Jailbreak Detection Bypass"](#automated-jailbreak-detection-bypass).
+If it implements jailbreak detection, you might be able to see indicators of that in the output of the tool. See section ["Automated Jailbreak Detection Bypass"](../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#automated-jailbreak-detection-bypass).
 
 **Reverse Engineer the app:**
 
-The app might be using techniques that are not implemented in the automated tools that you've used. If that's the case you must reverse engineer the app to find proofs. See section ["Manual Jailbreak Detection Bypass"](#manual-jailbreak-detection-bypass).
+The app might be using techniques that are not implemented in the automated tools that you've used. If that's the case you must reverse engineer the app to find proofs. See section ["Manual Jailbreak Detection Bypass"](../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#manual-jailbreak-detection-bypass).

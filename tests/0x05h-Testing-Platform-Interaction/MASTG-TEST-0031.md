@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-To test for [JavaScript execution in WebViews](#javascript-execution-in-webviews "JavaScript Execution in WebViews") check the app for WebView usage and evaluate whether or not each WebView should allow JavaScript execution. If JavaScript execution is required for the app to function normally, then you need to ensure that the app follows the all best practices.
+To test for [JavaScript execution in WebViews](../../Document/0x05h-Testing-Platform-Interaction.md#javascript-execution-in-webviews "JavaScript Execution in WebViews") check the app for WebView usage and evaluate whether or not each WebView should allow JavaScript execution. If JavaScript execution is required for the app to function normally, then you need to ensure that the app follows the all best practices.
 
 ## Static Analysis
 
@@ -54,6 +54,6 @@ To address these attack vectors, check the following:
 - Only files that are in the app data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
 - The HTTPS communication must be implemented according to best practices to avoid MITM attacks. This means:
-  - all communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"),
-  - the certificate is checked properly (see test case "Testing Endpoint Identify Verification"), and/or
-  - the certificate should be pinned (see "Testing Custom Certificate Stores and Certificate Pinning").
+    - all communication is encrypted via TLS,
+    - the certificate is checked properly, and/or
+    - the certificate should be pinned.

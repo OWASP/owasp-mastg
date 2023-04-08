@@ -11,7 +11,7 @@ masvs_v1_levels:
 
 ## Overview
 
-In order to test for emulator detection you can try to run the app on different emulators as indicated in section ["Emulator Detection"](#emulator-detection) and see what happens.
+In order to test for emulator detection you can try to run the app on different emulators as indicated in section ["Emulator Detection"](../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#emulator-detection) and see what happens.
 
 The app should respond in some way. For example by:
 
@@ -19,7 +19,7 @@ The app should respond in some way. For example by:
 - Preventing execution by gracefully terminating.
 - Reporting to a backend server, e.g, for fraud detection.
 
-You can also reverse engineer the app using ideas for strings and methods from section ["Emulator Detection"](#emulator-detection).
+You can also reverse engineer the app using ideas for strings and methods from section ["Emulator Detection"](../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#emulator-detection).
 
 Next, work on bypassing this detection and answer the following questions:
 

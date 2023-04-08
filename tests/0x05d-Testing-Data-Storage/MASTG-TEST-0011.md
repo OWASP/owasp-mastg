@@ -28,11 +28,11 @@ When performing static analysis to identify sensitive data that is exposed in me
 - Make sure that object references are properly removed once the object containing the sensitive data is no longer needed.
 - Make sure that garbage collection is requested after references have been removed.
 - Make sure that sensitive data gets overwritten as soon as it is no longer needed.
-  - Don't represent such data with immutable data types (such as `String` and `BigInteger`).
-  - Avoid non-primitive data types (such as `StringBuilder`).
-  - Overwrite references before removing them, outside the `finalize` method.
-  - Pay attention to third-party components (libraries and frameworks).
-    Public APIs are good indicators. Determine whether the public API handles the sensitive data as described in this chapter.
+    - Don't represent such data with immutable data types (such as `String` and `BigInteger`).
+    - Avoid non-primitive data types (such as `StringBuilder`).
+    - Overwrite references before removing them, outside the `finalize` method.
+    - Pay attention to third-party components (libraries and frameworks).
+      Public APIs are good indicators. Determine whether the public API handles the sensitive data as described in this chapter.
 
 **The following section describes pitfalls of data leakage in memory and best practices for avoiding them.**
 

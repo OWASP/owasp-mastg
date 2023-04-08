@@ -14,9 +14,9 @@ masvs_v1_levels:
 
 To test for [injection flaws](0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2 "Injection Flaws") you need to first rely on other tests and check for functionality that might have been exposed:
 
-- ["Testing Deep Links"](#testing-deep-links-mstg-platform-3)
-- ["Testing for Sensitive Functionality Exposure Through IPC"](#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
-- ["Testing for Overlay Attacks"](#testing-for-overlay-attacks-mstg-platform-9)
+- ["Testing Deep Links"](MASTG-TEST-0028.md)
+- ["Testing for Sensitive Functionality Exposure Through IPC"](MASTG-TEST-0029.md)
+- ["Testing for Overlay Attacks"](MASTG-TEST-0035.md)
 
 ## Static Analysis
 

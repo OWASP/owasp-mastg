@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-When testing [Pending Intents](#pending-intents) you must ensure that they are immutable and that the app explicitly specifies the exact package, action, and component that will receive the base intent.
+When testing [Pending Intents](../../Document/0x05h-Testing-Platform-Interaction.md#pending-intents) you must ensure that they are immutable and that the app explicitly specifies the exact package, action, and component that will receive the base intent.
 
 ## Static Analysis
 
@@ -27,7 +27,7 @@ PendingIntent getForegroundService(Context, int, Intent, int)
 PendingIntent getService(Context, int, Intent, int)
 ```
 
-Once any of the above function is spotted, check the implementation of the base intent and the `PendingIntent` for the security pitfalls listed in the [Pending Intents](#pending-intents) section.
+Once any of the above function is spotted, check the implementation of the base intent and the `PendingIntent` for the security pitfalls listed in the [Pending Intents](../../Document/0x05h-Testing-Platform-Interaction.md#pending-intents) section.
 
 For example, in [A-156959408](https://android.googlesource.com/platform/frameworks/base/+/6ae2bd0e59636254c32896f7f01379d1d704f42d "A-156959408")(CVE-2020-0389), the base intent is implicit and also the `PendingIntent` is mutable, thus making it exploitable.
 

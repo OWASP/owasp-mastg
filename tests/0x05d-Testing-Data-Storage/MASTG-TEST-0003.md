@@ -25,15 +25,15 @@ As a general recommendation to avoid potential sensitive application data leakag
 Applications will often use the [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class") and [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class") to create logs. To discover this, you should audit the application's source code for any such logging classes. These can often be found by searching for the following keywords:
 
 - Functions and classes, such as:
-  - `android.util.Log`
-  - `Log.d` | `Log.e` | `Log.i` | `Log.v` | `Log.w` | `Log.wtf`
-  - `Logger`
+    - `android.util.Log`
+    - `Log.d` | `Log.e` | `Log.i` | `Log.v` | `Log.w` | `Log.wtf`
+    - `Logger`
 
 - Keywords and system output:
-  - `System.out.print` | `System.err.print`
-  - logfile
-  - logging
-  - logs
+    - `System.out.print` | `System.err.print`
+    - logfile
+    - logging
+    - logs
 
 While preparing the production release, you can use tools like [ProGuard](0x08a-Testing-Tools.md#proguard) (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 

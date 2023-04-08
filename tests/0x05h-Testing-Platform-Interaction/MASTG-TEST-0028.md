@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-Any existing [deep links](#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc.
+Any existing [deep links](../../Document/0x05h-Testing-Platform-Interaction.md#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc.
 
 - Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
 - Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
@@ -145,12 +145,12 @@ This section details a few, of potentially many, reasons why the verification pr
 **Check the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link"):**
 
 - Check for **missing** Digital Asset Links file:
-  - try to find it in the domain's `/.well-known/` path. Example: `https://www.example.com/.well-known/assetlinks.json`
-  - or try `https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=www.example.com`
+    - try to find it in the domain's `/.well-known/` path. Example: `https://www.example.com/.well-known/assetlinks.json`
+    - or try `https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=www.example.com`
 - Check for valid Digital Asset Links file **served via HTTP**.
 - Check for **invalid** Digital Asset Links files served via HTTPS. For example:
-  - the file contains invalid JSON.
-  - the file doesn't include the target app's package.
+    - the file contains invalid JSON.
+    - the file doesn't include the target app's package.
 
 **Check for Redirects:**
 
@@ -209,9 +209,9 @@ public final class WebViewActivity extends AppCompatActivity {
             ...
 ```
 
-You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has [JavaScript enabled](#testing-javascript-execution-in-webviews-mstg-platform-5).
+You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has [JavaScript enabled](MASTG-TEST-0031.md).
 
-The same WebView might be also rendering an attacker controlled parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws-mstg-platform-2) within the context of the WebView:
+The same WebView might be also rendering an attacker controlled parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws) within the context of the WebView:
 
 ```default
 deeplinkdemo://load.html?attacker_controlled=<svg onload=alert(1)>
@@ -219,12 +219,12 @@ deeplinkdemo://load.html?attacker_controlled=<svg onload=alert(1)>
 
 But there are many other possibilities. Be sure to check the following sections to learn more about what to expect and how to test different scenarios:
 
-- ["Cross-Site Scripting Flaws (MSTG-PLATFORM-2)"](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws-mstg-platform-2).
-- ["Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)"](0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2).
-- ["Testing Object Persistence (MSTG-PLATFORM-8)"](#testing-object-persistence-mstg-platform-8).
-- ["Testing for URL Loading in WebViews (MSTG-PLATFORM-2)"](#testing-for-url-loading-in-webviews-mstg-platform-2)
-- ["Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)"](#testing-javascript-execution-in-webviews-mstg-platform-5)
-- ["Testing WebView Protocol Handlers (MSTG-PLATFORM-6)"](#testing-webview-protocol-handlers-mstg-platform-6)
+- ["Cross-Site Scripting Flaws"](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws).
+- ["Injection Flaws"](0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2).
+- ["Testing Object Persistence"](MASTG-TEST-0028.md).
+- ["Testing for URL Loading in WebViews"](MASTG-TEST-0027.md)
+- ["Testing JavaScript Execution in WebViews"](MASTG-TEST-0031.md)
+- ["Testing WebView Protocol Handlers"](MASTG-TEST-0032.md)
 
 In addition, we recommend to search and read public reports (search term: `"deep link*"|"deeplink*" site:https://hackerone.com/reports/`). For example:
 

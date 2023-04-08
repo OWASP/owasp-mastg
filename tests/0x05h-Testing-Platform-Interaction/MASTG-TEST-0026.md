@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-When testing for [implicit intents](#implicit-intents) you need to check if they are vulnerable to injection attacks or potentially leaking sensitive data.
+When testing for [implicit intents](../../Document/0x05h-Testing-Platform-Interaction.md#implicit-intents) you need to check if they are vulnerable to injection attacks or potentially leaking sensitive data.
 
 ## Static Analysis
 
@@ -98,7 +98,7 @@ for(ResolveInfo info : getPackageManager().queryIntentActivities(intent, 0)) {
 
 An improperly handled return value of an implicit intent can lead to arbitrary code execution if the victim app allows `content://` and `file://` URLs.
 
-An attacker can implement a [`ContentProvider`](https://developer.android.com/reference/android/content/ContentProvider "Android ContentProvider") that contains `public Cursor query(...)` to set an arbitrary file (in this case *lib.so*), and if the victim loads this file from the content provider by executing `copy` the attacker's `ParcelFileDescriptor openFile(...)` method will be executed and return a malicious *fakelib.so*.
+An attacker can implement a [`ContentProvider`](https://developer.android.com/reference/android/content/ContentProvider "Android ContentProvider") that contains `public Cursor query(...)` to set an arbitrary file (in this case _lib.so_), and if the victim loads this file from the content provider by executing `copy` the attacker's `ParcelFileDescriptor openFile(...)` method will be executed and return a malicious _fakelib.so_.
 
 AndroidManifest.xml
 

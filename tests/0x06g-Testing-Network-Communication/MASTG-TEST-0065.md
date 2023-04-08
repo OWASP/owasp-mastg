@@ -36,7 +36,7 @@ Make sure that the app:
 
 - verifies the challenge type and the host name and credentials when performing server trust evaluation.
 - doesn't ignore TLS errors.
-- doesn't use any insecure TLS configurations (see ["Testing the TLS Settings (MSTG-NETWORK-2)"](#testing-the-tls-settings-mstg-network-2))
+- doesn't use any insecure TLS configurations (see ["Testing the TLS Settings"](MASTG-TEST-0066.md))
 
 These checks are orientative, we cannot name specific APIs since every app might use a different framework. Please use this information as a reference when inspecting the code.
 
@@ -73,7 +73,7 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 - Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) or [Burp Suite](0x08a-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
 - Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
-> Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check ["Testing Custom Certificate Stores and Certificate Pinning"](#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4).
+> Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check ["Testing Custom Certificate Stores and Certificate Pinning"](MASTG-TEST-0068.md).
 
 For more details refer to:
 

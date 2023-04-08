@@ -61,3 +61,6 @@ You can also demangle it:
 ```bash
 $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
 
+---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect,
+                                configuration: __C.WKWebViewConfiguration) -> __C.WKWebView
+```

@@ -11,7 +11,7 @@ masvs_v1_levels:
 
 ## Overview
 
-To test for [enforced updating](#enforced-updating "Enforced Updating") you need to check if the app has support for in-app updates and validate if it's properly enforced so that the user is not able to continue using the app without updating it first.
+To test for [enforced updating](../../Document/0x05h-Testing-Platform-Interaction.md#enforced-updating "Enforced Updating") you need to check if the app has support for in-app updates and validate if it's properly enforced so that the user is not able to continue using the app without updating it first.
 
 ## Static analysis
 
