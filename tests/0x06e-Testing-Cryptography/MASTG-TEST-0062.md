@@ -26,7 +26,7 @@ Always make sure that:
 - keys are not hidden by use of lower level languages (e.g. C/C++).
 - keys are not imported from unsafe locations.
 
-Check also the [list of common cryptographic configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
+Check also the [list of common cryptographic configuration issues](../../Document/0x04g-Testing-Cryptography.md#common-configuration-issues).
 
 Most of the recommendations for static analysis can already be found in chapter "Testing Data Storage for iOS". Next, you can read up on it at the following pages:
 

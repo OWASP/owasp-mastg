@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-To test for [injection flaws](0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2 "Injection Flaws") you need to first rely on other tests and check for functionality that might have been exposed:
+To test for [injection flaws](../../Document/0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2 "Injection Flaws") you need to first rely on other tests and check for functionality that might have been exposed:
 
 - ["Testing Deep Links"](MASTG-TEST-0028.md)
 - ["Testing for Sensitive Functionality Exposure Through IPC"](MASTG-TEST-0029.md)

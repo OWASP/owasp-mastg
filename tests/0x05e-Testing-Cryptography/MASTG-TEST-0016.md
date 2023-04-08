@@ -27,4 +27,4 @@ If you want to test for randomness, you can try to capture a large set of number
 
 ## Dynamic Analysis
 
-You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on the mentioned classes and methods to determine input / output values being used.
+You can use [method tracing](../../Document/0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on the mentioned classes and methods to determine input / output values being used.

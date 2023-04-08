@@ -12,4 +12,4 @@ masvs_v1_levels:
 
 ## Overview
 
-Refer to section ["Verifying the TLS Settings"](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings) in chapter "Mobile App Network Communication" for details.
+Refer to section ["Verifying the TLS Settings"](../../Document/0x04f-Testing-Network-Communication.md#verifying-the-tls-settings) in chapter "Mobile App Network Communication" for details.

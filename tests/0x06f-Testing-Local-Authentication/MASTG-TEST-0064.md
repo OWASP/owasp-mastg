@@ -12,7 +12,7 @@ masvs_v1_levels:
 
 ## Overview
 
-The usage of frameworks in an app can be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using [otool](0x08a-Testing-Tools.md#otool):
+The usage of frameworks in an app can be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using [otool](../../Document/0x08a-Testing-Tools.md#otool):
 
 ```bash
 otool -L <AppName>.app/<AppName>

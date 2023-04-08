@@ -17,7 +17,7 @@ masvs_v1_levels:
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use the kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
-Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
+Refer to the "[Tampering and Reverse Engineering on Android](../../Document/0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
 
 ### Bypassing the storage integrity checks
 

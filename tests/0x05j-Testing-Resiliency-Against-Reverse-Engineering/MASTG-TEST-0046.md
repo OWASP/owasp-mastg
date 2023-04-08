@@ -20,7 +20,7 @@ The following methods describe different approaches to bypass debugger detection
 
 ### Bypassing Example: UnCrackable App for Android Level 2
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [level 2 of the "UnCrackable App for Android"](0x08b-Reference-Apps.md#android-uncrackable-l2).
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [level 2 of the "UnCrackable App for Android"](../../Document/0x08b-Reference-Apps.md#android-uncrackable-l2).
 
 At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a _native_ method.
 

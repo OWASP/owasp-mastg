@@ -45,7 +45,7 @@ These checks are orientative, we cannot name specific APIs since every app might
 Ensure that the app is not allowing cleartext HTTP traffic. Since iOS 9.0 cleartext HTTP traffic is blocked by default (due to App Transport Security (ATS)) but there are multiple ways in which an application can still send it:
 
 - Configuring ATS to enable cleartext traffic by setting the `NSAllowsArbitraryLoads` attribute to `true` (or `YES`) on `NSAppTransportSecurity` in the app's `Info.plist`.
-- [Retrieve the `Info.plist`](0x06b-Basic-Security-Testing.md#the-infoplist-file)
+- [Retrieve the `Info.plist`](../../Document/0x06b-Basic-Security-Testing.md#the-infoplist-file)
 - Check that `NSAllowsArbitraryLoads` is not set to `true` globally of for any domain.
 
 - If the application opens third party web sites in WebViews, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views.
@@ -70,12 +70,12 @@ ATS should include a [justification string](https://developer.apple.com/document
 
 Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
-- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) or [Burp Suite](0x08a-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
+- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](../../Document/0x08a-Testing-Tools.md#owasp-zap) or [Burp Suite](../../Document/0x08a-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
 - Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
 > Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check ["Testing Custom Certificate Stores and Certificate Pinning"](MASTG-TEST-0068.md).
 
 For more details refer to:
 
-- "Intercepting Traffic on the Network Layer" from chapter ["Testing Network Communication"](0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer)
-- "Setting up a Network Testing Environment" from chapter [iOS Basic Security Testing](0x06b-Basic-Security-Testing.md#setting-up-a-network-testing-environment)
+- "Intercepting Traffic on the Network Layer" from chapter ["Testing Network Communication"](../../Document/0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer)
+- "Setting up a Network Testing Environment" from chapter [iOS Basic Security Testing](../../Document/0x06b-Basic-Security-Testing.md#setting-up-a-network-testing-environment)

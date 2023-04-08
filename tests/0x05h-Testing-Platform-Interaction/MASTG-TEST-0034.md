@@ -16,8 +16,8 @@ To test for [object persistence](../../Document/0x05h-Testing-Platform-Interacti
 
 There are a few generic remediation steps that you can always take:
 
-1. Make sure that sensitive data has been encrypted and HMACed/signed after serialization/persistence. Evaluate the signature or HMAC before you use the data. See the chapter "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md)" for more details.
-2. Make sure that the keys used in step 1 can't be extracted easily. The user and/or application instance should be properly authenticated/authorized to obtain the keys. See the chapter "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" for more details.
+1. Make sure that sensitive data has been encrypted and HMACed/signed after serialization/persistence. Evaluate the signature or HMAC before you use the data. See the chapter "[Android Cryptographic APIs](../../Document/0x05e-Testing-Cryptography.md)" for more details.
+2. Make sure that the keys used in step 1 can't be extracted easily. The user and/or application instance should be properly authenticated/authorized to obtain the keys. See the chapter "[Data Storage on Android](../../Document/0x05d-Testing-Data-Storage.md)" for more details.
 3. Make sure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
 
 For high-risk applications that focus on availability, we recommend that you use `Serializable` only when the serialized classes are stable. Second, we recommend not using reflection-based persistence because
@@ -25,7 +25,7 @@ For high-risk applications that focus on availability, we recommend that you use
 - the attacker could find the method's signature via the String-based argument
 - the attacker might be able to manipulate the reflection-based steps to execute business logic.
 
-See the chapter "[Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)" for more details.
+See the chapter "[Android Anti-Reversing Defenses](../../Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)" for more details.
 
 ## Static Analysis
 
@@ -61,7 +61,7 @@ If you need to counter memory-dumping, make sure that very sensitive information
 
 ### ORM
 
-When you use an ORM library, make sure that the data is stored in an encrypted database and the class representations are individually encrypted before storing it. See the chapters "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md)" for more details. You can check for the following keywords in the corresponding libraries:
+When you use an ORM library, make sure that the data is stored in an encrypted database and the class representations are individually encrypted before storing it. See the chapters "[Data Storage on Android](../../Document/0x05d-Testing-Data-Storage.md)" and "[Android Cryptographic APIs](../../Document/0x05e-Testing-Cryptography.md)" for more details. You can check for the following keywords in the corresponding libraries:
 
 **`OrmLite`** Search the source code for the following keywords:
 

@@ -14,7 +14,7 @@ masvs_v1_levels:
 
 **Application Source Code Integrity Checks:**
 
-Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter ["iOS Tampering and Reverse Engineering"](0x06c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing), and run it.
+Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter ["iOS Tampering and Reverse Engineering"](../../Document/0x06c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing), and run it.
 
 The app should respond in some way. For example by:
 
@@ -32,7 +32,7 @@ Work on bypassing the defenses and answer the following questions:
 
 **File Storage Integrity Checks:**
 
-Go to the app data directories as indicated in section ["Accessing App Data Directories"](0x06b-Basic-Security-Testing.md#accessing-app-data-directories) and modify some files.
+Go to the app data directories as indicated in section ["Accessing App Data Directories"](../../Document/0x06b-Basic-Security-Testing.md#accessing-app-data-directories) and modify some files.
 
 Next, work on bypassing the defenses and answer the following questions:
 

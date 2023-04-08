@@ -35,7 +35,7 @@ Applications will often use the [Log Class](https://developer.android.com/refere
     - logging
     - logs
 
-While preparing the production release, you can use tools like [ProGuard](0x08a-Testing-Tools.md#proguard) (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
+While preparing the production release, you can use tools like [ProGuard](../../Document/0x08a-Testing-Tools.md#proguard) (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
 ```default
 -assumenosideeffects class android.util.Log

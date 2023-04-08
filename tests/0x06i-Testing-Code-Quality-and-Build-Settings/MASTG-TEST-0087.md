@@ -14,7 +14,7 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-You can use [otool](0x08a-Testing-Tools.md#otool) to check the binary security features described above. All the features are enabled in these examples.
+You can use [otool](../../Document/0x08a-Testing-Tools.md#otool) to check the binary security features described above. All the features are enabled in these examples.
 
 - PIE:
 
@@ -71,7 +71,7 @@ You can use [otool](0x08a-Testing-Tools.md#otool) to check the binary security f
 
 ## Dynamic Analysis
 
-These checks can be performed dynamically using [objection](0x08a-Testing-Tools.md#objection). Here's one example:
+These checks can be performed dynamically using [objection](../../Document/0x08a-Testing-Tools.md#objection). Here's one example:
 
 ```bash
 com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary

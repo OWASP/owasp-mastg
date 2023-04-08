@@ -130,7 +130,7 @@ To identify if a backup is encrypted, you can check the key named "IsEncrypted" 
 
 In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes/Finder versions and might need to be tweaked.
 
-You can also use the tool [iOSbackup](0x08a-Testing-Tools.md#iosbackup) to easily read and extract files from a password-encrypted iOS backup.
+You can also use the tool [iOSbackup](../../Document/0x08a-Testing-Tools.md#iosbackup) to easily read and extract files from a password-encrypted iOS backup.
 
 ### Proof of Concept: Removing UI Lock with Tampered Backup
 

@@ -17,7 +17,7 @@ masvs_v1_levels:
 
 Inspect the Network Security Configuration looking for any `<pin-set>` elements. Check their `expiration` date, if any. If expired, certificate pinning will be disabled for the affected domains.
 
-> **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](0x05b-Basic-Security_Testing.md#monitoring-system-logs):
+> **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](../../Document/0x05b-Basic-Security_Testing.md#monitoring-system-logs):
 
 ```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
@@ -175,7 +175,7 @@ After decompressing the APK file, Cordova/Phonegap files will be located in the 
 
 Follow the instructions from ["Testing Endpoint Identify Verification > Dynamic Analysis"](MASTG-TEST-0021.md). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
 
-As a quick smoke test, you can try to bypass certificate pinning using [objection](0x08a-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](0x05b-Basic-Security_Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
+As a quick smoke test, you can try to bypass certificate pinning using [objection](../../Document/0x08a-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](../../Document/0x05b-Basic-Security_Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
 
 ![objection Android SSL Pinning Bypass](Images/Chapters/0x05b/android_ssl_pinning_bypass.png)
 

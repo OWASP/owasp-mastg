@@ -29,7 +29,7 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 Applications targeting Android 7.0 (API level 24) or higher will use a **default Network Security Configuration that doesn't trust any user supplied CAs**, reducing the possibility of MITM attacks by luring users to install malicious CAs.
 
-[Decode the app using apktool](0x05b-Basic-Security_Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal to or higher than `24`.
+[Decode the app using apktool](../../Document/0x05b-Basic-Security_Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal to or higher than `24`.
 
 ```txt
 grep targetSdkVersion UnCrackable-Level3/apktool.yml
