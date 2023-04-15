@@ -2,9 +2,7 @@
 hide:
   - navigation
   - toc
-title: "Home"
 ---
-
 
 # OWASP Mobile Application Security
 
@@ -67,7 +65,7 @@ title: "Home"
 
 <br>
 
-## Trusted by ...
+## Trusted By
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](MASTG/Intro/0x02b-MASVS-MASTG-Adoption.md).
 
