@@ -46,7 +46,9 @@
 
 .masvs-v1-chip {
   background-color: #c6c6c6;
-  color: #fff;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .masvs-v2-chip {

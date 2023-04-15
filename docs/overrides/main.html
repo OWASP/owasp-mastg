@@ -7,7 +7,7 @@
         <div class="masvs-v1">
             <span class="masvs-chips-title">MASVS v1</span>
             {% for id in page.meta.masvs_v1_id %}
-            <span class="masvs-chip masvs-v1-chip">{{ id }}</span>
+            <a href="https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0" class="masvs-chip masvs-v1-chip">{{ id }}</a>
             {% endfor %}
         </div>
         {% endif %}
@@ -16,7 +16,7 @@
         <div class="masvs-v2">
             <span class="masvs-chips-title">MASVS v2</span>
             {% for id in page.meta.masvs_v2_id %}
-            <a href="https://mas.owasp.org/MASVS/controls/{{ id }}" class="masvs-chip masvs-v2-chip">{{ id }}</a>
+            <a href="https://mas.owasp.org/MASVS/Controls/{{ id }}" class="masvs-chip masvs-v2-chip">{{ id }}</a>
             {% endfor %}
         </div>
         {% endif %}
