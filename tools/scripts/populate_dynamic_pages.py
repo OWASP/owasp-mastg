@@ -75,6 +75,6 @@ if not os.path.exists(CHECKLISTS_DIR):
 for group_id, checklist in checklist_dict.items():
     set_icons_for_web(checklist)
     content = list_of_dicts_to_md_table(checklist, column_titles, column_align) + "\n\n<br><br>"
-
+    warning = '!!! warning "Temporary Checklist"\n    This checklist contains the **old MASVS v1 verification levels (L1, L2 and R)** which we are currently reworking into "security testing profiles". The levels were assigned according to the MASVS v1 ID that the test was previously covering and might differ in the upcoming version of the MASTG and MAS Checklist.\n\n    For the upcoming of the MASTG version we will progressively split the MASTG tests into smaller tests, the so-called "atomic tests" and assign the new MAS profiles accordingly.\n\n'
     with open(f"{CHECKLISTS_DIR}/{group_id}.md", 'w') as f:
-        f.write(f"---\nhide:\n  - toc\n---\n\n{content}\n")
+        f.write(f"---\nhide:\n  - toc\n---\n\n{warning + content}\n")
