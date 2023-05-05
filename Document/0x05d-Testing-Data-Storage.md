@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-STORAGE
+platform: android
+---
+
 # Android Data Storage
 
 ## Overview

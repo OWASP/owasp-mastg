@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-AUTH
+platform: ios
+---
+
 # iOS Local Authentication
 
 ## Overview

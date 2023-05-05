@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-CRYPTO
+platform: ios
+---
+
 # iOS Cryptographic APIs
 
 ## Overview

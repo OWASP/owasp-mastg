@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-RESILIENCE
+platform: android
+---
+
 # Android Anti-Reversing Defenses
 
 ## Overview
