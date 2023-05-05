@@ -38,7 +38,7 @@ def add_test_rows(checklist, platform, control):
             levels = test['masvs_v1_levels']
             checklist_row = {}
             checklist_row['MASVS-ID'] = ""
-            checklist_row['path'] = f"/MASTG/tests/{os.path.splitext(os.path.basename(test['path']))[0]}"
+            checklist_row['path'] = f"/MASTG/{os.path.splitext(test['path'])[0]}"
             checklist_row['Platform'] = test['platform']
             checklist_row['Control / MASTG Test'] = test['title']
             checklist_row['L1'] = "L1" in levels

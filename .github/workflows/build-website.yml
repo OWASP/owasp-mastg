@@ -19,16 +19,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r tools/scripts/requirements.txt
 
-      - name: Assemble Testing Chapters
-        run: python3 tools/scripts/assemble_test_chapters.py -w
-
       - run: ./tools/scripts/structure_mastg.sh
       - run: python3 tools/scripts/transform_files.py
 
       - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
-      - name: Copy MASTG Tests
-        run: find tests -type f -exec cp {} docs/MASTG/tests \;
+      - name: Copy MASTG Tests folder
+        run: cp -r tests docs/MASTG/
 
 
       - name: Get Latest MASVS Release Tag

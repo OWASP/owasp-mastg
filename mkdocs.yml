@@ -10,14 +10,44 @@ nav:
       - Overview: MASTG.md
       - Intro:
         - ... | flat | MASTG/Intro/*.md
-      - General Guide:
-        - ... | flat | MASTG/General/*.md
-      - Android:
-        - ... | flat | MASTG/Android/*.md
-      - iOS: 
-        - ... | flat | MASTG/iOS/*.md
-      - Tests:
-        - ... | flat | MASTG/tests/*.md
+      - Mobile Security Testing Theory:
+        - General Concepts:
+          - ... | flat | MASTG/General/*.md
+        - Android Security Testing:
+          - ... | flat | MASTG/Android/*.md
+        - iOS Security Testing: 
+          - ... | flat | MASTG/iOS/*.md
+      - MASTG Tests: 
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests/android/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests/android/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/tests/android/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/tests/android/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/tests/android/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests/android/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests/android/MASVS-RESILIENCE/*.md
+        - iOS:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests/ios/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests/ios/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/tests/ios/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/tests/ios/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/tests/ios/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests/ios/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
       - Tools:
         - ... | flat | MASTG/Tools/*.md
       - References:

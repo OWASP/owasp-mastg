@@ -3,12 +3,10 @@ import yaml
 
 
 def get_platform(input_file: str) -> str:
-    if "0x05" in input_file:
+    if "/android/" in input_file:
         return "android"
-    elif "0x06" in input_file:
+    elif "/ios/" in input_file:
         return "ios"
-    elif "0x04" in input_file:
-        return "general" 
 
 def get_mastg_tests_dict():
 

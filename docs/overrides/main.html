@@ -38,32 +38,41 @@
         
         if (elements.length > 0) {
             for (const element of elements) {
-                var elementKey = element.innerHTML.trim();
-                if (keys.some(key => elementKey.startsWith(key))) {
-                    var color = "";
-                    if (elementKey.split("-").length === 3) {
-                        var keyParts = elementKey.split('-');
-                        var category = keyParts.slice(0, keyParts.length - 1).join('-');
-                        
-                        if (element.classList.contains("masvs-v2-chip")) {
-                            color = MASVS_COLORS[category];
+                if (element.innerHTML.trim().includes("MASVS-")) {
+                    var elementKey = element.innerHTML.trim();
+                    if (elementKey.includes("\n")) {
+                        for (const part of elementKey.split('\n')) {
+                            if (part.trim().includes("MASVS-")) {
+                                elementKey = RegExp(/MASVS-(NETWORK|STORAGE|CRYPTO|AUTH|NETWORK|PLATFORM|CODE|RESILIENCE|PRIVACY)(-\d)?/).exec(part.trim())[0];
+                            }
+                        }
+                    }
+                    if (keys.some(key => elementKey.startsWith(key))) {
+                        var color = "";
+                        if (elementKey.split("-").length === 3) {
+                            var keyParts = elementKey.split('-');
+                            var category = keyParts.slice(0, keyParts.length - 1).join('-');
+                            
+                            if (element.classList.contains("masvs-v2-chip")) {
+                                color = MASVS_COLORS[category];
+                            }
+                            else {
+                                color = MASVS_COLORS[category] + "b0";
+                            }
                         }
                         else {
-                            color = MASVS_COLORS[category] + "b0";
+                            color = MASVS_COLORS[elementKey];
+                            element.style.fontWeight = "bold";
+                            element.style.fontSize = "1.2em";
                         }
-                    }
-                    else {
-                        color = MASVS_COLORS[elementKey];
-                        element.style.fontWeight = "bold";
-                        element.style.fontSize = "1.2em";
-                    }
-                    element.style.backgroundColor = "#" + color;
-                    element.style.margin = "0.5em 0.5em 0.5em 0.2em";
-                    element.style.borderRadius = "5px";
-                    element.style.color = "white";
-                    element.style.padding = "0.3em";
-                    if (element.classList.contains("md-nav__link--active")) {
-                    element.style.height = "6em";
+                        element.style.backgroundColor = "#" + color;
+                        element.style.margin = "0.5em 0.5em 0.5em 0.2em";
+                        element.style.borderRadius = "5px";
+                        element.style.color = "white";
+                        element.style.padding = "0.3em";
+                        if (element.classList.contains("md-nav__link--active")) {
+                            element.style.height = "6em";
+                        }
                     }
                 }
             }
