@@ -3,6 +3,12 @@
 {% block content %}
 
     <div class="masvs-chips">
+        {% if page.meta.platform %}
+        <div class="masvs-v1">
+            <span class="masvs-chips-title">Platform</span>
+            <div class="masvs-chip masvs-v2-chip">{{ page.meta.platform }}</div>
+        </div>
+        {% endif %}
         {% if page.meta.masvs_v1_id %}
         <div class="masvs-v1">
             <span class="masvs-chips-title">MASVS v1</span>
