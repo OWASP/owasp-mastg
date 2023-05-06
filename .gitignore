@@ -8,6 +8,7 @@ tmp_*
 build
 *-temp
 OWASP_MSTG-SNAPSHOT-*
+OWASP_MAS_Checklist.xlsx
 logs
 *.pdf
 *.docx
@@ -18,3 +19,5 @@ docs/MASTG
 docs/checklists/
 owasp-masvs
 __pycache__
+venv/
+playground/
