@@ -44,6 +44,12 @@
   margin: 0 0.5em;
 }
 
+.mas-blue-chip {
+  background-color: #499FFF;
+  color: #fff !important;
+  cursor: default;
+}
+
 .masvs-v1-chip {
   background-color: #828282;
   color: #fff !important;
