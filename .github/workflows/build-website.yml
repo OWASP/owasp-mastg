@@ -20,13 +20,12 @@ jobs:
         run: pip install -r tools/scripts/requirements.txt
 
       - run: ./tools/scripts/structure_mastg.sh
+      - name: Copy MASTG Tests folder
+        run: cp -r tests docs/MASTG/
       - run: python3 tools/scripts/transform_files.py
 
       - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
-      - name: Copy MASTG Tests folder
-        run: cp -r tests docs/MASTG/
-
 
       - name: Get Latest MASVS Release Tag
         run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
