@@ -104,7 +104,7 @@ def transform(folder):
                     else:
                         external_links.append(link.raw)
 
-                references_section = "\n## References"
+                resources_section = ""
                 
                 if len(internal_links) > 0:
                     internal_links = sorted(list(set(internal_links)))
@@ -113,7 +113,7 @@ def transform(folder):
                     
                     internal_links_text = "\n".join(internal_links)
                     internal_links_text = f"\n\n### Internal\n\n{internal_links_text}"
-                    references_section += internal_links_text
+                    resources_section += internal_links_text
 
                 # if len(external_links) > 0:
                 #     external_links = sorted(list(set(external_links)))
@@ -122,9 +122,9 @@ def transform(folder):
 
                 #     external_links_text = "\n".join(external_links)
                 #     external_links_text = f"\n\n### External\n\n{external_links_text}"
-                #     references_section += external_links_text
-
-                new_text += references_section + "\n"
+                #     resources_section += external_links_text
+                if resources_section != "":
+                    new_text += "\n## Resources" + resources_section + "\n"
                 file.write_text(new_text) 
 
                 # file_obj = Path(file)
