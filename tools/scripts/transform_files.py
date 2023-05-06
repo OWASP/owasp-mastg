@@ -28,6 +28,7 @@ def extract_markdown_links(md_file_content: str) -> List[MarkdownLink]:
         
         raw_new = ""
         if not external:
+            directory = ""
             if "0x01" in raw or "0x02" in raw or "0x03" in raw:
                 directory = "/MASTG/Intro/"
             elif "0x04" in raw:
@@ -42,8 +43,12 @@ def extract_markdown_links(md_file_content: str) -> List[MarkdownLink]:
                 directory = "/MASTG/References/"
             else:
                 continue
-            raw_new = re.sub(r"\.\./\.\./\.\./Document/", directory, raw)
-            # remove .md from raw_new
+            
+            if "Document/" in raw:
+                raw_new = re.sub(r"\.\./\.\./\.\./Document/", directory, raw)
+            else:
+                raw_new = f"[{text}]({directory}{url}{title})"
+            
             raw_new = re.sub(r"\.md", "", raw_new)
 
         md_links.append(MarkdownLink(raw, text, url, external, title, raw_new))
