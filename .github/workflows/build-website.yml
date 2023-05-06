@@ -25,7 +25,9 @@ jobs:
       - run: python3 tools/scripts/transform_files.py
 
       - run: mv Document/Images/ docs/assets/Images/
+      - run: find docs/MASTG/tests -name "*.md" -exec sed -i "s#<img src=\"Images/#<img src=\"../../../../assets/Images/#g" {} \;
       - run: find docs/MASTG -name "*.md" -exec sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" {} \;
+
 
       - name: Get Latest MASVS Release Tag
         run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
