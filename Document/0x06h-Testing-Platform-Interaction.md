@@ -225,9 +225,9 @@ WebViews are in-app browser components for displaying interactive web content. T
 
 There are multiple ways to include a WebView in an iOS application:
 
-- UIWebView
-- WKWebView
-- SFSafariViewController
+- `UIWebView`
+- `WKWebView`
+- `SFSafariViewController`
 
 ##### UIWebView
 
@@ -244,7 +244,7 @@ There are multiple ways to include a WebView in an iOS application:
 - The `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
-A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "[Determining Whether Native Methods Are Exposed Through WebViews](../tests/0x06h-Testing-Platform-Interaction/MASTG-TEST-0078.md "Determining Whether Native Methods Are Exposed Through WebViews")" below for more information.
+A JavaScript Bridge can be enabled when using `WKWebView` and `UIWebView`. See Section "[Native Functionality Exposed Through WebViews](#native-functionality-exposed-through-webviews "Native Functionality Exposed Through WebViews")" below for more information.
 
 ##### SFSafariViewController
 
@@ -329,12 +329,12 @@ Some permissions can be configured by the app's developers (e.g. Data Protection
 
 Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many of them for non-obvious reasons.
 
-Some permissions such as Camera, Photos, Calendar Data, Motion, Contacts or Speech Recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. Let's consider the following examples regarding the Photos permission, which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos):
+Verifying the use of some permissions such as Camera, Photos, Calendar Data, Motion, Contacts or Speech Recognition should be pretty straightforward as it should be obvious if the app requires them to fulfill its tasks. Let's consider the following examples regarding the Photos permission, which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos):
 
 - The typical QR Code scanning app obviously requires the camera to function but might be requesting the photos permission as well. If storage is explicitly required, and depending on the sensitivity of the pictures being taken, these apps might better opt to use the app sandbox storage to avoid other apps (having the photos permission) to access them. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more information regarding storage of sensitive data.
 - Some apps require photo uploads (e.g. for profile pictures). Recent versions of iOS introduce new APIs such as [`UIImagePickerController`](https://developer.apple.com/documentation/uikit/uiimagepickercontroller "UIImagePickerController") (iOS 11+) and its modern [replacement](https://developer.apple.com/videos/play/wwdc2020/10652/ "replacement") [`PHPickerViewController`](https://developer.apple.com/documentation/photokit/phpickerviewcontroller "PHPickerViewController") (iOS 14+). These APIs run on a separate process from your app and by using them, the app gets read-only access exclusively to the images selected by the user instead of to the whole "Camera Roll". This is considered a best practice to avoid requesting unnecessary permissions.
 
-Other permissions like Bluetooth or Location require deeper verification steps. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected. For more information and some examples please refer to the "[Source Code Inspection](../tests/0x06h-Testing-Platform-Interaction/MASTG-TEST-0069.md#source-code-inspection "Source Code Inspection")".
+Verifying other permissions like Bluetooth or Location require a deeper source code inspection. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected.
 
 When collecting or simply handling (e.g. caching) sensitive data, an app should provide proper mechanisms to give the user control over it, e.g. to be able to revoke access or to delete it. However, sensitive data might not only be stored or cached but also sent over the network. In both cases, it has to be ensured that the app properly follows the appropriate best practices, which in this case involve implementing proper data protection and transport security. More information on how to protect this kind of data can be found in the chapter "Network APIs".
 

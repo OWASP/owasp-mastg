@@ -120,7 +120,7 @@ Android implements an extensive permissions system that is used as an access con
 
 Further information is available in the [Android documentation](https://developer.android.com/guide/topics/permissions/overview) including several [considerations](https://developer.android.com/training/permissions/evaluating) and [best practices](https://developer.android.com/training/permissions/usage-notes).
 
-To learn how to test app permissions refer to the [Testing App Permissions](../tests/0x05h-Testing-Platform-Interaction/MASTG-TEST-0024.md) section in the "Android Platform APIs" chapter.
+To learn how to test app permissions refer to the [Testing App Permissions](0x05h-Testing-Platform-Interaction.md#app-permissions) section in the "Android Platform APIs" chapter.
 
 ### Network security
 
