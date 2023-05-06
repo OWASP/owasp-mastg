@@ -25,7 +25,7 @@ jobs:
       - run: python3 tools/scripts/transform_files.py
 
       - run: mv Document/Images/ docs/assets/Images/
-      - run: find docs/MASTG/tests -name "*.md" -exec sed -i "s#<img src=\"Images/#<img src=\"../../../../assets/Images/#g" {} \;
+      - run: find docs/MASTG/tests -name "*.md" -exec sed -i "s#<img src=\"Images/#<img src=\"../../../../../../assets/Images/#g" {} \;
       - run: find docs/MASTG -name "*.md" -exec sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" {} \;
 
 
