@@ -43,6 +43,8 @@ def extract_markdown_links(md_file_content: str) -> List[MarkdownLink]:
             else:
                 continue
             raw_new = re.sub(r"\.\./\.\./\.\./Document/", directory, raw)
+            # remove .md from raw_new
+            raw_new = re.sub(r"\.md", "", raw_new)
 
         md_links.append(MarkdownLink(raw, text, url, external, title, raw_new))
     return md_links
