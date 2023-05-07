@@ -9,9 +9,11 @@ hide:
 
     Follow [:material-twitter: @OWASP_MAS](https://twitter.com/OWASP_MAS) to get the latest updates instantly.
 
-## May 6st, 2023: MASVS v2 Colors
+## May 7th, 2023: MASVS v2 Colors
 
-We're bringing official colors to the MASVS! The new colors will be used in the MASVS v2.0.0 and MASTG v2.0.0 to help users quickly identify the different control groups. We've also revamped certain areas of our website to make them more readable and easier to navigate as well as to prepare for what's coming with the MASTSG v2.0.0 (keyword: "atomic tests").
+We're bringing official colors to the MASVS! The new colors will be used across the MASVS v2.0.0 and MASTG v2.0.0 to help users quickly identify the different control groups. We've also revamped certain areas of our website to make them more readable and easier to navigate as well as to prepare for what's coming with the MASTSG v2.0.0 (keyword: "atomic tests").
+
+<img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_colors.png"/>
 
 ### MASVS
 
@@ -21,7 +23,7 @@ In the MASVS home page, the new colors will be used to highlight the different c
 <img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_home.png"/>
 </center>
 
-The individual controls will also be color-coded to help users quickly identify the different control groups. We've also redesigned the control cards to make them more readable and easier to navigate.
+The individual controls will also be color-coded to help users quickly identify the different control groups. We've also redesigned the control pages to make them more readable and easier to navigate.
 
 <center>
 <img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_control.png"/>
@@ -37,7 +39,7 @@ Each test now contains a header section indicating the platform, the MASVS v1.5.
 <img style="width: 80%; border-radius: 5px" src="../assets/news/mastg_test.png"/>
 </center>
 
-We've also introduces a new section called "Resources" which is automatically generated using the inline links within the MASTG pages and serve as a quick reference to the most important resources for each test.
+We've also introduced a new section called "Resources" which is automatically generated using the inline links within the MASTG pages and serve as a quick reference to the most important resources for each test.
 
 **NOTE:** The MASTG tests themselves haven't changed yet, we're still working on the refactoring. For now we've simply split the tests into individual pages to make them easier to navigate and reference. This will facilitate the work on the refactoring and the introduction of the new atomic tests.
 
