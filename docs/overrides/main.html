@@ -13,7 +13,7 @@
         {% if page.meta.masvs_category %}
         <div class="masvs-v2">
             <span class="masvs-chips-title">MASVS Group</span>
-            <a href="https://mas.owasp.org/MASVS/" class="masvs-chip masvs-v2-chip">{{ page.meta.masvs_category }}</a>
+            <a href="https://mas.owasp.org/MASVS/" class="masvs-chip masvs-v2-chip masvs-category">{{ page.meta.masvs_category }}</a>
         </div>
         {% endif %}
 
@@ -77,7 +77,10 @@
                         else {
                             color = MASVS_COLORS[elementKey];
                             element.style.fontWeight = "bold";
-                            element.style.fontSize = "1.2em";
+                            
+                            if (!element.classList.contains("masvs-category")) {
+                                element.style.fontSize = "1.2em";
+                            }
                         }
                         element.style.backgroundColor = "#" + color;
                         element.style.margin = "0.5em 0.5em 0.5em 0.2em";

@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-AUTH
+platform: all
+---
+
 # Mobile App Authentication Architectures
 
 Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://owasp.org/www-project-top-ten/).

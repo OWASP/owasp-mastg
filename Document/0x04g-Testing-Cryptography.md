@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-CRYPTO
+platform: all
+---
+
 # Mobile App Cryptography
 
 Cryptography plays an especially important role in securing the user's data - even more so in a mobile environment, where attackers having physical access to the user's device is a likely scenario. This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. These best practices are valid independent of the mobile operating system.
