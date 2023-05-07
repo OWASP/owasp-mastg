@@ -13,7 +13,9 @@ hide:
 
 We're bringing official colors to the MASVS! The new colors will be used across the MASVS v2.0.0 and MASTG v2.0.0 to help users quickly identify the different control groups. We've also revamped certain areas of our website to make them more readable and easier to navigate as well as to prepare for what's coming with the MASTSG v2.0.0 (keyword: "atomic tests").
 
+<center>
 <img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_colors.png"/>
+</center>
 
 ### MASVS
 

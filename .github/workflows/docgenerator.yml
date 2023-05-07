@@ -53,8 +53,8 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: OWASP_MASTG-${{env.MASTG_VERSION}}
-        path: OWASP_MASTG-${{env.MASTG_VERSION}}*
+        name: OWASP_MASTG
+        path: OWASP_MASTG*
   
   Generate-Checklists:
     runs-on: ubuntu-latest
@@ -141,8 +141,8 @@ jobs:
           generate_release_notes: true
           discussion_category_name: Announcements
           files: |
-            OWASP_MASTG-*/OWASP_MASTG-*.pdf
-            OWASP_MASTG-*/OWASP_MASTG-*.epub
+            OWASP_MASTG-*/OWASP_MASTG.pdf
+            OWASP_MASTG-*/OWASP_MASTG.epub
             Checklists/*.xlsx
             Enhanced-MASVS-YAML-Files/*.yaml
         env:
