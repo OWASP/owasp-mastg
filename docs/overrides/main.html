@@ -9,6 +9,14 @@
             <div class="masvs-chip mas-blue-chip">{{ page.meta.platform }}</div>
         </div>
         {% endif %}
+
+        {% if page.meta.masvs_category %}
+        <div class="masvs-v2">
+            <span class="masvs-chips-title">MASVS Group</span>
+            <a href="https://mas.owasp.org/MASVS/" class="masvs-chip masvs-v2-chip">{{ page.meta.masvs_category }}</a>
+        </div>
+        {% endif %}
+
         {% if page.meta.masvs_v1_id %}
         <div class="masvs-v1">
             <span class="masvs-chips-title">MASVS v1</span>
