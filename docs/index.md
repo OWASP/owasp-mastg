@@ -43,7 +43,7 @@ hide:
 
 <br>
 
-<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG-v1.5.0.pdf" class="md-button md-button--primary" > Download the MASTG</a>
+<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG.pdf" class="md-button md-button--primary" > Download the MASTG</a>
 
 </center>
 
@@ -81,6 +81,6 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 <img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/nowsecure-logo.png" align="right" style="margin: 0em 5em" width="200px;" />
 </a>
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](MASTG/Intro/0x02c-Acknowledgements.md).
+MAS Advocates are key industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to drive the project forward and ensure its continued success. This includes making consistent high-impact contributions and actively promoting the adoption and usage of the project. [Learn more](MASTG/Intro/0x02c-Acknowledgements.md).
 
 <br>
