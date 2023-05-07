@@ -1,27 +1,28 @@
-import os
 import re
 import yaml
+from pathlib import Path
 
 def append_tests_as_subsections():
-    testing_chapters = [filename for filename in os.listdir('Document/') if re.match(r'^(0x05|0x06).*-Testing-.*\.md$', filename)]
-    for testing_chapter in testing_chapters:
-        path = os.path.join('Document', testing_chapter)
-        with open(path, 'r') as f:
+    base_document_path = Path('Document')
+    base_tests_path = Path('tests')
+
+    testing_chapters = [filename for filename in base_document_path.glob('0x0[56]*-Testing-*.md')]
+    for testing_chapter_path in testing_chapters:
+        with testing_chapter_path.open('r') as f:
             testing_chapter_content = f.read()
-            chapter_metadata = next(yaml.load_all(testing_chapter_content, Loader=yaml.FullLoader))
+            chapter_metadata = next(yaml.safe_load_all(testing_chapter_content))
 
         chapter_tests_content = ""
 
         platform = chapter_metadata['platform']
         masvs_category = chapter_metadata['masvs_category']
 
-        path = os.path.join('tests', platform, masvs_category)
-        for test_file in os.listdir(path):
-        
-            with open(os.path.join(path, test_file), 'r') as f:
+        tests_path = base_tests_path / platform / masvs_category
+        for test_file in tests_path.glob('*'):
+            with test_file.open('r') as f:
                 test_content = f.read()
                 # Extract yaml frontmatter
-                yaml_front = next(yaml.load_all(test_content, Loader=yaml.FullLoader))
+                yaml_front = next(yaml.safe_load_all(test_content))
                 # Extract title and masvs_id
                 title = yaml_front['title']
                 masvs_v1_id = yaml_front['masvs_v1_id']
@@ -38,7 +39,7 @@ def append_tests_as_subsections():
                 chapter_tests_content += '\n' + test_content.strip()
 
         # Write the updated content to the file
-        with open(os.path.join('Document', testing_chapter), 'a') as f:
+        with testing_chapter_path.open('a') as f:
             content = chapter_tests_content + '\n'
             f.write(content)
 
