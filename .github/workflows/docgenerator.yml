@@ -13,9 +13,6 @@ on:
     paths:
       - 'Document/**.md'
 
-permissions:
-  contents: write
-
 jobs:
   Generate-MASTG-Documents:
     runs-on: ubuntu-latest
