@@ -14,7 +14,7 @@ on:
       - 'Document/**.md'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   Generate-MASTG-Documents:
