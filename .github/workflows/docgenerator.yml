@@ -17,13 +17,19 @@ permissions:
   contents: read
 
 jobs:
-
   Generate-MASTG-Documents:
     runs-on: ubuntu-latest
     steps:
+
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+    - name: Install dependencies
+      run: pip install -r tools/scripts/requirements.txt
 
     - name: Set MASTG_VERSION to env 
       run: echo "MASTG_VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mastg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
@@ -35,6 +41,9 @@ jobs:
     - name: Get Latest MASVS Release Tag
       run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
+    - name: Assemble Testing Chapters
+      run: python3 tools/scripts/assemble_test_chapters.py
+
     - name: Process Files
       run: python3 tools/scripts/transform_files.py
 
@@ -44,20 +53,22 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: OWASP_MASTG-${{env.MASTG_VERSION}}
-        path: OWASP_MASTG-${{env.MASTG_VERSION}}*
+        name: OWASP_MASTG
+        path: OWASP_MASTG*
   
   Generate-Checklists:
     runs-on: ubuntu-latest
-
     steps:
 
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
     
-    - name: Listing repo recursive
-      run: ls -lR
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+    - name: Install dependencies
+      run: pip install -r tools/scripts/requirements.txt
 
     - name: Set MASTG_VERSION to env 
       # run: echo "MASTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
@@ -93,35 +104,20 @@ jobs:
     - name: Confirm MASTG Current Commit ID
       run: echo ${{env.MASVS_COMMIT}}
 
-    - name: Listing of scripts directory
-      run: ls -l tools/scripts/
+    - name: Generate Excel
+      run: python3 tools/scripts/yaml_to_excel.py --mastgversion ${{env.MASTG_VERSION}} --mastgcommit ${{env.MASTG_COMMIT}} --masvsversion ${{env.MASVS_VERSION}} --masvscommit ${{env.MASVS_COMMIT}}
 
-    - name: Install pip Requirements
-      run: pip3 install -r tools/scripts/requirements.txt
-
-    - name: Show openpyxl Version
-      run: pip3 show openpyxl
-
-    - name: Convert MASTG Testing Chapters to HTML
-      run: . tools/scripts/mstg_to_html.sh
-
-    - name: List MASTG HTML
-      run: ls -l tools/scripts/generated/html/
-
-    - name: Export YAML, enhance with MASTG and generate Excel
-      run: cd tools/scripts && ./gen_all_excel.sh ${{env.MASTG_VERSION}} ${{env.MASTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
-
-    - name: Upload Enhanced MASVS YAML
-      uses: actions/upload-artifact@v3
-      with:
-        name: Enhanced-MASVS-YAML-Files
-        path: tools/scripts/masvs_full_*.yaml
+    # - name: Upload Enhanced MASVS YAML
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: Enhanced-MASVS-YAML-Files
+    #     path: tools/scripts/masvs_full_*.yaml
 
     - name: Upload Checklists
       uses: actions/upload-artifact@v3
       with:
         name: Checklists
-        path: tools/scripts/*.xlsx
+        path: OWASP_MAS_Checklist*.xlsx
 
   release:
     runs-on: ubuntu-latest
@@ -145,8 +141,8 @@ jobs:
           generate_release_notes: true
           discussion_category_name: Announcements
           files: |
-            OWASP_MASTG-*/OWASP_MASTG-*.pdf
-            OWASP_MASTG-*/OWASP_MASTG-*.epub
+            OWASP_MASTG-*/OWASP_MASTG.pdf
+            OWASP_MASTG-*/OWASP_MASTG.epub
             Checklists/*.xlsx
             Enhanced-MASVS-YAML-Files/*.yaml
         env:

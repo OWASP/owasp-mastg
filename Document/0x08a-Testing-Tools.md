@@ -501,8 +501,8 @@ The following is displayed:
 
 - Basic information about the app and its binary file.
 - Some options to:
-  - View the `AndroidManifest.xml` file.
-  - View the IPC components of the app.
+    - View the `AndroidManifest.xml` file.
+    - View the IPC components of the app.
 - Signer certificate.
 - App permissions.
 - A security analysis showing known defects e.g. if the app backups are enabled.
@@ -525,9 +525,9 @@ The following is displayed:
 
 - Basic information about the app and its binary file.
 - Some options to:
-  - View the `Info.plist` file.
-  - View the strings contained in the app binary.
-  - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
+    - View the `Info.plist` file.
+    - View the strings contained in the app binary.
+    - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
 - List all Purpose Strings extracted from the `Info.plist` which give some hints on the app's permissions.
 - Exceptions in the App Transport Security (ATS) configuration will be listed.
 - A brief binary analysis showing if free binary security features are activated or e.g. if the binary makes use of banned APIs.
@@ -781,7 +781,7 @@ You can find more examples on [how to use r2frida](https://github.com/enovella/r
 
 [radare2](https://rada.re/r/ "Radare2 official website") (r2) is a popular open source reverse engineering framework for disassembling, debugging, patching and analyzing binaries that is scriptable and supports many architectures and file formats including Android and iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java (JNI and Java classes) are supported. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes in handy when traditional tools fail.
 
-radare2 implements a rich command line interface (CLI) where you can perform the mentioned tasks. However, if you're not really comfortable using the CLI for reverse engineering you may want to consider using the Web UI (via the `-H` flag) or the even more convenient Qt and C++ GUI version called [Cutter](https://github.com/radareorg/cutter "Cutter"). Do keep in mind that the CLI, and more concretely its Visual Mode and its scripting capabilities ([r2pipe](https://github.com/radare/radare2-r2pipe "r2pipe")), are the core of radare2's power and it's definitely worth learning how to use it.
+radare2 implements a rich command line interface (CLI) where you can perform the mentioned tasks. However, if you're not really comfortable using the CLI for reverse engineering you may want to consider using the Web UI (via the `-H` flag) or the even more convenient Qt and C++ GUI version called [iaito](https://github.com/radareorg/iaito "iaito"). Do keep in mind that the CLI, and more concretely its Visual Mode and its scripting capabilities ([r2pipe](https://github.com/radare/radare2-r2pipe "r2pipe")), are the core of radare2's power and it's definitely worth learning how to use it.
 
 ##### Installing radare2
 
@@ -1147,7 +1147,7 @@ Among the unpacked files you can usually find (after running `apktool d base.apk
 - res: directory containing the app’s resources
 - smali: directory containing the disassembled Dalvik bytecode.
 
-You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")" later on this chapter and section "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" in the chapter [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md) for more information and practical examples.
+You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "[Exploring the App Package](0x05b-Basic-Security_Testing.md#exploring-the-app-package "Exploring the App Package")" later on this chapter and section "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" in the chapter [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md) for more information and practical examples.
 
 ### apkx
 
@@ -1258,7 +1258,7 @@ Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.and
 Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
 ```
 
-> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in "[Alternative App Stores](#alternative-app-stores "Alternative App Stores")".
+> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in "[Alternative App Stores](0x05b-Basic-Security_Testing.md#alternative-app-stores "Alternative App Stores")".
 
 ### House
 
@@ -1290,7 +1290,7 @@ An Xposed Module to bypass SSL certificate pinning - <https://github.com/Fuzion2
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/ota.html "OTA Installation").
 
-Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting with Magisk").
+Learn more about [rooting your device with Magisk](0x05b-Basic-Security_Testing.md#rooting-with-magisk "Rooting with Magisk").
 
 ### Proguard
 
@@ -1563,7 +1563,7 @@ A fork of Cycript including a brand new runtime called Mjølner powered by Frida
 
 ### Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") is a Python script that helps you retrieve the decrypted version of an iOS app (IPA) from an iOS device. It supports both Python 2 and Python 3 and requires Frida running on your iOS device (jailbroken or not). This tool uses Frida's [Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida Memory API") to dump the memory of the running app and recreate an IPA file. Because the code is extracted from memory, it is automatically decrypted. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") is a Python script that helps you retrieve the decrypted version of an iOS app (IPA) from an iOS device. It supports both Python 2 and Python 3 and requires Frida running on your iOS device (jailbroken or not). This tool uses Frida's [Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida Memory API") to dump the memory of the running app and recreate an IPA file. Because the code is extracted from memory, it is automatically decrypted. Please refer to the section ["Using Frida-ios-dump"](0x06b-Basic-Security-Testing.md#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
 
 ### Fridpa
 

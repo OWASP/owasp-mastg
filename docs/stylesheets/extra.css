@@ -22,6 +22,54 @@
   padding-right: 0.4em;
 }
 
+.masvs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 0.7em 0;
+}
+
+.masvs-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 0.6em;
+
+}
+
+.masvs-chips-title {
+  color: darkgrey;
+  font-size: small;
+  margin: 0 0.5em;
+}
+
+.mas-blue-chip {
+  background-color: #499FFF;
+  color: #fff !important;
+  cursor: default;
+}
+
+.masvs-v1-chip {
+  background-color: #828282;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.masvs-v2-chip {
+  background-color: #499FFF;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+.masvs-v2-chip:hover {
+  background-color: #72b3fe;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .mas-dot-blue {
   height: 1.5em;
   width: 1.5em;

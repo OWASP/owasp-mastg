@@ -1,3 +1,9 @@
+---
+hide:
+  - toc
+  - navigation
+---
+
 # &#128172; Connect with Us
 
 <img src="../assets/logo_circle.png" width="150px" style="margin-left: 4em; margin-top: 0em;" align="right">

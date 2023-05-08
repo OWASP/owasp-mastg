@@ -7,51 +7,104 @@ edit_uri: "" # disable edit button
 nav:
   - Home: index.md
   - MASTG:
-      - MASTG.md
-      - Intro: MASTG/Intro
-      - General Guide: MASTG/General
-      - Android: MASTG/Android
-      - iOS: MASTG/iOS
-      - Tools: MASTG/Tools
-      - References: MASTG/References
+      - Overview: MASTG.md
+      - Intro:
+        - ... | flat | MASTG/Intro/*.md
+      - Mobile Security Testing Theory:
+        - General Concepts:
+          - ... | flat | MASTG/General/*.md
+        - Android Security Testing:
+          - ... | flat | MASTG/Android/*.md
+        - iOS Security Testing: 
+          - ... | flat | MASTG/iOS/*.md
+      - MASTG Tests: 
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests/android/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests/android/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/tests/android/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/tests/android/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/tests/android/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests/android/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests/android/MASVS-RESILIENCE/*.md
+        - iOS:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests/ios/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests/ios/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/tests/ios/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/tests/ios/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/tests/ios/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests/ios/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
+      - Tools:
+        - ... | flat | MASTG/Tools/*.md
+      - References:
+        - ... | flat | MASTG/References/*.md
   - MASVS:
-      - MASVS.md
-      - Intro: MASVS/Intro
+      - Overview: MASVS.md
+      - Intro:
+        - ... | flat | MASVS/Intro/*
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
+      - ... | flat | MASVS/controls/MASVS-STORAGE*.md
       - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md
+      - ... | flat | MASVS/controls/MASVS-CRYPTO*.md
       - MASVS-AUTH: MASVS/07-MASVS-AUTH.md
+      - ... | flat | MASVS/controls/MASVS-AUTH*.md
       - MASVS-NETWORK: MASVS/08-MASVS-NETWORK.md
+      - ... | flat | MASVS/controls/MASVS-NETWORK*.md
       - MASVS-PLATFORM: MASVS/09-MASVS-PLATFORM.md
+      - ... | flat | MASVS/controls/MASVS-PLATFORM*.md
       - MASVS-CODE: MASVS/10-MASVS-CODE.md
+      - ... | flat | MASVS/controls/MASVS-CODE*.md
       - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
-      - Controls: MASVS/Controls
-  - "MAS Checklist": MAS_checklist.md
+      - ... | flat | MASVS/controls/MASVS-RESILIENCE*.md
+  - "MAS Checklist":
+     - Overview: MAS_checklist.md
+     - MASVS-STORAGE: checklists/MASVS-STORAGE.md
+     - MASVS-CRYPTO: checklists/MASVS-CRYPTO.md 
+     - MASVS-AUTH: checklists/MASVS-AUTH.md
+     - MASVS-NETWORK: checklists/MASVS-NETWORK.md
+     - MASVS-PLATFORM: checklists/MASVS-PLATFORM.md
+     - MASVS-CODE: checklists/MASVS-CODE.md
+     - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
   - "MAS Crackmes": 
-      - crackmes.md
-      - crackmes
+      - Overview: crackmes.md
+      - ... | flat | crackmes/*.md
   - news.md
   - talks.md
   - "&#11088; Contribute":
       - contributing.md
-      - contributing
+      - ... | flat | contributing/*.md
   - "&#128153; Donate":
       - donate.md
-      - donate
+      - ... | flat | donate/*.md
   - contact.md
 
 copyright: |
   <div style="float: left; padding-right: 1em;">
     <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
   </div>
-  <span>
+  <span style="font-size: smaller">
     &#169; OWASP Foundation 2023. This work is licensed under 
     <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
-  </span><br><span>OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span>
-  <div style="color: #6a6868"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website designed by Carlos Holguera.</i></div>
+  </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span>
+  <div style="color: #6a6868; font-size: smaller"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website and covers designed by Carlos Holguera.</i></div>
 
 theme:
   name: material
-  # custom_dir: docs/overrides
+  custom_dir: docs/overrides
   logo: assets/logo_circle.png
   favicon: assets/logo_circle.png
   icon:
@@ -59,7 +112,7 @@ theme:
   features:
     - search.suggest
     - search.share
-    - toc.integrate
+    # - toc.integrate
     - navigation.instant
     # - navigation.expand
     - navigation.tabs
@@ -81,11 +134,11 @@ theme:
 extra_css:
   - stylesheets/extra.css
 extra_javascript:
-  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
-  - javascripts/tablesort.js
+  - javascripts/tablesort.min.js
+  - javascripts/tablesorts.js
 plugins:
   - search
-  - include_dir_to_nav
+  - awesome-pages
   - mermaid2
 markdown_extensions:
   - meta

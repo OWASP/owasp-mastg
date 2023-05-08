@@ -2,9 +2,7 @@
 hide:
   - navigation
   - toc
-title: "Home"
 ---
-
 
 # OWASP Mobile Application Security
 
@@ -45,7 +43,7 @@ title: "Home"
 
 <br>
 
-<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG-v1.5.0.pdf" class="md-button md-button--primary" > Download the MASTG</a>
+<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG.pdf" class="md-button md-button--primary" > Download the MASTG</a>
 
 </center>
 
@@ -55,11 +53,11 @@ title: "Home"
 
 <br><br>
 
-<a href="../MAS_checklist"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/checklist_en_filled.png" /></a>
+<a href="../MAS_checklist"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/mas_checklist.png" /></a>
 
 <br><br><br>
 
-<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/Mobile_App_Security_Checklist_en.xlsx" class="md-button md-button--primary" style="margin-top: 0.6em;"> Download the Checklist</a>
+<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MAS_Checklist.xlsx" class="md-button md-button--primary" style="margin-top: 0.6em;"> Download the Checklist</a>
 
 </center>
 
@@ -67,7 +65,7 @@ title: "Home"
 
 <br>
 
-## Trusted by ...
+## Trusted By
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](MASTG/Intro/0x02b-MASVS-MASTG-Adoption.md).
 
@@ -83,6 +81,6 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 <img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/nowsecure-logo.png" align="right" style="margin: 0em 5em" width="200px;" />
 </a>
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](MASTG/Intro/0x02c-Acknowledgements.md).
+MAS Advocates are key industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to drive the project forward and ensure its continued success. This includes making consistent high-impact contributions and actively promoting the adoption and usage of the project. [Learn more](MASTG/Intro/0x02c-Acknowledgements.md).
 
 <br>

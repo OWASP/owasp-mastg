@@ -1,3 +1,8 @@
+---
+hide:
+  - toc
+---
+
 # MAS Crackmes
 
 Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile reverse engineering challenges. These challenges are used as examples throughout the OWASP MASTG. Of course, you can also solve them for fun.

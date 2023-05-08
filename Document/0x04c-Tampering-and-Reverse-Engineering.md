@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-RESILIENCE
+platform: all
+---
+
 # Mobile App Tampering and Reverse Engineering
 
 Reverse engineering and tampering techniques have long belonged to the realm of crackers, modders, malware analysts, etc. For "traditional" security testers and researchers, reverse engineering has been more of a complementary skill. But the tides are turning: mobile app black-box testing increasingly requires disassembling compiled apps, applying patches, and tampering with binary code or even live processes. The fact that many mobile apps implement defenses against unwelcome tampering doesn't make things easier for security testers.
@@ -116,7 +121,7 @@ This technique replaces standard binary operators like addition or subtraction w
 
 Control flow flattening replaces original code with a more complex representation. The transformation breaks the body of a function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because it removes the natural conditional constructs that usually make the code easier to read.
 
-![control-flow-flattening](./Images/Chapters/0x06j/control-flow-flattening.png) \
+<img src="Images/Chapters/0x06j/control-flow-flattening.png" width="100%" />
 
 The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
 

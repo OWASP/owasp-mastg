@@ -202,7 +202,7 @@ iPhone:~ root#
 
 #### On-device Shell App
 
-While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/ "NewTerm 2") via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://chariz.com/get/newterm "NewTerm 2") via Cydia for this purpose (it supports iOS 10.0 to 16.2 at the time of this writing).
 
 In addition, there are a few jailbreaks that explicitly disable incoming SSH _for security reasons_. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
 
@@ -681,12 +681,12 @@ Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-En
 
 iOS apps can make their codebase modular by using different elements. In the MASTG we will refer to all of them as native libraries, but they can come in different forms:
 
-- [Static and Dynamic Libraries](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html#//apple_ref/doc/uid/TP40001873-SW1):
-  - Static Libraries can be used and will be compiled in the app binary.
-  - Dynamic Libraries (typically having the `.dylib` extension) are also used but must be part of a framework bundle. Standalone Dynamic Libraries are [not supported](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) on iOS, watchOS, or tvOS, except for the system Swift libraries provided by Xcode.
-- [Frameworks](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) (since iOS 8). A Framework is a hierarchical directory that encapsulates a dynamic library, header files, and resources, such as storyboards, image files, and localized strings, into a single package.
-- [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
-- [Swift Packages](https://developer.apple.com/documentation/swift_packages): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
+- [Static and Dynamic Libraries](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html#//apple_ref/doc/uid/TP40001873-SW1 "Overview of Dynamic Libraries"):
+    - Static Libraries can be used and will be compiled in the app binary.
+    - Dynamic Libraries (typically having the `.dylib` extension) are also used but must be part of a framework bundle. Standalone Dynamic Libraries are [not supported](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS "Apps with Dependencies Between Frameworks") on iOS, watchOS, or tvOS, except for the system Swift libraries provided by Xcode.
+- [Frameworks](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS "Apps with Dependencies Between Frameworks") (since iOS 8). A Framework is a hierarchical directory that encapsulates a dynamic library, header files, and resources, such as storyboards, image files, and localized strings, into a single package.
+- [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/ "Binary Frameworks in Swift"): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages "Distributing binary frameworks as Swift packages").
+- [Swift Packages](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages "Distributing binary frameworks as Swift packages"): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739 "Adopting Swift Packages in Xcode"). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
 
 You can visualize native libraries in Passionfruit by clicking on "Modules":
 
@@ -753,7 +753,7 @@ Application: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-
 Data: /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
 ```
 
-Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "[Recommended Tools - Objection](#using-objection "Recommended Tools - Objection")".
+Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "[Recommended Tools - Objection](0x08a-Testing-Tools.md#using-objection-on-ios)".
 
 ```bash
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # env
@@ -776,41 +776,41 @@ These folders contain information that must be examined closely during applicati
 Bundle directory:
 
 - **AppName.app**
-  - This is the Application Bundle as seen before in the IPA, it contains essential application data, static content as well as the application's compiled binary.
-  - This directory is visible to users, but users can't write to it.
-  - Content in this directory is not backed up.
-  - The contents of this folder are used to validate the code signature.
+    - This is the Application Bundle as seen before in the IPA, it contains essential application data, static content as well as the application's compiled binary.
+    - This directory is visible to users, but users can't write to it.
+    - Content in this directory is not backed up.
+    - The contents of this folder are used to validate the code signature.
 
 Data directory:
 
 - **Documents/**
-  - Contains all the user-generated data. The application end user initiates the creation of this data.
-  - Visible to users and users can write to it.
-  - Content in this directory is backed up.
-  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
+    - Contains all the user-generated data. The application end user initiates the creation of this data.
+    - Visible to users and users can write to it.
+    - Content in this directory is backed up.
+    - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
 - **Library/**
-  - Contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
-  - iOS apps usually use the `Application Support` and `Caches` subdirectories, but the app can create custom subdirectories.
+    - Contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
+    - iOS apps usually use the `Application Support` and `Caches` subdirectories, but the app can create custom subdirectories.
 - **Library/Caches/**
-  - Contains semi-persistent cached files.
-  - Invisible to users and users can't write to it.
-  - Content in this directory is not backed up.
-  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
+    - Contains semi-persistent cached files.
+    - Invisible to users and users can't write to it.
+    - Content in this directory is not backed up.
+    - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
 - **Library/Application Support/**
-  - Contains persistent files necessary for running the app.
-  - Invisible to users and users can't write to it.
-  - Content in this directory is backed up.
-  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
+    - Contains persistent files necessary for running the app.
+    - Invisible to users and users can't write to it.
+    - Content in this directory is backed up.
+    - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
 - **Library/Preferences/**
-  - Used for storing properties that can persist even after an application is restarted.
-  - Information is saved, unencrypted, inside the application sandbox in a plist file called [BUNDLE_ID].plist.
-  - All the key/value pairs stored using `NSUserDefaults` can be found in this file.
+    - Used for storing properties that can persist even after an application is restarted.
+    - Information is saved, unencrypted, inside the application sandbox in a plist file called [BUNDLE_ID].plist.
+    - All the key/value pairs stored using `NSUserDefaults` can be found in this file.
 - **tmp/**
-  - Use this directory to write temporary files that do not need to persist between app launches.
-  - Contains non-persistent cached files.
-  - Invisible to users.
-  - Content in this directory is not backed up.
-  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
+    - Use this directory to write temporary files that do not need to persist between app launches.
+    - Contains non-persistent cached files.
+    - Invisible to users.
+    - Content in this directory is not backed up.
+    - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
 
 Let's take a closer look at [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift)'s Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
 
@@ -972,11 +972,11 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 
 ## Setting Up a Network Testing Environment
 
-iOS apps can be monitored at both the *application layer* via **HTTP proxy** and the *data link layer* (and above) via **network traffic capture** in terms of the [OSI model](https://en.wikipedia.org/wiki/OSI_model). Testing with an HTTP proxy is sufficient for apps that exclusively utilize REST APIs or other HTTP communications, however a traffic capture is required to validate if that is the only channel in use and to inspect those channels if not.
+iOS apps can be monitored at both the _application layer_ via **HTTP proxy** and the _data link layer_ (and above) via **network traffic capture** in terms of the [OSI model](https://en.wikipedia.org/wiki/OSI_model). Testing with an HTTP proxy is sufficient for apps that exclusively utilize REST APIs or other HTTP communications, however a traffic capture is required to validate if that is the only channel in use and to inspect those channels if not.
 
 ### Low Level Network Monitoring
 
-Network traffic can be captured into [Wireshark](0x08a-Testing-Tools.md#wireshark) at the *data link layer* either through Apple's [Remote Virtual Interface](https://developer.apple.com/documentation/network/recording_a_packet_trace) over USB on macOS, or using `tcpdump` over SSH with a jailbroken iOS device.
+Network traffic can be captured into [Wireshark](0x08a-Testing-Tools.md#wireshark) at the _data link layer_ either through Apple's [Remote Virtual Interface](https://developer.apple.com/documentation/network/recording_a_packet_trace) over USB on macOS, or using `tcpdump` over SSH with a jailbroken iOS device.
 
 #### Network Traffic Capture with a USB Cable and macOS
 
