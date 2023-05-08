@@ -16,6 +16,9 @@
             "pattern": "https://haveibeenpwned.com"
         },
         {
+            "pattern": "https://www.hackingwithswift.com"
+        },
+        {
             "pattern": "http://apt.thebigboss.org/repofiles/cydia/"
         },
         {

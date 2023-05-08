@@ -26,7 +26,7 @@ Identify all the instances of the cryptographic primitives in code. Identify all
 
 Identify that all calls to getInstance use default `provider` of security services by not specifying it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
 
-Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](../../../Document/0x04g-Testing-Cryptography.md)" chapter are followed. Look at [insecure and deprecated algorithms](../../../Document/0x04g-Testing-Cryptography.md#identifying-insecure-and/or-deprecated-cryptographic-algorithms) and [common configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
+Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](../../../Document/0x04g-Testing-Cryptography.md)" chapter are followed. Look at [insecure and deprecated algorithms](../../../Document/0x04g-Testing-Cryptography.md#identifying-insecure-and/or-deprecated-cryptographic-algorithms) and [common configuration issues](../../../Document/0x04g-Testing-Cryptography.md#common-configuration-issues).
 
 ## Dynamic Analysis
 

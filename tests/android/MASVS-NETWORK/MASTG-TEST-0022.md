@@ -177,7 +177,7 @@ Follow the instructions from ["Testing Endpoint Identify Verification > Dynamic 
 
 As a quick smoke test, you can try to bypass certificate pinning using [objection](../../../Document/0x08a-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](../../../Document/0x05b-Basic-Security_Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
 
-![objection Android SSL Pinning Bypass](Images/Chapters/0x05b/android_ssl_pinning_bypass.png)
+<img src="Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="600px"/>
 
 However, keep in mind that:
 

@@ -61,7 +61,10 @@ You can use a _visual approach_ to quickly validate this test case using any iOS
 2. Background the application by hitting the **Home** button on your iOS device.
 3. Verify that a default image is shown as the top view element instead of the view containing the sensitive information.
 
-If required, you may also collect evidence by performing steps 1 to 3 on a jailbroken device or a non-jailbroken device after [repackaging the app with the Frida Gadget](../../../Document/0x06c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-jailbroken-devices). After that, connect to the iOS device [per SSH](../../../Document/0x06b-Basic-Security-Testing.md#accessing-the-device-shell) or [by other means](0x06b-Basic-Security-Testing.md#host-device-data-transfer) and navigate to the Snapshots directory. The location may differ on each iOS version but it's usually inside the app's Library directory. On iOS 14.5:
-    `/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`
+If required, you may also collect evidence by performing steps 1 to 3 on a jailbroken device or a non-jailbroken device after [repackaging the app with the Frida Gadget](../../../Document/0x06c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-jailbroken-devices). After that, connect to the iOS device [per SSH](../../../Document/0x06b-Basic-Security-Testing.md#accessing-the-device-shell) or [by other means](../../../Document/0x06b-Basic-Security-Testing.md#host-device-data-transfer) and navigate to the Snapshots directory. The location may differ on each iOS version but it's usually inside the app's Library directory. For instance, on iOS 14.5 the Snapshots directory is located at:
+
+```txt
+/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/
+```
 
 The screenshots inside that folder should not contain any sensitive information.
