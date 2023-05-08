@@ -141,9 +141,8 @@ jobs:
           generate_release_notes: true
           discussion_category_name: Announcements
           files: |
-            OWASP_MASTG-*/OWASP_MASTG.pdf
-            OWASP_MASTG-*/OWASP_MASTG.epub
+            OWASP_MASTG/OWASP_MASTG.pdf
+            OWASP_MASTG/OWASP_MASTG.epub
             Checklists/*.xlsx
-            Enhanced-MASVS-YAML-Files/*.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
