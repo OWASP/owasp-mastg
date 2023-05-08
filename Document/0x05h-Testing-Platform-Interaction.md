@@ -367,7 +367,7 @@ There are libraries that provide functionality for directly storing the contents
 
 - [OrmLite](http://ormlite.com/ "OrmLite"),
 - [SugarORM](https://satyan.github.io/sugar/ "Sugar ORM"),
-- [GreenDAO](https://greenrobot.org/greendao/ "GreenDAO") and
+- [GreenDAO](https://github.com/greenrobot/greenDAO "GreenDAO") and
 - [ActiveAndroid](http://www.activeandroid.com/ "ActiveAndroid").
 
 [Realm](https://www.mongodb.com/docs/realm/sdk/java/ "Realm Java"), on the other hand, uses its own database to store the contents of a class. The amount of protection that ORM can provide depends primarily on whether the database is encrypted. See the chapter "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" for more details. The Realm website includes a nice [example of ORM Lite](https://github.com/j256/ormlite-examples/tree/master/android/HelloAndroid "OrmLite example").

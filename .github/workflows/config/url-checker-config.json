@@ -19,6 +19,9 @@
             "pattern": "https://www.hackingwithswift.com"
         },
         {
+            "pattern": "https://www.raywenderlich.com"
+        },
+        {
             "pattern": "http://apt.thebigboss.org/repofiles/cydia/"
         },
         {
