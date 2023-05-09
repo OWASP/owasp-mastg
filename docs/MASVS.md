@@ -38,6 +38,6 @@ To complement the MASVS, the OWASP MAS project also provides the [OWASP Mobile A
 !!! warning "MAS Security Testing Profiles"
     **Starting on v2.0.0 the MASVS does not contain "verification levels"**. The MAS project has traditionally provided three verification levels (L1, L2 and R), which were revisited during the MASVS refactoring in 2023, and have been reworked as "security testing profiles" and moved over to the OWASP MASTG.
     <br><br>
-    While we move things around and as a temporary measure, the [OWASP MAS Checklist](MAS_checklist.md) will still contain the old verification levels, associated with the current MASTG v1 tests. However, note that the levels will be completely reorked and reassigned to the corresponding MASTG tests in the next release.
+    While we move things around and as a temporary measure, the [OWASP MAS Checklist](MAS_checklist.md) will still contain the old verification levels, associated with the current MASTG v1 tests. However, note that the levels will be completely reworked and reassigned to the corresponding MASTG tests in the next release.
 
 <br><br>
