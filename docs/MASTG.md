@@ -15,7 +15,7 @@ The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensi
 
 <br>
 
-[:material-download: Download the MASTG](https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG-v1.5.0.pdf){ .md-button .md-button--primary }
+[:material-download: Download the MASTG](https://github.com/OWASP/owasp-mastg/releases/download/v1.6.0/OWASP_MASTG.pdf){ .md-button .md-button--primary }
 
 <br>
 
