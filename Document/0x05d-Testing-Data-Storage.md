@@ -324,7 +324,7 @@ For more understanding on the implementation guidelines, you can refer to [Googl
 
 For the security analysis perspective, the analysts may perform the following checks for the secure implementation of Key Attestation:
 
-- Check if the key attestation is totally implemented on the client-side. In such scenario, the same can be easily bypassed by tampering the application, method hooking, etc.
+- Check if the key attestation is totally implemented on the client-side. In which case, it can be more easily bypassed by tampering the application, method hooking, etc.
 - Check if the server uses random challenge while initiating the key attestation. As failing to do that would lead to insecure implementation thus making it vulnerable to replay attacks. Also, checks pertaining to the randomness of the challenge should be performed.
 - Check if the server verifies the integrity of the key attestation response.
 - Check if the server performs basic checks such as integrity verification, trust verification, validity, etc. on the certificates in the chain.
