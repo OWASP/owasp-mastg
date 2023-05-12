@@ -311,6 +311,7 @@ The typical example of Android Keystore attestation response looks like this:
 ```
 
 In the above JSON snippet, the keys have the following meaning:
+
 - `fmt`: Attestation statement format identifier
 - `authData`: It denotes the authenticator data for the attestation
 - `alg`: The algorithm that is used for the Signature
