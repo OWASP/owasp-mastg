@@ -119,7 +119,7 @@ Manufacturers want to provide device users with an aesthetically pleasing effect
 
 #### Keyboard Cache
 
-Several options for simplifying keyboard input are available to users. These options include autocorrection and spell checking. Most keyboard input is cached by default, in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
+Several options, such as autocorrect and spell check, are available to users to simplify keyboard input and are cached by default in `.dat` files in `/private/var/mobile/Library/Keyboard/` and its subdirectories.
 
 The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UITextInputTraits protocol") is used for keyboard caching. The `UITextField`, `UITextView`, and `UISearchBar` classes automatically support this protocol and it offers the following properties:
 
