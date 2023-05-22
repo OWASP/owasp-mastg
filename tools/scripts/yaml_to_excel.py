@@ -187,6 +187,9 @@ def create_security_requirements_sheet(wb):
                 ws.cell(row=row, column=Position.TEXT).value = element["Control / MASTG Test"]
                 ws.cell(row=row, column=Position.TEXT).style = "text_bold"
 
+                status_cell = ws.cell(row=row, column=Position.STATUS).coordinate
+                mas_styles.status_validation.add(status_cell)
+
                 row = row + 2
             # MASTG test
             elif element.get("Platform") != "":
