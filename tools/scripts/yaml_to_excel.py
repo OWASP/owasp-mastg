@@ -153,7 +153,7 @@ def create_security_requirements_sheet(wb):
         write_header(ws, category_title, mas_styles.MASVS_COLORS[group_id])
         set_columns_width(ws)
 
-        status_cells = 'I11:I400'
+        status_cells = 'I13:I400'
         ws.conditional_formatting.add(status_cells, mas_styles.rule_fail)
         ws.conditional_formatting.add(status_cells, mas_styles.rule_pass)
         ws.conditional_formatting.add(status_cells, mas_styles.rule_na)
