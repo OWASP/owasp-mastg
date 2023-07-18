@@ -28,9 +28,9 @@ The following table presents a representative set of Android permissions categor
 
 | Category     | Permissions                                         | Protection Level                                    |
 |--------------|-----------------------------------------------------|-----------------------------------------------------|
-| ASTRONOMICAL | `android.permission.INSTALL_PACKAGES`               | signature, appop                                   |
-| -------------|-----------------------------------------------------|-----------------------------------------------------|
-| CRITICAL     | `android.permission.COPY_PROTECTED_DATA`            | signature                                          |
+| **ASTRONOMICAL** | `android.permission.INSTALL_PACKAGES`               | signature, appop                                   |
+|              |                                                     |                                                     |
+| **CRITICAL** | `android.permission.COPY_PROTECTED_DATA`            | signature                                          |
 |              | `android.permission.WRITE_SECURE_SETTINGS`          | signature, privileged, development, role, installer|
 |              | `android.permission.READ_FRAME_BUFFER`              | signature, recents                                 |
 |              | `android.permission.MANAGE_CA_CERTIFICATES`         | signature, privileged                              |
@@ -41,8 +41,8 @@ The following table presents a representative set of Android permissions categor
 |              | `android.permission.SYSTEM_CAMERA`                  | system, signature, role                            |
 |              | `android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS`| signature, role                                   |
 |              | `android.permission.MOUNT_UNMOUNT_FILESYSTEMS`      | signature, privileged                              |
-| -------------|-----------------------------------------------------|-----------------------------------------------------|
-| HIGH         | `android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS`| signature, installer, verifier                   |
+|              |                                                     |                                                     |
+| **HIGH**     | `android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS`| signature, installer, verifier                   |
 |              | `android.permission.READ_SMS`                       | dangerous                                         |
 |              | `android.permission.WRITE_SMS`                      | normal                                            |
 |              | `android.permission.RECEIVE_MMS`                    | dangerous                                         |
@@ -63,8 +63,8 @@ The following table presents a representative set of Android permissions categor
 |              | `android.permission.BLUETOOTH_PRIVILEGED`           | signature, privileged                             |
 |              | `android.permission.GET_PASSWORD`                   | signature                                         |
 |              | `android.permission.INTERNAL_SYSTEM_WINDOW`         | signature                                         |
-| -------------|-----------------------------------------------------|-----------------------------------------------------|
-| MEDIUM       | `android.permission.ACCESS_COARSE_LOCATION`         | dangerous, instant                                |
+|              |                                                     |                                                     |
+| **MEDIUM**   | `android.permission.ACCESS_COARSE_LOCATION`         | dangerous, instant                                |
 |              | `android.permission.CHANGE_COMPONENT_ENABLED_STATE` | signature, privileged, role                        |
 |              | `android.permission.READ_CONTACTS`                  | dangerous                                         |
 |              | `android.permission.WRITE_CONTACTS`                 | dangerous                                         |
@@ -80,16 +80,16 @@ The following table presents a representative set of Android permissions categor
 |              | `android.permission.READ_CALENDAR`                  | dangerous                                         |
 |              | `android.permission.BLUETOOTH_ADMIN`                | normal                                            |
 |              | `android.permission.BODY_SENSORS`                   | dangerous                                         |
-| -------------|-----------------------------------------------------|-----------------------------------------------------|
-| LOW          | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION`   | normal                                            |
+|              |                                                     |                                                     |
+| **LOW**      | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION`   | normal                                            |
 |              | `android.permission.PACKAGE_USAGE_STATS`             | signature, privileged, development, appop, retailDemo|
 |              | `android.permission.MASTER_CLEAR`                    | signature, privileged, role                       |
 |              | `android.permission.DELETE_PACKAGES`                 | normal                                            |
 |              | `android.permission.GET_PACKAGE_SIZE`                | normal                                            |
 |              | `android.permission.BLUETOOTH`                       | normal                                            |
 |              | `android.permission.DEVICE_POWER`                    | signature, role                                   |
-| -------------|-----------------------------------------------------|-----------------------------------------------------|
-| NONE         | `android.permission.ACCESS_NETWORK_STATE`            | normal, instant                                   |
+|              |                                                     |                                                     |
+| **NONE**     | `android.permission.ACCESS_NETWORK_STATE`            | normal, instant                                   |
 |              | `android.permission.RECEIVE_BOOT_COMPLETED`          | normal                                            |
 |              | `android.permission.WAKE_LOCK`                       | normal, instant                                   |
 |              | `android.permission.FLASHLIGHT`                      | normal                                            |
