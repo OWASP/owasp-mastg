@@ -11,22 +11,27 @@ platform: android
 
 Android assigns a distinct system identity (Linux user ID and group ID) to every installed app. Because each Android app operates in a process sandbox, apps must explicitly request access to resources and data that are outside their sandbox. They request this access by declaring the permissions they need to use system data and features. Depending on how sensitive or critical the data or feature is, the Android system will grant the permission automatically or ask the user to approve the request.
 
-Android permissions are classified into four different categories on the basis of the protection level they offer:
+See the Android developer documentation for guides and trainings:
 
-- **Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting Android 6.0 (API level 23) or higher, these permissions are granted automatically at installation time. For apps targeting a lower API level, the user needs to approve them at installation time. Example: `android.permission.INTERNET`.
-- **Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`.
-- **Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at installation time. Example: `android.permission.ACCESS_MOCK_LOCATION`.
-- **SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`.
-
-A list of all permissions can be found in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/overview.html "Permissions overview") as well as concrete steps on how to:
-
+- [Permissions on Android](https://developer.android.com/guide/topics/permissions/overview.html "Permissions on Android")
 - [Declare app permissions](https://developer.android.com/training/permissions/declaring) in your app's manifest file.
 - [Request app permissions](https://developer.android.com/training/permissions/requesting) programmatically.
 - [Define a Custom App Permission](https://developer.android.com/guide/topics/permissions/defining) to share your app resources and capabilities with other apps.
 
-The following table presents a representative set of Android permissions categorized by associated risk as defined in this [paper](https://www.android-device-security.org/publications/2020-lau-uraniborg/Lau_2020_Uraniborg_Scoring_Whitepaper_20200827.pdf "Uraniborg’s Device Preloaded App Risks Scoring Metrics") which leverages the set of (privileged) permissions and entrance points to an app to estimate its attack surface. You can inspect all Android permissions in the [Android developer documentation Manifest.permission](https://developer.android.com/reference/android/Manifest.permission).
+Android permissions are classified into four different categories on the basis of the protection level they offer:
 
-| Category     | Permissions                                         | Protection Level |
+| Protection Level | Description                                                                                                                                            | Granting Method                          | Example                                      |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|----------------------------------------------|
+| **Normal**           | Grants apps access to isolated application-level features with minimal risk to other apps, the user, and the system.                                   | Automatic at installation time (Android 6.0 (API level 23) or higher)           | `android.permission.INTERNET`                |
+| **Dangerous**        | Provides the app with control over user data or device functionality that could potentially impact the user.                                            | User approval required                   | `android.permission.RECORD_AUDIO`            |
+| **Signature**        | Granted only to apps signed with the same certificate as the one used to sign the declaring app.                                                      | Automatic at installation time                          | `android.permission.ACCESS_MOCK_LOCATION`    |
+| **SystemOrSignature** | Reserved for system-embedded apps or those signed with the same certificate as the one used to sign the declaring app.                                 | Automatic at installation time       | `android.permission.ACCESS_DOWNLOAD_MANAGER` |
+
+A list of all permissions can be found in the [Android developer documentation](https://developer.android.com/reference/android/Manifest.permission "Manifest.permission").
+
+Independently from the assigned Protection Level, it is important to consider the risk that a permission might be posing considering the additional guarded capabilities, this is especially important for preloaded apps. The following table presents a representative set of Android permissions categorized by associated risk as defined in this [paper](https://www.android-device-security.org/publications/2020-lau-uraniborg/Lau_2020_Uraniborg_Scoring_Whitepaper_20200827.pdf "Uraniborg’s Device Preloaded App Risks Scoring Metrics") which leverages the set of (privileged) permissions and entrance points to an app to estimate its attack surface.
+
+| Risk Category     | Permissions                                         | Protection Level |
 |--------------|-----------------------------------------------------|------------------|
 | **ASTRONOMICAL** | `android.permission.INSTALL_PACKAGES`           | Signature        |
 |              |                                                     |                  |
@@ -96,6 +101,10 @@ The following table presents a representative set of Android permissions categor
 |              | `android.permission.VIBRATE`                        | Normal           |
 |              | `android.permission.WRITE_MEDIA_STORAGE`            | Signature        |
 |              | `android.permission.MODIFY_AUDIO_SETTINGS`          | Normal           |
+
+Note that this categorization can change over time. The paper gives us an example of that:
+
+> Prior to Android 10, the `READ_PHONE_STATE` permission would be classified as HIGH, due to the permanent device identifiers (e.g. (IMEI/MEID, IMSI, SIM, and build serial) that it guards. However, starting from Android 10, a bulk of the sensitive information that can be used for tracking has been moved, refactored or rescoped into a new permission called `READ_PRIVILEGED_PHONE_STATE`, putting the new permission in the HIGH category, but resulting in the `READ_PHONE_STATE` permission moving to LOW.
 
 #### Permission Changes per API Level
 
