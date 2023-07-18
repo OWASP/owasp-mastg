@@ -24,74 +24,80 @@ A list of all permissions can be found in the [Android developer documentation](
 - [Request app permissions](https://developer.android.com/training/permissions/requesting) programmatically.
 - [Define a Custom App Permission](https://developer.android.com/guide/topics/permissions/defining) to share your app resources and capabilities with other apps.
 
-The following table presents a representative set of Android permissions categorized by associated risk as defined in this [paper](https://www.android-device-security.org/publications/2020-lau-uraniborg/Lau_2020_Uraniborg_Scoring_Whitepaper_20200827.pdf "Uraniborg’s Device Preloaded App Risks Scoring Metrics") which leverages the set of (privileged) permissions and
-entrance points to an app to estimate its attack surface.
+The following table presents a representative set of Android permissions categorized by associated risk as defined in this [paper](https://www.android-device-security.org/publications/2020-lau-uraniborg/Lau_2020_Uraniborg_Scoring_Whitepaper_20200827.pdf "Uraniborg’s Device Preloaded App Risks Scoring Metrics") which leverages the set of (privileged) permissions and entrance points to an app to estimate its attack surface.
 
-| Risk         | Permissions                                            |
-|--------------|--------------------------------------------------------|
-| ASTRONOMICAL | `android.permission.INSTALL_PACKAGES`                  |
-| CRITICAL     | `android.permission.COPY_PROTECTED_DATA`               |
-|              | `android.permission.WRITE_SECURE_SETTINGS`             |
-|              | `android.permission.READ_FRAME_BUFFER`                 |
-|              | `android.permission.MANAGE_CA_CERTIFICATES`            |
-|              | `android.permission.MANAGE_APP_OPS_MODES`              |
-|              | `android.permission.GRANT_RUNTIME_PERMISSIONS`         |
-|              | `android.permission.DUMP`                              |
-|              | `android.permission.CAMERA`                            |
-|              | `android.permission.SYSTEM_CAMERA`                     |
-|              | `android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS`  |
-|              | `android.permission.MOUNT_UNMOUNT_FILESYSTEMS`         |
-| HIGH         | `android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS` |
-|              | `android.permission.READ_SMS`                          |
-|              | `android.permission.WRITE_SMS`                         |
-|              | `android.permission.RECEIVE_MMS`                       |
-|              | `android.permission.SEND_SMS_NO_CONFIRMATION`          |
-|              | `android.permission.RECEIVE_SMS`                       |
-|              | `android.permission.READ_LOGS`                         |
-|              | `android.permission.READ_PRIVILEGED_PHONE_STATE`       |
-|              | `android.permission.LOCATION_HARDWARE`                 |
-|              | `android.permission.ACCESS_FINE_LOCATION`              |
-|              | `android.permission.ACCESS_BACKGROUND_LOCATION`        |
-|              | `android.permission.BIND_ACCESSIBILITY_SERVICE`        |
-|              | `android.permission.ACCESS_WIFI_STATE`                 |
-|              | `com.android.voicemail.permission.READ_VOICEMAIL`      |
-|              | `android.permission.RECORD_AUDIO`                      |
-|              | `android.permission.CAPTURE_AUDIO_OUTPUT`              |
-|              | `android.permission.ACCESS_NOTIFICATIONS`              |
-|              | `android.permission.INTERACT_ACROSS_USERS_FULL`        |
-|              | `android.permission.BLUETOOTH_PRIVILEGED`              |
-|              | `android.permission.GET_PASSWORD`                      |
-|              | `android.permission.INTERNAL_SYSTEM_WINDOW`            |
-| MEDIUM       | `android.permission.ACCESS_COARSE_LOCATION`            |
-|              | `android.permission.CHANGE_COMPONENT_ENABLED_STATE`    |
-|              | `android.permission.READ_CONTACTS`                     |
-|              | `android.permission.WRITE_CONTACTS`                    |
-|              | `android.permission.CONNECTIVITY_INTERNAL`             |
-|              | `android.permission.ACCESS_MEDIA_LOCATION`             |
-|              | `android.permission.READ_EXTERNAL_STORAGE`             |
-|              | `android.permission.WRITE_EXTERNAL_STORAGE`            |
-|              | `android.permission.SYSTEM_ALERT_WINDOW`               |
-|              | `android.permission.READ_CALL_LOG`                     |
-|              | `android.permission.WRITE_CALL_LOG`                    |
-|              | `android.permission.INTERACT_ACROSS_USERS`             |
-|              | `android.permission.MANAGE_USERS`                      |
-|              | `android.permission.READ_CALENDAR`                     |
-|              | `android.permission.BLUETOOTH_ADMIN`                   |
-|              | `android.permission.BODY_SENSORS`                      |
-| LOW          | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION`     |
-|              | `android.permission.PACKAGE_USAGE_STATS`               |
-|              | `android.permission.MASTER_CLEAR`                      |
-|              | `android.permission.DELETE_PACKAGES`                   |
-|              | `android.permission.GET_PACKAGE_SIZE`                  |
-|              | `android.permission.BLUETOOTH`                         |
-|              | `android.permission.DEVICE_POWER`                      |
-| NONE         | `android.permission.ACCESS_NETWORK_STATE`              |
-|              | `android.permission.RECEIVE_BOOT_COMPLETED`            |
-|              | `android.permission.WAKE_LOCK`                         |
-|              | `android.permission.FLASHLIGHT`                        |
-|              | `android.permission.VIBRATE`                           |
-|              | `android.permission.WRITE_MEDIA_STORAGE`               |
-|              | `android.permission.MODIFY_AUDIO_SETTINGS`             |
+| Category     | Permissions                                         | Protection Level                                    |
+|--------------|-----------------------------------------------------|-----------------------------------------------------|
+| ASTRONOMICAL | `android.permission.INSTALL_PACKAGES`               | signature, appop                                   |
+| -------------|-----------------------------------------------------|-----------------------------------------------------|
+| CRITICAL     | `android.permission.COPY_PROTECTED_DATA`            | signature                                          |
+|              | `android.permission.WRITE_SECURE_SETTINGS`          | signature, privileged, development, role, installer|
+|              | `android.permission.READ_FRAME_BUFFER`              | signature, recents                                 |
+|              | `android.permission.MANAGE_CA_CERTIFICATES`         | signature, privileged                              |
+|              | `android.permission.MANAGE_APP_OPS_MODES`           | signature, installer, verifier, role               |
+|              | `android.permission.GRANT_RUNTIME_PERMISSIONS`      | signature, installer, verifier                     |
+|              | `android.permission.DUMP`                           | signature, privileged, development                 |
+|              | `android.permission.CAMERA`                         | signature                                         |
+|              | `android.permission.SYSTEM_CAMERA`                  | system, signature, role                            |
+|              | `android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS`| signature, role                                   |
+|              | `android.permission.MOUNT_UNMOUNT_FILESYSTEMS`      | signature, privileged                              |
+| -------------|-----------------------------------------------------|-----------------------------------------------------|
+| HIGH         | `android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS`| signature, installer, verifier                   |
+|              | `android.permission.READ_SMS`                       | dangerous                                         |
+|              | `android.permission.WRITE_SMS`                      | normal                                            |
+|              | `android.permission.RECEIVE_MMS`                    | dangerous                                         |
+|              | `android.permission.SEND_SMS_NO_CONFIRMATION`       | signature, privileged                             |
+|              | `android.permission.RECEIVE_SMS`                    | dangerous                                         |
+|              | `android.permission.READ_LOGS`                      | signature, privileged, development                |
+|              | `android.permission.READ_PRIVILEGED_PHONE_STATE`    | signature, privileged, role                       |
+|              | `android.permission.LOCATION_HARDWARE`              | signature, privileged, role                       |
+|              | `android.permission.ACCESS_FINE_LOCATION`           | dangerous, instant                                |
+|              | `android.permission.ACCESS_BACKGROUND_LOCATION`     | dangerous, instant                                |
+|              | `android.permission.BIND_ACCESSIBILITY_SERVICE`     | signature                                         |
+|              | `android.permission.ACCESS_WIFI_STATE`              | normal                                            |
+|              | `com.android.voicemail.permission.READ_VOICEMAIL`   | signature, privileged, role                       |
+|              | `android.permission.RECORD_AUDIO`                   | dangerous, instant                                |
+|              | `android.permission.CAPTURE_AUDIO_OUTPUT`           | signature, privileged, role                       |
+|              | `android.permission.ACCESS_NOTIFICATIONS`           | signature, privileged, appop                      |
+|              | `android.permission.INTERACT_ACROSS_USERS_FULL`     | signature, installer, role                         |
+|              | `android.permission.BLUETOOTH_PRIVILEGED`           | signature, privileged                             |
+|              | `android.permission.GET_PASSWORD`                   | signature                                         |
+|              | `android.permission.INTERNAL_SYSTEM_WINDOW`         | signature                                         |
+| -------------|-----------------------------------------------------|-----------------------------------------------------|
+| MEDIUM       | `android.permission.ACCESS_COARSE_LOCATION`         | dangerous, instant                                |
+|              | `android.permission.CHANGE_COMPONENT_ENABLED_STATE` | signature, privileged, role                        |
+|              | `android.permission.READ_CONTACTS`                  | dangerous                                         |
+|              | `android.permission.WRITE_CONTACTS`                 | dangerous                                         |
+|              | `android.permission.CONNECTIVITY_INTERNAL`          | signature, privileged                             |
+|              | `android.permission.ACCESS_MEDIA_LOCATION`          | dangerous                                         |
+|              | `android.permission.READ_EXTERNAL_STORAGE`          | dangerous                                         |
+|              | `android.permission.WRITE_EXTERNAL_STORAGE`         | dangerous                                         |
+|              | `android.permission.SYSTEM_ALERT_WINDOW`            | signature, setup, appop, installer, pre23, development|
+|              | `android.permission.READ_CALL_LOG`                  | dangerous                                         |
+|              | `android.permission.WRITE_CALL_LOG`                 | dangerous                                         |
+|              | `android.permission.INTERACT_ACROSS_USERS`          | signature, privileged, development, role           |
+|              | `android.permission.MANAGE_USERS`                   | signature, privileged                             |
+|              | `android.permission.READ_CALENDAR`                  | dangerous                                         |
+|              | `android.permission.BLUETOOTH_ADMIN`                | normal                                            |
+|              | `android.permission.BODY_SENSORS`                   | dangerous                                         |
+| -------------|-----------------------------------------------------|-----------------------------------------------------|
+| LOW          | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION`   | normal                                            |
+|              | `android.permission.PACKAGE_USAGE_STATS`             | signature, privileged, development, appop, retailDemo|
+|              | `android.permission.MASTER_CLEAR`                    | signature, privileged, role                       |
+|              | `android.permission.DELETE_PACKAGES`                 | normal                                            |
+|              | `android.permission.GET_PACKAGE_SIZE`                | normal                                            |
+|              | `android.permission.BLUETOOTH`                       | normal                                            |
+|              | `android.permission.DEVICE_POWER`                    | signature, role                                   |
+| -------------|-----------------------------------------------------|-----------------------------------------------------|
+| NONE         | `android.permission.ACCESS_NETWORK_STATE`            | normal, instant                                   |
+|              | `android.permission.RECEIVE_BOOT_COMPLETED`          | normal                                            |
+|              | `android.permission.WAKE_LOCK`                       | normal, instant                                   |
+|              | `android.permission.FLASHLIGHT`                      | normal                                            |
+|              | `android.permission.VIBRATE`                         | normal, instant                                   |
+|              | `android.permission.WRITE_MEDIA_STORAGE`             | signature, privileged                             |
+|              | `android.permission.MODIFY_AUDIO_SETTINGS`           | normal                                            |
+
+#### Permission Changes per API Level
 
 **Android 8.0 (API level 26) Changes:**
 
