@@ -22,6 +22,7 @@ A secret string is hidden somewhere in this app. Find a way to extract it.
     - [Solution using RMS by @mobilesecurity_ (video)](https://youtu.be/P6rNPkM2DdY "Solution by @mobilesecurity_")
     - [Solution using static analysis by Eduardo Vasconcelos](https://tereresecurity.wordpress.com/2021/03/03/write-up-uncrackable-level-1/ "Solution by Eduardo Vasconcelos")
     - [Solution using Frida by Davide Cioccia](https://1337.dcodx.com/mobile-security/owasp-mstg-crackme-1-writeup-android "Solution by Davide Cioccia")
+    - [Solution using MobSF by Jitendra Patro](https://blog.jitendrapatro.me/owasp-android-uncrackable-level-1/ "Solution by Jitendra Patro")
 
 <i style="color:gray">
 By [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller")
