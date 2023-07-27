@@ -47,7 +47,7 @@ A huge thanks goes of course to our wider community and all of our contributors.
 
 ## May 8th, 2023: MASVS v2 Colors
 
-We're bringing official colors to the MASVS! The new colors will be used across the MASVS v2.0.0 and MASTG v2.0.0 to help users quickly identify the different control groups. We've also revamped certain areas of our website to make them more readable and easier to navigate as well as to prepare for what's coming with the MASTSG v2.0.0 (keyword: "atomic tests").
+We're bringing official colors to the MASVS! The new colors will be used across the MASVS v2.0.0 and MASTG v2.0.0 to help users quickly identify the different control groups. We've also revamped certain areas of our website to make them more readable and easier to navigate as well as to prepare for what's coming with the MASTG v2.0.0 (keyword: "atomic tests").
 
 <img style="border-radius: 5px" src="../assets/news/masvs_colors.png"/>
 
