@@ -11,7 +11,7 @@ hide:
 
 ## Jul 28th, 2023: MASTG Refactoring and MAS Testing Profiles: Paving the Way for Next-Level Mobile Application Security
 
-The MASTG refactoring is a significant upgrade that addresses some existing challenges and introduces exciting new features. This refurbishment aims to streamline compliance, simplify testing and improve usability for security testers and other stakeholders.
+The MASTG refactoring is a significant upgrade that addresses some existing challenges and introduces exciting new features. It aims to streamline compliance, simplify testing and improve usability for security testers and other stakeholders.
 
 ### MAS Testing Profiles
 
