@@ -9,7 +9,7 @@ hide:
 
     Follow [:material-twitter: @OWASP_MAS](https://twitter.com/OWASP_MAS) to get the latest updates instantly.
 
-## Jul 28th, 2023: MASTG Refactoring and MAS Testing Profiles: Paving the Way for Next-Level Mobile Application Security
+## Jul 28th, 2023: MAS Testing Profiles and MASTG Atomic Tests - Paving the Way for Next-Level Mobile Application Security
 
 The MASTG refactoring is a significant upgrade that addresses some existing challenges and introduces exciting new features. It aims to streamline compliance, simplify testing and improve usability for security testers and other stakeholders.
 
@@ -23,17 +23,17 @@ The [new MAS Testing Profiles](https://docs.google.com/document/d/1paz7dxKXHzAC9
 
 Another interesting addition we're exploring for the near future is a 'Privacy' profile, which would focus on [tests that consider the privacy implications of various app features and functionalities](https://mas.owasp.org/MASTG/General/0x04i-Testing-User-Privacy-Protection/). We believe that this profile can become an essential tool in an era where privacy has become a significant concern.
 
-> **HELP WANTED:** Today we're releasing the new MAS Testing Profiles and would love to hear your what you think. Please [give your feedback here](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing).
+> **HELP WANTED:** Today we're releasing the new MAS Testing Profiles and would love to hear what you think. Please [give your feedback here until the 31st of August 2023](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing).
 
 ### Atomic Tests
 
-One of the key changes in the MASTG refactoring is the introduction of the [new MASTG Atomic Tests](https://docs.google.com/spreadsheets/d/1Go5GpVvKJqTDxGbSLBPZb1hmYi5lXRc1D1AfrTTkUkY/edit?usp=sharing). The existing tests are currently quite large and often cover more than one MASVS control. With the introduction of Atomic Tests, we'll break these tests down into smaller, more manageable pieces. Our goal is to make these tests as self-contained and specific as possible to allow for reduced ambiguity, better understanding and easier execution. Each atomic tests will have its unique ID for easy reference and traceability and will be mapped to the relevant controls from the MASVS.
+One of the key changes in the MASTG refactoring is the introduction of the [new MASTG Atomic Tests](https://docs.google.com/spreadsheets/d/1Go5GpVvKJqTDxGbSLBPZb1hmYi5lXRc1D1AfrTTkUkY/edit?usp=sharing). The existing tests are currently quite large and often cover more than one MASVS control. With the introduction of Atomic Tests, we'll break these tests down into smaller, more manageable pieces. Our goal is to make these tests as self-contained and specific as possible to allow for reduced ambiguity, better understanding and easier execution. Each atomic test will have its unique ID for easy reference and traceability and will be mapped to the relevant controls from the MASVS.
 
 <img style="border-radius: 5px" src="../assets/news/mastg_tests_refactoring.png"/>
 
 But before we can start writing the new atomic tests, we need to finalize the proposal for the new MASTG Atomic Tests including mappings to the MASVS controls and the new MAS Testing profiles.
 
-> **HELP WANTED:** Today we're releasing the new MASTG Atomic Tests Proposal and would love to hear what you think. Please [give your feedback here](https://docs.google.com/spreadsheets/d/1Go5GpVvKJqTDxGbSLBPZb1hmYi5lXRc1D1AfrTTkUkY/edit?usp=sharing).
+> **HELP WANTED:** Today we're releasing the new MASTG Atomic Tests Proposal and would love to hear what you think. Please [give your feedback here until the 31st of August 2023](https://docs.google.com/spreadsheets/d/1Go5GpVvKJqTDxGbSLBPZb1hmYi5lXRc1D1AfrTTkUkY/edit?usp=sharing).
 
 ### What's Next?
 
