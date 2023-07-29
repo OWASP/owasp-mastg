@@ -69,61 +69,6 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 <br>
 
-## Table-of-Contents
-
-### Introduction
-
-- [Foreword](https://mas.owasp.org/MASTG/Intro/0x01-Foreword)
-- [Frontispiece](https://mas.owasp.org/MASTG/Intro/0x02a-Frontispiece)
-- [OWASP MASVS and MASTG Adoption](https://mas.owasp.org/MASTG/Intro/0x02b-MASVS-MASTG-Adoption)
-- [Acknowledgements](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements)
-- [Introduction to the OWASP Mobile Application Security Project](https://mas.owasp.org/MASTG/Intro/0x03-Overview)
-
-### General Testing Guide
-
-- [Mobile Application Taxonomy](https://mas.owasp.org/MASTG/General/0x04a-Mobile-App-Taxonomy)
-- [Mobile Application Security Testing](https://mas.owasp.org/MASTG/General/0x04b-Mobile-App-Security-Testing)
-- [Mobile App Authentication Architectures](https://mas.owasp.org/MASTG/General/0x04e-Testing-Authentication-and-Session-Management)
-- [Testing Network Communication](https://mas.owasp.org/MASTG/General/0x04f-Testing-Network-Communication)
-- [Cryptography in Mobile Apps](https://mas.owasp.org/MASTG/General/0x04g-Testing-Cryptography)
-- [Testing Code Quality](https://mas.owasp.org/MASTG/General/0x04h-Testing-Code-Quality)
-- [Tampering and Reverse Engineering](https://mas.owasp.org/MASTG/General/0x04c-Tampering-and-Reverse-Engineering)
-- [Testing User Privacy Protection](https://mas.owasp.org/MASTG/General/0x04i-Testing-User-Privacy-Protection)
-
-### Android Testing Guide
-
-- [Platform Overview](https://mas.owasp.org/MASTG/Android/0x05a-Platform-Overview)
-- [Android Basic Security Testing](https://mas.owasp.org/MASTG/Android/0x05b-Basic-Security_Testing)
-- [Data Storage on Android](https://mas.owasp.org/MASTG/Android/0x05d-Testing-Data-Storage)
-- [Android Cryptographic APIs](https://mas.owasp.org/MASTG/Android/0x05e-Testing-Cryptography)
-- [Local Authentication on Android](https://mas.owasp.org/MASTG/Android/0x05f-Testing-Local-Authentication)
-- [Android Network Communication](https://mas.owasp.org/MASTG/Android/0x05g-Testing-Network-Communication)
-- [Android Platform APIs](https://mas.owasp.org/MASTG/Android/0x05h-Testing-Platform-Interaction)
-- [Code Quality and Build Settings for Android Apps](https://mas.owasp.org/MASTG/Android/0x05i-Testing-Code-Quality-and-Build-Settings)
-- [Tampering and Reverse Engineering on Android](https://mas.owasp.org/MASTG/Android/0x05c-Reverse-Engineering-and-Tampering)
-- [Android Anti-Reversing Defenses](https://mas.owasp.org/MASTG/Android/0x05j-Testing-Resiliency-Against-Reverse-Engineering)
-
-### iOS Testing Guide
-
-- [Platform Overview](https://mas.owasp.org/MASTG/iOS/0x06a-Platform-Overview)
-- [iOS Basic Security Testing](https://mas.owasp.org/MASTG/iOS/0x06b-Basic-Security-Testing)
-- [Data Storage on iOS](https://mas.owasp.org/MASTG/iOS/0x06d-Testing-Data-Storage)
-- [iOS Cryptographic APIs](https://mas.owasp.org/MASTG/iOS/0x06e-Testing-Cryptography)
-- [Local Authentication on iOS](https://mas.owasp.org/MASTG/iOS/0x06f-Testing-Local-Authentication)
-- [iOS Network Communication](https://mas.owasp.org/MASTG/iOS/0x06g-Testing-Network-Communication)
-- [iOS Platform APIs](https://mas.owasp.org/MASTG/iOS/0x06h-Testing-Platform-Interaction)
-- [Code Quality and Build Settings for iOS Apps](https://mas.owasp.org/MASTG/iOS/0x06i-Testing-Code-Quality-and-Build-Settings)
-- [Tampering and Reverse Engineering on iOS](https://mas.owasp.org/MASTG/iOS/0x06c-Reverse-Engineering-and-Tampering)
-- [iOS Anti-Reversing Defenses](https://mas.owasp.org/MASTG/iOS/0x06j-Testing-Resiliency-Against-Reverse-Engineering)
-
-### Appendix
-
-- [Testing Tools](https://mas.owasp.org/MASTG/Tools/0x08a-Testing-Tools)
-- [Reference Applications](https://mas.owasp.org/MASTG/Tools/0x08b-Reference-Apps)
-- [Suggested Reading](https://mas.owasp.org/MASTG/References/0x09-Suggested-Reading)
-
-<br>
-
 ## About Hybrid Apps
 
 Please note that the MASTG focuses primarily on native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Apps using frameworks such as Nativescript, React-native, Xamarin, Cordova, etc. are not within the main focus of the MASTG. However, some essential controls, such as certificate pinning, have been explained already for some of these platforms. For now, you can take a look and contribute to the work-in-progress being made in the discussions ["Hybrid application checklist experiments"](https://github.com/OWASP/owasp-mastg/discussions/1971) and ["Basic Guidelines for Hybrid Apps"](https://github.com/OWASP/owasp-masvs/discussions/557).

@@ -3,6 +3,7 @@ mkdir docs/MASTG/Intro
 mkdir docs/MASTG/General
 mkdir docs/MASTG/Android
 mkdir docs/MASTG/iOS
+mkdir docs/MASTG/tests
 mkdir docs/MASTG/Tools
 mkdir docs/MASTG/References
 cp Document/0x0*.md docs/MASTG

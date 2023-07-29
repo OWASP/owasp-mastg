@@ -12,7 +12,7 @@ cp -R $FOLDER "build"
 
 # You can also use the environment variables below to adapt the build process
 IMG=${IMG:-dalibo/pandocker}
-TAG=${TAG:-21.02} # /!\ use stable-full for non-european languages
+TAG=${TAG:-stable} # /!\ use stable-full for non-european languages
 LATEX_TEMPLATE=${LATEX_TEMPLATE:-eisvogel}
 TITLE=${TITLE:-OWASP Mobile Application Security Testing Guide ${MASTG_VERSION}}
 
@@ -36,7 +36,7 @@ PANDOC=${PANDOC:-${PANDOCKER}}
 
 METADATA="build/metadata.md"
 CHAPTERS="build/0x*.md"
-OUTPUT_BASE_NAME="OWASP_MASTG-${MASTG_VERSION}"
+OUTPUT_BASE_NAME="OWASP_MASTG"
 
 [ ! -z "${VERBOSE}" ] && echo "[*] Creating PDF"
 

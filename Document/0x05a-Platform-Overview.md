@@ -28,9 +28,9 @@ Dalvik bytecode is an optimized version of Java bytecode. It is created by first
 
 <img src="Images/Chapters/0x05a/java_vs_dalvik.png" width="400px" />
 
-Before Android 5.0 (API level 21), Android executed bytecode on the Dalvik Virtual Machine (DVM), where it was translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation.
+Before Android 5.0 (API level 21), Android executed bytecode on the Dalvik Virtual Machine (DVM), where it was translated into machine code at execution time, a process known as _just-in-time_ (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation.
 
-Since Android 5.0 (API level 21), Android executes bytecode on the Android Runtime (ART) which is the successor of the DVM. ART provides improved performance as well as context information in app native crash reports, by including both Java and native stack information. It uses the same Dalvik bytecode input to maintain backward compatibility. However, ART executes the Dalvik bytecode differently, using a hybrid combination of *ahead-of-time* (AOT), *just-in-time* (JIT) and profile-guided compilation.
+Since Android 5.0 (API level 21), Android executes bytecode on the Android Runtime (ART) which is the successor of the DVM. ART provides improved performance as well as context information in app native crash reports, by including both Java and native stack information. It uses the same Dalvik bytecode input to maintain backward compatibility. However, ART executes the Dalvik bytecode differently, using a hybrid combination of _ahead-of-time_ (AOT), _just-in-time_ (JIT) and profile-guided compilation.
 
 - **AOT** pre-compiles Dalvik bytecode into native code, and the generated code will be saved on disk with the .oat extension (ELF binary). The dex2oat tool can be used to perform the compilation and can be found at /system/bin/dex2oat on Android devices. AOT compilation is executed during the installation of the app. This makes the application start faster, as no compilation is needed anymore. However, this also means that the install time increases as compared to JIT compilation. Additionally, since applications are always optimized against the current version of the OS, this means that software updates will recompile all previously compiled applications, resulting in a significant increase in the system update time. Finally, AOT compilation will compile the entire application, even if certain parts are never used by the user.
 - **JIT** happens at runtime.
@@ -120,7 +120,7 @@ Android implements an extensive permissions system that is used as an access con
 
 Further information is available in the [Android documentation](https://developer.android.com/guide/topics/permissions/overview) including several [considerations](https://developer.android.com/training/permissions/evaluating) and [best practices](https://developer.android.com/training/permissions/usage-notes).
 
-To learn how to test app permissions refer to the [Testing App Permissions](0x05h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) section in the "Android Platform APIs" chapter.
+To learn how to test app permissions refer to the [Testing App Permissions](0x05h-Testing-Platform-Interaction.md#app-permissions) section in the "Android Platform APIs" chapter.
 
 ### Network security
 
@@ -177,24 +177,24 @@ Noteworthy API versions:
 - Android 8.0 (API level 26-27) in August 2017 (a lot of security improvements)
 - Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
 - **Android 10 (API level 29)** in September 2019 (access location "only while using the app", device tracking prevention, improve secure external storage,)
-  - Privacy ([overview](https://developer.android.com/about/versions/10/highlights#privacy_for_users), [details 1](https://developer.android.com/about/versions/10/privacy), [details 2](https://developer.android.com/about/versions/10/privacy/changes))
-  - Security ([overview](https://developer.android.com/about/versions/10/highlights#security), [details](https://developer.android.com/about/versions/10/behavior-changes-all#security))
+    - Privacy ([overview](https://developer.android.com/about/versions/10/highlights#privacy_for_users), [details 1](https://developer.android.com/about/versions/10/privacy), [details 2](https://developer.android.com/about/versions/10/privacy/changes))
+    - Security ([overview](https://developer.android.com/about/versions/10/highlights#security), [details](https://developer.android.com/about/versions/10/behavior-changes-all#security))
 - **Android 11 (API level 30)** in September 2020 (scoped storage enforcement, Permissions auto-reset, [reduced package visibility](https://developer.android.com/training/package-visibility), APK Signature Scheme v4)
-  - Privacy ([overview](https://developer.android.com/about/versions/11/privacy))
-  - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all)
-  - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all#security)
-  - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#privacy)
-  - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#security)
+    - Privacy ([overview](https://developer.android.com/about/versions/11/privacy))
+    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all)
+    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all#security)
+    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#privacy)
+    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#security)
 - **Android 12 (API level 31-32)** in August 2021 (Material You, Web intent resolution, Privacy Dashboard)
-  - [Security and privacy](https://developer.android.com/about/versions/12/features#security-privacy)
-  - [Behavior changes (all apps)](https://developer.android.com/about/versions/12/behavior-changes-all#security-privacy)
-  - [Behavior changes (apps targeting version)](https://developer.android.com/about/versions/12/behavior-changes-12#security-privacy)
+    - [Security and privacy](https://developer.android.com/about/versions/12/features#security-privacy)
+    - [Behavior changes (all apps)](https://developer.android.com/about/versions/12/behavior-changes-all#security-privacy)
+    - [Behavior changes (apps targeting version)](https://developer.android.com/about/versions/12/behavior-changes-12#security-privacy)
 - [BETA] **Android 13 (API level 33)** in 2022 (Safer exporting of context-registered receivers, new photo picker)
-  - [Security and privacy](https://developer.android.com/about/versions/13/features#privacy-security)
-  - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#privacy)
-  - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#security)
-  - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#privacy)
-  - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#security)
+    - [Security and privacy](https://developer.android.com/about/versions/13/features#privacy-security)
+    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#privacy)
+    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#security)
+    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#privacy)
+    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#security)
 
 ### The App Sandbox
 
@@ -502,11 +502,11 @@ Found 99 services:
 _Intent messaging_ is an asynchronous communication framework built on top of Binder. This framework allows both point-to-point and publish-subscribe messaging. An _Intent_ is a messaging object that can be used to request an action from another app component. Although intents facilitate inter-component communication in several ways, there are three fundamental use cases:
 
 - Starting an activity
-  - An activity represents a single screen in an app. You can start a new instance of an activity by passing an intent to `startActivity`. The intent describes the activity and carries necessary data.
+    - An activity represents a single screen in an app. You can start a new instance of an activity by passing an intent to `startActivity`. The intent describes the activity and carries necessary data.
 - Starting a service
-  - A Service is a component that performs operations in the background, without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler.
+    - A Service is a component that performs operations in the background, without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler.
 - Delivering a broadcast
-  - A broadcast is a message that any app can receive. The system delivers broadcasts for system events, including system boot and charging initialization. You can deliver a broadcast to other apps by passing an intent to `sendBroadcast` or `sendOrderedBroadcast`.
+    - A broadcast is a message that any app can receive. The system delivers broadcasts for system events, including system boot and charging initialization. You can deliver a broadcast to other apps by passing an intent to `sendBroadcast` or `sendOrderedBroadcast`.
 
 There are two types of intents. Explicit intents name the component that will be started (the fully qualified class name). For instance:
 
@@ -707,23 +707,3 @@ Apps can be installed on an Android device from a variety of sources: locally vi
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this minimizes the time between the beginning of the publishing process and public app availability.
 
 Publishing an app is quite straightforward; the main operation is making the signed APK file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available at [the official Android documentation](https://play.google.com/console/about/guides/releasewithconfidence/ "Review the checklists to plan your launch").
-
-## Android Application Attack Surface
-
-The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application may be vulnerable to attack if it does not:
-
-- Validate all input by means of IPC communication or URL schemes, see also:
-  - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
-  - [Testing Deep Links](0x05h-Testing-Platform-Interaction.md#testing-deep-links-mstg-platform-3)
-- Validate all input by the user in input fields.
-- Validate the content loaded inside a WebView, see also:
-  - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5)
-  - [Testing WebView Protocol Handlers](0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers-mstg-platform-6)
-  - [Determining Whether Java Objects Are Exposed Through WebViews](0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews-mstg-platform-7)
-- Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application, see also:
-  - [Testing Network Communication](0x04f-Testing-Network-Communication.md#testing-network-communication)
-  - [Android Network Communication](0x05g-Testing-Network-Communication.md)
-- Securely stores all local data, or loads untrusted data from storage, see also:
-  - [Data Storage on Android](0x05d-Testing-Data-Storage.md)
-- Protect itself against compromised environments, repackaging or other local attacks, see also:
-  - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)
