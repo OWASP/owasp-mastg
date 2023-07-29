@@ -85,19 +85,7 @@ String providers = builder.toString();
 //now display the string on the screen or in the logs for debugging.
 ```
 
-Below you can find the output of a running this snippet on Android 4.4 (API level 19) in an emulator with Google Play APIs, after the security provider has been patched:
-
-```default
-provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider)
-provider: AndroidOpenSSL1.0 (Android's OpenSSL-backed security provider)
-provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7)
-provider: BC1.49 (BouncyCastle Security Provider v1.49)
-provider: Crypto1.0 (HARMONY (SHA1 digest; SecureRandom; SHA1withDSA signature))
-provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
-provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
-```
-
-Below you can find the output of running this snippet on Android 9 (API level 28) in an emulator with Google Play APIs:
+This is the output for Android 9 (API level 28) running in an emulator with Google Play APIs:
 
 ```default
 provider: AndroidNSSP 1.0(Android Network Security Policy Provider)
@@ -133,9 +121,7 @@ Security.addProvider(Conscrypt.newProvider())
 
 ### Key Generation
 
-The Android SDK allows you to specify how a key should be generated, and under which circumstances it can be used. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
-
-The following example shows key generation for AES/CBC/PKCS7Padding on API 23+:
+The Android SDK allows you to specify how a key should be generated, and under which circumstances it can be used. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application. For example:
 
 ```java
 String keyAlias = "MySecretKey";
@@ -154,7 +140,7 @@ keyGenerator.init(keyGenParameterSpec);
 SecretKey secretKey = keyGenerator.generateKey();
 ```
 
-The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default). Next, we give `AndroidKeyStore` as the name of the provider in the `KeyGenerator.getInstance` call. This will automatically ensure that the keys are stored in the `AndroidKeyStore` which is beneficiary for the protection of the key.
+The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default). Next, we enter `AndroidKeyStore` as the name of the provider in the `KeyGenerator.getInstance` call to ensure that the keys are stored in the Android KeyStore.
 
 GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter). Note that GCM is the only mode of AES that [does not support padding](https://developer.android.com/training/articles/keystore.html#SupportedCiphers "Supported Ciphers in AndroidKeyStore").
 
