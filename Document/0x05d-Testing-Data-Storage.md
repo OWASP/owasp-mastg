@@ -7,21 +7,17 @@ platform: android
 
 ## Overview
 
-This chapter focuses on the importance of protecting sensitive data such as authentication tokens and private information, which are crucial for mobile security. We will explore the APIs offered by Android for local data storage and provide best practices for their use.
+This chapter discusses the importance of securing sensitive data, like authentication tokens and private information, vital for mobile security. We'll look at Android's APIs for local data storage and share best practices.
 
-Data storage guidelines are simple: keep public data accessible to everyone, while ensuring sensitive and private data are either protected or ideally, not stored on the device at all.
+While it's preferable to limit sensitive data on local storage, or avoid it at all whenever possible, practical use cases often necessitate user data storage. For example, to improve user experience, apps cache authentication tokens locally, circumventing the need for complex password entry at each app start. Apps may also need to store personally identifiable information (PII) and other sensitive data.
 
-[Storing data](https://developer.android.com/training/data-storage "Storing Data in Android") is a fundamental aspect of many mobile apps. While it's recommended to limit the sensitive data stored on permanent local storage, practical scenarios often require some user data storage. For instance, requiring users to enter a complex password each time the app starts is not user-friendly. Hence, most apps locally cache an authentication token to circumvent this. Depending on the scenario, the app may also need to save personally identifiable information (PII) and other sensitive data.
+Sensitive data can become vulnerable if improperly protected, potentially stored in various locations, including the device or an external SD card. It's important to identify the information processed by the mobile app and classify what counts as sensitive data. Check out the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section in the "Mobile App Security Testing" chapter for data classification details. Refer to [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide for comprehensive insights.
 
-Sensitive data becomes vulnerable if the app storing it does not properly protect it. The app might store data in locations, such as the device or an external SD card. Remember that a substantial amount of information might be processed and stored across different locations when exploiting such issues.
+Sensitive information disclosure risks include potential information decryption, social engineering attacks (if PII is disclosed), account hijacking (if session information or an authentication token is disclosed), and app exploitation with a payment option.
 
-The first step is to identify the information that the mobile application processes and the user inputs. Determining what qualifies as sensitive data, which could be valuable to attackers (e.g., passwords, credit card information, PII), is not always straightforward and largely depends on the context of the target application. For more details on data classification, refer to the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section in the "Mobile App Security Testing" chapter. For a broader understanding of Android Data Storage Security, consult the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
+In addition to data protection, validate and sanitize data from any storage source. This includes checking correct data types and implementing cryptographic controls, such as HMACs, for data integrity.
 
-The disclosure of sensitive information carries several consequences, such as the risk of information decryption. Generally, an attacker can identify this information and exploit it for further attacks. These attacks can range from social engineering (if PII has been disclosed), account hijacking (if session information or an authentication token has been disclosed), to exploiting apps with a payment option.
-
-In addition to protecting sensitive data, it's crucial to validate and possibly sanitize data read from any storage source. Validation can range from checking for correct data types to implementing additional cryptographic controls, such as HMACs, to verify data integrity.
-
-Android offers a variety of [data storage](https://developer.android.com/training/data-storage "Storing Data in Android") methods tailored to the needs of users, developers, and applications. For instance, apps often use data storage to monitor user settings or store user-provided data. There are numerous ways to persistently store this data. Here are some commonly used persistent storage techniques on the Android platform:
+Android offers various [data storage](https://developer.android.com/training/data-storage "Storing Data in Android") methods, tailored to users, developers, and applications. Common persistent storage techniques include:
 
 - Shared Preferences
 - SQLite Databases
@@ -31,7 +27,7 @@ Android offers a variety of [data storage](https://developer.android.com/trainin
 - External Storage
 - Keystore
 
-In addition to this, there are a number of other functions in Android built for use cases that can also result in the storage of data and respectively should also be tested, such as:
+Additionally, other Android functions that can result in data storage and should be tested include:
 
 - Logging Functions
 - Android Backups
@@ -39,7 +35,7 @@ In addition to this, there are a number of other functions in Android built for 
 - Keyboard Caches
 - Screenshots
 
-It is important to understand each relevant data storage function to correctly perform the appropriate test cases. This overview aims to provide a brief outline of each of these data storage methods, as well as point testers to further relevant documentation.
+Understanding each relevant data storage function is crucial for performing the appropriate test cases. This overview provides a brief outline of these data storage methods and points testers to further relevant documentation.
 
 ### Shared Preferences
 
