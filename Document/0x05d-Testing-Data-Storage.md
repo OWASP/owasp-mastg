@@ -7,21 +7,21 @@ platform: android
 
 ## Overview
 
-Protecting authentication tokens, private information, and other sensitive data is key to mobile security. In this chapter, you will learn about the APIs Android offers for local data storage and best practices for using them.
+This chapter focuses on the importance of protecting sensitive data such as authentication tokens and private information, which are crucial for mobile security. We will explore the APIs offered by Android for local data storage and provide best practices for their use.
 
-The guidelines for saving data can be summarized quite easily: public data should be available to everyone, but sensitive and private data must be protected, or, better yet, kept out of device storage.
+Data storage guidelines are simple: keep public data accessible to everyone, while ensuring sensitive and private data are either protected or ideally, not stored on the device at all.
 
-[Storing data](https://developer.android.com/training/data-storage "Storing Data in Android") is essential to many mobile apps. Conventional wisdom suggests that as little sensitive data as possible should be stored on permanent local storage. In most practical scenarios, however, some type of user data must be stored. For example, asking the user to enter a very complex password every time the app starts isn't a great idea in terms of usability. Most apps must locally cache some kind of authentication token to avoid this. Personally identifiable information (PII) and other types of sensitive data may also be saved if a given scenario calls for it.
+[Storing data](https://developer.android.com/training/data-storage "Storing Data in Android") is a fundamental aspect of many mobile apps. While it's recommended to limit the sensitive data stored on permanent local storage, practical scenarios often require some user data storage. For instance, requiring users to enter a complex password each time the app starts is not user-friendly. Hence, most apps locally cache an authentication token to circumvent this. Depending on the scenario, the app may also need to save personally identifiable information (PII) and other sensitive data.
 
-Sensitive data is vulnerable when it is not properly protected by the app that is persistently storing it. The app may be able to store the data in several places, for example, on the device or on an external SD card. When you're trying to exploit these kinds of issues, consider that a lot of information may be processed and stored in different locations.
+Sensitive data becomes vulnerable if the app storing it does not properly protect it. The app might store data in locations, such as the device or an external SD card. Remember that a substantial amount of information might be processed and stored across different locations when exploiting such issues.
 
-First, it is important to identify the kind of information processed by the mobile application and input by the user. Next, determining what can be considered sensitive data that may be valuable to attackers (e.g., passwords, credit card information, PII) is not always a trivial task and it strongly depends on the context of the target application. You can find more details regarding data classification in the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section of the chapter "Mobile App Security Testing". For general information on Android Data Storage Security, refer to the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
+The first step is to identify the information that the mobile application processes and the user inputs. Determining what qualifies as sensitive data, which could be valuable to attackers (e.g., passwords, credit card information, PII), is not always straightforward and largely depends on the context of the target application. For more details on data classification, refer to the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section in the "Mobile App Security Testing" chapter. For a broader understanding of Android Data Storage Security, consult the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
 
-Disclosing sensitive information has several consequences, including decrypted information. In general, an attacker may identify this information and use it for additional attacks, such as social engineering (if PII has been disclosed), account hijacking (if session information or an authentication token has been disclosed), and gathering information from apps that have a payment option (to attack and abuse them).
+The disclosure of sensitive information carries several consequences, such as the risk of information decryption. Generally, an attacker can identify this information and exploit it for further attacks. These attacks can range from social engineering (if PII has been disclosed), account hijacking (if session information or an authentication token has been disclosed), to exploiting apps with a payment option.
 
-Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation usually ranges from checking for the correct data types to using additional cryptographic controls, such as an HMAC that allows you to validate the integrity of the data.
+In addition to protecting sensitive data, it's crucial to validate and possibly sanitize data read from any storage source. Validation can range from checking for correct data types to implementing additional cryptographic controls, such as HMACs, to verify data integrity.
 
-Android provides a number of methods for [data storage](https://developer.android.com/training/data-storage "Storing Data in Android") depending on the needs of the user, developer, and application. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently for this use case in several ways. The following list of persistent storage techniques are widely used on the Android platform:
+Android offers a variety of [data storage](https://developer.android.com/training/data-storage "Storing Data in Android") methods tailored to the needs of users, developers, and applications. For instance, apps often use data storage to monitor user settings or store user-provided data. There are numerous ways to persistently store this data. Here are some commonly used persistent storage techniques on the Android platform:
 
 - Shared Preferences
 - SQLite Databases
@@ -31,7 +31,7 @@ Android provides a number of methods for [data storage](https://developer.androi
 - External Storage
 - Keystore
 
-In addition to this, there are a number of other functions in Android built for various use cases that can also result in the storage of data and respectively should also be tested, such as:
+In addition to this, there are a number of other functions in Android built for use cases that can also result in the storage of data and respectively should also be tested, such as:
 
 - Logging Functions
 - Android Backups
@@ -39,7 +39,7 @@ In addition to this, there are a number of other functions in Android built for 
 - Keyboard Caches
 - Screenshots
 
-It is important to understand each relevant data storage function in order to correctly perform the appropriate test cases. This overview aims to provide a brief outline of each of these data storage methods, as well as point testers to further relevant documentation.
+It is important to understand each relevant data storage function to correctly perform the appropriate test cases. This overview aims to provide a brief outline of each of these data storage methods, as well as point testers to further relevant documentation.
 
 ### Shared Preferences
 
@@ -125,7 +125,7 @@ Sensitive information should not be stored in unencrypted SQLite databases.
 
 ### SQLite Databases (Encrypted)
 
-With the library [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQLCipher"), SQLite databases can be password-encrypted.
+With the library [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQLCipher"), you can password-encrypt SQLite databases.
 
 Example in Java:
 
@@ -364,7 +364,7 @@ When defining the KeyDescription AuthorizationList, the following parameters wil
 ### Older KeyStore Implementations
 
 Older Android versions don't include KeyStore, but they _do_ include the KeyStore interface from JCA (Java Cryptography Architecture). You can use KeyStores that implement this interface to ensure the secrecy and integrity of keys stored with KeyStore; BouncyCastle KeyStore (BKS) is recommended. All implementations are based on the fact that files are stored on the filesystem; all files are password-protected.
-To create one, you can use the `KeyStore.getInstance("BKS", "BC") method`, where "BKS" is the KeyStore name (BouncyCastle Keystore) and "BC" is the provider (BouncyCastle). You can also use SpongyCastle as a wrapper and initialize the KeyStore as follows: `KeyStore.getInstance("BKS", "SC")`.
+To create one, use the `KeyStore.getInstance("BKS", "BC") method`, where "BKS" is the KeyStore name (BouncyCastle Keystore) and "BC" is the provider (BouncyCastle). You can also use SpongyCastle as a wrapper and initialize the KeyStore as follows: `KeyStore.getInstance("BKS", "SC")`.
 
 Be aware that not all KeyStores properly protect the keys stored in the KeyStore files.
 
@@ -409,7 +409,7 @@ Note that some ciphers do not properly clean up their byte-arrays. For instance,
 
 #### Storing Keys using Android KeyStore API
 
-A more user-friendly and recommended way is to use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API") system (itself or through KeyChain) to store key material. If it is possible, hardware-backed storage should be used. Otherwise, it should fallback to software implementation of Android Keystore. However, be aware that the `AndroidKeyStore` API has been changed significantly throughout various versions of Android. In earlier versions, the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since Android 6.0 (API level 23). As a result, a developer needs to handle the different Android API levels to securely store symmetric keys.
+A more user-friendly and recommended way is to use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API") system (itself or through KeyChain) to store key material. If it is possible, hardware-backed storage should be used. Otherwise, it should fallback to software implementation of Android Keystore. However, be aware that the `AndroidKeyStore` API has been changed significantly throughout versions of Android. In earlier versions, the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since Android 6.0 (API level 23). As a result, a developer needs to handle the different Android API levels to securely store symmetric keys.
 
 #### Storing keys by encrypting them with other keys
 
@@ -421,11 +421,11 @@ Also, as the illustration of this approach, refer to the [EncryptedSharedPrefere
 
 #### Insecure options to store keys
 
-A less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are used, the file is only readable by the application that created it. However, on rooted devices, any other application with root access can simply read the SharedPreferences file of other apps. This is not the case for the AndroidKeyStore, since AndroidKeyStore access is managed on the kernel level, which needs considerably more work and skill to bypass without the AndroidKeyStore clearing or destroying the keys.
+A less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are used, the file is only readable by the application that created it. However, on rooted devices, any other application with root access can read the SharedPreferences file of other apps. This is not the case for the AndroidKeyStore, since AndroidKeyStore access is managed on the kernel level, which needs considerably more work and skill to bypass without the AndroidKeyStore clearing or destroying the keys.
 
-The last three options are to use hardcoded encryption keys in the source code, having a predictable obfuscation function or key derivation function based on stable attributes, and storing generated keys in public places like `/sdcard/`. Hardcoded encryption keys are an issue, since this means every instance of the application uses the same encryption key. An attacker can reverse-engineer a local copy of the application in order to extract the cryptographic key, and use that key to decrypt any data which was encrypted by the application on any device.
+The last three options are to use hardcoded encryption keys in the source code, having a predictable obfuscation function or key derivation function based on stable attributes, and storing generated keys in public places like `/sdcard/`. Hardcoded encryption keys are an issue, since this means every instance of the application uses the same encryption key. An attacker can reverse-engineer a local copy of the application to extract the cryptographic key, and use that key to decrypt any data which was encrypted by the application on any device.
 
-Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly is also highly discouraged, as other applications can have permission to read the public partition and steal the keys.
+Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device to find the key. Lastly, storing encryption keys publicly is also highly discouraged, as other applications can have permission to read the public partition and steal the keys.
 
 #### Data Encryption Using Third Party Libraries
 
@@ -458,7 +458,7 @@ You can create log files in several ways. The following list includes two classe
 
 Android provides users with an auto-backup feature. The backups usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
 
-- Stock Android has built-in USB backup facilities. When USB debugging is enabled, you can use the `adb backup` command to create full data backups and backups of an app's data directory.
+- Stock Android has built-in USB backup facilities. When USB debugging is enabled, use the `adb backup` command to create full data backups and backups of an app's data directory.
 
 - Google provides a "Back Up My Data" feature that backs up all app data to Google's servers.
 
@@ -493,9 +493,9 @@ However, if you need to expose sensitive data in memory, you should make sure th
 
 The latter requirement gives developers direct memory access. Make sure that they use this access to overwrite the sensitive data with dummy data (typically zeroes). Examples of preferable data types include `byte []` and `char []`, but not `String` or `BigInteger`. Whenever you try to modify an immutable object like `String`, you create and change a copy of the object.
 
-Using non-primitive mutable types like `StringBuffer` and `StringBuilder` may be acceptable, but it's indicative and requires care. Types like `StringBuffer` are used to modify content (which is what you want to do). To access such a type's value, however, you would use the `toString` method, which would create an immutable copy of the data. There are several ways to use these data types without creating an immutable copy, but they require more effort than simply using a primitive array. Safe memory management is one benefit of using types like `StringBuffer` , but this can be a two-edged sword. If you try to modify the content of one of these types and the copy exceeds the buffer capacity, the buffer size will automatically increase. The buffer content may be copied to a different location, leaving the old content without a reference you can use to overwrite it.
+Using non-primitive mutable types like `StringBuffer` and `StringBuilder` may be acceptable, but it's indicative and requires care. Types like `StringBuffer` are used to modify content (which is what you want to do). To access such a type's value, however, you would use the `toString` method, which would create an immutable copy of the data. There are several ways to use these data types without creating an immutable copy, but they require more effort than using a primitive array. Safe memory management is one benefit of using types like `StringBuffer` , but this can be a two-edged sword. If you try to modify the content of one of these types and the copy exceeds the buffer capacity, the buffer size will automatically increase. The buffer content may be copied to a different location, leaving the old content without a reference use to overwrite it.
 
-Unfortunately, few libraries and frameworks are designed to allow sensitive data to be overwritten. For example, destroying a key, as shown below, doesn't really remove the key from memory:
+Unfortunately, few libraries and frameworks are designed to allow sensitive data to be overwritten. For example, destroying a key, as shown below, doesn't remove the key from memory:
 
 Example in Java:
 
@@ -532,7 +532,7 @@ Most third-party services are implemented in two ways:
 
 ### UI Components
 
-At various points in time, the user will have to enter sensitive information into the application. This data may be financial information such as credit card data or user account passwords, or maybe healthcare data. The data may be exposed if the app doesn't properly mask it while it is being typed.
+At certain points in time, the user will have to enter sensitive information into the application. This data may be financial information such as credit card data or user account passwords, or maybe healthcare data. The data may be exposed if the app doesn't properly mask it while it is being typed.
 
 In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
 
@@ -546,9 +546,9 @@ For example, capturing a screenshot of a banking application may reveal informat
 
 It is important to understand that [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview") should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
 
-There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuses the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done in order to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacker. A safer alternative for the user would be to use a 2FA application that does not generate notifications.
+There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuses the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacker. A safer alternative for the user would be to use a 2FA application that does not generate notifications.
 
-Furthermore there are a number of apps on the Google Play Store that provide notification logging, which basically logs locally any notifications on the Android system. This highlights that notifications are in no way private on Android and accessible by any other app on the device.
+Furthermore there are a number of apps on the Google Play Store that provide notification logging, which logs locally any notifications on the Android system. This highlights that notifications are in no way private on Android and accessible by any other app on the device.
 
 For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
 
