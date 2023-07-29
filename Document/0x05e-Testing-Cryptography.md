@@ -7,13 +7,13 @@ platform: android
 
 ## Overview
 
-In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
+In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices, as linked in this guide.
 
-We can identify key components of cryptography system in Android:
+We can identify key components of cryptography system on Android:
 
 - [Security Provider](0x05e-Testing-Cryptography.md#security-provider)
-- KeyStore - see the section [KeyStore](0x05d-Testing-Data-Storage.md#keystore) in the chapter "Testing Data Storage"
-- KeyChain - see the section [KeyChain](0x05d-Testing-Data-Storage.md#keychain) in the chapter "Testing Data Storage"
+- KeyStore - see the section [KeyStore](0x05d-Testing-Data-Storage.md#keystore) in the "Testing Data Storage" chapter
+- KeyChain - see the section [KeyChain](0x05d-Testing-Data-Storage.md#keychain) in the "Testing Data Storage" chapter
 
 Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers") that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages. In addition, there are Android specific packages `android.security.*` and `android.security.keystore.*`.
 
