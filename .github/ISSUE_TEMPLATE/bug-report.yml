@@ -1,5 +1,5 @@
-name: 🪲📘 Bug report / error in MSTG report
-description: Create a report to help us improve the MSTG.
+name: 🪲📘 Bug report / error in MASTG report
+description: Create a report to help us improve the MASTG.
 title: "[Bug] "
 labels: ["bug"]
 
@@ -18,7 +18,7 @@ body:
   - type: input
     id: chapter
     attributes:
-      label: MSTG Chapter
+      label: MASTG Chapter
       description: Which chapter contains the bug?
       placeholder: e.g. 0x05f-Testing-Local-Authentication.md line 30
     validations:

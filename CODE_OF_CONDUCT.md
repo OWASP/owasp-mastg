@@ -20,7 +20,7 @@ Examples of unacceptable behavior by participants include:
 - Trolling, insulting/derogatory comments, and personal or political attacks
 - Public or private harassment
 - Publishing others' private information, such as a physical or electronic address, without explicit permission
-- Misusing the context of the Mobile Security Testing Guide project for commercial goals (e.g. adding sales pitches to the guide or to communication channels used by the project, such as Slack).
+- Misusing the context of the Mobile Application Security project for commercial goals (e.g. adding sales pitches to the guide or to communication channels used by the project, such as Slack).
 - Other conduct which could reasonably be considered inappropriate in a professional setting
 
 ## Our Responsibilities
@@ -31,15 +31,15 @@ Project maintainers have the right and responsibility to remove, edit, or reject
 
 ## Disclaimer
 
-The MSTG and its materials are conceived for educational and research purposes only, or if you are a professional security tester that is analyzing mobile apps with approval of the app owner (e.g. as part of a penetration test or a bug bounty program).
+The OWAPS MAS and its materials are conceived for educational and research purposes only, or if you are a professional security tester that is analyzing mobile apps with approval of the app owner (e.g. as part of a penetration test or a bug bounty program).
 
-Refrain from violating the laws in your country by carefully consulting them before executing any tests against mobile apps when utilizing the MSTG materials.
+Refrain from violating the laws in your country by carefully consulting them before executing any tests against mobile apps when utilizing the OWAPS MAS materials.
 
-The MSTG project is also NOT supporting unethical activities in any way. If you come across such requests, please reach out to the project leaders and raise this to them.
+The OWAPS MAS project is also NOT supporting unethical activities in any way. If you come across such requests, please reach out to the project leaders and raise this to them.
 
-Neither OWASP, the MSTG project leaders, authors or anyone else involved in this project is going to take responsibility for your actions.
+Neither OWASP, the OWAPS MAS project leaders, authors or anyone else involved in this project is going to take responsibility for your actions.
 
-The intention of the MSTG is not to encourage hacking or malicious activities! Instead, the goal of the project is to document different attacks against mobile apps and its risk, and offer ways to reduce or mitigate that risk.
+The intention of the OWAPS MAS project is not to encourage hacking or malicious activities! Instead, the goal of the project is to document different attacks against mobile apps and its risk, and offer ways to reduce or mitigate that risk.
 
 ## Scope
 

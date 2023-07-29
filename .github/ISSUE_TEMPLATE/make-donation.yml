@@ -1,5 +1,5 @@
-name: 💲 Donate to the OWASP Mobile Security Project
-description: Thanks for donating to the MSTG project!
+name: 💲 Donate to the OWASP Mobile Application Security Project
+description: Thanks for donating to the MAS project!
 title: "💲🎉 New Donation"
 labels: ["org", "donation"]
 assignees:
@@ -11,7 +11,7 @@ body:
     id: intro
     attributes:
       value: |
-          **IMPORTANT**: Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
+          **IMPORTANT**: Before opening this issue please go to our [**Donations page**](https://mas.owasp.org/donate) and read all the information.
           
           🙏🏻 Thanks a lot!
         
@@ -56,17 +56,17 @@ body:
       description: Which Donator Package would you like to request?
       options:
         - Standard Donation / No package (Donation < USD 500)
-        - Good Samaritan (USD 500; 1 year;  1 paperback MSTG)
-        - Honourable Benefactor (USD 2000 / 8 Available; 2 years; 3 paperback MSTGs)
-        - God Mode Donator (USD 4000 / 5 Available; 3 years; 5 paperback MSTGs)
+        - Good Samaritan (USD 500; 1 year;  1 paperback MASTG)
+        - Honourable Benefactor (USD 2000 / 8 Available; 2 years; 3 paperback MASTGs)
+        - God Mode Donator (USD 4000 / 5 Available; 3 years; 5 paperback MASTGs)
     validations:
       required: true
 
   - type: dropdown
     id: paperback
     attributes:
-      label: 📘 MSTG Paperback Copies
-      description: Would you like to receive the paperback copie(s) of the MSTG as indicated in your Donation Package?
+      label: 📘 MASTG Paperback Copies
+      description: Would you like to receive the paperback copies of the MASTG as indicated in your Donation Package?
       options:
         - 🌱 No, please save the money for the project and help the environment and climate.
         - 📮 Yes, please send them to me.
@@ -79,7 +79,7 @@ body:
       label: 📋 Code of Conduct and Donation Conditions
       description: | 
             By submitting this request, you agree to follow our [**Code of Conduct**](CODE_OF_CONDUCT.md) 
-            and have read and agree to the [**Donation Conditions**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) from our Project Page.
+            and have read and agree to the [**Donation Conditions**](https://mas.owasp.org/donate).
             > Some important points to consider:
             > These types of public recognition shall be online no less than one year, 
             > or in the case of Project no less than the next major release, whichever is greater. 

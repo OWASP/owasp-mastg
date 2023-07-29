@@ -1,0 +1,179 @@
+site_name: OWASP Mobile Application Security
+repo_url: https://github.com/OWASP/owasp-mastg
+repo_name: OWASP/owasp-mastg
+# use_directory_urls: false # only set for mkdocs build
+edit_uri: "" # disable edit button
+
+nav:
+  - Home: index.md
+  - MASTG:
+      - Overview: MASTG.md
+      - Intro:
+        - ... | flat | MASTG/Intro/*.md
+      - Mobile Security Testing Theory:
+        - General Concepts:
+          - ... | flat | MASTG/General/*.md
+        - Android Security Testing:
+          - ... | flat | MASTG/Android/*.md
+        - iOS Security Testing: 
+          - ... | flat | MASTG/iOS/*.md
+      - MASTG Tests: 
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests/android/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests/android/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/tests/android/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/tests/android/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/tests/android/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests/android/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests/android/MASVS-RESILIENCE/*.md
+        - iOS:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests/ios/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests/ios/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/tests/ios/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/tests/ios/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/tests/ios/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests/ios/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
+      - Tools:
+        - ... | flat | MASTG/Tools/*.md
+      - References:
+        - ... | flat | MASTG/References/*.md
+  - MASVS:
+      - Overview: MASVS.md
+      - Intro:
+        - ... | flat | MASVS/Intro/*
+      - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
+      - ... | flat | MASVS/controls/MASVS-STORAGE*.md
+      - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md
+      - ... | flat | MASVS/controls/MASVS-CRYPTO*.md
+      - MASVS-AUTH: MASVS/07-MASVS-AUTH.md
+      - ... | flat | MASVS/controls/MASVS-AUTH*.md
+      - MASVS-NETWORK: MASVS/08-MASVS-NETWORK.md
+      - ... | flat | MASVS/controls/MASVS-NETWORK*.md
+      - MASVS-PLATFORM: MASVS/09-MASVS-PLATFORM.md
+      - ... | flat | MASVS/controls/MASVS-PLATFORM*.md
+      - MASVS-CODE: MASVS/10-MASVS-CODE.md
+      - ... | flat | MASVS/controls/MASVS-CODE*.md
+      - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
+      - ... | flat | MASVS/controls/MASVS-RESILIENCE*.md
+  - "MAS Checklist":
+     - Overview: MAS_checklist.md
+     - MASVS-STORAGE: checklists/MASVS-STORAGE.md
+     - MASVS-CRYPTO: checklists/MASVS-CRYPTO.md 
+     - MASVS-AUTH: checklists/MASVS-AUTH.md
+     - MASVS-NETWORK: checklists/MASVS-NETWORK.md
+     - MASVS-PLATFORM: checklists/MASVS-PLATFORM.md
+     - MASVS-CODE: checklists/MASVS-CODE.md
+     - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
+  - "MAS Crackmes": 
+      - Overview: crackmes.md
+      - ... | flat | crackmes/*.md
+  - news.md
+  - talks.md
+  - "&#11088; Contribute":
+      - contributing.md
+      - ... | flat | contributing/*.md
+  - "&#128153; Donate":
+      - donate.md
+      - ... | flat | donate/*.md
+  - contact.md
+
+copyright: |
+  <div style="float: left; padding-right: 1em;">
+    <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
+  </div>
+  <span style="font-size: smaller">
+    &#169; OWASP Foundation 2023. This work is licensed under 
+    <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
+  </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span>
+  <div style="color: #6a6868; font-size: smaller"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website and covers designed by Carlos Holguera.</i></div>
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  logo: assets/logo_circle.png
+  favicon: assets/logo_circle.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - search.suggest
+    - search.share
+    # - toc.integrate
+    - navigation.instant
+    # - navigation.expand
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+
+  palette:
+    # - primary: #499FFF 
+    - scheme: default
+      toggle:
+        icon: material/weather-night 
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
+extra_javascript:
+  - javascripts/tablesort.min.js
+  - javascripts/tablesorts.js
+plugins:
+  - search
+  - awesome-pages
+  - mermaid2
+markdown_extensions:
+  - meta
+  - toc:
+      permalink: true
+  - attr_list
+  - admonition
+  - tables
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.progressbar
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra:
+  generator: false # removed but recreated in copyright above
+  analytics:
+    provider: google
+    property: G-KWZRJV0S4P
+  social:
+    - icon: fontawesome/brands/slack
+      link: https://owasp.slack.com/messages/project-mobile_omtg/details/
+    - icon: fontawesome/brands/twitter 
+      link: https://twitter.com/OWASP_MAS
+    - icon: fontawesome/brands/github
+      link: https://github.com/OWASP/owasp-mastg/discussions
+    # - icon: fontawesome/solid/paper-plane
+    #   link: mailto:carlos.holguera@owasp.org
+    #   name: Carlos Holguera
+    # - icon: fontawesome/solid/paper-plane
+    #   link: mailto:sven.schleier@owasp.org
+    #   name: Sven Schleier
