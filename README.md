@@ -5,7 +5,7 @@
 [![OWASP Flagship](https://img.shields.io/badge/owasp-flagship%20project-48A646.svg)](https://owasp.org/projects/)
 [![Creative Commons License](https://img.shields.io/github/license/OWASP/owasp-mastg)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
 
-[![Document Build](https://github.com/OWASP/owasp-mastg/workflows/Document%20Build/badge.svg)](https://github.com/OWASP/owasp-mastg/actions?query=workflow%3A%22Document+Build%22)
+[![Document Build](https://github.com/OWASP/owasp-mastg/workflows/Documents%20Build/badge.svg)](https://github.com/OWASP/owasp-mastg/actions?query=workflow%3A%22Document+Build%22)
 [![Markdown Linter](https://github.com/OWASP/owasp-mastg/workflows/Markdown%20Linter/badge.svg)](https://github.com/OWASP/owasp-mastg/actions?query=workflow%3A%22Markdown+Linter%22)
 [![URL Checker](https://github.com/OWASP/owasp-mastg/workflows/URL%20Checker/badge.svg)](https://github.com/OWASP/owasp-mastg/actions?query=workflow%3A%22URL+Checker%22)
 
