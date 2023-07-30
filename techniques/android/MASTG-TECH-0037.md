@@ -1,6 +1,8 @@
 ---
 title: Symbolic Execution
 platform: android
+tools: [angr, adb, cutter, radare2]
+examples: [android-license-validator]
 ---
 
 Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the [Angr](0x08a-Testing-Tools.md#angr) binary analysis framework as our symbolic execution engine.
@@ -23,7 +25,7 @@ Incorrect serial (wrong format).
 
 ```
 
-So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as [Cutter](0x08a-Testing-Tools.md#cutter). The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
 
 <img src="Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 

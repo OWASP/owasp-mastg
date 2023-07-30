@@ -1,6 +1,7 @@
 ---
 title: Obtaining and Extracting Apps
 platform: android
+tools: [adb, gplaycli]
 ---
 
 There are several ways of extracting APK files from a device. You will need to decide which one is the easiest method depending if the app is public or private.

@@ -1,6 +1,7 @@
 ---
 title: Disassembling Code to Smali
 platform: android
+tools: [apktool, android-studio]
 ---
 
 If you want to inspect the app's smali code (instead of Java), you can [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the "Welcome screen" (even if you don't intend to debug it you can take a look at the smali code).
