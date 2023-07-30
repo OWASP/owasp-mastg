@@ -9,7 +9,7 @@ The MASTG document generation is based on pandocker: [https://github.com/dalibo/
 - Run the `pandoc_makedocs.sh` script with the language folder and an optional version number (**do not `cd` into `src/docker` to run it**):
 
     ```sh
-    $ ./src/docker/pandoc_makedocs.sh Document MyVersion
+    ./src/docker/pandoc_makedocs.sh Document MyVersion
     ```
 
 - You can set `VERBOSE=1` for a more detailed output
@@ -49,7 +49,7 @@ Given a new version:
 
 - Run Docker container which will run the generation script (`pandoc_makedocs.sh`).
 - The script should be self explanatory, it basically:
-  - Reads the `metadata.md` for the Document folder
-  - Using that metadata creates the cover dynamically including language and version (no GIMP required anymore!)
-  - For more details, read the inline comments in `pandoc_makedocs.sh`.
+    - Reads the `metadata.md` for the Document folder
+    - Using that metadata creates the cover dynamically including language and version (no GIMP required anymore!)
+    - For more details, read the inline comments in `pandoc_makedocs.sh`.
 - The PDFs will be generated in the MASTG root folder.

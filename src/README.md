@@ -1,4 +1,4 @@
-# Tools
+# Tools (Partially Outdated, double check!)
 
 ## Overview
 
@@ -58,3 +58,15 @@ In case something went wrong and we need to remove the release:
     ```
 
 2. Go to Github release page <https://github.com/OWASP/owasp-masvs/releases>. The release you removed is now in "draft". Click on edit and discard/delete the release.
+
+## Leanpub
+
+There is a publishing API available <https://leanpub.com/help/api>.
+
+As of now (26th July 2021) the API of Leanpub is only available to Pro Customers, which would costs 12.99 USD per month. For now we do it manually at <https://leanpub.com/owasp-mastg/upload>.
+
+## Lulu
+
+Will be created when we have full support from Lulu. For now do it manually at <https://leanpub.com/mobile-security-testing-guide/upload>.
+
+At the moment (26th July 2021) it's only possible to use the API for ordering books, but not releasing a new version, <https://api.lulu.com/docs/#section/Getting-Started/Generate-a-Token>.
