@@ -24,5 +24,5 @@ To add a new language you have to follow the steps from both sections below.
 
 IMPORTANT: only after releasing the MASVS!
 
-1. Add the new language to `tools/scripts/gen_all_excel.sh`.
+1. Add the new language to `src/scripts/gen_all_excel.sh`.
 2. Push and verify that the new Checklist is correctly generated for the new language.
