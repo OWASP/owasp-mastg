@@ -28,7 +28,7 @@ PANDOCKER="docker run --rm --volume `pwd`:/pandoc ${IMG}:${TAG} ${PANDOC_PARAMS}
 docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i "s#<!-- \(.*\) -->#\1#g" build/*.md'
 
 # convert HTML images to pandoc markdown images
-docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i -f tools/docker/imagereplace.sed build/0x*.md'
+docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i -f src/docker/imagereplace.sed build/0x*.md'
 
 # Use pandocker PANDOCKER by default, unless `export PANDOC=pandoc`
 # this is useful for CI, because we can run the script directly inside the container
@@ -43,19 +43,19 @@ OUTPUT_BASE_NAME="OWASP_MASTG"
 # header
 ${PANDOC} \
   --output tmp_latex-header.latex \
-  --template tools/docker/latex-header.tex \
+  --template src/docker/latex-header.tex \
   ${METADATA}
 
 # cover
 ${PANDOC} \
   --output tmp_cover.latex \
-  --template tools/docker/cover.tex \
+  --template src/docker/cover.tex \
   ${METADATA}
 
 # first_page
 ${PANDOC} \
   --output tmp_first_page.latex \
-  --template tools/docker/first_page.tex \
+  --template src/docker/first_page.tex \
   ${METADATA}
 
 # PDF

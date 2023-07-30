@@ -26,7 +26,7 @@ jobs:
       with:
         python-version: 3.x
     - name: Install dependencies
-      run: pip install -r tools/scripts/requirements.txt
+      run: pip install -r src/scripts/requirements.txt
 
     - name: Set MASTG_VERSION to env 
       run: echo "MASTG_VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mastg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
@@ -39,13 +39,13 @@ jobs:
       run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Assemble Testing Chapters
-      run: python3 tools/scripts/assemble_test_chapters.py
+      run: python3 src/scripts/assemble_test_chapters.py
 
     - name: Process Files
-      run: python3 tools/scripts/transform_files.py
+      run: python3 src/scripts/transform_files.py
 
     - name: Generate English PDF
-      run: ./tools/docker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
+      run: ./src/docker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
@@ -65,7 +65,7 @@ jobs:
       with:
         python-version: 3.x
     - name: Install dependencies
-      run: pip install -r tools/scripts/requirements.txt
+      run: pip install -r src/scripts/requirements.txt
 
     - name: Set MASTG_VERSION to env 
       # run: echo "MASTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
@@ -94,21 +94,21 @@ jobs:
         repository: "OWASP/owasp-masvs.git"
         ref: ${{env.MASVS_VERSION}}
         fetch-depth: 1
-        path: tools/scripts/owasp-masvs
+        path: src/scripts/owasp-masvs
 
     - name: Get MASVS Current Commit ID
-      run: cd tools/scripts/owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      run: cd src/scripts/owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
     - name: Confirm MASTG Current Commit ID
       run: echo ${{env.MASVS_COMMIT}}
 
     - name: Generate Excel
-      run: python3 tools/scripts/yaml_to_excel.py --mastgversion ${{env.MASTG_VERSION}} --mastgcommit ${{env.MASTG_COMMIT}} --masvsversion ${{env.MASVS_VERSION}} --masvscommit ${{env.MASVS_COMMIT}}
+      run: python3 src/scripts/yaml_to_excel.py --mastgversion ${{env.MASTG_VERSION}} --mastgcommit ${{env.MASTG_COMMIT}} --masvsversion ${{env.MASVS_VERSION}} --masvscommit ${{env.MASVS_COMMIT}}
 
     # - name: Upload Enhanced MASVS YAML
     #   uses: actions/upload-artifact@v3
     #   with:
     #     name: Enhanced-MASVS-YAML-Files
-    #     path: tools/scripts/masvs_full_*.yaml
+    #     path: src/scripts/masvs_full_*.yaml
 
     - name: Upload Checklists
       uses: actions/upload-artifact@v3
