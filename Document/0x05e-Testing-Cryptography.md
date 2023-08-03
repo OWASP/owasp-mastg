@@ -7,13 +7,13 @@ platform: android
 
 ## Overview
 
-In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
+In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices, as linked in this guide.
 
-We can identify key components of cryptography system in Android:
+We can identify key components of cryptography system on Android:
 
 - [Security Provider](0x05e-Testing-Cryptography.md#security-provider)
-- KeyStore - see the section [KeyStore](0x05d-Testing-Data-Storage.md#keystore) in the chapter "Testing Data Storage"
-- KeyChain - see the section [KeyChain](0x05d-Testing-Data-Storage.md#keychain) in the chapter "Testing Data Storage"
+- KeyStore - see the section [KeyStore](0x05d-Testing-Data-Storage.md#keystore) in the "Testing Data Storage" chapter
+- KeyChain - see the section [KeyChain](0x05d-Testing-Data-Storage.md#keychain) in the "Testing Data Storage" chapter
 
 Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers") that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages. In addition, there are Android specific packages `android.security.*` and `android.security.keystore.*`.
 
@@ -64,9 +64,9 @@ The following list of recommendations should be considered during app examinatio
 
 ### Security Provider
 
-Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
+Android relies on the `java.security.Provider` class to implement Java Security services. These providers are crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
 
-The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
+The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide a good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
 
 You can list the set of existing security providers using following code:
 
@@ -85,19 +85,7 @@ String providers = builder.toString();
 //now display the string on the screen or in the logs for debugging.
 ```
 
-Below you can find the output of a running Android 4.4 (API level 19) in an emulator with Google Play APIs, after the security provider has been patched:
-
-```default
-provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider)
-provider: AndroidOpenSSL1.0 (Android's OpenSSL-backed security provider)
-provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7)
-provider: BC1.49 (BouncyCastle Security Provider v1.49)
-provider: Crypto1.0 (HARMONY (SHA1 digest; SecureRandom; SHA1withDSA signature))
-provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
-provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
-```
-
-Below you can find the output of a running Android 9 (API level 28) in an emulator with Google Play APIs:
+This is the output for Android 9 (API level 28) running in an emulator with Google Play APIs:
 
 ```default
 provider: AndroidNSSP 1.0(Android Network Security Policy Provider)
@@ -133,9 +121,7 @@ Security.addProvider(Conscrypt.newProvider())
 
 ### Key Generation
 
-Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
-
-Here's an example of using AES/CBC/PKCS7Padding on API 23+:
+The Android SDK allows you to specify how a key should be generated, and under which circumstances it can be used. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application. For example:
 
 ```java
 String keyAlias = "MySecretKey";
@@ -154,9 +140,9 @@ keyGenerator.init(keyGenParameterSpec);
 SecretKey secretKey = keyGenerator.generateKey();
 ```
 
-The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default). `"AndroidKeyStore"` is the name of security provider used in this example. This will automatically ensure that the keys are stored in the `AndroidKeyStore` which is beneficiary for the protection of the key.
+The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default). Next, we enter `AndroidKeyStore` as the name of the provider in the `KeyGenerator.getInstance` call to ensure that the keys are stored in the Android KeyStore.
 
-GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter). Note that GCM is the only mode of AES that [does not support paddings](https://developer.android.com/training/articles/keystore.html#SupportedCiphers "Supported Ciphers in AndroidKeyStore").
+GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter). Note that GCM is the only mode of AES that [does not support padding](https://developer.android.com/training/articles/keystore.html#SupportedCiphers "Supported Ciphers in AndroidKeyStore").
 
 Attempting to use the generated key in violation of the above spec would result in a security exception.
 
@@ -243,9 +229,9 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 }
 ```
 
-The above method requires a character array containing the password and the needed key length in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10,000 rounds which will be used by the PBKDF2 algorithm. Increasing number of iteration significantly increases the workload for a brute-force attack on password, however it can affect performance as more computational power is required for key derivation. We define the salt size equal to the key length, we divide by 8 to take care of the bit to byte conversion. We use the `SecureRandom` class to randomly generate a salt. Obviously, the salt is something you want to keep constant to ensure the same encryption key is generated time after time for the same supplied password. Note that you can store the salt privately in `SharedPreferences`. It is recommended to exclude the salt from the Android backup mechanism to prevent synchronization in case of higher risk data.
+The above method requires a character array containing the password and the needed key length in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10,000 rounds which will be used by the PBKDF2 algorithm. Increasing the number of iterations significantly increases the workload for a brute-force attack on the password, however it can affect performance as more computational power is required for key derivation. We define the salt size equal to the key length divided by 8 in order to convert from bits to bytes and we use the `SecureRandom` class to randomly generate a salt. The salt needs to be kept constant to ensure the same encryption key is generated time after time for the same supplied password. Note that you can store the salt privately in `SharedPreferences`. It is recommended to exclude the salt from the Android backup mechanism to prevent synchronization in case of higher risk data.
 
-> Note that if you take a rooted device or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key that is placed in the `AndroidKeystore`. The Password-Based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm, till Android 8.0 (API level 26). For higher API levels, it is best to use `PBKDF2withHmacSHA256`, which will end up with a longer hash value.
+> Note that if you take a rooted device or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key that is placed in the `AndroidKeystore`. The Password-Based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm, until Android 8.0 (API level 26). For higher API levels, it is best to use `PBKDF2withHmacSHA256`, which will end up with a longer hash value.
 
 Note: there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanism is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 and the keys extracted with the help of Frida or the combination of both: [r2frida](0x08a-Testing-Tools.md#r2frida) (see sections "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")", "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")" and "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android" for more details). From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
 
