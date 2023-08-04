@@ -1290,7 +1290,7 @@ In InsecureShop app, it accepts username and password as input, and stores them 
 
 To use FlowDroid, firstly, we need to provide an input list of possible sources and sinks to evaluate for. In our case, reading from shared preferences will be the source, while adding parameters to an `Intent` as sink. The config file will look as following (and named as source_sink.txt):
 
-```
+```Jimple
 <android.content.SharedPreferences: java.lang.String getString(java.lang.String, java.lang.String)> -> _SOURCE_
 
 <android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.CharSequence)> -> _SINK_
@@ -1347,6 +1347,7 @@ fun onSendData(view: View) {
 
     }
 ```
+
 FlowDroid is a versatile tool, and can also be used for generating call graphs. This is demonstrated in this [blog post](https://medium.com/geekculture/generating-call-graphs-in-android-using-flowdroid-pointsto-analysis-7b2e296e6697 "FlowDroid call graphs") by Navid Salehnamadi.
 
 To summarize, taint analysis is an information flow analysis approach. For Android Java code, FlowDroid can be used for performing taint analysis. Taint analysis is especially helpful in automating data flow analysis in big complex applications. With applications having complex flows, the accuracy of such tools may vary, thus it is upto the human reviewer to strike a balance between time consumed for manual analysis and accuracy.
