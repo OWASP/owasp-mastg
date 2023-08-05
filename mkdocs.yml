@@ -49,7 +49,27 @@ nav:
           - MASVS-RESILIENCE:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
       - Tools:
-        - ... | flat | MASTG/Tools/*.md
+        - ... | flat | MASTG/tools.md
+        - All Platforms:
+          - ... | flat | MASTG/tools/generic/*.md
+        - Android:
+          - ... | flat | MASTG/tools/android/*.md
+        - iOS:
+          - ... | flat | MASTG/tools/ios/*.md
+      - Techniques:
+        - ... | flat | MASTG/techniques.md
+        - All Platforms:
+          - ... | flat | MASTG/techniques/generic/*.md
+        - Android:
+          - ... | flat | MASTG/techniques/android/*.md
+        - iOS:
+          - ... | flat | MASTG/techniques/ios/*.md
+      - Apps:
+        - ... | flat | MASTG/apps.md
+        - Android:
+          - ... | flat | MASTG/apps/android/*.md
+        - iOS:
+          - ... | flat | MASTG/apps/ios/*.md
       - References:
         - ... | flat | MASTG/References/*.md
   - MASVS:

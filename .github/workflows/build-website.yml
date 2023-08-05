@@ -20,8 +20,7 @@ jobs:
         run: pip install -r src/scripts/requirements.txt
 
       - run: ./src/scripts/structure_mastg.sh
-      - name: Copy MASTG Tests folder
-        run: cp -r tests docs/MASTG/
+
       - run: python3 src/scripts/transform_files.py
 
       - run: mv Document/Images/ docs/assets/Images/

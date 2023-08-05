@@ -1,6 +1,7 @@
 import pandas
 import yaml
 import os
+import glob
 from pathlib import Path
 import combine_data_for_checklist
 
@@ -47,6 +48,59 @@ def append_to_file(new_content, file_path):
     file = Path(file_path)
     content = file.read_text() + new_content
     file.write_text(content)
+
+def get_mastg_components_dict(name):
+    
+        components = []
+    
+        for file in glob.glob(f"{name}/**/*.md", recursive=True):
+            with open(file, 'r') as f:
+                content = f.read()
+    
+                frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+                # is is the basename of the file without the extension
+                id = os.path.splitext(os.path.basename(file))[0]
+                frontmatter['id'] = f"[{id}]({file})"
+                components.append(frontmatter)
+        return components
+
+def reorder_dict_keys(original_dict, key_order):
+    return {key: original_dict.get(key, "N/A") for key in key_order}
+
+# tools.md
+
+column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'refs': 'Refs', 'techniques': 'Techniques'}
+
+tools = get_mastg_components_dict("docs/MASTG/tools")
+tool_types = ["generic", "android", "ios", "network"]
+for tool_type in tool_types:
+    append_to_file(f"## {tool_type.title()} Tools\n\n<br>\n\n", "docs/MASTG/tools.md")
+    tools_of_type = [reorder_dict_keys(tool, column_titles.keys()) for tool in tools if tool['platform'] == tool_type]
+    append_to_file(list_of_dicts_to_md_table(tools_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tools.md")
+
+# techniques.md
+
+column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'tools': 'Tools'}
+
+techniques = get_mastg_components_dict("docs/MASTG/techniques")
+technique_types = ["generic", "android", "ios"]
+
+for technique_type in technique_types:
+    append_to_file(f"## {technique_type.title()} Techniques\n\n<br>\n\n", "docs/MASTG/techniques.md")
+    techniques_of_type = [reorder_dict_keys(technique, column_titles.keys()) for technique in techniques if technique['platform'] == technique_type]
+    append_to_file(list_of_dicts_to_md_table(techniques_of_type) + "\n\n<br>\n\n", "docs/MASTG/techniques.md")
+
+# apps.md
+
+column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'techniques': 'Used in'}
+
+apps = get_mastg_components_dict("docs/MASTG/apps")
+app_types = ["android", "ios"]
+
+for app_type in app_types:
+    append_to_file(f"## {app_type.title()} Apps\n\n<br>\n\n", "docs/MASTG/apps.md")
+    apps_of_type = [reorder_dict_keys(app, column_titles.keys()) for app in apps if app['platform'] == app_type]
+    append_to_file(list_of_dicts_to_md_table(apps_of_type) + "\n\n<br>\n\n", "docs/MASTG/apps.md")
 
 # talks.md
 
