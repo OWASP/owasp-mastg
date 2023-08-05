@@ -1,8 +1,6 @@
 ---
 title: Host-Device Data Transfer
 platform: android
-tools: [adb, android-studio, objection, termux]
-examples: [mastg-hacking-playground]
 ---
 
 ## Using adb

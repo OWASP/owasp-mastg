@@ -1,8 +1,6 @@
 ---
 title: Debugging
 platform: android
-tools: [adb, jdb, gdb, IDA Pro]
-examples: [android-uncrackable-l1, helloworldjni]
 ---
 
 So far, you've been using static analysis techniques without running the target apps. In the real world, especially when reversing malware or more complex apps, pure static analysis is very difficult. Observing and manipulating an app during runtime makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.

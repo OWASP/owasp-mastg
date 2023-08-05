@@ -1,7 +1,6 @@
 ---
 title: Accessing the Device Shell
 platform: android
-tools: [adb, termux] # read automatically from the tools/ links
 ---
 
 One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the Android shell both remotely from your host computer with/without a USB cable and locally from the device itself.

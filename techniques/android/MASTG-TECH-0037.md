@@ -1,8 +1,6 @@
 ---
 title: Symbolic Execution
 platform: android
-tools: [angr, adb, cutter, radare2]
-examples: [android-license-validator]
 ---
 
 Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the [Angr](0x08a-Testing-Tools.md#angr) binary analysis framework as our symbolic execution engine.

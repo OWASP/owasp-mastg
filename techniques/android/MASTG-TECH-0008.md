@@ -1,8 +1,6 @@
 ---
 title: Accessing App Data Directories
 platform: android
-tools: [objection]
-examples: [mastg-hacking-playground]
 ---
 
 Once you have installed the app, there is further information to explore, where tools like objection come in handy.
