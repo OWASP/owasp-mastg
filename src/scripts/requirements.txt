@@ -3,6 +3,7 @@ mkdocs-material
 mkdocs-mermaid2-plugin
 mkdocs-include-dir-to-nav
 mkdocs-awesome-pages-plugin
+mkdocs-redirects
 pandas
 pyyaml
 tabulate
