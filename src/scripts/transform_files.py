@@ -1,8 +1,9 @@
-import re, os
+import os
+import re
 from pathlib import Path
 from typing import List
-from dataclasses import dataclass
 import yaml
+from dataclasses import dataclass
 
 EMOJIS_regex = r"🥇 |🎁 |📝 |❗ "
 
@@ -15,47 +16,6 @@ class MarkdownLink:
     title: str = ""
     raw_new: str = ""
 
-def extract_markdown_links(md_file_content: str) -> List[MarkdownLink]:
-    md_links = []
-    
-    for match in re.finditer(r'\[([^\]]+)\]\(([^ ")]+)(?: "([^"]+)")?\)', md_file_content):
-        # raw is the full match
-        raw = match.group(0)
-        text = match.group(1)
-        url = match.group(2)
-        title = match.group(3).strip('"') if match.group(3) is not None else ""
-        external = True if url.startswith("http") else False
-        
-        raw_new = ""
-        if not external:
-            directory = ""
-            if "0x01" in raw or "0x02" in raw or "0x03" in raw:
-                directory = "/MASTG/Intro/"
-            elif "0x04" in raw:
-                directory = "/MASTG/General/"
-            elif "0x05" in raw:
-                directory = "/MASTG/Android/"
-            elif "0x06" in raw:
-                directory = "/MASTG/iOS/"
-            elif "0x08" in raw:
-                directory = "/MASTG/Tools/"
-            elif "0x09" in raw:
-                directory = "/MASTG/References/"
-            else:
-                continue
-            
-            if "Document/" in raw:
-                raw_new = re.sub(r"\.\./\.\./\.\./Document/", directory, raw)
-            else:
-                full_url = f"{directory}{url}"
-                if title != "":
-                    full_url = f'{full_url} "{title}"'
-                raw_new = f"[{text}]({full_url})"
-            
-            raw_new = re.sub(r"\.md", "", raw_new)
-
-        md_links.append(MarkdownLink(raw, text, url, external, title, raw_new))
-    return md_links
 
 def remove_emojis(file_text):
     print("[*] Regex Substitutions for emojis")
@@ -63,116 +23,160 @@ def remove_emojis(file_text):
     print(f"    Found: {found}")
     return re.sub(EMOJIS_regex, r"", file_text)
 
-def add_resources_section(file_text, links):
-    internal_links = []
-    external_links = []
-    new_text = file_text  # start with the original file text
+
+def extract_markdown_links(md_file_content: str) -> List[MarkdownLink]:
+    """
+    Extracts markdown links from the given content.
+    """
+    markdown_links = []
+    link_pattern = r'\[([^\]]+)\]\(([^ ")]+)(?: "([^"]+)")?\)'
+
+    for match in re.finditer(link_pattern, md_file_content):
+        raw, text, url, title = match.group(0), match.group(1), match.group(2), match.group(3)
+        external = url.startswith("http")
+        raw_new = construct_internal_link(raw, url, text, title) if not external else ""
+        markdown_links.append(MarkdownLink(raw, text, url, external, title, raw_new))
+
+    return markdown_links
+
+
+def construct_internal_link(raw, url, text, title):
+    """
+    Constructs a new internal link with the correct directory.
+    """
+    directory = f"/MASTG/{get_directory_from_code(raw)}/" if "0x" in raw else ""
+    full_url = f"{directory}{url}"
+    title = f' "{title}"' if title else ""
+
+    return f"[{text}]({full_url}{title})".replace(".md", "")
+
+
+def get_directory_from_code(raw):
+    """
+    Maps directory code to directory name.
+    """
+    return {
+        "01": "Intro",
+        "02": "Intro",
+        "03": "Intro",
+        "04": "General",
+        "05": "Android",
+        "06": "iOS",
+        "08": "Tools",
+        "09": "References",
+    }.get(raw[1:3], "")
+
+
+def get_links_from_anchor(links, anchor):
+    """
+    Extracts specific links from the anchor text.
+    """
+    return sorted(set([
+        re.search(r"\#([^ \")]*)(?=\s|\)|$)", link.raw).group(1)
+        for link in links
+        if not link.external and "#" in link.raw and anchor in link.raw
+    ]))
+
+
+def update_yaml_frontmatter(file_text, tools, examples, external_links):
+    """
+    Updates the YAML frontmatter with the tools and examples list.
+    """
+    # Regular expression to match the YAML frontmatter at the beginning of the file
+    frontmatter_pattern = r'^---\n(.*?)\n---\n'
+    match = re.search(frontmatter_pattern, file_text, re.DOTALL)
+    
+    if match:
+        frontmatter_str = match.group(1)
+        frontmatter = yaml.safe_load(frontmatter_str)
+
+        # Update the tools and examples in the frontmatter
+        frontmatter["tools"] = update_frontmatter_list(frontmatter.get("tools", []), tools)
+        frontmatter["examples"] = update_frontmatter_list(frontmatter.get("examples", []), examples)
+
+        # update with external links
+        frontmatter["resources"] = update_frontmatter_list(frontmatter.get("external_links", []), external_links)
+
+        # Replace the old frontmatter with the updated frontmatter
+        updated_frontmatter = f"---\n{yaml.dump(frontmatter, indent=4, sort_keys=False)}---\n"
+        file_text = file_text.replace(match.group(0), updated_frontmatter, 1)
+
+    return file_text
+
+
+def update_frontmatter_list(current_list, new_items):
+    """
+    Updates a list in the frontmatter with new items.
+    """
+    updated_list = current_list + new_items
+    return sorted(list(set(updated_list)))
+
+def get_raw_links(links):
+    raw_links = []
     for link in links:
-        if link.external is False:
-            new_text = new_text.replace(link.raw, link.raw_new)
-            internal_links.append(link.raw_new)
+        if link.external is True:
+            raw_links.append(link.raw)
         else:
-            external_links.append(link.raw)
+            raw_links.append(link.raw_new)
+    return raw_links
 
-    resources_section = ""
-    
-    if len(internal_links) > 0:
-        internal_links = sorted(list(set(internal_links)))
-        # add - to each link
-        internal_links = [f"- {link}" for link in internal_links]
-        
-        internal_links_text = "\n".join(internal_links)
-        internal_links_text = f"\n\n### Internal\n\n{internal_links_text}"
-        resources_section += internal_links_text
+def links_to_markdown(links, title):
+    """
+    Converts a list of links to markdown.
+    """
+    section = ""
+    if len(links) > 0:
+        links = sorted(list(set(get_raw_links(links))))        
+        links_text = "\n".join([f"- {link}" for link in links])
+        links_text = f"\n\n### {title}\n\n{links_text}"
+        section += links_text
+    return section
 
-    if resources_section != "":
-        new_text += "\n## Resources" + resources_section + "\n"
-    
+
+def split_links(links):
+    internal_links = [link for link in links if link.external is False]
+    external_links = [link for link in links if link.external is True]
+
+    return internal_links, external_links
+
+def update_internal_links(file_text, links):
+    new_text = file_text
+    for link in links:        
+        new_text = new_text.replace(link.raw, link.raw_new)
     return new_text
 
-def get_tools_links(links):
-    """
-    tools are tool apps links like [UnCrackable App for Android Level 4: Radare2 Pay](0x08a-Testing-Tools.md#android-uncrackable-l4) or [UnCrackable App for Android Level 4: Radare2 Pay](0x08b-Reference-Apps.md#android-uncrackable-l4 "Uncrykable App for Android Level 4: Radare2 Pay")
-    This function iterates links to build a unique list of tools (the text after the anchor)
-    """
-    tools = []
-    for link in links:
-        if link.external is False:
-            if "#" in link.raw:
-                if "0x08a" in link.raw:
-                    # get tool-name with regex considering that it might be [text](some.md#tool-name) or [text](some.md#tool-name "title"), the whitespace might be there or not
-                    match = re.search(r"\#([^ \")]*)(?=\s|\)|$)", link.raw)
-                    if match:
-                        tool_name = match.group(1)
-                        tools.append(tool_name)
-    tools = sorted(list(set(tools)))
-    return tools
+def create_resources_section(internal_links, external_links):
+    internal_links_section = links_to_markdown(internal_links, "Internal")
+    external_links_section = links_to_markdown(external_links, "External")
+    resources_section = internal_links_section + external_links_section
 
+    if resources_section != "":
+        resources_section = "\n\n## Resources" + resources_section + "\n"
+    return resources_section
 
-def get_examples_links(links):
+def process_markdown_files(folder):
     """
-    Examples are example apps links like [UnCrackable App for Android Level 4: Radare2 Pay](0x08b-Reference-Apps.md#android-uncrackable-l4) or [UnCrackable App for Android Level 4: Radare2 Pay](0x08b-Reference-Apps.md#android-uncrackable-l4 "Uncrykable App for Android Level 4: Radare2 Pay")
-    This function iterates links to build a unique list of examples (the text after the anchor)
+    Processes all markdown files in the given folder.
     """
-    examples = []
-    for link in links:
-        if link.external is False:
-            if "#" in link.raw:
-                if "0x08b" in link.raw:
-                    # get example-name with regex considering that it might be [text](some.md#example-name) or [text](some.md#example-name "title"), the whitespace might be there or not
-                    match = re.search(r"\#([^ \")]*)(?=\s|\)|$)", link.raw)
-                    if match:
-                        example_name = match.group(1)
-                        examples.append(example_name)
-    examples = sorted(list(set(examples)))
-    return examples
+    for root, _, filenames in os.walk(folder):
+        if filenames:
+            markdown_files = Path(root).glob('*.md')
 
-def update_yaml_frontmatter(file_text, tools, examples):
-    """
-    This function updates the yaml frontmatter with the tools and examples list
-    """
-    if '---\n' in file_text:
-        parts = file_text.split('---\n', 2)  # split the file at the second '---'
-        yaml_dict = yaml.load(parts[1], Loader=yaml.FullLoader)
-        
-        if type(yaml_dict) is dict:
-            # read current values of tools and examples, if existing, and update them with the new ones, ensuring uniqueness
-            tools_current = yaml_dict.get("tools", [])
-            examples_current = yaml_dict.get("examples", [])
-            tools = sorted(list(set(tools_current + tools)))
-            examples = sorted(list(set(examples_current + examples)))
-            yaml_dict["tools"] = tools
-            yaml_dict["examples"] = examples
+            for markdown_file in markdown_files:
+                file_content = markdown_file.read_text()
+                links = extract_markdown_links(file_content)
 
-            yaml_frontmatter_new = yaml.dump(yaml_dict, indent=4, sort_keys=False)
-            file_text_new = f"---\n{yaml_frontmatter_new}---\n{parts[2]}"  # join the parts back together
-            return file_text_new
-        else:
-            return file_text
-    else:
-        return file_text
-
-def transform(folder):
-    print(f"[*] Applying transforms to {folder}")
-
-    for root, dirname, filenames in os.walk(folder):
-        if len(filenames):
-            files = Path(root).glob('*.md')
-            for file in files:
-                file_text = file.read_text()
+                tools = get_links_from_anchor(links, "0x08a")
+                examples = get_links_from_anchor(links, "0x08b")
                 
-                links = extract_markdown_links(file_text)
-              
-                # new_text = add_resources_section(file_text, links)
-                new_text = file_text
+                internal_links, external_links = split_links(links)
+                resources_section = create_resources_section(internal_links, external_links)
 
-                tools = get_tools_links(links)
-                examples = get_examples_links(links)
-                new_text = update_yaml_frontmatter(new_text, tools, examples)
-                
-                file.write_text(new_text) 
+                file_content = update_internal_links(file_content, internal_links)
 
-# transform("docs/MASTG")
-transform("docs/MASTG/techniques")
-transform("docs/MASTG/tools")
-transform("docs/MASTG/apps")
+                external_links = [link.url for link in external_links]
+                updated_content = update_yaml_frontmatter(file_content, tools, examples, external_links)
+                markdown_file.write_text(updated_content + resources_section)
+
+
+process_markdown_files("docs/MASTG")
