@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-CODE
+platform: all
+---
+
 # Mobile App Code Quality
 
 Mobile app developers use a wide variety of programming languages and frameworks. As such, common vulnerabilities such as SQL injection, buffer overflows, and cross-site scripting (XSS), may manifest in apps when neglecting secure programming practices.
@@ -303,11 +308,3 @@ More information can be found in ["Memory Corruption Bugs"](#memory-corruption-b
 [Stack canaries](https://en.wikipedia.org/wiki/Stack_buffer_overflow#Stack_canaries) help prevent stack buffer overflow attacks by storing a hidden integer value on the stack right before the return pointer. This value is then validated before the return statement of the function is executed. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the program flow. If stack canaries are enabled, they will be overwritten as well and the CPU will know that the memory has been tampered with.
 
 Stack buffer overflow is a type of the more general programming vulnerability known as [buffer overflow](https://en.wikipedia.org/wiki/Buffer_overflow) (or buffer overrun). Overfilling a buffer on the stack is more likely to **derail program execution** than overfilling a buffer on the heap because the stack contains the return addresses for all active function calls.
-
-## References
-
-### OWASP MASVS
-
-- MSTG-ARCH-2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
-- MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."

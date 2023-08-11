@@ -1,3 +1,8 @@
+---
+masvs_category: MASVS-CRYPTO
+platform: all
+---
+
 # Mobile App Cryptography
 
 Cryptography plays an especially important role in securing the user's data - even more so in a mobile environment, where attackers having physical access to the user's device is a likely scenario. This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. These best practices are valid independent of the mobile operating system.
@@ -159,7 +164,7 @@ Therefore it is best to consider the following, if keys are still needed at the 
 - **Keys in a Remote Server**: you can use remote Key vaults such as Amazon KMS or Azure Key Vault. For some use cases, developing an orchestration layer between the app and the remote resource might be a suitable option. For instance, a serverless function running on a Function as a Service (FaaS) system (e.g. AWS Lambda or Google Cloud Functions) which forwards requests to retrieve an API key or secret. There are other alternatives such as Amazon Cognito, Google Identity Platform or Azure Active Directory.
 - **Keys inside Secure Hardware-backed Storage**: make sure that all cryptographic actions and the key itself remain in the Trusted Execution Environment (e.g. use [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android keystore system")) or [Secure Enclave](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Storing Keys in the Secure Enclave") (e.g. use the Keychain). Refer to the [Android Data Storage](0x05d-Testing-Data-Storage.md#storing-keys-using-hardware-backed-android-keystore) and [iOS Data Storage](0x06d-Testing-Data-Storage.md#the-keychain) chapters for more information.
 - **Keys protected by Envelope Encryption**: If keys are stored outside of the TEE / SE, consider using multi-layered encryption: an _envelope encryption_ approach (see [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#encrypting-stored-keys "OWASP Cryptographic Storage Cheat Sheet: Encrypting Stored Keys"), [Google Cloud Key management guide](https://cloud.google.com/kms/docs/envelope-encryption?hl=en "Google Cloud Key management guide: Envelope encryption"), [AWS Well-Architected Framework guide](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html "AWS Well-Architected Framework")), or [a HPKE approach](https://tools.ietf.org/html/draft-irtf-cfrg-hpke-08 "Hybrid Public Key Encryption") to encrypt data encryption keys with key encryption keys.
-- **Keys in Memory**: make sure that keys live in memory for the shortest time possible and consider zeroing out and nullifying keys after successful cryptographic operations, and in case of error. For general cryptocoding guidelines, refer to [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data"). For more detailed information refer to sections [Testing Memory for Sensitive Data](0x05d-Testing-Data-Storage.md#testing-memory-for-sensitive-data-mstg-storage-10) and [Testing Memory for Sensitive Data](0x06d-Testing-Data-Storage.md#testing-memory-for-sensitive-data-mstg-storage-10) for Android and iOS respectively.
+- **Keys in Memory**: make sure that keys live in memory for the shortest time possible and consider zeroing out and nullifying keys after successful cryptographic operations, and in case of error. For general cryptocoding guidelines, refer to [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data").
 
 Note: given the ease of memory dumping, never share the same key among accounts and/or devices, other than public keys used for signature verification or encryption.
 
@@ -187,13 +192,3 @@ Learn more:
 - [Encryption and Export Administration Regulations (USA)](https://www.bis.doc.gov/index.php/policy-guidance/encryption "Encryption and Export Administration Regulations")
 - [Encryption Control (France)](https://www.ssi.gouv.fr/en/regulation/cryptology/ "Encryption Control")
 - [World map of encryption laws and policies](https://www.gp-digital.org/WORLD-MAP-OF-ENCRYPTION/)
-
-## References
-
-### OWASP MASVS
-
-- MSTG-ARCH-8: "There is an explicit policy for how cryptographic keys (if any) are managed, and the lifecycle of cryptographic keys is enforced. Ideally, follow a key management standard such as NIST SP 800-57."
-- MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
-- MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
-- MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-- MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered deprecated for security purposes."

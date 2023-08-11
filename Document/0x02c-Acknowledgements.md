@@ -1,5 +1,11 @@
 # Acknowledgments
 
+## Contributors
+
+All of our contributors are listed in the Contributing section of the OWASP MAS website:
+
+<https://mas.owasp.org/contributing/>
+
 ## 🥇 MAS Advocates
 
 MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word.
@@ -23,7 +29,7 @@ We will validate this status according to these categories:
      - etc.
 3. **Spreading the word** and promoting the project with many presentations each year, public trainings, high social media involvement (e.g. liking, re-sharing, doing own posting specifically to promote the project).
 
-_NOTE: You don't need to fulfill each and every bullet point (they are examples). However, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so._
+_NOTE: You have to satisfy all three categories in order to qualify as an MAS Advocate. However, you do not need to fulfill each and every bullet point (they are examples). In general, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so._
 
 ### 🎁 Benefits
 
@@ -43,9 +49,9 @@ If you'd like to apply please contact the project leaders by sending an email to
 - [Financial donations](https://mas.owasp.org/donate/) are not part of the eligibility criteria but will be listed for completion.
 - Re-shared publications and blog posts linked in MASTG text must be **educational** and focus on mobile security or MASVS/MASTG and **not endorse company products/services**.
 - Advocate Companies may use the logo and links to MASVS/MASTG resources as part of their communication but cannot use them as an endorsement by OWASP as a preferred provider of software and services.
-  - Example of what's ok: list MAS Advocate status on website home page, in "about company" slides in sales presentations, on sales collateral.
-  - Example of what's not ok: a MAS Advocate cannot claim they are OWASP certified.
-- The quality of the application of the MASVS/MASTG by these companies [has not been vetted by the MAS team](https://mas.owasp.org/MASVS/Intro/0x04-Assessment_and_Certification/#owasps-stance-on-masvs-certifications-and-trust-marks).
+    - Example of what's ok: list MAS Advocate status on website home page, in "about company" slides in sales presentations, on sales collateral.
+    - Example of what's not ok: a MAS Advocate cannot claim they are OWASP certified.
+- The quality of the application of the MASVS/MASTG by these companies [has not been vetted by the MAS team](https://mas.owasp.org/MASVS/Intro/04-Assessment_and_Certification/).
 
 > The OWASP Foundation is very grateful for the support by the individuals and organizations listed. However please note, the OWASP Foundation is strictly vendor neutral and does not endorse any of its supporters. MAS Advocates do not influence the content of the MASVS or MASTG in any way.
 
@@ -60,14 +66,14 @@ If you'd like to apply please contact the project leaders by sending an email to
 ### NowSecure as a MASVS/MASTG Adopter
 
 - Services / Products:
-  - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
-  - [NowSecure Platform for Automated Mobile Security Testing](https://www.nowsecure.com/products/nowsecure-platform/)
+    - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
+    - [NowSecure Platform for Automated Mobile Security Testing](https://www.nowsecure.com/products/nowsecure-platform/)
 - Resources:
-  - [The Essential Guide to the OWASP Mobile Security Project](https://discover.nowsecure.com/c/manager-guide-owasp?x=LIaYZt&xs=90367)
+    - [The Essential Guide to the OWASP Mobile Security Project](https://discover.nowsecure.com/c/manager-guide-owasp?x=LIaYZt&xs=90367)
 - Trainings:
-  - [Standards and Risk Assessment](https://academy.nowsecure.com/standards-and-risk-assessment)
-  - [OWASP MASVS & MASTG Updates](https://academy.nowsecure.com/owasp-masvs-mstg-updates)
-  - [Intro to Mobile App Security](https://academy.nowsecure.com/intro-to-mobile-app-security)
+    - [Standards and Risk Assessment](https://academy.nowsecure.com/standards-and-risk-assessment)
+    - [OWASP MASVS & MASTG Updates](https://academy.nowsecure.com/owasp-masvs-mstg-updates)
+    - [Intro to Mobile App Security](https://academy.nowsecure.com/intro-to-mobile-app-security)
 
 ### NowSecure's Contributions to the MAS Project
 
@@ -89,68 +95,16 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
 **Spreading the Word:**
 
 - **Social media involvement**: continuous Twitter and LinkedIn activity (see [examples](https://twitter.com/search?q=(MASVS%20OR%20MSTG)%20(from%3ANowSecureMobile)&src=typed_query))
+- **Case Study**: [NowSecure Commits to Security Standards](https://drive.google.com/file/d/1cns3Ot6MGdHwMMSx88lDds3brktMhLOM/view?usp=share_link)
 - **Blog Posts**:
-  - [Integrate security into the mobile app software development lifecycle](https://www.scmagazine.com/perspective/devops/integrate-security-into-the-mobile-app-software-development-lifecycle)
-  - [OWASP Mobile Security Testing Checklist Aids Compliance](https://www.nowsecure.com/blog/2022/02/23/owasp-mobile-security-testing-checklist-aids-compliance/)
+    - [Integrate security into the mobile app software development lifecycle](https://www.scmagazine.com/perspective/devops/integrate-security-into-the-mobile-app-software-development-lifecycle)
+    - [OWASP Mobile Security Testing Checklist Aids Compliance](https://www.nowsecure.com/blog/2022/02/23/owasp-mobile-security-testing-checklist-aids-compliance/)
 - **Presentations**:
-  - "Mobile Wanderlust"! Our journey to Version 2.0! (OWASP AppSec EU, Jun 10 2022)
-  - Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Toronto Chapter, Feb 10 2022)
-  - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
-  - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
-  - and more
-
-## Contributors
-
-**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mastg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mastg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
-
-### Top Contributors
-
-Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
-
-- Pawel Rzepa
-- Francesco Stillavato
-- Henry Hoggard
-- Andreas Happe
-- Kyle Benac
-- Paulino Calderon
-- Alexander Anthuk
-- Caleb Kinney
-- Abderrahmane Aftahi
-- Koki Takeyama
-- Wen Bin Kong
-- Abdessamad Temmar
-- Cláudio André
-- Slawomir Kosowski
-- Bolot Kerimbaev
-- Lukasz Wierzbicki
-
-### Contributors
-
-Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository. Their Github handle is listed below:
-
-kryptoknight13, DarioI, luander, oguzhantopgul, Osipion, mpishu, pmilosev, isher-ux, thec00n, ssecteam, jay0301, magicansk, jinkunong, nick-epson, caitlinandrews, dharshin, raulsiles, righettod, karolpiateknet, mkaraoz, Sjord, bugwrangler, jasondoyle, joscandreu, yog3shsharma, ryantzj, rylyade1, shivsahni, diamonddocumentation, 51j0, AnnaSzk, hlhodges, legik, abjurato, serek8, mhelwig, locpv-ibl and ThunderSon.
-
-### Mini Contributors
-
-Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). Their Github handle is listed below:
-
-jonasw234, zehuanli, jadeboer, Isopach, prabhant, jhscheer, meetinthemiddle-be, bet4it, aslamanver, juan-dambra, OWASP-Seoul, hduarte, TommyJ1994, forced-request, D00gs, vasconcedu, mehradn7, whoot, LucasParsy, DotDotSlashRepo, enovella, ionis111, vishalsodani, chame1eon, allRiceOnMe, crazykid95, Ralireza, Chan9390, tamariz-boop, abhaynayar, camgaertner, EhsanMashhadi, fujiokayu, decidedlygray, Ali-Yazdani, Fi5t, MatthiasGabriel, colman-mbuya and anyashka.
-
-### Reviewers
-
-Reviewers have consistently provided useful feedback through GitHub issues and pull request comments.
-
-- Jeroen Beckers
-- Sjoerd Langkemper
-- Anant Shrivastava
-
-### Editors
-
-- Heaven Hodges
-- Caitlin Andrews
-- Nick Epson
-- Anita Diamond
-- Anna Szkudlarek
+    - "Mobile Wanderlust"! Our journey to Version 2.0! (OWASP AppSec EU, Jun 10 2022)
+    - Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Toronto Chapter, Feb 10 2022)
+    - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
+    - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
+    - and more
 
 ### Donators
 

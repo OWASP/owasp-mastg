@@ -1,9 +1,149 @@
+---
+hide:
+  - navigation
+---
+
 # &#128478; News
 
 !!! tip "Tip: Follow us on Twitter!"
 
     Follow [:material-twitter: @OWASP_MAS](https://twitter.com/OWASP_MAS) to get the latest updates instantly.
-    
+
+## Jul 28th, 2023: MAS Testing Profiles and MASTG Atomic Tests - Paving the Way for Next-Level Mobile Application Security
+
+The MASTG refactoring is a significant upgrade that addresses some existing challenges and introduces exciting new features. It aims to streamline compliance, simplify testing and improve usability for security testers and other stakeholders.
+
+### MAS Testing Profiles
+
+As part of the MASVS refactoring, we've replaced the three traditional verification levels (L1, L2, and R) with security testing profiles in the MASTG. These new profiles are designed to enhance our ability to capture various security nuances associated with mobile apps, allowing us to evaluate different situations for the same MASVS control. For instance, in [MASVS-STORAGE-1](https://mas.owasp.org/MASVS/controls/MASVS-STORAGE-1/), it's acceptable to store data unencrypted in app internal storage for MAS-L1, but MAS-L2 requires data encryption.
+
+The [new MAS Testing Profiles](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing) include revamped versions of the traditional levels and one new addition:
+
+<img style="border-radius: 5px" src="../assets/news/mas_profiles.png"/>
+
+Another interesting addition we're exploring for the near future is a 'Privacy' profile, which would focus on [tests that consider the privacy implications of various app features and functionalities](https://mas.owasp.org/MASTG/General/0x04i-Testing-User-Privacy-Protection/). We believe that this profile can become an essential tool in an era where privacy has become a significant concern.
+
+> **HELP WANTED:** Today we're releasing the new MAS Testing Profiles and would love to hear what you think. Please [give your feedback here until the 31st of August 2023](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing).
+
+### Atomic Tests
+
+One of the key changes in the MASTG refactoring is the introduction of the [new MASTG Atomic Tests](https://docs.google.com/spreadsheets/d/1Go5GpVvKJqTDxGbSLBPZb1hmYi5lXRc1D1AfrTTkUkY/edit?usp=sharing). The existing tests are currently quite large and often cover more than one MASVS control. With the introduction of Atomic Tests, we'll break these tests down into smaller, more manageable pieces. Our goal is to make these tests as self-contained and specific as possible to allow for reduced ambiguity, better understanding and easier execution. Each atomic test will have its unique ID for easy reference and traceability and will be mapped to the relevant controls from the MASVS.
+
+<img style="border-radius: 5px" src="../assets/news/mastg_tests_refactoring.png"/>
+
+But before we can start writing the new atomic tests, we need to finalize the proposal for the new MASTG Atomic Tests including mappings to the MASVS controls and the new MAS Testing profiles.
+
+> **HELP WANTED:** Today we're releasing the new MASTG Atomic Tests Proposal and would love to hear what you think. Please [give your feedback here until the 31st of August 2023](https://docs.google.com/spreadsheets/d/1Go5GpVvKJqTDxGbSLBPZb1hmYi5lXRc1D1AfrTTkUkY/edit?usp=sharing).
+
+### What's Next?
+
+We are now in the process of transforming the MASTG, according to the changes highlighted above. We've already released the MASVS v2.0.0, and the rest of the year will be dedicated to the MASTG refactoring, which will involve creating hundreds of new tests. We believe these changes will significantly improve the usability and relevance of the MASTG. We're excited to keep you updated on our progress and look forward to your continued support and feedback.
+
+> We would like to extend a special thanks to [our MAS Advocate NowSecure](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/#our-mas-advocates). Their commitment to the OWASP project is not merely financial; it’s an investment of their most valuable resource – their people and their time. NowSecure has dedicated hours of expertise, extensive knowledge, and hard work towards making these changes a reality.
+>
+> Would you like to become a [MAS Advocate](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/)? [Contact us](https://mas.owasp.org/contact/) to learn more.
+
+A huge thanks goes of course to our wider community and all of our contributors. Your continuous participation and input have been instrumental in the evolution of the OWASP MAS project. It is through this collaborative effort that we can truly advance in the field of mobile app security. Thank you for being a part of this journey!
+
+## May 8th, 2023: MASVS v2 Colors
+
+We're bringing official colors to the MASVS! The new colors will be used across the MASVS v2.0.0 and MASTG v2.0.0 to help users quickly identify the different control groups. We've also revamped certain areas of our website to make them more readable and easier to navigate as well as to prepare for what's coming with the MASTG v2.0.0 (keyword: "atomic tests").
+
+<img style="border-radius: 5px" src="../assets/news/masvs_colors.png"/>
+
+### MASVS
+
+In the MASVS home page, the new colors will be used to highlight the different control groups.
+
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_home.png"/>
+</center>
+
+The individual controls will also be color-coded to help users quickly identify the different control groups. We've also redesigned the control pages to make them more readable and easier to navigate.
+
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_control.png"/>
+</center>
+
+### MASTG
+
+Now, when you navigate to the MASTG tests, you'll see that they are categorized by platform (Android/iOS) as well as by MASVS category, also using our new colors in the sidebar. The colors will also be used to highlight the different control groups in the test description.
+
+Each test now contains a header section indicating the platform, the MASVS v1.5.0 controls, and the MASVS v2.0.0 controls.
+
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/mastg_test.png"/>
+</center>
+
+We've also introduced a new section called "Resources" which is automatically generated using the inline links within the MASTG pages and serve as a quick reference to the most important resources for each test.
+
+**NOTE:** The MASTG tests themselves haven't changed yet, we're still working on the refactoring. For now we've simply split the tests into individual pages to make them easier to navigate and reference. This will facilitate the work on the refactoring and the introduction of the new atomic tests.
+
+### MAS Checklist
+
+The MAS Checklist pages and the MAS checklist itself have also been updated to use the new colors to highlight the different control groups and to make them easier to navigate.
+
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/checklist_home.png"/>
+</center>
+
+When you click on a MASVS group you'll see a table listing the new MASVS v2.0.0 controls as well as the corresponding MASTG tests (v1.5.0) for both the Android and the iOS platforms.
+
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/checklist_detail.png"/>
+</center>
+
+**NOTE:** The checklist contains the old MASVS v1 verification levels (L1, L2 and R) which we are currently reworking into "security testing profiles". The levels were assigned according to the MASVS v1 ID that the test was previously covering and might differ in the upcoming version of the MASTG and MAS Checklist.
+
+For the upcoming of the MASTG version we will progressively split the MASTG tests into smaller tests, the so-called "atomic tests" and assign the new MAS profiles accordingly.
+
+<br>
+
+We hope you like the new colors and the changes we've made to the website. We're looking forward to your feedback! Please use our GitHub Discussions to post any  [questions](https://github.com/OWASP/owasp-mastg/discussions/categories/q-a) or [ideas](https://github.com/OWASP/owasp-mastg/discussions/categories/ideas) you might have. If you see something wrong please let us know by [opening a bug issue](https://github.com/OWASP/owasp-mastg/issues/new?assignees=&labels=%F0%9F%90%9B%20bug).
+
+## April 1st, 2023: MASVS v2.0.0 Release
+
+<!-- Release notes generated using configuration in .github/release.yml at v2.0.0 -->
+
+<img width="1570" alt="masvs_v2_release" src="https://user-images.githubusercontent.com/29175115/229280824-ada98710-5d01-49fb-8a39-9304a5cf9231.png">
+
+We are thrilled to announce the release of the new version of the [OWASP Mobile Application Security Verification Standard (MASVS) v2.0.0](https://github.com/OWASP/owasp-masvs/releases/tag/v2.0.0). With this update, we have set out to achieve several key objectives to ensure that MASVS remains a leading industry standard for mobile application security.
+
+- **Keep Abstraction**: we have worked hard to maintain the level of abstraction that has made MASVS so valuable in the past. We leave the details to the MASTG.
+- **Simplify**: we have simplified the MASVS by removing redundancies and overlaps in the security controls. This will make it easier for users to understand the standard and implement it effectively in their own projects.
+- **Bring Clarity**: we have worked hard to use standard terminology wherever possible, drawing on established sources such as NIST-SP 800-175B and NIST OSCAL, as well as well-known and used sources such as CWEs, Android Developer Docs, and Apple Docs.
+- **Narrow Scope**: we have narrowed the scope of MASVS to rely more heavily on other industry standards such as the OWASP ASVS, OWASP SAMM and NIST.SP.800-218 SSDF v1.1. This will ensure that MASVS remains relevant and up-to-date in a rapidly evolving landscape of mobile application security.
+
+We believe that these changes will make the OWASP MASVS v2.0.0 an even more valuable resource for developers and security practitioners alike, and we are excited to see how the industry embraces these updates.
+
+The MASVS v2.0.0 was presented at the OWASP AppSec Dublin 2023, you can watch the presentation [ ▶️ here](https://www.youtube.com/watch?v=GxcabVcCEiQ).
+
+### Why are there no levels in the new MASVS controls?
+
+The Levels you already know (L1, L2 and R) will be fully reviewed and backed up with a corrected and well-documented threat model.
+
+**Enter MAS Profiles:** We are moving the levels to the MASTG tests so that we can evaluate different situations for the same control (e.g., in MASVS-STORAGE-1, it's OK to store data unencrypted in app internal storage for L1, but L2 requires data encryption). This can lead to different tests depending on the security profile of the application.
+
+### Transition Phase
+
+The MASTG, in its current version v1.5.0, currently still supports the MASVS v1.5.0. Bringing the MASTG to v2.0.0 to be fully compatible with MASVS v2.0.0 will take some time. That's why we need to introduce a "transition phase". We're currently mapping all new proposed test cases to the new profiles (at least L1 and L2), so even if the MASTG refactoring is not complete, you'll know what to test for, and you'll be able to find most of the tests already in the MASTG.
+
+- Map the current MASTG tests to the new MASVS v2.0.0.
+- Assign profiles to the proposed MASTG atomic tests (at least L1, L2 and R).
+
+### Special Thanks
+
+We thank everyone that has participated in the MASVS Refactoring. You can access all Discussion and documents for the refactoring [here](https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring).
+
+You'll notice that we have one **new author in the MASVS: Jeroen Beckers**
+
+> Jeroen is a mobile security lead responsible for quality assurance on mobile security projects and for R&D on all things mobile. Ever since his master's thesis on Android security, Jeroen has been interested in mobile devices and their (in)security. He loves sharing his knowledge with other people, as is demonstrated by his many talks & trainings at colleges, universities, clients and conferences.
+
+💙 Special thanks to our [MAS Advocate](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/#mas-advocates), [NowSecure](https://www.nowsecure.com/), who has once again demonstrated their commitment to the project by continuously supporting it with time/dedicated resources as well as feedback, data and content contributions.
+
+<center>
+<img style="width: 60%; border-radius: 5px" src="https://user-images.githubusercontent.com/29175115/229281279-d739fa75-b3da-467d-91a0-82be88c688bf.png"/>
+</center>
 
 ## August 23rd, 2022: Project Rebranding to OWASP MAS
 

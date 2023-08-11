@@ -1,4 +1,0 @@
-lxml
-bs4
-openpyxl
-Pillow

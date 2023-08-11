@@ -1,0 +1,99 @@
+{
+    "ignorePatterns": [
+        {
+            "pattern": "https://github.com/Your_Github_Handle/owasp-mstg"
+        },
+        {
+            "pattern": "changelog"
+        },
+        {
+            "pattern": "https://github.com/commjoen/contributors-mstg"
+        },
+        {
+            "pattern": "http://127.0.0.1:8000"
+        },
+        {
+            "pattern": "https://haveibeenpwned.com"
+        },
+        {
+            "pattern": "https://www.hackingwithswift.com"
+        },
+        {
+            "pattern": "https://www.raywenderlich.com"
+        },
+        {
+            "pattern": "http://apt.thebigboss.org/repofiles/cydia/"
+        },
+        {
+            "pattern": "^https://developer.android.com"
+        },
+        {
+            "pattern": "^https://source.android.com"
+        },
+        {
+            "pattern": "^https://www.infosecurity-magazine.com"
+        },
+        {
+            "pattern": "^https://apkpure.com"
+        },
+        {
+            "pattern": "^https://manualzz.com"
+        },
+        {
+            "pattern": "^https://www.verticalstructure.com"
+        },
+        {
+            "pattern": "^https://support.virustotal.com"
+        },
+        {
+            "pattern": "^https://www.europeanpaymentscouncil.eu"
+        },
+        {
+            "pattern": "^http://damnvulnerableiosapp.com/"
+        },
+        {
+            "pattern": "http://owaspsummit.org"
+        },
+        {
+            "pattern": "^https://docs.github.com"
+        },
+        {
+            "pattern": "^https://busybox.net"
+        },
+        {
+            "pattern": "http://newandroidbook.com/"
+        },
+        {
+            "pattern": "^https://oauth.net"
+        },
+        {
+            "pattern": "^https://www.bsi.bund.de"
+        },
+        {
+            "pattern": "^https://secrary.com/"
+        },
+        {
+            "pattern": "^MASTG/"
+        },
+        {
+            "pattern": "^MASVS/"
+        },
+        {
+            "pattern": "^https://linkedin.com/in/"
+        }
+    ],
+    "httpHeaders": [
+        {
+            "urls": [
+                "https://",
+                "http://"
+            ],
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0"
+            }
+        }
+    ],
+    "retryOn429": true,
+    "fallbackRetryDelay": "30s",
+    "see": "https://github.com/tcort/markdown-link-check#config-file-format"
+}
