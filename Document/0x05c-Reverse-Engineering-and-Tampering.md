@@ -1309,7 +1309,7 @@ java -jar soot-infoflow-cmd/target/soot-infoflow-cmd-jar-with-dependencies.jar \
 
 The output from the above command is following:
 
-```
+```txt
 ...
 
 [main] INFO soot.jimple.infoflow.android.SetupApplication$InPlaceInfoflow - The sink virtualinvoke r2.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("password", $r5) in method <com.insecureshop.AboutUsActivity: void onSendData(android.view.View)> was called with values from the following sources:
