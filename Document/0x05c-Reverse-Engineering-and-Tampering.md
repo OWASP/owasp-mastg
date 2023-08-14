@@ -1274,21 +1274,25 @@ To conclude, learning symbolic execution might look a bit intimidating at first,
 
 ### Taint Analysis
 
-Taint analysis is an information flow analysis technique. It involves tracking the flow of sensitive information within a program. For example, determining the usage of geolocation information collected in an Android app - whether it is being sent to 3rd party domains or not.
+Taint analysis is an information flow analysis technique that tracks the flow of sensitive information within a program. For example, it can determine whether geolocation data collected in an Android app is being transmitted to third-party domains.
 
-In taint analysis, the information is defined to flow from source to sink. Source is from where a sensitive information originates, while a sink is where the information is eventually used. For instance in an Android app `getDeviceId()` and `sendTextMessage()` function calls are used. Using taint analysis we can determine whether the device ID from `getDeviceId()` is being sent out as a text message or not, using `sendTextMessage()`. For taint analysis,  `getDeviceId()` is the source and `sendTextMessage()` is the sink, and we determine if there is a direct path between the source and sink. If there is a direct path, then such a flow is called a **leak**.
+In taint analysis, data flows from a "source" to a "sink". A source is where sensitive information originates, and a sink is where this information is ultimately utilized. For instance, we can determine if the device ID retrieved by a `getDeviceId()` function is transmitted as a text message via another function `sendTextMessage()`. In this scenario, `getDeviceId()` is the source, and `sendTextMessage()` is the sink. If a direct path exists between them, it's called a _leak_.
 
-Often with big applications information flow analysis performed manually is very time consuming, and can be inaccurate. Taint analysis provides an excellent alternative to automate such analysis. Taint analysis can be performed both statically and dynamically, with each approach having its own pros and cons. Discussing these pros and cons is beyond the scope of this section.
+In large applications, manual information flow analysis can be very time consuming and inaccurate. Taint analysis automates this, with two main methods: static and dynamic. The former examines code without running it, offering broad coverage but potentially yielding false positives. In contrast, dynamic analysis observes real-time application execution, providing actual context but possibly overlooking untriggered issues. A thorough comparison of these techniques is beyond this section's scope.
 
-There are multiple tools which perform taint analysis on native code, like [Triton](https://github.com/jonathansalwan/Triton "Triton"), [bincat](https://github.com/airbus-seclab/bincat "bincat"). In this section we will focus on Android Java code, and use [FlowDroid](https://github.com/secure-software-engineering/FlowDroid "FlowDroid") to perform the taint analysis. Apart from FlowDroid, [GDA](https://github.com/charles2gan/GDA-android-reversing-Tool/wiki/GDA-Static-Taint-Analysis "GDA") also supports taint analysis for Android apps.
+There are multiple tools which perform taint analysis on native code, including [Triton](https://github.com/jonathansalwan/Triton "Triton") and [bincat](https://github.com/airbus-seclab/bincat "bincat"). However, in this section, we'll primarily focus on Android Java code and utilize [FlowDroid](https://github.com/secure-software-engineering/FlowDroid "FlowDroid") for the taint analysis. Another notable tool supporting taint analysis for Android apps is [GDA](https://github.com/charles2gan/GDA-android-reversing-Tool/wiki/GDA-Static-Taint-Analysis "GDA").
 
-FlowDroid is an open-source tool, built on top of [soot](https://github.com/soot-oss/soot "soot") - a framework for analyzing and transforming Java and Android applications. FlowDroid performs a fully context, object and flow-sensitive taint analysis, while accommodating the additional complexity of Android application's lifecycle and UI widgets in the analysis.
+FlowDroid is an open-source tool based in [soot](https://github.com/soot-oss/soot "soot"), a framework dedicated to analyzing and translating Java bytecode for easier analysis. The tool handles the nuances of Android app lifecycles (like `onCreate`, `onStart`, `onPause`, and others) and its UI components during analysis and performs taint analysis that is:
 
-FlowDroid tool can be used either as a standalone command line tool or as a library. The former mostly used to perform a quick analysis, while later for performing complex analysis. We will use command line tool and perform taint analysis on [InsecureShop v1.0]( https://github.com/hax0rgb/InsecureShop/releases/tag/v1.0 "InsecureShop") application.
+- **Context-sensitive**: Distinguishing between calls to the same method based on their specific execution contexts.
+- **Object-sensitive**: Identifying individual objects, even when they're of the same class.
+- **Flow-sensitive**: Recognizing the sequential order of code execution.
 
-In InsecureShop app, it accepts username and password as input, and stores them into the app's shared preferences. For taint analysis, we are interested in how this stored username and password are used. For our analysis, username and password is the sensitive information, while reading from shared preferences will be the source. Sink for this analysis can be multiple operations - sending info over the network, sending info out in an Intent, storing info in an external file etc. For simplicity, let us only consider the scenario where an `Intent` is sent with username and password included as extra parameters to the `Intent`.
+FlowDroid tool is versatile and can be used in two ways: as a standalone command line tool for quick analyses or as a library for more complex investigations. For our demonstration, we'll utilize the command line tool to perform taint analysis on the [InsecureShop v1.0]( https://github.com/hax0rgb/InsecureShop/releases/tag/v1.0 "InsecureShop") application.
 
-To use FlowDroid, firstly, we need to provide an input list of possible sources and sinks to evaluate for. In our case, reading from shared preferences will be the source, while adding parameters to an `Intent` as sink. The config file will look as following (and named as source_sink.txt):
+The InsecureShop app accepts a username and password as input and stores them in the app's shared preferences. In our taint analysis, we're interested in how this stored username and password are used. In this context, the username and password are the sensitive information, and reading from shared preferences is the source. The sink in this analysis could be various operations, such as sending info over the network, transmitting info via an `Intent`, or storing info in an external file.
+
+To use FlowDroid, firstly, we need to provide an input list of potential sources and sinks to evaluate for. In our case, _reading from shared preferences_ will be the source, while _adding parameters to an `Intent`_ will be the sink. The configuration file will look as follows (we'll name it "source_sink.txt"):
 
 ```Jimple
 <android.content.SharedPreferences: java.lang.String getString(java.lang.String, java.lang.String)> -> _SOURCE_
@@ -1298,19 +1302,14 @@ To use FlowDroid, firstly, we need to provide an input list of possible sources 
 <android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)> -> _SINK_
 ```
 
-To invoke FlowDroid via command line, following command can be used:
+To invoke FlowDroid via the command line, use the following command:
 
 ```shell
 java -jar soot-infoflow-cmd/target/soot-infoflow-cmd-jar-with-dependencies.jar \
     -a InsecureShop.apk \
     -p Android/Sdk/platforms \
     -s source_sink.txt
-```
 
-The output from the above command is following:
-
-```txt
-...
 
 [main] INFO soot.jimple.infoflow.android.SetupApplication$InPlaceInfoflow - The sink virtualinvoke r2.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("password", $r5) in method <com.insecureshop.AboutUsActivity: void onSendData(android.view.View)> was called with values from the following sources:
 
@@ -1327,9 +1326,7 @@ The output from the above command is following:
 [main] INFO soot.jimple.infoflow.android.SetupApplication - Found 2 leaks
 ```
 
-The output indicates there are 2 leaks in the application, with one each corresponding to the username and password.
-
-The above output uses [jimple intermediate representation](https://www.sable.mcgill.ca/soot/doc/soot/jimple/Jimple.html "Jimple") to show the sources and sinks. Jimple representation contains enough information to locate the sources and sinks in the actual application. Since, InsecureShop app is an open source app, we can look for the source code corresponding to above findings, and shown below:
+The output also uses the [jimple intermediate representation](https://www.sable.mcgill.ca/soot/doc/soot/jimple/Jimple.html "Jimple") and reveals two leaks in the application, each corresponding to the username and password. Given that the InsecureShop app is open-source, we can refer to its source code to validate the findings, as shown below:
 
 ```java
 // file: AboutActivity.kt
@@ -1348,9 +1345,7 @@ fun onSendData(view: View) {
     }
 ```
 
-FlowDroid is a versatile tool, and can also be used for generating call graphs. This is demonstrated in this [blog post](https://medium.com/geekculture/generating-call-graphs-in-android-using-flowdroid-pointsto-analysis-7b2e296e6697 "FlowDroid call graphs") by Navid Salehnamadi.
-
-To summarize, taint analysis is an information flow analysis approach. For Android Java code, FlowDroid can be used for performing taint analysis. Taint analysis is especially helpful in automating data flow analysis in big complex applications. With applications having complex flows, the accuracy of such tools may vary, thus it is upto the human reviewer to strike a balance between time consumed for manual analysis and accuracy.
+FlowDroid is not only versatile in performing taint analysis but can also generate call graphs, as illustrated in [this blog post](https://medium.com/geekculture/generating-call-graphs-in-android-using-flowdroid-pointsto-analysis-7b2e296e6697) by Navid Salehnamadi. Taint analysis is especially beneficial for automating data flow analysis in intricate applications. However, given the complexity of some apps, the accuracy of such tools can vary. Thus, it's essential for reviewers to find a balance between the accuracy of tools and the time spent on manual analysis.
 
 ## Tampering and Runtime Instrumentation
 
