@@ -1288,7 +1288,7 @@ FlowDroid is an open-source tool based in [soot](https://github.com/soot-oss/soo
 - **Object-sensitive**: Identifying individual objects, even when they're of the same class.
 - **Flow-sensitive**: Recognizing the sequential order of code execution.
 
-FlowDroid tool is versatile and can be used in two ways: as a standalone command line tool for quick analyses or as a library for more complex investigations. For our demonstration, we'll utilize the command line tool to perform taint analysis on the [InsecureShop v1.0]( https://github.com/hax0rgb/InsecureShop/releases/tag/v1.0 "InsecureShop") application.
+FlowDroid tool is versatile and can be used in two ways: as a standalone command line tool for quick analyses or as a library for more complex investigations. For our demonstration, we'll utilize the command line tool to perform taint analysis on the [InsecureShop v1.0](https://github.com/hax0rgb/InsecureShop/releases/tag/v1.0 "InsecureShop") application.
 
 The InsecureShop app accepts a username and password as input and stores them in the app's shared preferences. In our taint analysis, we're interested in how this stored username and password are used. In this context, the username and password are the sensitive information, and reading from shared preferences is the source. The sink in this analysis could be various operations, such as sending info over the network, transmitting info via an `Intent`, or storing info in an external file.
 
