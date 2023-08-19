@@ -14,60 +14,50 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-You can use [otool](../../../Document/0x08a-Testing-Tools.md#otool) to check the binary security features described above. All the features are enabled in these examples.
+You can use radare2 to check the binary security features.
 
-- PIE:
+Let's use the [Damn Vulnerable iOS App DVIA v1](https://github.com/prateek147/DVIA/) as an example. Open its main binary with radare2:
 
-    ```bash
-    $ unzip DamnVulnerableiOSApp.ipa
-    $ cd Payload/DamnVulnerableIOSApp.app
-    $ otool -hv DamnVulnerableIOSApp
-    DamnVulnerableIOSApp (architecture armv7):
-    Mach header
-    magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-    MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
-    WEAK_DEFINES BINDS_TO_WEAK PIE
-    DamnVulnerableIOSApp (architecture arm64):
-    Mach header
-    magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-    MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
-    WEAK_DEFINES BINDS_TO_WEAK PIE
-    ```
+```bash
+r2 DamnVulnerableIOSApp
+```
 
-    The output shows that the Mach-O flag for `PIE` is set. This check is applicable to all - Objective-C, Swift and hybrid apps but only to the main executable.
+And run the following commands:
 
-- Stack canary:
+```bash
+[0x1000180c8]> i~pic,canary
+canary   true
+pic      true
+```
 
-    ```bash
-    $ otool -Iv DamnVulnerableIOSApp | grep stack
-    0x0046040c 83177 ___stack_chk_fail
-    0x0046100c 83521 _sigaltstack
-    0x004fc010 83178 ___stack_chk_guard
-    0x004fe5c8 83177 ___stack_chk_fail
-    0x004fe8c8 83521 _sigaltstack
-    0x00000001004b3fd8 83077 ___stack_chk_fail
-    0x00000001004b4890 83414 _sigaltstack
-    0x0000000100590cf0 83078 ___stack_chk_guard
-    0x00000001005937f8 83077 ___stack_chk_fail
-    0x0000000100593dc8 83414 _sigaltstack
-    ```
+```bash
+[0x1000180c8]> is~release,retain
+124  0x002951e0 0x1000891e0 LOCAL  FUNC 0        imp.dispatch_release
+149  0x00294e80 0x100088e80 LOCAL  FUNC 0        imp.objc_autorelease
+150  0x00294e8c 0x100088e8c LOCAL  FUNC 0        imp.objc_autoreleasePoolPop
+151  0x00294e98 0x100088e98 LOCAL  FUNC 0        imp.objc_autoreleasePoolPush
+152  0x00294ea4 0x100088ea4 LOCAL  FUNC 0        imp.objc_autoreleaseReturnValue
+165  0x00294f40 0x100088f40 LOCAL  FUNC 0        imp.objc_release
+167  0x00294f58 0x100088f58 LOCAL  FUNC 0        imp.objc_retainAutorelease
+168  0x00294f64 0x100088f64 LOCAL  FUNC 0        imp.objc_retainAutoreleaseReturnValue
+169  0x00294f70 0x100088f70 LOCAL  FUNC 0        imp.objc_retainAutoreleasedReturnValue
+```
 
-    In the above output, the presence of `__stack_chk_fail` indicates that stack canaries are being used. This check is applicable to pure Objective-C and hybrid apps, but not necessarily to pure Swift apps (i.e. it is OK if it's shown as disabled because Swift is memory safe by design).
+All the features are enabled in these examples:
 
-- ARC:
+- PIE (Position Independent Executable): indicated by the flag `pic true`.
+    - Applies to all apps independently of the language used.
+    - Applies only to the main executable (`MH_EXECUTE`), not to dynamic libraries (`MH_DYLIB`).
 
-    ```bash
-    $ otool -Iv DamnVulnerableIOSApp | grep release
-    0x0045b7dc 83156 ___cxa_guard_release
-    0x0045fd5c 83414 _objc_autorelease
-    0x0045fd6c 83415 _objc_autoreleasePoolPop
-    0x0045fd7c 83416 _objc_autoreleasePoolPush
-    0x0045fd8c 83417 _objc_autoreleaseReturnValue
-    0x0045ff0c 83441 _objc_release
-    [SNIP]
-    ```
+- Stack Canary: indicated by the flag `canary true`.
+    - Applies to apps containing Objective-C code.
+    - Not necessarily required for pure Swift apps (Swift is memory safe by design).
+    - Especially important for apps containing C/C++ code, as they provide direct access to memory and pointers, making them more vulnerable to buffer overflows.
 
-    This check is applicable to all cases, including pure Swift apps where it's automatically enabled.
+- ARC (Automatic Reference Counting): indicated by symbols such as `objc_autorelease` or `objc_retainAutorelease`.
+    - Important for binaries containing Objective-C code.
+    - For binaries written purely in Swift, ARC is enabled by default.
+    - ARC is not relevant for binaries written purely in C/C++, as it's a memory management feature specific to Objective-C and Swift.
 
 ## Dynamic Analysis
 
