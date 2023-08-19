@@ -10,14 +10,14 @@ nav:
       - Overview: MASTG.md
       - Intro:
         - ... | flat | MASTG/Intro/*.md
-      - Mobile Security Testing Theory:
+      - Theory:
         - General Concepts:
           - ... | flat | MASTG/General/*.md
         - Android Security Testing:
           - ... | flat | MASTG/Android/*.md
         - iOS Security Testing: 
           - ... | flat | MASTG/iOS/*.md
-      - MASTG Tests: 
+      - Tests: 
         - Android:
           - MASVS-STORAGE:
             - ... | flat | MASTG/tests/android/MASVS-STORAGE/*.md
