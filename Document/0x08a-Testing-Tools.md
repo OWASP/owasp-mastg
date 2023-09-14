@@ -1,19 +1,27 @@
 # Testing Tools
 
-To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile apps, investigate the behavior of running apps and other test cases and automate them.
+Many different tools are available to perform the tests from the different test-cases. These tools allow you to perform static analysis, dynamic analysis, dynamic instrumentation, etc. The goal of these tools is to help you perform your own assessments, and not to obtain a conclusive result on the security status of an application. The output of these tools should be carefully studied, as they can (and will) contain both false positives and false negatives.
 
-> The MASTG project has no preference in any of the tools below, but only open-source tools are being considered for the testing tools. All tools below have been verified if they are "alive", meaning that updates have been pushed recently. Nevertheless, not all tools have been used/tested by the authors, but they might still be useful when analyzing a mobile app. The listing is sorted in alphabetical order.
->
-> Disclaimer: At the time of writing, we ensure that the tools being used in the MASTG examples are properly working. However, the tools might be broken or not work properly depending on your OS version of both your host computer and your test device. The functioning of the tooling can be further impeded by whether you're using a rooted/jailbroken device, the specific version of the rooting/jailbreak method and/or the version of the tool. The MASTG does not take any responsibility over the working status of the tools. If you find a broken tool or example, please search or file an issue in the tool original page, e.g. in the GitHub issues page.
+The goal of the MASTG is to be as accessible as possible. For this reason, all the tools on this page comply with the following criterea:
+
+* The tool is open-source
+* The tool is free to use
+* The tool can be used to analyze recent Android / iOS applications
+
+Some closed-source tools will still be listed if there is no open-source alternative. However, even those tools will be free to use. 
+
+> Disclaimer: At the time of writing, we ensure that the tools being used in the MASTG examples are properly working. However, the tools might be broken or not work properly depending on your OS version of both your host computer and your test device. The functioning of the tooling can be further impeded by whether you're using a rooted/jailbroken device, the specific version of the rooting/jailbreak method and/or the version of the tool. The MASTG does not take any responsibility over the working status of the tools. If you find a broken tool or example, please search or file an issue in the tool's original page, e.g. in the GitHub issues page.
 
 ## Commercial Tools
 
-The MASTG project is not listing commercial tools and also not freeware from commercial vendors if it's not available as open-source.
+As explained above, the MASTG project does not list commercial tools, nor freeware versions from commercial vendors if an open-source alternative is available.
 
 If you are looking for commercial tooling in the Mobile Application Security Space a potential resource is Gartner:
 
 - [Mobile Application Security Testing Market](https://www.gartner.com/reviews/market/mobile-application-security-testing)
 - [Products In In-App Protection Market](https://www.gartner.com/reviews/market/in-app-protection)
+
+> Disclaimer: Performing a fully automated scan of an application is a good start, but will not ensure that your application is secure. The results are heavily impacted by the type of application, the implemented business logic, the used framework (Flutter, React Native, Xamarin, ...) and the target OS. We recommend analyzing different tools for your specific application to see which tool gives the most thorough results.
 
 ## Tools for all Platforms
 
