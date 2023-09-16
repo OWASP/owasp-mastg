@@ -31,7 +31,8 @@ table = '| name | platform | link | release | commit |\n| --- | --- | --- | --- 
 for frontmatter in frontmatters:
     name = frontmatter.get('title', '')
     platform = frontmatter.get('platform', '')
-    github_link = next((ref for ref in frontmatter.get('refs', []) if 'github.com' in ref), '')
+    source = frontmatter.get('source', '')
+    github_link = source if 'github.com' in source else ''
     if github_link:
         user, repo = re.search(r"github.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)", github_link).groups()
         release = f'![GitHub Release Date - Published_At](https://img.shields.io/github/release-date/{user}/{repo}?style=for-the-badge&label=LAST%20RELEASE)'

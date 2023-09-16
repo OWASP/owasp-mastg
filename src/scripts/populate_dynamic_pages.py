@@ -78,7 +78,6 @@ for test_type in test_types:
     tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests if test['platform'] == test_type]
     append_to_file(list_of_dicts_to_md_table(tests_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests.md")
 
-
 # tools.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'refs': 'Refs', 'techniques': 'Techniques'}
