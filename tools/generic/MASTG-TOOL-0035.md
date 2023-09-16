@@ -1,8 +1,7 @@
 ---
 title: MobSF
 platform: generic
-refs:
-  - https://github.com/MobSF/Mobile-Security-Framework-MobSF
+source: https://github.com/MobSF/Mobile-Security-Framework-MobSF
 ---
 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") (Mobile Security Framework) is an automated, all-in-one mobile application pentesting framework capable of performing static and dynamic analysis. The easiest way of getting MobSF started is via Docker.

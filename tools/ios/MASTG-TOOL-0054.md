@@ -1,8 +1,7 @@
 ---
 title: ios-deploy
 platform: ios
-refs:
-  - https://github.com/ios-control/ios-deploy
+source: https://github.com/ios-control/ios-deploy
 ---
 
 With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:

@@ -1,8 +1,7 @@
 ---
 title: apkx
 platform: android
-refs:
-  - https://github.com/muellerberndt/apkx
+source: https://github.com/muellerberndt/apkx
 ---
 
 apkx is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:

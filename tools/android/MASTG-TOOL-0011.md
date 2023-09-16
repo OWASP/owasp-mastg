@@ -1,8 +1,7 @@
 ---
 title: Apktool
 platform: android
-refs:
-  - https://github.com/iBotPeaches/Apktool
+source: https://github.com/iBotPeaches/Apktool
 ---
 
 [Apktool](https://github.com/iBotPeaches/Apktool) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.

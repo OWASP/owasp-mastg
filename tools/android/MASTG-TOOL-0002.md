@@ -1,8 +1,7 @@
 ---
 title: MobSF for Android
 platform: android
-refs:
-  - https://github.com/MobSF/Mobile-Security-Framework-MobSF
+source: https://github.com/MobSF/Mobile-Security-Framework-MobSF
 ---
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
@@ -13,8 +12,8 @@ The following is displayed:
 
 - Basic information about the app and its binary file.
 - Some options to:
-  - View the `AndroidManifest.xml` file.
-  - View the IPC components of the app.
+    - View the `AndroidManifest.xml` file.
+    - View the IPC components of the app.
 - Signer certificate.
 - App permissions.
 - A security analysis showing known defects e.g. if the app backups are enabled.

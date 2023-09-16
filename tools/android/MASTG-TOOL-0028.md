@@ -1,8 +1,7 @@
 ---
 title: radare2 for Android
 platform: android
-refs:
-  - https://github.com/radare/radare2
+source: https://github.com/radare/radare2
 ---
 
 [radare2](https://rada.re/r/ "Radare2 official website") (r2) is a popular open source reverse engineering framework for disassembling, debugging, patching and analyzing binaries that is scriptable and supports many architectures and file formats including Android and iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java (JNI and Java classes) are supported. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes in handy when traditional tools fail.

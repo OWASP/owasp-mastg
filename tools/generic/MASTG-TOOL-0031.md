@@ -4,8 +4,7 @@ platform: generic
 # device_requirements: ['jailbroken', 'non-jailbroken', 'rooted', 'non-rooted']
 # host_requirements: ['Windows', 'Linux', 'macOS']
 # techniques: ['TECH-0001', 'TECH-0010'] -> automatically added by reading from tools/
-refs:
-  - https://github.com/frida/frida
+source: https://github.com/frida/frida
 ---
 
 [Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written by Ole André Vadla Ravnås that works by injecting the [QuickJS](https://bellard.org/quickjs/) JavaScript engine (previously [Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).

@@ -1,8 +1,7 @@
 ---
 title: RMS Runtime Mobile Security
 platform: generic
-refs:
-  - https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security
+source: https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security
 ---
 
 [RMS - Runtime Mobile Security](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "Runtime Mobile Security (RMS)") is a runtime mobile application analysis toolkit, supporting Android and iOS Apps. It offers a web GUI and is written in Python.

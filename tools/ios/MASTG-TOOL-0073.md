@@ -1,8 +1,7 @@
 ---
 title: radare2 for iOS
 platform: ios
-refs:
-  - https://github.com/radare/radare2
+source: https://github.com/radare/radare2
 ---
 
 [Radare2](https://github.com/radare/radare2 "Radare2") is a complete framework for reverse-engineering and analyzing binaries. The installation instructions can be found in the GitHub repository. To learn more on radare2 you may want to read the [official radare2 book](https://book.rada.re/ "Radare2 book").
