@@ -67,6 +67,18 @@ def get_mastg_components_dict(name):
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
 
+# tests.md
+
+column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'refs': 'Refs', 'techniques': 'Techniques'}
+
+tests = get_mastg_components_dict("docs/MASTG/tests")
+test_types = ["android", "ios"]
+for test_type in test_types:
+    append_to_file(f"## {test_type.title()} tests\n\n<br>\n\n", "docs/MASTG/tests.md")
+    tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests if test['platform'] == test_type]
+    append_to_file(list_of_dicts_to_md_table(tests_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests.md")
+
+
 # tools.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'refs': 'Refs', 'techniques': 'Techniques'}

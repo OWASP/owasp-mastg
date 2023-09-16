@@ -5,6 +5,7 @@ mkdir docs/MASTG/Android
 mkdir docs/MASTG/iOS
 mkdir docs/MASTG/References
 
+cp Document/tests.md docs/MASTG
 cp Document/apps.md docs/MASTG
 cp Document/tools.md docs/MASTG
 cp Document/techniques.md docs/MASTG

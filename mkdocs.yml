@@ -17,7 +17,8 @@ nav:
           - ... | flat | MASTG/Android/*.md
         - iOS Security Testing: 
           - ... | flat | MASTG/iOS/*.md
-      - Tests: 
+      - Tests:
+        - Index: MASTG/tests.md
         - Android:
           - MASVS-STORAGE:
             - ... | flat | MASTG/tests/android/MASVS-STORAGE/*.md
