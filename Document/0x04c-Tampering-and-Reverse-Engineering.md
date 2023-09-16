@@ -95,7 +95,7 @@ The following techniques can be used to obfuscate an application:
 
 #### Name Obfuscation
 
-The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation is applied, symbol names remain meaningful and can easily be extracted from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the Damn Vulnerable iOS App ([DVIA-v2](0x08b-Reference-Apps.md#dvia-v2)).
+The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation is applied, symbol names remain meaningful and can easily be extracted from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the [Damn Vulnerable iOS App (DVIA-v2)](0x08b-Reference-Apps.md#dvia-v2).
 
 ```assembly
 __T07DVIA_v232JailbreakDetectionViewControllerC20jailbreakTest4TappedyypF:
@@ -123,7 +123,7 @@ Control flow flattening replaces original code with a more complex representatio
 
 <img src="Images/Chapters/0x06j/control-flow-flattening.png" width="100%" />
 
-The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
+The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
 
 #### Dead Code Injection
 

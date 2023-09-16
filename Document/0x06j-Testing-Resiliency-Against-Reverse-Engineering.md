@@ -98,7 +98,7 @@ do {
 
 **Checking Protocol Handlers:**
 
-The app might be attempting to call well-known protocol handlers such as `cydia://` (available by default after installing [Cydia](0x08a-Testing-Tools.md#cydia)).
+The app might be attempting to call well-known protocol handlers such as `cydia://` (available by default after installing [Cydia](0x08a-Testing-Tools.md#cydia "Cydia")).
 
 ```swift
 if let url = URL(string: "cydia://package/com.example.package"), UIApplication.shared.canOpenURL(url) {
@@ -118,7 +118,7 @@ If the automated bypasses aren't effective you need to get your hands dirty and 
 
 When you need to reverse engineer a binary looking for jailbreak detection, the most obvious way is to search for known strings, such as "jail" or "jailbreak". Note that this won't be always effective, especially when resilience measures are in place or simply when the the developer has avoided such obvious terms.
 
-Example: Download the [Damn Vulnerable iOS application](0x08b-Reference-Apps.md#dvia-v2) (DVIA-v2), unzip it, load the main binary into [radare2](0x08a-Testing-Tools.md#radare2) and wait for the analysis to complete.
+Example: Download the [Damn Vulnerable iOS application (DVIA-v2)](0x08b-Reference-Apps.md#dvia-v2), unzip it, load the main binary into [radare2](0x08a-Testing-Tools.md#radare2) and wait for the analysis to complete.
 
 ```sh
 r2 -A ./DVIA-v2-swift/Payload/DVIA-v2.app/DVIA-v2
@@ -181,7 +181,7 @@ There are several anti-debugging techniques applicable to iOS which can be categ
 
 #### Using ptrace
 
-As seen in chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
+As seen in chapter ["Tampering and Reverse Engineering on iOS"](0x06c-Reverse-Engineering-and-Tampering.md#debugging), the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
 
 Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
 
@@ -246,7 +246,7 @@ There are two common approaches to check file integrity: using application sourc
 
 #### Application Source Code Integrity Checks
 
-In the "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
+In the ["Tampering and Reverse Engineering on iOS"](0x06c-Reverse-Engineering-and-Tampering.md#debugging) chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
 
 Apple takes care of integrity checks with DRM. However, additional controls (such as in the example below) are possible. The `mach_header` is parsed to calculate the start of the instruction data, which is used to generate the signature. Next, the signature is compared to the given signature. Make sure that the generated signature is stored or coded somewhere else.
 
@@ -354,7 +354,7 @@ Note: if the app also encrypts files, make sure that it encrypts and then calcul
 
 **Bypass:**
 
-1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding)" section.
+1. Retrieve the data from the device, as described in the ["Device Binding"](#device-binding) section.
 2. Alter the retrieved data and return it to storage.
 
 ### Reverse Engineering Tools Detection
@@ -370,7 +370,7 @@ The following steps should guide you when bypassing detection of reverse enginee
 1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of radare2/Cutter or Ghidra.
 2. Use Frida or Cydia Substrate to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
 
-Refer to the chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md)" for examples of patching and code injection.
+Refer to the chapter ["Tampering and Reverse Engineering on iOS"](0x06c-Reverse-Engineering-and-Tampering.md) for examples of patching and code injection.
 
 #### Frida Detection
 
@@ -412,7 +412,7 @@ Looking at these _traces_ that Frida _leaves behind_, you might already imagine 
 Please remember that this table is far from exhaustive. For example, two other possible detection mechanisms are:
 
 - [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), or
-- detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (see "[Prevent bypassing of SSL certificate pinning in iOS applications](https://www.guardsquare.com/en/blog/iOS-SSL-certificate-pinning-bypassing "Prevent bypassing of SSL certificate pinning in iOS applications")" for further explanation and sample code for detection of trampolines in an iOS app)
+- detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (see ["Prevent bypassing of SSL certificate pinning in iOS applications"](https://www.guardsquare.com/en/blog/iOS-SSL-certificate-pinning-bypassing "Prevent bypassing of SSL certificate pinning in iOS applications") for further explanation and sample code for detection of trampolines in an iOS app)
 
 Both would _help_ to detect Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker. Remember that the success of each of these detection methods will depend on whether you're using a jailbroken device, the specific version of the jailbreak and method and/or the version of the tool itself. At the end, this is part of the cat and mouse game of protecting data being processed on an uncontrolled environment (the end user's device).
 
@@ -422,9 +422,9 @@ The goal of emulator detection is to increase the difficulty of running the app 
 
 As discussed in the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md#testing-on-the-ios-simulator "Testing on the iOS Simulator") in the basic security testing chapter, the only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator, hence _simulation_ protection was not so much a concern regarding iOS apps in contrast to Android with a wide range of _emulation_ choices available.
 
-However, since its release, [Corellium](https://www.corellium.com/) (commercial tool) has enabled real emulation, [setting itself apart from the iOS simulator](https://www.corellium.com/compare/ios-simulator). In addition to that, being a SaaS solution, Corellium enables large-scale device analysis with the limiting factor just being available funds.
+However, since its release, [Corellium](https://www.corellium.com/) (commercial tool) has enabled real emulation, [setting itself apart from the iOS simulator](https://www.corellium.com/compare/ios-simulator "Corellium vs Apple\'s iOS Simulator"). In addition to that, being a SaaS solution, Corellium enables large-scale device analysis with the limiting factor just being available funds.
 
-With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu)). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
+With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu "Apple Metal Framework")). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
 
 Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators.
 
@@ -434,7 +434,7 @@ The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and
 
 #### Name Obfuscation
 
-The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation was applied, symbol names remain meaningful and can be easily read straight from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the Damn Vulnerable iOS App ([DVIA-v2](0x08b-Reference-Apps.md#dvia-v2)).
+The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation was applied, symbol names remain meaningful and can be easily read straight from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the [Damn Vulnerable iOS App (DVIA-v2)](0x08b-Reference-Apps.md#dvia-v2).
 
 ```assembly
 __T07DVIA_v232JailbreakDetectionViewControllerC20jailbreakTest4TappedyypF:
@@ -462,7 +462,7 @@ Control flow flattening replaces original code with a more complex representatio
 
 <img src="Images/Chapters/0x06j/control-flow-flattening.png" width="600px">
 
-The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
+The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
 
 #### Dead Code Injection
 
@@ -477,7 +477,7 @@ Applications are often compiled with hardcoded keys, licences, tokens and endpoi
 - [SwiftShield](0x08a-Testing-Tools.md#swiftshield) can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation (IR) instead of the source code. It can be used for symbol obfuscation, string encryption and control flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
-Learn more about iOS obfuscation techniques [here](https://faculty.ist.psu.edu/wu/papers/obf-ii.pdf).
+Learn more about iOS obfuscation techniques in the paper ["Protecting Million-User iOS Apps with Obfuscation: Motivations, Pitfalls, and Experience"](https://faculty.ist.psu.edu/wu/papers/obf-ii.pdf "Paper - Protecting Million-User iOS Apps with Obfuscation: Motivations, Pitfalls, and Experience").
 
 ### Device Binding
 

@@ -65,7 +65,7 @@ In order to provide more transparency into the app's security architecture, Goog
 
 <img src="Images/Chapters/0x04i/masa_framework.png" width="100%"/>
 
-> If you are a developer and would like to participate, you should complete this [form](https://docs.google.com/forms/d/e/1FAIpQLSdBl_eCNcUeUVDiB2duiJLZ5s4AV5AhDVuOz_1u8S9qhcXF5g/viewform).
+> If you are a developer and would like to participate, you should complete the [Independent Security Review form](https://docs.google.com/forms/d/e/1FAIpQLSdBl_eCNcUeUVDiB2duiJLZ5s4AV5AhDVuOz_1u8S9qhcXF5g/viewform "Google Play - Independent Security Review form").
 
 Note that the limited nature of testing does not guarantee complete safety of the application. This independent review may not be scoped to verify the accuracy and completeness of a developer's Data safety declarations. Developers remain solely responsible for making complete and accurate declarations in their app's Play store listing.
 
@@ -90,7 +90,7 @@ The following is a list of [common privacy violations](https://support.google.co
 - Example 3: An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data, additionally sending it over an unsecured network connection (violating MSTG-NETWORK-1).
 - Example 4: An app collects device location (which is apparently not required for its proper functioning) and does not have a prominent disclosure explaining which feature uses this data (violating MSTG-PLATFORM-1).
 
-> You can find more common violations in [Google Play Console Help (Policy Centre -> Privacy, deception and device abuse -> User data)](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations).
+> You can find more [common violations in Google Play Console Help](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations "Google Play Console Help - Examples of Common Privacy Violations") by going to **Policy Centre -> Privacy, deception and device abuse -> User data**.
 
 As you can see this is deeply related to other testing categories. When you're testing them you're often indirectly testing for User Privacy Protection. Keep this in mind since it will help you provide better and more comprehensive reports. Often you'll also be able to reuse evidence from other tests in order to test for User Privacy Protection).
 

@@ -8,9 +8,9 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 ### Host Device
 
-At the very least, you'll need [Android Studio](0x08a-Testing-Tools.md#android-studio) (which comes with the [Android SDK](0x08a-Testing-Tools.md#android-sdk)) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
+At the very least, you'll need [Android Studio](0x08a-Testing-Tools.md#android-studio) (which comes with the [Android SDK](0x08a-Testing-Tools.md#android-sdk "Android SDK")) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
 
-In addition, you may want to complete your host setup by installing the [Android NDK](0x08a-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
+In addition, you may want to complete your host setup by installing the [Android NDK](0x08a-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries.
 
 Sometimes it can be useful to display or control devices from the computer. To achieve this, you can use [Scrcpy](0x08a-Testing-Tools.md#scrcpy).
 
@@ -74,7 +74,7 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
-Please also verify the "[Testing Tools](0x08a-Testing-Tools.md)" chapter at the end of this book.
+Please also verify the ["Testing Tools"](0x08a-Testing-Tools.md) chapter at the end of this book.
 
 #### Getting Privileged Access
 

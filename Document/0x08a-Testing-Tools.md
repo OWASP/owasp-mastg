@@ -26,7 +26,7 @@ pip install angr
 
 Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
-You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the "[Symbolic Execution](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Symbolic Execution")" section of the "Reverse Engineering and Tampering" chapter as a great example on how this can work.
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the ["Symbolic Execution"](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Symbolic Execution") section of the "Reverse Engineering and Tampering" chapter as a great example on how this can work.
 
 ### Frida
 
@@ -111,7 +111,7 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 
 In order to set up Frida on your Android device:
 
-- If your device is not rooted, you can also use Frida, please refer to section "[Dynamic Analysis on Non-Rooted Devices](0x05c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices")" of the "Reverse Engineering and Tampering" chapter.
+- If your device is not rooted, you can also use Frida, please refer to section ["Dynamic Analysis on Non-Rooted Devices"](0x05c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices") of the "Reverse Engineering and Tampering" chapter.
 - If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
 
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
@@ -869,7 +869,7 @@ Use the main `r2` utility to access the **r2 shell**. You can load DEX binaries 
 r2 classes.dex
 ```
 
-Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)".
+Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in the chapter ["Tampering and Reverse Engineering on Android"](0x05c-Reverse-Engineering-and-Tampering.md).
 
 Once in the r2 shell, you can also access functions offered by the other radare2 utilities. For example, running `i` will print the information of the binary, exactly as `rabin2 -I` does.
 
@@ -998,7 +998,7 @@ Radare2 offers a **Graph Mode** that is very useful to follow the flow of the co
 
 This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://book.rada.re/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 
-Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more detailed use of radare2 on Android, especially when analyzing native libraries. You may also want to read the [official radare2 book](https://book.rada.re/ "Radare2 book").
+Please refer to the chapter ["Tampering and Reverse Engineering on Android"](0x05c-Reverse-Engineering-and-Tampering.md) for more detailed use of radare2 on Android, especially when analyzing native libraries. You may also want to read the [official radare2 book](https://book.rada.re/ "Radare2 book").
 
 #### Radare2 (iOS)
 
@@ -1147,7 +1147,7 @@ Among the unpacked files you can usually find (after running `apktool d base.apk
 - res: directory containing the app’s resources
 - smali: directory containing the disassembled Dalvik bytecode.
 
-You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "[Exploring the App Package](0x05b-Basic-Security_Testing.md#exploring-the-app-package "Exploring the App Package")" later on this chapter and section "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" in the chapter [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md) for more information and practical examples.
+You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section ["Exploring the App Package"](0x05b-Basic-Security_Testing.md#exploring-the-app-package "Exploring the App Package") later on this chapter and section ["Repackaging"](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging") in the chapter [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md) for more information and practical examples.
 
 ### apkx
 
@@ -1159,7 +1159,7 @@ cd apkx
 sudo ./install.sh
 ```
 
-This should copy apkx to `/usr/local/bin`. See section "[Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code")" of the "Reverse Engineering and Tampering" chapter for more information about usage.
+This should copy apkx to `/usr/local/bin`. See section ["Decompiling Java Code"](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code") of the "Reverse Engineering and Tampering" chapter for more information about usage.
 
 ### Busybox
 
@@ -1258,7 +1258,7 @@ Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.and
 Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
 ```
 
-> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in "[Alternative App Stores](0x05b-Basic-Security_Testing.md#alternative-app-stores "Alternative App Stores")".
+> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in ["Alternative App Stores"](0x05b-Basic-Security_Testing.md#alternative-app-stores "Alternative App Stores").
 
 ### House
 
@@ -1859,7 +1859,7 @@ Please refer to the section "Setting up an Interception Proxy" in the [Android](
 
 [mitmproxy](https://mitmproxy.org/) is an interactive, SSL/TLS-capable intercepting proxy with a console interface and a web interface for HTTP/1, HTTP/2, and WebSockets. - <https://mitmproxy.org/>
 
-See "[Quick Setup](https://docs.mitmproxy.org/stable/concepts-certificates/#quick-setup)" following installation for instructions specific to mobile platforms.
+See ["Quick Setup"](https://docs.mitmproxy.org/stable/concepts-certificates/#quick-setup) following installation for instructions specific to mobile platforms.
 
 ### MITM Relay
 

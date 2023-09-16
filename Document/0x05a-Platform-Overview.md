@@ -42,7 +42,7 @@ Source: <https://lief-project.github.io/doc/latest/tutorials/10_android_formats.
 
 **Sandboxing:** Android apps don't have direct access to hardware resources, and each app runs in its own virtual machine or sandbox. This enables the OS to have precise control over resources and memory access on the device. For instance, a crashing app doesn't affect other apps running on the same device. Android controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources. At the same time, this sandbox design can be considered as one of the many principles in Android's global defense-in-depth strategy. A malicious third-party application, with low privileges, shouldn't be able to escape its own runtime and read the memory of a victim application on the same device. In the following section we take a closer look at the different defense layers in the Android operating system. Learn more in the section ["Software Isolation"](#software-isolation).
 
-You can find more detailed information in the Google Source article ["Android Runtime (ART)"](https://source.android.com/devices/tech/dalvik/configure#how_art_works) , the ["Android Internals" by Jonathan Levin](http://newandroidbook.com/) and the [blog post "Android 101" by @_qaz_qaz](https://secrary.com/android-reversing/android101/).
+You can find more detailed information in the Google Source article ["Android Runtime (ART)"](https://source.android.com/devices/tech/dalvik/configure#how_art_works), the [book "Android Internals" by Jonathan Levin](http://newandroidbook.com/) and the [blog post "Android 101" by @_qaz_qaz](https://secrary.com/android-reversing/android101/).
 
 ## Android Security: Defense-in-Depth Approach
 
@@ -91,7 +91,7 @@ Further information is available in the [Android documentation](https://source.a
 
 Even though the Android operating system is based on Linux, it doesn't implement user accounts in the same way other Unix-like systems do. In Android, the multi-user support of the Linux kernel is used to sandbox apps: with a few exceptions, each app runs as though under a separate Linux user, effectively isolated from other apps and the rest of the operating system.
 
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/9.0.0_r3/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html "Bin Chen - AProgrammer Blog - Android Security: An Overview Of Application Sandbox") on Android sandboxing.
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/9.0.0_r3/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out the [blog post "An Overview Of Application Sandbox" by Bin Chen](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html) on Android sandboxing.
 
 For example, Android 9.0 (API level 28) defines the following system users:
 
