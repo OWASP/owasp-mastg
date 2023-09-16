@@ -74,24 +74,3 @@ Successfully downloaded ... to sg.vp.owasp_mobile.omtg_android_preferences.xml
 ```
 
 The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of for example taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
-
-## Using Termux
-
-If you have a rooted device, have [Termux](0x08a-Testing-Tools.md#termux) installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
-
-```bash
-$ sftp -P 8022 root@localhost
-...
-sftp> cd /data/data
-sftp> ls -1
-...
-sg.vantagepoint.helloworldjni
-sg.vantagepoint.uncrackable1
-sg.vp.owasp_mobile.omtg_android
-```
-
-Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
-
-<img src="Images/Chapters/0x05b/sftp-with-filezilla.png" width="400px" />
-
-Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
