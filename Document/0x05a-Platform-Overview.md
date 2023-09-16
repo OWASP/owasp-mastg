@@ -12,13 +12,13 @@ Visit the official [Android developer documentation website](https://developer.a
 
 ## Android Architecture
 
-[Android](https://en.wikipedia.org/wiki/Android_(operating_system)) is a Linux-based open source platform developed by the [Open Handset Alliance](https://www.openhandsetalliance.com/) (a consortium lead by Google), which serves as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other smart devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
+[Android](https://en.wikipedia.org/wiki/Android_(operating_system) "Android (Operating System)") is a Linux-based open source platform developed by the [Open Handset Alliance](https://www.openhandsetalliance.com/) (a consortium lead by Google), which serves as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other smart devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
 
 Android's software stack is composed of several different layers. Each layer defines interfaces and offers specific services.
 
 <img src="Images/Chapters/0x05a/android_software_stack.png" width="400px" />
 
-**Kernel:** At the lowest level, Android is based on a [variation of the Linux Kernel](https://source.android.com/devices/architecture/kernel) containing some significant additions, including [Low Memory Killer](https://source.android.com/devices/tech/perf/lmkd), wake locks, the [Binder IPC](https://source.android.com/devices/architecture/hidl/binder-ipc) driver, etc. For the purpose of the MASTG, we'll focus on the user-mode part of the OS, where Android significantly differs from a typical Linux distribution. The two most important components for us are the managed runtime used by applications (ART/Dalvik) and [Bionic](https://en.wikipedia.org/wiki/Bionic_(software)), Android’s version of glibc, the GNU C library.
+**Kernel:** At the lowest level, Android is based on a [variation of the Linux Kernel](https://source.android.com/devices/architecture/kernel) containing some significant additions, including [Low Memory Killer](https://source.android.com/devices/tech/perf/lmkd), wake locks, the [Binder IPC](https://source.android.com/devices/architecture/hidl/binder-ipc) driver, etc. For the purpose of the MASTG, we'll focus on the user-mode part of the OS, where Android significantly differs from a typical Linux distribution. The two most important components for us are the managed runtime used by applications (ART/Dalvik) and [Bionic](https://en.wikipedia.org/wiki/Bionic_(software) "Android (Bionic)"), Android’s version of glibc, the GNU C library.
 
 **HAL:** On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware. For example, it allows a stock phone application to use a device's microphone and speaker.
 
@@ -177,28 +177,31 @@ Noteworthy [API versions](https://developer.android.com/guide/topics/manifest/us
 - Android 8.0 (API level 26-27) in August 2017 (a lot of security improvements)
 - Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
 - **Android 10 (API level 29)** in September 2019 (access location "only while using the app", device tracking prevention, improve secure external storage,)
-    - Privacy ([overview](https://developer.android.com/about/versions/10/highlights#privacy_for_users), [details 1](https://developer.android.com/about/versions/10/privacy), [details 2](https://developer.android.com/about/versions/10/privacy/changes))
-    - Security ([overview](https://developer.android.com/about/versions/10/highlights#security), [details](https://developer.android.com/about/versions/10/behavior-changes-all#security))
+    - [Privacy (overview)](https://developer.android.com/about/versions/10/highlights#privacy_for_users "Android 10 Privacy Overview")
+    - [Privacy (details 1)](https://developer.android.com/about/versions/10/privacy "Android 10 Privacy Details 1")
+    - [Privacy (details 2)](https://developer.android.com/about/versions/10/privacy/changes "Android 10 Privacy Details 2")
+    - [Security (overview)](https://developer.android.com/about/versions/10/highlights#security "Android 10 Security Overview")
+    - [Security (details)](https://developer.android.com/about/versions/10/behavior-changes-all#security "Android 10 Security Details")
 - **Android 11 (API level 30)** in September 2020 (scoped storage enforcement, Permissions auto-reset, [reduced package visibility](https://developer.android.com/training/package-visibility), APK Signature Scheme v4)
-    - Privacy ([overview](https://developer.android.com/about/versions/11/privacy))
-    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all)
-    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all#security)
-    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#privacy)
-    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#security)
+    - [Privacy (overview)](https://developer.android.com/about/versions/11/privacy "Android 11 Privacy Overview")
+    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all "Android 11 Privacy Behavior changes (all apps)")
+    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all#security "Android 11 Security Behavior changes (all apps)")
+    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#privacy "Android 11 Privacy Behavior changes (apps targeting version)")
+    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#security "Android 11 Security Behavior changes (apps targeting version)")
 - **Android 12 (API level 31-32)** in August 2021 (Material You, Web intent resolution, Privacy Dashboard)
-    - [Security and privacy](https://developer.android.com/about/versions/12/features#security-privacy)
-    - [Behavior changes (all apps)](https://developer.android.com/about/versions/12/behavior-changes-all#security-privacy)
-    - [Behavior changes (apps targeting version)](https://developer.android.com/about/versions/12/behavior-changes-12#security-privacy)
+    - [Security and privacy](https://developer.android.com/about/versions/12/features#security-privacy "Android 12 Security and privacy")
+    - [Behavior changes (all apps)](https://developer.android.com/about/versions/12/behavior-changes-all#security-privacy "Android 12 Behavior changes (all apps)")
+    - [Behavior changes (apps targeting version)](https://developer.android.com/about/versions/12/behavior-changes-12#security-privacy "Android 12 Behavior changes (apps targeting version)")
 - **Android 13 (API level 33)** in 2022 (Safer exporting of context-registered receivers, new photo picker)
-    - [Security and privacy](https://developer.android.com/about/versions/13/features#privacy-security)
-    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#privacy)
-    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#security)
-    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#privacy)
-    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#security)
+    - [Security and privacy](https://developer.android.com/about/versions/13/features#privacy-security "Android 13 Security and privacy")
+    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#privacy "Android 13 Privacy Behavior changes (all apps)")
+    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#security "Android 13 Security Behavior changes (all apps)")
+    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#privacy "Android 13 Privacy Behavior changes (apps targeting version)")
+    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#security "Android 13 Security Behavior changes (apps targeting version)")
 - **Android 14 (API level 34)** in 2023:
-    - [Summary of changes](https://developer.android.com/about/versions/14/summary)
-    - [Security Behavior changes (all apps](https://developer.android.com/about/versions/14/behavior-changes-all#security)
-    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/14/behavior-changes-14#security)
+    - [Summary of changes](https://developer.android.com/about/versions/14/summary "Android 14 Summary of changes")
+    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/14/behavior-changes-all#security "Android 14 Security Behavior changes (all apps)")
+    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/14/behavior-changes-14#security "Android 14 Security Behavior changes (apps targeting version)")
 
 Android development releases follow a unique structure. They are organized into families and given alphabetical codenames inspired by tasty treats. You can find them all [here](https://source.android.com/docs/setup/about/build-numbers "Codenames, tags, and build numbers").
 
