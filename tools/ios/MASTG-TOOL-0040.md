@@ -1,6 +1,7 @@
 ---
 title: MobSF for iOS
 platform: ios
+source: https://github.com/MobSF/Mobile-Security-Framework-MobSF
 ---
 
 By running MobSF locally on a macOS host you'll benefit from a slightly better class-dump output.
@@ -15,9 +16,9 @@ The following is displayed:
 
 - Basic information about the app and its binary file.
 - Some options to:
-  - View the `Info.plist` file.
-  - View the strings contained in the app binary.
-  - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
+    - View the `Info.plist` file.
+    - View the strings contained in the app binary.
+    - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
 - List all Purpose Strings extracted from the `Info.plist` which give some hints on the app's permissions.
 - Exceptions in the App Transport Security (ATS) configuration will be listed.
 - A brief binary analysis showing if free binary security features are activated or e.g. if the binary makes use of banned APIs.

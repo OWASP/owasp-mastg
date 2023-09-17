@@ -1,6 +1,7 @@
 ---
 title: Cycript
 platform: ios
+source: https://www.cycript.org/
 ---
 
 Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing Cydia runtime patches (the so-called "Cydia Substrate Extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C.
