@@ -1,6 +1,6 @@
 # Testing Tools
 
-Many different tools are available to perform the tests from the different test-cases. These tools allow you to perform static analysis, dynamic analysis, dynamic instrumentation, etc. The goal of these tools is to help you perform your own assessments, and not to obtain a conclusive result on the security status of an application. The output of these tools should be carefully studied, as they can (and will) contain both false positives and false negatives.
+The OWASP MASTG includes many tools to assist you in executing test cases, allowing you to perform static analysis, dynamic analysis, dynamic instrumentation, etc. These tools are meant to help you conduct your own assessments, rather than provide a conclusive result on an application's security status. It's essential to carefully review the tools' output, as it can contain both false positives and false negatives.
 
 The goal of the MASTG is to be as accessible as possible. For this reason, we prioritize including tools that meet the following criteria:
 
