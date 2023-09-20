@@ -16,16 +16,6 @@ Our goal is to be vendor-neutral and to serve as a trusted learning resource, so
 
 > Disclaimer: Each tool included in the MASTG examples was verified to be functional at the time it was added. However, the tools may not work properly depending on the OS version of both your host computer and your test device. The functionality of the tools can also be affected by whether you're using a rooted or jailbroken device, the specific version of the rooting or jailbreaking method, and/or the tool version itself. The OWASP MASTG does not assume any responsibility for the operational status of these tools. If you encounter a broken tool or example, we recommend searching online for a solution or contacting the tool's provider directly. If the tool has a GitHub page, you may also open an issue there.
 
-## Commercial Tools
-
-As explained above, the MASTG project does not list commercial tools, nor freeware versions from commercial vendors if an open-source alternative is available.
-
-If you are looking for commercial tooling in the Mobile Application Security Space a potential resource is Gartner:
-
-- [Mobile Application Security Testing Market](https://www.gartner.com/reviews/market/mobile-application-security-testing)
-- [Products In In-App Protection Market](https://www.gartner.com/reviews/market/in-app-protection)
-
-> Disclaimer: Performing a fully automated scan of an application is a good start, but will not ensure that your application is secure. The results are heavily impacted by the type of application, the implemented business logic, the used framework (Flutter, React Native, Xamarin, ...) and the target OS. We recommend analyzing different tools for your specific application to see which tool gives the most thorough results.
 
 ## Tools for all Platforms
 
