@@ -1,8 +1,17 @@
 # Testing Tools
 
-To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile apps, investigate the behavior of running apps and other test cases and automate them.
+The OWASP MASTG includes many tools to assist you in executing test cases, allowing you to perform static analysis, dynamic analysis, dynamic instrumentation, etc. These tools are meant to help you conduct your own assessments, rather than provide a conclusive result on an application's security status. It's essential to carefully review the tools' output, as it can contain both false positives and false negatives.
 
-> The MASTG project has no preference in any of the tools below, or in promoting or selling any of the tools. All tools below have been verified if they are "alive", meaning that updates have been pushed recently. Nevertheless, not all tools have been used/tested by the authors, but they might still be useful when analyzing a mobile app. The listing is sorted in alphabetical order. The list is also pointing out commercial tools.
->
-> Disclaimer: At the time of writing, we ensure that the tools being used in the MASTG examples are properly working. However, the tools might be broken or not work properly depending on your OS version of both your host computer and your test device. The functioning of the tooling can be further impeded by whether you're using a rooted/jailbroken device, the specific version of the rooting/jailbreak method and/or the version of the tool. The MASTG does not take any responsibility over the working status of the tools. If you find a broken tool or example, please search or file an issue in the tool original page, e.g. in the GitHub issues page.
+The goal of the MASTG is to be as accessible as possible. For this reason, we prioritize including tools that meet the following criteria:
 
+- Open-source
+- Free to use
+- Capable of analyzing recent Android/iOS applications
+- Regularly updated
+- Strong community support
+
+In instances where no suitable open-source alternative exists, we may include closed-source tools. However, any closed-source tools included must be free to use, as we aim to avoid featuring paid tools whenever possible. This also extends to freeware or community editions of commercial tools.
+
+Our goal is to be vendor-neutral and to serve as a trusted learning resource, so the specific category of "automated mobile application security scanners" presents a unique challenge. For this reason, we have historically avoided including such tools due to the competitive disadvantages they can create among vendors. In contrast, we prioritize tools like MobSF that provide full access to their code and a comprehensive set of tests, making them excellent for educational purposes. Tools that lack this level of transparency, even if they offer a free version, generally do not meet the inclusion criteria of the OWASP MAS project.
+
+> Disclaimer: Each tool included in the MASTG examples was verified to be functional at the time it was added. However, the tools may not work properly depending on the OS version of both your host computer and your test device. The functionality of the tools can also be affected by whether you're using a rooted or jailbroken device, the specific version of the rooting or jailbreaking method, and/or the tool version itself. The OWASP MASTG does not assume any responsibility for the operational status of these tools. If you encounter a broken tool or example, we recommend searching online for a solution or contacting the tool's provider directly. If the tool has a GitHub page, you may also open an issue there.
