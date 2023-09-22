@@ -67,7 +67,7 @@ def append_tools_as_subsections():
                 chapter_tools_content += f"\n> **Platform:** {platform}\n"
                 if source:
                     # Add source to content
-                    chapter_tools_content += f"> **Avaliable at:** <{source}>\n"
+                    chapter_tools_content += f"> **Available at:** <{source}>\n"
                 # Remove yaml frontmatter from tool content
                 tool_content = re.sub(r'---\n(.|\n)*?\n---\n', '', tool_content)
                 # Add one nesting level to all headers
@@ -102,7 +102,7 @@ def append_apps_as_subsections():
                 chapter_apps_content += f"\n> **Platform:** {platform}\n"
                 if source:
                     # Add source to content
-                    chapter_apps_content += f"> **Avaliable at:** <{source}>\n"
+                    chapter_apps_content += f"> **Available at:** <{source}>\n"
                 # Remove yaml frontmatter from app content
                 app_content = re.sub(r'---\n(.|\n)*?\n---\n', '', app_content)
                 # Add one nesting level to all headers
