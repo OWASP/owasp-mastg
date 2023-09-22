@@ -25,10 +25,12 @@ def append_tests_as_subsections():
                 yaml_front = next(yaml.safe_load_all(test_content))
                 # Extract title and masvs_id
                 title = yaml_front['title']
+                platform = yaml_front['platform']
                 masvs_v1_id = yaml_front['masvs_v1_id']
                 masvs_v2_id = yaml_front['masvs_v2_id']
                 # Add title header to content
                 chapter_tests_content += f"\n\n## {title}"
+                chapter_tests_content += f"\n> **Platform:** {platform}\n"
                 # Add MASVS header to content
                 chapter_tests_content += f"\n\n> **MASVS V1:** {', '.join(masvs_v1_id)}\n>\n> **MASVS V2:** {'N/A' if not masvs_v2_id else ', '.join(masvs_v2_id)}\n"
                 # Remove yaml frontmatter from test content
@@ -58,12 +60,14 @@ def append_tools_as_subsections():
                 yaml_front = next(yaml.safe_load_all(tool_content))
                 # Extract title and source
                 title = yaml_front['title']
+                platform = yaml_front['platform']
                 source = yaml_front.get('source')
                 # Add title header to content
                 chapter_tools_content += f"\n\n## {title}\n"
+                chapter_tools_content += f"\n> **Platform:** {platform}\n"
                 if source:
                     # Add source to content
-                    chapter_tools_content += f"\n> **Avaliable at:** <{source}>\n"
+                    chapter_tools_content += f"> **Avaliable at:** <{source}>\n"
                 # Remove yaml frontmatter from tool content
                 tool_content = re.sub(r'---\n(.|\n)*?\n---\n', '', tool_content)
                 # Add one nesting level to all headers
@@ -74,6 +78,41 @@ def append_tools_as_subsections():
         # Write the updated content to the file
         with tools_chapter_path.open('a') as f:
             content = chapter_tools_content + '\n'
+            f.write(content)
+
+def append_apps_as_subsections():
+    base_document_path = Path('Document')
+    base_apps_path = Path('apps')
+    apps_chapter_path = base_document_path / '0x08b-Reference-Apps.md'
+    
+    for platform in ['android', 'ios']:
+        chapter_apps_content = ""
+        apps_path = base_apps_path / platform
+        for app_file in apps_path.glob('*'):
+            with app_file.open('r') as f:
+                app_content = f.read()
+                # Extract yaml frontmatter
+                yaml_front = next(yaml.safe_load_all(app_content))
+                # Extract title and source
+                title = yaml_front['title']
+                platform = yaml_front['platform']
+                source = yaml_front.get('source')
+                # Add title header to content
+                chapter_apps_content += f"\n\n## {title}\n"
+                chapter_apps_content += f"\n> **Platform:** {platform}\n"
+                if source:
+                    # Add source to content
+                    chapter_apps_content += f"> **Avaliable at:** <{source}>\n"
+                # Remove yaml frontmatter from app content
+                app_content = re.sub(r'---\n(.|\n)*?\n---\n', '', app_content)
+                # Add one nesting level to all headers
+                app_content = re.sub(r'^#', '##', app_content, flags=re.MULTILINE)
+
+                chapter_apps_content += '\n' + app_content.strip()
+
+        # Write the updated content to the file
+        with apps_chapter_path.open('a') as f:
+            content = chapter_apps_content + '\n'
             f.write(content)
 
 def append_techniques_as_subsections():
@@ -92,8 +131,10 @@ def append_techniques_as_subsections():
                 yaml_front = next(yaml.safe_load_all(tool_content))
                 # Extract title
                 title = yaml_front['title']
+                platform = yaml_front['platform']
                 # Add title header to content
                 chapter_techniques_content += f"\n\n## {title}\n"
+                chapter_techniques_content += f"\n> **Platform:** {platform}\n"
                 # Remove yaml frontmatter from tool content
                 tool_content = re.sub(r'---\n(.|\n)*?\n---\n', '', tool_content)
                 # Add one nesting level to all headers
@@ -116,3 +157,5 @@ append_tests_as_subsections()
 append_tools_as_subsections()
 
 append_techniques_as_subsections()
+
+append_apps_as_subsections()
