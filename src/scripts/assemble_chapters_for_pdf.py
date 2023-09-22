@@ -64,7 +64,7 @@ def append_tools_as_subsections():
                 source = yaml_front.get('source')
                 # Add title header to content
                 chapter_tools_content += f"\n\n## {title}\n"
-                chapter_tools_content += f"\n> **Platform:** {platform}\n"
+                chapter_tools_content += f"\n> **Platform:** {platform}\n>\n"
                 if source:
                     # Add source to content
                     chapter_tools_content += f"> **Available at:** <{source}>\n"
@@ -99,7 +99,7 @@ def append_apps_as_subsections():
                 source = yaml_front.get('source')
                 # Add title header to content
                 chapter_apps_content += f"\n\n## {title}\n"
-                chapter_apps_content += f"\n> **Platform:** {platform}\n"
+                chapter_apps_content += f"\n> **Platform:** {platform}\n>\n"
                 if source:
                     # Add source to content
                     chapter_apps_content += f"> **Available at:** <{source}>\n"
