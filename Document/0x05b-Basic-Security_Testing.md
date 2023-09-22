@@ -1,4 +1,4 @@
-# Android Basic Security Testing
+# Android Security Testing
 
 In the previous chapter, we provided an overview of the Android platform and described the structure of its apps. In this chapter, we'll talk about setting up a security testing environment and introduce basic processes and techniques you can use to test Android apps for security flaws. These basic processes are the foundation for the test cases outlined in the following chapters.
 
