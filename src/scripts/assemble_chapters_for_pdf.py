@@ -29,10 +29,10 @@ def append_tests_as_subsections():
                 masvs_v1_id = yaml_front['masvs_v1_id']
                 masvs_v2_id = yaml_front['masvs_v2_id']
                 # Add title header to content
-                chapter_tests_content += f"\n\n## {title}"
-                chapter_tests_content += f"\n> **Platform:** {platform}\n"
+                chapter_tests_content += f"\n\n## {title}\n"
+                chapter_tests_content += f"\n> **Platform:** {platform}\n>\n"
                 # Add MASVS header to content
-                chapter_tests_content += f"\n\n> **MASVS V1:** {', '.join(masvs_v1_id)}\n>\n> **MASVS V2:** {'N/A' if not masvs_v2_id else ', '.join(masvs_v2_id)}\n"
+                chapter_tests_content += f"> **MASVS V1:** {', '.join(masvs_v1_id)}\n>\n> **MASVS V2:** {'N/A' if not masvs_v2_id else ', '.join(masvs_v2_id)}\n"
                 # Remove yaml frontmatter from test content
                 test_content = re.sub(r'---\n(.|\n)*?\n---\n', '', test_content)
                 # Add one nesting level to all headers
