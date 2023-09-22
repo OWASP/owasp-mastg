@@ -24,13 +24,13 @@ frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
 
 For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
 
-##### Installing Frida on iOS
+## Installing Frida on iOS
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
 
 Start Cydia and add Frida's repository by navigating to **Manage** -> **Sources** -> **Edit** -> **Add** and entering <https://build.frida.re>. You should then be able to find and install the Frida package.
 
-##### Using Frida on iOS
+## Using Frida on iOS
 
 Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
 
@@ -49,7 +49,7 @@ PID  Name
 (...)
 ```
 
-#### Frida Bindings
+## Frida Bindings
 
 In order to extend the scripting experience, Frida offers bindings to programming languages such as Python, C, NodeJS, and Swift.
 

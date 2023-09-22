@@ -8,11 +8,11 @@ source: https://github.com/FSecureLABS/drozer
 
 The advantage of using drozer consists on its ability to automate several tasks and that it can be expanded through modules. The modules are very helpful and they cover different categories including a scanner category that allows you to scan for known defects with a simple command such as the module `scanner.provider.injection` which detects SQL injections in content providers in all the apps installed in the system. Without drozer, simple tasks such as listing the app's permissions require several steps that include decompiling the APK and manually analyzing the results.
 
-#### Installing Drozer
+## Installing Drozer
 
 You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://fi5t.xyz/en/posts/drozer-on-mac/ "(not)Unique experience blog - Installing Drozer on macOS Catalina")) and the [drozer website](https://labs.withsecure.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
-#### Using Drozer
+## Using Drozer
 
 Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the GitHub releases page](https://github.com/FSecureLABS/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
@@ -34,7 +34,7 @@ dz> run app.activity.start --component <package> <component name>
 
 This previous command will start the activity, hopefully leaking some sensitive information. Drozer has modules for every type of IPC mechanism. Download [InsecureBankv2](0x08b-Reference-Apps.md#insecurebankv2) if you would like to try the modules with an intentionally vulnerable application that illustrates common problems related to IPC endpoints. Pay close attention to the modules in the scanner category as they are very helpful automatically detecting vulnerabilities even in system packages, specially if you are using a ROM provided by your cellphone company. Even [SQL injection vulnerabilities in system packages by Google](https://issuetracker.google.com/u/0/issues/36965126 "SQL injection in Android") have been identified in the past with drozer.
 
-#### Other Drozer commands
+## Other Drozer commands
 
 Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
@@ -67,7 +67,7 @@ $ dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number
 $ dz> run scanner.provider.injection -a (package name)
 ```
 
-#### Other Drozer resources
+## Other Drozer resources
 
 Other resources where you might find useful information are:
 

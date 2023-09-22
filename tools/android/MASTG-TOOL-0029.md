@@ -17,7 +17,7 @@ If you have a rooted device with frida-server installed, Objection can connect d
 
 The ability to **perform advanced dynamic analysis on non-rooted devices** is one of the features that makes Objection incredibly useful. After following the [repackaging process](0x05b-Basic-Security_Testing.md#repackaging-apps) you will be able to run all the aforementioned commands which make it very easy to quickly analyze an application, or bypass basic security controls.
 
-##### Using Objection on Android
+## Using Objection on Android
 
 Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 

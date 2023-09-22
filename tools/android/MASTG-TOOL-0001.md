@@ -24,7 +24,7 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 
 > Note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
 
-##### Installing Frida on Android
+## Installing Frida on Android
 
 In order to set up Frida on your Android device:
 
@@ -51,7 +51,7 @@ adb shell "chmod 755 /data/local/tmp/frida-server"
 adb shell "su -c /data/local/tmp/frida-server &"
 ```
 
-##### Using Frida on Android
+## Using Frida on Android
 
 With frida-server running, you should now be able to get a list of running processes with the following command (use the `-U` option to indicate Frida to use a connected USB devices or emulator):
 
@@ -88,7 +88,7 @@ $ frida-ps -Uai
 
 This will show the names and identifiers of all apps, if they are currently running it will also show their PIDs. Search for your app in the list and take a note of the PID or its name/identifier. From now on you'll refer to your app by using one of them. A recommendation is to use the identifiers, as the PIDs will change on each run of the app. For example let's take `com.android.chrome`. You can use this string now on all Frida tools, e.g. on the Frida CLI, on frida-trace or from a Python script.
 
-##### Tracing Native Libraries with frida-trace
+## Tracing Native Libraries with frida-trace
 
 To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
 
@@ -100,7 +100,7 @@ This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frid
 
 Unfortunately tracing high-level methods of Java classes is not yet supported (but might be [in the future](https://github.com/frida/frida-python/issues/70 "Support for tracing high-level methods of Java Classes via patterns")).
 
-##### Frida CLI and the Java API
+## Frida CLI and the Java API
 
 Use the Frida CLI tool (`frida`) to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
