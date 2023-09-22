@@ -6,8 +6,8 @@ mkdir docs/MASTG/iOS
 mkdir docs/MASTG/References
 
 cp Document/tests.md docs/MASTG
-cp Document/apps.md docs/MASTG
-cp Document/tools.md docs/MASTG
+cp Document/0x08b-Reference-Apps.md docs/MASTG/apps.md
+cp Document/0x08a-Testing-Tools.md docs/MASTG/tools.md
 cp Document/techniques.md docs/MASTG
 
 cp Document/0x0*.md docs/MASTG
