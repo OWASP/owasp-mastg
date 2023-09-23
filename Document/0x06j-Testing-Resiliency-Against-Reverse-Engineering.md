@@ -367,7 +367,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 The following steps should guide you when bypassing detection of reverse engineering tools:
 
-1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of radare2/Cutter or Ghidra.
+1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of radare2/[iaito](https://github.com/radareorg/iaito "iaito") or Ghidra.
 2. Use Frida or Cydia Substrate to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
 
 Refer to the chapter ["Tampering and Reverse Engineering on iOS"](0x06c-Reverse-Engineering-and-Tampering.md) for examples of patching and code injection.

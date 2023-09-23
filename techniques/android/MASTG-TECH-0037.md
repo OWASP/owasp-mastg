@@ -21,7 +21,7 @@ Incorrect serial (wrong format).
 
 ```
 
-So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as [Cutter](0x08a-Testing-Tools.md#cutter). The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as [iaito](0x08a-Testing-Tools.md#iaito). The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
 
 <img src="Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 
@@ -147,7 +147,7 @@ You need to perform several steps to initialize Angr's symbolic execution engine
 
 - Also, specify the addresses that the analysis should not reach. In this case, the code block that prints the "Incorrect serial" message at `0x00001854` is not interesting.
 
-> Note that the Angr loader will load the PIE executable with a base address of `0x400000`, which needs to be added to the offsets from Cutter before passing it to Angr.
+> Note that the Angr loader will load the PIE executable with a base address of `0x400000`, which needs to be added to the offsets from iaito before passing it to Angr.
 
 The final solution script is presented below:
 
