@@ -5,9 +5,7 @@ platform: android
 
 Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the [Angr](0x08a-Testing-Tools.md#angr) binary analysis framework as our symbolic execution engine.
 
-The target crackme is a simple [Android License Validator](0x08b-Reference-Apps.md#android-license-validator "Android License Validator") executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code, and hence, critical business logic is often written in native. The current sample application may not represent a real world problem, but nevertheless it helps getting some basic notions about symbolic execution that you can use in a real situation. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
-
-The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
+To demonstrate this technique we'll use a crackme called [Android License Validator](0x08b-Reference-Apps.md#android-license-validator "Android License Validator"). The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
 
 ```bash
 $ adb push validate /data/local/tmp
@@ -27,7 +25,7 @@ So far so good, but we know nothing about what a valid license key looks like. T
 
 <img src="Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 
-The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward,  we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
+The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward, we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
 
 <img src="Images/Chapters/0x05c/graph_1874.png" width="100%" />
 
