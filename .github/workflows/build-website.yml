@@ -23,11 +23,6 @@ jobs:
 
       - run: python3 src/scripts/transform_files.py
 
-      - run: mv Document/Images/ docs/assets/Images/
-      - run: find docs/MASTG/tests -name "*.md" -exec sed -i "s#<img src=\"Images/#<img src=\"../../../../../../assets/Images/#g" {} \;
-      - run: find docs/MASTG -name "*.md" -exec sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" {} \;
-
-
       - name: Get Latest MASVS Release Tag
         run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
@@ -41,10 +36,7 @@ jobs:
       # - name: Populate MASVS Categories Markdown Files
       #   run: python3 ./owasp-masvs/src/populate_masvs_categories_md.py -d ./owasp-masvs/Document -w
       - run: ./src/scripts/structure_masvs.sh
-      - run: mkdir docs/assets/Images/MASVS
-      - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
-      - run: sed -i "s#images/#../../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
-      - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/*.md
+
       - name: Generate MASVS Control Markdown Files
         run: python3 src/scripts/write_masvs_control_md_files.py
 
