@@ -327,7 +327,7 @@ Some permissions can be configured by the app's developers (e.g. Data Protection
 - Speech recognition
 - the TV provider
 
-Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/accessing-private-data "Requesting Permissions"), it can still be the case that an app requests too many of them for non-obvious reasons.
+Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/privacy "Requesting Permission"), it can still be the case that an app requests too many of them for non-obvious reasons.
 
 Verifying the use of some permissions such as Camera, Photos, Calendar Data, Motion, Contacts or Speech Recognition should be pretty straightforward as it should be obvious if the app requires them to fulfill its tasks. Let's consider the following examples regarding the Photos permission, which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos):
 

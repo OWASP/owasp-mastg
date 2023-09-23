@@ -7,7 +7,7 @@ platform: ios
 
 ## Overview
 
-This chapter covers defense-in-depth measures recommended for apps that process, or give access to, sensitive data or functionality. Research shows that [many App Store apps often include these measures](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
+This chapter covers defense-in-depth measures recommended for apps that process, or give access to, sensitive data or functionality. Research shows that [many App Store apps often include these measures](https://seredynski.com/articles/a-security-review-of-1-300-appstore-applications "A security review of 1,300 AppStore applications - 5 April 2020").
 
 These measures should be applied as needed, based on an assessment of the risks caused by unauthorized tampering with the app and/or reverse engineering of the code.
 
@@ -36,7 +36,7 @@ Jailbreak detection mechanisms are added to reverse engineering defense to make 
 
 #### Common Jailbreak Detection Checks
 
-Here we present three typical jailbreak detection techniques (more information [in this blog post](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods")):
+Here we present three typical jailbreak detection techniques:
 
 **File-based Checks:**
 

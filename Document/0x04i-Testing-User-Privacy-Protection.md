@@ -146,5 +146,5 @@ Some references include:
 
 - Open-Source Licenses and Android - <https://www.bignerdranch.com/blog/open-source-licenses-and-android/>
 - Software Licenses in Plain English - <https://tldrlegal.com/>
-- Apple Accessing private data - <https://developer.apple.com/design/human-interface-guidelines/accessing-private-data>
+- Apple Accessing private data - <https://developer.apple.com/design/human-interface-guidelines/privacy>
 - Android App permissions best practices - <https://developer.android.com/training/permissions/requesting.html#explain>

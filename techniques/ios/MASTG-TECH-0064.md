@@ -44,6 +44,6 @@ Some apps might implement custom SSL pinning methods, so the tester could also d
 
 If you don't have access to the source, you can try binary patching:
 
-- If OpenSSL certificate pinning is used, you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
+- If OpenSSL certificate pinning is used, you can try binary patching.
 - Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware of the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
 - If you can access the source code you could try to disable certificate pinning and recompile the app, look for API calls for `NSURLSession`, `CFStream`, and `AFNetworking` and methods/strings containing words like "pinning", "X.509", "Certificate", etc.
