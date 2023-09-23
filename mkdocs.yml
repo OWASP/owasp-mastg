@@ -157,6 +157,7 @@ extra_css:
 extra_javascript:
   - javascripts/tablesort.min.js
   - javascripts/tablesorts.js
+  - javascripts/external_links.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
