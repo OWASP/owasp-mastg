@@ -60,7 +60,13 @@ def get_mastg_components_dict(name):
                 frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
                 # is is the basename of the file without the extension
                 id = os.path.splitext(os.path.basename(file))[0]
-                frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
+                if "-TEST" in id:
+                    masvs_id = frontmatter['masvs_v2_id'][0]
+                    masvs_category = masvs_id[:masvs_id.rfind('-')]
+                    frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
+
+                else:
+                    frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
                 components.append(frontmatter)
         return components
 
