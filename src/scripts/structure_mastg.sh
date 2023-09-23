@@ -11,6 +11,7 @@ cp Document/0x08a-Testing-Tools.md docs/MASTG/tools.md
 cp Document/techniques.md docs/MASTG
 
 cp Document/0x0[1-6]*.md docs/MASTG
+cp Document/0x09*.md docs/MASTG
 cp -r tests docs/MASTG/
 cp -r techniques docs/MASTG/
 cp -r tools docs/MASTG/
