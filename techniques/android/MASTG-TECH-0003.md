@@ -58,7 +58,7 @@ adb pull <apk path>
 
 The APK will be downloaded in your working directory.
 
-Alternatively, there are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted APK via your preferred method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
+Alternatively, there are also apps like [APK Extractor](https://github.com/Domilopment/apk-extractor "APK Extractor") that do not require root and can even share the extracted APK via your preferred method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
 
 ## Testing Instant Apps
 

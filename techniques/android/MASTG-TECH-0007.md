@@ -29,9 +29,9 @@ The following files are unpacked:
 
 - AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
 - original/META-INF: contains the app's metadata
-  - MANIFEST.MF: stores hashes of the app resources
-  - CERT.RSA: the app's certificate(s)
-  - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
+    - MANIFEST.MF: stores hashes of the app resources
+    - CERT.RSA: the app's certificate(s)
+    - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
 - assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager) can retrieve
 - classes.dex: classes compiled in the DEX file format, that Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
 - lib: directory containing 3rd party libraries that are part of the APK
@@ -69,7 +69,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 ## App Binary
 
-As seen above in "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
+The app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
 
 Refer to the section "[Reviewing Decompiled Java Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more information about how to reverse engineer DEX files.
 
