@@ -16,6 +16,7 @@ logs
 launch.json
 docs/MASVS
 docs/MASTG
+docs/assets/Images
 docs/checklists/
 owasp-masvs
 __pycache__

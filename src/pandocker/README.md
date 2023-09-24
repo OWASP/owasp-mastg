@@ -6,10 +6,10 @@ The MASTG document generation is based on pandocker: [https://github.com/dalibo/
 
 - Install Docker
 - `cd` to the MASTG root folder `owasp-mastg/`
-- Run the `pandoc_makedocs.sh` script with the language folder and an optional version number (**do not `cd` into `src/docker` to run it**):
+- Run the `pandoc_makedocs.sh` script with the language folder and an optional version number (**do not `cd` into `src/pandocker` to run it**):
 
     ```sh
-    ./src/docker/pandoc_makedocs.sh Document MyVersion
+    ./src/pandocker/pandoc_makedocs.sh Document MyVersion
     ```
 
 - You can set `VERBOSE=1` for a more detailed output
@@ -34,7 +34,7 @@ See the results in: <https://github.com/OWASP/owasp-mastg/actions>
 - Create a new image and push it to docker hub (requires being logged in to Docker hub and Docker hub membership of OWASP organization):
 
   ```sh
-    docker build --tag owasp/masvs-docgenerator:<docker-container-image-version> src/docker/
+    docker build --tag owasp/masvs-docgenerator:<docker-container-image-version> src/pandocker/
     docker images
     #check the output and find the tag of the MASVS-generator container image you created
     docker tag <imageid> owasp/masvs-docgenerator:<docker-container-image-version>
