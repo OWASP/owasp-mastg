@@ -1,72 +1,31 @@
-# Tools (Partially Outdated, double check!)
+# Scripts and Releases
 
 ## Overview
 
-This directory is for tools that are used to generate the necessary files for our release-channels.
-
-Channels:
-
-- Gitbook: currently using @sushi2k's repository (<https://github.com/sushi2k/owasp-mstg-1>) which is synced automatically via <https://github.com/apps/pull>.
-- Github actions & Github releases: We use Github actions to build and verify the documents in an automated fashion as well as build releases.
-- Leanpub: The book can be bought via Leanpub <https://leanpub.com/owasp-mastg> as PDF to support OWASP and the MAS project financially.
-- Lulu: The book can be bought via Lulu <https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html> as hard-copy to support OWASP and the MAS project financially.
+This folder contains scripts and assets needed to generate our deliverables.
 
 Files:
 
-- `Apply_Link_Check.sh`: Tool to inspect the links in the document folders for every language.
-- `Apply_Lint_Check.sh`: Tool to inspect the markdown files their markup in the document folders for every language.
+- `pandocker/`: Directory containing the scripts and auxiliary files needed to run the pandocker image for the document generation.
+- `scripts/`: Directory containing the scripts used for the generation of the MAS deliverables such as the PDF, the website, the checklists, etc.
 - `contributors.py`: Python script to retrieve current contributors and group them into our different categories according to their additions.
-- `custom-reference.docx`: Template file used for generating the word document.
-- `pandoc_makedocs.sh`: Script that is being used to generate PDF, ePub and docx version of the MASTG. This script can be used to generate the documents locally and is also used in Github Actions.
-- `updateLeanpub.sh` is in the making: for now it contains only instructions.
 
-## Release process
+## GitHub Actions
 
-1. Update the CHANGELOG.md in the Documents directory and add a release statement and summary of the changes since the last release. Update the RECENT_CHANGES.md in the tools folder. Add it also to the CHANGELOG.md in the root directory.
-2. Commit the changes (with message `Release <version>`)
-3. Merge the PR into master
-4. Checkout master and pull changes:
+Our workflows for GitHub Actions are located in `.github/workflows`.
 
-    ```bash
-    $ git checkout master
-    $ git pull
-    ```
+Usually we don't have to change anything here apart from upgrading the version of the included actions (e.g. `actions/checkout@v2`).
 
-5. Push a tag with the new version:
+- **Document** (`.github/workflows/docgenerator.yml`) generates:
+    - the MASTG as PDF and ePub using `src/pandocker/pandoc_makedocs.sh`
+    - the MAS Checklist using `src/scripts/yaml_to_excel.py`
+- **Build Website** (`.github/workflows/build-website.yml`): builds the website and pushes the result to the `gh-pages` branch.
+- **Markdown Linter** (`.github/workflows/markdown-linter.yml`): runs a markdown linter using our config `.markdownlint.json` (more about [configuration](https://github.com/igorshubovych/markdownlint-cli#configuration)).
+- **URLs Checker** (`.github/workflows/url-checker.yml`, `.github/workflows/url-checker-pr.yml`): runs a URL checker using our config `.github/workflows/config/url-checker-config.json` (this workflow usually gives false positives that we have to exclude in the config).
+- **Spell Checker** (`.github/workflows/spell-checker.yml`): runs a spell checker
+- **CodeQL Security Scan** (`.github/workflows/codeql-analysis.yml`): to detect security issues in our Python code.
+- **Labeler** (`.github/workflows/labeler.yml`): automatically labels PRs based on the files changed and the configuration in `.github/labeler.yml`.
 
-    ```bash
-    $ git tag -a v<version> -m "Release message"
-    $ git push origin v<version>
-    ```
+## How to Release
 
-    > The letter `v` need to be part of the tag name to trigger the release Github action. The tag name will become the version title of the release. The content of the RECENT_CHANGES file will become the body text of the release (be sure it includes the actual title of the release).
-
-6. Verify that Github Action was triggered and successfully completed <https://github.com/OWASP/owasp-mastg/actions>
-7. Verify the new release <https://github.com/OWASP/owasp-mastg/releases>
-8. Update OWASP Wiki if necessary <https://owasp.org/mas>
-9. Update the files at Lulu with the created files from the release page.
-10. Update the files at Leanpub with the created files from the release page.
-11. Tweet about it with @OWASP_MAS, Linkedin and OWASP Slack
-
-In case something went wrong and we need to remove the release:
-
-1. Delete the tag locally and remotely:
-
-    ```bash
-    $ git tag -d <tag>   # delete the tag locally
-    $ git push origin :refs/tags/<tag>  # delete the tag remotely
-    ```
-
-2. Go to Github release page <https://github.com/OWASP/owasp-masvs/releases>. The release you removed is now in "draft". Click on edit and discard/delete the release.
-
-## Leanpub
-
-There is a publishing API available <https://leanpub.com/help/api>.
-
-As of now (26th July 2021) the API of Leanpub is only available to Pro Customers, which would costs 12.99 USD per month. For now we do it manually at <https://leanpub.com/owasp-mastg/upload>.
-
-## Lulu
-
-Will be created when we have full support from Lulu. For now do it manually at <https://leanpub.com/mobile-security-testing-guide/upload>.
-
-At the moment (26th July 2021) it's only possible to use the API for ordering books, but not releasing a new version, <https://api.lulu.com/docs/#section/Getting-Started/Generate-a-Token>.
+See ["How to Release"](https://github.com/sushi2k/MSTG-MASVS-Internal/blob/main/docs/release/1_How_to_Release.md) (access restricted).
