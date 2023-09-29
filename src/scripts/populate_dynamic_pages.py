@@ -67,7 +67,6 @@ def get_mastg_components_dict(name):
                         masvs_id = frontmatter['masvs_v2_id'][0]
                         masvs_category = masvs_id[:masvs_id.rfind('-')]
                         frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
-                        frontmatter['title'] = f"[{frontmatter['title']}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
 
                     else:
                         frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
@@ -79,7 +78,7 @@ def reorder_dict_keys(original_dict, key_order):
 
 # tests/index.md
 
-column_titles = {'title': 'Name', 'masvs_v2_id': "MASVS ID"} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
+column_titles = {'id': 'ID', 'title': 'Name', 'masvs_v2_id': "MASVS ID"} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
 
 tests = get_mastg_components_dict("docs/MASTG/tests")
 test_types = ["android", "ios"]
