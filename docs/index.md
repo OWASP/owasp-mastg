@@ -43,7 +43,7 @@ hide:
 
 <br>
 
-<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG.pdf" class="md-button md-button--primary" > Download the MASTG</a>
+<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG.pdf';"> Download the MASTG</button>
 
 </center>
 

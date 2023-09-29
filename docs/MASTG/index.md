@@ -15,9 +15,20 @@ The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensi
 
 <br>
 
-[:material-download: Download the MASTG](https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG.pdf){ .md-button .md-button--primary }
+<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG.pdf';"> Download the MASTG</button>
 
 <br>
+
+Start exploring the MASTG:
+
+<div class="mas-flex-container" style="margin-top: 2em;">
+
+<a href="/MASTG/tests/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">Tests</a>
+<a href="/MASTG/techniques/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">Techniques</a>
+<a href="/MASTG/tools/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">Tools</a>
+<a href="/MASTG/apps/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">Apps</a>
+
+</div>
 
 <span style="color: darkgray; font-size: small"> :blue_heart:{ .pump } Support the project by purchasing the [OWASP MASTG on leanpub.com](https://leanpub.com/owasp-mastg). All funds raised through sales of this book go directly into the project budget and will be used to for technical editing and designing the book and fund production of future releases.</span>
 

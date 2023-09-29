@@ -50,14 +50,6 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-CODE/*.md
           - MASVS-RESILIENCE:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
-      - Tools:
-        - MASTG/tools/index.md
-        - Generic:
-          - ... | flat | MASTG/tools/generic/*.md
-        - Android:
-          - ... | flat | MASTG/tools/android/*.md
-        - iOS:
-          - ... | flat | MASTG/tools/ios/*.md
       - Techniques:
         - MASTG/techniques/index.md
         - Generic:
@@ -66,6 +58,14 @@ nav:
           - ... | flat | MASTG/techniques/android/*.md
         - iOS:
           - ... | flat | MASTG/techniques/ios/*.md
+      - Tools:
+        - MASTG/tools/index.md
+        - Generic:
+          - ... | flat | MASTG/tools/generic/*.md
+        - Android:
+          - ... | flat | MASTG/tools/android/*.md
+        - iOS:
+          - ... | flat | MASTG/tools/ios/*.md
       - Apps:
         - MASTG/apps/index.md
         - Android:
