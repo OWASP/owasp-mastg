@@ -239,7 +239,7 @@ You don't need to deploy a fully fledged MITM attack if you simply want to know 
 
 This would work pretty well for apps using standard API libraries functions and classes, however there might be some downsides:
 
-- the app might implement a custom network stack and you'll have to spend time analyzing the app to find out the APIs that you can use (see section "Searching for OpenSSL traces with signature analysis" in [this blog post](https://hackmag.com/security/ssl-sniffing/)).
+- the app might implement a custom network stack and you'll have to spend time analyzing the app to find out the APIs that you can use. See section "Searching for OpenSSL traces with signature analysis" in [this blog post](https://hackmag.com/security/ssl-sniffing/ "Searching for OpenSSL traces with signature analysis").
 - it might be very time consuming to craft the right hooking scripts to re-assemble HTTP response pairs (across many method calls and execution threads). You might find [ready-made scripts](https://github.com/fanxs-t/Android-SSL_read-write-Hook/blob/master/frida-hook.py) and even for [alternative network stacks](https://codeshare.frida.re/@owen800q/okhttp3-interceptor/) but depending on the app and the platform these scripts might need a lot of maintenance and might not _always work_.
 
 See some examples:

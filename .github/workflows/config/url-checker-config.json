@@ -80,6 +80,9 @@
         },
         {
             "pattern": "^https://linkedin.com/in/"
+        },
+        {
+            "pattern": "^https://github.com/sushi2k/MSTG-MASVS-Internal"
         }
     ],
     "httpHeaders": [

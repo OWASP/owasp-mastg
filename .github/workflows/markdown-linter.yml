@@ -20,4 +20,4 @@ jobs:
         with:
           files: Document
           config_file: ".markdownlint.jsonc"
-          ignore_files: "Tools, node_modules, Crackmes, Samples"
+          ignore_files: "src, node_modules, Crackmes, Samples"

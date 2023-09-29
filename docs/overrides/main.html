@@ -36,6 +36,11 @@
         {% endif %}
     </div>
 
+    {% if page.meta.source %}
+    <span>Available at: </span><a href="{{ page.meta.source }}"> {{ page.meta.source }}</a>
+    <br><br>
+    {% endif %}
+
     <script>
         MASVS_COLORS = {
             "MASVS-STORAGE": "DF5C8D",

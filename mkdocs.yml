@@ -7,17 +7,19 @@ edit_uri: "" # disable edit button
 nav:
   - Home: index.md
   - MASTG:
-      - Overview: MASTG.md
+      - MASTG/index.md
       - Intro:
         - ... | flat | MASTG/Intro/*.md
-      - Mobile Security Testing Theory:
+        - ... | flat | MASTG/References/*.md
+      - Theory:
         - General Concepts:
           - ... | flat | MASTG/General/*.md
         - Android Security Testing:
           - ... | flat | MASTG/Android/*.md
         - iOS Security Testing: 
           - ... | flat | MASTG/iOS/*.md
-      - MASTG Tests: 
+      - Tests:
+        - MASTG/tests/index.md
         - Android:
           - MASVS-STORAGE:
             - ... | flat | MASTG/tests/android/MASVS-STORAGE/*.md
@@ -48,12 +50,31 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-CODE/*.md
           - MASVS-RESILIENCE:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
+      - Techniques:
+        - MASTG/techniques/index.md
+        - Generic:
+          - ... | flat | MASTG/techniques/generic/*.md
+        - Android:
+          - ... | flat | MASTG/techniques/android/*.md
+        - iOS:
+          - ... | flat | MASTG/techniques/ios/*.md
       - Tools:
-        - ... | flat | MASTG/Tools/*.md
-      - References:
-        - ... | flat | MASTG/References/*.md
+        - MASTG/tools/index.md
+        - Generic:
+          - ... | flat | MASTG/tools/generic/*.md
+        - Android:
+          - ... | flat | MASTG/tools/android/*.md
+        - iOS:
+          - ... | flat | MASTG/tools/ios/*.md
+      - Apps:
+        - MASTG/apps/index.md
+        - Android:
+          - ... | flat | MASTG/apps/android/*.md
+        - iOS:
+          - ... | flat | MASTG/apps/ios/*.md
+
   - MASVS:
-      - Overview: MASVS.md
+      - MASVS/index.md
       - Intro:
         - ... | flat | MASVS/Intro/*
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
@@ -71,7 +92,7 @@ nav:
       - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
       - ... | flat | MASVS/controls/MASVS-RESILIENCE*.md
   - "MAS Checklist":
-     - Overview: MAS_checklist.md
+     - checklists/index.md
      - MASVS-STORAGE: checklists/MASVS-STORAGE.md
      - MASVS-CRYPTO: checklists/MASVS-CRYPTO.md 
      - MASVS-AUTH: checklists/MASVS-AUTH.md
@@ -80,7 +101,7 @@ nav:
      - MASVS-CODE: checklists/MASVS-CODE.md
      - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
   - "MAS Crackmes": 
-      - Overview: crackmes.md
+      - crackmes/index.md
       - ... | flat | crackmes/*.md
   - news.md
   - talks.md
@@ -119,6 +140,7 @@ theme:
     - navigation.tabs.sticky
     - navigation.top
     - navigation.tracking
+    - navigation.indexes
 
   palette:
     # - primary: #499FFF 
@@ -136,7 +158,9 @@ extra_css:
 extra_javascript:
   - javascripts/tablesort.min.js
   - javascripts/tablesorts.js
+  - javascripts/external_links.js
 plugins:
+  # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
   - awesome-pages
   - mermaid2

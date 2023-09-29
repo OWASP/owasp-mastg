@@ -47,4 +47,4 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 For more details refer to:
 
 - ["Intercepting Traffic on the Network Layer"](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer) from chapter "Mobile App Network Communication"
-- ["Setting up a Network Testing Environment"](../../../Document/0x05b-Basic-Security_Testing.md#setting-up-a-network-testing-environment) from chapter "Android Basic Security Testing"
+- ["Setting up a Network Testing Environment"](../../../Document/0x05b-Android-Security-Testing.md#setting-up-a-network-testing-environment) from chapter "Android Basic Security Testing"

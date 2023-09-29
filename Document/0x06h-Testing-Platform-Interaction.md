@@ -89,7 +89,7 @@ guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/arch
 
 When decoding a keyed archive, because values are requested by name, values can be decoded out of sequence or not at all. Keyed archives, therefore, provide better support for forward and backward compatibility. This means that an archive on disk could actually contain additional data which is not detected by the program, unless the key for that given data is provided at a later stage.
 
-Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
+Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the chapter ["Data Storage on iOS"](0x06d-Testing-Data-Storage.md) for more details.
 
 #### Codable
 
@@ -147,7 +147,7 @@ let stringData = String(data: data, encoding: .utf8)
 // })
 ```
 
-JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
+JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the chapter ["Data Storage on iOS"](0x06d-Testing-Data-Storage.md) for more details.
 
 #### Property Lists and Codable
 
@@ -244,7 +244,7 @@ There are multiple ways to include a WebView in an iOS application:
 - The `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
-A JavaScript Bridge can be enabled when using `WKWebView` and `UIWebView`. See Section "[Native Functionality Exposed Through WebViews](#native-functionality-exposed-through-webviews "Native Functionality Exposed Through WebViews")" below for more information.
+A JavaScript Bridge can be enabled when using `WKWebView` and `UIWebView`. See Section ["Native Functionality Exposed Through WebViews"](#native-functionality-exposed-through-webviews "Native Functionality Exposed Through WebViews") below for more information.
 
 ##### SFSafariViewController
 
@@ -327,11 +327,11 @@ Some permissions can be configured by the app's developers (e.g. Data Protection
 - Speech recognition
 - the TV provider
 
-Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/accessing-private-data "Requesting Permissions"), it can still be the case that an app requests too many of them for non-obvious reasons.
+Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/privacy "Requesting Permission"), it can still be the case that an app requests too many of them for non-obvious reasons.
 
 Verifying the use of some permissions such as Camera, Photos, Calendar Data, Motion, Contacts or Speech Recognition should be pretty straightforward as it should be obvious if the app requires them to fulfill its tasks. Let's consider the following examples regarding the Photos permission, which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos):
 
-- The typical QR Code scanning app obviously requires the camera to function but might be requesting the photos permission as well. If storage is explicitly required, and depending on the sensitivity of the pictures being taken, these apps might better opt to use the app sandbox storage to avoid other apps (having the photos permission) to access them. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more information regarding storage of sensitive data.
+- The typical QR Code scanning app obviously requires the camera to function but might be requesting the photos permission as well. If storage is explicitly required, and depending on the sensitivity of the pictures being taken, these apps might better opt to use the app sandbox storage to avoid other apps (having the photos permission) to access them. See the chapter ["Data Storage on iOS"](0x06d-Testing-Data-Storage.md) for more information regarding storage of sensitive data.
 - Some apps require photo uploads (e.g. for profile pictures). Recent versions of iOS introduce new APIs such as [`UIImagePickerController`](https://developer.apple.com/documentation/uikit/uiimagepickercontroller "UIImagePickerController") (iOS 11+) and its modern [replacement](https://developer.apple.com/videos/play/wwdc2020/10652/ "replacement") [`PHPickerViewController`](https://developer.apple.com/documentation/photokit/phpickerviewcontroller "PHPickerViewController") (iOS 14+). These APIs run on a separate process from your app and by using them, the app gets read-only access exclusively to the images selected by the user instead of to the whole "Camera Roll". This is considered a best practice to avoid requesting unnecessary permissions.
 
 Verifying other permissions like Bluetooth or Location require a deeper source code inspection. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected.

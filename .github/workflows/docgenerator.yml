@@ -38,14 +38,14 @@ jobs:
     - name: Get Latest MASVS Release Tag
       run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
-    - name: Assemble Testing Chapters
-      run: python3 src/scripts/assemble_test_chapters.py
+    - name: Assemble Chapters
+      run: python3 src/scripts/assemble_chapters_for_pdf.py
 
     - name: Process Files
       run: python3 src/scripts/transform_files.py
 
     - name: Generate English PDF
-      run: ./src/docker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
+      run: ./src/pandocker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3

@@ -6,7 +6,7 @@ The [OWASP Mobile Application Security _Verification Standard_ (MASVS)](https://
 
 <img src="Images/Chapters/0x03/owasp-mobile-overview.png" width="50%" />
 
-For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the "[Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)" chapter we'll describe how you can apply the checklist and MASTG to a mobile app penetration test.
+For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the ["Mobile App Security Testing"](0x04b-Mobile-App-Security-Testing.md) chapter we'll describe how you can apply the checklist and MASTG to a mobile app penetration test.
 
 ## Key Areas in Mobile Application Security
 
