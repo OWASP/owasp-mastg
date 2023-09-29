@@ -15,6 +15,10 @@ We are thrilled to announce the second phase of the MASTG (Mobile Application Se
 
 The primary focus of this new refactor is the reorganization of the MASTG content into different components, each housed in its dedicated section/folder and existing now as individual pages in our website (markdown files with metadata/frontmatter in GitHub):
 
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/mastg_refactor_2.png"/>
+</center>
+
 - **Tests**:
     - Website: [Tests](https://mas.owasp.org/MASTG/tests/) section.
     - GitHub: [`tests/` folder](https://github.com/OWASP/owasp-mastg/tree/master/tests).
@@ -27,6 +31,7 @@ The primary focus of this new refactor is the reorganization of the MASTG conten
         - 0x05h/0x06h-Testing-Platform-Interaction.md
         - 0x05i/0x06i-Testing-Code-Quality-and-Build-Settings.md
         - 0x05j/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md
+    - :warning: **IMPORTANT (TODO)**: These tests are still the original MASTG v1.6.0 tests. We will progressively split them into smaller tests, the so-called "atomic tests" in MASTG v2 and assign the new MAS profiles accordingly.
 
 - **Techniques**:
     - Website: [Techniques](https://mas.owasp.org/MASTG/techniques/) section.
