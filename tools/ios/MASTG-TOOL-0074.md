@@ -23,7 +23,7 @@ OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
 
 If you have a jailbroken device with frida-server installed, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, it is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms.
 
-The ability to **perform advanced dynamic analysis on non-jailbroken devices** is one of the features that makes Objection incredibly useful. After following the [repackaging process](0x06b-Basic-Security-Testing.md#repackaging-apps) you will be able to run all the aforementioned commands which make it very easy to quickly analyze an application, or get around basic security controls.
+The ability to **perform advanced dynamic analysis on non-jailbroken devices** is one of the features that makes Objection incredibly useful. After following the [repackaging process](0x06b-iOS-Security-Testing.md#repackaging-apps) you will be able to run all the aforementioned commands which make it very easy to quickly analyze an application, or get around basic security controls.
 
 ## Using Objection on iOS
 

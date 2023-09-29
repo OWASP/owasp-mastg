@@ -26,7 +26,7 @@ If an app defines a custom Network Security Configuration, you can obtain its lo
 <application android:networkSecurityConfig="@xml/network_security_config"
 ```
 
-In this case the file is located at `@xml` (equivalent to /res/xml) and has the name "network_security_config" (which might vary). You should be able to find it as "res/xml/network_security_config.xml". If a configuration exists, the following event should be visible in the [system logs](0x05b-Basic-Security_Testing.md#monitoring-system-logs):
+In this case the file is located at `@xml` (equivalent to /res/xml) and has the name "network_security_config" (which might vary). You should be able to find it as "res/xml/network_security_config.xml". If a configuration exists, the following event should be visible in the [system logs](0x05b-Android-Security-Testing.md#monitoring-system-logs):
 
 ```bash
 D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config

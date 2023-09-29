@@ -11,7 +11,7 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 
 ## Using Burp via USB on a Jailbroken Device
 
-In the section [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use [iproxy](0x08a-Testing-Tools.md#iproxy) to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In the section [Accessing the Device Shell](0x06b-iOS-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use [iproxy](0x08a-Testing-Tools.md#iproxy) to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 

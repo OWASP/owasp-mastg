@@ -51,8 +51,7 @@ def construct_internal_link(raw, url, text, title):
     """
     Constructs a new internal link with the correct directory.
     """
-    directory = f"/MASTG/{get_directory_from_code(raw)}/" if "0x" in raw else ""
-    full_url = f"{directory}{url}"
+    full_url = f"/MASTG/{get_directory_from_code(raw)}" if "0x" in raw else ""
     title = f' "{title}"' if title else ""
 
     return f"[{text}]({full_url}{title})".replace(".md", "")
@@ -70,16 +69,22 @@ def get_directory_from_code(raw):
     """
     Maps directory code to directory name.
     """
-    return {
-        "01": "Intro",
-        "02": "Intro",
-        "03": "Intro",
-        "04": "General",
-        "05": "Android",
-        "06": "iOS",
-        "08": "Tools",
-        "09": "References",
-    }.get(raw[1:3], "")
+    match = re.search(r'0x(\d{2})', raw)
+    if match:
+        directory = {
+            "01": "Intro",
+            "02": "Intro",
+            "03": "Intro",
+            "04": "General",
+            "05": "Android",
+            "06": "iOS",
+            "08": "Tools",
+            "09": "Intro",
+        }.get(match.group(1))
+        relative_path = raw[match.start():-1]
+        return f"{directory}/{relative_path}"
+    else:
+        return ""
 
 
 def get_links_from_anchor(links, anchor):

@@ -91,7 +91,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ## radare2
 
-To open the file in [radare2](0x08a-Testing-Tools.md#radare2) you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
+To open the file in [radare2](0x08a-Testing-Tools.md#radare2) you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Android-Security-Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
 ```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so

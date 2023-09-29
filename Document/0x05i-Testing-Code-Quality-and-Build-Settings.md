@@ -55,9 +55,9 @@ Detecting the presence of [binary protection mechanisms](0x04h-Testing-Code-Qual
 
 In general all binaries should be tested, which includes both the main app executable as well as all libraries/dependencies. However, on Android we will focus on native libraries since the main executables are considered safe as we will see next.
 
-Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Basic-Security_Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
+Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Android-Security-Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
 
-The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
+The app's [NDK native libraries](0x05b-Android-Security-Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
 
 - [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
     - Since Android 7.0 (API level 24), PIC compilation is [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.

@@ -34,7 +34,7 @@ The Android version in which the app runs also influences the risk of using deep
 
 **Inspecting the Android Manifest:**
 
-You can easily determine whether deep links (with or without custom URL schemes) are defined by [decoding the app using apktool](../../../Document/0x05b-Basic-Security_Testing.md#exploring-the-app-package) and inspecting the Android Manifest file looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
+You can easily determine whether deep links (with or without custom URL schemes) are defined by [decoding the app using apktool](../../../Document/0x05b-Android-Security-Testing.md#exploring-the-app-package) and inspecting the Android Manifest file looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
 
 - **Custom Url Schemes**: The following example specifies a deep link with a custom URL scheme called `myapp://`.
 

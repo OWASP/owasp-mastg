@@ -45,7 +45,7 @@ These checks are orientative, we cannot name specific APIs since every app might
 Ensure that the app is not allowing cleartext HTTP traffic. Since iOS 9.0 cleartext HTTP traffic is blocked by default (due to App Transport Security (ATS)) but there are multiple ways in which an application can still send it:
 
 - Configuring ATS to enable cleartext traffic by setting the `NSAllowsArbitraryLoads` attribute to `true` (or `YES`) on `NSAppTransportSecurity` in the app's `Info.plist`.
-- [Retrieve the `Info.plist`](../../../Document/0x06b-Basic-Security-Testing.md#the-infoplist-file)
+- [Retrieve the `Info.plist`](../../../Document/0x06b-iOS-Security-Testing.md#the-infoplist-file)
 - Check that `NSAllowsArbitraryLoads` is not set to `true` globally of for any domain.
 
 - If the application opens third party web sites in WebViews, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views.
@@ -78,4 +78,4 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 For more details refer to:
 
 - "Intercepting Traffic on the Network Layer" from chapter ["Testing Network Communication"](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer)
-- "Setting up a Network Testing Environment" from chapter [iOS Basic Security Testing](../../../Document/0x06b-Basic-Security-Testing.md#setting-up-a-network-testing-environment)
+- "Setting up a Network Testing Environment" from chapter [iOS Basic Security Testing](../../../Document/0x06b-iOS-Security-Testing.md#setting-up-a-network-testing-environment)

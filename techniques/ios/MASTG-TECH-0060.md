@@ -18,7 +18,7 @@ To save the console output to a text file, go to the top right side of the Conso
 
 <img src="Images/Chapters/0x06b/device_console.png" width="100%" />
 
-You can also connect to the device shell as explained in [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell), install socat via apt-get and run the following command:
+You can also connect to the device shell as explained in [Accessing the Device Shell](0x06b-iOS-Security-Testing.md#accessing-the-device-shell), install socat via apt-get and run the following command:
 
 ```bash
 iPhone:~ root# socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock
