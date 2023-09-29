@@ -21,7 +21,7 @@ mv docs/MASTG/0x0[1-3]*.md docs/MASTG/Intro
 mv docs/MASTG/0x04*.md docs/MASTG/General
 mv docs/MASTG/0x05*.md docs/MASTG/Android
 mv docs/MASTG/0x06*.md docs/MASTG/iOS
-mv docs/MASTG/0x09*.md docs/MASTG/References
+mv docs/MASTG/0x09*.md docs/MASTG/Intro
 
 cp -r Document/Images/ docs/assets/Images/
 find docs/MASTG/tests -name "*.md" -exec sed -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;

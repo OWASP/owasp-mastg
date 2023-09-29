@@ -10,6 +10,7 @@ nav:
       - Overview: MASTG.md
       - Intro:
         - ... | flat | MASTG/Intro/*.md
+        - ... | flat | MASTG/References/*.md
       - Theory:
         - General Concepts:
           - ... | flat | MASTG/General/*.md
@@ -71,8 +72,7 @@ nav:
           - ... | flat | MASTG/apps/android/*.md
         - iOS:
           - ... | flat | MASTG/apps/ios/*.md
-      - References:
-        - ... | flat | MASTG/References/*.md
+
   - MASVS:
       - Overview: MASVS.md
       - Intro:
