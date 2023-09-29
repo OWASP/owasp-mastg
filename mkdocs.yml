@@ -51,7 +51,7 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
       - Tools:
         - Index: MASTG/tools.md
-        - All Platforms:
+        - Generic:
           - ... | flat | MASTG/tools/generic/*.md
         - Android:
           - ... | flat | MASTG/tools/android/*.md
@@ -59,7 +59,7 @@ nav:
           - ... | flat | MASTG/tools/ios/*.md
       - Techniques:
         - Index: MASTG/techniques.md
-        - All Platforms:
+        - Generic:
           - ... | flat | MASTG/techniques/generic/*.md
         - Android:
           - ... | flat | MASTG/techniques/android/*.md
