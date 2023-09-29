@@ -18,7 +18,7 @@ nav:
         - iOS Security Testing: 
           - ... | flat | MASTG/iOS/*.md
       - Tests:
-        - Index: MASTG/tests.md
+        - MASTG/tests/index.md
         - Android:
           - MASVS-STORAGE:
             - ... | flat | MASTG/tests/android/MASVS-STORAGE/*.md
@@ -50,7 +50,7 @@ nav:
           - MASVS-RESILIENCE:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
       - Tools:
-        - Index: MASTG/tools.md
+        - MASTG/tools/index.md
         - Generic:
           - ... | flat | MASTG/tools/generic/*.md
         - Android:
@@ -58,7 +58,7 @@ nav:
         - iOS:
           - ... | flat | MASTG/tools/ios/*.md
       - Techniques:
-        - Index: MASTG/techniques.md
+        - MASTG/techniques/index.md
         - Generic:
           - ... | flat | MASTG/techniques/generic/*.md
         - Android:
@@ -66,7 +66,7 @@ nav:
         - iOS:
           - ... | flat | MASTG/techniques/ios/*.md
       - Apps:
-        - Index: MASTG/apps.md
+        - MASTG/apps/index.md
         - Android:
           - ... | flat | MASTG/apps/android/*.md
         - iOS:
@@ -140,6 +140,7 @@ theme:
     - navigation.tabs.sticky
     - navigation.top
     - navigation.tracking
+    - navigation.indexes
 
   palette:
     # - primary: #499FFF 

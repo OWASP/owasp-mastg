@@ -56,61 +56,62 @@ def get_mastg_components_dict(name):
         components = []
     
         for file in glob.glob(f"{name}/**/*.md", recursive=True):
-            with open(file, 'r') as f:
-                content = f.read()
-    
-                frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-                # is is the basename of the file without the extension
-                id = os.path.splitext(os.path.basename(file))[0]
-                if "-TEST" in id:
-                    masvs_id = frontmatter['masvs_v2_id'][0]
-                    masvs_category = masvs_id[:masvs_id.rfind('-')]
-                    frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
-                    frontmatter['title'] = f"[{frontmatter['title']}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
+            if "index.md" not in file:
+                with open(file, 'r') as f:
+                    content = f.read()
+        
+                    frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+                    # is is the basename of the file without the extension
+                    id = os.path.splitext(os.path.basename(file))[0]
+                    if "-TEST" in id:
+                        masvs_id = frontmatter['masvs_v2_id'][0]
+                        masvs_category = masvs_id[:masvs_id.rfind('-')]
+                        frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
+                        frontmatter['title'] = f"[{frontmatter['title']}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
 
-                else:
-                    frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
-                components.append(frontmatter)
+                    else:
+                        frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
+                    components.append(frontmatter)
         return components
 
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
 
-# tests.md
+# tests/index.md
 
 column_titles = {'title': 'Name', 'masvs_v2_id': "MASVS ID"} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
 
 tests = get_mastg_components_dict("docs/MASTG/tests")
 test_types = ["android", "ios"]
 for test_type in test_types:
-    append_to_file(f"## {test_type.title()} tests\n\n<br>\n\n", "docs/MASTG/tests.md")
+    append_to_file(f"## {test_type.title()} tests\n\n<br>\n\n", "docs/MASTG/tests/index.md")
     tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests if test['platform'] == test_type]
     for test in tests_of_type:
         test['masvs_v2_id'] = test['masvs_v2_id'][0]
     
 
     for group_id, checklist in CHECKLIST_DICT.items():
-        append_to_file(f"### {group_id}\n\n<br>\n\n", "docs/MASTG/tests.md")
+        append_to_file(f"### {group_id}\n\n<br>\n\n", "docs/MASTG/tests/index.md")
 
         tests_by_category = [test for test in tests_of_type if test['masvs_v2_id'].startswith(group_id)]
 
         # sort the dicts within tests_by_category by MASVS ID
         tests_by_category.sort(key=lambda x: x['masvs_v2_id'])
 
-        append_to_file(list_of_dicts_to_md_table(tests_by_category, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests.md")
+        append_to_file(list_of_dicts_to_md_table(tests_by_category, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests/index.md")
 
-# tools.md
+# tools/index.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'refs': 'Refs', 'techniques': 'Techniques'
 
 tools = get_mastg_components_dict("docs/MASTG/tools")
 tool_types = ["generic", "android", "ios", "network"]
 for tool_type in tool_types:
-    append_to_file(f"## {tool_type.title()} Tools\n\n<br>\n\n", "docs/MASTG/tools.md")
+    append_to_file(f"## {tool_type.title()} Tools\n\n<br>\n\n", "docs/MASTG/tools/index.md")
     tools_of_type = [reorder_dict_keys(tool, column_titles.keys()) for tool in tools if tool['platform'] == tool_type]
-    append_to_file(list_of_dicts_to_md_table(tools_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tools.md")
+    append_to_file(list_of_dicts_to_md_table(tools_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tools/index.md")
 
-# techniques.md
+# techniques/index.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'tools': 'Tools'
 
@@ -118,11 +119,11 @@ techniques = get_mastg_components_dict("docs/MASTG/techniques")
 technique_types = ["generic", "android", "ios"]
 
 for technique_type in technique_types:
-    append_to_file(f"## {technique_type.title()} Techniques\n\n<br>\n\n", "docs/MASTG/techniques.md")
+    append_to_file(f"## {technique_type.title()} Techniques\n\n<br>\n\n", "docs/MASTG/techniques/index.md")
     techniques_of_type = [reorder_dict_keys(technique, column_titles.keys()) for technique in techniques if technique['platform'] == technique_type]
-    append_to_file(list_of_dicts_to_md_table(techniques_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/techniques.md")
+    append_to_file(list_of_dicts_to_md_table(techniques_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/techniques/index.md")
 
-# apps.md
+# apps/index.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'techniques': 'Used in'
 
@@ -130,9 +131,9 @@ apps = get_mastg_components_dict("docs/MASTG/apps")
 app_types = ["android", "ios"]
 
 for app_type in app_types:
-    append_to_file(f"## {app_type.title()} Apps\n\n<br>\n\n", "docs/MASTG/apps.md")
+    append_to_file(f"## {app_type.title()} Apps\n\n<br>\n\n", "docs/MASTG/apps/index.md")
     apps_of_type = [reorder_dict_keys(app, column_titles.keys()) for app in apps if app['platform'] == app_type]
-    append_to_file(list_of_dicts_to_md_table(apps_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/apps.md")
+    append_to_file(list_of_dicts_to_md_table(apps_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/apps/index.md")
 
 # talks.md
 
