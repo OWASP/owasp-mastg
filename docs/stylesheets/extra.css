@@ -2,6 +2,28 @@
   --md-primary-fg-color: #499FFF;
 }
 
+/* Wider space for pages */
+.md-grid {
+  max-width: 90%;
+}
+
+.md-sidebar--primary {
+  margin-right: 4em;
+}
+
+.md-sidebar--secondary {
+  margin-left: 4em;
+}
+
+/* Maximum space for tables */
+.md-typeset__table {
+  width: 100%;
+}
+
+.md-typeset__table table:not([class]) {
+  display: table
+}
+
 @keyframes pump {
   0%, 40%, 80%, 100% {
     transform: scale(1);
@@ -122,6 +144,7 @@
 .mas-flex-container {
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
 }
 
 @media (max-width: 800px) {
