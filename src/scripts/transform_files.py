@@ -172,6 +172,8 @@ def process_markdown_files(folder):
             markdown_files = Path(root).glob('*.md')
 
             for markdown_file in markdown_files:
+                if markdown_file.name == "index.md":
+                    continue
                 file_content = markdown_file.read_text()
                 links = extract_markdown_links(file_content)
                 
