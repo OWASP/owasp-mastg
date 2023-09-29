@@ -133,9 +133,10 @@ def links_to_markdown(links, title):
     """
     section = ""
     if len(links) > 0:
-        links = sorted(list(set([link.raw_new for link in links]))) # links = sorted({link.raw_new for link in links})        
+        links = sorted(list(set([link.raw_new for link in links])))      
         links_text = "\n".join([f"- {link}" for link in links])
-        links_text = f"\n\n### {title}\n\n{links_text}"
+        # TODO links_text = f"\n\n### {title}\n\n{links_text}"
+        links_text = f"\n\n{links_text}"
         section += links_text
     return section
 
@@ -153,9 +154,10 @@ def update_internal_links(file_text, links):
     return new_text
 
 def create_resources_section(internal_links, external_links):
-    internal_links_section = links_to_markdown(internal_links, "Internal")
+    # TODO internal_links_section = links_to_markdown(internal_links, "Internal")
     external_links_section = links_to_markdown(external_links, "External")
-    resources_section = internal_links_section + external_links_section
+    # TODO resources_section = internal_links_section + external_links_section
+    resources_section = external_links_section
 
     if resources_section != "":
         resources_section = "\n\n## Resources" + resources_section + "\n"
