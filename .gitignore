@@ -14,10 +14,11 @@ logs
 *.docx
 *.epub
 launch.json
-docs/MASVS
-docs/MASTG
+docs/MASVS/**/
+docs/MASVS/*-MASVS-*.md
+docs/MASTG/**/
 docs/assets/Images
-docs/checklists/
+docs/checklists/MASVS-*.md
 owasp-masvs
 __pycache__
 venv/

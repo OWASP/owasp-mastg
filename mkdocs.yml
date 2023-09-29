@@ -7,7 +7,7 @@ edit_uri: "" # disable edit button
 nav:
   - Home: index.md
   - MASTG:
-      - Overview: MASTG.md
+      - MASTG/index.md
       - Intro:
         - ... | flat | MASTG/Intro/*.md
         - ... | flat | MASTG/References/*.md
@@ -74,7 +74,7 @@ nav:
           - ... | flat | MASTG/apps/ios/*.md
 
   - MASVS:
-      - Overview: MASVS.md
+      - MASVS/index.md
       - Intro:
         - ... | flat | MASVS/Intro/*
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
@@ -92,7 +92,7 @@ nav:
       - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
       - ... | flat | MASVS/controls/MASVS-RESILIENCE*.md
   - "MAS Checklist":
-     - Overview: MAS_checklist.md
+     - checklists/index.md
      - MASVS-STORAGE: checklists/MASVS-STORAGE.md
      - MASVS-CRYPTO: checklists/MASVS-CRYPTO.md 
      - MASVS-AUTH: checklists/MASVS-AUTH.md
@@ -101,7 +101,7 @@ nav:
      - MASVS-CODE: checklists/MASVS-CODE.md
      - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
   - "MAS Crackmes": 
-      - Overview: crackmes.md
+      - crackmes/index.md
       - ... | flat | crackmes/*.md
   - news.md
   - talks.md
