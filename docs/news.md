@@ -15,21 +15,33 @@ We are thrilled to announce the second phase of the MASTG (Mobile Application Se
 
 The primary focus of this new refactor is the reorganization of the MASTG content into different components, each housed in its dedicated section/folder and existing now as individual pages in our website (markdown files with metadata/frontmatter in GitHub):
 
-- **Tests**: The tests have been moved to the [Tests section](https://mas.owasp.org/MASTG/tests/), [`tests/` folder in GitHub](https://github.com/OWASP/owasp-mastg/tree/master/tests). The tests are now identified by IDs in the format `MASTG-TEST-XXXX`. Includes all tests originally in:
-    - 0x05d/0x06d-Testing-Data-Storage.md
-    - 0x05e/0x06e-Testing-Cryptography.md
-    - 0x05f/0x06f-Testing-Local-Authentication.md
-    - 0x05g/0x06g-Testing-Network-Communication.md
-    - 0x05h/0x06h-Testing-Platform-Interaction.md
-    - 0x05i/0x06i-Testing-Code-Quality-and-Build-Settings.md
-    - 0x05j/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md
+- **Tests**:
+    - Website: [Tests](https://mas.owasp.org/MASTG/tests/) section.
+    - GitHub: [`tests/` folder](https://github.com/OWASP/owasp-mastg/tree/master/tests).
+    - Identified by IDs in the format `MASTG-TEST-XXXX`.
+    - Includes all tests originally in:
+        - 0x05d/0x06d-Testing-Data-Storage.md
+        - 0x05e/0x06e-Testing-Cryptography.md
+        - 0x05f/0x06f-Testing-Local-Authentication.md
+        - 0x05g/0x06g-Testing-Network-Communication.md
+        - 0x05h/0x06h-Testing-Platform-Interaction.md
+        - 0x05i/0x06i-Testing-Code-Quality-and-Build-Settings.md
+        - 0x05j/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md
 
-- **Techniques**: The techniques are now in the [Techniques section](https://mas.owasp.org/MASTG/techniques/), [`techniques/` folder in GitHub](https://github.com/OWASP/owasp-mastg/tree/master/techniques). The techniques are now identified by IDs in the format `MASTG-TECH-XXXX`. Includes all techniques originally in:
-    - 0x05b/0x06b-Basic-Security_Testing.md
-    - 0x05c/0x06c-Reverse-Engineering-and-Tampering.md
+- **Techniques**:
+    - Website: [Techniques](https://mas.owasp.org/MASTG/techniques/) section.
+    - GitHub: [`techniques/` folder](https://github.com/OWASP/owasp-mastg/tree/master/techniques).
+    - Identified by IDs in the format `MASTG-TECH-XXXX`.
+    - Includes all techniques originally in:
+        - 0x05b/0x06b-Basic-Security_Testing.md
+        - 0x05c/0x06c-Reverse-Engineering-and-Tampering.md
 
-- **Tools**: The tools are now located in the Tools section, [`tools/` folderin GitHub](https://github.com/OWASP/owasp-mastg/tree/master/tools). The tools are now identified by IDs in the format `MASTG-TOOL-XXXX`. Includes all tools from:
-    - 0x08a-Testing-Tools.md
+- **Tools**:
+    - Website: [Tools](https://mas.owasp.org/MASTG/tools/) section.
+    - GitHub: [`tools/` folder](https://github.com/OWASP/owasp-mastg/tree/master/tools).
+    - Identified by IDs in the format `MASTG-TOOL-XXXX`.
+    - Includes all tools from:
+        - 0x08a-Testing-Tools.md
 
 - **Apps**:
     - Website: [Apps](https://mas.owasp.org/MASTG/apps/) section.
@@ -38,7 +50,7 @@ The primary focus of this new refactor is the reorganization of the MASTG conten
     - Includes all apps from:
         - 0x08b-Reference-Apps.md
 
-We hope that the revamped structure enable you to navigate the MASTG more efficiently and access the information they need with ease.
+We hope that the revamped structure enables you to navigate the MASTG more efficiently and access the information you need with ease.
 
 ## Jul 28th, 2023: MAS Testing Profiles and MASTG Atomic Tests - Paving the Way for Next-Level Mobile Application Security
 
