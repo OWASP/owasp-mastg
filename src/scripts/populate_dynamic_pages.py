@@ -5,6 +5,8 @@ import glob
 from pathlib import Path
 import combine_data_for_checklist
 
+CHECKLIST_DICT = combine_data_for_checklist.get_checklist_dict()
+
 # checklist functions
 
 def get_platform_icon(platform):
@@ -64,6 +66,7 @@ def get_mastg_components_dict(name):
                     masvs_id = frontmatter['masvs_v2_id'][0]
                     masvs_category = masvs_id[:masvs_id.rfind('-')]
                     frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
+                    frontmatter['title'] = f"[{frontmatter['title']}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
 
                 else:
                     frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
@@ -75,18 +78,30 @@ def reorder_dict_keys(original_dict, key_order):
 
 # tests.md
 
-column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'refs': 'Refs', 'techniques': 'Techniques'}
+column_titles = {'title': 'Name', 'masvs_v2_id': "MASVS ID"} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
 
 tests = get_mastg_components_dict("docs/MASTG/tests")
 test_types = ["android", "ios"]
 for test_type in test_types:
     append_to_file(f"## {test_type.title()} tests\n\n<br>\n\n", "docs/MASTG/tests.md")
     tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests if test['platform'] == test_type]
-    append_to_file(list_of_dicts_to_md_table(tests_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests.md")
+    for test in tests_of_type:
+        test['masvs_v2_id'] = test['masvs_v2_id'][0]
+    
+
+    for group_id, checklist in CHECKLIST_DICT.items():
+        append_to_file(f"### {group_id}\n\n<br>\n\n", "docs/MASTG/tests.md")
+
+        tests_by_category = [test for test in tests_of_type if test['masvs_v2_id'].startswith(group_id)]
+
+        # sort the dicts within tests_by_category by MASVS ID
+        tests_by_category.sort(key=lambda x: x['masvs_v2_id'])
+
+        append_to_file(list_of_dicts_to_md_table(tests_by_category, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests.md")
 
 # tools.md
 
-column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'refs': 'Refs', 'techniques': 'Techniques'}
+column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'refs': 'Refs', 'techniques': 'Techniques'
 
 tools = get_mastg_components_dict("docs/MASTG/tools")
 tool_types = ["generic", "android", "ios", "network"]
@@ -97,7 +112,7 @@ for tool_type in tool_types:
 
 # techniques.md
 
-column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'tools': 'Tools'}
+column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'tools': 'Tools'
 
 techniques = get_mastg_components_dict("docs/MASTG/techniques")
 technique_types = ["generic", "android", "ios"]
@@ -105,11 +120,11 @@ technique_types = ["generic", "android", "ios"]
 for technique_type in technique_types:
     append_to_file(f"## {technique_type.title()} Techniques\n\n<br>\n\n", "docs/MASTG/techniques.md")
     techniques_of_type = [reorder_dict_keys(technique, column_titles.keys()) for technique in techniques if technique['platform'] == technique_type]
-    append_to_file(list_of_dicts_to_md_table(techniques_of_type) + "\n\n<br>\n\n", "docs/MASTG/techniques.md")
+    append_to_file(list_of_dicts_to_md_table(techniques_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/techniques.md")
 
 # apps.md
 
-column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform", 'techniques': 'Used in'}
+column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'techniques': 'Used in'
 
 apps = get_mastg_components_dict("docs/MASTG/apps")
 app_types = ["android", "ios"]
@@ -117,7 +132,7 @@ app_types = ["android", "ios"]
 for app_type in app_types:
     append_to_file(f"## {app_type.title()} Apps\n\n<br>\n\n", "docs/MASTG/apps.md")
     apps_of_type = [reorder_dict_keys(app, column_titles.keys()) for app in apps if app['platform'] == app_type]
-    append_to_file(list_of_dicts_to_md_table(apps_of_type) + "\n\n<br>\n\n", "docs/MASTG/apps.md")
+    append_to_file(list_of_dicts_to_md_table(apps_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/apps.md")
 
 # talks.md
 
@@ -135,7 +150,7 @@ append_to_file(list_of_dicts_to_md_table(data) + "\n\n<br>\n", "docs/talks.md")
 
 CHECKLISTS_DIR = "docs/checklists"
 
-checklist_dict = combine_data_for_checklist.get_checklist_dict()
+
 
 column_titles = {'MASVS-ID': 'MASVS-ID', 'Platform': "Platform", 'Control / MASTG Test': 'Control / MASTG Test', 'L1': 'L1', 'L2': 'L2', 'R': 'R'}
 column_align = ("left", "center", "left", "center", "center", "center")
@@ -149,7 +164,7 @@ warning = '''\
 
 os.makedirs(CHECKLISTS_DIR, exist_ok=True)
 
-for group_id, checklist in checklist_dict.items():
+for group_id, checklist in CHECKLIST_DICT.items():
     set_icons_for_web(checklist)
     content = list_of_dicts_to_md_table(checklist, column_titles, column_align) + "\n\n<br><br>"
     
