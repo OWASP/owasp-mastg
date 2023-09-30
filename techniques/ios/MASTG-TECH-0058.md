@@ -136,3 +136,4 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
+<img src="Images/Chapters/0x06b/grapefruit_db_view.png" width="100%" />
