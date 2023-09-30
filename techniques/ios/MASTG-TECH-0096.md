@@ -21,10 +21,10 @@ r2 frida://usb//iGoat-Swift
 
 ## Memory Maps and Inspection
 
-You can retrieve the app's memory maps by running `\dm`:
+You can retrieve the app's memory maps by running `:dm`:
 
 ```bash
-[0x00000000]> \dm
+[0x00000000]> :dm
 0x0000000100b7c000 - 0x0000000100de0000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
 0x0000000100de0000 - 0x0000000100e68000 rw- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
 0x0000000100e68000 - 0x0000000100e97000 r-- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
@@ -37,12 +37,12 @@ You can retrieve the app's memory maps by running `\dm`:
 0x0000000100f60000 - 0x00000001012dc000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/Realm.framework/Realm
 ```
 
-While you're searching or exploring the app memory, you can always verify where your current offset is located in the memory map. Instead of noting and searching for the memory address in this list you can simply run `\dm.`. You'll find an example in the following section "In-Memory Search".
+While you're searching or exploring the app memory, you can always verify where your current offset is located in the memory map. Instead of noting and searching for the memory address in this list you can simply run `:dm.`. You'll find an example in the following section "In-Memory Search".
 
-If you're only interested into the modules (binaries and libraries) that the app has loaded, you can use the command `\il` to list them all:
+If you're only interested into the modules (binaries and libraries) that the app has loaded, you can use the command `:il` to list them all:
 
 ```bash
-[0x00000000]> \il
+[0x00000000]> :il
 0x0000000100b7c000 iGoat-Swift
 0x0000000100eb4000 TweakInject.dylib
 0x00000001862c0000 SystemConfiguration
@@ -120,7 +120,7 @@ Now take the first hit, seek to it and check your current location in the memory
 
 ```bash
 [0x00000000]> s 0x100d7d332
-[0x100d7d332]> \dm.
+[0x100d7d332]> :dm.
 0x0000000100b7c000 - 0x0000000100de0000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
 ```
 
@@ -134,11 +134,11 @@ hits: 1
 0x1c06619c0 hit3_0 owasp-mstg
 ```
 
-In fact, the string could be found at address `0x1c06619c0`. Seek `s` to there and retrieve the current memory region with `\dm.`.
+In fact, the string could be found at address `0x1c06619c0`. Seek `s` to there and retrieve the current memory region with `:dm.`.
 
 ```bash
 [0x100d7d332]> s 0x1c06619c0
-[0x1c06619c0]> \dm.
+[0x1c06619c0]> :dm.
 0x00000001c0000000 - 0x00000001c8000000 rw-
 ```
 

@@ -21,7 +21,7 @@ r2 frida://usb//sg.vantagepoint.helloworldjni
 
 > See all options with `r2 frida://?`.
 
-Once in the r2frida session, all commands start with `\`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `\i`.
+Once in the r2frida session, all commands start with `:`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `:i`.
 
 ### Memory Maps and Inspection
 
