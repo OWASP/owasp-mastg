@@ -23,4 +23,3 @@ With Grapfruit it's possible to explore different kinds of information concernin
 - List the modules that are loaded by the app
 - Dump class names
 - Dump keychain items
-- Access to NSLog traces

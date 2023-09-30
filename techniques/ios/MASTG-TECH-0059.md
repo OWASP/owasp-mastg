@@ -124,16 +124,16 @@ Regular           420  None                ...  Info.plist
 Regular           493  None                ...  iGoat-Swift
 ```
 
-You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
+You can also visualize the Bundle directory from [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") by clicking on **Finder** -> **Bundle**:
 
-<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_bundle_dir.png" width="100%" />
 
 Including the `Info.plist` file:
 
-<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_plist_view.png" width="100%" />
 
-As well as the Data directory in **Files** -> **Data**:
+As well as the Data directory in **Finder** -> **Home**:
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
 
 Refer to the [Testing Data Storage](0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
