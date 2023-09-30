@@ -53,7 +53,7 @@ hide:
 
 <br><br>
 
-<a href="../MAS_checklist"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/mas_checklist.png" /></a>
+<a href="../checklists"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/mas_checklist.png" /></a>
 
 <br><br><br>
 
