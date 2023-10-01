@@ -97,13 +97,13 @@ iOS apps can make their codebase modular by using different elements. In the MAS
 - [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
 - [Swift Packages](https://developer.apple.com/documentation/swift_packages): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
 
-You can visualize native libraries in Passionfruit by clicking on "Modules":
+You can view native libraries in [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") by clicking on the Modules icon in the left menu bar:
 
-<img src="Images/Chapters/0x06b/passionfruit_modules.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_modules.png" width="100%" />
 
 And get a more detailed view including their imports/exports:
 
-<img src="Images/Chapters/0x06b/passionfruit_modules_detail.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_modules_detail.png" width="100%" />
 
 They are available in the `Frameworks` folder in the IPA, you can also inspect them from the terminal:
 
@@ -136,4 +136,4 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-<img src="Images/Chapters/0x06b/passionfruit_db_view.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_db_view.png" width="100%" />

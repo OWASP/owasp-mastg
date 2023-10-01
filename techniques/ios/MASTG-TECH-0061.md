@@ -30,11 +30,11 @@ Note that currently, the latest versions of frida-server and objection do not co
 
 Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
 
-## Passionfruit (Jailbroken / non-Jailbroken)
+## Grapefruit (Jailbroken / non-Jailbroken)
 
-With [Passionfruit](0x08a-Testing-Tools.md#passionfruit) it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
+With [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") it's possible to access the keychain data of the app you have selected. Inside the **Storage** section, click on **Keychain** and you can see a listing of the stored Keychain information.
 
-<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_keychain.png" width="100%" />
 
 ## Keychain-dumper (Jailbroken)
 

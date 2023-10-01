@@ -34,7 +34,3 @@ Jun  7 13:42:14 iPhone rm[9707] <Notice>: MS:Notice: Injecting: (null) [rm] (155
 Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch] (1556.00)
 ...
 ```
-
-Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the **Console** -> **Output** tab:
-
-<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" width="100%" />

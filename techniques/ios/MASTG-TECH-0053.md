@@ -15,21 +15,19 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
-## Passionfruit
+## Grapefruit
 
-After starting [Passionfruit](0x08a-Testing-Tools.md#passionfruit) you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
+After starting [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") you can select the app that is in scope for testing. There are various functions available, of which one is called "Finder". When selecting it, you will get a listing of the directories of the app sandbox.
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
 
 When navigating through the directories and selecting a file, a pop-up will show up and display the data either as hexadecimal or text. When closing this pop-up you have various options available for the file, including:
 
-- Text viewer
-- SQLite viewer
-- Image viewer
+- Database viewer
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/passionfruit_file_download.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_file_download.png" width="100%" />
 
 ## Objection
 

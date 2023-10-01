@@ -20,6 +20,6 @@ $ frida-ps -Uai
 
 It also shows which of them are currently running. Take a note of the "Identifier" (bundle identifier) and the PID if any as you'll need them afterwards.
 
-You can also directly open passionfruit and after selecting your iOS device you'll get the list of installed apps.
+You can also directly open [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") and after selecting your iOS device you'll get the list of installed apps.
 
-<img src="Images/Chapters/0x06b/passionfruit_installed_apps.png" width="400px" />
+<img src="Images/Chapters/0x06b/grapefruit_installed_apps.png" width="400px" />
