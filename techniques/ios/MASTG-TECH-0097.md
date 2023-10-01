@@ -5,10 +5,10 @@ platform: ios
 
 Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
 
-We'll keep using the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app, open a session with r2frida `r2 frida://usb//iGoat-Swift` and you can start by displaying the target binary information by using the `\i` command:
+We'll keep using the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app, open a session with r2frida `r2 frida://usb//iGoat-Swift` and you can start by displaying the target binary information by using the `:i` command:
 
 ```bash
-[0x00000000]> \i
+[0x00000000]> :i
 arch                arm
 bits                64
 os                  darwin
@@ -25,7 +25,7 @@ isDebuggerAttached  false
 cwd                 /
 ```
 
-Search all symbols of a certain module with `\is <lib>`, e.g. `\is libboringssl.dylib`.
+Search all symbols of a certain module with `:is <lib>`, e.g. `:is libboringssl.dylib`.
 
 The following does a case-insensitive search (grep) for symbols including "aes" (`~+aes`).
 
@@ -44,10 +44,10 @@ The following does a case-insensitive search (grep) for symbols including "aes" 
 
 Or you might prefer to look into the imports/exports. For example:
 
-- List all imports of the main binary: `\ii iGoat-Swift`.
-- List exports of the libc++.1.dylib library: `\iE /usr/lib/libc++.1.dylib`.
+- List all imports of the main binary: `:ii iGoat-Swift`.
+- List exports of the libc++.1.dylib library: `:iE /usr/lib/libc++.1.dylib`.
 
-> For big binaries it's recommended to pipe the output to the internal less program by appending `~..`, i.e. `\ii iGoat-Swift~..` (if not, for this binary, you'd get almost 5000 lines printed to your terminal).
+> For big binaries it's recommended to pipe the output to the internal less program by appending `~..`, i.e. `:ii iGoat-Swift~..` (if not, for this binary, you'd get almost 5000 lines printed to your terminal).
 
 The next thing you might want to look at are the classes:
 
@@ -96,20 +96,20 @@ Imagine that you are interested into `0x000000018eec5c8c - setStringValue:`. You
 ╰           0x18eec5ca8      f4             hlt
 ```
 
-Finally, instead of doing a full memory search for strings, you may want to retrieve the strings from a certain binary and filter them, as you'd do _offline_ with radare2. For this you have to find the binary, seek to it and then run the `\iz` command.
+Finally, instead of doing a full memory search for strings, you may want to retrieve the strings from a certain binary and filter them, as you'd do _offline_ with radare2. For this you have to find the binary, seek to it and then run the `:iz` command.
 
 > It's recommended to apply a filter with a keyword `~<keyword>`/`~+<keyword>` to minimize the terminal output. If just want to explore all results you can also pipe them to the internal less `\iz~..`.
 
 ```bash
-[0x00000000]> \il~iGoa
+[0x00000000]> :il~iGoa
 0x00000001006b8000 iGoat-Swift
 [0x00000000]> s 0x00000001006b8000
-[0x1006b8000]> \iz
+[0x1006b8000]> :iz
 Reading 2.390625MB ...
 Do you want to print 8568 lines? (y/N) N
-[0x1006b8000]> \iz~+hill
+[0x1006b8000]> :iz~+hill
 Reading 2.390625MB ...
-[0x1006b8000]> \iz~+pass
+[0x1006b8000]> :iz~+pass
 Reading 2.390625MB ...
 0x00000001006b93ed  "passwordTextField"
 0x00000001006bb11a  "11iGoat_Swift20KeychainPasswordItemV0C5ErrorO"

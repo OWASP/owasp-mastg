@@ -23,12 +23,12 @@ For more examples on how to connect to frida-server, [see the usage section in t
 
 > The following examples were executed using an Android app but also apply to iOS apps.
 
-Once in the r2frida session, all commands start with `\` or `=!`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `\i`.
+Once in the r2frida session, all commands start with `:` or `=!`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `:i`.
 
 > See all options with `r2 frida://?`.
 
 ```bash
-[0x00000000]> \i
+[0x00000000]> :i
 arch                x86
 bits                64
 os                  linux
@@ -74,10 +74,10 @@ policyunsupported md algorithmvar bad valuec0"},{"address":"0x561f072c4275", \
 ...
 ```
 
-To list the loaded libraries use the command `\il` and filter the results using the internal grep from radare2 with the command `~`. For example, the following command will list the loaded libraries matching the keywords `keystore`, `ssl` and `crypto`:
+To list the loaded libraries use the command `:il` and filter the results using the internal grep from radare2 with the command `~`. For example, the following command will list the loaded libraries matching the keywords `keystore`, `ssl` and `crypto`:
 
 ```bash
-[0x00000000]> \il~keystore,ssl,crypto
+[0x00000000]> :il~keystore,ssl,crypto
 0x00007f3357b8e000 libssl.so.1.1
 0x00007f3357716000 libcrypto.so.1.1
 ```
@@ -85,7 +85,7 @@ To list the loaded libraries use the command `\il` and filter the results using 
 Similarly, to list the exports and filter the results by a specific keyword:
 
 ```bash
-[0x00000000]> \iE libssl.so.1.1~CIPHER
+[0x00000000]> :iE libssl.so.1.1~CIPHER
 0x7f3357bb7ef0 f SSL_CIPHER_get_bits
 0x7f3357bb8260 f SSL_CIPHER_find
 0x7f3357bb82c0 f SSL_CIPHER_get_digest_nid
@@ -102,7 +102,7 @@ Similarly, to list the exports and filter the results by a specific keyword:
 To list or set a breakpoint use the command db. This is useful when analyzing/modifying memory:
 
 ```bash
-[0x00000000]> \db
+[0x00000000]> :db
 ```
 
 Finally, remember that you can also run Frida JavaScript code with `\.` plus the name of the script:

@@ -5,10 +5,10 @@ platform: android
 
 Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
 
-We'll keep using the HelloWorld JNI app, open a session with r2frida `r2 frida://usb//sg.vantagepoint.helloworldjni` and you can start by displaying the target binary information by using the `\i` command:
+We'll keep using the HelloWorld JNI app, open a session with r2frida `r2 frida://usb//sg.vantagepoint.helloworldjni` and you can start by displaying the target binary information by using the `:i` command:
 
 ```bash
-[0x00000000]> \i
+[0x00000000]> :i
 arch                arm
 bits                64
 os                  linux
@@ -36,7 +36,7 @@ cacheDir            /data/local/tmp
 jniEnv              0x7d30a43c60
 ```
 
-Search all symbols of a certain module with `\is <lib>`, e.g. `\is libnative-lib.so`.
+Search all symbols of a certain module with `:is <lib>`, e.g. `:is libnative-lib.so`.
 
 ```bash
 [0x00000000]> \is libnative-lib.so
@@ -44,18 +44,18 @@ Search all symbols of a certain module with `\is <lib>`, e.g. `\is libnative-lib
 [0x00000000]>
 ```
 
-Which are empty in this case. Alternatively, you might prefer to look into the imports/exports. For example, list the imports with `\ii <lib>`:
+Which are empty in this case. Alternatively, you might prefer to look into the imports/exports. For example, list the imports with `:ii <lib>`:
 
 ```bash
-[0x00000000]> \ii libnative-lib.so
+[0x00000000]> :ii libnative-lib.so
 0x7dbe1159d0 f __cxa_finalize /system/lib64/libc.so
 0x7dbe115868 f __cxa_atexit /system/lib64/libc.so
 ```
 
-And list the exports with `\iE <lib>`:
+And list the exports with `:iE <lib>`:
 
 ```bash
-[0x00000000]> \iE libnative-lib.so
+[0x00000000]> :iE libnative-lib.so
 0x7d1c49954c f Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
 ```
 
@@ -71,7 +71,7 @@ sg.vantagepoint.helloworldjni.MainActivity
 List class fields:
 
 ```bash
-[0x00000000]> \ic sg.vantagepoint.helloworldjni.MainActivity~sg.vantagepoint.helloworldjni
+[0x00000000]> :ic sg.vantagepoint.helloworldjni.MainActivity~sg.vantagepoint.helloworldjni
 public native java.lang.String sg.vantagepoint.helloworldjni.MainActivity.stringFromJNI()
 public sg.vantagepoint.helloworldjni.MainActivity()
 ```
@@ -81,7 +81,7 @@ Note that we've filtered by package name as this is the `MainActivity` and it in
 You can also display information about the class loader:
 
 ```bash
-[0x00000000]> \icL
+[0x00000000]> :icL
 dalvik.system.PathClassLoader[
  DexPathList[
   [

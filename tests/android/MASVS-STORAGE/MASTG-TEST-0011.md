@@ -308,7 +308,7 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 ### Runtime Memory Analysis
 
 Instead of dumping the memory to your host computer, you can alternatively use [r2frida](../../../Document/0x08a-Testing-Tools.md#r2frida). With it, you can analyze and inspect the app's memory while it's running.
-For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
+For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `:` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
 For more information, options and approaches, please refer to section "[In-Memory Search](../../../Document/0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android".
 
