@@ -41,6 +41,11 @@
     <br><br>
     {% endif %}
 
+    {% if page.meta.last_updated %}
+    <em><small style="color: darkgrey;">Last updated: {{ page.meta.last_updated }}</small></em>
+    <br><br>
+    {% endif %}
+
     <script>
         MASVS_COLORS = {
             "MASVS-STORAGE": "DF5C8D",
