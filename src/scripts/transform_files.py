@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List
 import yaml
 from dataclasses import dataclass
+import git_data
 
 EMOJIS_regex = r"🥇 |🎁 |📝 |❗ "
 
@@ -98,7 +99,7 @@ def get_links_from_anchor(links, anchor):
     ]))
 
 
-def update_yaml_frontmatter(file_text, tools, examples, external_links):
+def update_yaml_frontmatter(file_text, tools, examples, external_links, last_updated):
     """
     Updates the YAML frontmatter with the tools and examples list.
     """
@@ -116,6 +117,8 @@ def update_yaml_frontmatter(file_text, tools, examples, external_links):
 
         # update with external links
         frontmatter["resources"] = update_frontmatter_list(frontmatter.get("external_links", []), external_links)
+
+        frontmatter["last_updated"] = last_updated
 
         # Replace the old frontmatter with the updated frontmatter
         updated_frontmatter = f"---\n{yaml.dump(frontmatter, indent=4, sort_keys=False)}---\n"
@@ -192,7 +195,10 @@ def process_markdown_files(folder):
                 file_content = update_internal_links(file_content, internal_links)
 
                 external_links = [link.url for link in external_links]
-                updated_content = update_yaml_frontmatter(file_content, tools, examples, external_links)
+
+                last_updated = git_data.get_last_commit_date(Path(markdown_file.as_posix().replace('docs/MASTG', '.')).absolute().as_posix())
+
+                updated_content = update_yaml_frontmatter(file_content, tools, examples, external_links, last_updated)
                 markdown_file.write_text(updated_content + resources_section)
 
 
