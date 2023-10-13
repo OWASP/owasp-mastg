@@ -1,0 +1,1 @@
+Log.d("Secret Log", "\uD83D\uDD11 PIN: $secretPin")
