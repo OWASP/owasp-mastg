@@ -20,3 +20,7 @@ With the following command you can specifically grep for the log output of the a
 ```bash
 adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
+
+If you already know the app PID you may give it directly using `--pid` flag.
+
+You may also want to apply further filters or regular expressions (using `logcat`'s regex flags `-e <expr>, --regex=<expr>` for example) if you expect certain strings or patterns to come up in the logs.
