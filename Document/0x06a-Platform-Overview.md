@@ -99,6 +99,20 @@ ASLR randomizes the memory location of the program's executable file, data, heap
 
 The XN mechanism allows iOS to mark selected memory segments of a process as non-executable. On iOS, the process stack and heap of user-mode processes is marked non-executable. Pages that are writable cannot be marked executable at the same time. This prevents attackers to execute machine code injected into the stack or heap.
 
+### DeviceCheck
+
+The DeviceCheck framework, including its components DeviceCheck and App Attest, helps prevent fraud in promotional offers. It allows developers to persistently store information on the device and on Apple servers to limit promotions to once per device. The stored information remains intact across app reinstallation, device transfers, and even resets. Developers can reset this data periodically.
+
+For more information, refer to the [DeviceCheck documentation](https://developer.apple.com/documentation/devicecheck "DeviceCheck").
+
+### App Attest
+
+App Attest, available under the DeviceCheck framework, helps verify instances of the app running on a device. It enables apps to attach a hardware-backed assertion to requests, ensuring that the request originated from the genuine app on a genuine Apple device. This feature aids in preventing modified apps from communicating with your server.
+
+The process involves generating and validating cryptographic keys, along with a set of verifications performed by the server, ensuring the authenticity of the request. It is important to note that while App Attest enhances security, it does not guarantee complete protection against all forms of fraudulent activities.
+
+For more detailed information, refer to the [WWDC 2021](https://developer.apple.com/videos/play/wwdc2021/10244 "WWDC 2021") session, along with the [App Attest documentation](https://developer.apple.com/documentation/devicecheck/establishing_your_app_s_integrity "App Attest documentation") and [App Attest implementation guide](https://developer.apple.com/documentation/devicecheck/validating_apps_that_connect_to_your_server "App Attest implementation guide").
+
 ## Software Development on iOS
 
 Like other platforms, Apple provides a Software Development Kit (SDK) that helps developers to develop, install, run, and test native iOS Apps. Xcode is an Integrated Development Environment (IDE) for Apple software development. iOS applications are developed in Objective-C or Swift.
