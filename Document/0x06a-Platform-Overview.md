@@ -101,15 +101,15 @@ The XN mechanism allows iOS to mark selected memory segments of a process as non
 
 ### DeviceCheck
 
-The DeviceCheck framework, including its components DeviceCheck and App Attest, helps prevent fraud in promotional offers. It allows developers to persistently store information on the device and on Apple servers to limit promotions to once per device. The stored information remains intact across app reinstallation, device transfers, and even resets. Developers can reset this data periodically.
+The DeviceCheck framework, including its components DeviceCheck and App Attest, helps you prevent fraud in promotional offers. It allows you to persistently store information on the device and on Apple servers to limit promotions to once per device. The stored information remains intact across app reinstallation, device transfers, and even resets. You can reset this data periodically.
 
 For more information, refer to the [DeviceCheck documentation](https://developer.apple.com/documentation/devicecheck "DeviceCheck").
 
 ### App Attest
 
-App Attest, available under the DeviceCheck framework, helps verify instances of the app running on a device. It enables apps to attach a hardware-backed assertion to requests, ensuring that the request originated from the genuine app on a genuine Apple device. This feature aids in preventing modified apps from communicating with your server.
+App Attest, available under the DeviceCheck framework, helps you verify instances of the app running on a device. It enables apps to attach a hardware-backed assertion to requests, ensuring that the request originated from the genuine app on a genuine Apple device. This feature aids in preventing modified apps from communicating with your server.
 
-The process involves generating and validating cryptographic keys, along with a set of verifications performed by the server, ensuring the authenticity of the request. It is important to note that while App Attest enhances security, it does not guarantee complete protection against all forms of fraudulent activities.
+The process involves generating and validating cryptographic keys, along with a set of verifications performed by your server, ensuring the authenticity of the request. It is important to note that while App Attest enhances security, it does not guarantee complete protection against all forms of fraudulent activities.
 
 For more detailed information, refer to the [WWDC 2021](https://developer.apple.com/videos/play/wwdc2021/10244 "WWDC 2021") session, along with the [App Attest documentation](https://developer.apple.com/documentation/devicecheck/establishing_your_app_s_integrity "App Attest documentation") and [App Attest implementation guide](https://developer.apple.com/documentation/devicecheck/validating_apps_that_connect_to_your_server "App Attest implementation guide").
 
