@@ -170,7 +170,9 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 
 ### DeviceCheck
 
-The DeviceCheck framework, including its components DeviceCheck and App Attest, helps you prevent fraud in promotional offers. It allows you to persistently store information on the device and on Apple servers to limit promotions to once per device. The stored information remains intact across app reinstallation, device transfers, and even resets. You can reset this data periodically.
+The DeviceCheck framework, including its components DeviceCheck and App Attest, helps you prevent fraudulent use of your services. It consists of a framework that you use from your app and an Apple server which is accessible only to your own server. DeviceCheck allows you to persistently store information on the device and on Apple servers. The stored information remains intact across app reinstallation, device transfers, or resets, with the option to reset this data periodically.
+
+DeviceCheck is typically used to mitigate fraud by restricting access to sensitive resources. For example, limiting promotions to once per device, identify and flag fraudulent devices, etc. However, it definitely cannot prevent all fraud. For example, it is [not meant to detect compromised operating systems](https://swiftrocks.com/app-attest-apple-protect-ios-jailbreak "App Attest: How to prevent an iOS app's APIs from being abused") (aka. jailbreak detection). 
 
 For more information, refer to the [DeviceCheck documentation](https://developer.apple.com/documentation/devicecheck "DeviceCheck documentation").
 
