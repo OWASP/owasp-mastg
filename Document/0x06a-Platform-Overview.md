@@ -167,3 +167,19 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 - Bluetooth sharing
 - Media Library
 - Social media accounts
+
+### DeviceCheck
+
+The DeviceCheck framework, including its components DeviceCheck and App Attest, helps you prevent fraudulent use of your services. It consists of a framework that you use from your app and an Apple server which is accessible only to your own server. DeviceCheck allows you to persistently store information on the device and on Apple servers. The stored information remains intact across app reinstallation, device transfers, or resets, with the option to reset this data periodically.
+
+DeviceCheck is typically used to mitigate fraud by restricting access to sensitive resources. For example, limiting promotions to once per device, identify and flag fraudulent devices, etc. However, it definitely cannot prevent all fraud. For example, it is [not meant to detect compromised operating systems](https://swiftrocks.com/app-attest-apple-protect-ios-jailbreak "App Attest: How to prevent an iOS app's APIs from being abused") (aka. jailbreak detection).
+
+For more information, refer to the [DeviceCheck documentation](https://developer.apple.com/documentation/devicecheck "DeviceCheck documentation").
+
+#### App Attest
+
+App Attest, available under the DeviceCheck framework, helps you verify instances of the app running on a device by enabling apps to attach a hardware-backed assertion to requests, ensuring they originate from the legitimate app on a genuine Apple device. This feature aids in preventing modified apps from communicating with your server.
+
+The process involves generating and validating cryptographic keys, along with a set of verifications performed by your server, ensuring the authenticity of the request. It is important to note that while App Attest enhances security, it does not guarantee complete protection against all forms of fraudulent activities.
+
+For more detailed information, refer to the [WWDC 2021](https://developer.apple.com/videos/play/wwdc2021/10244 "WWDC 2021") session, along with the [App Attest documentation](https://developer.apple.com/documentation/devicecheck/establishing_your_app_s_integrity "App Attest documentation") and [App Attest implementation guide](https://developer.apple.com/documentation/devicecheck/validating_apps_that_connect_to_your_server "App Attest implementation guide").
