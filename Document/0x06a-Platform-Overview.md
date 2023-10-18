@@ -174,7 +174,7 @@ The DeviceCheck framework, including its components DeviceCheck and App Attest, 
 
 For more information, refer to the [DeviceCheck documentation](https://developer.apple.com/documentation/devicecheck "DeviceCheck documentation").
 
-### App Attest
+#### App Attest
 
 App Attest, available under the DeviceCheck framework, helps you verify instances of the app running on a device by enabling apps to attach a hardware-backed assertion to requests, ensuring they originate from the legitimate app on a genuine Apple device. This feature aids in preventing modified apps from communicating with your server.
 
