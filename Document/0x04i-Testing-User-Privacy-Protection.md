@@ -50,7 +50,7 @@ Though a privacy policy traditionally protects most of the these processes, that
 
 ### The New Approach (Google and Apple)
 
-In order to address these challenge and better inform users, Google and Apple have introduced new privacy labeling systems (very much along the lines of NIST's proposal) to help users easily understand how their data is being collected, handled, and shared, [Consumer Software Cybersecurity Labeling](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.02042022-1.pdf). Their approaches can be seen at: 
+In order to address these challenges and better inform users, Google and Apple have introduced new privacy labeling systems (very much along the lines of NIST's proposal) to help users easily understand how their data is being collected, handled, and shared, [Consumer Software Cybersecurity Labeling](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.02042022-1.pdf). Their approaches can be seen at: 
 
 - The App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
 - The Google Play [Data Safety Section](https://developer.android.com/guide/topics/data/collect-share) (since 2021).
@@ -92,7 +92,7 @@ Security testers should be aware of Google Play's list of [common privacy violat
 
 > You can find more [common violations in Google Play Console Help](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations "Google Play Console Help - Examples of Common Privacy Violations") by going to **Policy Centre -> Privacy, deception and device abuse -> User data**.
 
-As you might expect, these testing categories are related to each other. When you're testing them you're often indirectly testing for user privacy protection. This fact will allow you to help you provide better and more comprehensive reports. Often you'll also be able to reuse evidence from other tests in order to test for User Privacy Protection).
+As you might expect, these testing categories are related to each other. When you're testing them you're often indirectly testing for user privacy protection. This fact will allow you to help you provide better and more comprehensive reports. Often you'll be able to reuse evidence from other tests in order to test for User Privacy Protection).
 
 ## Testing Disclosure of Data Privacy on the App Marketplace
 
