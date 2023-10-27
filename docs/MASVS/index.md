@@ -25,13 +25,13 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 
 The standard is divided into various groups of security controls, labeled **MASVS-XXXXX**, that represent the most critical areas of the mobile attack surface:
 
-- [**MASVS-STORAGE**](MASVS/05-MASVS-STORAGE.md): Secure storage of sensitive data on a device (data-at-rest).
-- [**MASVS-CRYPTO**](MASVS/06-MASVS-CRYPTO.md): Cryptographic functionality used to protect sensitive data.
-- [**MASVS-AUTH**](MASVS/07-MASVS-AUTH.md): Authentication and authorization mechanisms used by the mobile app.
-- [**MASVS-NETWORK**](MASVS/08-MASVS-NETWORK.md): Secure network communication between the mobile app and remote endpoints (data-in-transit).
-- [**MASVS-PLATFORM**](MASVS/09-MASVS-PLATFORM.md): Secure interaction with the underlying mobile platform and other installed apps.
-- [**MASVS-CODE**](MASVS/10-MASVS-CODE.md): Security best practices for data processing and keeping the app up-to-date.
-- [**MASVS-RESILIENCE**](MASVS/11-MASVS-RESILIENCE.md): Resilience to reverse engineering and tampering attempts.
+- [**MASVS-STORAGE**](/MASVS/05-MASVS-STORAGE): Secure storage of sensitive data on a device (data-at-rest).
+- [**MASVS-CRYPTO**](/MASVS/06-MASVS-CRYPTO): Cryptographic functionality used to protect sensitive data.
+- [**MASVS-AUTH**](/MASVS/07-MASVS-AUTH): Authentication and authorization mechanisms used by the mobile app.
+- [**MASVS-NETWORK**](/MASVS/08-MASVS-NETWORK): Secure network communication between the mobile app and remote endpoints (data-in-transit).
+- [**MASVS-PLATFORM**](/MASVS/09-MASVS-PLATFORM): Secure interaction with the underlying mobile platform and other installed apps.
+- [**MASVS-CODE**](/MASVS/10-MASVS-CODE): Security best practices for data processing and keeping the app up-to-date.
+- [**MASVS-RESILIENCE**](/MASVS/11-MASVS-RESILIENCE): Resilience to reverse engineering and tampering attempts.
 
 To complement the MASVS, the OWASP MAS project also provides the [OWASP Mobile Application Security Testing Guide (MASTG)](/MASTG/) and the [OWASP MAS Checklist](/checklists/) which together are the perfect companion for verifying the controls listed in the OWASP MASVS and demonstrate compliance.
 
