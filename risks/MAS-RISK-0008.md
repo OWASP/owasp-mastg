@@ -12,10 +12,10 @@ mappings:
 
   - owasp-masvs: [MASVS-PRIVACY-1, MASVS-PRIVACY-2]
   - owasp-masvs-v1: []
-title: Insertion of Sensitive Data into Network Traffic
+title: Sensitive Data in Network Traffic
 platform: android
 profiles: ["P"]
-profiles_rationale: This risk is part of the MAS privacy profile because most of apps will insert sensitive data into network traffic, but, as long as the communication is properly encrypted this is not a security risk. It is a privacy risk because the data is sent to a third party. 
+profiles_rationale: This risk is part of the MAS privacy profile because most of apps will insert sensitive data into network traffic, but, as long as the communication is properly encrypted this is not a security risk.
 ---
 
 ## Overview
