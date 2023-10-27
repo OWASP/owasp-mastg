@@ -1,0 +1,34 @@
+POST /login HTTP/1.1
+Host: www.wanikani.com
+Connection: keep-alive
+Content-Length: 196
+Cache-Control: max-age=0
+sec-ch-ua: ".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"
+sec-ch-ua-mobile: ?1
+sec-ch-ua-platform: "Android"
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Linux; Android 13; sdk_gphone64_arm64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Mobile Safari/537.36
+Origin: https://www.wanikani.com
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: https://www.wanikani.com/login
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Cookie: _wanikani_session=91yii%2FmlYqfcLvGG0GbVGZo%2FIQMjbZdH0vv57M3KlIZNdvKxrXvw2%2Fvm%2FUZOEmbTCYOvyEjxURSwk8%2Br622XQc8DUvHX%2FPnSdFj%2FEijR12M2CTo4bMSUWpone6f1yQPshDxUEVFVCLY8yuUUA8PGfVcXxKdM1v0yLvmGQhHLOZLi7PB%2BcF%2Bk0XO1sxV96XJ1OoC2l0%2BIhvBKeAzYS65cY23gZK1FO78uphdv2FXh%2FqaCtufKj7fEIJAaa%2FIZQ7%2FSDTTFcqUP%2B7WD1diQgQvXB13B8he%2BAbly%2Bg%3D%3D--v%2BV6C%2Bz4cDAzTQ%2Fw--zSZysukKFc0ujoxUGsnyMQ%3D%3D
+
+authenticity_token=7TXw-V-9jPcd7rBb5f_aKmGJmRdL1gk0ODXwvk2InvhjVAz5Aqb3ybsR-3WaUAkL76q9xT0dG0NeGWVOI87QFA&user%5Bemail%5D=ghsouhg%40hotmail.com&user%5Bpassword%5D=111111111&user%5Bremember_me%5D=0
+
+HTTP/1.1 200 OK
+Server: Cowboy
+Date: Sun, 22 Oct 2023 10:13:15 GMT
+Connection: keep-alive
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin

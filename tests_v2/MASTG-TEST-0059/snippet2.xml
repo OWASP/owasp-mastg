@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- ruleid: nsc-allows-plaintext-traffic -->
+    <base-config cleartextTrafficPermitted="true">
+    </base-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">localhost</domain>
+        <trust-anchors>
+            <!-- Trust a debug certificate in addition to the system certificates -->
+            <certificates src="system" />
+            <certificates src="@raw/debug_certificate" />
+        </trust-anchors>
+    </domain-config>
+
+</network-security-config>
+
+<network-security-config>
+    <!-- ok: nsc-allows-plaintext-traffic -->
+    <!-- <base-config cleartextTrafficPermitted="true"> -->
+    <!-- ok: nsc-allows-plaintext-traffic -->
+    <base-config cleartextTrafficPermitted="false">
+    </base-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">localhost</domain>
+        <trust-anchors>
+            <!-- Trust a debug certificate in addition to the system certificates -->
+            <certificates src="system" />
+            <certificates src="@raw/debug_certificate" />
+        </trust-anchors>
+    </domain-config>
+
+</network-security-config>
+
+<network-security-config>
+    <!-- ok: nsc-allows-plaintext-traffic -->
+    <base-config cleartextTrafficPermitted="false">
+    </base-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">localhost</domain>
+        <trust-anchors>
+            <!-- Trust a debug certificate in addition to the system certificates -->
+            <certificates src="system" />
+            <certificates src="@raw/debug_certificate" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
+
+<network-security-config xmlns:tools="http://schemas.android.com/tools" tools:ignore="InsecureBaseConfiguration,AcceptsUserCertificates">
+    <!-- ok: nsc-allows-plaintext-traffic -->
+    <base-config cleartextTrafficPermitted="true">
+            <!-- Trust system and user certificates -->
+            <certificates src="system" />
+            <!-- ok: nsc-allows-user-ca-certs -->
+            <certificates src="user" />
+    </base-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">localhost</domain>
+        <trust-anchors>
+            <!-- Trust a debug certificate in addition to the system certificates -->
+            <certificates src="system" />
+            <!-- ok: nsc-allows-user-ca-certs-for-domain -->
+            <certificates src="user" />
+            <certificates src="@raw/debug_certificate" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
+
+<network-security-config xmlns:tools="http://schemas.android.com/tools" tools:ignore="InsecureBaseConfiguration">
+    <!-- ok: nsc-allows-plaintext-traffic -->
+    <base-config cleartextTrafficPermitted="true">
+            <!-- Trust system and user certificates -->
+            <certificates src="system" />
+            <!-- ruleid: nsc-allows-user-ca-certs -->
+            <certificates src="user" />
+    </base-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">localhost</domain>
+        <trust-anchors>
+            <!-- Trust a debug certificate in addition to the system certificates -->
+            <certificates src="system" />
+            <!-- ruleid: nsc-allows-user-ca-certs-for-domain -->
+            <certificates src="user" />
+            <certificates src="@raw/debug_certificate" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
+
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">example.com</domain>
+        <!-- ok: nsc-pinning-without-expiration -->
+        <pin-set expiration="2018-01-01">
+            <!-- ruleid: nsc-pinning-without-backup -->
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
+
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">example.com</domain>
+        <!-- ok: nsc-pinning-without-expiration -->
+        <pin-set expiration="2018-01-01">
+            <!-- ok: nsc-pinning-without-backup -->
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+            <!-- backup pin -->
+            <pin digest="SHA-256">fwza0LRMXouZHRC8Ei+4PyuldPDcf3UKgO/04cDM1oE=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
+
+
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">example.com</domain>
+        <!-- ruleid: nsc-pinning-without-expiration -->
+        <pin-set>
+            <!-- ok: nsc-pinning-without-backup -->
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+            <!-- backup pin -->
+            <pin digest="SHA-256">fwza0LRMXouZHRC8Ei+4PyuldPDcf3UKgO/04cDM1oE=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>

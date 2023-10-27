@@ -1,0 +1,166 @@
+rules:
+- id: nsc-allows-plaintext-traffic
+  languages:
+  - generic
+  message: >-
+    The Network Security Config is set to allow non-encrypted connections.
+    Evaluate if this is necessary for your app, and disable it if appropriate.
+    (To hide this warning, set `xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="InsecureBaseConfiguration"` as parameters to your
+    `<network-security-config>`)
+  metadata:
+    category: best-practice
+    license: Commons Clause License Condition v1.0[LGPL-2.1-only]
+    technology:
+    - android
+    references:
+    - https://developer.android.com/training/articles/security-config
+    - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+  patterns:
+  - pattern: |
+      <base-config ... cleartextTrafficPermitted="true" ... >
+  - pattern-not-inside: |
+      <!-- ... -->
+     # If the config explicitly tells us not to check for insecure configurations, respect that
+      # (on a best-effort basis due to limitations of how much you can glob in generic parser mode)
+  - pattern-not-inside: |
+      <network-security-config ... InsecureBaseConfiguration ... >... ... ... ... ... ... ... ... ... ... </network-security-config>
+  severity: INFO
+  paths:
+    include:
+    - '*.xml'
+- id: nsc-pinning-without-backup
+  languages:
+  - generic
+  message: >-
+    Your app uses TLS public key pinning without specifying a backup key.
+    If you are forced to change TLS keys or CAs on short notice, not
+    having a backup pin can lead to connectivity issues until you can push
+    out an update. It is considered best practice to add at least one additional
+    pin as a backup.
+  metadata:
+    category: best-practice
+    license: Commons Clause License Condition v1.0[LGPL-2.1-only]
+    technology:
+    - android
+    references:
+    - https://developer.android.com/training/articles/security-config#CertificatePinning
+    - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+  patterns:
+      # FIXME: This check will currently not detect cases where there are two pins
+      # listed, but one of them is inside a <!-- comment --> - these will be recognized
+      # as having two or more pins. I don't think detecting these cases while not falsely
+      # detecting cases where there are three pins, but the middle one is commented out,
+      # is possible using the generic parser - this would require a specialized XML parser
+      # that has knowledge about comments etc.
+  - pattern: |
+      <pin ...>...</pin>
+  - pattern-not-inside: |
+      <pin ...>...</pin>...<pin ...>...</pin>
+  - pattern-inside: |
+      <pin-set ...> ... ... </pin-set>
+  - pattern-inside: |
+      <domain-config ... > ... ... ... ... ... </domain-config>
+  - pattern-not-inside: |
+      <!-- ... -->
+  severity: INFO
+  paths:
+    include:
+    - '*.xml'
+- id: nsc-pinning-without-expiration
+  languages:
+  - generic
+  message: >-
+    Your app uses TLS public key pinning without specifying an expiration date.
+    If your users do not update the app to receive new pins in time, expired or replaced
+    certificates can lead to connectivity issues until they install an update.
+    It is considered best practice to set an expiration time, after which the system will
+    default to trusting system CAs and disregard the pin.
+  metadata:
+    category: best-practice
+    license: Commons Clause License Condition v1.0[LGPL-2.1-only]
+    technology:
+    - android
+    references:
+    - https://developer.android.com/training/articles/security-config#CertificatePinning
+    - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+  patterns:
+  - pattern: |
+      <pin-set ...>... ... ...</pin-set>
+  - pattern-not-inside: |
+      <pin-set ... expiration="..."> ... ... ... </pin-set>
+  - pattern-inside: |
+      <domain-config ... > ... ... ... ... ... </domain-config>
+  - pattern-not-inside: |
+      <!-- ... -->
+  severity: INFO
+  paths:
+    include:
+    - '*.xml'
+- id: nsc-allows-user-ca-certs
+  languages:
+  - generic
+  message: >-
+    The Network Security Config is set to accept user-installed CAs.
+    Evaluate if this is necessary for your app, and disable it if appropriate.
+    (To hide this warning, set `xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AcceptsUserCertificates"` as parameters to your
+    `<network-security-config>`)
+  metadata:
+    category: best-practice
+    license: Commons Clause License Condition v1.0[LGPL-2.1-only]
+    technology:
+    - android
+    references:
+    - https://developer.android.com/training/articles/security-config
+    - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+  patterns:
+  - pattern: |
+      <certificates ... user ... />
+  - pattern-inside: |
+      <base-config ... > ... ... ... ... </base-config>
+  - pattern-not-inside: |
+      <!-- ... -->
+     # If the config explicitly tells us not to check for user CAs, respect that
+      # (on a best-effort basis due to limitations of how much you can glob in generic parser mode)
+  - pattern-not-inside: |
+      <network-security-config ... AcceptsUserCertificates ... >... ... ... ... ... ... ... ... ... ... </network-security-config>
+  severity: WARNING
+  paths:
+    include:
+    - '*.xml'
+- id: nsc-allows-user-ca-certs-for-domain
+  languages:
+  - generic
+  message: >-
+    The Network Security Config is set to accept user-installed CAs for the
+    domain `$DOMAIN`.
+    Evaluate if this is necessary for your app, and disable it if appropriate.
+    (To hide this warning, set `xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AcceptsUserCertificates"` as parameters to your
+    `<network-security-config>`)
+  metadata:
+    category: best-practice
+    license: Commons Clause License Condition v1.0[LGPL-2.1-only]
+    technology:
+    - android
+    references:
+    - https://developer.android.com/training/articles/security-config
+    - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+  patterns:
+  - pattern: |
+      <certificates src="user" ... />
+  - pattern-inside: |
+      <trust-anchors> ... ... ... </trust-anchors>
+  - pattern-inside: |
+      <domain-config ... > ... <domain ...> $DOMAIN </domain>... ... ... </domain-config>
+  - pattern-not-inside: |
+      <!-- ... -->
+     # If the config explicitly tells us not to check for user CAs, respect that
+      # (on a best-effort basis due to limitations of how much you can glob in generic parser mode)
+  - pattern-not-inside: |
+      <network-security-config ... AcceptsUserCertificates ... >... ... ... ... ... ... ... ... ... ... </network-security-config>
+  severity: WARNING
+  paths:
+    include:
+    - '*.xml'
