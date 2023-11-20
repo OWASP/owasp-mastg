@@ -8,28 +8,27 @@ All of our contributors are listed in the Contributing section of the OWASP MAS 
 
 ## 🥇 MAS Advocates
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word.
+MAS Advocates are industry supporters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word.
 
-> 🥇 Being an "MAS Advocate" is the highest status that companies can achieve in the project acknowledging that they've gone above and beyond to support the project.
+> 🥇 Being a "MAS Advocate" is the highest status that companies can achieve in the project, acknowledging that they've gone above and beyond to support the project.
 
-We will validate this status according to these categories:
-
-1. **Showing Adoption**: it should be clear just from looking at the official company page that they have adopted the OWASP MASVS and MASTG. For example:
-     - Services / Products
-     - Resources (e.g. blog posts, press releases, public pentest reports)
-     - Trainings
-     - etc.
-2. **Providing consistent high-impact contributions**: by continuously supporting with time/dedicated resources with clear/high impact for the OWASP MAS project.
-     - Content Pull Requests (e.g. adding/upgrading existing tests, tooling, maintaining code samples, etc.)
+**MAS Advocates continuously support the project with time/dedicated resources with clear/high impact**. To achieve this status, you'll need to demonstrate that you **make consistent high-impact contributions** to the project. For example:
+     - Content Pull Requests (e.g. adding/updating existing tests, tooling, maintaining code samples, etc.)
      - Technical PR reviews
      - Improving automation (GitHub Actions)
      - Upgrading, extending or creating new Crackmes
      - Moderating GitHub Discussions
-     - Providing high-value feedback to the project and for special events such as the MASVS/MASTG refactoring.
+     - Providing high quality feedback to the project and for special events such as the MASVS/MASTG refactoring.
      - etc.
-3. **Spreading the word** and promoting the project with many presentations each year, public trainings, high social media involvement (e.g. liking, re-sharing, doing own posting specifically to promote the project).
 
-_NOTE: You have to satisfy all three categories in order to qualify as an MAS Advocate. However, you do not need to fulfill each and every bullet point (they are examples). In general, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so._
+The following will be considered but it's not a requirement:
+
+- **Showing Adoption**: it should be clear just from looking at the official company page that they have adopted the OWASP MASVS and MASTG. For example:
+     - Services/products
+     - Resources (e.g. blog posts, press releases, public pentest reports)
+     - Trainings
+     - etc.
+- **Spreading the word** and promoting the project with many presentations each year, public trainings, high social media involvement (e.g. liking, re-sharing, doing own posting specifically to promote the project).
 
 ### 🎁 Benefits
 
@@ -41,7 +40,7 @@ _NOTE: You have to satisfy all three categories in order to qualify as an MAS Ad
 
 ### 📝 How to Apply
 
-If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application. Please be sure to include sufficient evidence (usually in the form of a _contribution report_ including URLs linking to the corresponding elements) showing what you've done in the 6 months period that goes inline with the three categories described above.
+If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application adn provide you with a _contribution report_. Please be sure to include sufficient evidence (e.g including links to PRs) showing what you've done in the 6 months period that goes inline with the three categories described above.
 
 ### ❗ Important Disclaimers
 
@@ -63,18 +62,6 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 **We'd like to thank NowSecure for its exemplary contribution which sets a blueprint for other potential contributors wanting to push the project forward.**
 
-### NowSecure as a MASVS/MASTG Adopter
-
-- Services / Products:
-    - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
-    - [NowSecure Platform for Automated Mobile Security Testing](https://www.nowsecure.com/products/nowsecure-platform/)
-- Resources:
-    - [The Essential Guide to the OWASP Mobile Security Project](https://discover.nowsecure.com/c/manager-guide-owasp?x=LIaYZt&xs=90367)
-- Trainings:
-    - [Standards and Risk Assessment](https://academy.nowsecure.com/standards-and-risk-assessment)
-    - [OWASP MASVS & MASTG Updates](https://academy.nowsecure.com/owasp-masvs-mstg-updates)
-    - [Intro to Mobile App Security](https://academy.nowsecure.com/intro-to-mobile-app-security)
-
 ### NowSecure's Contributions to the MAS Project
 
 **High-impact Contributions (time/dedicated resources):**
@@ -92,6 +79,20 @@ A special mention goes for the **contribution to the MASVS Refactoring**:
 
 In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](0x08b-Reference-Apps.md#android-uncrackable-l4).
 
+Additionally:
+
+**Showing Adoption:**
+
+- Services / Products:
+    - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
+    - [NowSecure Platform for Automated Mobile Security Testing](https://www.nowsecure.com/products/nowsecure-platform/)
+- Resources:
+    - [The Essential Guide to the OWASP Mobile Security Project](https://discover.nowsecure.com/c/manager-guide-owasp?x=LIaYZt&xs=90367)
+- Trainings:
+    - [Standards and Risk Assessment](https://academy.nowsecure.com/standards-and-risk-assessment)
+    - [OWASP MASVS & MASTG Updates](https://academy.nowsecure.com/owasp-masvs-mstg-updates)
+    - [Intro to Mobile App Security](https://academy.nowsecure.com/intro-to-mobile-app-security)
+
 **Spreading the Word:**
 
 - **Social media involvement**: continuous Twitter and LinkedIn activity (see [examples](https://twitter.com/search?q=(MASVS%20OR%20MSTG)%20(from%3ANowSecureMobile)&src=typed_query))
@@ -100,10 +101,13 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
     - [Integrate security into the mobile app software development lifecycle](https://www.scmagazine.com/perspective/devops/integrate-security-into-the-mobile-app-software-development-lifecycle)
     - [OWASP Mobile Security Testing Checklist Aids Compliance](https://www.nowsecure.com/blog/2022/02/23/owasp-mobile-security-testing-checklist-aids-compliance/)
 - **Presentations**:
-    - "Mobile Wanderlust"! Our journey to Version 2.0! (OWASP AppSec EU, Jun 10 2022)
-    - Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Toronto Chapter, Feb 10 2022)
-    - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
-    - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
+    - Refactoring Mobile App Security (OWASP AppSec US, Oct 2023)
+    - OWASP MAS Project Showcase (OWASP AppSec US, Oct 2023)
+    - OWASP MASVS v2 Updates (Tech Talks by NowSecure, Feb 2023)
+    - "Mobile Wanderlust"! Our journey to Version 2.0! (OWASP AppSec EU Jun 10 2022, OWASP Global AppSec APAC Sept 2022, OWASP AppSec US Nov 2022, OWASP AppSec EU Feb 2023)
+    - Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Toronto Chapter Feb 10 2022)
+    - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021 Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
+    - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
     - and more
 
 ### Donators
