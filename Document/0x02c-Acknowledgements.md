@@ -24,10 +24,10 @@ MAS Advocates are industry supporters of the OWASP MASVS and MASTG who have inve
 The following will be considered but it's not a requirement:
 
 - **Showing Adoption**: it should be clear just from looking at the official company page that they have adopted the OWASP MASVS and MASTG. For example:
-     - Services/products
-     - Resources (e.g. blog posts, press releases, public pentest reports)
-     - Trainings
-     - etc.
+    - Services/products
+    - Resources (e.g. blog posts, press releases, public pentest reports)
+    - Trainings
+    - etc.
 - **Spreading the word** and promoting the project with many presentations each year, public trainings, high social media involvement (e.g. liking, re-sharing, doing own posting specifically to promote the project).
 
 ### 🎁 Benefits
