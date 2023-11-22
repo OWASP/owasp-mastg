@@ -41,6 +41,7 @@ The following will be considered but it's not a requirement:
 ### 📝 How to Apply
 
 If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application and provide you with a _contribution report_. Please be sure to include sufficient evidence (e.g including links to PRs) showing what you've done in the 6 months period that goes inline with the three categories described above:
+
 - **Make consistent high-impact contributions**
 - **Showing Adoption**
 - **Spreading the word**
