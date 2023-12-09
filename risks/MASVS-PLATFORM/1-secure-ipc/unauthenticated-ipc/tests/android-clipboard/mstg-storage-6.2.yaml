@@ -1,0 +1,24 @@
+rules:
+  - id: MSTG-STORAGE-6.2
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M3
+      category: security
+      area: storage
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05d-Testing-Data-Storage.md#determining-whether-sensitive-stored-data-has-been-exposed-via-ipc-mechanisms-mstg-storage-6
+    message: The application may expose sensitive data via Clipboard Manager.
+    options:
+      symbolic_propagation: true
+    patterns:
+      - pattern: (ClipboardManager $CM).setPrimaryClip(<... $P ...>)
+      - metavariable-regex:
+          metavariable: $P
+          regex: .*(?i)(key|secret|password|pwd|passwd|token|seed|otp(?-i)|IV).*

@@ -1,0 +1,62 @@
+rules:
+  - id: MSTG-STORAGE-2
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M2
+      category: security
+      area: storage
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05d-Testing-Data-Storage.md#testing-local-storage-for-sensitive-data-mstg-storage-1-and-mstg-storage-2
+    message: The application could store sensitive data outside of the application container or system credential storage facilities.
+    options:
+      symbolic_propagation: true
+    pattern-either:
+      # Create file with WORLD_WRITABLE/READABLE permissions
+      - patterns:
+          - pattern: openFileOutput($FILENAME, $MODE)
+          - metavariable-comparison:
+              comparison: $MODE & (0x0001+0x0002) > 0
+      # Use of sharedpreferences without MODE_PRIVATE
+      - patterns:
+          - pattern: $X = ... .getSharedPreferences($P, $M);
+          - metavariable-comparison:
+                comparison: $M != 0
+      # Use of unencrypted FileOutStream
+#      - pattern-either:
+#          - patterns:
+#              - pattern: (FileOutputStream $S) = ...;
+#              - pattern-not: (FileOutputStream $S) = (EncryptedFile $EF).$METHOD(...);
+#          - patterns:
+#              - pattern: (FileInputStream $S) = ...;
+#              - pattern-not: (FileInputStream $S) = (EncryptedFile $EF).$METHOD(...);
+      # Interaction with external storage directories
+      - patterns:
+          - pattern: $X.$M(...)
+          - metavariable-regex:
+                metavariable: $M
+                regex: ((getExternal).*|getCacheDir)
+      # Sensitive strings in clear text in db
+      - patterns:
+          - pattern-inside: |
+              $METHOD(...){ ...
+              $X = ... .$WRT(...);
+              ...
+              $X.$MTD(...);
+              ... }
+          - metavariable-regex:
+                metavariable: $WRT
+                regex: (getWritableDatabase|getReadableDatabase|openOrCreateDatabase|create|openDatabase)
+          - pattern: $X.$MTD($...ARGS);
+          - metavariable-regex:
+                metavariable: $MTD
+                regex: .*(?i)(query|insert|replace|update).*
+          - metavariable-regex:
+                metavariable: $...ARGS
+                regex: .*(?i)(key|secret|password|pwd|passwd|token|seed|otp(?-i)|IV).*

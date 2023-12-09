@@ -1,0 +1,117 @@
+{
+    "errors": [],
+    "paths": {
+        "scanned": [
+            "snippet.xml"
+        ]
+    },
+    "results": [
+        {
+            "check_id": "manifest-usesCleartextTraffic-true",
+            "end": {
+                "col": 44,
+                "line": 8,
+                "offset": 368
+            },
+            "extra": {
+                "engine_kind": "OSS",
+                "fingerprint": "fd2e16ff417534571bf84304554c99d2f1b7671cfe285b0240af639c160115c075187ae18a0522d0e09367b2953c38d910ce26dccffc3881e953d95cdb383a55_0",
+                "is_ignored": false,
+                "lines": "        android:usesCleartextTraffic=\"true\"",
+                "message": "The Android manifest is configured to allow non-encrypted connections. Evaluate if this is necessary for your app, and disable it if appropriate. This flag is ignored on Android 7 (API 24) and above if a Network Security Config is present.",
+                "metadata": {
+                    "category": "best-practice",
+                    "license": "Commons Clause License Condition v1.0[LGPL-2.1-only]",
+                    "references": [
+                        "https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic",
+                        "https://developer.android.com/training/articles/security-config"
+                    ],
+                    "technology": [
+                        "android"
+                    ]
+                },
+                "metavars": {},
+                "severity": "INFO",
+                "validation_state": "NO_VALIDATOR"
+            },
+            "path": "snippet.xml",
+            "start": {
+                "col": 9,
+                "line": 8,
+                "offset": 333
+            }
+        },
+        {
+            "check_id": "manifest-usesCleartextTraffic-ignored-by-nsc",
+            "end": {
+                "col": 38,
+                "line": 9,
+                "offset": 406
+            },
+            "extra": {
+                "engine_kind": "OSS",
+                "fingerprint": "62ead52dac35b8d4b44a39e9fc2d185d96e773ce7a8850585defcc7e4a971dba6de04f55d77610ad82aab4ad147f90315beb13044d9f756bba340c49630b667e_0",
+                "is_ignored": false,
+                "lines": "        android:usesCleartextTraffic=\"true\"\n        android:networkSecurityConfig=\"@xml/network_security_config\"",
+                "message": "Manifest uses both `android:usesCleartextTraffic` and Network Security Config. The `usesCleartextTraffic` directive is ignored on Android 7 (API 24) and above if a Network Security Config is present.",
+                "metadata": {
+                    "category": "best-practice",
+                    "license": "Commons Clause License Condition v1.0[LGPL-2.1-only]",
+                    "references": [
+                        "https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic",
+                        "https://developer.android.com/training/articles/security-config"
+                    ],
+                    "technology": [
+                        "android"
+                    ]
+                },
+                "metavars": {},
+                "severity": "INFO",
+                "validation_state": "NO_VALIDATOR"
+            },
+            "path": "snippet.xml",
+            "start": {
+                "col": 9,
+                "line": 8,
+                "offset": 333
+            }
+        },
+        {
+            "check_id": "manifest-usesCleartextTraffic-true",
+            "end": {
+                "col": 44,
+                "line": 39,
+                "offset": 1571
+            },
+            "extra": {
+                "engine_kind": "OSS",
+                "fingerprint": "fd2e16ff417534571bf84304554c99d2f1b7671cfe285b0240af639c160115c075187ae18a0522d0e09367b2953c38d910ce26dccffc3881e953d95cdb383a55_1",
+                "is_ignored": false,
+                "lines": "        android:usesCleartextTraffic=\"true\"",
+                "message": "The Android manifest is configured to allow non-encrypted connections. Evaluate if this is necessary for your app, and disable it if appropriate. This flag is ignored on Android 7 (API 24) and above if a Network Security Config is present.",
+                "metadata": {
+                    "category": "best-practice",
+                    "license": "Commons Clause License Condition v1.0[LGPL-2.1-only]",
+                    "references": [
+                        "https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic",
+                        "https://developer.android.com/training/articles/security-config"
+                    ],
+                    "technology": [
+                        "android"
+                    ]
+                },
+                "metavars": {},
+                "severity": "INFO",
+                "validation_state": "NO_VALIDATOR"
+            },
+            "path": "snippet.xml",
+            "start": {
+                "col": 9,
+                "line": 39,
+                "offset": 1536
+            }
+        }
+    ],
+    "skipped_rules": [],
+    "version": "1.44.0"
+}

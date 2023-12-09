@@ -1,0 +1,57 @@
+rules:
+  - id: MSTG-STORAGE-5.2
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M2
+      category: security
+      area: storage
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05d-Testing-Data-Storage.md#determining-whether-the-keyboard-cache-is-disabled-for-text-input-fields-mstg-storage-5
+    message: The keyboard cache is not disabled on text inputs that process sensitive data.
+    pattern-either:
+      - patterns:
+        - pattern: (EditText $NAME).setInputType(...);
+        - metavariable-regex:
+            metavariable: $NAME
+            regex: .*(?i)(key|secret|password|pwd|passwd|token|seed|cc|otp).*
+        - pattern-not: (EditText $NAME).setInputType(<... InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS ...>);
+        - pattern-not: (EditText $NAME).setInputType((int $Y));
+
+      - patterns:
+        - pattern-inside: |
+            (EditText $X) = findViewById($ID);
+            ...
+            $X.setInputType(...);
+        - pattern: $X.setInputType(...);
+        - metavariable-regex:
+            metavariable: $ID
+            regex: .*(?i)(key|secret|password|pwd|passwd|token|seed|cc|otp).*
+        - pattern-not: (EditText $NAME).setInputType(<... InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS ...>);
+        - pattern-not: (EditText $NAME).setInputType((int $Y));
+
+      - patterns:
+        - pattern: (EditText $NAME).setInputType((int $Y));
+        - metavariable-regex:
+            metavariable: $NAME
+            regex: .*(?i)(key|secret|password|pwd|passwd|token|seed|cc|otp).*
+        - metavariable-comparison:
+            comparison: $Y & 0x00080000 == 0
+
+      - patterns:
+        - pattern-inside: |
+            (EditText $X) = findViewById($ID);
+            ...
+            $X.setInputType(...);
+        - pattern: $X.setInputType((int $Y));
+        - metavariable-regex:
+            metavariable: $ID
+            regex: .*(?i)(key|secret|password|pwd|passwd|token|seed|cc|otp).*
+        - metavariable-comparison:
+            comparison: $Y & 0x00080000 == 0

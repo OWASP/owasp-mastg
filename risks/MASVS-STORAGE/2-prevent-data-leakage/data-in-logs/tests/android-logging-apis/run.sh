@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ./rule.yaml ./snippet.java --text -q > output.txt

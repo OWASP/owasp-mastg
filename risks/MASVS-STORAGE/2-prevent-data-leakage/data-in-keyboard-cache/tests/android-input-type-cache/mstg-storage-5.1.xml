@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="48dp" android:layout_marginBottom="48dp" android:overScrollMode="ifContentScrolls">
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginStart="24dp" android:layout_marginEnd="24dp">
+        <TextView android:textColor="?android:attr/textColorSecondary" android:id="@android:id/message" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="48dp" style="?android:attr/textAppearanceSmall"/>
+        <EditText android:id="@android:id/edit" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginStart="-4dp" android:layout_marginEnd="-4dp"/>
+        <!-- ruleid: MSTG-STORAGE-5.1 -->
+        <EditText
+            android:id="@+id/key-test"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent" >
+        </EditText>
+        <!-- ok: MSTG-STORAGE-5.1 -->
+        <EditText
+            android:id="@+id/key-test"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:inputType="textCapSentences|textNoSuggestions" >
+        </EditText>
+        <!-- ruleid: MSTG-STORAGE-5.1 -->
+         <EditText
+            android:id="@+id/test-pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:inputType="textCapSentences" >
+        </EditText>
+        <!-- ok: MSTG-STORAGE-5.1 -->
+        <EditText
+            android:id="@+id/key-test"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:inputType="textPassword|textCapSentences" >
+        </EditText>
+    </LinearLayout>
+</ScrollView>

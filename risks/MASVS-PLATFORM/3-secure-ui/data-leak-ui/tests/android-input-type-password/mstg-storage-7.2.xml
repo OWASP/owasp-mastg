@@ -1,0 +1,6 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:paddingLeft="@dimen/activity_horizontal_margin" android:paddingTop="@dimen/activity_vertical_margin" android:paddingRight="@dimen/activity_horizontal_margin" android:paddingBottom="@dimen/activity_vertical_margin" android:layout_width="match_parent" android:layout_height="match_parent">
+    <!-- ruleid: MSTG-STORAGE-7.2 -->
+    <EditText android:id="@+id/TestPinText" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/test_enterpin" android:ems="10" android:maxLength="4" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:inputType="numberPassword" android:textAlignment="center" android:layout_alignParentStart="true"/>
+    <!-- ok: MSTG-STORAGE-7.2 -->
+    <EditText android:id="@+id/TestPinText" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/test_enterpin" android:ems="10" android:maxLength="4" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:inputType="textPassword" android:textAlignment="center" android:layout_alignParentStart="true"/>
+</RelativeLayout>

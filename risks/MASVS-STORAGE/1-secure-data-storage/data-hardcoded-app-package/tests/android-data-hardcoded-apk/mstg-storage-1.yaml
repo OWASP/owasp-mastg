@@ -1,0 +1,30 @@
+rules:
+  - id: MSTG-STORAGE-1
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M2
+      category: security
+      area: storage
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05d-Testing-Data-Storage.md#testing-local-storage-for-sensitive-data-mstg-storage-1-and-mstg-storage-2
+    message: The application stores credentials outside the Android Keystore.
+    paths:
+      exclude:
+        - "**/values-*/**"
+    patterns:
+      - pattern-either:
+          - pattern: <string name="$S">$X</string>
+          - pattern: <array name="$S"><item>$X</item></array>
+      - metavariable-regex:
+          metavariable: $S
+          regex: .*(?i)(key|secret|password|pwd|passwd|token|salt|seed|salt|bearer|auth|otp|crypt(?-i)|IV).*
+      - metavariable-analysis:
+          analyzer: entropy
+          metavariable: $X
