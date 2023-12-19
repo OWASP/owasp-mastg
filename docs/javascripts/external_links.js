@@ -1,4 +1,7 @@
-if ((window.location.hostname === 'mas.owasp.org' || window.location.hostname === 'localhost') && window.location.pathname.startsWith('/MASTG')) {
+if (
+  (window.location.hostname === 'mas.owasp.org' || window.location.hostname === 'localhost') &&
+  (window.location.pathname.startsWith('/MASTG') || window.location.pathname.startsWith('/MASVS'))
+) {
   const links = document.links;
 
   for (let i = 0; i < links.length; i++) {
