@@ -1,7 +1,6 @@
 ---
 title: Comply with Privacy Regulations and Best Practices
 platform: android
-risk: MAS-RISK-0007
 ---
 
 
