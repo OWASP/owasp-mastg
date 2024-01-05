@@ -10,8 +10,6 @@ mappings:
     - id: 497
       title: Exposure of Sensitive System Information to an Unauthorized Control Sphere
 
-  - owasp-masvs: [MASVS-PRIVACY-1, MASVS-PRIVACY-2]
-  - owasp-masvs-v1: []
 title: Sensitive Data in Network Traffic
 platform: android
 profiles: ["P"]

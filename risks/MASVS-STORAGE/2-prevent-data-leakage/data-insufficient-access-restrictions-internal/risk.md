@@ -3,10 +3,6 @@ title: Sensitive Data Stored With Insufficient Access Restrictions in Internal L
 platform: ["android"]
 profiles: ["L1", "L2"]
 mappings:
-  - cwe:
-    - id:
-      title:
-  - owasp-masvs: [MASVS-STORAGE-2]
   - android: https://developer.android.com/about/versions/nougat/android-7.0-changes#permfilesys
 context: not ensuring exclusive app access to sensitive data stored in internal locations e.g. by using the wrong file permissions.
 ---

@@ -2,8 +2,6 @@
 title: Sensitive Data Stored Unencrypted in External Locations
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]
-mappings:
-  - owasp-masvs: [MASVS-STORAGE-1]
 ---
 
 ## Overview

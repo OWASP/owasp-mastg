@@ -3,7 +3,6 @@ title: Sensitive Data Hardcoded in the App Package
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]
 mappings:
-  - owasp-masvs: [MASVS-STORAGE-1]
   - android: https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
 ---
 

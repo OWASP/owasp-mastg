@@ -12,7 +12,6 @@ mappings:
       title: Exposure of Sensitive System Information to an Unauthorized Control Sphere
     - id: 532
       title: Insertion of Sensitive Information into Log File
-  - owasp-masvs: [MASVS-STORAGE-2]
   - android: https://developer.android.com/topic/security/risks/log-info-disclosure
 refs:
   - https://stackoverflow.com/questions/45270547/is-read-logs-a-normal-or-dangerous-android-permission

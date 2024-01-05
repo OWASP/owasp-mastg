@@ -2,8 +2,6 @@
 title: Sensitive Data Stored Unencrypted in Internal Locations
 platform: ["android", "ios"]
 profiles: ["L2"]
-mappings:
-  - owasp-masvs: [MASVS-STORAGE-1]
 ---
 
 ## Overview

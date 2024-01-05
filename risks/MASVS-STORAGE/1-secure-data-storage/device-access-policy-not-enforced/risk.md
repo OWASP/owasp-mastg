@@ -1,6 +1,4 @@
 ---
-mappings:
-  - owasp-masvs: [MASVS-STORAGE-1]
 title: Device Access Security Policy Not Enforced
 platform: ["android"]
 profiles: ["L2"]

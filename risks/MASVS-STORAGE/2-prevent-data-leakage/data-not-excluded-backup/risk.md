@@ -3,10 +3,6 @@ title: Sensitive Data Not Excluded From Backup
 platform: [android, ios]
 profiles: ["L1", "L2", "P"]
 mappings:
-  - cwe:
-    - id:
-      title:
-  - owasp-masvs: [MASVS-STORAGE-2]
   - android: https://developer.android.com/privacy-and-security/risks/backup-leaks
 refs:
     - https://developer.android.com/guide/topics/data/autobackup#include-exclude-android-11

@@ -2,8 +2,6 @@
 title: 
 platform: []
 profiles: []
-mappings:
-  - owasp-masvs: []
 ---
 
 ## Overview

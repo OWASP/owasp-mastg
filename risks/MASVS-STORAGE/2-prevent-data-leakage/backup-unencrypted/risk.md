@@ -2,11 +2,6 @@
 title: Backup Unencrypted
 platform: ["android"]
 profiles: ["L1", "L2"]
-mappings:
-  - cwe:
-    - id:
-      title:
-  - owasp-masvs: [MASVS-STORAGE-2]
 refs:
     - https://developer.android.com/guide/topics/data/autobackup#define-device-conditions
 ---
