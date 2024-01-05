@@ -1,0 +1,63 @@
+rules:
+  - id: MSTG-CRYPTO-1
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M2
+      category: security
+      area: cryptography
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05e-Testing-Cryptography.md#testing-symmetric-cryptography-mstg-crypto-1
+    message: The application relies on symmetric cryptography with hardcoded keys as a sole method of encryption.
+    options:
+      symbolic_propagation: true
+    pattern-either:
+      - patterns:
+        - pattern: |
+              class $CLASS{ ...
+              byte[] $K = new byte[]{$X, ...};
+              ...
+              $M(...){ ...
+                new SecretKeySpec(this.$K,...);
+              ... }
+              ...}
+        - focus-metavariable:
+            - $K
+      - patterns:
+        - pattern: |
+              class $CLASS{ ...
+              String $K = "=~/.+/";
+              ...
+              $M(...){ ...
+                new SecretKeySpec(this.$K.$TB(),...);
+              ... }
+              ...}
+        - metavariable-regex:
+            metavariable: $TB
+            regex: (toByteArray|getBytes)
+        - focus-metavariable:
+          - $K
+      - patterns:
+        - pattern: |
+              class $CLASS{ ...
+              ...
+              $M(...){ ...
+                new SecretKeySpec($K.$TB(),...);
+              ... }
+              ...}
+        - metavariable-regex:
+            metavariable: $TB
+            regex: (toByteArray|getBytes)
+        - metavariable-pattern:
+            metavariable: $K
+            pattern-either:
+              - pattern: getString(...)
+              - pattern: $X.getString(...)
+        - focus-metavariable:
+            - $K

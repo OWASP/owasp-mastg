@@ -1,0 +1,7 @@
+<Button android:text="Button"
+    android:id="@+id/button1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    <!-- ruleid:MSTG-PLATFORM-9.2 -->
+    android:filterTouchesWhenObscured="false">
+</Button>

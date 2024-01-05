@@ -1,0 +1,38 @@
+rules:
+  - id: MSTG-PLATFORM-4.1
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M1
+      category: security
+      area: platform
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4
+    message: Pending Intents must be declared as immutable and specify the exact package, action, and component that will receive the base intent.
+    patterns:
+      - pattern-inside: |
+          $T(...){
+            ...
+            (PendingIntent $I) = PendingIntent.$M($A, $B, $C, $D, ...);
+            ...
+          }
+      - pattern-not-inside: |
+          $T(...){
+            ...
+            (PendingIntent $E) = PendingIntent.$M(...);
+            ...
+            $E.setClassName(...);
+            ...
+          }
+      - pattern: PendingIntent.$M($A, $B, $C, $D, ...)
+      - metavariable-regex:
+          metavariable: $M
+          regex: (getActivity|getActivities|getBroadcast|getForegroundService|getService)
+      - metavariable-comparison:
+          comparison: $D & 0x04000000 > 0

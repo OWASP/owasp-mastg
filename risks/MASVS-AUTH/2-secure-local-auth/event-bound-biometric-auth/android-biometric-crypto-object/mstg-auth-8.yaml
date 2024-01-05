@@ -1,0 +1,48 @@
+rules:
+  - id: MSTG-AUTH-8
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Maurizio Siddu @akabe1 (IMQ Minded Security)
+      owasp-mobile: M1
+      category: security
+      area: authentication
+      verification-level: 
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05f-Testing-Local-Authentication.md#testing-biometric-authentication-mstg-auth-8
+    message: The application does not seem to properly implement biometric authentication.
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern-inside: |
+                  $RET onAuthenticationSucceeded(FingerprintManager.AuthenticationResult $RES) {
+                    ...
+                  }
+          - patterns:
+              - pattern-inside: |
+                  $RET onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult $RES) {
+                    ...
+                  }
+          - patterns:
+              - pattern-inside: |
+                  $RET onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult $RES) {
+                    ...
+                  }
+      - pattern-not-inside: |
+          $RET onAuthenticationSucceeded(FingerprintManager.AuthenticationResult $RES) {
+            ...
+            $CIP = $RES.getCryptoObject().getCipher();
+          }
+      - pattern-not-inside: |
+          $RET onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult $RES) {
+            ...
+            $CIP = $RES.getCryptoObject().getCipher();
+          }
+      - pattern-not-inside: |
+          $RET onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult $RES) {
+            ...
+            $CIP = $RES.getCryptoObject().getCipher();
+          }

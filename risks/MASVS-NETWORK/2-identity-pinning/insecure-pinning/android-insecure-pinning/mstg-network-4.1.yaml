@@ -1,0 +1,33 @@
+rules:
+  - id: MSTG-NETWORK-4.1
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M3
+      category: security
+      area: network
+      verification-level:
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05g-Testing-Network-Communication.md#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4
+    message: The application may not implement correctly the SSL Pinning.
+    pattern-either:
+# Pin expiration not present
+      - patterns:
+          - pattern: <pin-set ... />
+          - pattern-not: <pin-set expiration="..." />
+# Pin expired
+      - patterns:
+          - pattern: <pin-set expiration="$X" />
+          - metavariable-comparison:
+              comparison: strptime($X) < today()
+# Backup pin not present
+      - patterns:
+          - pattern: <pin-set ... />
+          - pattern-not: <pin-set><pin/><pin/></pin-set>
+# Trust anchors contains user certificates
+      - patterns:
+          - pattern: <trust-anchors>...<certificates src="user" />...</trust-anchors>

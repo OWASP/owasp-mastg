@@ -1,0 +1,43 @@
+rules:
+  - id: MSTG-PLATFORM-9.1
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Michele Tumolo @zer0s0urce (IMQ Minded Security)
+        - Giovanni Fazi @giovifazi (IMQ Minded Security)
+      owasp-mobile: M2
+      category: security
+      area: platform
+      verification-level:
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05h-Testing-Platform-Interaction.md#testing-for-overlay-attacks-mstg-platform-9
+    message: The application does not enforce any security policy to prevent overlay attacks.
+    patterns:
+      - pattern: |
+         public class $MAINACTIVITY extends $ACTIVITY{
+            public void onCreate(...){...}
+         }
+
+      - pattern-not: |
+         public class $MAINACTIVITY extends $ACTIVITY{
+            ...
+            onFilterTouchEventForSecurity($NAME event) {...}
+            ...
+         }
+
+      - pattern-not: |
+         public class $MAINACTIVITY extends $ACTIVITY{
+            $X(...){
+            ...
+            $OBJECT.setFilterTouchesWhenObscured(true);
+            ...
+            }
+         }
+      - metavariable-regex:
+          metavariable: $ACTIVITY
+          regex: .*(?i)(activity).*
+      - focus-metavariable:
+         - $MAINACTIVITY

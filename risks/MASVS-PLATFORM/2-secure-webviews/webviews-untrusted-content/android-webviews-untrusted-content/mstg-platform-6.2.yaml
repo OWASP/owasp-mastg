@@ -1,0 +1,36 @@
+rules:
+  - id: MSTG-PLATFORM-6.2
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Federico Dotta @apps3c (HN Security)
+      owasp-mobile: M1
+      category: security
+      area: platform
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers-mstg-platform-6
+    message: >-
+        The WebView allows to load external content. It is suggested to verify that the granted
+        accesses are necessary and follow the best practices.
+    options:
+      symbolic_propagation: true
+    patterns:
+      - pattern-either:
+        - patterns:
+          - pattern: $B(...)
+          - pattern-not: $B(false)
+        - patterns:
+          - pattern: $A.$B(...)
+          - pattern-not: $A.$B(false)
+      - metavariable-pattern:
+          metavariable: $B
+          pattern-either:
+            - pattern: setAllowContentAccess
+            - pattern: setAllowFileAccess
+            - pattern: setAllowFileAccessFromFileURLs
+            - pattern: setAllowUniversalAccessFromFileURLs

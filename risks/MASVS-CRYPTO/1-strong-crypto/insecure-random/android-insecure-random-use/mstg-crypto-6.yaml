@@ -1,0 +1,44 @@
+rules:
+  - id: MSTG-CRYPTO-6
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M5
+      category: security
+      area: cryptography
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05e-Testing-Cryptography.md#testing-random-number-generation-mstg-crypto-6
+    message: The application makes use of insecure random number generator.
+    paths:
+      exclude:
+        - "**/math/**"
+        - "**/Math/**"
+        - "**/kotlin/**"
+        - "**/com/google/**"
+        - "**/org/apache/**"
+        - "**/androidx/**"
+        - "**/dexguard/**"
+    pattern-either:
+        - patterns:
+            - pattern-inside: $M(...){ ... }
+            - pattern-either:
+                - pattern: Math.random(...)
+                - pattern: (java.util.Random $X).$Y(...)
+                - pattern: new Date()
+                - pattern: System.currentTimeMillis()
+                - pattern: (Calendar $C).get(...)
+            - metavariable-regex:
+                metavariable: $M
+                regex: .*(?i)(random|gen).*
+            - metavariable-regex:
+                metavariable: $M
+                regex: ^((?!(?i)Log).)*$
+        # Specify a seed may reduce the randomness
+        - pattern: new SecureRandom($SEED);
+

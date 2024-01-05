@@ -1,0 +1,31 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">example.com</domain>
+        <!-- ruleid: MSTG-NETWORK-4.1 -->
+        <pin-set expiration="2018-01-01">
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+            <!-- missing backup pin -->
+        </pin-set>
+        <!-- Expired pin -->
+        <!-- ruleid: MSTG-NETWORK-4.1 -->
+        <pin-set expiration="2019-01-01">
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+        </pin-set>
+        <!-- ok: MSTG-NETWORK-4.1 -->
+        <pin-set expiration="3000-01-01">
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+        </pin-set>
+    </domain-config>
+    <base-config>
+        <!-- ruleid: MSTG-NETWORK-4.1 -->
+        <trust-anchors>
+            <certificates src="@raw/extracas"/>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>

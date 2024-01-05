@@ -1,0 +1,20 @@
+rules:
+  - id: MSTG-PLATFORM-7.1
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      authors:
+        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
+      owasp-mobile: M1
+      category: security
+      area: platform
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews-mstg-platform-7
+    message: The method "$X" is accessible from a WebView.
+    pattern: |
+      @JavascriptInterface
+      public $X(...){...}
