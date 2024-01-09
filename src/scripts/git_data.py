@@ -28,9 +28,9 @@ def get_last_commit_date(file_path):
 
         if 'message' in data:
             raise Exception(data['message'])
-        elif len(data) and data[0]['commit']:
+        if data and 'commit' in data[0]:
             commit_date_in_utc = data[0]['commit']['committer']['date']
-            fmt_date = datetime.strptime(commit_date_in_utc, '%Y-%m-%dT%H:%M:%SZ').strftime('%B %d %Y')
+            fmt_date = datetime.strptime(commit_date_in_utc, '%Y-%m-%dT%H:%M:%SZ').strftime('%B %d, %Y')
             return fmt_date
         
     except Exception as e:
