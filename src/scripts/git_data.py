@@ -1,8 +1,6 @@
 from datetime import datetime
-import json
 import os
 import requests
-import subprocess
 
 def get_last_commit_date(file_path):
     try:
