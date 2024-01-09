@@ -7,7 +7,7 @@ import subprocess
 def get_last_commit_date(file_path):
     try:
         # get the last commit date as "September 12, 2022"
-        GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+        GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 
         if GITHUB_TOKEN is None:
             print('Github token not found')
