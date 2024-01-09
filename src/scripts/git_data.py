@@ -34,7 +34,10 @@ def get_last_commit_date(file_path):
 
         url = f'https://api.github.com/repos/OWASP/owasp-mastg/commits?path={file_path}'
         response = requests.get(url, headers=headers)
-        data = json.loads(response.text)
+        if response.status_code != 200:
+            response.raise_for_status()
+
+        data = response.json()
 
         if 'message' in data:
             raise Exception(data['message'])
