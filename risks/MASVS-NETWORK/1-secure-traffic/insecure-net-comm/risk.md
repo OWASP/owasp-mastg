@@ -8,7 +8,6 @@ mappings:
         title: Missing Encryption of Sensitive Data
       - id: 319
         title: Cleartext Transmission of Sensitive Information
-  - owasp-masvs: [MASVS-NETWORK-1]
   - android: https://developer.android.com/privacy-and-security/risks/cleartext
 ---
 
