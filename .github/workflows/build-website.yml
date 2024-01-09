@@ -21,9 +21,7 @@ jobs:
 
       - run: ./src/scripts/structure_mastg.sh
 
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 src/scripts/transform_files.py
+      - run: python3 src/scripts/transform_files.py
 
       - name: Get Latest MASVS Release Tag
         run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
