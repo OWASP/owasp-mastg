@@ -4,19 +4,6 @@ import os
 import requests
 import subprocess
 
-def get_last_commit_date_by_terminal_log(file_path):
-    try:
-        # get the last commit date as "September 12, 2022"
-        command = f"git log -n 1 --date=format:'%B %d, %Y' --format=%ad -- {file_path}"
-        result = subprocess.check_output(command, shell=True, universal_newlines=True)
-
-        return result.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing Git command: {e}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-    return None
-
 def get_last_commit_date(file_path):
     try:
         # get the last commit date as "September 12, 2022"
@@ -24,7 +11,7 @@ def get_last_commit_date(file_path):
 
         if GITHUB_TOKEN is None:
             print('Github token not found')
-            return get_last_commit_date_by_terminal_log(file_path)
+            return None
         
         headers = {
             'X-GitHub-Api-Version': '2022-11-28',
