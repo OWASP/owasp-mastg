@@ -1,6 +1,6 @@
 import subprocess
 
-def get_last_commit_date(file_path):
+def get_last_commit_date_by_terminal_log(file_path):
     try:
         # get the last commit date as "September 12, 2022"
         command = f"git log -n 1 --date=format:'%B %d, %Y' --format=%ad -- {file_path}"
