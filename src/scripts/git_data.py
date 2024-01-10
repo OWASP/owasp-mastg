@@ -32,7 +32,8 @@ def get_last_commit_date(file_path):
             'Authorization': f'Bearer {GITHUB_TOKEN}'
         }
 
-        url = f'https://api.github.com/repos/OWASP/owasp-mastg/commits?path={file_path}'
+        path = file_path.split('owasp-mastg/')[1]
+        url = f'https://api.github.com/repos/OWASP/owasp-mastg/commits?path={path}'
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
             response.raise_for_status()
