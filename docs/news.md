@@ -9,6 +9,12 @@ hide:
 
     Follow [:material-twitter: @OWASP_MAS](https://twitter.com/OWASP_MAS) to get the latest updates instantly.
 
+## Jan 11th, 2024: Mobile Application Risk Scoring Q&A
+
+We've received many comments and excellent questions, which we've compiled and summarized, along with the authors' answers. We'd like to thank everyone who took the time to read the document and especially those who asked valuable questions.
+
+See [Mobile Application Risk Scoring Q&A](https://docs.google.com/document/d/1dnjXoHpVL5YmZTqVEC9b9JOfu6EzQiizZAHVAeDoIlo/edit#heading=h.sl9wb7xadrza)
+
 ## Oct 10th, 2023: MASVS-PRIVACY
 
 Mobile applications frequently access sensitive user data to deliver their core functionalities. This data ranges from personally identifiable information (PII), health metrics, location data, to device identifiers. Mobile devices are a constant companion to users, always connected, and equipped with numerous sensors—including cameras, microphones, GPS and BLE—that generate data capable of inferring user behavior and even identifying individuals. The landscape is further complicated by advanced tracking techniques, the integration of third-party SDKs, and a heightened awareness of privacy issues among users and regulators. As a response, there's a growing trend towards on-device processing to keep user data localized and more secure.
