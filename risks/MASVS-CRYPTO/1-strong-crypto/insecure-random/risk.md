@@ -5,11 +5,7 @@ profiles: ["L1", "L2"]
 mappings:
 - masvs-v1: [MSTG-CRYPTO-6]
 - masvs-v2: [MASVS-CRYPTO-1]
-- cwe:
-    - id: 338
-      title: Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)
-    - id: 337
-      title: Predictable Seed in Pseudo-Random Number Generator (PRNG)
+- cwe: [338, 337]
 - android: https://developer.android.com/privacy-and-security/risks/weak-prng
 observed_examples: 
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6386

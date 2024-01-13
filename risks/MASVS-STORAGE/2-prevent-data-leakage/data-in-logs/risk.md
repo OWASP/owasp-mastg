@@ -3,15 +3,7 @@ title: Insertion of Sensitive Data into Logs
 platform: ["android", "ios"]
 profiles: ["L1", "L2", "P"]
 mappings:
-  - cwe:
-    - id: 200
-      title: Exposure of Sensitive Information to an Unauthorized Actor
-    - id: 359
-      title: Exposure of Private Personal Information to an Unauthorized Actor
-    - id: 497
-      title: Exposure of Sensitive System Information to an Unauthorized Control Sphere
-    - id: 532
-      title: Insertion of Sensitive Information into Log File
+  - cwe: [200, 359, 497, 532]
   - android: https://developer.android.com/topic/security/risks/log-info-disclosure
 refs:
   - https://stackoverflow.com/questions/45270547/is-read-logs-a-normal-or-dangerous-android-permission
