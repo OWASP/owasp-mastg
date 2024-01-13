@@ -11,7 +11,7 @@ prerequisites:
 
 ## Steps
 
-1. Run a [static analysis](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0014/) tool on the app and look for insecure random APIs.
+1. Run a [static analysis](../../../../../techniques/android/MASTG-TECH-0014.md) tool on the app and look for insecure random APIs.
 
 ## Observation
 
