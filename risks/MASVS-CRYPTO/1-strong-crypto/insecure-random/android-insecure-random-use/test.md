@@ -1,8 +1,9 @@
 ---
 platform: android
 title: Insecure Random API Usage
-type: static
-mitigations: [android-secure-random-use]
+type: [static]
+mitigations:
+- android-use-secure-random
 prerequisites:
 - MASTG-KNOW-0001
 - MASTG-KNOW-0002

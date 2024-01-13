@@ -11,10 +11,6 @@ observed_examples:
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6386
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-3419
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4102
-impact:
-- Bypass Protection Mechanism
-mitigations:
-- android-use-secure-random
 ---
 
 ## Overview
@@ -29,6 +25,6 @@ A [pseudorandom number generator (PRNG)](https://en.wikipedia.org/wiki/Pseudoran
 
 For security relevant contexts, use cryptographically secure random numbers.
 
-In general, it is strongly recommended not to use any random function on a deterministic way, even if it's a secure one, especially those involving hardcoded seed values (which are vulnerable to exposure by decompilation).
+In general, it is strongly recommended not to use any random function in a deterministic way, even if it's a secure one, especially those involving hardcoded seed values (which are vulnerable to exposure by decompilation).
 
 Refer to the [RFC 1750 - Randomness Recommendations for Security](https://www.ietf.org/rfc/rfc1750.txt) and the [OWASP Cryptographic Storage Cheat Sheet  - Secure Random Number Generation](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation) for more information and recommendations on random number generation.

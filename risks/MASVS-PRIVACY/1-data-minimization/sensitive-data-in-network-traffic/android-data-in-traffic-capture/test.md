@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Sensitive Data in Network Traffic Capture
-type: dynamic, network
+type: [dynamic, network]
 ---
 
 ## Prerequisites

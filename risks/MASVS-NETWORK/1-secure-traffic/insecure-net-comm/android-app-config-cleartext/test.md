@@ -1,7 +1,7 @@
 ---
 platform: android
 title: App Configuration Allows Cleartext Traffic
-type: static
+type: [static]
 ---
 
 ## Steps
