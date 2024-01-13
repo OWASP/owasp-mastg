@@ -5,14 +5,9 @@ type: [static]
 mitigations:
 - android-use-secure-random
 prerequisites:
-- MASTG-KNOW-0001
-- MASTG-KNOW-0002
+- identify-sensitive-data
+- identify-security-relevant-contexts
 ---
-
-## Prerequisites
-
-- [Identify your sensitive data](MASTG-KNOW-0001)
-- [Identify your security-relevant contexts](MASTG-KNOW-0002)
 
 ## Steps
 
@@ -20,10 +15,10 @@ prerequisites:
 
 ## Observation
 
-The **static analysis output** contains a list of locations where insecure random APIs are used in the app.
+The output should contain a **list of locations where insecure random APIs are used**.
 
 ## Evaluation
 
-Inspect the code of the app looking for the APIs identified by the static analysis tool.
+Inspect the app source code using the provided location information.
 
 The test case fails if you can find random numbers generated using those APIs that are used in security-relevant contexts.
