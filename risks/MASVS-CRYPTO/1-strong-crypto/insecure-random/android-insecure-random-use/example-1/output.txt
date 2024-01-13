@@ -1,0 +1,19 @@
+                   
+                   
+┌─────────────────┐
+│ 5 Code Findings │
+└─────────────────┘
+                       
+    mstg-crypto-6.java 
+       rules.MSTG-CRYPTO-6                                              
+          The application makes use of insecure random number generator.
+                                                                        
+           12┆ return 1 + Math.random();
+            ⋮┆----------------------------------------
+           17┆ return r.nextDouble();
+            ⋮┆----------------------------------------
+           21┆ SecureRandom number = new SecureRandom(12);
+            ⋮┆----------------------------------------
+           36┆ return abc(new Date().getTime());
+            ⋮┆----------------------------------------
+           41┆ int mseconds = c.get(Calendar.MILLISECOND)

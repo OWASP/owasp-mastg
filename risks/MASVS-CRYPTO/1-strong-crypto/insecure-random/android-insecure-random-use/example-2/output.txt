@@ -1,0 +1,12 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                         
+    random-password.java 
+       rules.MSTG-CRYPTO-6                                              
+          The application makes use of insecure random number generator.
+                                                                        
+           15┆ password.append(characters.charAt(random.nextInt(characters.length())));
+

@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../rules/mstg-crypto-6.yaml ./random-password.java --text -q > output.txt
