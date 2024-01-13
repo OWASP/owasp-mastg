@@ -7,7 +7,7 @@ type: dynamic
 
 ## Steps
 
-Run a [method trace](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-00xx/) targeting logging APIs and save the output.
+Run a [method trace](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0033/) targeting logging APIs and save the output.
 
 ## Observation
 
