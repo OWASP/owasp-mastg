@@ -5,8 +5,7 @@
 └────────────────┘
                          
     random-password.java 
-       rules.MSTG-CRYPTO-6                                              
-          The application makes use of insecure random number generator.
-                                                                        
-           15┆ password.append(characters.charAt(random.nextInt(characters.length())));
-
+       rules.mastg-android-insecure-random-use                                           
+          [MASVS-CRYPTO-1] The application makes use of insecure random number generator.
+                                                                                         
+           17┆ password.append(characters.charAt(random.nextInt(characters.length())));

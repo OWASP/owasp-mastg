@@ -1,3 +1,5 @@
+// SUMMARY: This sample demonstrates different common ways of insecurely generating random numbers in Java.
+
 import java.util.Random;
 import java.lang.*;
 import java.security.SecureRandom;

@@ -1,3 +1,5 @@
+// SUMMARY: This sample generates a random password using a cryptographically insecure random number generator.
+
 import java.util.Random;
 
 public class InsecurePasswordGenerator {
