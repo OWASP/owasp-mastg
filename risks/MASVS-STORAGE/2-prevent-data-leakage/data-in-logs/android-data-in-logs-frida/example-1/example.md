@@ -13,7 +13,7 @@ TBD: Explaining what are the test cases in the code for leaking data in log file
 
 ### Steps
 
-Execute `run.sh` that calls `frida-trace` against the sample app.
+Execute `frida-trace` against the sample app, tracing logging classes and methods.
 
 {{ run.sh }}
 
