@@ -2,7 +2,7 @@
 platform: android
 title: Leakage of Sensitive Data via Logging APIs
 apis: [Log, Logger, System.out.print, System.err.print, java.lang.Throwable#printStackTrace]
-type: dynamic
+type: [dynamic]
 ---
 
 ## Steps

@@ -1,15 +1,6 @@
 ---
 mappings:
-  - cwe:
-    - id: 200
-      title: Exposure of Sensitive Information to an Unauthorized Actor
-    - id: 201
-      title: Insertion of Sensitive Information Into Sent Data
-    - id: 359
-      title: Exposure of Private Personal Information to an Unauthorized Actor
-    - id: 497
-      title: Exposure of Sensitive System Information to an Unauthorized Control Sphere
-
+  - cwe: [200, 201, 359, 497]
 title: Sensitive Data in Network Traffic
 platform: android
 profiles: ["P"]

@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Sensitive Data in Logcat
-type: dynamic
+type: [dynamic]
 ---
 
 ## Steps

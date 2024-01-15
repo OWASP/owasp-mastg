@@ -1,0 +1,19 @@
+                   
+                   
+┌─────────────────┐
+│ 5 Code Findings │
+└─────────────────┘
+                       
+    mstg-crypto-6.java 
+       rules.mastg-android-insecure-random-use                                           
+          [MASVS-CRYPTO-1] The application makes use of insecure random number generator.
+                                                                                         
+           14┆ return 1 + Math.random();
+            ⋮┆----------------------------------------
+           19┆ return r.nextDouble();
+            ⋮┆----------------------------------------
+           23┆ SecureRandom number = new SecureRandom(12);
+            ⋮┆----------------------------------------
+           38┆ return abc(new Date().getTime());
+            ⋮┆----------------------------------------
+           43┆ int mseconds = c.get(Calendar.MILLISECOND)

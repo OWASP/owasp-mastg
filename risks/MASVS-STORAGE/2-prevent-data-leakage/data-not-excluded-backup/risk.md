@@ -13,15 +13,6 @@ refs:
 
 Apps striving to protect user privacy should not backup sensitive data to the cloud. Android and iOS provide mechanisms to exclude sensitive data from backups. However, if the app does not exclude sensitive data from backups, the data may be backed up to the cloud, where it can be accessed by attackers or unauthorized users.
 
-## Modes of Introduction
-
-This can typically occur in these different ways: e.g. via `android:fullBackupContent` (Android 11-) or `android:dataExtractionRules` (Android 12+) and iOS `isExcludedFromBackup` or file operations that reset backup exclusion"
-
-- Full Backup Content (Android)
-- Data Extraction Rules (Android)
-- Backup Exclusion (iOS)
-- File Operations That Reset Backup Exclusion (iOS)
-
 ## Impact
 
 Loss of confidentiality: The backup data is stored in the user's Google Drive account, which is protected by the user's Google account password. However, if the user's Google account password is compromised, the attacker can access the user's backup data.

@@ -6,8 +6,6 @@ profiles: []
 
 ## Overview
 
-## Modes of Introduction
-
 ## Impact
 
 ## Mitigations
