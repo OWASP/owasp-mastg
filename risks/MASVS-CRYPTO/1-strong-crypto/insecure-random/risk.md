@@ -21,6 +21,11 @@ A [pseudorandom number generator (PRNG)](https://en.wikipedia.org/wiki/Pseudoran
 
 - **Bypass Protection Mechanism**: Using a non-cryptographically secure PRNG in a security context, such as authentication, poses significant risks. An attacker could potentially guess the generated numbers and gain access to privileged data or functionality. Predicting or regenerating random numbers can lead to encryption breaches, compromise sensitive user information, or enable user impersonation.
 
+## Modes of Introduction
+
+- **Insecure Random APIs**: The app may use many existing APIs to generate random numbers insecurely.
+- **Non-random Sources**: The app may use custom methods to create "supposedly random" values, using non-random sources such as the current time.
+
 ## Mitigations
 
 For security relevant contexts, use cryptographically secure random numbers.

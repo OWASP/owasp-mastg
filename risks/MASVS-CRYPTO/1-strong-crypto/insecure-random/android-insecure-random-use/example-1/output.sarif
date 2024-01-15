@@ -11,52 +11,23 @@
       "results": [
         {
           "fingerprints": {
-            "matchBasedId/v1": "2081aa0f7acfee87e5cc1bffe0cab46a67b52c346840aa87568b26c1a7fc81e39a971938389dd865ab383ded7f829271d26d58a6d728b8f7e4e17b9f6bc4d2f3_0"
+            "matchBasedId/v1": "c64d9bd1932b4a46aa51534dc110a2d15555e30b239d99e9e6fd8b8b165118c617ac0107ae1585fcdfed5ac75a67686cb54a07e0d3ebd8a65aeb73359491bcc3_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "mstg-crypto-6.java",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "endColumn": 33,
-                  "endLine": 14,
-                  "snippet": {
-                    "text": "        return 1 + Math.random();"
-                  },
-                  "startColumn": 20,
-                  "startLine": 14
-                }
-              }
-            }
-          ],
-          "message": {
-            "text": "[MASVS-CRYPTO-1] The application makes use of insecure random number generator."
-          },
-          "properties": {},
-          "ruleId": "rules.mastg-android-insecure-random-use"
-        },
-        {
-          "fingerprints": {
-            "matchBasedId/v1": "4f5519ac267abc45f511a2b665f6c0f5c6848647c79179983691f095a5853729ddf4241b141d82839be1d268773275b7c7e9760821e78d39accc0dbce2a2dd72_0"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "mstg-crypto-6.java",
+                  "uri": "common-use-of-random.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
                   "endColumn": 30,
-                  "endLine": 19,
+                  "endLine": 12,
                   "snippet": {
                     "text": "        return r.nextDouble();"
                   },
                   "startColumn": 16,
-                  "startLine": 19
+                  "startLine": 12
                 }
               }
             }
@@ -69,52 +40,23 @@
         },
         {
           "fingerprints": {
-            "matchBasedId/v1": "3c7b21483e62d9debe060b8ed9be65c562bc097aa1706fa73026d4aa294c57e625503ce91a5f833119235793e21cf958db2db215c1128a0b347f38b9895ccd56_0"
+            "matchBasedId/v1": "b56b88bf37b02f8c246a01de8779ff48bf2cc48751246907c60b01cedf6af4cac58a04d6f01bbd41a562099ab286f0c9ade96737756b8e1a4b6b42d99dc5fc82_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "mstg-crypto-6.java",
+                  "uri": "common-use-of-random.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "endColumn": 51,
-                  "endLine": 23,
+                  "endColumn": 33,
+                  "endLine": 17,
                   "snippet": {
-                    "text": "        SecureRandom number = new SecureRandom(12);"
-                  },
-                  "startColumn": 9,
-                  "startLine": 23
-                }
-              }
-            }
-          ],
-          "message": {
-            "text": "[MASVS-CRYPTO-1] The application makes use of insecure random number generator."
-          },
-          "properties": {},
-          "ruleId": "rules.mastg-android-insecure-random-use"
-        },
-        {
-          "fingerprints": {
-            "matchBasedId/v1": "692c9d98424f77af9b21147e19498e26535b3d39dfa26d9a0f7f9224ac541166d711cf05f003067209327409532b1a7f174f742a60027da096d61e4adecc8001_0"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "mstg-crypto-6.java",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "endColumn": 30,
-                  "endLine": 38,
-                  "snippet": {
-                    "text": "        return abc(new Date().getTime());"
+                    "text": "        return 1 + Math.random();"
                   },
                   "startColumn": 20,
-                  "startLine": 38
+                  "startLine": 17
                 }
               }
             }
@@ -127,23 +69,23 @@
         },
         {
           "fingerprints": {
-            "matchBasedId/v1": "38d456151942f2fc9504af9e22413e67ca647e1362740fc9fed708af6a19d3708404c535c4d3c0afda7704f19a2774f728a3e5f16c5348454a0bbe4d20d253c0_0"
+            "matchBasedId/v1": "b82f3dfb2ff1780355503788cd53b6c0a77164e391b68d5d6a6a908f06ffa5c1d91ec2eea404ac7fb658fd5183af32364daa40128d4d0a9931bf26c411abee72_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "mstg-crypto-6.java",
+                  "uri": "common-use-of-random.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "endColumn": 51,
-                  "endLine": 43,
+                  "endColumn": 82,
+                  "endLine": 27,
                   "snippet": {
-                    "text": "        int mseconds = c.get(Calendar.MILLISECOND)"
+                    "text": "            password.append(characters.charAt(random.nextInt(characters.length())));"
                   },
-                  "startColumn": 24,
-                  "startLine": 43
+                  "startColumn": 47,
+                  "startLine": 27
                 }
               }
             }
@@ -157,7 +99,7 @@
       ],
       "tool": {
         "driver": {
-          "name": "semgrep",
+          "name": "Semgrep OSS",
           "rules": [
             {
               "defaultConfiguration": {
@@ -167,7 +109,7 @@
                 "text": "[MASVS-CRYPTO-1] The application makes use of insecure random number generator."
               },
               "help": {
-                "markdown": "[MASVS-CRYPTO-1] The application makes use of insecure random number generator.\n\n<b>References:</b>\n - [https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05e-Testing-Cryptography.md#testing-random-number-generation-mstg-crypto-6](https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05e-Testing-Cryptography.md#testing-random-number-generation-mstg-crypto-6)\n",
+                "markdown": "[MASVS-CRYPTO-1] The application makes use of insecure random number generator.",
                 "text": "[MASVS-CRYPTO-1] The application makes use of insecure random number generator."
               },
               "id": "rules.mastg-android-insecure-random-use",
@@ -181,7 +123,7 @@
               }
             }
           ],
-          "semanticVersion": "1.44.0"
+          "semanticVersion": "1.56.0"
         }
       }
     }

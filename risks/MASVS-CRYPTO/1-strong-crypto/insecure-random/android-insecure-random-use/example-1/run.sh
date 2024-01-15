@@ -1,2 +1,2 @@
-NO_COLOR=true semgrep -c ../rules/mstg-crypto-6.yaml ./mstg-crypto-6.java --text -q -o output.txt
-NO_COLOR=true semgrep -c ../rules/mstg-crypto-6.yaml ./mstg-crypto-6.java --sarif -o output.sarif
+NO_COLOR=true semgrep -c ../rules/mastg-android-insecure-random-use.yaml ./common-use-of-random.java --text -o output.txt
+NO_COLOR=true semgrep -c ../rules/mastg-android-insecure-random-use.yaml ./common-use-of-random.java --sarif -o output.sarif
