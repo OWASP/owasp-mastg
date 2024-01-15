@@ -7,9 +7,11 @@ type: [dynamic]
 
 ## Steps
 
-1. Navigate to the screen of the mobile app you want to analyse the log output from.
+1. Install and run the app.
 
-2. Execute a [method trace](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-00xx/) by attaching to the running app, targeting logging APIs and save the output.
+2. Navigate to the screen of the mobile app you want to analyse the log output from.
+
+3. Execute a [method trace](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-00xx/) by attaching to the running app, targeting logging APIs and save the output.
 
 ## Observation
 

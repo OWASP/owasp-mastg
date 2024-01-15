@@ -7,15 +7,13 @@ code: [kotlin]
 
 ### Sample
 
+TBD: Explaining what are the test cases in the code for leaking data in log files
+
 {{ snippet.kt }}
 
 ### Steps
 
-1. Install and run the app.
-
-2. Navigate to the screen of the mobile app you want to analyse the log output from.
-
-3. Run `frida-trace` against the sample code by using run.sh.
+Execute `run.sh` that calls `frida-trace` against the sample app.
 
 {{ run.sh }}
 
