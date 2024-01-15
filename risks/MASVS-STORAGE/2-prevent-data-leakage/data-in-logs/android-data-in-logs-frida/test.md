@@ -19,13 +19,10 @@ The **method trace output** contains a list of locations where logging APIs are 
 
 ## Evaluation
 
-Inspect the code of the app looking for the APIs identified by the static analysis tool.
-
 The test case fails if you can find sensitive data being logged using those APIs.
 
-For example, the following code leaks a password and an IV via `Log`:
+For example, the following output leaks a key via `Log`:
 
-```java
-Log.i("tag", "key: " + password_secret_key + sec);
-Log.w("tag", "test: " + IV);
+```shell
+Log.println_native(0, 4, "tag", "key: 12345678")
 ```
