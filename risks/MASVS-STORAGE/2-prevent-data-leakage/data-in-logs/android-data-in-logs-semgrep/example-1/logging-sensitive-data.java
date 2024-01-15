@@ -1,3 +1,5 @@
+// SUMMARY: This sample demonstrates different common ways of logging sensitive data in Java.
+
 import java.io.BufferedWriter;
 import java.util.logging.Logger;
 

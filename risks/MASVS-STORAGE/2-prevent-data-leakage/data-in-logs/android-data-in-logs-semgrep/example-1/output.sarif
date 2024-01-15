@@ -1,0 +1,248 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "toolExecutionNotifications": []
+        }
+      ],
+      "results": [
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "eef6e6bc9cbdd8174e5622839e1e2edc79310fee9a29b9227a1508114783df7066f3efc2747697e4e586c84efb1354ecbdd620481cca0a47d8085fbda8cf7652_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "logging-sensitive-data.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 42,
+                  "endLine": 10,
+                  "snippet": {
+                    "text": "        Log.v(\"tag\", \"key: \" + variable);"
+                  },
+                  "startColumn": 9,
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The application writes sensitive data in application logs."
+          },
+          "properties": {},
+          "ruleId": "rules.MASTG-TEST-0057"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "eef6e6bc9cbdd8174e5622839e1e2edc79310fee9a29b9227a1508114783df7066f3efc2747697e4e586c84efb1354ecbdd620481cca0a47d8085fbda8cf7652_1"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "logging-sensitive-data.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 59,
+                  "endLine": 12,
+                  "snippet": {
+                    "text": "        Log.i(\"tag\", \"key: \" + password_secret_key + sec);"
+                  },
+                  "startColumn": 9,
+                  "startLine": 12
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The application writes sensitive data in application logs."
+          },
+          "properties": {},
+          "ruleId": "rules.MASTG-TEST-0057"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "eef6e6bc9cbdd8174e5622839e1e2edc79310fee9a29b9227a1508114783df7066f3efc2747697e4e586c84efb1354ecbdd620481cca0a47d8085fbda8cf7652_2"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "logging-sensitive-data.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 37,
+                  "endLine": 14,
+                  "snippet": {
+                    "text": "        Log.w(\"tag\", \"test: \" + IV);"
+                  },
+                  "startColumn": 9,
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The application writes sensitive data in application logs."
+          },
+          "properties": {},
+          "ruleId": "rules.MASTG-TEST-0057"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "567473c3b33413293cc5f9368f8560dcc38717a09a22492bc682cb70957e4dc659bf1f5651cb08d6b4d9b7b3aa68794f54e5899de7298910c1faea84cf22760e_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "logging-sensitive-data.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 33,
+                  "endLine": 20,
+                  "snippet": {
+                    "text": "        System.out.print(\"key\");"
+                  },
+                  "startColumn": 9,
+                  "startLine": 20
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The application writes sensitive data in application logs."
+          },
+          "properties": {},
+          "ruleId": "rules.MASTG-TEST-0057"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "d4968e81ebb0605434b4bb02b36447133ecd35ef27ab346e4c20b099f05e09aa80df29e974cc273f2f75eddbb57feea6f02fa6bb8a75c25c17fe7e091d5ed4c7_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "logging-sensitive-data.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 33,
+                  "endLine": 22,
+                  "snippet": {
+                    "text": "        System.err.print(\"key\");"
+                  },
+                  "startColumn": 9,
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The application writes sensitive data in application logs."
+          },
+          "properties": {},
+          "ruleId": "rules.MASTG-TEST-0057"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "567473c3b33413293cc5f9368f8560dcc38717a09a22492bc682cb70957e4dc659bf1f5651cb08d6b4d9b7b3aa68794f54e5899de7298910c1faea84cf22760e_1"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "logging-sensitive-data.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 33,
+                  "endLine": 27,
+                  "snippet": {
+                    "text": "        out.write(\"key string\");"
+                  },
+                  "startColumn": 9,
+                  "startLine": 27
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The application writes sensitive data in application logs."
+          },
+          "properties": {},
+          "ruleId": "rules.MASTG-TEST-0057"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "48c9eca61848bf779587ee13ecf93375148d5ffa0f4472323eed7dd30bd7c84c9f15d71ae8d0547113de53e74ad7997a4333db18ed5c39fa6cc4eea936f563d2_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "logging-sensitive-data.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 25,
+                  "endLine": 33,
+                  "snippet": {
+                    "text": "        x.severe(\"key\");"
+                  },
+                  "startColumn": 9,
+                  "startLine": 33
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The application writes sensitive data in application logs."
+          },
+          "properties": {},
+          "ruleId": "rules.MASTG-TEST-0057"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "The application writes sensitive data in application logs."
+              },
+              "help": {
+                "markdown": "The application writes sensitive data in application logs.",
+                "text": "The application writes sensitive data in application logs."
+              },
+              "id": "rules.MASTG-TEST-0057",
+              "name": "rules.MASTG-TEST-0057",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.MASTG-TEST-0057"
+              }
+            }
+          ],
+          "semanticVersion": "1.56.0"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

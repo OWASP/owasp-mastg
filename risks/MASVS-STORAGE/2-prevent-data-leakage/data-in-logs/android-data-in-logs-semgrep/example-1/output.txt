@@ -3,22 +3,21 @@
 ┌─────────────────┐
 │ 7 Code Findings │
 └─────────────────┘
-                 
-    snippet.java 
-       MASTG-TEST-0057                                              
+                                
+    logging-sensitive-data.java 
+       rules.MASTG-TEST-0057                                        
           The application writes sensitive data in application logs.
                                                                     
-            8┆ Log.v("tag", "key: " + variable);
+           10┆ Log.v("tag", "key: " + variable);
             ⋮┆----------------------------------------
-           10┆ Log.i("tag", "key: " + password_secret_key + sec);
+           12┆ Log.i("tag", "key: " + password_secret_key + sec);
             ⋮┆----------------------------------------
-           12┆ Log.w("tag", "test: " + IV);
+           14┆ Log.w("tag", "test: " + IV);
             ⋮┆----------------------------------------
-           18┆ System.out.print("key");
+           20┆ System.out.print("key");
             ⋮┆----------------------------------------
-           20┆ System.err.print("key");
+           22┆ System.err.print("key");
             ⋮┆----------------------------------------
-           25┆ out.write("key string");
+           27┆ out.write("key string");
             ⋮┆----------------------------------------
-           31┆ x.severe("key");
-
+           33┆ x.severe("key");

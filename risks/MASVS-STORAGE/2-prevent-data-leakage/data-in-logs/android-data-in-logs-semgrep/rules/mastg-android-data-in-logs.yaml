@@ -1,20 +1,12 @@
 rules:
-  - id: MSTG-STORAGE-3
+  - id: mastg-android-data-in-logs
     severity: WARNING
     languages:
       - java
     metadata:
-      authors:
-        - Riccardo Cardelli @gand3lf (IMQ Minded Security)
-      owasp-mobile: M2
-      category: security
-      area: storage
-      verification-level:
-        - L1
-        - L2
-      references:
-        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05d-Testing-Data-Storage.md#testing-logs-for-sensitive-data-mstg-storage-3
-    message: The application writes sensitive data in application logs.
+      summary: This rule looks for common logging patterns.
+      original_source: https://github.com/mindedsecurity/semgrep-rules-android-security/blob/main/rules/storage/mstg-storage-3.yaml
+    message: "[MASVS-STORAGE-2] The application writes sensitive data in application logs."
     patterns:
       - pattern-either:
           - pattern: Log.v(...);

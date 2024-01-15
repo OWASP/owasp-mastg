@@ -1,0 +1,2 @@
+NO_COLOR=true semgrep -c ../rules/mastg-android-data-in-logs.yaml ./logging-sensitive-data.java --text -q -o output.txt
+NO_COLOR=true semgrep -c ../rules/mastg-android-data-in-logs.yaml ./logging-sensitive-data.java --sarif -o output.sarif
