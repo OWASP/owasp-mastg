@@ -63,14 +63,3 @@ Refer to Google Technical Writing trainings for more info:
 
 - [Google Technical Writing One](https://developers.google.com/tech-writing/one)
 - [Google Technical Writing Two](https://developers.google.com/tech-writing/two)
-
-## 🌐 Translating the MASVS
-
-Translating the MASVS in a new language is another great way to contribute. This helps the project to reach to more people around the world.
-
-Before starting a translation please consider the following:
-
-- **First of all** contact us on Slack or via email.
-- We need your commitment. After the first translation is done, we will ask for your help to translate any new changes, so your translation can remain up to date.
-- We need a second translator who can verify that the English version of the MASVS has been translated properly.
-- Once you are all set, go to your fork and follow [these steps](4_Add_new_Language.md).
