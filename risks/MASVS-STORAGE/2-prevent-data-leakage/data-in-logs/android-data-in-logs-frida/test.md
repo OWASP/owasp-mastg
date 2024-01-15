@@ -7,7 +7,9 @@ type: dynamic
 
 ## Steps
 
-Run a [method trace](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-00xx/) targeting logging APIs and save the output.
+1. Navigate to the screen of the mobile app you want to analyse the log output from.
+
+2. Execute a [method trace](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-00xx/) by attaching to the running app, targeting logging APIs and save the output.
 
 ## Observation
 
@@ -25,11 +27,3 @@ For example, the following code leaks a password and an IV via `Log`:
 Log.i("tag", "key: " + password_secret_key + sec);
 Log.w("tag", "test: " + IV);
 ```
-
-## Example
-
-{{ snippet.java }}
-
-{{ run.sh }}
-
-{{ output.txt }}

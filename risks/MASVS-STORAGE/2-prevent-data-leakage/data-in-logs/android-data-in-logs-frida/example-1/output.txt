@@ -1,0 +1,23 @@
+Log.println_native(0, 2, "Frida-Logging-Test", "myVariable: Logging test!")
+<= "REDACTED4"
+Log.println_native(0, 4, "tag", "key: 12345678")
+<= "REDACTED4"
+Log.println_native(0, 5, "tag", "test: ")
+<= "REDACTED4"
+Log.println_native(0, 3, "tag", "test log.d: ")
+<= "REDACTED4"
+Log.println_native(0, 6, "tag", "test log.e: Logging test!")
+<= "REDACTED4"
+Log.printlns(0, 6, "tag", "test log.wtf: Logging test!", null)
+Log.println_native(0, 6, "tag", "test log.wtf: Logging test!\n")
+<= "REDACTED4"
+<= "REDACTED2"
+LoggingPrintStream.println("<instance: java.lang.Object, $className: java.lang.String>")
+Log.println(4, "System.out", "print key secretprintln key secret")
+Log.println_native(0, 4, "System.out", "print key secretprintln key secret")
+<= "REDACTED4"
+<= "REDACTED3"
+Log.println(6, "MainActivity", "logger: key")
+Log.println_native(0, 6, "MainActivity", "logger: key")
+<= "REDACTED4"
+<= "REDACTED3"

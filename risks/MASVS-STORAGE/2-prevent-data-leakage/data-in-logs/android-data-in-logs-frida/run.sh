@@ -1,1 +1,0 @@
-frida-trace ... > output.txt
