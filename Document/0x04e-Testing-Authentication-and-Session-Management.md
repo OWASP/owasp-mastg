@@ -185,7 +185,7 @@ OAuth 2.0 defines four roles:
 - Resource Server: hosts the user accounts
 - Authorization Server: verifies user identity and issues access tokens to the application
 
-Note: The API fulfills both the Resource Owner and Authorization Server roles. Therefore, we will refer to both as the API.
+Note: The API fulfills both the Resource Server and Authorization Server roles. Therefore, we will refer to both as the API.
 
 <img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="400px" />
 
