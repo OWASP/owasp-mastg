@@ -25,9 +25,9 @@ Sensitive data sent over the network will be available for an attacker performin
 
 ## Impact
 
-Loss of confidentiality: Sentitiva data within network traffic is at risk of being exposed to an attacker who may be able to intercept it. This may lead to further attacks, such as identity theft, or compromise of the application's backend.
+- **Loss of confidentiality**: Sentitiva data within network traffic is at risk of being exposed to an attacker who may be able to intercept it. This may lead to further attacks, such as identity theft, or compromise of the application's backend.
 
-Loss of privacy: Sentitiva data within network traffic is at risk of being exposed to a third party, which could use it for malicious purposes, such as tracking the user.
+- **Loss of privacy**: Sentitiva data within network traffic is at risk of being exposed to a third party, which could use it for malicious purposes, such as tracking the user.
 
 ## Mitigations
 

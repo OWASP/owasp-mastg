@@ -12,22 +12,14 @@ type: [dynamic, network]
 
 ## Steps
 
-1. [Intercept the network traffic of the app](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0011/) ensuring that the traffic is decrypted.
+1. Start [logging sensitive data from network traffic](../../../../../techniques/android/MASTG-TECH-0100.md).
 
 2. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Especially, places where you know that will trigger network traffic.
 
-> Tip: Use unique identifiers (like "1111111111111") so that you can easily be find them later in the test output.
-
 ## Observation
 
-The **network traffic capture** including decrypted HTTPS traffic.
+The **network traffic sensitive data log** including decrypted HTTPS traffic contains the sensitive data you entered in the app.
 
 ## Evaluation
 
-The test case fails if you can find the sensitive data you entered in the app within the **network traffic capture** that is not stated in the App Store Privacy declarations.
-
-## Example
-
-{{ test.sh }}
-
-{{ output.txt }}
+The test case fails if you can find the sensitive data you entered in the app within the **network traffic sensitive data log** that is not stated in the App Store Privacy declarations.

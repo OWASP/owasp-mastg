@@ -1,0 +1,28 @@
+REQUEST URL: https://httpbin.org/post
+Request Headers: Headers[(b'Content-Type', b'application/x-www-form-urlencoded'), (b'User-Agent', b'Dalvik/2.1.0 (Linux; U; Android 13; sdk_gphone64_arm64 Build/TE1A.220922.021)'), (b'Host', b'httpbin.org'), (b'Connection', b'Keep-Alive'), (b'Accept-Encoding', b'gzip'), (b'Content-Length', b'42')]
+Request Body: username=sampleUser&password=dummyPassword
+
+RESPONSE URL: https://httpbin.org/post
+Response Headers: Headers[(b'Date', b'Tue, 16 Jan 2024 09:08:08 GMT'), (b'Content-Type', b'application/json'), (b'Content-Length', b'548'), (b'Connection', b'keep-alive'), (b'Server', b'gunicorn/19.9.0'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true')]
+Response Body: {
+  "args": {}, 
+  "data": "", 
+  "files": {}, 
+  "form": {
+    "password": "dummyPassword", 
+    "username": "sampleUser"
+  }, 
+  "headers": {
+    "Accept-Encoding": "gzip", 
+    "Content-Length": "42", 
+    "Content-Type": "application/x-www-form-urlencoded", 
+    "Host": "httpbin.org", 
+    "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; sdk_gphone64_arm64 Build/TE1A.220922.021)", 
+    "X-Amzn-Trace-Id": "Root=1-65a64778-78495e9f5d742c9b0c7a75d8"
+  }, 
+  "json": null, 
+  "origin": "148.141.65.87", 
+  "url": "https://httpbin.org/post"
+}
+
+
