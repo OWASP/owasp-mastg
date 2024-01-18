@@ -85,6 +85,58 @@ On the other hand, `ctsProfileMatch` gives you a much stricter signal about the 
 
 Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklist "attestation checklist") to ensure that you've completed each of the steps needed to integrate the `SafetyNetApi.attest` API into the app.
 
+> It is important to note that the `SafetyNet Attestation API` is deprecated and so you can no longer request a new API key.
+
+#### Play Integrity API
+
+If you're already verifying responses by using a trusted server, then migrating from the SafetyNet Attestation API to the `Play Integrity API` is straightforward. The Play Integrity API can also be used as a replacement for App Licensing checks performed directly with the Play Store app through AIDL, such as those performed by the Licensing Verification Library (LVL). Most of the required changes will be on the trusted server side, which need to read and analyze the Play Integrity response token. Note that during migration, both the application and the server need to support both APIs simultaneously to support older clients that have not yet updated.
+
+> Note: for the SafetyNet Attestation API, it was possible to perform a response validation directly on the device, although it was not recommended. To use the new Play Integrity API, you need a trusted server component that performs response token decryption and validation. We strongly discourage keeping Play Integrity API self-managed keys on-device, as this makes it trivial for an attacker to spoof the response.
+
+If your app was granted increased quota limits for the SafetyNet Attestation API, you should check the assigned usage tier for the Play Integrity API, and if needed request to move to the raised tier.
+
+The following changes are necessary to support the Play Integrity API:
+
+Android Client:
+
+- Ensure that the code is passing the correctly-formatted nonce to the IntegrityTokenRequest builder:
+  - String (instead of a byte array)
+  - URL-safe
+  - Encoded as Base64 and non-wrapping
+  - Minimum of 16 characters
+  - Maximum of 500 characters
+- Review the retry logic, and make sure the application handles errors appropriately.
+- Make sure the response data sent to the trusted server allows distinguishing between `SafetyNet Attestation API` responses and `Play Integrity API` responses.
+
+Trusted Server:
+
+- Review nonce generation logic, and make sure it meets Play Integrity API requirements.
+- Make sure the server code can distinguish between SafetyNet Attestation API responses and Play Integrity API responses. Make sure the code parses and validates those responses properly.
+- Add logic to validate and parse Play Integrity API responses.
+- Since the new Play Integrity API response provides additional details, it might be necessary to enhance the decision making logic and the feedback data sent back to the client devices. For more information, see the API Response Mapping section within this topic.
+
+  Nonce encoding
+  An integrity-related nonce must be passed to the `Play Integrity API` as a Base64-encoded, URL-safe, and non-wrapped String. This format differs from the SafetyNet Attestation API, which requires byte[].
+- "URL-safe" means using the "URL and filename-safe" variant of Base64 (see RFC 4648 section 5), where ‘-' and ‘_' are used in place of ‘+' and ‘/'. For more information on Base64 encoding, see RFC 4648.
+- "no-wrap" means omitting all line terminators. This means that the output is a single long line.
+
+```default
+.setNonce(Base64.encodeToString(NONCE_BYTES,
+        Base64.URL_SAFE | Base64.NO_WRAP))
+```
+In addition, make sure the nonce generation is aligned with the Play Integrity API guidelines.
+
+Play Integrity API Retry Logic
+An app should retry API calls in case of certain error codes. Make sure you have reviewed all error codes, and make sure that the application retries when necessary with exponential backoff. Please make sure the minimal delay is at least 5 seconds, increasing exponentially (5s, 10s, 20s, 40s, and so on), to provide the API enough time to assess device and application integrity.
+
+Optional App Licensing API replacement
+If you're using the App Licensing API, you can optionally migrate to use the Play Integrity API, as a Play Integrity API token includes the application's licensing information. As with the SafetyNet Attestation API migration, you should expect a number of devices to retain an older version of the application. Your trusted server should be capable of processing both App Licensing API and Play Integrity API responses.
+
+Receive responses until the full turndown
+If you have not yet migrated to Play Integrity API or removed SafetyNet Attestation by the migration deadline (January 31, 2024), you can complete this form to request an extension. If approved for an extension, your app will continue receiving responses from SafetyNet Attestation until the full turndown deadline (January 31, 2025).
+
+Follow this [ Play Integrity API](https://developer.android.com/google/play/integrity/migrate") documentation to ensure that you've completed each of the steps needed to migrate to the  ` Play Integrity API` API into the app.
+
 #### Programmatic Detection
 
 ##### File existence checks
