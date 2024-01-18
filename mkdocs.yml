@@ -35,6 +35,8 @@ nav:
             - ... | flat | MASTG/tests/android/MASVS-CODE/*.md
           - MASVS-RESILIENCE:
             - ... | flat | MASTG/tests/android/MASVS-RESILIENCE/*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/tests/android/MASVS-PRIVACY/*.md
         - iOS:
           - MASVS-STORAGE:
             - ... | flat | MASTG/tests/ios/MASVS-STORAGE/*.md
@@ -50,6 +52,8 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-CODE/*.md
           - MASVS-RESILIENCE:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/tests/ios/MASVS-PRIVACY/*.md
       - Techniques:
         - MASTG/techniques/index.md
         - Generic:
@@ -91,6 +95,8 @@ nav:
       - ... | flat | MASVS/controls/MASVS-CODE*.md
       - MASVS-RESILIENCE: MASVS/11-MASVS-RESILIENCE.md
       - ... | flat | MASVS/controls/MASVS-RESILIENCE*.md
+      - MASVS-PRIVACY: MASVS/12-MASVS-PRIVACY.md
+      - ... | flat | MASVS/controls/MASVS-PRIVACY*.md
   - "MAS Checklist":
      - checklists/index.md
      - MASVS-STORAGE: checklists/MASVS-STORAGE.md
@@ -100,6 +106,7 @@ nav:
      - MASVS-PLATFORM: checklists/MASVS-PLATFORM.md
      - MASVS-CODE: checklists/MASVS-CODE.md
      - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
+     - MASVS-PRIVACY: checklists/MASVS-PRIVACY.md
   - "MAS Crackmes": 
       - crackmes/index.md
       - ... | flat | crackmes/*.md
@@ -190,7 +197,7 @@ extra:
     property: G-KWZRJV0S4P
   social:
     - icon: fontawesome/brands/slack
-      link: https://owasp.slack.com/messages/project-mobile_omtg/details/
+      link: https://owasp.slack.com/archives/C1M6ZVC6S
     - icon: fontawesome/brands/twitter 
       link: https://twitter.com/OWASP_MAS
     - icon: fontawesome/brands/github

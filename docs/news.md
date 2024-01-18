@@ -9,6 +9,33 @@ hide:
 
     Follow [:material-twitter: @OWASP_MAS](https://twitter.com/OWASP_MAS) to get the latest updates instantly.
 
+## Jan 18th, 2024: MASVS v2.1.0 Release & MASVS-PRIVACY
+
+We are thrilled to announce the release of the new version of the [OWASP Mobile Application Security Verification Standard (MASVS) v2.1.0](https://github.com/OWASP/owasp-masvs/releases/tag/v2.1.0) including the new MASVS-PRIVACY category and CycloneDX support.
+
+### MASVS-PRIVACY
+
+After collecting and processing all feedback from the [MASVS-PRIVACY Proposal](https://docs.google.com/document/d/1jq7V9cRureRFF_XT7d_Z9H_SLsaFs43cE50k6zMRu0Q/edit?usp=sharing) we're releasing the [new MASVS-PRIVACY category](https://mas.owasp.org/MASVS/12-MASVS-PRIVACY/).
+
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_privacy.png"/>
+</center>
+
+> The main goal of MASVS-PRIVACY is to provide a **baseline for user privacy**. It is not intended to cover all aspects of user privacy, especially when other standards and regulations such as ENISA or the GDPR already do that. We focus on the app itself, looking at what can be tested using information that's publicly available or found within the app through methods like static or dynamic analysis.
+>
+> While some associated tests can be automated, others necessitate manual intervention due to the nuanced nature of privacy. For example, if an app collects data that it didn't mention in the app store or its privacy policy, it takes careful manual checking to spot this.
+
+The new controls are:
+
+- **MASVS-PRIVACY-1**: The app minimizes access to sensitive data and resources.
+- **MASVS-PRIVACY-2**: The app prevents identification of the user.
+- **MASVS-PRIVACY-3**: The app is transparent about data collection and usage.
+- **MASVS-PRIVACY-4**: The app offers user control over their data.
+
+### CycloneDX Support
+
+The MASVS is now available in CycloneDX format (OWASP_MASVS.cdx.json), a widely adopted standard for software bill of materials (SBOM). This format enables easier integration and automation within DevOps pipelines, improving visibility and management of mobile app security. By using CycloneDX, developers and security teams can more efficiently assess, track and comply with MASVS requirements, resulting in more secure mobile applications.
+
 ## Jan 11th, 2024: Mobile Application Risk Scoring Q&A
 
 We've received many comments and excellent questions, which we've compiled and summarized, along with the authors' answers. We'd like to thank everyone who took the time to read the document and especially those who asked valuable questions.
@@ -558,7 +585,7 @@ Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/
 - [Uncrackable App for iOS Level 1](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_01/)
 - [Uncrackable App for iOS Level 2](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_02/)
 
-One of these three already has a [documented solution](https://github.com/OWASP/owasp-mastg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/README.md).
+One of these three already has a documented solution in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/README.md).
 
 ### We Need More Authors and Contributors!
 
