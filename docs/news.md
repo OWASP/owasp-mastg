@@ -585,7 +585,7 @@ Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/
 - [Uncrackable App for iOS Level 1](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_01/)
 - [Uncrackable App for iOS Level 2](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_02/)
 
-One of these three already has a [documented solution](https://github.com/OWASP/owasp-mastg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/README.md).
+One of these three already has a documented solution in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/README.md).
 
 ### We Need More Authors and Contributors!
 
