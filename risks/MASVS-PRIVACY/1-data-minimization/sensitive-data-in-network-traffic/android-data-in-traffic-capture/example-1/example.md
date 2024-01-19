@@ -11,11 +11,21 @@ code: [kotlin]
 
 ### Steps
 
-Let's run our mitmproxy with our custom script for logging sensitive data and dump the relevant traffic to a file.
+First, we need to start the device, in this case, the Android emulator:
+
+```bash
+emulator -avd Pixel_3a_API_33_arm64-v8a -writable-system
+```
+
+Now, we launch the app from Android Studio.
+
+Before clicking anything, we run our mitmproxy with our custom script for logging sensitive data and dump the relevant traffic to a file.
 
 {{ ../mitm_sensitive_logger.py }}
 
 {{ run.sh }}
+
+Now, we click the button in the app.
 
 ### Observation
 
