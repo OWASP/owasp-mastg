@@ -13,13 +13,14 @@ MAS Advocates are industry supporters of the OWASP MASVS and MASTG who have inve
 > 🥇 Being a "MAS Advocate" is the highest status that companies can achieve in the project, acknowledging that they've gone above and beyond to support the project.
 
 **MAS Advocates continuously support the project with time/dedicated resources with clear/high impact**. To achieve this status, you'll need to demonstrate that you **make consistent high-impact contributions** to the project. For example:
-     - Content Pull Requests (e.g. adding/updating existing tests, tooling, maintaining code samples, etc.)
-     - Technical PR reviews
-     - Improving automation (GitHub Actions)
-     - Upgrading, extending or creating new Crackmes
-     - Moderating GitHub Discussions
-     - Providing high quality feedback to the project and for special events such as the MASVS/MASTG refactoring.
-     - etc.
+
+- Content Pull Requests (e.g. adding/updating existing tests, tooling, maintaining code samples, etc.)
+- Technical PR reviews
+- Improving automation (GitHub Actions)
+- Upgrading, extending or creating new Crackmes
+- Moderating GitHub Discussions
+- Providing high quality feedback to the project and for special events such as the MASVS/MASTG refactoring.
+- etc.
 
 The following will be considered but it's not a requirement:
 
