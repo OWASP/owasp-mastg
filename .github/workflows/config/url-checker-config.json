@@ -83,7 +83,17 @@
         },
         {
             "pattern": "^https://github.com/sushi2k/MSTG-MASVS-Internal"
+        },
+        {
+            "pattern": "^/MASVS/"
+        },
+        {
+            "pattern": "^/MASTG/"
+        },
+        {
+            "pattern": "^/checklists/"
         }
+        
     ],
     "httpHeaders": [
         {
