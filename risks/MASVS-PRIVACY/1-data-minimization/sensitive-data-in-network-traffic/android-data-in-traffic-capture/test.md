@@ -12,9 +12,11 @@ type: [dynamic, network]
 
 ## Steps
 
-1. Start [logging sensitive data from network traffic](../../../../../techniques/android/MASTG-TECH-0100.md).
+1. Start the device.
 
-2. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Especially, places where you know that will trigger network traffic.
+2. Start [logging sensitive data from network traffic](../../../../../techniques/android/MASTG-TECH-0100.md).
+
+3. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Especially, places where you know that will trigger network traffic.
 
 ## Observation
 
