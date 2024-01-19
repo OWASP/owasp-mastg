@@ -1,5 +1,6 @@
 ---
 title: Cryptographically Weak Pseudo-Random Number Generator (PRNG)
+alias: insecure-random
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]
 mappings:
