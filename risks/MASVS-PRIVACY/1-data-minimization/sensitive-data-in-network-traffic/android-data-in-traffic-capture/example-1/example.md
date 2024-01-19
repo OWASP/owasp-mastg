@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Detecting User Name and Password in Network Traffic
+title: Detecting Sensitive Data in Network Traffic
 tools: [mitmproxy]
 code: [kotlin]
 ---
@@ -27,8 +27,8 @@ The script has identified several instances in the network traffic where sensiti
 
 Review each of the reported instances.
 
-- The first instance is a POST request to `https://httpbin.org/post` which contains the user and password in the request body.
-- The second instance is a response from `https://httpbin.org/post` which contains the user and password in the response body.
+- The first instance is a POST request to `https://httpbin.org/post` which contains the sensitive data values in the request body.
+- The second instance is a response from `https://httpbin.org/post` which contains the sensitive data values in the response body.
 
 This is a dummy example, but in a real-world scenario, you should determine which of the reported instances are privacy-relevant and need to be addressed. You can use the list of sensitive data you identified in the [Identify your sensitive data](MASTG-KNOW-0001) section as a reference.
 
