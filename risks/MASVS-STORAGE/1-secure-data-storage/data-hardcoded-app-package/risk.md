@@ -1,8 +1,11 @@
 ---
 title: Sensitive Data Hardcoded in the App Package
+alias: data-hardcoded-app-package
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]
 mappings:
+  - masvs-v1: [MSTG-STORAGE-1]
+  - masvs-v2: [MASVS-STORAGE-1]
   - android: https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
 ---
 

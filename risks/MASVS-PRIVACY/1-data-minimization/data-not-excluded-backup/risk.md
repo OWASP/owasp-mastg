@@ -1,9 +1,13 @@
 ---
 title: Sensitive Data Not Excluded From Backup
+alias: data-not-excluded-backup
 platform: [android, ios]
 profiles: ["L1", "L2", "P"]
 mappings:
-  - android: https://developer.android.com/privacy-and-security/risks/backup-leaks
+- masvs-v1: [MSTG-STORAGE-8]
+- masvs-v2: [MASVS-STORAGE-2, MASVS-PRIVACY-1]
+- cwe: [311, 312]
+- android: https://developer.android.com/privacy-and-security/risks/backup-leaks
 refs:
     - https://developer.android.com/guide/topics/data/autobackup#include-exclude-android-11
     - https://developer.android.com/guide/topics/data/autobackup#include-exclude-android-12

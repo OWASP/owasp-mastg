@@ -1,10 +1,13 @@
 ---
-mappings:
-  - cwe: [200, 201, 359, 497]
 title: Sensitive Data in Network Traffic
+alias: sensitive-data-in-network-traffic
 platform: android
 profiles: ["P"]
 profiles_rationale: This risk is part of the MAS privacy profile because most of apps will insert sensitive data into network traffic, but, as long as the communication is properly encrypted this is not a security risk.
+mappings:
+  - masvs-v1: [MSTG-NETWORK-1]
+  - masvs-v2: [MASVS-PRIVACY-1]
+  - cwe: [200, 201, 359, 497]
 ---
 
 ## Overview

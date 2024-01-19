@@ -1,7 +1,12 @@
 ---
 title: Device Access Security Policy Not Enforced
+alias: device-access-policy-not-enforced
 platform: ["android"]
 profiles: ["L2"]
+mappings:
+- masvs-v1: [MSTG-STORAGE-11]
+- masvs-v2: [MASVS-STORAGE-1]
+- cwe: [311]
 ---
 
 ## Overview

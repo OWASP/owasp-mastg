@@ -1,7 +1,12 @@
 ---
 title: Backup Unencrypted
+alias: backup-unencrypted
 platform: ["android"]
 profiles: ["L1", "L2"]
+mappings:
+- masvs-v1: [MSTG-STORAGE-8]
+- masvs-v2: [MASVS-STORAGE-2]
+- cwe: [311, 312]
 refs:
     - https://developer.android.com/guide/topics/data/autobackup#define-device-conditions
 ---

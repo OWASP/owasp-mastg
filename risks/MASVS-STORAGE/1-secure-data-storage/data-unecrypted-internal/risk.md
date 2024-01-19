@@ -1,7 +1,12 @@
 ---
 title: Sensitive Data Stored Unencrypted in Internal Locations
+alias: data-unecrypted-internal
 platform: ["android", "ios"]
 profiles: ["L2"]
+mappings:
+- masvs-v1: [MSTG-STORAGE-2]
+- masvs-v2: [MASVS-STORAGE-1]
+- cwe: [311, 312]
 ---
 
 ## Overview

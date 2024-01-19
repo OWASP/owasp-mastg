@@ -1,8 +1,11 @@
 ---
 title: Sensitive Data Stored With Insufficient Access Restrictions in Internal Locations
+alias: data-insufficient-access-restrictions-internal
 platform: ["android"]
 profiles: ["L1", "L2"]
 mappings:
+  - masvs-v1: [MSTG-STORAGE-1]
+  - masvs-v2: [MASVS-STORAGE-2]
   - android: https://developer.android.com/about/versions/nougat/android-7.0-changes#permfilesys
 context: not ensuring exclusive app access to sensitive data stored in internal locations e.g. by using the wrong file permissions.
 ---

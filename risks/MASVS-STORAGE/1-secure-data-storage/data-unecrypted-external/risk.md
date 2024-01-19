@@ -1,7 +1,12 @@
 ---
 title: Sensitive Data Stored Unencrypted in External Locations
+alias: data-unecrypted-external
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]
+mappings:
+- masvs-v1: [MSTG-STORAGE-2]
+- masvs-v2: [MASVS-STORAGE-1]
+- cwe: [311, 312]
 ---
 
 ## Overview
