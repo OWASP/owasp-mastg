@@ -26,14 +26,20 @@
 "MASVS-RESILIENCE":
 - Document/0x0[5-6]j*
 
+"MASVS-PRIVACY":
+- Document/0x04i*
+
 "tests":
-- Document/0x0[5-6][d-j]*
+- tests/*
 
 "fundamentals":
 - Document/0x0[5-6][a-b]*
 
 "techniques":
-- Document/0x0[5-6]c*
+- techniques/*
 
 "tools":
-- Document/0x08*
+- tools/*
+
+"apps":
+- apps/*
