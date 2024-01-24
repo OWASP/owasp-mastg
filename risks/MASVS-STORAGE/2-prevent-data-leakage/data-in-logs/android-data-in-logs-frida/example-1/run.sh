@@ -1,13 +1,15 @@
 #!/bin/bash
 
-# Note: the class and method names are case-sensitive
+# SUMMARY: This script uses frida-trace to trace logging statements in the specified Android app
+# and filters the output to exclude certain log methods.
+# The raw output is saved to "output_raw.txt" and then filtered to remove unwanted log entries.
+# The final result saved to "output.txt".
 
-# Attach to the running app "Logging"
-# Includes Log.v, Log.d, Log.i, Log.w, Log.e, Log.wtf, Logger
-frida-trace -U -j "*Log*!*println*" Logging -o output.txt
-
-## Spawn the app org.owasp.mastg.logging and trace the methods
-# frida-trace -U -j "*Log*!*println*" -f org.owasp.mastg.logging -o output.txt
-
-## System.err.print("key") => LoggingPrintStream.print()
-# frida-trace -U -j "*LoggingPrintStream\!print" -f org.owasp.mastg.logging -o system_err_class_output.txt
+frida-trace \
+    -U \
+    -f com.owasp.mas.maswebview \
+    --runtime=v8 \
+    -j 'android.util.Log!*' \
+    -j 'java.util.logging.Logger!severe' \
+    -o output_raw.txt \
+    && cat output_raw.txt | grep -E "(Log|Logger)" | grep -vE "Log\.println|Log\.isLoggable" > output.txt
