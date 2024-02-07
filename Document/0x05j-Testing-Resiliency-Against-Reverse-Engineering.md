@@ -219,7 +219,7 @@ for (int i = 1; ; i = 0)
 }
 ```
 
-Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: on stock Android builds, [OTA updates Google's public certificates](https://blog.netspi.com/android-root-detection-techniques/ "Android Root Detection Techniques").
+Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: on stock Android builds, [OTA updates Google's public certificates](https://www.netspi.com/blog/technical/mobile-application-penetration-testing/android-root-detection-techniques/ "Android Root Detection Techniques").
 
 ### Anti-Debugging
 
