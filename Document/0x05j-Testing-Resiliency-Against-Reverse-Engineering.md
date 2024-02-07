@@ -32,17 +32,17 @@ Root detection can also be implemented through libraries such as [RootBeer](http
 
 #### Google Play Integrity
 
-Google has launched the [Google Play Integrity API](https://developer.android.com/google/play/integrity/overview "Google Play Integrity API") to improve the security and integrity of apps and games on Android starting from Android 4.4 (level 19). The previous official API, [SafetyNet](https://developer.android.com/training/safetynet), did not cover all the security needs that Google wanted for the platform, so Play Integrity was developed with the basic functions of the previous API and integrated additional features. This change aims to protect users against dangerous and fraudulent interactions.
+Google has launched the [Google Play Integrity API](https://developer.android.com/google/play/integrity/overview "Google Play Integrity API") to improve the security and integrity of apps and games on Android starting with Android 4.4 (level 19). The previous official API, [SafetyNet](https://developer.android.com/training/safetynet), did not cover all the security needs that Google wanted for the platform, so Play Integrity was developed with the basic functions of the previous API and integrated additional features. This change aims to protect users from dangerous and fraudulent interactions.
 
 **Google Play Integrity offers the following safeguards:**
 
 - Verification of genuine Android device: It verifies that the application is running on a legitimate Android device.
-- User license validation: It indicates whether the user installed or purchased the application or game through the Google Play Store.  
+- User license validation: It indicates whether the application or game was installed or purchased through the Google Play Store.
 - Unmodified binary verification: It determines whether the application is interacting with the original binary recognized by Google Play.
 
 The API provides four macro categories of information to help the security team make a decision. These categories include:
 
-1. **Request Details**: In this section, details are obtained about the app package that requested the integrity check, including  its format (my.package.com), a base64-encoded ID provided by the developer to establish a link between the request and the integrity certificate, and the time of the request execution in milliseconds.
+1. **Request Details**: In this section, details are obtained about the app package that requested the integrity check, including its format (e.g., com.example.myapp), a base64-encoded ID provided by the developer to link the request with the integrity certificate, and the execution time of the request in milliseconds.
 
 2. **App Integrity**: This section provides information about the integrity of the app, including the result of the verification (denominated verdict), which indicates whether the app's installation source is trusted (via Play Store) or unknown/suspicious. If the installation source is considered secure, the app version will also be displayed.
 
@@ -50,10 +50,10 @@ The API provides four macro categories of information to help the security team 
 
 4. **Device Integrity**: This section presents information that verifies the authenticity of the Android environment in which the app is running.
 
-- `MEETS_DEVICE_INTEGRITY`: Running on Android Device with Google Play Services: The app is running on an Android device with Google Play Services. This device passed system integrity checks and meets the Android compatibility requirements.
-- `MEETS_BASIC_INTEGRITY`: Running on Device without Google Play Services: The app is running on a device that passed basic system integrity checks. This may occur because the device may be running an unrecognized version of Android, has an unlocked bootloader, or has not been certified by the manufacturer.
-- `MEETS_STRONG_INTEGRITY`: The app is running on an Android device equipped with Google Play Services technology, ensuring a strong system integrity such as a hardware-protected boot process.
-- `MEETS_VIRTUAL_INTEGRITY`: Running on Emulator with Google Play Services: In this scenario, the app is running in a simulated environment of an Android device that has Google Play Services. The emulator was checked and approved for system integrity and meets the necessary Android compatibility requirements.
+- `MEETS_DEVICE_INTEGRITY`: The app is on an Android device with Google Play Services, passing system integrity checks and compatibility requirements.
+- `MEETS_BASIC_INTEGRITY`: The app is on a device that may not be approved to run Google Play Services but passes basic integrity checks, possibly due to an unrecognized Android version, unlocked bootloader, or lack of manufacturer certification.
+- `MEETS_STRONG_INTEGRITY`: The app is on a device with Google Play Services, ensuring robust system integrity with features like hardware-protected boot.
+- `MEETS_VIRTUAL_INTEGRITY`: The app runs in an emulator with Google Play Services, passing system integrity checks and meeting Android compatibility requirements.
 
 **API Errors:**
 
@@ -61,15 +61,15 @@ The API can return local errors such as `APP_NOT_INSTALLED` and `APP_UID_MISMATC
 
 **Best practices:**
 
-1. Although Play Integrity provides an additional layer of security for Android applications, it is not a single security solution. It is important to have complementary measures in place, such as input data validation, user authentication and anti-fraud protection.
-2. It is important to avoid querying the Play Protect API too frequently in order to minimize the impact on device resources. Furthermore, it is good practice to use the API only in situations where device integrity verification is truly necessary.
+1. Use Play Integrity as part of a broader security strategy. Complement it with additional security measures such as input data validation, user authentication, and anti-fraud protection.
+2. Minimize queries to the Play Protect API to reduce device resource impact. For example, employ the API only for essential device integrity verifications.
 
-3. By including a `NONCE` in the request, the verification server can ensure that the response matches the original request and has not been tampered with by third parties. It is a random value generated by the app (or server) and sent with the integrity verification request.
+3. Include a `NONCE` with integrity verification requests. This random value, generated by the app or server, helps the verification server confirm that responses match the original requests without third-party tampering.
 
 **Limitations:**  
-It is important to note that there is a daily limit for the Google Play Services Integrity Verification API requests. By default, up to 10,000 requests are allowed per day, but for applications that require a higher number of requests, it is necessary to contact Google to request an expansion of this limit.
+The default daily limit for Google Play Services Integrity Verification API requests is 10,000 requests per day. Applications needing more must contact Google to request an increased limit.
 
-**Example:**  
+**Example Request:**  
 
 ```json
 {  
