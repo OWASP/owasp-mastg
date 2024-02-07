@@ -50,7 +50,7 @@ Though a privacy policy traditionally protects most of the these processes, that
 
 ### The New Approach (Google and Apple)
 
-In order to address these challenges and better inform users, Google and Apple have introduced new privacy labeling systems (very much along the lines of NIST's proposal) to help users easily understand how their data is being collected, handled, and shared, [Consumer Software Cybersecurity Labeling](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.02042022-1.pdf). Their approaches can be seen at: 
+In order to address these challenges and better inform users, Google and Apple have introduced new privacy labeling systems (very much along the lines of NIST's proposal) to help users easily understand how their data is being collected, handled, and shared, [Consumer Software Cybersecurity Labeling](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.02042022-1.pdf). Their approaches can be seen at:
 
 - The App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
 - The Google Play [Data Safety Section](https://developer.android.com/guide/topics/data/collect-share) (since 2021).
