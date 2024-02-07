@@ -19,7 +19,7 @@ Consider these dimensions of mobile app privacy:
 - **Developer Compliance**: Developers need to be aware of laws about user privacy so their work is compliant. Ideally, the following principles must be followed:
     - **Privacy-by-Design** approach (Art. 25 GDPR, "Data protection by design and by default").
     - **Principle of Least Privilege** ("Every program and every user of the system should operate using the least set of privileges necessary to complete the job.")
-    - **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure secure handling and processing of their information).
+- **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure secure handling and processing of their information).
 
 > Note: More often than not apps will claim to handle certain data, but in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://drive.google.com/file/d/1cp7zrqJuVkftJ0DARNN40Ga_m_tEhIrQ/view?usp=sharing) gives a very nice introduction to this topic.
 
@@ -59,7 +59,7 @@ Since this is a new requirement on both platforms, these labels must be accurate
 
 ### Google ADA MASA Program
 
-Since regular security testing helps developers identify key vulnerabilities in their apps, Google Play will allow developers who have completed independent security validation to inform users by disclosing this fact in the app's Data Safety section. The developer's commitment to security and privacy is meant to reassure users. 
+Since regular security testing helps developers identify key vulnerabilities in their apps, Google Play will allow developers who have completed independent security validation to inform users by disclosing this fact in the app's Data Safety section. The developer's commitment to security and privacy is meant to reassure users.
 
 As part of the process to provide more transparency into the app's security architecture, Google has introduced the [MASA (Mobile Application Security Assessment)](https://appdefensealliance.dev/masa) program as part of the [App Defense Alliance (ADA)](https://appdefensealliance.dev/). Since MASA is a globally recognized standard for mobile app security to the mobile app ecosystem, Google is acknowledging the importance of security in this industry. Developers can work directly with an Authorized Lab partner to initiate a security assessment that is independently validated against a set of MASVS Level 1 requirements, and Google will recognize this effort by allowing them to disclose these tests in the app's Data Safety section.
 
