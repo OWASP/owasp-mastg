@@ -11,7 +11,7 @@ We place mobile apps into four categories:
 [Hybrid Apps](#hybrid-apps)
 [Progressive Web Apps](#progressive-web-apps)
 
-## Native Apps</A>
+## Native Apps
 
 If a mobile app is developed with a Software Development Kit (SDK) for developing apps specific to a mobile OS, they are referred to as _native_ to their OS. If we are discussing a native app, we presume is was implemented in a standard programming language for that mobile operating system - Objective-C or Swift for iOS, and Java or Kotlin for Android.
 
@@ -29,13 +29,13 @@ Here are some multi-platform frameworks that allow developers to compile a singl
 
 If an apps is developed using these these frameworks, the app will use the internal APIs native to each system and offer performance equivalent to native apps. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed _native apps_, apps developed using these frameworks are said to be _native apps_.
 
-## Web Apps</A>
+## Web Apps
 
 Mobile web apps (or simply, _web apps_) are websites designed to look and feel like a _native app_. These apps run on top of a device’s browser and are usually developed in HTML5, much like a modern web page. Launcher icons may be used to parallel the same feel of accessing a _native app_; however, these icons are essentially the same as a browser bookmark, simply opening the default web browser to load the referenced web page.
 
 Because they run within the confines of a browser, web apps have limited integration with the general components of the device (i.e. they are "sandboxed") and their performance is usually inferior compared to native apps. Since developers usually target multiple platforms with a web app, their UIs generally do not follow the design principles of any specific platform. However, _web apps_ are popular because developers can use a single code base to reduce development and maintenance costs and distribute updates without going through the platform-specific app stores. For example, a change to the HTML file for a _web app_ can serve as viable, cross-platform update whereas an update to a store-based app requires considerably more effort.
 
-## Hybrid Apps</A>
+## Hybrid Apps
 
 _Hybrid apps_ try to benefit from the best aspects of _native_ and _web apps_. This type of app executes like a _native app_, but a majority of the processes rely on web technologies, meaning a portion of the app runs in an embedded web browser (commonly called "WebView"). As such, _hybrid apps_ inherit both pros and cons of _native_ and _web apps_. These apps can use a web-to-native abstraction layer to access to device capabilities that are not accessible to a pure _web app_. Depending on the framework used for development, a _hybrid app_ code base can generate multiple apps that target different platforms and take advange of UIs that closely resembling a device's original platform.
 
@@ -49,7 +49,7 @@ Here are some popular frameworks for developing _hybrid apps_:
 - [Onsen UI](https://onsen.io/ "Onsen UI")
 - [Sencha Touch](https://www.sencha.com/products/touch/ "Sencha Touch")
 
-## Progressive Web Apps</A>
+## Progressive Web Apps
 
 _Progressive web apps_ (PWAs) combine different open standards of the web offered by modern browsers to provide benefits of a rich mobile experience. A Web App Manifest, which is a simple JSON file, can be used to configure the behavior of the app after "installation". These apps load like regular web pages, but differ from usual web apps in several ways.
 
