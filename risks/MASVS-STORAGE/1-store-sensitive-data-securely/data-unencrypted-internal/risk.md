@@ -24,7 +24,7 @@ Sensitive data stored locally on the device should be encrypted, and any keys us
 
 ## Modes of Introduction
 
-- **Data Stored Unencrypted**: Sensitive data is written to the file system unencrypted.
+- **Data Stored Unencrypted**: Sensitive data is written to the app's private data directory (sandbox) unencrypted.
 - **Hardcoded Encryption Key**: Sensitive data is encrypted but the key is hardcoded inside the application.
 - **Encryption Key Stored on Filesystem**: Sensitive data is encrypted but the key is stored alongside it or in another easily accessible location.
 - **Encryption Used is Insufficient**: Sensitive data is encrypted but the encryption is not considered to be strong.
