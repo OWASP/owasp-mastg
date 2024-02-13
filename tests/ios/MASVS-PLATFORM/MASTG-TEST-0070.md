@@ -405,4 +405,6 @@ $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05force
 
 Resulting in:
 
-```default
+```bash
+default
+```
