@@ -100,3 +100,4 @@ Note: You may be asked to authenticate using the devices passcode or TouchID
 Save the output by adding `--json keychain.json` to this command
 Dumping the iOS keychain...
 Created                    Accessible                      ACL    Type      Account                    Service                                                        Data
+```
