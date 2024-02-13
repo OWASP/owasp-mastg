@@ -117,3 +117,4 @@ The `list_bundles` command lists all of the application’s bundles that are not
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
 Executable    Bundle                                       Version  Path
+```
