@@ -51,3 +51,4 @@ ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
 
 ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
 NSFileType      Perms  NSFileProtection    Read    Write     Name
+```
