@@ -2,13 +2,15 @@
 platform: android
 title: Sensitive Data in Network Traffic Capture
 type: [dynamic, network]
+prerequisites:
+- identify-sensitive-data
+- privacy-policy
+- app-store-privacy-declarations
 ---
 
-## Prerequisites
+## Overview
 
-- [Identify your sensitive data](MASTG-KNOW-0001)
-- [Privacy policy](MASTG-TECH-0001)
-- [App Store Privacy declarations](MASTG-TECH-0001)
+Attackers may capture network traffic from Android devices using an intercepting proxy, such as [OWASP ZAP](https://www.zaproxy.org/), [Burp Suite](https://portswigger.net/burp), or [mitmproxy](https://mitmproxy.org/), to analyze the data being transmitted by the app. This works even if the app uses HTTPS, as the attacker can install a custom root certificate on the Android device to decrypt the traffic. Inspecting traffic that is not encrypted with HTTPS is even easier and can be done without installing a custom root certificate for example by using [Wireshark](https://www.wireshark.org/).
 
 ## Steps
 

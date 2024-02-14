@@ -9,6 +9,10 @@ prerequisites:
 - identify-security-relevant-contexts
 ---
 
+## Overview
+
+Android applications sometimes use non-random sources to generate "random" values, leading to potential security vulnerabilities. Common practices include relying on the current time, such as `Date().getTime()`, or accessing `Calendar.MILLISECOND` to produce values that are easily guessable and reproducible.
+
 ## Steps
 
 1. Run a [static analysis](../../../../../techniques/android/MASTG-TECH-0014.md) tool on the app and look for uses of non-random sources.

@@ -9,6 +9,10 @@ prerequisites:
 - identify-security-relevant-contexts
 ---
 
+## Overview
+
+Android apps sometimes use insecure pseudorandom number generators (PRNGs) such as `java.util.Random`, which is essentially a linear congruential generator. This type of PRNG generates a predictable sequence of numbers for any given seed value, making the sequence reproducible and insecure for cryptographic use. In particular, `java.util.Random` and `Math.random()` ([the latter](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/) simply calling `nextDouble()` on a static `java.util.Random` instance) produce identical number sequences when initialized with the same seed across all Java implementations.
+
 ## Steps
 
 1. Run a [static analysis](../../../../../techniques/android/MASTG-TECH-0014.md) tool on the app and look for insecure random APIs.
