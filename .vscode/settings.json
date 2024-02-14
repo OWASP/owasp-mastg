@@ -59,5 +59,6 @@
         "Truststore",
         "unpatched",
         "Xposed"
-    ]
+    ],
+    "sarif-viewer.connectToGithubCodeScanning": "off"
 }
