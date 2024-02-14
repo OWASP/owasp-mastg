@@ -1,0 +1,103 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "toolExecutionNotifications": []
+        }
+      ],
+      "results": [
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "de5276d3547e34da6c7ab8303e7618b583c75c03b55a9643e858c7599acffa379c63e4d180e693d6c61e1751efedf9f143f8b2b598f17f6bb92c0c810b08f7db_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "non-random.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 30,
+                  "endLine": 7,
+                  "snippet": {
+                    "text": "        return abc(new Date().getTime());"
+                  },
+                  "startColumn": 20,
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-CRYPTO-1] The application makes use of non-random sources."
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-non-random-use"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "c08d5d1a060c1bf5050736078625b8df97a21c2bbd3d38b1e2c026a5889e3096152e7f2f3a391dca471bc07ad1612257e10dec682a1517c42d7270f52cd0c692_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "non-random.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 51,
+                  "endLine": 12,
+                  "snippet": {
+                    "text": "        int mseconds = c.get(Calendar.MILLISECOND)"
+                  },
+                  "startColumn": 24,
+                  "startLine": 12
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-CRYPTO-1] The application makes use of non-random sources."
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-non-random-use"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "[MASVS-CRYPTO-1] The application makes use of non-random sources."
+              },
+              "help": {
+                "markdown": "[MASVS-CRYPTO-1] The application makes use of non-random sources.",
+                "text": "[MASVS-CRYPTO-1] The application makes use of non-random sources."
+              },
+              "id": "rules.mastg-android-non-random-use",
+              "name": "rules.mastg-android-non-random-use",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-non-random-use"
+              }
+            }
+          ],
+          "semanticVersion": "1.56.0"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

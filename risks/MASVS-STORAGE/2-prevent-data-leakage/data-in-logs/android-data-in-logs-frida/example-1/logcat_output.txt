@@ -1,0 +1,7 @@
+2024-01-24 09:55:47.312  6476-6476  MASTG                   com.owasp.mas.maswebview             V  key: MAS-Sensitive-Value
+2024-01-24 09:55:47.312  6476-6476  MASTG                   com.owasp.mas.maswebview             I  key: MAS-Sensitive-Password
+2024-01-24 09:55:47.313  6476-6476  MASTG                   com.owasp.mas.maswebview             W  test: MAS-Sensitive-Value-IV
+2024-01-24 09:55:47.314  6476-6476  MASTG                   com.owasp.mas.maswebview             D  test: MAS-Sensitive-Value-IV-2
+2024-01-24 09:55:47.314  6476-6476  MASTG                   com.owasp.mas.maswebview             E  test: MAS-Sensitive-Value
+2024-01-24 09:55:47.315  6476-6476  MASTG                   com.owasp.mas.maswebview             E  test: MAS-Sensitive-Value
+2024-01-24 09:55:47.319  6476-6476  myLogger                com.owasp.mas.maswebview             E  MAS-Sensitive-Key
