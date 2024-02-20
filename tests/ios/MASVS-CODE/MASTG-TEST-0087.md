@@ -66,3 +66,9 @@ These checks can be performed dynamically using [objection](../../../Document/0x
 ```bash
 com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary
 Name                  Type     Encrypted    PIE    ARC    Canary    Stack Exec    RootSafe
+--------------------  -------  -----------  -----  -----  --------  ------------  ----------
+PayPal                execute  True         True   True   True      False         False
+CardinalMobile        dylib    False        False  True   True      False         False
+FraudForce            dylib    False        False  True   True      False         False
+...
+```
