@@ -34,12 +34,13 @@ Many mobile app penetration testers have a background in network and web app pen
 
 This overview discusses how the MASVS defines and describes the key areas of mobile security:
 
-[Data Storage and Privacy](#masvs-storage-data-storage-and-privacy)
-[Cryptography](#masvs-crypto-cryptography)
-[Authentication and Authorization](#masvs-auth-authentication-and-authorization)
-[Network Communication](#masvs-network-network-communication)
-[Interaction with the Mobile Platform](#masvs-platform-interaction-with-the-mobile-platform)
-[Anti-Tampering and Anti-Reversing](#masvs-code-code-quality-and-exploit-mitigation)
+- [Data Storage and Privacy](#masvs-storage-data-storage-and-privacy)
+- [Cryptography](#masvs-crypto-cryptography)
+- [Authentication and Authorization](#masvs-auth-authentication-and-authorization)
+- [Network Communication](#masvs-network-network-communication)
+- [Interaction with the Mobile Platform](#masvs-platform-interaction-with-the-mobile-platform)
+- [Code Quality and Exploit Mitigation](#masvs-code-code-quality-and-exploit-mitigation)
+- [Anti-Tampering and Anti-Reversing](#masvs-resilience-anti-tampering-and-anti-reversing)
 
 ### MASVS-STORAGE: Data Storage and Privacy
 
