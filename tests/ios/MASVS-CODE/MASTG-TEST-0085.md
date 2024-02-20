@@ -117,3 +117,19 @@ The `list_bundles` command lists all of the application’s bundles that are not
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
 Executable    Bundle                                       Version  Path
+------------  -----------------------------------------  ---------  -------------------------------------------
+DVIA-v2       com.highaltitudehacks.DVIAswiftv2.develop          2  ...-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
+CoreGlyphs    com.apple.CoreGlyphs                               1  ...m/Library/CoreServices/CoreGlyphs.bundle
+```
+
+The `list_frameworks` command lists all of the application’s bundles that represent Frameworks.
+
+```bash
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks
+Executable      Bundle                                     Version    Path
+--------------  -----------------------------------------  ---------  -------------------------------------------
+Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-v2.app/Frameworks/Bolts.framework
+RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
+                                                                      ...ystem/Library/Frameworks/IOKit.framework
+...
+```
