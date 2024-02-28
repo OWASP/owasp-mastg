@@ -178,6 +178,68 @@ Realm realm = Realm.getInstance(config);
 
 If the database _is not_ encrypted, you should be able to obtain the data. If the database _is_ encrypted, determine whether the key is hard-coded in the source or resources and whether it is stored unprotected in shared preferences or some other location.
 
+However its quite important to be aware that if the database _is_ encrypted, its often possible to obtain the decryption key at runtime this is because the encryption and decryption keys are identical and are invoked at runtime to facilitate access to the Realm file. The frida script below is demonstrating how to intercept the specific Realm key utilized by the Realm database, allowing for the decryption of encrypted database.
+
+```javascript
+
+'use strict';
+
+function modulus(x, n){
+    return ((x % n) + n) % n;
+}
+
+function bytesToHex(bytes) {
+    for (var hex = [], i = 0; i < bytes.length; i++) { hex.push(((bytes[i] >>> 4) & 0xF).toString(16).toUpperCase());
+        hex.push((bytes[i] & 0xF).toString(16).toUpperCase());
+    }
+    return hex.join("");
+}
+
+function b2s(array) {
+    var result = "";
+    for (var i = 0; i < array.length; i++) {
+        result += String.fromCharCode(modulus(array[i], 256));
+    }
+    return result;
+}
+
+// Main Modulus and function.
+
+if(Java.available){
+    console.log("Java is available");
+    console.log("[+] Android Device.. Hooking Realm Configuration.");
+
+    Java.perform(function(){
+        var RealmConfiguration = Java.use('io.realm.RealmConfiguration');
+        if(RealmConfiguration){
+            console.log("[++] Realm Configuration is available");
+            Java.choose("io.realm.Realm", {
+                onMatch: function(instance)
+                {
+                    console.log("[==] Opened Realm Database...Obtaining the key...")
+                    console.log(instance);
+                    console.log(instance.getPath());
+                    console.log(instance.getVersion());
+                    var encryption_key = instance.getConfiguration().getEncryptionKey();
+                    console.log(encryption_key);
+                    console.log("Length of the key: " + encryption_key.length); 
+                    console.log("Decryption Key:", bytesToHex(encryption_key));
+
+                }, 
+                onComplete: function(instance){
+                    RealmConfiguration.$init.overload('java.io.File', 'java.lang.String', '[B', 'long', 'io.realm.RealmMigration', 'boolean', 'io.realm.internal.OsRealmConfig$Durability', 'io.realm.internal.RealmProxyMediator', 'io.realm.rx.RxObservableFactory', 'io.realm.coroutines.FlowFactory', 'io.realm.Realm$Transaction', 'boolean', 'io.realm.CompactOnLaunchCallback', 'boolean', 'long', 'boolean', 'boolean').implementation = function(arg1)
+                    {
+                        console.log("[==] Realm onComplete Finished..")
+                        
+                    }
+                }
+                   
+            });
+        }
+    });
+}
+```
+
 ### Internal Storage
 
 You can save files to the device's [internal storage](https://developer.android.com/training/data-storage#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
