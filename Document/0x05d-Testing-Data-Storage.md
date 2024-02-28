@@ -178,7 +178,7 @@ Realm realm = Realm.getInstance(config);
 
 If the database _is not_ encrypted, you should be able to obtain the data. If the database _is_ encrypted, determine whether the key is hard-coded in the source or resources and whether it is stored unprotected in shared preferences or some other location.
 
-However its quite important to be aware that if the database _is_ encrypted, its often possible to obtain the decryption key at runtime this is because the encryption and decryption keys are identical and are invoked at runtime to facilitate access to the Realm file. The frida script below is demonstrating how to intercept the specific Realm key utilized by the Realm database, allowing for the decryption of encrypted database.
+However its quite important to be aware that if the database _is_ encrypted, its often possible to obtain the decryption key at runtime. This is because the encryption and decryption keys are identical and are invoked at runtime to facilitate access to the Realm file. The frida script below is demonstrating how to intercept the specific Realm key utilized by the Realm database, allowing for the decryption of encrypted database.
 
 ```javascript
 
