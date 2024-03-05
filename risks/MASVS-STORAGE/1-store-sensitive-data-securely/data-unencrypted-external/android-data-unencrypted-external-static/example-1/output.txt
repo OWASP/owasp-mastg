@@ -1,0 +1,9 @@
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                            
+    use-of-external-store.kt
+    rules.mastg-android-data-unencrypted-external 0m
+          [MASVS-STORAGE] Make sure you encrypt files at these locations if necessary
+                                                                                     
+           26┆ val externalDirPath = getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)

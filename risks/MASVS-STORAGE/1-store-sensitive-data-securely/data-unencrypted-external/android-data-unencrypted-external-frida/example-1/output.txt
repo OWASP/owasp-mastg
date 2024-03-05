@@ -1,0 +1,1 @@
+638 ms  open(path="/storage/emulated/0/Android/data/com.example/files/secret.json", oflag=0x241)

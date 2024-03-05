@@ -1,0 +1,21 @@
+rules:
+  - id: mastg-android-data-unencrypted-external
+    severity: WARNING
+    languages:
+      - kotlin
+    metadata:
+      summary: This rule looks for methods that returns locations to external storage
+    message: "[MASVS-STORAGE] Make sure you encrypt files at these locations if necessary"
+    pattern-either:
+        - patterns:
+            - pattern-either:
+                - pattern: getExternalFilesDir(...)
+                - pattern: getExternalStorageDirectory(...)
+                - pattern: getExternalStoragePublicDirectory(...)
+                - pattern: getExternalCacheDir(...)
+                - pattern: getDownloadCacheDirectory(...)
+                - pattern: Intent.ACTION_CREATE_DOCUMENT
+                
+                
+                
+

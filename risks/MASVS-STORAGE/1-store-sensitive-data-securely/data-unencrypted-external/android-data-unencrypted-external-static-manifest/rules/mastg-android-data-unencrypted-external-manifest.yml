@@ -1,0 +1,10 @@
+rules:
+  - id: mastg-android-data-unencrypted-external-manifest
+    severity: WARNING
+    languages:
+      - generic
+    metadata:
+      summary: This rule looks for permissions that allows your app to write in External Storage
+    message: "[MASVS-STORAGE] Make sure you encrypt files in external storage if necessary"
+    patterns:
+      - pattern: WRITE_EXTERNAL_STORAGE
