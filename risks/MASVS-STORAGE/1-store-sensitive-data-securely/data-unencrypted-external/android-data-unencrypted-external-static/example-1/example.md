@@ -25,7 +25,7 @@ The rule has identified 1 location in the code file where a path to external sto
 
 ### Evaluation
 
-Review each of the reported instances. In this case, it's only one instance. Line 9 shows the occurence of API that returns external storage location. Make sure to either:
+Review each of the reported instances. In this case, it's only one instance. Line 9 shows the occurrence of API that returns external storage location. Make sure to either:
 - encrypt this file if necessary
 - move the file to the internal storage
 - keep the file in the same location if intended and secure
