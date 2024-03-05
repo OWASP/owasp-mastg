@@ -1,0 +1,74 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "toolExecutionNotifications": []
+        }
+      ],
+      "results": [
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "7fff0cca477ae1b0a93a5b8e265d8a7471c4144464dcbbd55d7256be707b55568882a55bbac36d334816deb905d562cb7f9c4cee168fb02f8ca6f31936c62fb7_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "use-of-external-store.kt",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 101,
+                  "endLine": 26,
+                  "snippet": {
+                    "text": "            val externalDirPath = getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)"
+                  },
+                  "startColumn": 35,
+                  "startLine": 26
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-STORAGE] Make sure you encrypt files at these locations if necessary"
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-data-unencrypted-external"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "[MASVS-STORAGE] Make sure you encrypt files at these locations if necessary"
+              },
+              "help": {
+                "markdown": "[MASVS-STORAGE] Make sure you encrypt files at these locations if necessary",
+                "text": "[MASVS-STORAGE] Make sure you encrypt files at these locations if necessary"
+              },
+              "id": "rules.mastg-android-data-unencrypted-external",
+              "name": "rules.mastg-android-data-unencrypted-external",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external"
+              }
+            }
+          ],
+          "semanticVersion": "1.63.0"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
