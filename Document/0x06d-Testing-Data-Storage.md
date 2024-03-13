@@ -94,6 +94,49 @@ do {
   fatalError("Error opening realm: \(error)")
 }
 ```
+One critical security concern that warrants attention involves the potential interception or compromise of the encryption key when accessing the Realm database. This arises due to the necessity of supplying the decryption key at runtime, which introduces a window to capture or manipulate the key. The frida script below targets the RLMRealmConfiguration class within the Realm database framework, leveraging its functionality to extract the decryption key. By hooking into this class, the script retrieves the key directly from memory, converting it into a hexadecimal string which then can be used to decrypt the database. 
+```
+
+function nsdataToHex(data) {
+    var hexStr = '';
+    for (var i = 0; i < data.length(); i++) {
+        var byte = Memory.readU8(data.bytes().add(i));
+        hexStr += ('0' + (byte & 0xFF).toString(16)).slice(-2);
+    }
+    return hexStr;
+}
+
+
+function HookRealm() {
+    if (ObjC.available) {
+        console.log("ObjC is available. Attempting to intercept Realm classes...");
+        const RLMRealmConfiguration = ObjC.classes.RLMRealmConfiguration;
+        Interceptor.attach(ObjC.classes.RLMRealmConfiguration['- setEncryptionKey:'].implementation, {
+            onEnter: function(args) {
+                var encryptionKeyData = new ObjC.Object(args[2]);
+                console.log(`Encryption Key Length: ${encryptionKeyData.length()}`);
+                // Hexdump the encryption key
+                var encryptionKeyBytes = encryptionKeyData.bytes();
+                console.log(hexdump(encryptionKeyBytes, {
+                    offset: 0,
+                    length: encryptionKeyData.length(),
+                    header: true,
+                    ansi: true
+                }));
+
+                // Convert the encryption key bytes to a hex string
+                var encryptionKeyHex = nsdataToHex(encryptionKeyData);
+                console.log(`Encryption Key Hex: ${encryptionKeyHex}`);
+            },
+            onLeave: function(retval) {
+                console.log('Leaving RLMRealmConfiguration.- setEncryptionKey:');
+            }
+        });
+        
+    }
+       
+}
+```
 
 #### Couchbase Lite Databases
 
