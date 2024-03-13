@@ -95,8 +95,8 @@ do {
 }
 ```
 One critical security concern that warrants attention involves the potential interception or compromise of the encryption key when accessing the Realm database. This arises due to the necessity of supplying the decryption key at runtime, which introduces a window to capture or manipulate the key. The frida script below targets the RLMRealmConfiguration class within the Realm database framework, leveraging its functionality to extract the decryption key. By hooking into this class, the script retrieves the key directly from memory, converting it into a hexadecimal string which then can be used to decrypt the database. 
-```
 
+```javascript
 function nsdataToHex(data) {
     var hexStr = '';
     for (var i = 0; i < data.length(); i++) {
@@ -105,7 +105,6 @@ function nsdataToHex(data) {
     }
     return hexStr;
 }
-
 
 function HookRealm() {
     if (ObjC.available) {
