@@ -36,8 +36,3 @@ Sensitive data stored locally on the device should be encrypted, and any keys us
 - Avoid storing sensitive data locally if not required for application functionality helps reduce the scope for risks. For example keeping PII server-side, rendering it at time of use, and removing any cached data on logout.
 - Use the platform's hardware-backed keystore solution to store the key used for encryption.
 - Use platform features for encrypting data at rest to safely store files and preferences.
-
-Further documentation:
-
-- [Android Developers: Encrypt All Sensitive Data](https://developer.android.com/privacy-and-security/risks/backup-leaks#risk:-storing-sensitive-data-unencrypted)
-- [iOS Documentation: Encrypt App Files](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/encrypting_your_app_s_files)
