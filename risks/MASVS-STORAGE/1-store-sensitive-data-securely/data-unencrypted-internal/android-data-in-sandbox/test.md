@@ -23,8 +23,8 @@ prerequisites:
 
 ## Observation
 
-Files within the private data directory contain sensitive data.
+Data extracted from the app's private data directory which has been decompressed, decoded or deobfuscated where required.
 
 ## Evaluation
 
-The test case fails if you find sensitive data in the app's private data directory which has not been encrypted with strong cryptography. This includes plaintext data as well as encoding such as base64 or obfuscation such as xoring.
+Search the extracted data for items such as keys, passwords and any sensitive data inputted into the app. The test case fails if you find any of this sensitive data.
