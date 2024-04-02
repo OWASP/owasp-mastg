@@ -15,7 +15,7 @@ prerequisites:
 
 2. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Taking note of the data you input can help identify it later using tools to search for it.
 
-3. Take a copy of the app's private data directory for offline analysis. Using tar will preserve the filesystem structure and permissions.
+3. Take a copy of the app's private data directory for offline analysis. See: https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0008.
 
 4. Search the extracted data for items such as keys, passwords and any sensitive data inputted into the app.
 
