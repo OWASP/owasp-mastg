@@ -38,8 +38,9 @@ We thank CREST for their consulation regarding the OVS programme and its support
 
 The [National Institute of Standards and Technology (NIST)](https://www.nist.gov/about-nist) was founded in 1901 and is now part of the U.S. Department of Commerce. NIST is one of the nation's oldest physical science laboratories. Congress established the agency to remove a major challenge to U.S. industrial competitiveness at the time — a second-rate measurement infrastructure that lagged behind the capabilities of the United Kingdom, Germany and other economic rivals.
 
-- [NIST.SP.800-163 "Vetting the Security of Mobile Applications" Revision 1, 2019](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1 "National Institute of Standards and Technology")
+- [NIST.SP.800-163 "Vetting the Security of Mobile Applications" Revision 1, 2019](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1)
 - [NIST.SP.800-218 "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities" v1.1, 2022](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)
+- [NIST CSWP 33 "Product Development Cybersecurity Handbook: Concepts and Considerations for IoT Product Manufacturers" Initial Public Draft, 2024](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.33.ipd.pdf)
 
 ### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
