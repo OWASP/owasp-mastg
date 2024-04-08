@@ -3,7 +3,7 @@ title: Repackaging and Re-Signing
 platform: ios
 ---
 
-Of course, tampering an app invalidates the main executable's code signature, so this won't run on a non-jailbroken device. You'll need to replace the provisioning profile and sign both the main executable and the files you've made include (e.g. `FridaGadget.dylib`) with the certificate listed in the profile.
+Tampering an app invalidates the main executable's code signature, so this won't run on a non-jailbroken device. You'll need to replace the provisioning profile and sign both the main executable and the files you've made include (e.g. `FridaGadget.dylib`) with the certificate listed in the profile.
 
 ## Repackaging
 
@@ -36,7 +36,7 @@ $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --en
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
 
-Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](0x08a-Testing-Tools.md#ios-deploy):
+Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](../../tools/ios/MASTG-TOOL-0054.md "ios-deploy"):
 
 ```bash
 ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
