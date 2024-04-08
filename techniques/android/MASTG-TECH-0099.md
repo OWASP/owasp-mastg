@@ -1,9 +1,9 @@
 --- 
-title: Intercepting Non-proxy-aware HTTP Traffice
+title: Intercepting Non-proxy-aware HTTP Traffic
 platform: android 
 ---
 
-Flutter is an open-source UI software development kit (SDK) created by Google. It is used for building natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store.The application doesn’t take proxy configuration from the system and send the data directly to the server.Due to this,it is not possible to intercept the request using the Burp-suite or any MITM tools.
+Flutter is an open-source UI software development kit (SDK) created by Google. It is used for building natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store. The application doesn't take proxy configuration from the system and send the data directly to the server. Due to this, it is not possible to intercept the request using the BurpSuite or any MITM tools.
 
 ## Intercepting Traffic using re-flutter
 
