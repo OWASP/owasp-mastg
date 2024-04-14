@@ -1,10 +1,14 @@
 Title: Backup Unencrypted 
+
 Alias: backup-unencrypted 
-Platform: [android] 
+
+Platform: [android, IOS] 
+
 Profiles: [L2] 
+
 Mappings: 
-masvs: [MASVS-STORAGE-2]
-mastg: [MASTG-TEST-0009, MASTG-TEST-0058]
+- masvs: [MASVS-STORAGE-2]
+- mastg: [MASTG-TEST-0009, MASTG-TEST-0058]
 
 
 ## Overview
