@@ -23,7 +23,7 @@ rules:
       - pattern: |
           NSUbiquitousKeyValueStore.default.set($VALUE, forKey: $KEY)
       - pattern: |
-          let query = [kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly, ...]
+          let query = [kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly]
       - pattern: |
           var resourceValues = URLResourceValues()
           resourceValues.isExcludedFromBackup = true
