@@ -12,3 +12,8 @@ Addresses the risk of unencrypted backups due to the allowBackup attribute being
 
 ## cloud-backup-sensitive-data-rule.yaml
 Focuses on the potential inclusion of sensitive data in cloud backups. It advises ensuring that sensitive information is encrypted before being sent to the cloud, particularly when the allowBackup attribute is enabled.
+
+## insecure-device-conditions.yaml
+The rule has two exclusion patterns. It will trigger if either:
+The clientSideEncryption flag is missing, which is critical for ensuring that backups are encrypted at the client side.
+The deviceToDeviceTransfer flag is absent, which is important for ensuring secure transfers between devices that support this feature.
