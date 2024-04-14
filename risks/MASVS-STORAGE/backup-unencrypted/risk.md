@@ -3,9 +3,8 @@ Alias: backup-unencrypted
 Platform: [android] 
 Profiles: [L2] 
 Mappings: 
-masvs-v1: [MSTG-STORAGE-8] 
-masvs-v2: [MASVS-STORAGE-2, MASVS-PRIVACY-1] 
-mastg-v1: [MASTG-TEST-0058, MASTG-TEST-0009]
+masvs: [MASVS-STORAGE-2]
+mastg: [MASTG-TEST-0009, MASTG-TEST-0058]
 
 
 ## Overview
