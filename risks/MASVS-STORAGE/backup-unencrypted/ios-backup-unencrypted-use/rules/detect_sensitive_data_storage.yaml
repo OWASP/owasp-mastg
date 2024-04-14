@@ -18,6 +18,20 @@ rules:
           CoreDataStack.persistentContainer.persistentStoreDescriptions.first?.setValue(false, forKey: "NSPersistentStoreFileProtectionKey")
       - pattern: |
           FileManager.default.setAttributes([$ATTR: FileAttributeType.protectionNone], ofItemAtPath: $PATH)
+      - pattern: |
+          UserDefaults.standard.synchronize()
+      - pattern: |
+          NSUbiquitousKeyValueStore.default.set($VALUE, forKey: $KEY)
+      - pattern: |
+          let query = [kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly, ...]
+      - pattern: |
+          var resourceValues = URLResourceValues()
+          resourceValues.isExcludedFromBackup = true
+          try $URL.setResourceValues(resourceValues)
+      - pattern: |
+          SecItemAdd([kSecClass: kSecClassGenericPassword, kSecAttrAccessControl: ..., kSecUseAuthenticationUI: kSecUseAuthenticationUIAllow], &error)
+      - pattern: |
+          persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: $URL, options: [NSPersistentStoreFileProtectionKey : FileProtectionType.complete])
     metadata:
       category: security
       technology: [ios]
@@ -26,3 +40,6 @@ rules:
         - "https://developer.apple.com/documentation/foundation/nskeyedarchiver"
         - "https://developer.apple.com/documentation/coredata/protecting_data_using_encryption"
         - "https://developer.apple.com/documentation/foundation/filemanager/1412643-setattributes"
+        - "https://developer.apple.com/documentation/foundation/nsuserdefaults"
+        - "https://developer.apple.com/documentation/foundation/nskeyedunarchiver"
+        - "https://developer.apple.com/documentation/security/1399291-secitemadd"
