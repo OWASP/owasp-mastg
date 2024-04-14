@@ -1,0 +1,7 @@
+rules:
+- id: android-sharedpreferences-sensitive-data
+  languages: [java, kotlin]
+  message: "SharedPreferences might contain sensitive data. Ensure any stored information is not sensitive or is encrypted."
+  severity: WARNING
+  pattern: |
+    $PREFS.edit().putString($KEY, $VALUE);

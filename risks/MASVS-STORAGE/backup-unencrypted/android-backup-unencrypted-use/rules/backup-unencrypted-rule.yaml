@@ -1,0 +1,6 @@
+rules:
+  - id: android-backup-unencrypted-use
+    severity: ERROR
+    languages: [xml]
+    message: "The allowBackup attribute is set to true, allowing for potential unencrypted backups. Consider setting allowBackup to false or implementing encryption."
+    pattern: <application android:allowBackup="true" ...>

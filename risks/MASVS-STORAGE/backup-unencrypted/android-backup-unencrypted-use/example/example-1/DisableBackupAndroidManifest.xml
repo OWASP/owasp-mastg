@@ -1,0 +1,4 @@
+<!-- SUMMARY: Demonstrates an AndroidManifest configuration that does not disable backups, leading to unencrypted backup use. -->
+<application android:allowBackup="true" ...>
+  ...
+</application>

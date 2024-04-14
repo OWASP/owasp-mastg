@@ -1,0 +1,15 @@
+rules:
+- id: android-missing-encryption-api-usage
+  languages: [java, kotlin]
+  message: "Potential unencrypted sensitive data handling detected. Review to ensure that sensitive data is properly encrypted."
+  severity: WARNING
+  patterns:
+    - pattern-not: $ENCRYPTOR.encrypt($DATA, ...)
+    - pattern-not: $ENCRYPTOR.decrypt($DATA, ...)
+    - pattern: $PREFS.edit().putString($KEY, $VALUE)
+    - pattern: $PREFS.getString($KEY, $DEFAULT_VALUE)
+  metadata:
+    category: security
+    technology: [android]
+    references:
+      - https://developer.android.com/guide/topics/security/cryptography
