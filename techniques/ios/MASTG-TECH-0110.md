@@ -1,11 +1,11 @@
---- 
+---
 title: Intercepting Flutter HTTP Traffic
-platform: android 
+platform: ios
 ---
 
 Flutter is an open-source UI software development kit (SDK) created by Google. It is used for building natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store. The application doesn't take proxy configuration from the system and send the data directly to the server. Due to this, it is not possible to intercept the request using the BurpSuite or any MITM tools.
 
-## Intercepting Traffic using re-flutter
+## Intercepting Traffic using re-fultter
 
 1. Patch the app to enable traffic interception.
 
@@ -24,15 +24,9 @@ Example: (192.168.1.154) etc.
 Please enter your BurpSuite IP: 192.168.29.216
 ```
 
-This will create a **release.RE.apk** file in the output folder.
+This will create a **release.RE.ipa** file in the output folder.
 
-2. Sign the patched **release.RE.apk** file (e.g. using the [uber-apk-signer](https://github.com/patrickfav/uber-apk-signer)).
-
-```
-   $ java -jar uber-apk-signer.jar -a release.RE.apk --out demo-signed
-```
-
-This will create a **release.RE-aligned-debugSigned.apk** file in the output folder.
+2. [Sign](../../techniques/ios/MASTG-TECH-0092.md) the patched **release.RE.ipa** with the Apple certificates. This will create a singed ".ipa" file in the output folder.
 
 3. Install the signed patched app on the mobile device.
 
