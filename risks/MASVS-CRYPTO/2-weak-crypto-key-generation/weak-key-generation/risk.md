@@ -39,5 +39,5 @@ The use of insecure algorithms (e.g. using the 1024-bit RSA key, 128-bit AES key
 ## Mitigations
 
 - Use keys with sufficient length for protection against brute-force attack.
-- Key Length should meet industry standards and provides long-term protection.
+- Key Length should meet [industry standards](https://www.keylength.com/en/4/) and provides long-term protection.
 - Algorithms and cryptographic schemes used in third-party libraries must be verified to ensure that they are not deprecated and used properly.
