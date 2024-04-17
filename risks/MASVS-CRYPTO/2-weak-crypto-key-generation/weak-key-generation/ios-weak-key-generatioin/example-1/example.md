@@ -27,3 +27,5 @@ The rule has identified five instances in the code file where an insecure AES-12
 
 Review each of the reported instances.
 
+- Line 5 using `kCCKeySizeAES128` is a constant representing the size of the an `AES-128` key in bytes.
+- Line 10 using `The SymmetricKey(size: .bits128)` initializer creates a symmetric key with a size of 128 bits (16 bytes), suitable for use with AES-128 encryption

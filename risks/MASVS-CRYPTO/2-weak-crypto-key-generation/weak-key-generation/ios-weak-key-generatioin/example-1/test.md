@@ -20,4 +20,4 @@ The output should contain a **list of locations where insecure algorithm are use
 
 ## Evaluation
 
-Review your code to make sure you don't use insecure alogrithms.
+The test case fails if you can find the use of AES-128 bit algorithm within the source code.
