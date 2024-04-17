@@ -5,7 +5,7 @@ platform: ios
 
 Flutter is an open-source UI software development kit (SDK) created by Google. It is used for building natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store. The application doesn't take proxy configuration from the system and send the data directly to the server. Due to this, it is not possible to intercept the request using the BurpSuite or any MITM tools.
 
-There are alternative methods for intercepting traffic, such as creating a WIFI hotspot and utilizing the openvpn approach. However, these techniques require some configuration. By employing the re-flutter command-line tool, the application can be patched effortlessly without the need for any setup.
+There are alternative methods for intercepting traffic, such as creating a[WIFI hotspot and utilizing the openvpn approach](https://blog.nviso.eu/2020/06/12/intercepting-flutter-traffic-on-ios/). However, these techniques require some configuration. By employing the re-flutter command-line tool, the application can be patched effortlessly without the need for any setup.
 
 
 ## Intercepting Traffic using re-fultter
