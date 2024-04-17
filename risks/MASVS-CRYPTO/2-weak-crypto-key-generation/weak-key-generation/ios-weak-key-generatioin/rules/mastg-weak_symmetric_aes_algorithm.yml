@@ -1,0 +1,35 @@
+rules:
+  - id: weak_symmetric_aes
+    severity: WARNING
+    languages: 
+      - swift
+    metadata:
+      summary: This rule looks for the ommon patterns including classes and methods that represent AES-128 bit alogrithm.
+      references:
+        - https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#algorithms
+        - https://mas.owasp.org/MASTG/General/0x04g-Testing-Cryptography/#insufficient-key-length
+        - https://www.keylength.com/en/4/
+    message: >-
+      [MASVS-CRYPTO-1] This iOS mobile application seems using a symmetric algorithm, `AES`, configured weakly, which could expose to various kind of vulnerabilities.
+      AES keys should be at least 256 bits based on NIST recommendation.
+    pattern-either:
+      - patterns:
+        - pattern-either:
+          - pattern: kCCKeySizeAES128
+      - patterns:
+        - pattern-either:
+          - pattern: |
+              $KEY = SymmetricKey(size: $KEY_SIZE)
+              ...
+              $ENCRYPTED = try AES.GCM.seal($DATA, using: $KEY, ...)
+          - pattern: |
+              $KEY = SymmetricKey(size: $KEY_SIZE)
+              ...
+              $DATA = try AES.GCM.open($ENCRYPTED, using: $KEY)
+        - focus-metavariable: $KEY
+        - metavariable-pattern:
+            metavariable: $KEY_SIZE
+            patterns:
+            - pattern-either:
+              - pattern: .bits128
+
