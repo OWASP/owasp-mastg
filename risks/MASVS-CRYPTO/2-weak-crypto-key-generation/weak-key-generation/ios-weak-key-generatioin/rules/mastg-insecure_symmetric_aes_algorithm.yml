@@ -29,4 +29,4 @@ rules:
             patterns:
             - pattern-either:
               - pattern: .bits128
-
+            - pattern-not: .bits256
