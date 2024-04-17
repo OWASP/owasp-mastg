@@ -4,7 +4,7 @@
 │ 2 Code Findings │
 └─────────────────┘
                                                      
-    weak_symmetric_aes_alogrithm.swift
+    insecure_symmetric_aes_alogrithm.swift
     ❯❱ rules.weak_symmetric_aes
           This iOS mobile application seems using a symmetric algorithm, `AES`, configured weakly, which could
           expose to various kind of vulnerabilities. AES keys should be at least 256 bits based on NIST       

@@ -7,7 +7,7 @@ type: [static]
 
 ## Overview
 
-The iOS app seems to be using a symmetric algorithm called `AES` with a vulnerable configuration, which puts it at risk of various vulnerabilities and potential security breaches.
+The iOS app seems to be using a symmetric algorithm called `AES-128` with a vulnerable key configuration, which puts it at risk of various vulnerabilities and potential security breaches.
 
 
 ## Steps

@@ -16,10 +16,10 @@ The key length, also known as the key size, depends on the number of bits in whi
 
 ## Impact
 
-- **Risk of Brute-Force Attacks** :
+- **Risk of Brute-Force Attacks**:
 If the key length is short, there are only a few combinations to check. This makes it more likely for an attacker to crack encryption using brute force technique.
 
-- **Loss of  Confidentiality** : 
+- **Loss of  Confidentiality**:
 The purpose of encryption is to ensure the confidentiality of the data ,only authorized users can access the data.Attacker can gain access to encrypted information with weak keys and can easily read and exploit it.
  
 - **Loss of Integrity**:

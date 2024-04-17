@@ -7,13 +7,13 @@ code: [swift]
 
 ### Sample
 
-{{ weak_symmetric_aes_alogrithm.swift }}
+{{ insecure_symmetric_aes_alogrithm.swift }}
 
 ### Steps
 
 Let's run our semgrep rule against the sample code.
 
-{{ ../rules/mastg-weak_symmetric_aes_algorithm.yml }}
+{{ ../rules/mastg-insecure_symmetric_aes_algorithm.yml }}
 
 {{ run.sh }}
 

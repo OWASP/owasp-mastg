@@ -1,1 +1,1 @@
-semgrep -c ../rules/mastg-weak_symmetric_aes_algorithm.yml ./weak_symmetric_aes_alogrithm.swift --text -o output.txt
+semgrep -c ../rules/mastg-insecure_symmetric_aes_algorithm.yml ./insecure_symmetric_aes_alogrithm.swift --text -o output.txt
