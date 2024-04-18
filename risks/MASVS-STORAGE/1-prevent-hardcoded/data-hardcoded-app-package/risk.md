@@ -22,10 +22,11 @@ Hardcoding sensitive information in the app can lead to a variety of security is
 
 ## Modes of Introduction
 
-Sensitive data can be hardcoded at various stages of app development, including:
-- During initial development, as a shortcut for testing.
-- In the configuration files or source code for convenience.
-- Within third-party libraries or dependencies that may not follow best security practices.
+Sensitive data can be hardcoded in several areas:
+
+- **App Source Code**: directly embedded in the app source code.
+- **App Assets**: included in files that are destined for the final deliverable app package (typically APK/IPA), such as configuration files, manifest files, and resource files.
+- **Libraries**: configuration files or source code for third-party, first-party libraries or any other app dependencies.
 
 ## Mitigations
 
