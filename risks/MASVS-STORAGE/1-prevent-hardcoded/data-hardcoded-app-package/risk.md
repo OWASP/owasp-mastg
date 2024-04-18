@@ -35,5 +35,7 @@ Sensitive data can be hardcoded in several areas:
 To mitigate the risks associated with hardcoded sensitive data, developers should:
 - Use secure storage solutions provided by the platform, such as Android Keystore or iOS Keychain, to store sensitive information.
 - Implement proper key management practices, including key rotation and using environment-specific keys.
-- Avoid storing sensitive data within the app package or source code, and instead retrieve it securely from server-side services.
+- Avoid storing sensitive data within the app package or source code, and instead securely retrieve it from server-side services that provide secure storage, access control, and auditing for sensitive data. For example, AWS Secrets Manager, Azure Key Vault, or Google Cloud Secret Manager are some popular managed secrets storage solutions. The app can securely retrieve the necessary secrets at runtime through secure, authenticated API calls.
+- Where possible, generate cryptographic keys dynamically on the device, rather than using predefined keys, and ensure that they don't leave the platform-provided keystore. This approach reduces the risk associated with key transmission and storage.
+- If data must be hardcoded, such as some API keys, be sure to configure them with the minimum required permissions to reduce the impact in case of exposure. Many services allow you to create keys with restricted access, which limits the operations that can be performed.
 - Regularly audit the codebase and dependencies for hardcoded sensitive data.
