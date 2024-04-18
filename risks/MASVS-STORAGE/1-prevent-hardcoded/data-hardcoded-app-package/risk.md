@@ -11,7 +11,7 @@ refs:
 
 ## Overview
 
-Sensitive data, including cryptographic keys and authentication material, hardcoded in the app package, source code, or compiled binaries, poses significant security risks. This data can be easily extracted by attackers, compromising the security of the application and its users.
+Sensitive data, including cryptographic keys and authentication material, hardcoded in the app package, source code, or compiled binaries, poses significant security risks, as attackers can easily extract this data through reverse engineering.
 
 ## Impact
 
