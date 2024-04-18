@@ -16,9 +16,11 @@ Sensitive data, including cryptographic keys and authentication material, hardco
 ## Impact
 
 Hardcoding sensitive information in the app can lead to a variety of security issues, including but not limited to:
-- Unauthorized access to user data or services.
-- Bypassing of authentication mechanisms.
-- Compromise of cryptographic keys, leading to decryption of sensitive data.
+
+- **Unauthorized Data Access**: The use of hardcoded credentials can lead to attackers impersonating legitimate users. This breach directly threatens user privacy by allowing unauthorized access to personal areas and accounts within the app, violating user trust.
+- **Bypass Protection Mechanism**: Hardcoded data can facilitate bypassing app protection mechanisms. Attackers might exploit this to access restricted content, cheat in app functionalities, or unlock features intended for purchase, impacting both revenue and user experience.
+- **Cryptographic Key Compromise**: Hardcoded cryptographic keys can result in the decryption of sensitive data intended to be securely transmitted or stored. This not only violates the confidentiality of the data, but also potentially exposes it to manipulation or theft.
+- **Compromise of System Integrity and Business Operations**: Extracting hardcoded data, such as API keys, from the app can give attackers unauthorized access to sensitive resources and services. This directly impacts developers and enterprises by compromising app integrity, privacy, and service continuity - potentially leading to disruptions such as Denial of Service (DoS). Such breaches can significantly erode user confidence and have a detrimental effect on business reputation and operations.
 
 ## Modes of Introduction
 
