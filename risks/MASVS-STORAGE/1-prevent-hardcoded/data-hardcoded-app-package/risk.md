@@ -3,9 +3,10 @@ alias: data-hardcoded-app-package
 platform: [android, ios]
 profiles: [L1, L2]
 mappings:
-  - android: 'https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets'
   - masvs-v2: [MASVS-STORAGE-1]
-
+  - mastg-v1: []
+refs:
+  - https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
 ---
 
 ## Overview
