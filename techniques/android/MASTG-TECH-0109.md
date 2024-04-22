@@ -6,6 +6,9 @@ platform: android
 Flutter is an open-source UI software development kit (SDK) created by Google. It is used for building natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store. The application doesn't take proxy configuration from the system and send the data directly to the server. Due to this, it is not possible to intercept the request using the BurpSuite or any MITM tools.
 
 
+
+**How does re-flutter method differs from other techniques ?**
+
 There are alternative methods for intercepting traffic, such as [sending traffic to the proxy through ProxyDroid/iptables](https://blog.nviso.eu/2019/08/13/intercepting-traffic-from-android-flutter-applications/). However, these techniques require some configuration. By employing the re-flutter command-line tool, the application can be patched effortlessly without the need for any setup.
 
 ## Intercepting Traffic using re-flutter
