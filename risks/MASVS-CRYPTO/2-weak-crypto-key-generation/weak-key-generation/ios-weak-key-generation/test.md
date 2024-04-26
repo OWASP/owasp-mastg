@@ -7,8 +7,7 @@ type: [static]
 
 ## Overview
 
-The iOS app seems to be using a symmetric algorithm called `AES-128` with a vulnerable key configuration, which puts it at risk of various vulnerabilities and potential security breaches.
-
+The application appears to utilize a symmetric algorithm known as `AES-128` with a weak key configuration, making it susceptible to multiple vulnerabilities and potential security breaches.
 
 ## Steps
 
@@ -20,4 +19,4 @@ The output should contain a **list of locations where insecure algorithm are use
 
 ## Evaluation
 
-The test case fails if you can find the use of AES-128 bit algorithm within the source code.
+The test case fails if you can find the use of AES-256 bit algorithm within the source code.
