@@ -11,20 +11,19 @@ mappings:
 
 ## Overview
 
-The key length, also known as the key size, depends on the number of bits in which the message is stored. Most secure encryption algorithms are vulnerable to attacks, when that algorithm uses insufficient key sizes. In general, longer keys mean more complex encryption.
+The key size, also known as the key length, is dependent on the number of bits in which the message is stored. Encryption algorithms that utilize insufficient key sizes are vulnerable to attacks, while longer keys typically entail more intricate encryption.
 
 
 ## Impact
 
 - **Risk of Brute-Force Attacks**:
-If the key length is short, there are only a few combinations to check. This makes it more likely for an attacker to crack encryption using brute force technique.
+With a shorter key length, the number of possible combinations decreases, increasing the likelihood of an attacker successfully cracking the encryption through brute force method.
 
 - **Loss of  Confidentiality**:
-The purpose of encryption is to ensure the confidentiality of the data ,only authorized users can access the data.Attacker can gain access to encrypted information with weak keys and can easily read and exploit it.
+Encryption is utilized to safeguard the confidentiality of data, allowing only authorized users to access it. Weak encryption keys can enable attackers to obtain encrypted information and exploit it effortlessly.
  
 - **Loss of Integrity**:
-Weak cryptographic key generation can compromise data integrity by making it
-easier for an attacker to tamper or alteration of data.
+Weak cryptographic key generation can undermine the integrity of data, as it creates a vulnerability that attackers can exploit to tamper with or alter the information.
 
 
 ## Modes of Introduction
@@ -38,6 +37,6 @@ The use of insecure algorithms (e.g. using the 1024-bit RSA key, 128-bit AES key
 
 ## Mitigations
 
-- Use keys with sufficient length for protection against brute-force attack.
+- Utilize keys that are long enough to safeguard against brute-force attacks.
 - Key Length should meet [industry standards](https://www.keylength.com/en/4/) and provides long-term protection.
 - Algorithms and cryptographic schemes used in third-party libraries must be verified to ensure that they are not deprecated and used properly.
