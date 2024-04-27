@@ -10,7 +10,7 @@ Flutter is an open-source UI software development kit (SDK) created by Google. I
 
 There are alternative methods for intercepting traffic, such as creating a [WIFI hotspot and utilizing the openvpn approach](https://blog.nviso.eu/2020/06/12/intercepting-flutter-traffic-on-ios/). However, these techniques require some configuration. By employing the re-flutter command-line tool, the application can be patched effortlessly without the need for any setup.
 
-## Intercepting Traffic using re-fultter
+## Intercepting Traffic using re-flutter
 
 1. Patch the app to enable traffic interception.
 
