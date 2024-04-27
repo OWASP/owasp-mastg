@@ -31,7 +31,7 @@ Please enter your BurpSuite IP: 192.168.29.216
 
 This will create a **release.RE.ipa** file in the output folder.
 
-2. [Sign](../../techniques/ios/MASTG-TECH-0092.md) the patched **release.RE.ipa** with the Apple certificates. This will create a singed ".ipa" file in the output folder.
+2. [Sign](../../techniques/ios/MASTG-TECH-0092.md) the patched **release.RE.ipa** with the Apple certificates. This will create a signed ".ipa" file in the output folder.
 
 3. Install the signed patched app on the mobile device.
 
