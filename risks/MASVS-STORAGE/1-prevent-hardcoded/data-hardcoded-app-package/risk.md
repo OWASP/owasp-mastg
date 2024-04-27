@@ -1,3 +1,4 @@
+---
 title: Sensitive Data Hardcoded in the App Package
 alias: data-hardcoded-app-package
 platform: [android, ios]
