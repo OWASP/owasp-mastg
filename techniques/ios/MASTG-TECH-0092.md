@@ -36,7 +36,7 @@ $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --en
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
 
-Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](../../tools/ios/MASTG-TOOL-0054.md "ios-deploy"):
+Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](../../../tools/ios/MASTG-TOOL-0054.md "ios-deploy"):
 
 ```bash
 ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
