@@ -36,7 +36,7 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 </plist>
 ```
 
-Apply the entitlement with [codesign](../../../tools/ios/MASTG-TOOL-0101.md "codesign"):
+Apply the entitlement with [codesign](../../tools/ios/MASTG-TOOL-0101.md "codesign"):
 
 ```bash
 codesign -s - --entitlements entitlements.plist -f debugserver
