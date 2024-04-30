@@ -1,0 +1,20 @@
+                   
+                   
+┌─────────────────┐
+│ 3 Code Findings │
+└─────────────────┘
+                   
+    key-length.java
+    ❯❱ [1mrules.weak_key_size[0m
+          Cryptographic implementations with insufficient key length are being used.
+                                                                                    
+            1┆ KeyPairGenerator keyPairGen1 = KeyPairGenerator.getInstance("RSA");
+            2┆ keyPairGen1.initialize(1024); // BAD: Key size is less than 2048
+            ⋮┆----------------------------------------
+            4┆ KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("EC");
+            5┆ ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // BAD: Key size is less
+               than 256                                                                                 
+            6┆ keyPairGen4.initialize(ecSpec);
+            ⋮┆----------------------------------------
+            8┆ KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+            9┆ keyGen.init(64); // BAD: Key size is less than 256

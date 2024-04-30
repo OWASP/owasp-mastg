@@ -1,0 +1,135 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "toolExecutionNotifications": []
+        }
+      ],
+      "results": [
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "8e735b45bd97686014465389dda7928cb669e2ce1b8ff2154f193e35fb5dc575baadb7258398087a8e91582ecf645cb91fdde94ead026bf55d024250aea55744_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "key-length.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 34,
+                  "endLine": 2,
+                  "snippet": {
+                    "text": "    KeyPairGenerator keyPairGen1 = KeyPairGenerator.getInstance(\"RSA\");\n    keyPairGen1.initialize(1024); // BAD: Key size is less than 2048"
+                  },
+                  "startColumn": 5,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Cryptographic implementations with insufficient key length are being used."
+          },
+          "properties": {},
+          "ruleId": "rules.weak_key_size"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "6711abae47b0bcde552f1e0d6bfaf12c4ffeac213bd1723ff246e6c3fab6ca2923b622910249a424fe2e693d8c208e69c85373087a0f205eae542ffa99020ed3_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "key-length.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 36,
+                  "endLine": 6,
+                  "snippet": {
+                    "text": "    KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance(\"EC\");\n    ECGenParameterSpec ecSpec = new ECGenParameterSpec(\"secp112r1\"); // BAD: Key size is less than 256\n    keyPairGen4.initialize(ecSpec);"
+                  },
+                  "startColumn": 5,
+                  "startLine": 4
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Cryptographic implementations with insufficient key length are being used."
+          },
+          "properties": {},
+          "ruleId": "rules.weak_key_size"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "337aaec3bfba9ed343671abb3dcfd235b6e585045e3aa8c1ae6c0e0f9023589086a36a0b5ba99191a94e79092f192d803c4b10fbb184d0c6934de1061e14fc41_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "key-length.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 21,
+                  "endLine": 9,
+                  "snippet": {
+                    "text": "    KeyGenerator keyGen = KeyGenerator.getInstance(\"AES\");\n    keyGen.init(64); // BAD: Key size is less than 256"
+                  },
+                  "startColumn": 5,
+                  "startLine": 8
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Cryptographic implementations with insufficient key length are being used."
+          },
+          "properties": {},
+          "ruleId": "rules.weak_key_size"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "Cryptographic implementations with insufficient key length are being used."
+              },
+              "help": {
+                "markdown": "Cryptographic implementations with insufficient key length are being used.",
+                "text": "Cryptographic implementations with insufficient key length are being used."
+              },
+              "id": "rules.weak_key_size",
+              "name": "rules.weak_key_size",
+              "properties": {
+                "precision": "very-high",
+                "tags": [
+                  "cwe-326",
+                  "security"
+                ]
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.weak_key_size"
+              }
+            }
+          ],
+          "semanticVersion": "1.66.0"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
