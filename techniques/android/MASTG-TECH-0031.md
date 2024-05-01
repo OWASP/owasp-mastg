@@ -13,7 +13,7 @@ Dalvik and ART support the JDWP, a protocol for communication between the debugg
 
 A JDWP debugger allows you to step through Java code, set breakpoints on Java methods, and inspect and modify local and instance variables. You'll use a JDWP debugger most of the time you debug "normal" Android apps (i.e., apps that don't make many calls to native libraries).
 
-In the following section, we'll show how to solve the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) with jdb alone. Note that this is not an _efficient_ way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
+In the following section, we'll show how to solve the [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md) with jdb alone. Note that this is not an _efficient_ way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
 
 ## Debugging with jdb
 
@@ -44,7 +44,7 @@ You're now attached to the suspended process and ready to go ahead with the jdb 
 - clear _method_: remove a method breakpoint
 - set _lvalue_ = _expr_:  assign new value to field/variable/array element
 
-Let's revisit the decompiled code from the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
+Let's revisit the decompiled code from the [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md) and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
 
 Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.MainActivity.a` displays the "This in unacceptable..." message box. This method creates an `AlertDialog` and sets a listener class for the `onClick` event. This class (named `b`) has a callback method will terminates the app once the user taps the **OK** button. To prevent the user from simply canceling the dialog, the `setCancelable` method is called.
 
@@ -128,7 +128,7 @@ This is the plaintext string you're looking for!
 
 Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able to single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect, it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
 
-To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" section. On the device, choose the app as **debug app** on the "Developer options" ([UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
+To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" section. On the device, choose the app as **debug app** on the "Developer options" ([UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md) in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
 
 Once you tap the app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 

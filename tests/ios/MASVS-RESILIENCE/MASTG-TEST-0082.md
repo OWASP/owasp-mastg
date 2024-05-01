@@ -15,7 +15,7 @@ masvs_v1_levels:
 
 Inspect the app entitlements and check the value of `get-task-allow` key. If it is set to `true`, the app is debuggable.
 
-Using [codesign](../../../../tools/ios/MASTG-TOOL-0101.md "codesign"):
+Using [codesign](../../../tools/ios/MASTG-TOOL-0101.md "codesign"):
 
 ```bash
 $ codesign -d --entitlements - iGoat-Swift.app

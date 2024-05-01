@@ -17,7 +17,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 ## Grapefruit
 
-After starting [Grapefruit](../../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") you can select the app that is in scope for testing. There are various functions available, of which one is called "Finder". When selecting it, you will get a listing of the directories of the app sandbox.
+After starting [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") you can select the app that is in scope for testing. There are various functions available, of which one is called "Finder". When selecting it, you will get a listing of the directories of the app sandbox.
 
 <img src="Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
 
