@@ -94,7 +94,10 @@ do {
   fatalError("Error opening realm: \(error)")
 }
 ```
-One security concern that warrants attention involves the potential interception or compromise of the encryption key when accessing the Realm database. This arises due to the necessity of supplying the decryption key at runtime, which introduces a window to capture the decryption key. The frida script demonstrated below targets the RLMRealmConfiguration class within the Realm database framework, leveraging its functionality to extract the decryption key. By hooking into this class, the script retrieves the key directly from memory, converting it into a hexadecimal string which then can be used to decrypt the database. 
+
+Access to the data depends on the encryption: unencrypted databases are easily accessible, while encrypted ones require investigation into how the key is managed - whether it's hardcoded or stored unencrypted in an insecure location such as shared preferences, or securely in the platform's KeyStore (which is best practice).
+	
+However, if an attacker has sufficient access to the device (e.g. jailbroken access) or can repackage the app, they can still retrieve encryption keys at runtime using tools like Frida. The following Frida script demonstrates how to intercept the Realm encryption key and access the contents of the encrypted database.
 
 ```javascript
 function nsdataToHex(data) {
