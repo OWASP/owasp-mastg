@@ -96,7 +96,6 @@ do {
 ```
 
 Access to the data depends on the encryption: unencrypted databases are easily accessible, while encrypted ones require investigation into how the key is managed - whether it's hardcoded or stored unencrypted in an insecure location such as shared preferences, or securely in the platform's KeyStore (which is best practice).
-	
 However, if an attacker has sufficient access to the device (e.g. jailbroken access) or can repackage the app, they can still retrieve encryption keys at runtime using tools like Frida. The following Frida script demonstrates how to intercept the Realm encryption key and access the contents of the encrypted database.
 
 ```javascript
