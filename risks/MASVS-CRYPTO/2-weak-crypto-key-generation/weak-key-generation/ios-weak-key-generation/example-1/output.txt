@@ -3,13 +3,13 @@
 ┌─────────────────┐
 │ 2 Code Findings │
 └─────────────────┘
-                                                         
-    insecure_symmetric_aes_alogrithm.swift
-    ❯❱ rules.weak_symmetric_aes
-          [MASVS-CRYPTO-1] This application seems using a symmetric algorithm, `AES`, configured weakly, which
-          could expose to various kind of vulnerabilities. AES keys should be at least 256 bits based on NIST 
-          recommendation.                                                                                     
-                                                                                                              
+                                            
+    weak-key-generation.swift
+    ❯❱ rules.weak_crypto_key_generation
+          The application appears to utilize a symmetric algorithm known as `AES-128` with a weak key      
+          configuration, making it susceptible to multiple vulnerabilities and potential security breaches.
+          AES keys should be at least 256 bits based on NIST recommendation.                               
+                                                                                                           
             4┆ let key_size = kCCKeySizeAES128
             ⋮┆----------------------------------------
             8┆ let key_weak = SymmetricKey(size: .bits128)
