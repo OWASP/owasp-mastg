@@ -68,13 +68,13 @@ In some scenarios, connecting to the device over the network may not be viable. 
 
 First, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415
 
-```shell
+```
 adb forward tcp:31415 tcp:31415
 ```
 
 You can now connect to the drozer Agent by connecting to `localhost` (or simply not specifying the target IP)
 
-```shell
+```
 drozer console connect
 ```
 
