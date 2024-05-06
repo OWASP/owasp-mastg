@@ -13,7 +13,7 @@ drozer helps to reduce the time taken for Android security assessments by automa
 
 drozer runs both in Android emulators and on real devices. It does not require USB debugging or other development features to be enabled; so you can perform assessments on devices in their production state to get better results.
 
-drozer can be easily extended with additional modules to find, test and exploit other weaknesses; this, combined with scripting possibilities, helps you to automate regression testing for security issues.
+You can easily extend drozer with additional modules to find, test and exploit other weaknesses; this, combined with scripting possibilities, helps to automate regression testing for security issues.
 
 ## Installing drozer
 
@@ -27,12 +27,12 @@ pipx install ./drozer-*.whl
 ### Using Docker
 To help with making sure drozer can be run on all systems, a Docker container was created that has a working build of drozer.
 
-- The Docker container and basic setup instructions can be found [here](https://hub.docker.com/r/withsecurelabs/drozer).
+- You can find the Docker container and basic setup instructions [here](https://hub.docker.com/r/withsecurelabs/drozer).
 - Instructions on building your own Docker container can be found [here](https://github.com/WithSecureLabs/drozer/tree/develop/docker).
 
 ### Installing the Agent
 
-drozer's "Agent" application is required for interaction with the device. It can be installed using Android Debug Bridge (`adb`).
+drozer's "Agent" application is required for interaction with the device. You can install it using the Android Debug Bridge (`adb`).
 
 Download the latest drozer Agent [here](https://github.com/WithSecureLabs/drozer-agent/releases/latest).
 
@@ -64,7 +64,7 @@ docker run --net host -it withsecurelabs/drozer console connect --server <phone'
 
 #### Option 2: Connect to the phone via USB
 
-In some scenarios, connecting to the device over the network may not be viable. In these scenarios, we can leverage `adb`'s port-forwarding capabilities to establish a connection over USB.
+In some scenarios, connecting to the device over the network may not be viable. In these scenarios, you can leverage `adb`'s port-forwarding capabilities to establish a connection over USB.
 
 First, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415
 
@@ -107,7 +107,7 @@ The prompt confirms the Android ID of the device you have connected to, along wi
 
 ### Example usage
 
-Once set up, drozer can be used to perform reconnaissance and exploitation of Android applications from the perspective of a malicious app on the device. [The drozer User Manual](https://labs.withsecure.com/tools/drozer#3 "drozer User Manual") introduces an intentionally vulnerable application - [sieve](https://github.com/WithSecureLabs/sieve "GitHub repo - sieve") - together with step-by-step exploitation instructions.
+Once set up, you can use drozer to perform reconnaissance and exploitation of Android applications from the perspective of a malicious app on the device. [The drozer User Manual](https://labs.withsecure.com/tools/drozer#3 "drozer User Manual") introduces an intentionally vulnerable application - [sieve](https://github.com/WithSecureLabs/sieve "GitHub repo - sieve") - together with step-by-step exploitation instructions.
 
 Some common drozer commands include:
 
@@ -123,19 +123,19 @@ run app.package.attacksurface <package>
 ```
 This command inspects the target app's manifest and provides a report on any exported components of the application, and verifies whether the application is debuggable.
 
-Once the attack surface has been identified, more specific information about each component class can be obtained. For example, to list  Activities, the following command can be used:
+Once the attack surface has been identified, you can obtain more specific information about each component class. For example, to list  Activities, you can use the following command:
 ```
 run app.activity.info -a <package>
 ```
 This lists the names of all exported Activities, together with the permissions required to interact with them.
 
 #### Starting an Activity
-An exported activity could be started by running the following command:
+In order to launch an exported activity, use the following command:
 ```
 run app.activity.start --component <package> <component name>
 ```
 
-When calling app.activity.start, it is possible to build a much more complex intent. As with all drozer modules, you can request more usage information:
+When calling `app.activity.start`, you can build a much more complex intent. As with all drozer modules, you can request more usage information:
 
 ```
 dz> help app.activity.start
@@ -143,7 +143,7 @@ Attempting to run shell module
 usage: run app.activity.start [-h] [--action ACTION] [--category CATEGORY [CATEGORY ...]] [--component PACKAGE COMPONENT] [--data-uri DATA_URI] [--extra TYPE KEY VALUE] [--flags FLAGS [FLAGS ...]] [--mimetype MIMETYPE]
 ```
 
-More information about drozer intents can be obtained by running `help intents`
+You can learn more about how intents are created by running `help intents`
 
 #### Further information
 
