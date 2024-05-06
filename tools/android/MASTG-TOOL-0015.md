@@ -1,5 +1,5 @@
 ---
-title: Drozer
+title: drozer
 platform: android
 source: https://github.com/WithSecureLabs/drozer
 ---
@@ -18,10 +18,10 @@ drozer can be easily extended with additional modules to find, test and exploit 
 ## Installing drozer
 
 ### Using pip
-You can use `pip` to install the [latest release](https://github.com/WithSecureLabs/drozer/releases/latest "Latest release on GitHub") of drozer:
+You can use `pipx` (or `pip`) to install the [latest release](https://github.com/WithSecureLabs/drozer/releases/latest "Latest release on GitHub") of drozer:
 
 ```
-sudo pip install drozer-<version>.whl
+pipx install ./drozer-*.whl
 ```
 
 ### Using Docker
@@ -30,53 +30,129 @@ To help with making sure drozer can be run on all systems, a Docker container wa
 - The Docker container and basic setup instructions can be found [here](https://hub.docker.com/r/withsecurelabs/drozer).
 - Instructions on building your own Docker container can be found [here](https://github.com/WithSecureLabs/drozer/tree/develop/docker).
 
-## Example Usage
-
 ### Installing the Agent
 
-drozer can be installed using Android Debug Bridge (adb).
+drozer's "Agent" application is required for interaction with the device. It can be installed using Android Debug Bridge (`adb`).
 
 Download the latest drozer Agent [here](https://github.com/WithSecureLabs/drozer-agent/releases/latest).
 
 `$ adb install drozer-agent.apk`
 
+## Using drozer
+
 ### Setup for session
 
 You should now have the drozer Console installed on your PC, and the Agent running on your test device. Now, you need to connect the two and you’re ready to start exploring.
 
-We will use the server embedded in the drozer Agent to do this.
+We will use the server embedded in the drozer Agent to do this. First, launch the Agent, select the "Embedded Server" option and tap "Enable" to start the server. You should see a notification that the server has started. 
 
-You need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the device or emulator. By default, drozer uses port 31415:
+Then, follow one of the options below.
 
-`$ adb forward tcp:31415 tcp:31415`
+#### Option 1: Connect to the phone via network
 
-Now, launch the Agent, select the "Embedded Server" option and tap "Enable" to start the server. You should see a notification that the server has started.
+By default, the drozer Agent listens for incoming TCP connections on all interfaces on port 31415. In order to connect to the Agent, run the following command:
 
-### Start a session
+```
+drozer console connect --server <phone's IP address>
+```
 
-On your PC, connect using the drozer Console:
+If you are using the Docker container, the equivalent command would be:
 
-`$ drozer console connect`
+```
+docker run --net host -it withsecurelabs/drozer console connect --server <phone's IP address>
+```
 
-If using a real device, the IP address of the device on the network must be specified:
+#### Option 2: Connect to the phone via USB
 
-`$ drozer console connect --server 192.168.0.10`
+In some scenarios, connecting to the device over the network may not be viable. In these scenarios, we can leverage `adb`'s port-forwarding capabilities to establish a connection over USB.
+
+First, you need to set up a suitable port forward so that your PC can connect to a TCP socket opened by the Agent inside the emulator, or on the device. By default, drozer uses port 31415
+
+```shell
+adb forward tcp:31415 tcp:31415
+```
+
+You can now connect to the drozer Agent by connecting to `localhost` (or simply not specifying the target IP)
+
+```shell
+drozer console connect
+```
+
+### Confirming a successful connection
 
 You should be presented with a drozer command prompt:
 
 ```
-selecting f75640f67144d9a3 (unknown sdk 4.1.1)  
+Selecting ebe9fcc0c47b28da (Google sdk_gphone64_x86_64 12)
+
+            ..                    ..:.
+           ..o..                  .r..
+            ..a..  . ....... .  ..nd
+              ro..idsnemesisand..pr
+              .otectorandroidsneme.
+           .,sisandprotectorandroids+.
+         ..nemesisandprotectorandroidsn:.
+        .emesisandprotectorandroidsnemes..
+      ..isandp,..,rotecyayandro,..,idsnem.
+      .isisandp..rotectorandroid..snemisis.
+      ,andprotectorandroidsnemisisandprotec.
+     .torandroidsnemesisandprotectorandroid.
+     .snemisisandprotectorandroidsnemesisan:
+     .dprotectorandroidsnemesisandprotector.
+
+drozer Console (v3.0.0)
 dz>
 ```
 The prompt confirms the Android ID of the device you have connected to, along with the manufacturer, model and Android software version.
 
-### Using modules
+### Example usage
 
+Once set up, drozer can be used to perform reconnaissance and exploitation of Android applications from the perspective of a malicious app on the device. [The drozer User Manual](https://labs.withsecure.com/tools/drozer#3 "drozer User Manual") introduces an intentionally vulnerable application - [sieve](https://github.com/WithSecureLabs/sieve "GitHub repo - sieve") - together with step-by-step exploitation instructions.
 
-## Other Drozer resources
+Some common drozer commands include:
+
+#### Searching for applications on the device:
+```
+run app.package.list -f <keyword>
+```
+This lists basic informations about any packages containing the word "<keyword>" in their bundle identifier. This includes package names, key directories used by the application, and any permissions used or defined by the application.
+
+#### Enumerating the attack surface of an app:
+```
+run app.package.attacksurface <package>
+```
+This command inspects the target app's manifest and provides a report on any exported components of the application, and verifies whether the application is debuggable.
+
+Once the attack surface has been identified, more specific information about each component class can be obtained. For example, to list  Activities, the following command can be used:
+```
+run app.activity.info -a <package>
+```
+This lists the names of all exported Activities, together with the permissions required to interact with them.
+
+#### Starting an Activity
+An exported activity could be started by running the following command:
+```
+run app.activity.start --component <package> <component name>
+```
+
+When calling app.activity.start, it is possible to build a much more complex intent. As with all drozer modules, you can request more usage information:
+
+```
+dz> help app.activity.start
+Attempting to run shell module
+usage: run app.activity.start [-h] [--action ACTION] [--category CATEGORY [CATEGORY ...]] [--component PACKAGE COMPONENT] [--data-uri DATA_URI] [--extra TYPE KEY VALUE] [--flags FLAGS [FLAGS ...]] [--mimetype MIMETYPE]
+```
+
+More information about drozer intents can be obtained by running `help intents`
+
+#### Further information
+
+Refer to the [Official drozer User Manual](https://labs.withsecure.com/tools/drozer "drozer User Manual") for a more comprehensive list of guided examples.
+
+## Other drozer resources
 
 Other resources where you might find useful information are:
 
 - [Official drozer User Manual](https://labs.withsecure.com/tools/drozer "drozer User Manual")
-- [drozer GitHub page](https://github.com/WithSecureLabs/drozer "GitHub repo")
-- [drozer Wiki](https://github.com/WithSecureLabs/drozer/wiki "drozer Wiki")
+- [drozer GitHub page](https://github.com/WithSecureLabs/drozer "GitHub repo - drozer")
+- [drozer Agent GitHub page](https://github.com/WithSecureLabs/drozer "GitHub repo - drozer-agent")
