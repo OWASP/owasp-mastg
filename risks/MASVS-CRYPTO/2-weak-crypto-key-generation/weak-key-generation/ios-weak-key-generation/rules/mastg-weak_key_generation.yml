@@ -1,13 +1,12 @@
 rules:
-  - id: weak_symmetric_aes
+  - id: weak_crypto_key_generation
     severity: WARNING
     languages: 
       - swift
     metadata:
       summary: This rule looks for the ommon patterns including classes and methods that represent AES-128 bit alogrithm.
-      original_source: https://github.com/insideapp-oss/mobile-application-security-rules/blob/main/rules/ios/cryptography/weak_symmetric_aes.yml
     message: >-
-      [MASVS-CRYPTO-1] This application seems using a symmetric algorithm, `AES`, configured weakly, which could expose to various kind of vulnerabilities.
+      The application appears to utilize a symmetric algorithm known as `AES-128` with a weak key configuration, making it susceptible to multiple vulnerabilities and potential security breaches.
       AES keys should be at least 256 bits based on NIST recommendation.
     pattern-either:
       - patterns:
@@ -30,3 +29,4 @@ rules:
             - pattern-either:
               - pattern: .bits128
             - pattern-not: .bits256
+
