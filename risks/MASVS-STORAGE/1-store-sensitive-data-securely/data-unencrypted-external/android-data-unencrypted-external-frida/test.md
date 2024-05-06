@@ -7,7 +7,7 @@ type: [dynamic]
 
 ## Overview
 
-Android apps utilize a variety of APIs to obtain a file path and save a file. Collecting a comprehensive list of these APIs can be challenging, especially when an app employs a third-party framework, loads code at runtime, or incorporates native code. Therefore, dynamic testing might be the most effective approach to find writing to the external storage.
+Android apps use a variety of APIs to obtain a file path and store a file. Collecting a comprehensive list of these APIs can be challenging, especially if an app uses a third-party framework, loads code at runtime, or includes native code. The most effective approach to testing applications that write to device memory is usually dynamic analysis, and specifically method tracing.
 
 ## Steps
 
