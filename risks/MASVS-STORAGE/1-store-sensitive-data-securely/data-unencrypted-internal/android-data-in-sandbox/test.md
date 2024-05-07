@@ -19,7 +19,9 @@ This has the limitation that you won't know the APIs and locations in your code 
 
 1. Start the device.
 
-2. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Taking note of the data you input can help identify it later using tools to search for it.
+2. Take a first [copy of the app's private data directory](../../../../../techniques/android/MASTG-TECH-0008.md) to have as a reference for offline analysis.
+
+3. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Taking note of the data you input can help identify it later using tools to search for it.
 
 3. Take a copy of the app's private data directory for offline analysis. See: https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0008.
 
