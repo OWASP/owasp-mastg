@@ -8,9 +8,12 @@ rules:
     message: "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
     pattern-either:
       - pattern: getExternalFilesDir(...)
+      - pattern: getExternalFilesDirs(...)
       - pattern: getExternalStorageDirectory(...)
       - pattern: getExternalStoragePublicDirectory(...)
       - pattern: getExternalCacheDir(...)
+      - pattern: getExternalCacheDirs(...)
+      - pattern: getExternalMediaDirs(...)
       - pattern: getDownloadCacheDirectory(...)
       - pattern: Intent.ACTION_CREATE_DOCUMENT
   - id: mastg-android-data-unencrypted-external-manifest
