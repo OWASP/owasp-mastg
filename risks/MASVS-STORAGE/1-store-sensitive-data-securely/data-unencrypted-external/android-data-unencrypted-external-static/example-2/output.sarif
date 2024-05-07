@@ -11,32 +11,32 @@
       "results": [
         {
           "fingerprints": {
-            "matchBasedId/v1": "86181ae035702aa50a67f6c5fcae0e9cd18f97887aa9e1ffcb70225f86d21062067e3925de964b722f4593b60fd959f1b9b0778f189a7183e0609be44faea0c5_0"
+            "matchBasedId/v1": "6aa4b8588a882dd4bcdb3d056b354663e9b7d6df919b1b9b26fd7f39f23b73467dd1a055148a14b9544c442214fcbb672a91534d0d59aa9d0ee720f2e2e668f4_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "use-of-external-store.kt",
+                  "uri": "AndroidManifest.xml",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "endColumn": 101,
-                  "endLine": 26,
+                  "endColumn": 77,
+                  "endLine": 5,
                   "snippet": {
-                    "text": "            val externalDirPath = getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)"
+                    "text": "    <uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />"
                   },
-                  "startColumn": 35,
-                  "startLine": 26
+                  "startColumn": 55,
+                  "startLine": 5
                 }
               }
             }
           ],
           "message": {
-            "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+            "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
           },
           "properties": {},
-          "ruleId": "rules.mastg-android-data-unencrypted-external-api"
+          "ruleId": "rules.mastg-android-data-unencrypted-external-manifest"
         }
       ],
       "tool": {
@@ -48,20 +48,20 @@
                 "level": "warning"
               },
               "fullDescription": {
-                "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
+                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
               },
               "help": {
-                "markdown": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary",
-                "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
+                "markdown": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps",
+                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
               },
-              "id": "rules.mastg-android-data-unencrypted-external-manifest",
-              "name": "rules.mastg-android-data-unencrypted-external-manifest",
+              "id": "rules.mastg-android-data-unencrypted-external-mediastore",
+              "name": "rules.mastg-android-data-unencrypted-external-mediastore",
               "properties": {
                 "precision": "very-high",
                 "tags": []
               },
               "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-manifest"
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-mediastore"
               }
             },
             {
@@ -90,20 +90,20 @@
                 "level": "warning"
               },
               "fullDescription": {
-                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+                "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
               },
               "help": {
-                "markdown": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps",
-                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+                "markdown": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary",
+                "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
               },
-              "id": "rules.mastg-android-data-unencrypted-external-mediastore",
-              "name": "rules.mastg-android-data-unencrypted-external-mediastore",
+              "id": "rules.mastg-android-data-unencrypted-external-manifest",
+              "name": "rules.mastg-android-data-unencrypted-external-manifest",
               "properties": {
                 "precision": "very-high",
                 "tags": []
               },
               "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-mediastore"
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-manifest"
               }
             }
           ],

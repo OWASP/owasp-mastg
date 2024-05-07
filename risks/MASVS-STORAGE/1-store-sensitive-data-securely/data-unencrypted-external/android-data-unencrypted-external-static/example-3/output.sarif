@@ -1,0 +1,232 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "toolExecutionNotifications": []
+        }
+      ],
+      "results": [
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "0863f3399c1ce2db808b0bc40f299ca16c02e7f2b20f894ae803e49e33a42c820871071aa041eef8f313ea699424e8ca6670bfa8df2baf9c7a1b731c2b283271_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "use-of-mediastore.kt",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 35,
+                  "endLine": 4,
+                  "snippet": {
+                    "text": "import android.provider.MediaStore"
+                  },
+                  "startColumn": 25,
+                  "startLine": 4
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-data-unencrypted-external-mediastore"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "0863f3399c1ce2db808b0bc40f299ca16c02e7f2b20f894ae803e49e33a42c820871071aa041eef8f313ea699424e8ca6670bfa8df2baf9c7a1b731c2b283271_1"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "use-of-mediastore.kt",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 41,
+                  "endLine": 13,
+                  "snippet": {
+                    "text": "            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, \"sampleName\")"
+                  },
+                  "startColumn": 31,
+                  "startLine": 13
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-data-unencrypted-external-mediastore"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "0863f3399c1ce2db808b0bc40f299ca16c02e7f2b20f894ae803e49e33a42c820871071aa041eef8f313ea699424e8ca6670bfa8df2baf9c7a1b731c2b283271_2"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "use-of-mediastore.kt",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 41,
+                  "endLine": 14,
+                  "snippet": {
+                    "text": "            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, \"image/jpg\")"
+                  },
+                  "startColumn": 31,
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-data-unencrypted-external-mediastore"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "0863f3399c1ce2db808b0bc40f299ca16c02e7f2b20f894ae803e49e33a42c820871071aa041eef8f313ea699424e8ca6670bfa8df2baf9c7a1b731c2b283271_3"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "use-of-mediastore.kt",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 41,
+                  "endLine": 15,
+                  "snippet": {
+                    "text": "            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)"
+                  },
+                  "startColumn": 31,
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-data-unencrypted-external-mediastore"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "0863f3399c1ce2db808b0bc40f299ca16c02e7f2b20f894ae803e49e33a42c820871071aa041eef8f313ea699424e8ca6670bfa8df2baf9c7a1b731c2b283271_4"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "use-of-mediastore.kt",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 43,
+                  "endLine": 17,
+                  "snippet": {
+                    "text": "                resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)"
+                  },
+                  "startColumn": 33,
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-data-unencrypted-external-mediastore"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+              },
+              "help": {
+                "markdown": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary",
+                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+              },
+              "id": "rules.mastg-android-data-unencrypted-external-api",
+              "name": "rules.mastg-android-data-unencrypted-external-api",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-api"
+              }
+            },
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+              },
+              "help": {
+                "markdown": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps",
+                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+              },
+              "id": "rules.mastg-android-data-unencrypted-external-mediastore",
+              "name": "rules.mastg-android-data-unencrypted-external-mediastore",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-mediastore"
+              }
+            },
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
+              },
+              "help": {
+                "markdown": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary",
+                "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
+              },
+              "id": "rules.mastg-android-data-unencrypted-external-manifest",
+              "name": "rules.mastg-android-data-unencrypted-external-manifest",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-manifest"
+              }
+            }
+          ],
+          "semanticVersion": "1.63.0"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

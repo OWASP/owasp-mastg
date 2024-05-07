@@ -2,7 +2,7 @@
 platform: android
 title: Find common APIs that return paths to External Storage locations
 tools: [semgrep]
-code: [java]
+code: [kotlin]
 ---
 
 ### Sample

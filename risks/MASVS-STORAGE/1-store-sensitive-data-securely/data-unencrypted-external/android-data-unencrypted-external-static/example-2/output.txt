@@ -5,7 +5,7 @@
 └────────────────┘
                        
     AndroidManifest.xml
-    mrules.mastg-android-data-unencrypted-external
-          [MASVS-STORAGE] Make sure you encrypt files in external storage if necessary
-                                                                                      
+    ❯❱ [1mrules.mastg-android-data-unencrypted-external-manifest[0m
+          [MASVS-STORAGE] Make sure to encrypt files in external storage if necessary
+                                                                                     
             5┆ <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

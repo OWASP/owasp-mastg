@@ -1,0 +1,19 @@
+                   
+                   
+┌─────────────────┐
+│ 5 Code Findings │
+└─────────────────┘
+                        
+    use-of-mediastore.kt
+    ❯❱ [1mrules.mastg-android-data-unencrypted-external-mediastore[0m
+          [MASVS-STORAGE] Make sure to want this data to be shared with other apps
+                                                                                  
+            4┆ import android.provider.MediaStore
+            ⋮┆----------------------------------------
+           13┆ contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "sampleName")
+            ⋮┆----------------------------------------
+           14┆ contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+            ⋮┆----------------------------------------
+           15┆ contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+            ⋮┆----------------------------------------
+           17┆ resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)

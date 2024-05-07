@@ -1,21 +1,39 @@
 rules:
-  - id: mastg-android-data-unencrypted-external
+  - id: mastg-android-data-unencrypted-external-api
     severity: WARNING
     languages:
       - kotlin
     metadata:
-      summary: This rule looks for methods that returns locations to external storage
-    message: "[MASVS-STORAGE] Make sure you encrypt files at these locations if necessary"
+      summary: This rule looks for methods that returns locations to "external storage" which is shared with other apps
+    message: "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
     pattern-either:
-        - patterns:
-            - pattern-either:
-                - pattern: getExternalFilesDir(...)
-                - pattern: getExternalStorageDirectory(...)
-                - pattern: getExternalStoragePublicDirectory(...)
-                - pattern: getExternalCacheDir(...)
-                - pattern: getDownloadCacheDirectory(...)
-                - pattern: Intent.ACTION_CREATE_DOCUMENT
-                
-                
-                
+      - pattern: getExternalFilesDir(...)
+      - pattern: getExternalStorageDirectory(...)
+      - pattern: getExternalStoragePublicDirectory(...)
+      - pattern: getExternalCacheDir(...)
+      - pattern: getDownloadCacheDirectory(...)
+      - pattern: Intent.ACTION_CREATE_DOCUMENT
+  - id: mastg-android-data-unencrypted-external-manifest
+    severity: WARNING
+    languages:
+      - generic
+    metadata:
+      summary: This rule scans for permissions that allows your app to write to external storage or shared storage
+    message: "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
+    pattern-either:
+      - pattern: WRITE_EXTERNAL_STORAGE
+      - pattern: MANAGE_EXTERNAL_STORAGE
+      - pattern: ACCESS_ALL_EXTERNAL_STORAGE
+      - pattern: requestLegacyExternalStorage="true"
+      - pattern: preserveLegacyExternalStorage="true"
+      - pattern: android:requestRawExternalStorageAccess="true"
+  - id: mastg-android-data-unencrypted-external-mediastore
+    severity: WARNING
+    languages:
+      - generic
+    metadata:
+      summary: This rule scans for uses of MediaStore API that writes data to the external storage. This data can be accessed by other apps.
+    message: "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+    pattern-either:
+      - pattern: MediaStore    
 

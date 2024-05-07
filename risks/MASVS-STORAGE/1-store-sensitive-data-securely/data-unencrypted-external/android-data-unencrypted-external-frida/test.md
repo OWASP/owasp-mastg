@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Storing Data in External Locations
+title: Data Stored to External Locations on Runtime
 apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, SharedPreferences, FileOutPutStream]
 type: [dynamic]
 ---

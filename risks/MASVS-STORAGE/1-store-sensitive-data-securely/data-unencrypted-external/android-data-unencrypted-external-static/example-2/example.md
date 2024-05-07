@@ -1,8 +1,8 @@
 ---
 platform: android
-title: Common APIs to return paths to External Storage
+title: Find permissions that allows an app to write to locations shared with other apps
 tools: [semgrep]
-code: [java]
+code: [kotlin]
 ---
 
 ### Sample
