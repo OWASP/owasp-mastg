@@ -18,8 +18,6 @@ Mobile apps may need to store sensitive data locally within private storage loca
 
 [Sensitive data](../../../../prerequisites/identify-sensitive-data.md "Sensitive Data") may include personally identifiable information (PII), passwords, cryptographic keys or session tokens.
 
-Sensitive data stored locally on the device should be encrypted, and any keys used for encryption methods should be protected by the device's hardware-backed keystore, where available.
-
 ## Impact
 
 - **Loss of Confidentiality**: Under the right conditions an attacker could extract sensitive data stored internally within the application sandbox leading to loss of confidentiality and enable further attacks such as identity theft or account takeover.
