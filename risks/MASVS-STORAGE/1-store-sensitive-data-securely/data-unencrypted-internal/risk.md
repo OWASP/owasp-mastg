@@ -14,7 +14,7 @@ refs:
 
 ## Overview
 
-Mobile apps may need to store sensitive data locally within the application sandbox and this data is at risk of exposure via, for example, incorrect file permissions, an app vulnerability, device vulnerability or data backup mechanisms.
+Mobile apps may need to store sensitive data locally within private storage locations such as the application sandbox and this data is at risk of exposure via, for example, incorrect file permissions, an app vulnerability, device vulnerability or data backup mechanisms.
 
 [Sensitive data](MASTG-THEORY-0023.md "Sensitive Data") may include personally identifiable information (PII), passwords, cryptographic keys or session tokens.
 
