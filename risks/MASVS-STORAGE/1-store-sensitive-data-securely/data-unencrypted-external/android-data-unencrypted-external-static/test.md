@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Use of app permissions and APIs to access storage locations shared with other apps
+title: Use of APIs to access External Storage Locations
 apis: [Environment#getExternalStoragePublicDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, MediaStore]
 type: [static]
 ---
