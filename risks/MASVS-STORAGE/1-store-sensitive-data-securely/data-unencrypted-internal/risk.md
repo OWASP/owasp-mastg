@@ -1,5 +1,5 @@
 ---
-title: Sensitive Data Stored Unencrypted in Internal Locations
+title: Sensitive Data Stored Unencrypted in Private Storage Locations
 alias: data-unencrypted-internal
 platform: [android, ios]
 profiles: [L2]
