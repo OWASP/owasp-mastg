@@ -209,7 +209,7 @@ public final class WebViewActivity extends AppCompatActivity {
             ...
 ```
 
-You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has [JavaScript enabled](../../../tests/android/MASVS-PLATFORM/MASTG-TEST-0031.md).
+You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has [JavaScript enabled](../MASVS-PLATFORM/MASTG-TEST-0031.md).
 
 The same WebView might be also rendering an attacker controlled parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](../../../Document/0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws) within the context of the WebView:
 
@@ -221,10 +221,10 @@ But there are many other possibilities. Be sure to check the following sections 
 
 - ["Cross-Site Scripting Flaws"](../../../Document/0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws).
 - ["Injection Flaws"](../../../Document/0x04h-Testing-Code-Quality.md#injection-flaws).
-- ["Testing Object Persistence"](../../../tests/android/MASVS-CODE/MASTG-TEST-0034.md).
-- ["Testing for URL Loading in WebViews"](../../../tests/android/MASVS-CODE/MASTG-TEST-0027.md)
-- ["Testing JavaScript Execution in WebViews"](../../../tests/android/MASVS-PLATFORM/MASTG-TEST-0031.md)
-- ["Testing WebView Protocol Handlers"](../../../tests/android/MASVS-PLATFORM/MASTG-TEST-0032.md)
+- ["Testing Object Persistence"](../MASVS-CODE/MASTG-TEST-0034.md).
+- ["Testing for URL Loading in WebViews"](../MASVS-CODE/MASTG-TEST-0027.md)
+- ["Testing JavaScript Execution in WebViews"](../MASVS-PLATFORM/MASTG-TEST-0031.md)
+- ["Testing WebView Protocol Handlers"](../MASVS-PLATFORM/MASTG-TEST-0032.md)
 
 In addition, we recommend to search and read public reports (search term: `"deep link*"|"deeplink*" site:https://hackerone.com/reports/`). For example:
 
