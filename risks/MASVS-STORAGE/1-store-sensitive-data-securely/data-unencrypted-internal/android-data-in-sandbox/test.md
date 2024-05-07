@@ -17,9 +17,7 @@ prerequisites:
 
 3. Take a copy of the app's private data directory for offline analysis. See: https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0008.
 
-4. Search the extracted data for items such as keys, passwords and any sensitive data inputted into the app.
-
-5. Check files for sensitive data that has been encoded with algorithms such as base64 which obscures but does not protect sensitive data.
+4. Attempt to identify and decode data that has been encoded using methods such as base64 encoding, hexadecimal representation, URL encoding, escape sequences, wide characters and common data obfuscation methods such as xoring. Also consider identifying and decompressing compressed files such as tar or zip. These methods obscure but do not protect sensitive data.
 
 ## Observation
 
