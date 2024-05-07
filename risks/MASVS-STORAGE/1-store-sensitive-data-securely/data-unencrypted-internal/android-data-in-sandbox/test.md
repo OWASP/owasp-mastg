@@ -9,6 +9,12 @@ prerequisites:
 - identify-sensitive-data
 ---
 
+## Overview
+
+Android apps use a variety of APIs to write data to internal storage. If you only need to inspect the list of created/modified files and their contents, the most effective approach is a snapshot-based approach like the one used in this test.
+
+This has the limitation that you won't know the APIs and locations in your code that are responsible; if you need to know, you should rather follow a dynamic analysis approach based on method tracing. 
+
 ## Steps
 
 1. Start the device.
