@@ -1,6 +1,6 @@
 ---
 title: Sensitive Data Stored Unencrypted in Private Storage Locations
-alias: data-unencrypted-internal
+alias: data-unencrypted-private-storage
 platform: [android, ios]
 profiles: [L2]
 mappings:
