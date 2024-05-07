@@ -1,5 +1,5 @@
 ---
-title: Sensitive Data Stored Unencrypted in External Locations
+title: Sensitive Data Stored in Shared Storage Requiring No User Interaction
 alias: data-unencrypted-external
 platform: [android]
 profiles: [L1, L2]
@@ -41,6 +41,6 @@ This threat is primarily a concern for Android devices since they permit the use
 
 ## Mitigations
 
-Sensitive data stored in the external storage should be encrypted, and any keys used for encryption methods should be protected by the device's hardware-backed keystore, where available. It is highly discouraged to include a cryptographic key inside the application. 
+Sensitive data stored in the external storage should be encrypted, and any keys used for encryption methods should be protected by the device's hardware-backed keystore, where available. It is highly discouraged to include a cryptographic key inside the application. You can also consider storing your files in the Private App Sandbox Storage.
 
 - [Android's EncryptedFile API wrapper for file encryption](https://developer.android.com/reference/androidx/security/crypto/EncryptedFile)

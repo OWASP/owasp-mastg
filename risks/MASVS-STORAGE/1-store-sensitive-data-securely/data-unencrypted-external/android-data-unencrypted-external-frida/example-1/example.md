@@ -21,7 +21,7 @@ The snippet below shows sample code that creates a file in external storage. You
 
 ### Observation
 
-The script will output the findings into `output.txt`
+There is only one file written to the external storage - `/storage/emulated/0/Android/data/com.gs.owasp_storage_app1/files/secret.json`. Make sure you don't store unencrypted data there unintentionally.
 
 {{ output.txt }}
 

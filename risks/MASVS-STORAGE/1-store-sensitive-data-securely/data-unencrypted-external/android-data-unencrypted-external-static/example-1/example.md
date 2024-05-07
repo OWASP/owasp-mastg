@@ -19,7 +19,7 @@ Let's run our semgrep rule against the sample code.
 
 ### Observation
 
-The rule has identified 1 location in the code file where a path to external storage is retuened. Make sure you don't store unencrypted code there unintentionally.
+The rule has identified 1 location in the code file where a path to external storage is retuened. Make sure you don't store unencrypted data there unintentionally.
 
 {{ output.txt }}
 

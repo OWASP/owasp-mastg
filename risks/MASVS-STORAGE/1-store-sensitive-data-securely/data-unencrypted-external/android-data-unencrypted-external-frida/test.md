@@ -7,17 +7,19 @@ type: [dynamic]
 
 ## Overview
 
-Android apps use a variety of APIs to obtain a file path and store a file. Collecting a comprehensive list of these APIs can be challenging, especially if an app uses a third-party framework, loads code at runtime, or includes native code. The most effective approach to testing applications that write to device memory is usually dynamic analysis, and specifically method tracing.
+Android apps use a variety of APIs to obtain a file path and store a file. Collecting a comprehensive list of these APIs can be challenging, especially if an app uses a third-party framework, loads code at runtime, or includes native code. The most effective approach to testing applications that write to device storage is usually dynamic analysis, and specifically method tracing.
 
 ## Steps
 
-1. Install the app.
+1. Make sure you have Frida installed
 
-2. Execute a [method trace](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-00xx/) to spawn an app and log all interactions with files.
+2. Install the app.
 
-3. Navigate to the screen of the mobile app that you want to analyse. 
+3. Execute a `run.sh` to spawn an app with Frida and log all interactions with files.
 
-4. Close the app to stop `frida-trace`
+4. Navigate to the screen of the mobile app that you want to analyse. 
+
+5. Close the app to stop `frida`
 
 
 ## Observation
