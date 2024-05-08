@@ -15,7 +15,7 @@ The application appears to utilize a symmetric algorithm known as `AES-128` with
 
 ## Observation
 
-The output should contain a **list of locations where insecure algorithm are used**.
+The output should contain a **list of locations where insecure algorithm is used**.
 
 ## Evaluation
 
