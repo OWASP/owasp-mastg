@@ -4,7 +4,7 @@ rules:
     languages: 
       - swift
     metadata:
-      summary: This rule looks for the ommon patterns including classes and methods that represent AES-128 bit alogrithm.
+      summary: This rule looks for the common patterns including classes and methods that represent AES-128 bit alogrithm.
     message: >-
       The application appears to utilize a symmetric algorithm known as `AES-128` with a weak key configuration, making it susceptible to multiple vulnerabilities and potential security breaches.
       AES keys should be at least 256 bits based on NIST recommendation.

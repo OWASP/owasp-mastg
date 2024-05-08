@@ -7,19 +7,19 @@ code: [swift]
 
 ### Sample
 
-{{ insecure_symmetric_aes_alogrithm.swift }}
+{{ weak-key-generation.swift }}
 
 ### Steps
 
 Let's run our semgrep rule against the sample code.
 
-{{ ../rules/mastg-insecure_symmetric_aes_algorithm.yml }}
+{{ ../rules/mastg-weak_key_generation.yml }}
 
 {{ run.sh }}
 
 ### Observation
 
-The rule has identified five instances in the code file where an insecure AES-128 bit algorithm is used. The specified line numbers can be located in the original code for further investigation and remediation.
+The rule has identified two instances in the code file where an insecure AES-128 bit algorithm is used. The specified line numbers can be located in the original code for further investigation and remediation.
 
 {{ output.txt }}
 
