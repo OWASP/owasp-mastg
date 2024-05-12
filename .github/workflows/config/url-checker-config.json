@@ -73,6 +73,9 @@
             "pattern": "^https://secrary.com/"
         },
         {
+            "pattern": "^https://www.reddit.com/r/jailbreak/"
+        },
+        {
             "pattern": "^MASTG/"
         },
         {
