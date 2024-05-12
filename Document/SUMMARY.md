@@ -29,7 +29,6 @@
 - [Android Network Communication](0x05g-Testing-Network-Communication.md)
 - [Android Platform APIs](0x05h-Testing-Platform-Interaction.md)
 - [Code Quality and Build Settings for Android Apps](0x05i-Testing-Code-Quality-and-Build-Settings.md)
-- [Reverse Engineering on Android](../techniques/android/MASTG-TECH-0013.md)
 - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
 ## iOS Testing Guide
@@ -42,7 +41,6 @@
 - [iOS Network Communication](0x06g-Testing-Network-Communication.md)
 - [iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)
 - [Code Quality and Build Settings for iOS Apps](0x06i-Testing-Code-Quality-and-Build-Settings.md)
-- [Reverse Engineering on iOS](../techniques/ios/MASTG-TECH-0065.md)
 - [iOS Anti-Reversing Defenses](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)
 
 ## Appendix

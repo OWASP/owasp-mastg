@@ -14,7 +14,7 @@ masvs_v1_levels:
 
 **Application Source Code Integrity Checks:**
 
-Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter ["Patching"](../../../techniques/ios/MASTG-TECH-0090.md), and run it.
+Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in ["Patching"](../../../techniques/ios/MASTG-TECH-0090.md), and run it.
 
 The app should respond in some way. For example by:
 

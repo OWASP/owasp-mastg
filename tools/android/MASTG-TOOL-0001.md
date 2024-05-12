@@ -28,7 +28,7 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 
 In order to set up Frida on your Android device:
 
-- If your device is not rooted, you can also use Frida, please refer to section "[Dynamic Analysis on Non-Rooted Devices](../../techniques/android/MASTG-TECH-0026.md "Dynamic Analysis on Non-Rooted Devices")" of the "Reverse Engineering and Tampering" chapter.
+- If your device is not rooted, you can also use Frida, please refer to ["Dynamic Analysis on Non-Rooted Devices"](../../techniques/android/MASTG-TECH-0026.md "Dynamic Analysis on Non-Rooted Devices").
 - If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
 
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:

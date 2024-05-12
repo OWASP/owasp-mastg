@@ -122,7 +122,7 @@ To implement this new setting you must follow the steps below:
     apktool b
     ```
 
-- You need to repackage the app, as explained in the "[Repackaging Apps](../../techniques/android/MASTG-TECH-0004.md "Repackaging Apps")" section of the "Reverse Engineering and Tampering" chapter. For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
+- You need to repackage the app, as explained in "[Repackaging Apps](../../techniques/android/MASTG-TECH-0004.md "Repackaging Apps")". For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 

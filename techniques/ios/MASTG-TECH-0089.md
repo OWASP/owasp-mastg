@@ -5,7 +5,7 @@ platform: ios
 
 TODO: Currently don't have this, but we do have this section below which does talk about Angr and a small intro referring to Android
 
-An introduction to binary analysis using binary analysis frameworks has already been discussed in the "[Dynamic Analysis on Android](../../techniques/android/MASTG-TECH-0015 "Dynamic Analysis on Android")" section. We recommend you to revisit this section and refresh the concepts on this subject.
+You can find an introduction to binary analysis using binary analysis frameworks in ["Dynamic Analysis on Android"](../../techniques/android/MASTG-TECH-0015 "Dynamic Analysis on Android"). We recommend you to revisit that content and refresh the concepts on this subject.
 
 For Android, we used Angr's symbolic execution engine to solve a challenge. In this section, we will firstly use Unicorn to solve the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1") challenge and then we will revisit the Angr binary analysis framework to analyze the challenge but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
 

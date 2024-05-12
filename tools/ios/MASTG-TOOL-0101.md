@@ -2,6 +2,7 @@
 title: codesign
 platform: ios
 source: https://www.unix.com/man-page/osx/1/codesign/
+alternatives: [MASTG-TOOL-0102]
 ---
 
 The codesign tool is primarily used to create, verify, and display code signatures, and to query the dynamic status of signed code in the system. Although Xcode typically automates the process of signing code during builds and before distribution, there are scenarios where manual intervention with codesign is required. This can include inspecting or verifying the details of an app's code signature, or manually re-signing an app. For more detailed tasks such as these, you can use the codesign command line tool directly, as described in Apple's Code Signing Guide.
