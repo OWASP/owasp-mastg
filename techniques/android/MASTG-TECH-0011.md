@@ -69,7 +69,7 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
-> A video of setting up [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
+> A video of setting up [OWASP ZAP](../../tools/network/MASTG-TOOL-0079.md "OWASP ZAP") with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
 
 A few other differences: from Android 8.0 (API level 26) onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 (API level 28) onward, the SSLSocket and SSLEngine will behave a little bit different in terms of error handling when something goes wrong during the handshakes.
 
