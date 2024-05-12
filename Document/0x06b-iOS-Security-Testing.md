@@ -69,7 +69,7 @@ Unlike the Android emulator, which fully emulates the hardware of an actual Andr
 
 ### Testing on an Emulator
 
-[Corellium](0x06c-Reverse-Engineering-and-Tampering.md#corellium) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
+[Corellium](../techniques/ios/MASTG-TECH-0088.md#corellium) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
 
 ### Getting Privileged Access
 

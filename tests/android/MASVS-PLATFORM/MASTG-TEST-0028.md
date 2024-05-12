@@ -188,7 +188,7 @@ Even if the deep link is correctly verified, the logic of the handler method sho
 
 First, obtain the name of the Activity from the Android Manifest `<activity>` element which defines the target `<intent-filter>` and search for usage of [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()") and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()"). This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data and if it could be subject to any kind of abuse.
 
-The following example is a snippet from an exemplary Kotlin app [decompiled with jadx](../../../Document/0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code). From the [static analysis](#check-for-deep-link-usage) we know that it supports the deep link `deeplinkdemo://load.html/` as part of `com.mstg.deeplinkdemo.WebViewActivity`.
+The following example is a snippet from an exemplary Kotlin app [decompiled with jadx](../../../techniques/android/MASTG-TECH-0017.md "Decompiling Java Code"). From the [static analysis](#check-for-deep-link-usage) we know that it supports the deep link `deeplinkdemo://load.html/` as part of `com.mstg.deeplinkdemo.WebViewActivity`.
 
 ```java
 // snippet edited for simplicity

@@ -19,4 +19,4 @@ ios-deploy --bundle Payload/my-app.app -W -d
 
 Refer to ["Installing Apps"](#installing-apps) to learn about other installation methods. Some of them doesn't require you to have a macOS.
 
-> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["iOS Tampering and Reverse Engineering - Patching, Repackaging and Re-Signing"](0x06c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing).
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["Repackaging and Re-Signing"](../../techniques/ios/MASTG-TECH-0092.md "Repackaging and Re-Signing").

@@ -181,7 +181,7 @@ There are several anti-debugging techniques applicable to iOS which can be categ
 
 #### Using ptrace
 
-As seen in chapter ["Tampering and Reverse Engineering on iOS"](0x06c-Reverse-Engineering-and-Tampering.md#debugging), the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
+As seen in ["Debugging"](../techniques/ios/MASTG-TECH-0084.md "Debugging"), the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
 
 Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
 
@@ -246,7 +246,7 @@ There are two common approaches to check file integrity: using application sourc
 
 #### Application Source Code Integrity Checks
 
-In the ["Tampering and Reverse Engineering on iOS"](0x06c-Reverse-Engineering-and-Tampering.md#debugging) chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
+In ["Debugging"](../techniques/ios/MASTG-TECH-0084.md), we discuss the iOS IPA application signature check. We also learn that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
 
 Apple takes care of integrity checks with DRM. However, additional controls (such as in the example below) are possible. The `mach_header` is parsed to calculate the start of the instruction data, which is used to generate the signature. Next, the signature is compared to the given signature. Make sure that the generated signature is stored or coded somewhere else.
 
@@ -370,8 +370,6 @@ The following steps should guide you when bypassing detection of reverse enginee
 1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of radare2/[iaito](https://github.com/radareorg/iaito "iaito") or Ghidra.
 2. Use Frida or Cydia Substrate to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
 
-Refer to the chapter ["Tampering and Reverse Engineering on iOS"](0x06c-Reverse-Engineering-and-Tampering.md) for examples of patching and code injection.
-
 #### Frida Detection
 
 Frida runs under the name of frida-server in its default configuration (injected mode) on a jailbroken device. When you explicitly attach to a target app (e.g. via frida-trace or the Frida CLI), Frida injects a frida-agent into the memory of the app. Therefore, you may expect to find it there after attaching to the app (and not before). On Android, verifying this is pretty straightforward as you can simply grep for the string "frida" in the memory maps of the process ID in the `proc` directory (`/proc/<pid>/maps`).
@@ -462,7 +460,7 @@ Control flow flattening replaces original code with a more complex representatio
 
 <img src="Images/Chapters/0x06j/control-flow-flattening.png" width="600px">
 
-The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
+The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](https://web.archive.org/web/20240414202600/http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
 
 #### Dead Code Injection
 
