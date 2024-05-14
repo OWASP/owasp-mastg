@@ -28,11 +28,11 @@ Weak cryptographic key generation can undermine the integrity of data, as it cre
 
 ## Modes of Introduction
 
-- **Third party libraries**:
+- **Third Party Libraries**:
 The libraries used by the application, the algorithms used and cryptographic schemes used are outdated.
 
-- **Use of insecure algorithms**:
-The use of insecure algorithms (e.g. using the 1024-bit RSA key, 128-bit AES key, 160-bit ECDSA key) in an application poses significant security risks to data.
+- **Use of Insecure Algorithms**:
+The use of insecure algorithms (e.g using the 1024-bit RSA key, 128-bit AES key, 160-bit ECDSA key) in an application poses significant security risks to data.
 
 
 ## Mitigations
