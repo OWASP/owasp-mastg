@@ -3,11 +3,11 @@
 ┌─────────────────┐
 │ 2 Code Findings │
 └─────────────────┘
-                    
-    non-random.java 
+                   
+    MastgTest.java 
        rules.mastg-android-non-random-use                                  
           [MASVS-CRYPTO-1] The application makes use of non-random sources.
                                                                            
-            7┆ return abc(new Date().getTime());
+           22┆ int random1 = (int) new Date().getTime();
             ⋮┆----------------------------------------
-           12┆ int mseconds = c.get(Calendar.MILLISECOND)
+           24┆ int random2 = c.get(14);

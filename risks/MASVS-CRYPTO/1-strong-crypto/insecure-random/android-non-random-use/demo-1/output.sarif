@@ -11,23 +11,23 @@
       "results": [
         {
           "fingerprints": {
-            "matchBasedId/v1": "de5276d3547e34da6c7ab8303e7618b583c75c03b55a9643e858c7599acffa379c63e4d180e693d6c61e1751efedf9f143f8b2b598f17f6bb92c0c810b08f7db_0"
+            "matchBasedId/v1": "8f736f5e1dee3abc6ed8ca0ea73181194449dccae07ac88f8f6326c59eaff9654c0b74ad454d38e61366ba89fa43ee24db131c5129c668eb8f1015c9e5f6e67a_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "non-random.java",
+                  "uri": "MastgTest.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "endColumn": 30,
-                  "endLine": 7,
+                  "endColumn": 39,
+                  "endLine": 22,
                   "snippet": {
-                    "text": "        return abc(new Date().getTime());"
+                    "text": "        int random1 = (int) new Date().getTime();"
                   },
-                  "startColumn": 20,
-                  "startLine": 7
+                  "startColumn": 29,
+                  "startLine": 22
                 }
               }
             }
@@ -40,23 +40,23 @@
         },
         {
           "fingerprints": {
-            "matchBasedId/v1": "c08d5d1a060c1bf5050736078625b8df97a21c2bbd3d38b1e2c026a5889e3096152e7f2f3a391dca471bc07ad1612257e10dec682a1517c42d7270f52cd0c692_0"
+            "matchBasedId/v1": "22a056e23a658affd682bcf40bb84ead56868564c11100d18146fac7139d8485a806d8c30f66ba8e01d07674542610a65471ca7d777e09abc4a92c8176a0ca28_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "non-random.java",
+                  "uri": "MastgTest.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "endColumn": 51,
-                  "endLine": 12,
+                  "endColumn": 32,
+                  "endLine": 24,
                   "snippet": {
-                    "text": "        int mseconds = c.get(Calendar.MILLISECOND)"
+                    "text": "        int random2 = c.get(14);"
                   },
-                  "startColumn": 24,
-                  "startLine": 12
+                  "startColumn": 23,
+                  "startLine": 24
                 }
               }
             }
