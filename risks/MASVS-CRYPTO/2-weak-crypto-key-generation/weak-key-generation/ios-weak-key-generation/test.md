@@ -19,4 +19,4 @@ The output should contain a **list of locations where insecure algorithm is used
 
 ## Evaluation
 
-The test case fails if you can find the use of AES-256 bit algorithm within the source code.
+The test case fails if you can find the use of less secure algorithm within the source code.
