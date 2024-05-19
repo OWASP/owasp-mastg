@@ -3,8 +3,8 @@
 ┌─────────────────┐
 │ 3 Code Findings │
 └─────────────────┘
-                   
-    MastgTest.java 
+                            
+    MastgTest_reversed.java 
        rules.mastg-android-insecure-random-use                                              
           [MASVS-CRYPTO-1] The application makes use of an insecure random number generator.
                                                                                             

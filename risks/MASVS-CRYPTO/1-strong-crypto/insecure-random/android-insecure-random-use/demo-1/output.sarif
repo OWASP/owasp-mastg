@@ -11,13 +11,13 @@
       "results": [
         {
           "fingerprints": {
-            "matchBasedId/v1": "69dc0e84cdbf3219be9bc38bf51f8f46e5e41da5787d072a690105cec4704a7995c0880257ba3e948482db45be1adff243492ea42f566dd5ade597e6bc8a17fa_0"
+            "matchBasedId/v1": "3ef38bcac231687abfe61bbaf3500989e846e3f96bfe4fa8a8a7e8faf38e8c320893e3a4db03f0245f425c79e73a4e5018eba6f097ed191ab728a01d4592b8cc_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "MastgTest.java",
+                  "uri": "MastgTest_reversed.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
@@ -40,13 +40,13 @@
         },
         {
           "fingerprints": {
-            "matchBasedId/v1": "6afc66cbd894e2f98bc7ddafb722fcbc4fe602f00f3bc8a7543beeba8fcf9c137b1ee03bdbdcbdd946586de397616912041764b09718ede9a1d878f48facf97a_0"
+            "matchBasedId/v1": "b0911993c9e40c66148b413cd0d54c46a4ce2898b72f2573ab185319a51cac2051c90e5ffa9be8dddf1d59897f52f6fcdf7c6f3fad52da5c11da364dca9accf6_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "MastgTest.java",
+                  "uri": "MastgTest_reversed.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
@@ -69,13 +69,13 @@
         },
         {
           "fingerprints": {
-            "matchBasedId/v1": "081cf9fd76f98ace998b1b970b3ed98b9c1063aa9d34ac38ee33a49ec2ef9dc31e319e9b1d28229918745de6c233003ddf606de8df2ab87ec9eb9ee4f08f6763_0"
+            "matchBasedId/v1": "75f1103268436669a637eb10463625ce1bef83b3542e834be4cbed44823a3eaa9a947a717a6c4f5dd6d67bd5897bc4a3783b0a5de3edaced9f45b55bb0534fd2_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "MastgTest.java",
+                  "uri": "MastgTest_reversed.java",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {

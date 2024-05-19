@@ -3,8 +3,8 @@
 ┌─────────────────┐
 │ 2 Code Findings │
 └─────────────────┘
-                   
-    MastgTest.java 
+                            
+    MastgTest_reversed.java 
        rules.mastg-android-non-random-use                                  
           [MASVS-CRYPTO-1] The application makes use of non-random sources.
                                                                            

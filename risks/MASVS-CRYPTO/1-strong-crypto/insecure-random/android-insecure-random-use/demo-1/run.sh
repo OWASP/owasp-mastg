@@ -1,2 +1,2 @@
-NO_COLOR=true semgrep -c ../rules/mastg-android-insecure-random-use.yaml ./MastgTest.java --text -o output.txt
-NO_COLOR=true semgrep -c ../rules/mastg-android-insecure-random-use.yaml ./MastgTest.java --sarif -o output.sarif
+NO_COLOR=true semgrep -c ../rules/mastg-android-insecure-random-use.yaml ./MastgTest_reversed.java --text -o output.txt
+NO_COLOR=true semgrep -c ../rules/mastg-android-insecure-random-use.yaml ./MastgTest_reversed.java --sarif -o output.sarif
