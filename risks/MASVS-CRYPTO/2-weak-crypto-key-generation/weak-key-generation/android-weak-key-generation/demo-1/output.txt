@@ -5,7 +5,7 @@
 └─────────────────┘
                    
     key-length.java
-    ❯❱ [1mrules.weak_key_size[0m
+    ❯❱ rules.weak_key_size
           Cryptographic implementations with insufficient key length are being used.
                                                                                     
             1┆ KeyPairGenerator keyPairGen1 = KeyPairGenerator.getInstance("RSA");
