@@ -1,0 +1,16 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                                            
+    weak-key-generation.swift
+    ❯❱ rules.weak_crypto_key_generation
+          The application appears to utilize a symmetric algorithm known as `AES-128` with a weak key      
+          configuration, making it susceptible to multiple vulnerabilities and potential security breaches.
+          AES keys should be at least 256 bits based on NIST recommendation.                               
+                                                                                                           
+            4┆ let key_size = kCCKeySizeAES128
+            ⋮┆----------------------------------------
+            8┆ let key_weak = SymmetricKey(size: .bits128)
+           

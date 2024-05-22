@@ -1,0 +1,2 @@
+NO_COLOR=true semgrep -c ../rules/mastg-weak-crypto-key-generation.yml ./key-length.java --text -o output.txt 
+NO_COLOR=true semgrep -c ../rules/mastg-weak-crypto-key-generation.yml ./key-length.java --sarif -o output.sarif
