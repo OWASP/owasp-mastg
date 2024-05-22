@@ -7,7 +7,7 @@
 
 frida-trace \
     -U \
-    -f com.owasp.mas.maswebview \
+    -f org.owasp.mastestapp \
     --runtime=v8 \
     -j 'android.util.Log!*' \
     -j 'java.util.logging.Logger!severe' \

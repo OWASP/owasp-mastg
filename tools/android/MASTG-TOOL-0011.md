@@ -16,4 +16,4 @@ Among the unpacked files you can usually find (after running `apktool d base.apk
 - res: directory containing the app’s resources
 - smali: directory containing the disassembled Dalvik bytecode.
 
-You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")" later on this chapter and section "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" in the chapter [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md) for more information and practical examples.
+You can also use apktool to repackage decoded resources back to binary APK/JAR. See the techniques ["Exploring the App Package"](../../techniques/android/MASTG-TECH-0007.md "Exploring the App Package") and ["Repackaging"](../../techniques/android/MASTG-TECH-0039.md "Repackaging") for more information and practical examples.

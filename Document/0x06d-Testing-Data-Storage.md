@@ -95,6 +95,50 @@ do {
 }
 ```
 
+Access to the data depends on the encryption: unencrypted databases are easily accessible, while encrypted ones require investigation into how the key is managed - whether it's hardcoded or stored unencrypted in an insecure location such as shared preferences, or securely in the platform's KeyStore (which is best practice).
+However, if an attacker has sufficient access to the device (e.g. jailbroken access) or can repackage the app, they can still retrieve encryption keys at runtime using tools like Frida. The following Frida script demonstrates how to intercept the Realm encryption key and access the contents of the encrypted database.
+
+```javascript
+function nsdataToHex(data) {
+    var hexStr = '';
+    for (var i = 0; i < data.length(); i++) {
+        var byte = Memory.readU8(data.bytes().add(i));
+        hexStr += ('0' + (byte & 0xFF).toString(16)).slice(-2);
+    }
+    return hexStr;
+}
+
+function HookRealm() {
+    if (ObjC.available) {
+        console.log("ObjC is available. Attempting to intercept Realm classes...");
+        const RLMRealmConfiguration = ObjC.classes.RLMRealmConfiguration;
+        Interceptor.attach(ObjC.classes.RLMRealmConfiguration['- setEncryptionKey:'].implementation, {
+            onEnter: function(args) {
+                var encryptionKeyData = new ObjC.Object(args[2]);
+                console.log(`Encryption Key Length: ${encryptionKeyData.length()}`);
+                // Hexdump the encryption key
+                var encryptionKeyBytes = encryptionKeyData.bytes();
+                console.log(hexdump(encryptionKeyBytes, {
+                    offset: 0,
+                    length: encryptionKeyData.length(),
+                    header: true,
+                    ansi: true
+                }));
+
+                // Convert the encryption key bytes to a hex string
+                var encryptionKeyHex = nsdataToHex(encryptionKeyData);
+                console.log(`Encryption Key Hex: ${encryptionKeyHex}`);
+            },
+            onLeave: function(retval) {
+                console.log('Leaving RLMRealmConfiguration.- setEncryptionKey:');
+            }
+        });
+        
+    }
+       
+}
+```
+
 #### Couchbase Lite Databases
 
 [Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is a lightweight, embedded, document-oriented (NoSQL) database engine that can be synced. It compiles natively for iOS and macOS.

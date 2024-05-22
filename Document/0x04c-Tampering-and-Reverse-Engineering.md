@@ -123,7 +123,7 @@ Control flow flattening replaces original code with a more complex representatio
 
 <img src="Images/Chapters/0x06j/control-flow-flattening.png" width="100%" />
 
-The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
+The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](https://web.archive.org/web/20240414202600/http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
 
 #### Dead Code Injection
 
@@ -165,7 +165,7 @@ QEMU based emulators for Android take into consideration the RAM, CPU, battery p
 
 In simple words, an emulator is a much closer imitation of the targeted platform, while a simulator mimics only a part of it.
 
-Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, because no free or open source emulator exists for iOS (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). The only iOS emulator available is a commercial SaaS solution - [Corellium](0x06c-Reverse-Engineering-and-Tampering.md#corellium). We'll provide an overview of popular emulation-based analysis frameworks for Android in the "Tampering and Reverse Engineering on Android" chapter.
+Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, because no free or open source emulator exists for iOS (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). The only iOS emulator available is a commercial SaaS solution - [Corellium](../techniques/ios/MASTG-TECH-0088.md#corellium).
 
 ### Custom Tooling with Reverse Engineering Frameworks
 
