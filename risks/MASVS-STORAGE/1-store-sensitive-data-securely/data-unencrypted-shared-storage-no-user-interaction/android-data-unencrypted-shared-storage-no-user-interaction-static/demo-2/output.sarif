@@ -11,23 +11,23 @@
       "results": [
         {
           "fingerprints": {
-            "matchBasedId/v1": "6aa4b8588a882dd4bcdb3d056b354663e9b7d6df919b1b9b26fd7f39f23b73467dd1a055148a14b9544c442214fcbb672a91534d0d59aa9d0ee720f2e2e668f4_0"
+            "matchBasedId/v1": "2b2ee4534454b35a0c8626a956eaf30a07b616097ca262d4f67128446dfb9fd17683ce8480f92ec0ebb0aa0830bcd81c298817c107317b8482db1e7f5c49629d_0"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "AndroidManifest.xml",
+                  "uri": "AndroidManifest_reversed.xml",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
-                  "endColumn": 77,
-                  "endLine": 5,
+                  "endColumn": 78,
+                  "endLine": 2,
                   "snippet": {
-                    "text": "    <uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />"
+                    "text": "    <uses-permission android:name=\"android.permission.MANAGE_EXTERNAL_STORAGE\"/>"
                   },
                   "startColumn": 55,
-                  "startLine": 5
+                  "startLine": 2
                 }
               }
             }
@@ -69,27 +69,6 @@
                 "level": "warning"
               },
               "fullDescription": {
-                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
-              },
-              "help": {
-                "markdown": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary",
-                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
-              },
-              "id": "rules.mastg-android-data-unencrypted-external-api",
-              "name": "rules.mastg-android-data-unencrypted-external-api",
-              "properties": {
-                "precision": "very-high",
-                "tags": []
-              },
-              "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-api"
-              }
-            },
-            {
-              "defaultConfiguration": {
-                "level": "warning"
-              },
-              "fullDescription": {
                 "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
               },
               "help": {
@@ -104,6 +83,27 @@
               },
               "shortDescription": {
                 "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-manifest"
+              }
+            },
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+              },
+              "help": {
+                "markdown": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary",
+                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+              },
+              "id": "rules.mastg-android-data-unencrypted-external-api",
+              "name": "rules.mastg-android-data-unencrypted-external-api",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-api"
               }
             }
           ],
