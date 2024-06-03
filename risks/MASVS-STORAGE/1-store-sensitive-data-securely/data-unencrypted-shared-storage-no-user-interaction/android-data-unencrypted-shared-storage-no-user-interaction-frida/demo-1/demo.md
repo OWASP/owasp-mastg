@@ -5,7 +5,7 @@ tools: [frida]
 code: [kotlin]
 ---
 
-### Sample
+### Demo
 
 The snippet below shows sample code that creates a file in external storage.
 

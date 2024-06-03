@@ -5,7 +5,7 @@ tools: [semgrep]
 code: [kotlin]
 ---
 
-### Sample
+### Demo
 
 {{ use-of-external-store.kt }}
 
