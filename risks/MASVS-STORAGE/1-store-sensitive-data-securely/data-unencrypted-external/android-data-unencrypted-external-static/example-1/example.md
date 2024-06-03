@@ -19,14 +19,11 @@ Let's run our semgrep rule against the sample code.
 
 ### Observation
 
-The rule has identified 1 location in the code file where a path to external storage is retuened. Make sure you don't store unencrypted data there unintentionally.
+The rule has identified one location in the code file where a path to external storage is returned.
 
 {{ output.txt }}
 
 ### Evaluation
 
-Review each of the reported instances. In this case, it's only one instance. Line 9 shows the occurrence of API that returns external storage location. Make sure to either:
-- encrypt this file if necessary
-- move the file to the internal storage
-- keep the file in the same location if intended and secure
+Review the decompiled code at the location specified in the output (file and line number). This test fails because the file written by this instance contains sensitive data, specifically a password.
 

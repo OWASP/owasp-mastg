@@ -1,6 +1,6 @@
 ---
-title: Sensitive Data Stored in Shared Storage Requiring No User Interaction
-alias: data-unencrypted-external
+title: Sensitive Data Stored Unencrypted in Shared Storage Requiring No User Interaction
+alias: data-unencrypted-shared-storage-no-user-interaction
 platform: [android]
 profiles: [L1, L2]
 mappings:

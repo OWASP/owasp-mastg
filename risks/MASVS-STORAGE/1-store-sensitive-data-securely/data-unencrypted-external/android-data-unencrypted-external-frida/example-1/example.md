@@ -7,7 +7,7 @@ code: [kotlin]
 
 ### Sample
 
-The snippet below shows sample code that creates a file in external storage. You can put this code into your app and follow the steps below to identify a potential data leak.
+The snippet below shows sample code that creates a file in external storage.
 
 {{ snippet.kt }}
 
@@ -21,10 +21,10 @@ The snippet below shows sample code that creates a file in external storage. You
 
 ### Observation
 
-There is only one file written to the external storage - `/storage/emulated/0/Android/data/com.gs.owasp_storage_app1/files/secret.json`. Make sure you don't store unencrypted data there unintentionally.
+There is only one file written to the external storage - `/storage/emulated/0/Android/data/org.owasp.mastestapp/files/secret.json`.
 
 {{ output.txt }}
 
 ### Evaluation
 
-Review each warning in the output file and make sure you intended to store this file in the external storage.
+This test fails since the file contains a password.
