@@ -7,11 +7,11 @@ code: [kotlin]
 
 ### Demo
 
-{{ use-of-external-store.kt }}
+{{ MastgTest.kt }}
 
 ### Steps
 
-Let's run our semgrep rule against the sample code.
+Let's run our semgrep rule against the reversed java code.
 
 {{ ../rules/mastg-android-data-unencrypted-external.yml }}
 

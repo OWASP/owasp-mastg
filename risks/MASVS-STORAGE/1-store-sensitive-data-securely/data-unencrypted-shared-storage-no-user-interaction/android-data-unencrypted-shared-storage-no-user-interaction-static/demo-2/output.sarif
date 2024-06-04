@@ -11,7 +11,7 @@
       "results": [
         {
           "fingerprints": {
-            "matchBasedId/v1": "2b2ee4534454b35a0c8626a956eaf30a07b616097ca262d4f67128446dfb9fd17683ce8480f92ec0ebb0aa0830bcd81c298817c107317b8482db1e7f5c49629d_0"
+            "matchBasedId/v1": "4f4da620f6961a9f5dc3861a6ead2be3dac9f043e8beff0c84200108663f19c8083459d308024a924a78f3301bb886eaac9699eee70be6a890110bca7aec4267_0"
           },
           "locations": [
             {
@@ -36,7 +36,7 @@
             "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
           },
           "properties": {},
-          "ruleId": "rules.mastg-android-data-unencrypted-external-manifest"
+          "ruleId": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest"
         }
       ],
       "tool": {
@@ -48,20 +48,41 @@
                 "level": "warning"
               },
               "fullDescription": {
+                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+              },
+              "help": {
+                "markdown": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary",
+                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+              },
+              "id": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api",
+              "name": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api"
+              }
+            },
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
                 "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
               },
               "help": {
                 "markdown": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps",
                 "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
               },
-              "id": "rules.mastg-android-data-unencrypted-external-mediastore",
-              "name": "rules.mastg-android-data-unencrypted-external-mediastore",
+              "id": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-mediastore",
+              "name": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-mediastore",
               "properties": {
                 "precision": "very-high",
                 "tags": []
               },
               "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-mediastore"
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-mediastore"
               }
             },
             {
@@ -75,35 +96,14 @@
                 "markdown": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary",
                 "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
               },
-              "id": "rules.mastg-android-data-unencrypted-external-manifest",
-              "name": "rules.mastg-android-data-unencrypted-external-manifest",
+              "id": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest",
+              "name": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest",
               "properties": {
                 "precision": "very-high",
                 "tags": []
               },
               "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-manifest"
-              }
-            },
-            {
-              "defaultConfiguration": {
-                "level": "warning"
-              },
-              "fullDescription": {
-                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
-              },
-              "help": {
-                "markdown": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary",
-                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
-              },
-              "id": "rules.mastg-android-data-unencrypted-external-api",
-              "name": "rules.mastg-android-data-unencrypted-external-api",
-              "properties": {
-                "precision": "very-high",
-                "tags": []
-              },
-              "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-external-api"
+                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest"
               }
             }
           ],

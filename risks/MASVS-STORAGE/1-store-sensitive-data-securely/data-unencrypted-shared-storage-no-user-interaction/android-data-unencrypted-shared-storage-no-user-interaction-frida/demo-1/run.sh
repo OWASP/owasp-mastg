@@ -8,6 +8,6 @@
 
 frida \
     -U \
-    -f com.gs.owasp_storage_app2 \
+    -f org.owasp.mastestapp \
     -l script.js \
     -o output.txt

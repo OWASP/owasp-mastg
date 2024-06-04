@@ -7,7 +7,7 @@ code: [xml]
 
 ### Demo
 
-{{ AndroidManifest_reversed.xml }}
+{{ AndroidManifest.xml }}
 
 ### Steps
 

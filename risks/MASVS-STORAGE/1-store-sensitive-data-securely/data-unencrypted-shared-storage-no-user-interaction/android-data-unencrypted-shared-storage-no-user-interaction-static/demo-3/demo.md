@@ -7,7 +7,7 @@ code: [kotlin]
 
 ### Demo
 
-{{ use-of-mediastore.kt }}
+{{ MastgTest.kt }}
 
 ### Steps
 
@@ -19,7 +19,7 @@ Let's run our semgrep rule against the sample code.
 
 ### Observation
 
-The rule has identified 5 locations in the code which refer to the same MediaStore use.
+The rule has identified 2 locations that indicate a use of MediaStore API.
 
 {{ output.txt }}
 
