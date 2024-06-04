@@ -12,9 +12,9 @@ mappings:
 
 ## Overview
 
-Apps frequently opt to store data in the external storage due to its larger capacity and the ability to share files with other apps. However, this convenience comes with a potential drawback. Data stored on external devices like SD cards can be accessed not only by other apps on the device, given the right permissions, but also if the external storage is physically removed. This means that files meant to be private might unintentionally become public. Even if the external storage is emulated by the system, the risk arises from improper file permissions or the misuse of APIs for saving files. In such cases, files become vulnerable to unauthorized modifications and deletions, posing a security threat to the application. 
+Apps frequently opt to store data in the external storage due to its larger capacity. However, this convenience comes with a potential security drawback. Once a malicious app is granted the relevant permissions, it can access this data without user consent or interaction at any time. Additionally, external storage like SD cards can be physically removed and read by a malicious actor. Even if the external storage is emulated by the system, the risk arises from improper file permissions or the misuse of APIs for saving files. In such cases, the files become vulnerable to unauthorized access, modifications and deletions, posing a security threat to the application.
 
-Developers may consider switching to the internal storage if they need more privacy and security. However, if the external storage is the most suitable for the app, it's a good practise to encrypt data stored in the external storage. Below you can find potential security impacts and mitigations linked to the use of the external storage.
+Developers may consider switching to Private Storage or Shared Storage Requiring User Interaction if they need more privacy and security. However, if the external storage is the most suitable for the app, it's a good practise to encrypt data stored in the external storage. Below you can find potential security impacts and mitigations linked to the use of the external storage.
 
 
 ## Impact
@@ -38,6 +38,7 @@ This threat is primarily a concern for Android devices since they permit the use
 - **Encryption Used is Insufficient**: Sensitive data is encrypted but the encryption is not considered to be strong.
 - **Reuse of encryption key**: The encryption key is shared between two devices owned by a single user, enabling the process of data cloning between these devices in the external storage.
 
+On iOS, apps cannot directly write to or read from the arbitrary locations, as compared to desktop operating system or Android. iOS maintains strict sandboxing rules, meaning apps can only access their own sandboxed file directories.
 
 ## Mitigations
 
