@@ -17,7 +17,7 @@ Comparing the list of all files in the shared and external storage before and af
 
 3. Execute `run_before.sh` before opening the app to mark the timestamp.
 
-4. Excercise the app
+4. Exercise the app
 
 5. Execute `run_after.sh` to list all the files created by the app in the external storage.
 

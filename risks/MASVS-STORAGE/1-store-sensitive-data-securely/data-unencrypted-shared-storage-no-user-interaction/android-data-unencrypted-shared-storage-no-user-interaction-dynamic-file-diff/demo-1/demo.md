@@ -15,7 +15,7 @@ The snippet below shows sample code that creates a file in external storage.
 
 1. Install an app on your device
 2. Execute `run_before.sh`
-3. Open an app and excercise it to trigger file creations
+3. Open an app and exercise it to trigger file creations
 4. Execute `run_after.sh`
 5. Close the app once you finish testing
 
