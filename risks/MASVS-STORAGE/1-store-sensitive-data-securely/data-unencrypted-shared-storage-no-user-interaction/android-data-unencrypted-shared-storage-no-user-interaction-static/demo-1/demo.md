@@ -1,19 +1,19 @@
 ---
 platform: android
-title: Find common APIs that return paths to External Storage locations
+title: Find common APIs that return paths to Public External Storage locations
 tools: [semgrep]
 code: [kotlin]
 ---
 
-### Demo
+### Sample
 
-{{ MastgTest.kt }}
+{{ MastgTest_reversed.java }}
 
 ### Steps
 
 Let's run our semgrep rule against the reversed java code.
 
-{{ ../rules/mastg-android-data-unencrypted-external.yml }}
+{{ ../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction.yml }}
 
 {{ run.sh }}
 

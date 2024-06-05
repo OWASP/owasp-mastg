@@ -13,3 +13,15 @@ Interceptor.attach(Module.getExportByName(null, 'open'), {
         });
     }
 });
+
+Java.perform(function() {
+    let ContentResolver = Java.use("android.content.ContentResolver");
+    ContentResolver["insert"].implementation = function (uri, values) {
+        var result = this["insert"](uri, values);
+        console.log('[WARNING] Opening a file with MediaStore at:', result)
+        Java.performNow(function() {
+            console.log("Invoked from: "+Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()))
+        });
+        return result
+    };
+})

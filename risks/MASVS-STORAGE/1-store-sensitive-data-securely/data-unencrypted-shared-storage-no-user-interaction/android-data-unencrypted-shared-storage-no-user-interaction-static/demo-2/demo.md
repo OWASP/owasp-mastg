@@ -1,17 +1,17 @@
 ---
 platform: android
-title: Find permissions that allows an app to write to locations shared with other apps
+title: Find common APIs that return paths to Scoped External Storage locations
 tools: [semgrep]
-code: [xml]
+code: [kotlin]
 ---
 
-### Demo
+### Sample
 
-{{ AndroidManifest.xml }}
+{{ MastgTest_reversed.java }}
 
 ### Steps
 
-Let's run our semgrep rule against the sample manifest file.
+Let's run our semgrep rule against the reversed java code.
 
 {{ ../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction.yml }}
 
@@ -19,11 +19,11 @@ Let's run our semgrep rule against the sample manifest file.
 
 ### Observation
 
-The rule has identified that the manifest file declares `MANAGE_EXTERNAL_STORAGE` permission.
+The rule has identified one location in the code file where a path to scoped external storage is returned.
 
 {{ output.txt }}
 
 ### Evaluation
 
-Review your code to make sure you don't store sensitive unencrypted data in the external storage unintentionally.
+Review the decompiled code at the location specified in the output (file and line number). This test fails because the file written by this instance contains sensitive data, specifically a password.
 

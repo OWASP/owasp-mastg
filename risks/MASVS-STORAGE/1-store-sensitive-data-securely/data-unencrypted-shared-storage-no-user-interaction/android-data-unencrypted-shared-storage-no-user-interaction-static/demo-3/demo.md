@@ -5,9 +5,9 @@ tools: [semgrep]
 code: [kotlin]
 ---
 
-### Demo
+### Sample
 
-{{ MastgTest.kt }}
+{{ MastgTest_reversed.java }}
 
 ### Steps
 

@@ -5,11 +5,11 @@ tools: [frida]
 code: [kotlin]
 ---
 
-### Demo
+### Sample
 
 The snippet below shows sample code that creates a file in external storage.
 
-{{ snippet.kt }}
+{{ MastgTest.kt }}
 
 ### Steps
 
