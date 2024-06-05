@@ -16,7 +16,7 @@ Some ambiguity exists when discussing *native apps* for Android as the platform 
 
 The most obvious downside of *native apps* is that they target only one specific platform. To build the same app for both Android and iOS, one needs to maintain two independent code bases, or introduce often complex development tools to port a single code base to two platforms. The following frameworks are an example of the latter and allow you to compile a single codebase for both Android and iOS.
 
-- [Xamarin](https://www.xamarin.com/ "Xamarin")
+- [.NET Maui](https://github.com/dotnet/maui ".Net MAUI")
 - [Google Flutter](https://flutter.dev/ "Google Flutter")
 - [React Native](https://reactnative.dev/ "React Native")
 
