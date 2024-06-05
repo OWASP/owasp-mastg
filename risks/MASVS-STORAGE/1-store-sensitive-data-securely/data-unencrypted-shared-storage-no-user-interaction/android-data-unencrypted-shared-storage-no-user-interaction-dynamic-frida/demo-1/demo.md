@@ -1,6 +1,6 @@
 ---
 platform: android
-title: File Tracing
+title: File Tracing with Frida
 tools: [frida]
 code: [kotlin]
 ---
