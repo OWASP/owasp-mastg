@@ -21,7 +21,6 @@ Comparing the list of all files in the shared and external storage before and af
 
 5. Execute `run_after.sh` to list all the files created by the app in the external storage.
 
-
 ## Observation
 
 The **output** contains a list of files that were created during the excersising the app app.

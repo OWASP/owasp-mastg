@@ -17,10 +17,9 @@ Android apps use a variety of APIs to obtain a file path and store a file. Colle
 
 3. Execute a `run.sh` to spawn an app with Frida and log all interactions with files.
 
-4. Navigate to the screen of the mobile app that you want to analyse. 
+4. Navigate to the screen of the mobile app that you want to analyse.
 
 5. Close the app to stop `frida`
-
 
 ## Observation
 

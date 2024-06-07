@@ -26,5 +26,6 @@ The rule has identified 2 locations that indicate a use of MediaStore API.
 ### Evaluation
 
 Review the reported instances and make sure to either:
+
 - confirm you intended to make this data public
 - store this data in a more strict storage type

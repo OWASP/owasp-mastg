@@ -26,4 +26,3 @@ The rule has identified that the manifest file declares `MANAGE_EXTERNAL_STORAGE
 ### Evaluation
 
 Review your code to make sure you don't store sensitive unencrypted data in the external storage unintentionally.
-

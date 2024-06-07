@@ -10,7 +10,7 @@ type: [static]
 This test looks for Android manifest permissions and APIs that allow an app to write to locations that are shared with other apps. This means that a third-party app with the proper permissions may be able to access data written to these locations. Therefore, this test verifies whether an app:
 
 - declares permissions required to write data to shared locations
-- uses API to obtain location to shared locations 
+- uses API to obtain location to shared locations
 - uses MediaStore API
 
 Additionally, if the "external storage" is actually stored externally, e.g. on an SD card, it can be removed from the device and inserted into a card reader to extract sensitive data.
@@ -42,7 +42,6 @@ If your app stores data with MediaStore API, a third-party app with proper permi
 
 1. Run a [static analysis](../../../../../techniques/android/MASTG-TECH-0014.md) tool on the app to find if it uses storage locations shared with other apps, and identify the calls to those APIs and the relevant permissions.
 
-
 ## Observation
 
 The output should contain a list of permissions and locations where paths to external storage are returned.
@@ -55,4 +54,3 @@ Inspect app's source code using the provided information. The test case fails if
 
 - [Manage all files on a storage device](https://developer.android.com/training/data-storage/manage-all-files)
 - [Access media files from shared storage](https://developer.android.com/training/data-storage/shared/media)
-
