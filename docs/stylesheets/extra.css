@@ -1,0 +1,215 @@
+:root {
+  --md-primary-fg-color: #499FFF;
+}
+
+/* Wider space for pages */
+.md-grid {
+  max-width: 90%;
+}
+
+.md-sidebar--primary {
+  margin-right: 4em;
+}
+
+.md-sidebar--secondary {
+  margin-left: 4em;
+}
+
+/* Maximum space for tables */
+.md-typeset__table {
+  width: 100%;
+}
+
+.md-typeset__table table:not([class]) {
+  display: table
+}
+
+@keyframes pump {
+  0%, 40%, 80%, 100% {
+    transform: scale(1);
+  }
+  20%, 60% {
+    transform: scale(1.15);
+  }
+}
+
+.mas-chip {
+  border: solid 1px var(--md-primary-fg-color);
+  outline:none;
+  text-decoration:none;
+  border-radius: 1.2em;
+  min-width: 5.5em;
+  max-height: 1.6em;
+  padding-left: 0.5em;
+  padding-right: 0.4em;
+}
+
+.masvs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 0.7em 0;
+}
+
+.masvs-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 0.6em;
+
+}
+
+.masvs-chips-title {
+  color: darkgrey;
+  font-size: small;
+  margin: 0 0.5em;
+}
+
+.mas-blue-chip {
+  background-color: #499FFF;
+  color: #fff !important;
+  cursor: default;
+}
+
+.masvs-v1-chip {
+  background-color: #828282;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.masvs-v2-chip {
+  background-color: #499FFF;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+.masvs-v2-chip:hover {
+  background-color: #72b3fe;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mas-dot-blue {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #33CCCC;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mas-dot-green {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #99CC00;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mas-dot-orange {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #FF9900;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.md-footer__inner:not([hidden]){
+  display: none;
+}
+
+.mas-blue-hue {
+  filter: sepia(100%) hue-rotate(190deg) saturate(500%);
+}
+
+.mas-mini-app {
+  border-radius: 5px;
+}
+
+.mas-app-row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1em;
+}
+
+.mas-apps-container {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  margin-left: 20px;
+}
+
+.mas-flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+@media (max-width: 800px) {
+  .mas-flex-container {
+    flex-direction: column;
+  }
+}
+
+.pump {
+  animation: pump 1000ms ease-out;
+}
+
+.grow:hover { transform: scale(1.05); transition: 0.2s;}
+
+.mas-button {
+  text-decoration: none;
+  position: relative;
+  border: none;
+  font-size: 1em;
+  font-weight: bold;
+  font-family: inherit;
+  color: #fff;
+  min-width: 15em;
+  height: 3em;
+  line-height: 2em;
+  text-align: center;
+  background: linear-gradient(90deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background-size: 300%;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.mas-button:hover {
+  animation: ani 8s linear infinite;
+  border: none;
+}
+
+@keyframes ani {
+  0% {
+    background-position: 0%;
+  }
+
+  100% {
+    background-position: 400%;
+  }
+}
+
+.mas-button:before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  background: linear-gradient(90deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background-size: 400%;
+  border-radius: 8px;
+  transition: 1s;
+}
+
+.mas-button:hover::before {
+  filter: blur(20px);
+}
+
+.mas-button:active {
+  background: linear-gradient(32deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+}

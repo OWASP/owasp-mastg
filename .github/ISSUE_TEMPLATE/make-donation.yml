@@ -1,0 +1,91 @@
+name: 💲 Donate to the OWASP Mobile Application Security Project
+description: Thanks for donating to the MAS project!
+title: "💲🎉 New Donation"
+labels: ["org", "donation"]
+assignees:
+  - cpholguera
+  - sushi2k
+body:
+
+  - type: markdown
+    id: intro
+    attributes:
+      value: |
+          **IMPORTANT**: Before opening this issue please go to our [**Donations page**](https://mas.owasp.org/donate) and read all the information.
+          
+          🙏🏻 Thanks a lot!
+        
+  - type: input
+    id: name
+    attributes:
+      label: 🙂 Your Name
+    validations:
+      required: true
+
+  - type: input
+    id: company
+    attributes:
+      label: 🏢 Company Name
+      description: What's the name of your company?
+      placeholder: ex. Nice Security Ltd.
+    validations:
+      required: false
+
+  - type: input
+    id: contact
+    attributes:
+      label: 📧 E-Mail Address
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: true
+
+  - type: input
+    id: amount
+    attributes:
+      label: 💵 Donation Amount
+      description: How much would you like to donate?
+      placeholder: ex. USD 2000, EUR 1000
+    validations:
+      required: false
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: 📦 Donation Package
+      description: Which Donator Package would you like to request?
+      options:
+        - Standard Donation / No package (Donation < USD 500)
+        - Good Samaritan (USD 500; 1 year;  1 paperback MASTG)
+        - Honourable Benefactor (USD 2000 / 8 Available; 2 years; 3 paperback MASTGs)
+        - God Mode Donator (USD 4000 / 5 Available; 3 years; 5 paperback MASTGs)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: paperback
+    attributes:
+      label: 📘 MASTG Paperback Copies
+      description: Would you like to receive the paperback copies of the MASTG as indicated in your Donation Package?
+      options:
+        - 🌱 No, please save the money for the project and help the environment and climate.
+        - 📮 Yes, please send them to me.
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 📋 Code of Conduct and Donation Conditions
+      description: | 
+            By submitting this request, you agree to follow our [**Code of Conduct**](CODE_OF_CONDUCT.md) 
+            and have read and agree to the [**Donation Conditions**](https://mas.owasp.org/donate).
+            > Some important points to consider:
+            > These types of public recognition shall be online no less than one year, 
+            > or in the case of Project no less than the next major release, whichever is greater. 
+            > Some Donation Packages have a maximum duration. Once reached, the logos will be removed 
+            > and the donator will still be listed as supporter on the project website, 
+            > GitHub and in the printed and digital versions. This can be renewed anytime.
+      options:
+        - label: I agree to follow this project's Code of Conduct and Donation conditions.
+          required: true

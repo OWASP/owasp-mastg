@@ -1,0 +1,59 @@
+name: 🪲📲 Bug in MASTG crackmes / challenges Apps
+description: Create a report to help us improve the MASTG.
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+
+  - type: markdown
+    id: intro
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug! If you need real-time help, join us on our [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
+
+  - type: input
+    id: description
+    attributes:
+      label: Describe the issue
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: input
+    id: where
+    attributes:
+      label: App Name
+      description: Name of crackme or challenge app that is broken. See all apps [here](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes).
+      placeholder: e.g. UnCrackable App for Android Level 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: "How do you trigger this bug? Please walk us through it step by step."
+      value: |
+        1.
+        2.
+        3.
+        ...
+      render: bash
+    validations:
+      required: true
+
+  - type: input
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - type: input
+    id: context
+    attributes:
+      label: Additional context
+      description: More context that may help us understand the bug.
+    validations:
+      required: false

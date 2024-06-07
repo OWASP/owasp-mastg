@@ -1,0 +1,23 @@
+name: Markdown Linter
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  markdown-lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: markdownlint-cli
+        uses: nosborn/github-action-markdown-cli@v3.0.1
+        with:
+          files: Document
+          config_file: ".markdownlint.jsonc"
+          ignore_files: "src, node_modules, Crackmes, Samples"

@@ -1,0 +1,47 @@
+name: 🪲📘 Bug report / error in MASTG report
+description: Create a report to help us improve the MASTG.
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+
+  - type: markdown
+    id: intro
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug! 
+        Please give below a clear and concise description of what is missing/ wrongly formulated / misspelled / lacks effectiveness (in terms of detection or remediation).
+        If you need real-time help, join us on our [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
+        
+        **NOTE: Please consider opening a PR directly including your fix, that'd save us a lot of time 🙏🏻 Thanks a lot!**
+
+  - type: input
+    id: chapter
+    attributes:
+      label: MASTG Chapter
+      description: Which chapter contains the bug?
+      placeholder: e.g. 0x05f-Testing-Local-Authentication.md line 30
+    validations:
+      required: true
+
+  - type: input
+    id: line
+    attributes:
+      label: File Line Number
+      description: Which line number?
+      placeholder: e.g. 30
+    validations:
+      required: true
+
+  - type: input
+    id: context
+    attributes:
+      label: Context
+      description: |
+        Please give us context about the issue here. e.g.
+        - Example 1: there's a typo, it should be "through" not "thrugh".
+        - Example 2: this section says that you can do XXXX but since Android XX is not possible anymore.
+        - Example 3: this test requires the tester to do XXXX but that's not working anymore since iOS.
+      placeholder: explain here what happens
+    validations:
+      required: true

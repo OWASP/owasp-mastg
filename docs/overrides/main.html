@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="masvs-chips">
+        {% if page.meta.platform %}
+        <div class="masvs-v1">
+            <span class="masvs-chips-title">Platform</span>
+            <div class="masvs-chip mas-blue-chip">{{ page.meta.platform }}</div>
+        </div>
+        {% endif %}
+
+        {% if page.meta.masvs_category %}
+        <div class="masvs-v2">
+            <span class="masvs-chips-title">MASVS Group</span>
+            <a href="https://mas.owasp.org/MASVS/" class="masvs-chip masvs-v2-chip masvs-category">{{ page.meta.masvs_category }}</a>
+        </div>
+        {% endif %}
+
+        {% if page.meta.masvs_v1_id %}
+        <div class="masvs-v1">
+            <span class="masvs-chips-title">MASVS v1</span>
+            {% for id in page.meta.masvs_v1_id %}
+            <a href="https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0" class="masvs-chip masvs-v1-chip">{{ id }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    
+        {% if page.meta.masvs_v2_id %}
+        <div class="masvs-v2">
+            <span class="masvs-chips-title">MASVS v2</span>
+            {% for id in page.meta.masvs_v2_id %}
+            <a href="https://mas.owasp.org/MASVS/controls/{{ id }}" class="masvs-chip masvs-v2-chip">{{ id }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    {% if page.meta.source %}
+    <span>Available at: </span><a href="{{ page.meta.source }}"> {{ page.meta.source }}</a>
+    <br><br>
+    {% endif %}
+
+    {% if page.meta.last_updated %}
+    <em><small style="color: darkgrey;">Last updated: {{ page.meta.last_updated }}</small></em>
+    <br><br>
+    {% endif %}
+
+    <script>
+        MASVS_COLORS = {
+            "MASVS-STORAGE": "DF5C8D",
+            "MASVS-CRYPTO": "F65928",
+            "MASVS-AUTH": "F09236",
+            "MASVS-NETWORK": "F2C200",
+            "MASVS-PLATFORM": "4FB991",
+            "MASVS-CODE": "5FACD3",
+            "MASVS-RESILIENCE": "317CC0",
+            "MASVS-PRIVACY": "8B5F9E",
+        }
+        var keys = Object.keys(MASVS_COLORS);
+        var elements = document.querySelectorAll('.md-nav__link, .masvs-v2-chip');
+        
+        if (elements.length > 0) {
+            for (const element of elements) {
+                if (element.innerHTML.trim().includes("MASVS-")) {
+                    var elementKey = element.innerHTML.trim();
+                    if (elementKey.includes("\n")) {
+                        for (const part of elementKey.split('\n')) {
+                            if (part.trim().includes("MASVS-")) {
+                                elementKey = RegExp(/MASVS-(NETWORK|STORAGE|CRYPTO|AUTH|NETWORK|PLATFORM|CODE|RESILIENCE|PRIVACY)(-\d)?/).exec(part.trim())[0];
+                            }
+                        }
+                    }
+                    if (keys.some(key => elementKey.startsWith(key))) {
+                        var color = "";
+                        if (elementKey.split("-").length === 3) {
+                            var keyParts = elementKey.split('-');
+                            var category = keyParts.slice(0, keyParts.length - 1).join('-');
+                            
+                            if (element.classList.contains("masvs-v2-chip")) {
+                                color = MASVS_COLORS[category];
+                            }
+                            else {
+                                color = MASVS_COLORS[category] + "b0";
+                            }
+                        }
+                        else {
+                            color = MASVS_COLORS[elementKey];
+                            element.style.fontWeight = "bold";
+                            
+                            if (!element.classList.contains("masvs-category")) {
+                                element.style.fontSize = "1.2em";
+                            }
+                        }
+                        element.style.backgroundColor = "#" + color;
+                        element.style.margin = "0.5em 0.5em 0.5em 0.2em";
+                        element.style.borderRadius = "5px";
+                        element.style.color = "white";
+                        element.style.padding = "0.3em";
+                        if (element.classList.contains("md-nav__link--active")) {
+                            element.style.height = "6em";
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    {{ super() }}
+{% endblock %}

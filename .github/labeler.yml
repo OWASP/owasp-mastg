@@ -1,0 +1,45 @@
+# LABEL List for Workflow labeler.yml job triage
+"iOS":
+- Document/0x06*
+
+"Android":
+- Document/0x05*
+
+"MASVS-STORAGE":
+- Document/0x0[5-6]d*
+
+"MASVS-CRYPTO":
+- Document/0x0[5-6]e*
+
+"MASVS-AUTH":
+- Document/0x0[5-6]f*
+
+"MASVS-NETWORK":
+- Document/0x0[5-6]g*
+
+"MASVS-PLATFORM":
+- Document/0x0[5-6]h*
+
+"MASVS-CODE":
+- Document/0x0[5-6]i*
+
+"MASVS-RESILIENCE":
+- Document/0x0[5-6]j*
+
+"MASVS-PRIVACY":
+- Document/0x04i*
+
+"tests":
+- tests/*
+
+"fundamentals":
+- Document/0x0[5-6][a-b]*
+
+"techniques":
+- techniques/*
+
+"tools":
+- tools/*
+
+"apps":
+- apps/*

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "toolExecutionNotifications": []
+        }
+      ],
+      "results": [
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "3ef38bcac231687abfe61bbaf3500989e846e3f96bfe4fa8a8a7e8faf38e8c320893e3a4db03f0245f425c79e73a4e5018eba6f097ed191ab728a01d4592b8cc_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "MastgTest_reversed.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 51,
+                  "endLine": 22,
+                  "snippet": {
+                    "text": "        double random1 = new Random().nextDouble();"
+                  },
+                  "startColumn": 26,
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-CRYPTO-1] The application makes use of an insecure random number generator."
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-insecure-random-use"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "b0911993c9e40c66148b413cd0d54c46a4ce2898b72f2573ab185319a51cac2051c90e5ffa9be8dddf1d59897f52f6fcdf7c6f3fad52da5c11da364dca9accf6_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "MastgTest_reversed.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 43,
+                  "endLine": 23,
+                  "snippet": {
+                    "text": "        double random2 = 1 + Math.random();"
+                  },
+                  "startColumn": 30,
+                  "startLine": 23
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-CRYPTO-1] The application makes use of an insecure random number generator."
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-insecure-random-use"
+        },
+        {
+          "fingerprints": {
+            "matchBasedId/v1": "75f1103268436669a637eb10463625ce1bef83b3542e834be4cbed44823a3eaa9a947a717a6c4f5dd6d67bd5897bc4a3783b0a5de3edaced9f45b55bb0534fd2_0"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "MastgTest_reversed.java",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "endColumn": 190,
+                  "endLine": 27,
+                  "snippet": {
+                    "text": "            password.append(\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\".charAt(random.nextInt(\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\".length())));"
+                  },
+                  "startColumn": 101,
+                  "startLine": 27
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "[MASVS-CRYPTO-1] The application makes use of an insecure random number generator."
+          },
+          "properties": {},
+          "ruleId": "rules.mastg-android-insecure-random-use"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "fullDescription": {
+                "text": "[MASVS-CRYPTO-1] The application makes use of an insecure random number generator."
+              },
+              "help": {
+                "markdown": "[MASVS-CRYPTO-1] The application makes use of an insecure random number generator.",
+                "text": "[MASVS-CRYPTO-1] The application makes use of an insecure random number generator."
+              },
+              "id": "rules.mastg-android-insecure-random-use",
+              "name": "rules.mastg-android-insecure-random-use",
+              "properties": {
+                "precision": "very-high",
+                "tags": []
+              },
+              "shortDescription": {
+                "text": "Semgrep Finding: rules.mastg-android-insecure-random-use"
+              }
+            }
+          ],
+          "semanticVersion": "1.56.0"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
