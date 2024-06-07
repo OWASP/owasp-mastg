@@ -466,12 +466,15 @@ Let's look at a simple improvement for the method above. After the initial `fork
 - In release mode: The call to ptrace fails and the child crashes immediately with a segmentation fault (exit code 11).
 - In debug mode: The call to ptrace works and the child should run indefinitely. Consequently, a call to `waitpid(child_pid)` should never return. If it does, something is fishy and we would kill the whole process group.
 
+To handle errors in release mode, by calling `prctl(PR_SET_DUMPABLE, 1, 0, 0, 0)` before forking, it is possible to implement anti-debugging regardless of the value of `android:debuggable`.
+
 The following is the complete code for implementing this improvement with a JNI function:
 
 ```c
 #include <jni.h>
 #include <unistd.h>
 #include <sys/ptrace.h>
+#include <sys/prctl.h>
 #include <sys/wait.h>
 #include <pthread.h>
 
@@ -490,6 +493,9 @@ void *monitor_pid() {
 }
 
 void anti_debug() {
+
+    /* Set PR_SET_DUMPABLE to 1 to allow tracing. */
+    prctl(PR_SET_DUMPABLE, 1, 0, 0, 0);
 
     child_pid = fork();
 
