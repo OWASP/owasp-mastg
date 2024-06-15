@@ -48,48 +48,6 @@
                 "level": "warning"
               },
               "fullDescription": {
-                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
-              },
-              "help": {
-                "markdown": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary",
-                "text": "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
-              },
-              "id": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api",
-              "name": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api",
-              "properties": {
-                "precision": "very-high",
-                "tags": []
-              },
-              "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api"
-              }
-            },
-            {
-              "defaultConfiguration": {
-                "level": "warning"
-              },
-              "fullDescription": {
-                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
-              },
-              "help": {
-                "markdown": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps",
-                "text": "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
-              },
-              "id": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-mediastore",
-              "name": "rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-mediastore",
-              "properties": {
-                "precision": "very-high",
-                "tags": []
-              },
-              "shortDescription": {
-                "text": "Semgrep Finding: rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-mediastore"
-              }
-            },
-            {
-              "defaultConfiguration": {
-                "level": "warning"
-              },
-              "fullDescription": {
                 "text": "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
               },
               "help": {
@@ -107,7 +65,7 @@
               }
             }
           ],
-          "semanticVersion": "1.63.0"
+          "semanticVersion": "1.56.0"
         }
       }
     }

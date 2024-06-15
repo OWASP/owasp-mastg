@@ -13,7 +13,7 @@ code: [kotlin]
 
 Let's run our semgrep rule against the reversed java code.
 
-{{ ../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction.yml }}
+{{ ../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-apis.yml }}
 
 {{ run.sh }}
 

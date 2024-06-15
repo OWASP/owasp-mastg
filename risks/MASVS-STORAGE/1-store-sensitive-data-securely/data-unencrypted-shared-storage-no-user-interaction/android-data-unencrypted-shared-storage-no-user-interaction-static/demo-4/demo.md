@@ -13,7 +13,7 @@ code: [xml]
 
 Let's run our semgrep rule against the sample manifest file.
 
-{{ ../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction.yml }}
+{{ ../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest.yml }}
 
 {{ run.sh }}
 
