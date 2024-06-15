@@ -11,19 +11,19 @@ Comparing the list of all files in the shared and external storage before and af
 
 ## Steps
 
-1. Make sure you have ADB installed
+1. Make sure you have ADB installed.
 
 2. Install the app.
 
 3. Execute `run_before.sh` before opening the app to mark the timestamp.
 
-4. Exercise the app
+4. Exercise the app.
 
 5. Execute `run_after.sh` to list all the files created by the app in the external storage.
 
 ## Observation
 
-The **output** contains a list of files that were created during the excersising the app app.
+The **output** contains a list of files that were created during the excersising the app.
 
 ## Evaluation
 

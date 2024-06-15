@@ -23,7 +23,7 @@ The snippet below shows sample code that creates a file in external storage.
 
 ### Observation
 
-There is a list of all created files inside `new_files.txt`. Their content is inside `./new_files/` directory.
+There is a list of all created files inside `output.txt`. Their content is inside the `./new_files/` directory.
 
 {{ output.txt }}
 

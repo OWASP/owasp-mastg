@@ -17,6 +17,7 @@ class MastgTest (private val context: Context){
         mastgTestMediaStore()
         return "SUCCESS!!\n\nFiles have been written with API and MediaStore"
     }
+    
     fun mastgTestApi() {
         val externalStorageDir = context.getExternalFilesDir(null)
         val fileName = File(externalStorageDir, "secret.txt")
