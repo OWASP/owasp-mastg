@@ -39,7 +39,7 @@ This will create a **release.RE.apk** file in the output folder.
 
 2. Sign the patched **release.RE.apk** file (e.g. using the [uber-apk-signer](https://github.com/patrickfav/uber-apk-signer)).
 
-```plaintext
+```bash
 java -jar uber-apk-signer.jar -a release.RE.apk --out demo-signed
 ```
 
@@ -60,8 +60,8 @@ This will create a **release.RE-aligned-debugSigned.apk** file in the output fol
 
 1. Configure [proxyDroid](https://blog.nviso.eu/2019/08/13/intercepting-traffic-from-android-flutter-applications/) or iptables rules to redirect requests to Burp.
 
-Execute the command to configure iptables in order to redirect the incoming requests from the application to Burp.
-```plaintext
+If not using proxyDroid, execute the following commands on the rooted Android device to configure iptables to redirect the incoming requests from the application to Burp:
+```bash
 $ iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080 
 
 $ iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination <Your-Proxy-IP>:8080 
@@ -78,7 +78,7 @@ $ iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination <Your-Pr
 
 4. Run the [disable-flutter-tls.js](../../tools/generic/MASTG-TOOL-0101.md) frida script.
 
-```plaintext
+```bash
 frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
 ```
 
