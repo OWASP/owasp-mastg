@@ -64,7 +64,7 @@ This will create a **release.RE.ipa** file in the output folder.
 
 4. Run the [disable-flutter-tls.js](../../tools/generic/MASTG-TOOL-0101.md) frida script.
 
-```plaintext
+```bash
 frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
 ```
 
