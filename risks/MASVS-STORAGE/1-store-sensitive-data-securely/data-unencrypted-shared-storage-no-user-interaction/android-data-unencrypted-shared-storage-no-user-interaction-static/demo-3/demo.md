@@ -1,11 +1,15 @@
 ---
 platform: android
-title: Find MediaStore APIs that writes data to locations shared with other apps
+title: App Writing to External Storage via the MediaStore API
 tools: [semgrep]
 code: [kotlin]
 ---
 
 ### Sample
+
+The snippet below shows sample code that uses the `MediaStore` API to write a file to shared storage in a path like `/storage/emulated/0/Download/` which does not require any permissions to access and is shared with other apps.
+
+{{ MastgTest.kt }}
 
 {{ MastgTest_reversed.java }}
 
@@ -23,9 +27,8 @@ The rule has identified 2 locations that indicate a use of MediaStore API.
 
 {{ output.txt }}
 
+The first location is the import statement for the `MediaStore` API and the second location is where the `MediaStore` API is used to write to shared storage.
+
 ### Evaluation
 
-Review the reported instances and make sure to either:
-
-- confirm you intended to make this data public
-- store this data in a more strict storage type
+After reviewing the decompiled code at the locations specified in the output (file and line number) we can conclude that the test fails because the file written by this instance contains sensitive data, specifically a API key.

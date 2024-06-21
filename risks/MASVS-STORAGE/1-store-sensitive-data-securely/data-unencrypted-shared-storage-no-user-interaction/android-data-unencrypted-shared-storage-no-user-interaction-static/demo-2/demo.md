@@ -1,11 +1,15 @@
 ---
 platform: android
-title: Find common APIs that return paths to Scoped External Storage locations
+title: App Writing to External Storage with Scoped Storage Restrictions
 tools: [semgrep]
 code: [kotlin]
 ---
 
 ### Sample
+
+The snippet below shows sample code that creates a file in external storage using the `getExternalFilesDir` API which returns a path to the app's external files directory (e.g. `/storage/emulated/0/Android/data/org.owasp.mastestapp/files`) and does not require any permissions to access. Scoped storage applies since the app targets Android 12 (API level 31) which is higher than Android 10 (API level 29).
+
+{{ MastgTest.kt }}
 
 {{ MastgTest_reversed.java }}
 
@@ -19,10 +23,10 @@ Let's run our semgrep rule against the reversed java code.
 
 ### Observation
 
-The rule has identified one location in the code file where a path to scoped external storage is returned.
+The rule has identified one location in the code file where an API, `getExternalFilesDir`, is used to write to external storage with scoped storage restrictions.
 
 {{ output.txt }}
 
 ### Evaluation
 
-Review the decompiled code at the location specified in the output (file and line number). This test fails because the file written by this instance contains sensitive data, specifically a password.
+After reviewing the decompiled code at the location specified in the output (file and line number) we can conclude that the test fails because the file written by this instance contains sensitive data, specifically a password.

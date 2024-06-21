@@ -1,17 +1,21 @@
 ---
 platform: android
-title: Find common APIs that return paths to Public External Storage locations
+title: App Writing to External Storage without Scoped Storage Restrictions
 tools: [semgrep]
 code: [kotlin, xml]
 ---
 
 ### Sample
 
-The snippet below shows sample code that creates a file in external storage.
+The snippet below shows sample code that creates a file in external storage without using scoped storage APIs. The `getExternalStorageDirectory` API returns a path to the root of the shared external storage (e.g. `/storage/emulated/0`).
+
+{{ MastgTest.kt }}
 
 {{ MastgTest_reversed.java }}
 
-This requires special app access called ["All files access"](https://developer.android.com/preview/privacy/storage#all-files-access), so the following permission must be declared in the manifest file.
+This requires special app access called ["All files access"](https://developer.android.com/preview/privacy/storage#all-files-access), so the `MANAGE_EXTERNAL_STORAGE` permission must be declared in the manifest file.
+
+{{ AndroidManifest.xml }}
 
 {{ AndroidManifest_reversed.xml }}
 
