@@ -38,7 +38,7 @@ public final class MastgTest {
                 if (outputStream != null) {
                     OutputStream outputStream2 = outputStream;
                     OutputStream it = outputStream2;
-                    byte[] bytes = "Secret data".getBytes(Charsets.UTF_8);
+                    byte[] bytes = "MAS_API_KEY=8767086b9f6f976g-a8df76\n".getBytes(Charsets.UTF_8);
                     Intrinsics.checkNotNullExpressionValue(bytes, "this as java.lang.String).getBytes(charset)");
                     it.write(bytes);
                     it.flush();

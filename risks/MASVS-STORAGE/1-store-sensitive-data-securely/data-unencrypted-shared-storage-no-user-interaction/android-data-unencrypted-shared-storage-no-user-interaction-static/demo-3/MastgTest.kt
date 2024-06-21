@@ -22,7 +22,7 @@ class MastgTest (private val context: Context){
             textUri?.let {
                 val outputStream: OutputStream? = resolver.openOutputStream(it)
                 outputStream?.use {
-                    it.write("Secret data".toByteArray())
+                    it.write("MAS_API_KEY=8767086b9f6f976g-a8df76\n".toByteArray())
                     it.flush()
                 }
                 Log.d("MediaStore", "File written to external storage successfully.")

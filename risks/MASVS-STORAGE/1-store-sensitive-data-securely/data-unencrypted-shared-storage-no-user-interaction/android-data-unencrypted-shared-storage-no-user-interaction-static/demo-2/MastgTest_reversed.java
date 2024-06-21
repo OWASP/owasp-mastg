@@ -27,12 +27,12 @@ public final class MastgTest {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             FileOutputStream output = fileOutputStream;
-            byte[] bytes = "Secret may use scoped storage depending on Android version".getBytes(Charsets.UTF_8);
+            byte[] bytes = "secr3tPa$$W0rd\n".getBytes(Charsets.UTF_8);
             Intrinsics.checkNotNullExpressionValue(bytes, "this as java.lang.String).getBytes(charset)");
             output.write(bytes);
             Log.d("WriteExternalStorage", "File written to external storage successfully.");
             CloseableKt.closeFinally(fileOutputStream, null);
-            return "SUCCESS!!\n\nFile " + fileName + " with content Secret may use scoped storage depending on Android version saved to " + externalStorageDir;
+            return "SUCCESS!!\n\nFile " + fileName + " with content secr3tPa$$W0rd\n saved to " + externalStorageDir;
         } catch (IOException e) {
             Log.e("WriteExternalStorage", "Error writing file to external storage", e);
             return "ERROR!!\n\nError writing file to external storage";
