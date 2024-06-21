@@ -1,13 +1,12 @@
 ---
 platform: android
-title: Listing Files Stored to External Locations on Runtime
-apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, SharedPreferences, FileOutPutStream]
+title: Files Written to External Storage
 type: [dynamic]
 ---
 
 ## Overview
 
-Comparing the list of all files in the shared and external storage before and after excersising the app may reveal sensitive files stored unintentionally.
+The goal of this test is to simply retrieve the files and inspect them regardless of the APIs used to write them. Therefore, we'll use a simple approach that consists of getting the list of all files in the shared and external storage before and after the app is exercised, and then comparing them, as this may reveal sensitive files that were unintentionally stored.
 
 ## Steps
 
@@ -28,11 +27,3 @@ The **output** contains a list of files that were created during the excersising
 ## Evaluation
 
 The test case fails if the files found above are not encrypted and leak sensitive data.
-
-For example, the following output shows sample files that should be manually inspected.
-
-```shell
-/storage/emulated/0/Android/data/com.example/keys.json
-/storage/emulated/0/Android/data/com.example/files/config.xml
-/sdcard/secret.txt"
-```

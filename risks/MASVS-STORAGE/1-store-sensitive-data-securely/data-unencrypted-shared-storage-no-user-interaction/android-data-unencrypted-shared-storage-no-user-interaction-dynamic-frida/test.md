@@ -1,7 +1,7 @@
 ---
 platform: android
-title: Data Stored to External Locations on Runtime
-apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, SharedPreferences, FileOutPutStream]
+title: Runtime Use of APIs to Access External Storage
+apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, FileOutPutStream]
 type: [dynamic]
 ---
 
@@ -11,7 +11,7 @@ Android apps use a variety of APIs to obtain a file path and store a file. Colle
 
 ## Steps
 
-1. Make sure you have Frida installed
+1. Make sure you have Frida installed.
 
 2. Install the app.
 
@@ -19,20 +19,14 @@ Android apps use a variety of APIs to obtain a file path and store a file. Colle
 
 4. Navigate to the screen of the mobile app that you want to analyse.
 
-5. Close the app to stop `frida`
+5. Close the app to stop Frida.
 
 ## Observation
 
-The **method trace output** contains a list of file locations that your app interacts with. You may need to use [adb shell](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0002/) to inspect these files manually.
+The **method trace output** contains a list of file locations that your app interacts with.
 
 ## Evaluation
 
 The test case fails if the files found above are not encrypted and leak sensitive data.
 
-For example, the following output shows sample files that should be manually inspected.
-
-```shell
-/storage/emulated/0/Android/data/com.example/keys.json
-/storage/emulated/0/Android/data/com.example/files/config.xml
-/sdcard/secret.txt"
-```
+You can inspect those files manually using [adb shell](https://mas.owasp.org/MASTG/techniques/android/MASTG-TECH-0002/) to retrieve them from the device.
