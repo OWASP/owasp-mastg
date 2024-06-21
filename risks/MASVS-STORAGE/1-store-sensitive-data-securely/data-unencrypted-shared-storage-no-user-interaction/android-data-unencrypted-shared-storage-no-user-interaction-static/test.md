@@ -13,7 +13,8 @@ This static test is great for identifying all code locations where the app is wr
 
 ## Steps
 
-1. Run a [static analysis](../../../../../techniques/android/MASTG-TECH-0014.md) tool on the reverse engineered app calls to any external storage APIs and Android manifest storage permissions.
+1. [Reverse engineer the app](../../../../../techniques/android/MASTG-TECH-0017.md).
+2. Run a [static analysis](../../../../../techniques/android/MASTG-TECH-0014.md) tool on the reverse engineered app targeting calls to any external storage APIs and Android manifest storage permissions.
 
 ## Observation
 
@@ -28,7 +29,7 @@ The test case fails if:
 - the app has the proper permissions declared in the Android manifest (e.g. `WRITE_EXTERNAL_STORAGE`, `MANAGE_EXTERNAL_STORAGE`, etc.)
 - **and** the data being written to shared storage is sensitive and not encrypted.
 
-To determine the latter, you may need to carefully review the reversed code and/or combine this test with others that take a dynamic approach, as this will provide a more complete view of the data being written to shared storage.
+To determine the latter, you may need to carefully [review the reversed code](../../../../../techniques/android/MASTG-TECH-0023.md) and/or combine this test with others that take a dynamic approach, as this will provide a more complete view of the data being written to shared storage.
 
 ## References
 
