@@ -1,4 +1,3 @@
-Log.d("ProfileInstaller", "Installing profile for com.owasp.mas.maswebview")
 Log.v("MASTG", "key: MAS-Sensitive-Value")
 Log.i("MASTG", "key: MAS-Sensitive-Password")
 Log.w("MASTG", "test: MAS-Sensitive-Value-IV")

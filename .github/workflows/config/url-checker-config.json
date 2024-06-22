@@ -73,6 +73,12 @@
             "pattern": "^https://secrary.com/"
         },
         {
+            "pattern": "^https://www.reddit.com/r/"
+        },
+        {
+            "pattern": "^https://www.netspi.com/blog/technical-blog/"
+        },
+        {
             "pattern": "^MASTG/"
         },
         {

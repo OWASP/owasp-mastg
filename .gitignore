@@ -23,3 +23,5 @@ owasp-masvs
 __pycache__
 venv/
 playground/
+__handlers__
+*.apk

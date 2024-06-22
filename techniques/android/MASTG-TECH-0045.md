@@ -39,7 +39,7 @@ jniEnv              0x7d30a43c60
 Search all symbols of a certain module with `:is <lib>`, e.g. `:is libnative-lib.so`.
 
 ```bash
-[0x00000000]> \is libnative-lib.so
+[0x00000000]> :is libnative-lib.so
 
 [0x00000000]>
 ```
@@ -59,12 +59,12 @@ And list the exports with `:iE <lib>`:
 0x7d1c49954c f Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
 ```
 
-> For big binaries it's recommended to pipe the output to the internal less program by appending `~..`, i.e. `\ii libandroid_runtime.so~..` (if not, for this binary, you'd get almost 2500 lines printed to your terminal).
+> For big binaries it's recommended to pipe the output to the internal less program by appending `~..`, i.e. `:ii libandroid_runtime.so~..` (if not, for this binary, you'd get almost 2500 lines printed to your terminal).
 
 The next thing you might want to look at are the **currently loaded** Java classes:
 
 ```bash
-[0x00000000]> \ic~sg.vantagepoint.helloworldjni
+[0x00000000]> :ic~sg.vantagepoint.helloworldjni
 sg.vantagepoint.helloworldjni.MainActivity
 ```
 

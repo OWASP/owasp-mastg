@@ -9,7 +9,7 @@ Thanks to tools like [objection](0x08a-Testing-Tools.md#objection), you can patc
 
 Now you can use objection to dynamically analyze the application on non-rooted devices.
 
-The following commands summarize how to patch and start dynamic analysis using objection using the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) as an example:
+The following commands summarize how to patch and start dynamic analysis using objection using the [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md) as an example:
 
 ```bash
 # Download the Uncrackable APK

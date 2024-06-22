@@ -25,10 +25,10 @@ Once in the r2frida session, all commands start with `:`. For example, in radare
 
 ### Memory Maps and Inspection
 
-You can retrieve the app's memory maps by running `\dm`. The output in Android can get very long (e.g. between 1500 and 2000 lines), to narrow your search and see only what directly belongs to the app apply a grep (`~`) by package name `\dm~<package_name>`:
+You can retrieve the app's memory maps by running `:dm`. The output in Android can get very long (e.g. between 1500 and 2000 lines), to narrow your search and see only what directly belongs to the app apply a grep (`~`) by package name `:dm~<package_name>`:
 
 ```bash
-[0x00000000]> \dm~sg.vantagepoint.helloworldjni
+[0x00000000]> :dm~sg.vantagepoint.helloworldjni
 0x000000009b2dc000 - 0x000000009b361000 rw- /dev/ashmem/dalvik-/data/app/sg.vantagepoint.helloworldjni-1/oat/arm64/base.art (deleted)
 0x000000009b361000 - 0x000000009b36e000 --- /dev/ashmem/dalvik-/data/app/sg.vantagepoint.helloworldjni-1/oat/arm64/base.art (deleted)
 0x000000009b36e000 - 0x000000009b371000 rw- /dev/ashmem/dalvik-/data/app/sg.vantagepoint.helloworldjni-1/oat/arm64/base.art (deleted)
@@ -45,12 +45,12 @@ You can retrieve the app's memory maps by running `\dm`. The output in Android c
 0x0000007dc05db000 - 0x0000007dc05dc000 r-- /data/app/sg.vantagepoint.helloworldjni-1/oat/arm64/base.art
 ```
 
-While you're searching or exploring the app memory, you can always verify where you're located at each moment (where your current offset is located) in the memory map. Instead of noting and searching for the memory address in this list you can simply run `\dm.`. You'll find an example in the following section "In-Memory Search".
+While you're searching or exploring the app memory, you can always verify where you're located at each moment (where your current offset is located) in the memory map. Instead of noting and searching for the memory address in this list you can simply run `:dm.`. You'll find an example in the following section "In-Memory Search".
 
-If you're only interested in the modules (binaries and libraries) that the app has loaded, you can use the command `\il` to list them all:
+If you're only interested in the modules (binaries and libraries) that the app has loaded, you can use the command `:il` to list them all:
 
 ```bash
-[0x00000000]> \il
+[0x00000000]> :il
 0x000000558b1fd000 app_process64
 0x0000007dbc859000 libandroid_runtime.so
 0x0000007dbf5d7000 libbinder.so
@@ -96,10 +96,10 @@ You can even directly see the size and the path to that binary in the Android fi
 
 In-memory search is a very useful technique to test for sensitive data that might be present in the app memory.
 
-See r2frida's help on the search command (`\/?`) to learn about the search command and get a list of options. The following shows only a subset of them:
+See r2frida's help on the search command (`:/?`) to learn about the search command and get a list of options. The following shows only a subset of them:
 
 ```bash
-[0x00000000]> \/?
+[0x00000000]> :/?
  /      search
  /j     search json
  /w     search wide
@@ -109,10 +109,10 @@ See r2frida's help on the search command (`\/?`) to learn about the search comma
 ...
 ```
 
-You can adjust your search by using the search settings `\e~search`. For example, `\e search.quiet=true;` will print only the results and hide search progress:
+You can adjust your search by using the search settings `:e~search`. For example, `:e search.quiet=true;` will print only the results and hide search progress:
 
 ```bash
-[0x00000000]> \e~search
+[0x00000000]> :e~search
 e search.in=perm:r--
 e search.quiet=false
 ```
@@ -120,7 +120,7 @@ e search.quiet=false
 For now, we'll continue with the defaults and concentrate on string search. This app is actually very simple, it loads the string "Hello from C++" from its native library and displays it to us. You can start by searching for "Hello" and see what r2frida finds:
 
 ```bash
-[0x00000000]> \/ Hello
+[0x00000000]> :/ Hello
 Searching 5 bytes: 48 65 6c 6c 6f
 ...
 hits: 11
@@ -137,10 +137,10 @@ hits: 11
 0x7d3aa4d274 hit0_10 Hello
 ```
 
-Now you'd like to know where these addresses actually are. You may do so by running the `\dm.` command for all `@@` hits matching the glob `hit0_*`:
+Now you'd like to know where these addresses actually are. You may do so by running the `:dm.` command for all `@@` hits matching the glob `hit0_*`:
 
 ```bash
-[0x00000000]> \dm.@@ hit0_*
+[0x00000000]> :dm.@@ hit0_*
 0x0000000013100000 - 0x0000000013140000 rw- /dev/ashmem/dalvik-main space (region space) (deleted)
 0x0000000013100000 - 0x0000000013140000 rw- /dev/ashmem/dalvik-main space (region space) (deleted)
 0x0000000013100000 - 0x0000000013140000 rw- /dev/ashmem/dalvik-main space (region space) (deleted)
@@ -154,10 +154,10 @@ Now you'd like to know where these addresses actually are. You may do so by runn
 0x0000007d3a998000 - 0x0000007d3aa9c000 r-- /system/framework/arm64/boot-ext.vdex
 ```
 
-Additionally, you can search for occurrences of the [wide version of the string](https://en.wikipedia.org/wiki/Wide_character "Wide character") (`\/w`) and, again, check their memory regions:
+Additionally, you can search for occurrences of the [wide version of the string](https://en.wikipedia.org/wiki/Wide_character "Wide character") (`:/w`) and, again, check their memory regions:
 
 ```bash
-[0x00000000]> \/w Hello
+[0x00000000]> :/w Hello
 Searching 10 bytes: 48 00 65 00 6c 00 6c 00 6f 00
 hits: 6
 0x13102acc hit1_0 480065006c006c006f00
@@ -167,7 +167,7 @@ hits: 6
 0x7d30bb9568 hit1_4 480065006c006c006f00
 0x7d30bb9a68 hit1_5 480065006c006c006f00
 
-[0x00000000]> \dm.@@ hit1_*
+[0x00000000]> :dm.@@ hit1_*
 0x0000000013100000 - 0x0000000013140000 rw- /dev/ashmem/dalvik-main space (region space) (deleted)
 0x0000000013100000 - 0x0000000013140000 rw- /dev/ashmem/dalvik-main space (region space) (deleted)
 0x0000007d30a00000 - 0x0000007d30c00000 rw-
