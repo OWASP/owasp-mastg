@@ -9,9 +9,7 @@ code: [kotlin]
 
 The snippet below shows sample code that uses the `MediaStore` API to write a file to shared storage in a path like `/storage/emulated/0/Download/` which does not require any permissions to access and is shared with other apps.
 
-{{ MastgTest.kt }}
-
-{{ MastgTest_reversed.java }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 

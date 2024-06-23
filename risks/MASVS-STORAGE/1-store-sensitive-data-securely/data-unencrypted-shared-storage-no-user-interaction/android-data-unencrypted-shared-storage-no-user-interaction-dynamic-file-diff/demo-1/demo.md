@@ -19,7 +19,7 @@ The snippet below shows sample code that creates two files in the external stora
 4. Execute `run_after.sh`.
 5. Close the app once you finish testing.
 
-{{ run.sh }}
+{{ run_before.sh # run_after.sh }}
 
 ### Observation
 
@@ -31,11 +31,11 @@ Their content is inside the `./new_files/` directory and contains:
 
 A password:
 
-{{ secret.txt }}
+{{ new_files/secret.txt }}
 
 And an API key:
 
-{{ secretFile75.txt }}
+{{ new_files/secretFile75.txt }}
 
 ### Evaluation
 

@@ -9,9 +9,7 @@ code: [kotlin]
 
 The snippet below shows sample code that creates a file in external storage using the `getExternalFilesDir` API which returns a path to the app's external files directory (e.g. `/storage/emulated/0/Android/data/org.owasp.mastestapp/files`) and does not require any permissions to access. Scoped storage applies since the app targets Android 12 (API level 31) which is higher than Android 10 (API level 29).
 
-{{ MastgTest.kt }}
-
-{{ MastgTest_reversed.java }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
