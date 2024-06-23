@@ -30,15 +30,10 @@ def on_page_markdown(markdown, page, **kwargs):
                         language = "kotlin"
                     elif language == "sh":
                         language = "shell"
-                    tabbed_content += f'??? "{title}"\n\n'
-                    tabbed_content += f'    === "{title}"\n\n'
-                    tabbed_content += f'        ```{language} linenums="1"\n'
-                    tabbed_content += f'        --8<-- "{file}"\n'
-                    tabbed_content += f'        ```\n\n'
-                    # tabbed_content += f'=== "{title}"\n\n'
-                    # tabbed_content += f'    ```{language} linenums="1"\n'
-                    # tabbed_content += f'    --8<-- "{file}"\n'
-                    # tabbed_content += f'    ```\n\n'
+                    tabbed_content += f'=== "{title}"\n\n'
+                    tabbed_content += f'    ```{language} linenums="1"\n'
+                    tabbed_content += f'    --8<-- "{file}"\n'
+                    tabbed_content += f'    ```\n\n'
                 return tabbed_content
 
         updated_markdown = re.sub(r'\{\{\s*(.*?)\s*\}\}', replace_placeholder, markdown)
