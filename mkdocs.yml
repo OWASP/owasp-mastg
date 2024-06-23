@@ -176,19 +176,34 @@ markdown_extensions:
   - toc:
       permalink: true
   - attr_list
+  - md_in_html
   - admonition
   - tables
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.progressbar
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.snippets:
+      check_paths: true
+      restrict_base_path: false
+      base_path: !relative
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+
+hooks:
+  - docs/hooks/replace_snippets.py
+  - docs/hooks/update_titles.py
 
 extra:
   generator: false # removed but recreated in copyright above
