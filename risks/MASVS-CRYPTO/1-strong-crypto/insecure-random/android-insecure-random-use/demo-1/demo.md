@@ -7,7 +7,7 @@ code: [java]
 
 ### Sample
 
-{{ common-use-of-random.java }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
