@@ -7,21 +7,21 @@ code: [kotlin]
 
 ### Sample
 
-{{ send-post-request.kt }}
+{{ MastgTest.kt }}
 
 ### Steps
 
 1. Start the device, in this case, the Android emulator:
 
-    ```bash
-    emulator -avd Pixel_3a_API_33_arm64-v8a -writable-system
-    ```
+```bash
+emulator -avd Pixel_3a_API_33_arm64-v8a -writable-system
+```
 
 2. Run mitmproxy with the custom script for logging sensitive data and dump the relevant traffic to a file.
 
-    {{ ../mitm_sensitive_logger.py }}
+{{ mitm_sensitive_logger.py }}
 
-    {{ run.sh }}
+{{ run.sh }}
 
 3. Launch the app from Android Studio and click the button in the app.
 

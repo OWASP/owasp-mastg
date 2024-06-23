@@ -19,9 +19,13 @@ docs/MASVS/*-MASVS-*.md
 docs/MASTG/**/
 docs/assets/Images
 docs/checklists/MASVS-*.md
+docs/talks.md
 owasp-masvs
 __pycache__
 venv/
 playground/
 __handlers__
 *.apk
+risks2/
+docs/MASWE/**/
+docs/MASWE/*.md

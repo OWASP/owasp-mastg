@@ -9,7 +9,7 @@ code: [kotlin]
 
 The snippet contains many calls to logging APIs which are used to print out secrets such as passwords or IVs.
 
-{{ snippet.kt }}
+{{ MastgTest.kt }}
 
 ### Steps
 

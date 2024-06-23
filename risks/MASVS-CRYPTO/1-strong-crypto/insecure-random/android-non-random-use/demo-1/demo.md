@@ -7,7 +7,7 @@ code: [java]
 
 ### Sample
 
-{{ non-random.java }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
@@ -26,5 +26,3 @@ The rule has identified some instances in the code file where an non-random sour
 ### Evaluation
 
 Review each of the reported instances.
-
-{{ evaluation }}
