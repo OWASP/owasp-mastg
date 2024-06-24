@@ -72,6 +72,8 @@ nav:
           - ... | flat | MASTG/tools/android/*.md
         - iOS:
           - ... | flat | MASTG/tools/ios/*.md
+        - Network:
+          - ... | flat | MASTG/tools/network/*.md
       - Apps:
         - MASTG/apps/index.md
         - Android:
