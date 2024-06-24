@@ -15,14 +15,12 @@ Android applications sometimes use non-random sources to generate "random" value
 
 ## Steps
 
-1. Run a [static analysis](../../../../../techniques/android/MASTG-TECH-0014.md) tool on the app and look for uses of non-random sources.
+1. Run a [static analysis](/MASTG/techniques/android/MASTG-TECH-0014.md) tool on the app and look for uses of non-random sources.
 
 ## Observation
 
-The output should contain a **list of locations where non-random sources are used**.
+The output should contain a list of locations where non-random sources are used.
 
 ## Evaluation
-
-Inspect the app source code using the provided location information.
 
 The test case fails if you can find security-relevant values, such as passwords or tokens, generated using non-random sources.
