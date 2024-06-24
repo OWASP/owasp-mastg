@@ -9,8 +9,6 @@ For its definition we draw inspiration from the [Common Weakness Enumeration (CW
 
 The MASWE leverages both the MASVS and the MASTG. From the MASVS, the MASWE takes the categories and controls, and from the MASTG, it takes the tests and demos. This combination allows the MASWE to provide a comprehensive list of security weaknesses in mobile applications and to provide a practical way to identify and mitigate these weaknesses. This is done by leveraging the new iteration of the MASTG tests and extending them with demontrative examples called demos.
 
-The MASWE is organized according to the following structure:
-
 ## Weaknesses
 
 A weakness is a security issue that can be introduced into a mobile application.
