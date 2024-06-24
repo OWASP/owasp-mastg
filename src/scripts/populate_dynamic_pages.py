@@ -76,8 +76,8 @@ def get_mastg_components_dict(name):
         return components
 
 def get_all_weaknessess():
-    # weaknessess are loacated in the MASWE folder and all such files are called risk.md. 
-    # We need to retrive all of them and get their frontmatter, then return them as a list of dictionaries.
+    # weaknessess are located in the MASWE folder and all such files are called risk.md. 
+    # We need to retrieve all of them and get their frontmatter, then return them as a list of dictionaries.
     weaknesses = []
     for file in glob.glob("docs/MASWE/**/risk.md", recursive=True):
         with open(file, 'r') as f:
