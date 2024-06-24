@@ -152,6 +152,7 @@ theme:
     - navigation.top
     - navigation.tracking
     - navigation.indexes
+    - content.code.copy
 
   palette:
     # - primary: #499FFF 
