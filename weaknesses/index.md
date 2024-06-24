@@ -13,7 +13,7 @@ The MASWE leverages both the MASVS and the MASTG. From the MASVS, the MASWE take
 
 A weakness is a security issue that can be introduced into a mobile application.
 
-!!! quote "Definition"
+!!! quote "Weakness vs Vulnerability"
     According to the [CWE](https://cwe.mitre.org/documents/glossary/#Weakness), a weakness is a condition in a software, firmware, hardware, or service component that, under certain circumstances, could contribute to the introduction of vulnerabilities. Whereas a vulnerability is a flaw in a software, firmware, hardware, or service component resulting from a weakness that can be exploited, causing a negative impact to the confidentiality, integrity, or availability of an impacted component or components.
     
     It is important to note that a weakness is not a vulnerability, but it can lead to the introduction of vulnerabilities.
