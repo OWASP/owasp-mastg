@@ -7,36 +7,40 @@ code: [kotlin]
 
 ### Sample
 
-{{ MastgTest.kt }}
+The snippet below shows sample code that sends sensitive data over the network using the `HttpURLConnection` class. The data is sent to `https://httpbin.org/post` which is a dummy endpoint that returns the data it receives.
+
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
-1. Start the device, in this case, the Android emulator:
+Start the device, in this case, the Android emulator:
 
 ```bash
 emulator -avd Pixel_3a_API_33_arm64-v8a -writable-system
 ```
 
-2. Run mitmproxy with the custom script for logging sensitive data and dump the relevant traffic to a file.
+Run mitmproxy with the custom script for logging sensitive data and dump the relevant traffic to a file.
+
+Note that the script is preconfigured with data that's already considered sensitive for this application. When running this test in a real-world scenario, you should determine which data is considered sensitive based on the app's privacy policy and relevant privacy regulations. One recommended way to do this is by checking the app's privacy policy and the App Store Privacy declarations.
 
 {{ mitm_sensitive_logger.py }}
 
 {{ run.sh }}
 
-3. Launch the app from Android Studio and click the button in the app.
+Launch the app from Android Studio and click the button which will send the sensitive data over the network. The script will capture the network traffic and log the sensitive data.
 
 ### Observation
 
-The script has identified several instances in the network traffic where sensitive data is sent.
+The script has identified several instances of sensitive data in the network traffic.
+
+- The first instance is a POST request to `https://httpbin.org/post` which contains the sensitive data values in the request body.
+- The second instance is a response from `https://httpbin.org/post` which contains the sensitive data values in the response body.
 
 {{ sensitive_data.log }}
 
 ### Evaluation
 
-Review each of the reported instances.
-
-- The first instance is a POST request to `https://httpbin.org/post` which contains the sensitive data values in the request body.
-- The second instance is a response from `https://httpbin.org/post` which contains the sensitive data values in the response body.
+After reviewing the captured network traffic, we can conclude that the test fails because the sensitive data is sent over the network.
 
 This is a dummy example, but in a real-world scenario, you should determine which of the reported instances are privacy-relevant and need to be addressed.
 

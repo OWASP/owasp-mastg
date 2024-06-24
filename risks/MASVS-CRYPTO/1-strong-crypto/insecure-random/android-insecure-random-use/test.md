@@ -19,10 +19,8 @@ Android apps sometimes use insecure pseudorandom number generators (PRNGs) such 
 
 ## Observation
 
-The output should contain a **list of locations where insecure random APIs are used**.
+The output should contain a list of locations where insecure random APIs are used.
 
 ## Evaluation
-
-Inspect the app source code using the provided location information.
 
 The test case fails if you can find random numbers generated using those APIs that are used in security-relevant contexts.
