@@ -8,7 +8,7 @@ log = logging.getLogger('mkdocs')
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
     title_prefix_map = {
-        'risk.md': 'Weakness: ',
+        'weakness.md': 'Weakness: ',
         'test.md': 'Test: ',
         'demo.md': 'Demo: '
     }
