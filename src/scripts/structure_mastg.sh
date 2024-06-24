@@ -13,7 +13,7 @@ cp -r tests docs/MASTG/
 cp -r techniques docs/MASTG/
 cp -r tools docs/MASTG/
 cp -r apps docs/MASTG/
-cp -r risks docs/MASWE/
+cp -r weaknesses docs/MASWE/
 
 cp Document/tests.md docs/MASTG/tests/index.md
 cp Document/0x08b-Reference-Apps.md docs/MASTG/apps/index.md
