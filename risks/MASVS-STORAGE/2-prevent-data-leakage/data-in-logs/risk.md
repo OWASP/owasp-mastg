@@ -4,17 +4,17 @@ alias: data-in-logs
 platform: ["android", "ios"]
 profiles: ["L1", "L2", "P"]
 mappings:
-  - masvs-v1: [MSTG-STORAGE-7]
-  - masvs-v2: [MASVS-STORAGE-2, MASVS-PRIVACY-1]
-  - cwe: [200, 359, 497, 532]
-  - android: https://developer.android.com/topic/security/risks/log-info-disclosure
+  masvs-v1: [MSTG-STORAGE-7]
+  masvs-v2: [MASVS-STORAGE-2, MASVS-PRIVACY-1]
+  cwe: [200, 359, 497, 532]
+  android: https://developer.android.com/privacy-and-security/risks/log-info-disclosure
 refs:
   - https://stackoverflow.com/questions/45270547/is-read-logs-a-normal-or-dangerous-android-permission
 ---
 
 ## Overview
 
-Mobile apps may write [sensitive data](MASTG-THEORY-0023.md "Sensitive Data") to [logs](MASTG-THEORY-0033.md "Logs"). This may include sensitive user data, such as passwords, credit card numbers, or other personally identifiable information (PII), as well as sensitive system data, such as cryptographic keys, session tokens, or other sensitive information.
+Mobile apps may write [sensitive data](../../../../Document/0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Sensitive Data") to logs. This may include sensitive user data, such as passwords, credit card numbers, or other personally identifiable information (PII), as well as sensitive system data, such as cryptographic keys, session tokens, or other sensitive information.
 
 Logging all possible information is very useful at development time, especially for debugging the app. However, in production it might not always be necessary and should be prevented whenever possible to avoid any accidentally exposure to potential attackers.
 

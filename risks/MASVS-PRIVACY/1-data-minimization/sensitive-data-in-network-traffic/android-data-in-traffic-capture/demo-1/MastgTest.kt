@@ -12,9 +12,7 @@ import java.util.logging.Logger
 
 class MastgTest (private val context: Context){
 
-    fun mastgTest(): String {
-
-        // Requires:     <uses-permission android:name="android.permission.INTERNET" />
+    fun mastgTest(): String { 
 
         val SENSITIVE_DATA = mapOf(
             "precise_location_latitude" to "37.7749",
@@ -48,12 +46,13 @@ class MastgTest (private val context: Context){
                 outputStream.close()
 
                 val responseCode = httpURLConnection.responseCode
+                val responseContent = httpURLConnection.inputStream.bufferedReader().readText()
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     Log.d("HTTP_SUCCESS", "Successfully authenticated.")
                 } else {
                     Log.e("HTTP_ERROR", "Failed to authenticate. Response code: $responseCode")
                 }
-                result = "$responseCode\n\n$postData"
+                result = "$responseCode\n\n$responseContent"
 
             } catch (e: Exception) {
                 e.printStackTrace()
