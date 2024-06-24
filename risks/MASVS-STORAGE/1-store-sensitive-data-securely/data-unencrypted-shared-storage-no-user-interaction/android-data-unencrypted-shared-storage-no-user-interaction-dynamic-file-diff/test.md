@@ -19,7 +19,7 @@ The goal of this test is to retrieve the files written to the external storage a
 
 ## Observation
 
-The **output** contains a list of files that were created during the excersising the app.
+The output should contain a list of files that were created on the external storage during the app's execution.
 
 ## Evaluation
 

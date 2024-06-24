@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Runtime Use of APIs to Access External Storage
-apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, FileOutPutStream]
+apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, FileOutputStream]
 type: [dynamic]
 ---
 
@@ -12,18 +12,16 @@ Android apps use a variety of APIs to obtain a file path and store a file. Colle
 ## Steps
 
 1. Make sure you have Frida installed.
-
 2. Install the app.
-
 3. Execute a `run.sh` to spawn an app with Frida and log all interactions with files.
-
 4. Navigate to the screen of the mobile app that you want to analyse.
-
 5. Close the app to stop Frida.
+
+The Frida script should log all file interactions by hooking into the relevant APIs such as `getExternalStorageDirectory`, `getExternalStoragePublicDirectory`, `getExternalFilesDir` or  `FileOutPutStream`. You could also use `open` as a catch-all for file interactions. However, this won't catch all file interactions, such as those that use the `MediaStore` API and should be done with additional filtering as it can generate a lot of noise.
 
 ## Observation
 
-The **method trace output** contains a list of file locations that your app interacts with.
+The output should contain a list of files that the app wrote to the external storage during execution and, if possible, the APIs used to write them.
 
 ## Evaluation
 
