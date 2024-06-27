@@ -1,9 +1,5 @@
 # MASWE (Mobile Application Security Weakness Enumeration)
 
-!!! example "BETA"
-    This is a beta version of the MASWE. The content is still under development and may change in terms of structure, IDs and content.
-    Your feedback and questions are welcome! Please post them to [MASWE Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-feedback).
-
 The Mobile Application Security Weakness Enumeration (MASWE) is a list of common security weaknesses in mobile applications. It is intended to be used as a reference for developers, security researchers, and security professionals to understand common security weaknesses in mobile applications and to help identify and mitigate these weaknesses.
 
 <center>
