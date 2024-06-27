@@ -6,7 +6,7 @@ edit_uri: "" # disable edit button
 
 nav:
   - Home: index.md
-  - "": 
+  - "MASWE (Beta)": 
     - ... | MASWE/**/*.md
   - MASTG:
       - MASTG/index.md
