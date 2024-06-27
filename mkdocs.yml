@@ -209,6 +209,7 @@ markdown_extensions:
 hooks:
   - docs/hooks/replace_snippets.py
   - docs/hooks/update_titles.py
+  - docs/hooks/maswe-beta-banner.py
 
 extra:
   generator: false # removed but recreated in copyright above
