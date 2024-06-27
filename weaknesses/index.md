@@ -2,10 +2,15 @@
 
 !!! example "BETA"
     This is a beta version of the MASWE. The content is still under development and may change in terms of structure, IDs and content.
+    Your feedback and questions are welcome! Please post them to [MASWE Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-feedback).
 
 The Mobile Application Security Weakness Enumeration (MASWE) is a list of common security weaknesses in mobile applications. It is intended to be used as a reference for developers, security researchers, and security professionals to understand common security weaknesses in mobile applications and to help identify and mitigate these weaknesses.
 
-For its definition we draw inspiration from the [Common Weakness Enumeration (CWE)](https://cwe.mitre.org/), which is a community-developed list of common software security weaknesses. The MASWE is intended to be a complementary list to the CWE, focusing specifically on security weaknesses in mobile applications.
+<center>
+<img src="../assets/maswe-overview.png" style="width: 80%; border-radius: 5px; margin: 2em" />
+</center>
+
+For its definition we draw inspiration from the [Common Weakness Enumeration (CWE)](https://cwe.mitre.org/), which is a community-developed list of common software security weaknesses. The MASWE is intended to be a **complementary list to the CWE**, focusing specifically on security weaknesses in mobile applications.
 
 The MASWE leverages both the MASVS and the MASTG. From the MASVS, the MASWE takes the categories and controls, and from the MASTG, it takes the tests and demos. This combination allows the MASWE to provide a comprehensive list of security weaknesses in mobile applications and to provide a practical way to identify and mitigate these weaknesses. This is done by leveraging the new iteration of the MASTG tests and extending them with demontrative examples called demos.
 
@@ -89,3 +94,12 @@ Depending on the test, the demo may contain additional files, such as configurat
 If the sample can be decompiled, the decompiled code is also provided in the demo. This is useful for understanding the code in the context of the application.
 
 Demos are required to be fully self-contained and should not rely on external resources or dependencies. This ensures that the demos can be run independently and that the results are reproducible. They must be proven to work on the provided sample applications and must be tested thoroughly before being included in the MASTG.
+
+## MAS Test Apps
+
+In order for our new demos to be reliable and consistent, we needed to make sure that the results were reproducible and could be tested and validated. This is where the new MASTestApps came in. They are two very simple apps that mirror each other on Android and iOS. Demos must be implemented using these apps. This helps the reviewer and serves as a playground to create and practice your MAS skills.
+
+- [MASTestApp-Android](https://github.com/cpholguera/MASTestApp-Android)
+- [MASTestApp-iOS](https://github.com/cpholguera/MASTestApp-iOS)
+
+Simply clone the repository and follow the instructions to run the apps on your local machine. Use them to validate the demos before submitting them to the MASTG.
