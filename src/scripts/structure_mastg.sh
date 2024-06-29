@@ -27,10 +27,16 @@ mv docs/MASTG/0x05*.md docs/MASTG/Android
 mv docs/MASTG/0x06*.md docs/MASTG/iOS
 mv docs/MASTG/0x09*.md docs/MASTG/Intro
 
+if [[ "$(uname)" == "Darwin" ]]; then
+    SED="gsed"
+else
+    SED="sed"
+fi
+
 cp -r Document/Images/ docs/assets/Images/
-find docs/MASTG/tests -name "*.md" -exec sed -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG/techniques -name "*.md" -exec sed -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG/tools -name "*.md" -exec sed -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG/apps -name "*.md" -exec sed -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG -name "*.md" -exec sed -i 's#<img src="Images/#<img src="../../../assets/Images/#g' {} \;
+find docs/MASTG/tests -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG/techniques -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG/tools -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG/apps -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../assets/Images/#g' {} \;
 
