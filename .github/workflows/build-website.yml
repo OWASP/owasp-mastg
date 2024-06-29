@@ -34,7 +34,7 @@ jobs:
       - name: Generate MASVS yaml
         run: python3 ./owasp-masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./owasp-masvs/Document -c ./owasp-masvs/controls
       - name: Populate MASVS Categories Markdown Files
-        run: python3 ./owasp-masvs/src/populate_masvs_categories_md.py -d ./owasp-masvs/Document -w
+        run: python3 ./owasp-masvs/tools/populate_masvs_categories_md.py -d ./owasp-masvs/Document -w
       - run: ./src/scripts/structure_masvs.sh
 
       - name: Generate MASVS Control Markdown Files
