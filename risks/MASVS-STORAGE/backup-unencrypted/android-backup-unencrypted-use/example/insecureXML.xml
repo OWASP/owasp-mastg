@@ -1,0 +1,13 @@
+<application
+    android:allowBackup="true"
+    ...>
+    <meta-data
+        android:name="com.google.android.backup.EXCLUDE"
+        android:value="false" /> <!-- Incorrectly configured, should be true or should use the right flag -->
+
+    <full-backup-content>
+        <include domain="file" path="secret_files/" />
+        <include domain="file" path="user_data/" requireFlags="clientSideEncryption" /> <!-- Missing or incorrect flags -->
+    </full-backup-content>
+    ...
+</application>

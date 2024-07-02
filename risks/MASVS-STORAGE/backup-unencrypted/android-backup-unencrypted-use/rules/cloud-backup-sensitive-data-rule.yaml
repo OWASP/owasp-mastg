@@ -1,0 +1,8 @@
+rules:
+  - id: android-cloud-backup-sensitive-data
+    severity: WARNING
+    languages: [xml]
+    message: "Sensitive data may be included in cloud backups. Ensure that sensitive information is encrypted before being sent to the cloud."
+    patterns:
+      - pattern: <application ... android:allowBackup="true" ...>
+      - pattern-not: <meta-data android:name="com.google.android.backup.EXCLUDE" ...>

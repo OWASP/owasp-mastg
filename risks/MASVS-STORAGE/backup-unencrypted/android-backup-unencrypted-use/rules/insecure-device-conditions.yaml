@@ -1,0 +1,15 @@
+rules: 
+  - id: android-backup-security-risks
+    severity: ERROR
+    languages: [xml]
+    message: "Backup configuration lacks required security flags. Ensure backups specify 'clientSideEncryption' for encryption and 'deviceToDeviceTransfer' for secure device transfers."
+    pattern: '<full-backup-content>.*<include .*?>.*</full-backup-content>'
+    pattern-not: '<include .*requireFlags=".*clientSideEncryption.*" />'
+    pattern-not: '<include .*requireFlags=".*deviceToDeviceTransfer.*" />'
+    metadata:
+      category: security
+      technology: [android]
+      references: [
+          "https://developer.android.com/guide/topics/data/autobackup#define-device-conditions",
+          "https://developer.android.com/guide/topics/data/autobackup"
+      ]

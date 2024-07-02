@@ -1,0 +1,15 @@
+rules:
+- id: android-external-storage-sensitive-data
+  languages: [java, kotlin]
+  message: "Sensitive data detected being written to external storage, which can be accessed by any app with READ_EXTERNAL_STORAGE permission. Ensure this data is encrypted before writing or avoid using external storage for sensitive data."
+  severity: WARNING
+  patterns:
+    - pattern: |
+        new java.io.FileOutputStream(new java.io.File(android.os.Environment.getExternalStorageDirectory(), $FILENAME))
+    - pattern: |
+        new java.io.FileWriter(new java.io.File(android.os.Environment.getExternalStorageDirectory(), $FILENAME))
+  metadata:
+    category: security
+    technology: [android]
+    references:
+      - https://developer.android.com/training/data-storage

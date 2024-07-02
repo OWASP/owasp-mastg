@@ -1,0 +1,45 @@
+rules:
+  - id: ios-sensitive-data-storage-expanded
+    languages: [swift]
+    message: "Detect storage or handling of potentially sensitive data that might be included in backups. Review to ensure data is encrypted and properly excluded from backups."
+    severity: WARNING
+    pattern-either:
+      - pattern: |
+          UserDefaults.standard.set($VALUE, forKey: $KEY)
+      - pattern: |
+          FileManager.default.createFile(atPath: $PATH, contents: $DATA, attributes: ...)
+      - pattern: |
+          let $DATA = Data(contentsOf: $URL)
+      - pattern: |
+          let $STRING = String(contentsOfFile: $PATH)
+      - pattern: |
+          NSKeyedArchiver.archivedData(withRootObject: $OBJECT, requiringSecureCoding: false, error: $ERROR)
+      - pattern: |
+          CoreDataStack.persistentContainer.persistentStoreDescriptions.first?.setValue(false, forKey: "NSPersistentStoreFileProtectionKey")
+      - pattern: |
+          FileManager.default.setAttributes([$ATTR: FileAttributeType.protectionNone], ofItemAtPath: $PATH)
+      - pattern: |
+          UserDefaults.standard.synchronize()
+      - pattern: |
+          NSUbiquitousKeyValueStore.default.set($VALUE, forKey: $KEY)
+      - pattern: |
+          let query = [kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly]
+      - pattern: |
+          var resourceValues = URLResourceValues()
+          resourceValues.isExcludedFromBackup = true
+          try $URL.setResourceValues(resourceValues)
+      - pattern: |
+          SecItemAdd([kSecClass: kSecClassGenericPassword, kSecAttrAccessControl: ..., kSecUseAuthenticationUI: kSecUseAuthenticationUIAllow], &error)
+      - pattern: |
+          persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: $URL, options: [NSPersistentStoreFileProtectionKey : FileProtectionType.complete])
+    metadata:
+      category: security
+      technology: [ios]
+      references:
+        - "https://developer.apple.com/documentation/foundation/nsurlisexcludedfrombackupkey"
+        - "https://developer.apple.com/documentation/foundation/nskeyedarchiver"
+        - "https://developer.apple.com/documentation/coredata/protecting_data_using_encryption"
+        - "https://developer.apple.com/documentation/foundation/filemanager/1412643-setattributes"
+        - "https://developer.apple.com/documentation/foundation/nsuserdefaults"
+        - "https://developer.apple.com/documentation/foundation/nskeyedunarchiver"
+        - "https://developer.apple.com/documentation/security/1399291-secitemadd"
