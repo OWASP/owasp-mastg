@@ -1,0 +1,49 @@
+rules:
+  - id: weak_key_size
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $K = $G.getInstance("RSA");
+              ...
+              $K.initialize(1024);
+          - pattern: |
+              $K = $G.getInstance("RSA");
+              ...
+              $K.initialize(512);
+          - pattern: |
+              $K = $G.getInstance("EC");
+              ...
+              $K.initialize(new ECGenParameterSpec("secp112r1"));
+          - pattern: |
+              $K = $G.getInstance("EC");
+              ...
+              $S = new ECGenParameterSpec("secp112r1");
+              ...
+              $K.initialize($S);
+          - pattern: |
+              $K = $G.getInstance("EC");
+              ...
+              $K.initialize(new ECGenParameterSpec("secp224r1"));
+          - pattern: |
+              $K = $G.getInstance("EC");
+              ...
+              $S = new ECGenParameterSpec("secp224r1");
+              ...
+              $K.initialize($S);
+          - pattern: |
+              $K = $G.getInstance("AES");
+              ...
+              $K.init(128);
+          - pattern: |
+              $K = $G.getInstance("AES");
+              ...
+              $K.init(64);
+    message: >-
+      Cryptographic implementations with insufficient key length are being used.
+    languages:
+      - java
+    severity: WARNING
+    metadata:
+      cwe: cwe-326
+      
+      

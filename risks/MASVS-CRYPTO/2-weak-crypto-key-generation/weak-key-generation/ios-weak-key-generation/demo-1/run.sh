@@ -1,0 +1,1 @@
+semgrep -c ../rules/mastg-weak_key_generation.yml ./weak-key-generation.swift --text -o output.txt
