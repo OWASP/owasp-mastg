@@ -10,9 +10,9 @@ The goal of this test is to retrieve the files written to the external storage a
 
 ## Steps
 
-1. Make sure you have [adb](/MASTG/tools/android/MASTG-TOOL-0004) installed.
-2. [Install the app](/MASTG/techniques/android/MASTG-TECH-0005).
-3. Before running the app, [get the current list of files](/MASTG/techniques/android/MASTG-TECH-0002) in the external storage.
+1. Make sure you have adb (#MASTG-TOOL-0004) installed.
+2. Install the app (#MASTG-TECH-0005).
+3. Before running the app, get the current list of files (#MASTG-TECH-0002) in the external storage.
 4. Exercise the app.
 5. After running the app, retrieve the list of files in the external storage again.
 6. Calculate the difference between the two lists.
