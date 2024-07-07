@@ -174,10 +174,12 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css
 extra_javascript:
-  - javascripts/tablesort.min.js
-  - javascripts/tablesorts.js
   - javascripts/external_links.js
+  - https://code.jquery.com/jquery-3.5.1.js
+  - https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js
+  - javascripts/datatables.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
