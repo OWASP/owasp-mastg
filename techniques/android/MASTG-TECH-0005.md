@@ -3,7 +3,7 @@ title: Installing Apps
 platform: android
 ---
 
-## Basic APK installation
+## Basic APK Installation
 
 Use `adb install` to install an APK on an emulator or connected device. The given path is the path of the APK on the host.
 
