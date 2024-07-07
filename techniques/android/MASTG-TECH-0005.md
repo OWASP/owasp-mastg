@@ -48,7 +48,10 @@ adb: failed to install myRepackagedApp.apk: Failure [INSTALL_FAILED_UPDATE_INCOM
 To solve this issue, first remove the original application using `adb uninstall`:
 
 ```bash
+# Uninstall based on package name
 adb uninstall org.owasp.mas.app
+
+# Normal install via adb
 adb install ./myRepackagedApp.apk
 ```
 
@@ -63,7 +66,10 @@ Users:
 	UserInfo{0:Owner:c13} running
 	UserInfo{11:Sample Managed Profile:1030} running
 
+# Push to /data/local/tmp/
 adb push ./myApp.apk /data/local/tmp/
+
+# Install with pm install and the --user option
 adb shell pm install --user 11 /data/local/tmp/myRepackagedApp.apk
 ```
 
