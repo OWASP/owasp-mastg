@@ -141,6 +141,13 @@ theme:
   favicon: assets/logo_circle.png
   icon:
     repo: fontawesome/brands/github
+    tag:
+      android: material/android
+      ios: material/apple
+      p: material/eye-circle-outline
+      l1: material/circle
+      l2: material/circle-multiple-outline
+      r: material/circle-double
   features:
     - search.suggest
     - search.share
@@ -167,15 +174,19 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css
 extra_javascript:
-  - javascripts/tablesort.min.js
-  - javascripts/tablesorts.js
   - javascripts/external_links.js
+  - https://code.jquery.com/jquery-3.5.1.js
+  - https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js
+  - javascripts/datatables.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
   - awesome-pages
   - mermaid2
+  - tags
+      # tags_file: tags.md # TODO: bug in mkdocs? dynamic tags from hooks not appearing in tags.md
 markdown_extensions:
   - meta
   - toc:
@@ -210,6 +221,7 @@ hooks:
   - docs/hooks/replace_snippets.py
   - docs/hooks/update_titles.py
   - docs/hooks/maswe-beta-banner.py
+  - docs/hooks/add-tags.py
 
 extra:
   generator: false # removed but recreated in copyright above
@@ -229,3 +241,10 @@ extra:
     # - icon: fontawesome/solid/paper-plane
     #   link: mailto:sven.schleier@owasp.org
     #   name: Sven Schleier
+  tags:
+    android: android
+    ios: ios
+    P: p
+    L1: l1
+    L2: l2
+    R: r
