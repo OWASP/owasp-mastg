@@ -35,88 +35,83 @@ Independently from the assigned Protection Level, it is important to consider th
 | Risk Category    | Permissions                                                     | Protection Level  |
 |------------------|-----------------------------------------------------------------|-------------------|
 | **ASTRONOMICAL** | `android.permission.INSTALL_PACKAGES`                           | signature         |
-|                  |                                                                 |                   |
 | **CRITICAL**     | `android.permission.COPY_PROTECTED_DATA`                        | signature         |
-|                  | `android.permission.WRITE_SECURE_SETTINGS`                      | signature         |
-|                  | `android.permission.READ_FRAME_BUFFER`                          | signature         |
-|                  | `android.permission.MANAGE_CA_CERTIFICATES`                     | signature         |
-|                  | `android.permission.MANAGE_APP_OPS_MODES`                       | signature         |
-|                  | `android.permission.GRANT_RUNTIME_PERMISSIONS`                  | signature         |
-|                  | `android.permission.DUMP`                                       | signature         |
-|                  | `android.permission.CAMERA`                                     | dangerous         |
-|                  | `android.permission.SYSTEM_CAMERA`                              | signatureOrSystem |
-|                  | `android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS`           | signature         |
-|                  | `android.permission.MOUNT_UNMOUNT_FILESYSTEMS`                  | signature         |
-|                  | `android.permission.PROVIDE_DEFAULT_ENABLED_CREDENTIAL_SERVICE` | signature         |
-|                  | `android.permission.PROVIDE_REMOTE_CREDENTIALS`                 | signature         |
-|                  |                                                                 |                   |
+| **CRITICAL**     | `android.permission.WRITE_SECURE_SETTINGS`                      | signature         |
+| **CRITICAL**     | `android.permission.READ_FRAME_BUFFER`                          | signature         |
+| **CRITICAL**     | `android.permission.MANAGE_CA_CERTIFICATES`                     | signature         |
+| **CRITICAL**     | `android.permission.MANAGE_APP_OPS_MODES`                       | signature         |
+| **CRITICAL**     | `android.permission.GRANT_RUNTIME_PERMISSIONS`                  | signature         |
+| **CRITICAL**     | `android.permission.DUMP`                                       | signature         |
+| **CRITICAL**     | `android.permission.CAMERA`                                     | dangerous         |
+| **CRITICAL**     | `android.permission.SYSTEM_CAMERA`                              | signatureOrSystem |
+| **CRITICAL**     | `android.permission.MANAGE_PROFILE_AND_DEVICE_OWNERS`           | signature         |
+| **CRITICAL**     | `android.permission.MOUNT_UNMOUNT_FILESYSTEMS`                  | signature         |
+| **CRITICAL**     | `android.permission.PROVIDE_DEFAULT_ENABLED_CREDENTIAL_SERVICE` | signature         |
+| **CRITICAL**     | `android.permission.PROVIDE_REMOTE_CREDENTIALS`                 | signature         |
 | **HIGH**         | `android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS`          | signature         |
-|                  | `android.permission.READ_SMS`                                   | dangerous         |
-|                  | `android.permission.WRITE_SMS`                                  | normal            |
-|                  | `android.permission.RECEIVE_MMS`                                | dangerous         |
-|                  | `android.permission.SEND_SMS_NO_CONFIRMATION`                   | signature         |
-|                  | `android.permission.RECEIVE_SMS`                                | dangerous         |
-|                  | `android.permission.READ_LOGS`                                  | signature         |
-|                  | `android.permission.READ_PRIVILEGED_PHONE_STATE`                | signature         |
-|                  | `android.permission.LOCATION_HARDWARE`                          | signature         |
-|                  | `android.permission.ACCESS_FINE_LOCATION`                       | dangerous         |
-|                  | `android.permission.ACCESS_BACKGROUND_LOCATION`                 | dangerous         |
-|                  | `android.permission.BIND_ACCESSIBILITY_SERVICE`                 | signature         |
-|                  | `android.permission.ACCESS_WIFI_STATE`                          | normal            |
-|                  | `com.android.voicemail.permission.READ_VOICEMAIL`               | signature         |
-|                  | `android.permission.RECORD_AUDIO`                               | dangerous         |
-|                  | `android.permission.CAPTURE_AUDIO_OUTPUT`                       | signature         |
-|                  | `android.permission.ACCESS_NOTIFICATIONS`                       | signature         |
-|                  | `android.permission.INTERACT_ACROSS_USERS_FULL`                 | signature         |
-|                  | `android.permission.BLUETOOTH_PRIVILEGED`                       | signature         |
-|                  | `android.permission.GET_PASSWORD`                               | signature         |
-|                  | `android.permission.INTERNAL_SYSTEM_WINDOW`                     | signature         |
-|                  | `android.permission.MANAGE_ONGOING_CALLS`                       | signature         |
-|                  | `android.permission.READ_RESTRICTED_STATS`                      | internal          |
-|                  | `android.permission.BIND_AUTOFILL_SERVICE`                      | signature         |
-|                  |                                                                 |                   |
+| **HIGH**         | `android.permission.READ_SMS`                                   | dangerous         |
+| **HIGH**         | `android.permission.WRITE_SMS`                                  | normal            |
+| **HIGH**         | `android.permission.RECEIVE_MMS`                                | dangerous         |
+| **HIGH**         | `android.permission.SEND_SMS_NO_CONFIRMATION`                   | signature         |
+| **HIGH**         | `android.permission.RECEIVE_SMS`                                | dangerous         |
+| **HIGH**         | `android.permission.READ_LOGS`                                  | signature         |
+| **HIGH**         | `android.permission.READ_PRIVILEGED_PHONE_STATE`                | signature         |
+| **HIGH**         | `android.permission.LOCATION_HARDWARE`                          | signature         |
+| **HIGH**         | `android.permission.ACCESS_FINE_LOCATION`                       | dangerous         |
+| **HIGH**         | `android.permission.ACCESS_BACKGROUND_LOCATION`                 | dangerous         |
+| **HIGH**         | `android.permission.BIND_ACCESSIBILITY_SERVICE`                 | signature         |
+| **HIGH**         | `android.permission.ACCESS_WIFI_STATE`                          | normal            |
+| **HIGH**         | `com.android.voicemail.permission.READ_VOICEMAIL`               | signature         |
+| **HIGH**         | `android.permission.RECORD_AUDIO`                               | dangerous         |
+| **HIGH**         | `android.permission.CAPTURE_AUDIO_OUTPUT`                       | signature         |
+| **HIGH**         | `android.permission.ACCESS_NOTIFICATIONS`                       | signature         |
+| **HIGH**         | `android.permission.INTERACT_ACROSS_USERS_FULL`                 | signature         |
+| **HIGH**         | `android.permission.BLUETOOTH_PRIVILEGED`                       | signature         |
+| **HIGH**         | `android.permission.GET_PASSWORD`                               | signature         |
+| **HIGH**         | `android.permission.INTERNAL_SYSTEM_WINDOW`                     | signature         |
+| **HIGH**         | `android.permission.MANAGE_ONGOING_CALLS`                       | signature         |
+| **HIGH**         | `android.permission.READ_RESTRICTED_STATS`                      | internal          |
+| **HIGH**         | `android.permission.BIND_AUTOFILL_SERVICE`                      | signature         |
 | **MEDIUM**       | `android.permission.ACCESS_COARSE_LOCATION`                     | dangerous         |
-|                  | `android.permission.CHANGE_COMPONENT_ENABLED_STATE`             | signature         |
-|                  | `android.permission.READ_CONTACTS`                              | dangerous         |
-|                  | `android.permission.WRITE_CONTACTS`                             | dangerous         |
-|                  | `android.permission.CONNECTIVITY_INTERNAL`                      | signature         |
-|                  | `android.permission.ACCESS_MEDIA_LOCATION`                      | dangerous         |
-|                  | `android.permission.READ_EXTERNAL_STORAGE`                      | dangerous         |
-|                  | `android.permission.WRITE_EXTERNAL_STORAGE`                     | dangerous         |
-|                  | `android.permission.SYSTEM_ALERT_WINDOW`                        | signature         |
-|                  | `android.permission.READ_CALL_LOG`                              | dangerous         |
-|                  | `android.permission.WRITE_CALL_LOG`                             | dangerous         |
-|                  | `android.permission.INTERACT_ACROSS_USERS`                      | signature         |
-|                  | `android.permission.MANAGE_USERS`                               | signature         |
-|                  | `android.permission.READ_CALENDAR`                              | dangerous         |
-|                  | `android.permission.BLUETOOTH_ADMIN`                            | normal            |
-|                  | `android.permission.BODY_SENSORS`                               | dangerous         |
-|                  | `android.permission.MANAGE_EXTERNAL_STORAGE`                    | signature         |
-|                  | `android.permission.ACCESS_BLOBS_ACROSS_USERS`                  | signature         |
-|                  | `android.permission.BLUETOOTH_ADVERTISE`                        | dangerous         |
-|                  | `android.permission.READ_MEDIA_AUDIO`                           | dangerous         |
-|                  | `android.permission.READ_MEDIA_IMAGES`                          | dangerous         |
-|                  | `android.permission.READ_MEDIA_VIDEO`                           | dangerous         |
-|                  |                                                                 |                   |
+| **MEDIUM**       | `android.permission.CHANGE_COMPONENT_ENABLED_STATE`             | signature         |
+| **MEDIUM**       | `android.permission.READ_CONTACTS`                              | dangerous         |
+| **MEDIUM**       | `android.permission.WRITE_CONTACTS`                             | dangerous         |
+| **MEDIUM**       | `android.permission.CONNECTIVITY_INTERNAL`                      | signature         |
+| **MEDIUM**       | `android.permission.ACCESS_MEDIA_LOCATION`                      | dangerous         |
+| **MEDIUM**       | `android.permission.READ_EXTERNAL_STORAGE`                      | dangerous         |
+| **MEDIUM**       | `android.permission.WRITE_EXTERNAL_STORAGE`                     | dangerous         |
+| **MEDIUM**       | `android.permission.SYSTEM_ALERT_WINDOW`                        | signature         |
+| **MEDIUM**       | `android.permission.READ_CALL_LOG`                              | dangerous         |
+| **MEDIUM**       | `android.permission.WRITE_CALL_LOG`                             | dangerous         |
+| **MEDIUM**       | `android.permission.INTERACT_ACROSS_USERS`                      | signature         |
+| **MEDIUM**       | `android.permission.MANAGE_USERS`                               | signature         |
+| **MEDIUM**       | `android.permission.READ_CALENDAR`                              | dangerous         |
+| **MEDIUM**       | `android.permission.BLUETOOTH_ADMIN`                            | normal            |
+| **MEDIUM**       | `android.permission.BODY_SENSORS`                               | dangerous         |
+| **MEDIUM**       | `android.permission.MANAGE_EXTERNAL_STORAGE`                    | signature         |
+| **MEDIUM**       | `android.permission.ACCESS_BLOBS_ACROSS_USERS`                  | signature         |
+| **MEDIUM**       | `android.permission.BLUETOOTH_ADVERTISE`                        | dangerous         |
+| **MEDIUM**       | `android.permission.READ_MEDIA_AUDIO`                           | dangerous         |
+| **MEDIUM**       | `android.permission.READ_MEDIA_IMAGES`                          | dangerous         |
+| **MEDIUM**       | `android.permission.READ_MEDIA_VIDEO`                           | dangerous         |
 | **LOW**          | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION`              | normal            |
-|                  | `android.permission.PACKAGE_USAGE_STATS`                        | signature         |
-|                  | `android.permission.MASTER_CLEAR`                               | signature         |
-|                  | `android.permission.DELETE_PACKAGES`                            | normal            |
-|                  | `android.permission.GET_PACKAGE_SIZE`                           | normal            |
-|                  | `android.permission.BLUETOOTH`                                  | normal            |
-|                  | `android.permission.DEVICE_POWER`                               | signature         |
-|                  | `android.permission.READ_PRECISE_PHONE_STATE`                   | signature         |
-|                  | `android.permission.LOG_FOREGROUND_RESOURCE_USE`                | signature         |
-|                  | `android.permission.MANAGE_DEFAULT_APPLICATIONS`                | signature         |
-|                  | `android.permission.MANAGE_FACE`                                | signature         |
-|                  |                                                                 |                   |
+| **LOW**          | `android.permission.PACKAGE_USAGE_STATS`                        | signature         |
+| **LOW**          | `android.permission.MASTER_CLEAR`                               | signature         |
+| **LOW**          | `android.permission.DELETE_PACKAGES`                            | normal            |
+| **LOW**          | `android.permission.GET_PACKAGE_SIZE`                           | normal            |
+| **LOW**          | `android.permission.BLUETOOTH`                                  | normal            |
+| **LOW**          | `android.permission.DEVICE_POWER`                               | signature         |
+| **LOW**          | `android.permission.READ_PRECISE_PHONE_STATE`                   | signature         |
+| **LOW**          | `android.permission.LOG_FOREGROUND_RESOURCE_USE`                | signature         |
+| **LOW**          | `android.permission.MANAGE_DEFAULT_APPLICATIONS`                | signature         |
+| **LOW**          | `android.permission.MANAGE_FACE`                                | signature         |
 | **NONE**         | `android.permission.ACCESS_NETWORK_STATE`                       | normal            |
-|                  | `android.permission.RECEIVE_BOOT_COMPLETED`                     | normal            |
-|                  | `android.permission.WAKE_LOCK`                                  | normal            |
-|                  | `android.permission.FLASHLIGHT`                                 | normal            |
-|                  | `android.permission.VIBRATE`                                    | normal            |
-|                  | `android.permission.WRITE_MEDIA_STORAGE`                        | signature         |
-|                  | `android.permission.MODIFY_AUDIO_SETTINGS`                      | normal            |
+| **NONE**         | `android.permission.RECEIVE_BOOT_COMPLETED`                     | normal            |
+| **NONE**         | `android.permission.WAKE_LOCK`                                  | normal            |
+| **NONE**         | `android.permission.FLASHLIGHT`                                 | normal            |
+| **NONE**         | `android.permission.VIBRATE`                                    | normal            |
+| **NONE**         | `android.permission.WRITE_MEDIA_STORAGE`                        | signature         |
+| **NONE**         | `android.permission.MODIFY_AUDIO_SETTINGS`                      | normal            |
 
 Note that this categorization can change over time. The paper gives us an example of that:
 

@@ -226,25 +226,29 @@
 /* Default DataTables styling for light mode */
 table.dataTable {
   background-color: white;
-  color: black;
+  color: #3a3a3a;
+}
+
+table.dataTable th {
+  border-bottom: 1px solid #ccc !important;
 }
 
 /* Dark mode DataTables styling */
 [data-md-color-scheme="slate"] table.dataTable,
 [data-md-color-scheme="dark"] table.dataTable {
-  background-color: #2d2d2d;
+  background-color: var(--md-default-bg-color);
   color: white;
 }
 
 [data-md-color-scheme="slate"] table.dataTable th,
 [data-md-color-scheme="dark"] table.dataTable th {
-  background-color: #3a3a3a;
+  background-color: var(--md-default-bg-color);
   color: white;
 }
 
 [data-md-color-scheme="slate"] table.dataTable td,
 [data-md-color-scheme="dark"] table.dataTable td {
-  background-color: #2d2d2d;
+  background-color: var(--md-default-bg-color);
   color: white;
 }
 
