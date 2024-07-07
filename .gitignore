@@ -13,7 +13,6 @@ logs
 *.pdf
 *.docx
 *.epub
-launch.json
 docs/MASVS/**/
 docs/MASVS/*-MASVS-*.md
 docs/MASTG/**/
