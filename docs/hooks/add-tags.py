@@ -12,9 +12,12 @@ def on_page_markdown(markdown, page, **kwargs):
 
         tags = page.meta.get('tags', [])
 
-        if page.meta.get('platform'): 
-            for platform in page.meta.get('platform', []):
-                tags.append(platform)
+        if page.meta.get('platform'):
+            if type(page.meta.get('platform')) == str:
+                tags.append(page.meta.get('platform'))
+            elif type(page.meta.get('platform')) == list:
+                for platform in page.meta.get('platform'):
+                    tags.append(platform)
         if page.meta.get('profiles'):
             for profile in page.meta.get('profiles', []):
                 tags.append(profile)
