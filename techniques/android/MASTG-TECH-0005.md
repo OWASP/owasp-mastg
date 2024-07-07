@@ -49,7 +49,7 @@ To solve this issue, first remove the original application using `adb uninstall`
 
 ```bash
 # Uninstall based on package name
-adb uninstall org.owasp.mas.app
+adb uninstall org.owasp.mastestapp
 
 # Normal install via adb
 adb install ./myRepackagedApp.apk
