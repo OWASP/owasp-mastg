@@ -1,5 +1,6 @@
 :root {
   --md-primary-fg-color: #499FFF;
+  --mas-gradient: linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
 }
 
 /* Wider space for pages */
@@ -22,6 +23,14 @@
 
 .md-typeset__table table:not([class]) {
   display: table
+}
+
+.md-header {
+  background: var(--mas-gradient);
+}
+
+.md-tabs {
+  background: var(--mas-gradient);
 }
 
 @keyframes pump {
@@ -171,10 +180,11 @@
   height: 3em;
   line-height: 2em;
   text-align: center;
-  background: linear-gradient(90deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background: var(--mas-gradient);
   background-size: 300%;
   border-radius: 8px;
   z-index: 1;
+  transition: background 0.3s ease;
 }
 
 .mas-button:hover {
@@ -186,7 +196,6 @@
   0% {
     background-position: 0%;
   }
-
   100% {
     background-position: 400%;
   }
@@ -200,7 +209,7 @@
   right: -5px;
   bottom: -5px;
   z-index: -1;
-  background: linear-gradient(90deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background: var(--mas-gradient);
   background-size: 400%;
   border-radius: 8px;
   transition: 1s;
@@ -211,5 +220,5 @@
 }
 
 .mas-button:active {
-  background: linear-gradient(32deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background: var(--mas-gradient);
 }
