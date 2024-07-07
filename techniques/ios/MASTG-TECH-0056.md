@@ -9,9 +9,12 @@ Different methods exist for installing an IPA package onto an iOS device, which 
 
 > Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not possible to install apps.
 
-## Cydia Impactor
+## Sideloadly
 
-[Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor") was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading (and even APK files to Android devices). Cydia Impactor is available for Windows, macOS and Linux. A [step by step guide and troubleshooting steps are available on yalujailbreak.net](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
+[Sideloadly](https://sideloadly.io/ "Sideloadly") allows you to obtain a valid signature for a given IPA file and then install it to a connected iOS device. In addition to signing and installing an IPA file, Sideloadly also allows you to inject tweaks, change the App or Bundle name or make other limited modifications to the IPA meta data. Sideloadly is available on both macOS and Windows.
+
+!!! warning "Do not use your personal Apple account"
+    In order to sign an IPA file, you will need a valid iOS developer account, either free or paid. Both types come with certain restrictions, as explained on the Sideloadly website. We recommend creating a dedicated developer account for signing test applications, and to **not** use your personal Apple account.
 
 ## libimobiledevice
 
