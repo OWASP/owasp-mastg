@@ -1,5 +1,6 @@
 document$.subscribe(function() {
     $('table').DataTable({
-        paging: false
+        paging: false,
+        dom: '<"top"if>rt<"bottom"lp><"clear">'
     });
 });
