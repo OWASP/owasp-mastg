@@ -14,7 +14,7 @@ Different methods exist for installing an IPA package onto an iOS device, which 
 [Sideloadly](https://sideloadly.io/ "Sideloadly") allows you to obtain a valid signature for a given IPA file and then install it to a connected iOS device. In addition to signing and installing an IPA file, Sideloadly also allows you to inject tweaks, change the App or Bundle name or make other limited modifications to the IPA meta data. Sideloadly is available on both macOS and Windows.
 
 !!! warning "Do not use your personal Apple account"
-    In order to sign an IPA file, you will need a valid iOS developer account, either free or paid. Both types come with certain restrictions, as explained on the Sideloadly website. We recommend creating a dedicated developer account for signing test applications, and to **not** use your personal Apple account.
+    To sign an IPA file, you will need a valid iOS developer account, either free or paid. Both types come with certain restrictions, as explained on the Sideloadly website. We recommend creating a dedicated developer account for signing test applications, and **not** using your personal Apple account.
 
 ## libimobiledevice
 
