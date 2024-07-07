@@ -36,13 +36,13 @@ When installing an app, it also possible to automatically grant all runtime perm
 adb install -g ./myApp.apk
 ```
 
-## Installing a repackaged app
+## Installing a Repackaged App
 
 In case there is already an application installed with the same package name, Android will compare the signatures. If the signatures match, the update will succeed. If the signature is different (for example, after repackaging an APK), the installation will fail.
 
 ```bash
 adb install ./myRepackagedApp.apk
-adb: failed to install myRepackagedApp.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package org.owasp.mas.app signatures do not match newer version; ignoring!]
+adb: failed to install myRepackagedApp.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package org.owasp.mastestapp signatures do not match newer version; ignoring!]
 ```
 
 To solve this issue, first remove the original application using `adb uninstall`:
@@ -55,7 +55,7 @@ adb uninstall org.owasp.mastestapp
 adb install ./myRepackagedApp.apk
 ```
 
-## Installing to a specific profile
+## Installing to a Specific Profile
 
 To install an APK into a specific profile, the APK first has to be pushed to the device, as it is not possible to do this directly using `adb install`. Note that pushing to `/sdcard/` may result in permission issues, so use `/data/local/tmp` to be sure. After pushing the APK to the device, it can be installed using `pm install` with the `--user XX` option:
 
@@ -73,7 +73,7 @@ adb push ./myApp.apk /data/local/tmp/
 adb shell pm install --user 11 /data/local/tmp/myRepackagedApp.apk
 ```
 
-## Installing split APKs
+## Installing Split APKs
 
 In case you need to install split APKs, you can use the `install-multiple` command. Make sure the different split APKs match your device configuration:
 
