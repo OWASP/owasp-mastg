@@ -222,3 +222,70 @@
 .mas-button:active {
   background: var(--mas-gradient);
 }
+
+/* Default DataTables styling for light mode */
+table.dataTable {
+  background-color: white;
+  color: black;
+}
+
+/* Dark mode DataTables styling */
+[data-md-color-scheme="slate"] table.dataTable,
+[data-md-color-scheme="dark"] table.dataTable {
+  background-color: #2d2d2d;
+  color: white;
+}
+
+[data-md-color-scheme="slate"] table.dataTable th,
+[data-md-color-scheme="dark"] table.dataTable th {
+  background-color: #3a3a3a;
+  color: white;
+}
+
+[data-md-color-scheme="slate"] table.dataTable td,
+[data-md-color-scheme="dark"] table.dataTable td {
+  background-color: #2d2d2d;
+  color: white;
+}
+
+/* Adjusting pagination buttons and other elements */
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_paginate .paginate_button,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: white !important;
+}
+
+/* Adjust  .dataTables_info */
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_info,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_info {
+  color: white;
+}
+
+/* add margin to dataTables_filter and dataTables_info independent of color scheme */
+
+.dataTables_filter {
+  margin: 1em 0 2em 0;
+}
+
+.dataTables_info {
+  margin: 1em 0 2em 0;
+  padding-top: 0px !important;
+  color: #aaaaaa !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 10px !important;
+  margin-left: 10px !important;
+}
+
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_filter input,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_filter input {
+  background-color: #3a3a3a;
+  color: white;
+  border: 1px solid #555;
+}
+
+
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_filter label,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_filter label {
+  color: white;
+}
