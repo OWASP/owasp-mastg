@@ -1,0 +1,2 @@
+/sdcard/Android/data/org.owasp.mastestapp/files/secret.txt
+/sdcard/Download/secretFile75.txt
