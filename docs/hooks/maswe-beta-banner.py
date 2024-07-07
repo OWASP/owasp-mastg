@@ -14,7 +14,7 @@ beta_banner = """
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
-    if "MASWE/" in path:
+    if "MASWE/" in path or "MASTG/tests-beta/" in path:
         markdown = f"{beta_banner}\n\n{markdown}"
 
     return markdown
