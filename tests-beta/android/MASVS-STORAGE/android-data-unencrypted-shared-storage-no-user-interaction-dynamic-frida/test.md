@@ -3,6 +3,7 @@ platform: android
 title: Runtime Use of APIs to Access External Storage
 apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, FileOutputStream]
 type: [dynamic]
+weakness: [MASWE-0007]
 ---
 
 ## Overview

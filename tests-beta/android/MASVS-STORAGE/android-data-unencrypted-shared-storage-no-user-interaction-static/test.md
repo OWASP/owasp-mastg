@@ -3,6 +3,7 @@ platform: android
 title: References to APIs and Permissions for Accessing External Storage
 apis: [Environment#getExternalStoragePublicDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, MediaStore, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE]
 type: [static]
+weakness: [MASWE-0007]
 ---
 
 ## Overview

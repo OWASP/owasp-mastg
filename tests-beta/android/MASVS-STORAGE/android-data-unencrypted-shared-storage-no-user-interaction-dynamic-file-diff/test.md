@@ -2,6 +2,7 @@
 platform: android
 title: Files Written to External Storage
 type: [dynamic]
+weakness: [MASWE-0007]
 ---
 
 ## Overview

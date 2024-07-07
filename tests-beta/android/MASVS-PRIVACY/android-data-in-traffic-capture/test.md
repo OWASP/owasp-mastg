@@ -2,6 +2,7 @@
 platform: android
 title: Sensitive Data in Network Traffic Capture
 type: [dynamic, network]
+weakness: [MASWE-0108]
 prerequisites:
 - identify-sensitive-data
 - privacy-policy
