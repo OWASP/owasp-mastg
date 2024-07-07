@@ -1,5 +1,6 @@
 ---
 title: Sensitive Data Stored Unencrypted in Shared Storage Requiring No User Interaction
+id: MASWE-0007
 alias: data-unencrypted-shared-storage-no-user-interaction
 platform: [android]
 profiles: [L1, L2]

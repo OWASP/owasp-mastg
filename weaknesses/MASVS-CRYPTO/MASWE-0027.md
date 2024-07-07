@@ -1,5 +1,6 @@
 ---
 title: Cryptographically Weak Pseudo-Random Number Generator (PRNG)
+id: MASWE-0027
 alias: insecure-random
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]

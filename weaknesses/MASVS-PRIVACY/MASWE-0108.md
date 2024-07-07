@@ -1,5 +1,6 @@
 ---
 title: Sensitive Data in Network Traffic
+id: MASWE-0108
 alias: sensitive-data-in-network-traffic
 platform: ["android", "ios"]
 profiles: ["P"]
