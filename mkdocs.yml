@@ -2,7 +2,8 @@ site_name: OWASP Mobile Application Security
 repo_url: https://github.com/OWASP/owasp-mastg
 repo_name: OWASP/owasp-mastg
 # use_directory_urls: false # only set for mkdocs build
-editor_url: "https://github.com/OWASP/owasp-mastg/edit/master/"
+editor_url_mastg: "https://github.com/OWASP/owasp-mastg/edit/master/"
+editor_url_masvs: "https://github.com/OWASP/owasp-masvs/edit/master/"
 
 nav:
   - Home: index.md
