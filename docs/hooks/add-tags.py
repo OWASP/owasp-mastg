@@ -8,7 +8,7 @@ log = logging.getLogger('mkdocs')
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
-    if "MASWE/" in path:
+    if "MASWE/" in path or "MASTG/" in path:
 
         tags = page.meta.get('tags', [])
 
@@ -21,10 +21,14 @@ def on_page_markdown(markdown, page, **kwargs):
         if page.meta.get('profiles'):
             for profile in page.meta.get('profiles', []):
                 tags.append(profile)
-        
-        if page.meta.get('masvs-v2'):
-            for masvs_v2 in page.meta.get('masvs-v2', []):
-                tags.append(masvs_v2)
+        if mappings:=page.meta.get('mappings'):
+            if masvs_v2:=mappings.get('masvs-v2'):
+                for masvs_id in masvs_v2:
+                    tags.append(masvs_id)
+
+        if page.meta.get('status'):
+            if page.meta.get('status') == 'draft':
+                tags.append('draft')
         
         page.meta['tags'] = tags
 
