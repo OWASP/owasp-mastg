@@ -12,7 +12,7 @@ IPSW calls itself an "iOS/macOS Research Swiss Army Knife". In general, IPSW all
 IPSW can extract Objective-C class information from a MachO binary. The desired architecture can be specified using `--arch` in case of a universal MachO file:
 
 ```bash
-ipsw class-dump --arch arm64 UnCrackable\ Level\ 1
+$ ipsw class-dump --arch arm64 UnCrackable\ Level\ 1
 
 @protocol NSObject
 
@@ -31,7 +31,7 @@ ipsw class-dump --arch arm64 UnCrackable\ Level\ 1
 ??? "Full command output"
 
     ```bash
-    ipsw class-dump --arch arm64 UnCrackable\ Level\ 1
+    $ ipsw class-dump --arch arm64 UnCrackable\ Level\ 1
 
     @protocol NSObject
 
@@ -199,102 +199,135 @@ ipsw class-dump --arch arm64 UnCrackable\ Level\ 1
 IPSW can output the available Swift symbols with `ipsw swift-dump`. By default, the location of the identified structures and symbols is not printed, but this can be enabled by using the `-V` flag:
 
 ```bash
-ipsw swift-dump --arch arm64 TelegramCoreFramework -V .
+$ ipsw swift-dump --arch arm64 ./MASTestApp -V
+
 Swift TOC
 --------
-  __swift5_builtin  = 167
-  __swift5_types(2) = 1159
-  __swift5_protos   = 14
-  __swift5_proto    = 1170
+  __swift5_builtin  = 0
+  __swift5_types(2) = 3
+  __swift5_protos   = 0
+  __swift5_proto    = 2
 
 TYPES
 -----
 
-// 0x5404f4
-struct TelegramApi.Api {} // accessor 0x14ff54
-
-// 0x54051c
-struct TelegramApi.Api.messages {} // accessor 0x14ff60
-
-// 0x540544
-enum TelegramApi.Api.messages.StickerSet { // accessor 0x150138
-    /* 0x5ad214 */ case stickerSet: TelegramApi.Api.StickerSet set_Sa TelegramApi.Api.StickerPack _$sG5packsSa -> TelegramApi.Api.Document _$sG9documentst
+// 0x10000a760
+struct MASTestApp.ContentView { // accessor 0x1000081e4
+    /* 0x10000b064 */ var _displayText: _$s7SwiftUI5StateVMn _$sSS
 }
 
-// 0x540574
-enum TelegramApi.Api.messages.ArchivedStickers { // accessor 0x150218
-    /* 0x5ad230 */ case archivedStickers: (private) count_Sa TelegramApi.Api.StickerSetCovered _$sG4setst ->
-}
+// 0x10000a7a4
+struct MASTestApp.MASTestAppApp {} // accessor 0x10000a200
 
-// 0x5405a0
-enum TelegramApi.Api.messages.InactiveChats { // accessor 0x150244
-    /* 0x5ad24c */ case inactiveChats: _$sSa -> (private) _$sG5dates_Sa -> TelegramApi.Api.Chat _$sG5chatsSa -> TelegramApi.Api.User _$sG5userst
+// 0x10000a7f0
+class MASTestApp.ResourceBundleClass { // accessor 0x10000a2c4
+  /* methods */
+    /* 0x10000a824 */ // <stripped> static func init
 }
-
-// 0x5405d8
-enum TelegramApi.Api.messages.SentEncryptedMessage { // accessor 0x15033c
-    /* 0x5ad268 */ case sentEncryptedMessage: (private) date_t
-    /* 0x5ad274 */ case sentEncryptedFile: (private) date_ TelegramApi.Api.EncryptedFile filet
-}
-
 ...
 
 ```
+
+??? "Full command output"
+
+    ```bash
+    $ ipsw swift-dump --arch arm64 ./MASTestApp -V
+
+    Swift TOC
+    --------
+    __swift5_builtin  = 0
+    __swift5_types(2) = 3
+    __swift5_protos   = 0
+    __swift5_proto    = 2
+
+    TYPES
+    -----
+
+    // 0x10000a760
+    struct MASTestApp.ContentView { // accessor 0x1000081e4
+        /* 0x10000b064 */ var _displayText: _$s7SwiftUI5StateVMn _$sSS
+    }
+
+    // 0x10000a7a4
+    struct MASTestApp.MASTestAppApp {} // accessor 0x10000a200
+
+    // 0x10000a7f0
+    class MASTestApp.ResourceBundleClass { // accessor 0x10000a2c4
+    /* methods */
+        /* 0x10000a824 */ // <stripped> static func init
+    }
+
+    PROTOCOL CONFORMANCES
+    ---------------------
+
+    // 0x10000a668
+    protocol conformance MASTestApp.ContentView : _$s7SwiftUI4ViewMp {
+    /* resilient witnesses */
+        /* 0x10000a83d */ _$s7SwiftUI4ViewP4BodyAC_AaBTn
+        /* 0x10000a845 */ _$s4Body7SwiftUI4ViewPTl
+        /* 0x100009924 */ _$s7SwiftUI4ViewP05_makeC04view6inputsAA01_C7OutputsVAA11_GraphValueVyxG_AA01_C6InputsVtFZTq
+        /* 0x100009928 */ _$s7SwiftUI4ViewP05_makeC4List4view6inputsAA01_cE7OutputsVAA11_GraphValueVyxG_AA01_cE6InputsVtFZTq
+        /* 0x10000992c */ _$s7SwiftUI4ViewP14_viewListCount6inputsSiSgAA01_ceF6InputsV_tFZTq
+        /* 0x100009944 */ _$s7SwiftUI4ViewP4body4BodyQzvgTq
+    }
+
+    // 0x10000a6fc
+    protocol conformance MASTestApp.MASTestAppApp : _$s7SwiftUI3AppMp {
+    /* resilient witnesses */
+        /* 0x10000afff */ _$s7SwiftUI3AppP4BodyAC_AA5SceneTn
+        /* 0x10000b007 */ _$s4Body7SwiftUI3AppPTl
+        /* 0x10000a0d4 */ _$s7SwiftUI3AppP4body4BodyQzvgTq
+        /* 0x10000a184 */ _$s7SwiftUI3AppPxycfCTq
+    }
+
+    ASSOCIATED TYPES
+    ---------------------
+
+    // 0x10000b088
+    extension MASTestApp.ContentView: _$s7SwiftUI4ViewP {
+        /* 0x10000b03f */ typealias Body = _$s7SwiftUI15ModifiedContentVMn _$s7SwiftUI6VStackVMn _$s7SwiftUI9TupleViewVMn _$syAA -> _$s7SwiftUI6HStackVMn _$syAC -> _$s7SwiftUI4TextVMn _$s_ _$s7SwiftUI6SpacerVMn _$sAAyAAyAA -> _$s7SwiftUI6ButtonVMn _$syAAyAAyAAyAE _$s7SwiftUI14_PaddingLayoutVMn _$sGAHG _$s7SwiftUI30_EnvironmentKeyWritingModifierVMn _$s7SwiftUI4FontVMn _$sSgGGG -> _$s7SwiftUI24_BackgroundStyleModifierVMn _$s7SwiftUI14LinearGradientVMn _$sGG -> _$s7SwiftUI11_ClipEffectVMn _$s7SwiftUI16RoundedRectangleVMn _$sGGAHGtGGAHG_AAyAAyAAyAA -> _$s7SwiftUI10ScrollViewVMn _$syAAyAAyAE _$s7SwiftUI16_FlexFrameLayoutVMn _$sGAHGGA2_GAQ -> _$s7SwiftUI5ColorVMn _$sGGAWGAHGtGGAH
+    }
+
+    // 0x10000b0a0
+    extension MASTestApp.MASTestAppApp: _$s7SwiftUI3AppP {
+        /* 0x10000b044 */ typealias Body = _$s7SwiftUI11WindowGroupVMn MASTestApp.ContentView
+    }
+
+    ```
 
 ## Converting plist Files
 
 IPSW can convert a binary plist or XML plist to JSON:
 
 ```bash
-ipsw plist ./Info.plist
+$ ipsw plist ./Info.plist
 {
-  "BuildMachineOSBuild": "15G1212",
-  "CFBundleDevelopmentRegion": "en",
-  "CFBundleDisplayName": "UnCrackable1",
-  "CFBundleExecutable": "UnCrackable Level 1",
-  "CFBundleIcons": {
+    "BuildMachineOSBuild": "23B74",
+    "CFBundleDevelopmentRegion": "en",
+    "CFBundleExecutable": "MASTestApp",
+    "CFBundleIdentifier": "org.owasp.mastestapp.MASTestApp",
+    "CFBundleInfoDictionaryVersion": "6.0",
+    "CFBundleName": "MASTestApp",
+    "CFBundlePackageType": "APPL",
+    "CFBundleShortVersionString": "1.0",
+    "CFBundleSupportedPlatforms": [
+        "iPhoneOS"
+    ],
     ...
 ```
 
 ??? "Full command output"
 
     ```bash
-    ipsw plist ./Info.plist
+    $ ipsw plist ./Info.plist
 
     {
-    "BuildMachineOSBuild": "15G1212",
+    "BuildMachineOSBuild": "23B74",
     "CFBundleDevelopmentRegion": "en",
-    "CFBundleDisplayName": "UnCrackable1",
-    "CFBundleExecutable": "UnCrackable Level 1",
-    "CFBundleIcons": {
-        "CFBundlePrimaryIcon": {
-        "CFBundleIconFiles": [
-            "AppIcon-120x20",
-            "AppIcon-129x29",
-            "AppIcon-140x40",
-            "AppIcon-157x57",
-            "AppIcon-160x60"
-        ]
-        }
-    },
-    "CFBundleIcons~ipad": {
-        "CFBundlePrimaryIcon": {
-        "CFBundleIconFiles": [
-            "AppIcon-120x20",
-            "AppIcon-129x29",
-            "AppIcon-140x40",
-            "AppIcon-157x57",
-            "AppIcon-160x60",
-            "AppIcon-150x50",
-            "AppIcon-172x72",
-            "AppIcon-176x76",
-            "AppIcon-183.5x83.5"
-        ]
-        }
-    },
-    "CFBundleIdentifier": "sg.vp.UnCrackable1",
+    "CFBundleExecutable": "MASTestApp",
+    "CFBundleIdentifier": "org.owasp.mastestapp.MASTestApp",
     "CFBundleInfoDictionaryVersion": "6.0",
-    "CFBundleName": "UnCrackable Level 1",
+    "CFBundleName": "MASTestApp",
     "CFBundlePackageType": "APPL",
     "CFBundleShortVersionString": "1.0",
     "CFBundleSupportedPlatforms": [
@@ -302,32 +335,38 @@ ipsw plist ./Info.plist
     ],
     "CFBundleVersion": "1",
     "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
-    "DTPlatformBuild": "14C89",
+    "DTPlatformBuild": "21A326",
     "DTPlatformName": "iphoneos",
-    "DTPlatformVersion": "10.2",
-    "DTSDKBuild": "14C89",
-    "DTSDKName": "iphoneos10.2",
-    "DTXcode": "0821",
-    "DTXcodeBuild": "8C1002",
+    "DTPlatformVersion": "17.0",
+    "DTSDKBuild": "21A326",
+    "DTSDKName": "iphoneos17.0",
+    "DTXcode": "1501",
+    "DTXcodeBuild": "15A507",
     "LSRequiresIPhoneOS": true,
-    "MinimumOSVersion": "8.0",
+    "MinimumOSVersion": "17.2",
+    "UIApplicationSceneManifest": {
+        "UIApplicationSupportsMultipleScenes": true,
+        "UISceneConfigurations": {}
+    },
+    "UIApplicationSupportsIndirectInputEvents": true,
     "UIDeviceFamily": [
         1,
         2
     ],
-    "UILaunchStoryboardName": "LaunchScreen",
-    "UIMainStoryboardFile": "Main",
+    "UILaunchScreen": {
+        "UILaunchScreen": {}
+    },
     "UIRequiredDeviceCapabilities": [
-        "armv7"
-    ],
-    "UISupportedInterfaceOrientations": [
-        "UIInterfaceOrientationPortrait",
-        "UIInterfaceOrientationLandscapeLeft",
-        "UIInterfaceOrientationLandscapeRight"
+        "arm64"
     ],
     "UISupportedInterfaceOrientations~ipad": [
         "UIInterfaceOrientationPortrait",
         "UIInterfaceOrientationPortraitUpsideDown",
+        "UIInterfaceOrientationLandscapeLeft",
+        "UIInterfaceOrientationLandscapeRight"
+    ],
+    "UISupportedInterfaceOrientations~iphone": [
+        "UIInterfaceOrientationPortrait",
         "UIInterfaceOrientationLandscapeLeft",
         "UIInterfaceOrientationLandscapeRight"
     ]
