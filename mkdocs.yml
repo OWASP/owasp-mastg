@@ -206,6 +206,8 @@ theme:
       l1: material/circle
       l2: material/circle-multiple-outline
       r: material/circle-double
+      draft: material/information-outline
+      new: material/alert-decagram
   features:
     - search.suggest
     - search.share
@@ -306,3 +308,8 @@ extra:
     L1: l1
     L2: l2
     R: r
+    draft: draft
+    new: new
+  status:
+    draft: This page is in draft.
+    new: New in this beta!

@@ -7,23 +7,23 @@ import combine_data_for_checklist
 
 CHECKLIST_DICT = combine_data_for_checklist.get_checklist_dict()
 
-# checklist functions
-
 def get_platform_icon(platform):
     if platform == "android":
-        return '<span style="font-size: large; color: darkgrey;"> :material-android: </span>'
+        return '<span style="font-size: large; color: darkgrey;"> :material-android: </span><span style="display: none;">platform:android</span>'
     elif platform == "ios":
-        return '<span style="font-size: large; color: darkgrey;"> :material-apple: </span>'
+        return '<span style="font-size: large; color: darkgrey;"> :material-apple: </span><span style="display: none;">platform:ios</span>'
     elif platform == "general":
         return '<span style="font-size: large; color: darkgrey;"> :material-asterisk: </span>'
 
 def get_level_icon(level, value):
     if level == "L1" and value == True:
-        return '<span class="mas-dot-blue"></span>'
+        return '<span class="mas-dot-blue"></span><span style="display: none;">profile:L1</span>'
     elif level == "L2" and value == True:
-        return '<span class="mas-dot-green"></span>'
+        return '<span class="mas-dot-green"></span><span style="display: none;">profile:L2</span>'
     elif level == "R" and value == True:
-        return '<span class="mas-dot-orange"></span>'
+        return '<span class="mas-dot-orange"></span><span style="display: none;">profile:R</span>'
+    elif level == "P" and value == True:
+        return '<span class="mas-dot-purple"></span><span style="display: none;">profile:P</span>'
 
 def set_icons_for_web(checklist):
     for row in checklist:
@@ -76,22 +76,33 @@ def get_mastg_components_dict(name):
         return components
 
 def get_all_weaknessess():
-    # weaknessess are located in the MASWE folder and all such files are called weakness.md. 
-    # We need to retrieve all of them and get their frontmatter, then return them as a list of dictionaries.
+
     weaknesses = []
-    for file in glob.glob("docs/MASWE/**/weakness.md", recursive=True):
+
+    for file in glob.glob("docs/MASWE/**/MASWE-*.md", recursive=True):
         with open(file, 'r') as f:
             content = f.read()
     
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-            # set path in frontmatter as the path from MASWE folder as is
+
             frontmatter['path'] = f"/MASWE/{os.path.splitext(os.path.relpath(file, 'docs/MASWE'))[0]}"
-            # id is a link containing the alias and this path
-            frontmatter['id'] = f"[{frontmatter['alias']}]({frontmatter['path']})"
+            weaknesses_id = frontmatter['id']            
+            frontmatter['id'] = f"[{weaknesses_id}]({frontmatter['path']})"
             frontmatter['masvs_v2_id'] = frontmatter['mappings']['masvs-v2'][0]
             frontmatter['masvs_category'] = frontmatter['masvs_v2_id'][:frontmatter['masvs_v2_id'].rfind('-')]
-
+            frontmatter['L1'] = get_level_icon('L1', "L1" in frontmatter['profiles'])
+            frontmatter['L2'] = get_level_icon('L2', "L2" in frontmatter['profiles'])
+            frontmatter['R'] = get_level_icon('R', "R" in frontmatter['profiles'])
+            frontmatter['P'] = get_level_icon('P', "P" in frontmatter['profiles'])
+            frontmatter['status'] = frontmatter.get('status', 'new')
+            status = frontmatter['status']
+            if status == 'new':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+            elif status == 'draft':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{weaknesses_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
             weaknesses.append(frontmatter)
+
     return weaknesses
 
 def reorder_dict_keys(original_dict, key_order):
@@ -159,15 +170,14 @@ for app_type in app_types:
 
 # weaknesses/overview.md
 
-column_titles = {'id': 'Alias', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'profiles': 'Profiles'}
+column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'L1': 'L1', 'L2': 'L2', 'R': 'R', 'P': 'P', 'status': 'Status'}
 
 weaknesses = get_all_weaknessess()
-masvs_categories = ["MASVS-STORAGE", "MASVS-CRYPTO", "MASVS-AUTH", "MASVS-NETWORK", "MASVS-PLATFORM", "MASVS-CODE","MASVS-RESILIENCE", "MASVS-PRIVACY"]
+weaknesses_columns_reordered = [reorder_dict_keys(weakness, column_titles.keys()) for weakness in weaknesses]
 
-for masvs_category in masvs_categories:
-    append_to_file(f"## {masvs_category}\n\n<br>\n\n", "docs/MASWE/overview.md")
-    weaknesses_of_type = [reorder_dict_keys(weakness, column_titles.keys()) for weakness in weaknesses if weakness['masvs_category'] == masvs_category]
-    append_to_file(list_of_dicts_to_md_table(weaknesses_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASWE/overview.md")
+append_to_file("---\nhide:\n  - toc\n---\n\n", "docs/MASWE/overview.md")
+append_to_file(list_of_dicts_to_md_table(weaknesses_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASWE/overview.md")
+
 
 # talks.md
 
