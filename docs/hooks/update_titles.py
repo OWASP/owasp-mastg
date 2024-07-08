@@ -23,4 +23,7 @@ def on_page_markdown(markdown, page, **kwargs):
         page.meta['id'] = path.split('/')[-1].split('.')[0]
         page.meta['title'] = f"{page.meta['id']}: {page.meta.get('title', '')}"
 
+    if page.meta.get('id') and "MASWE" in page.meta.get('id'): 
+        page.meta['title'] = f"{page.meta.get('id')}: {page.meta.get('title', '')}"
+    
     return markdown
