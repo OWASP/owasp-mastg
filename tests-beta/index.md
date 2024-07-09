@@ -1,14 +1,21 @@
-# New MASTG "Atomic Tests" (Beta)
+---
+hide: toc
+status: new
+---
 
-The MASTG "Atomic Tests" are a new addition to the MASTG project. They are a collection of small, individual tests that can be used to assess the security of a mobile application. Each test is designed to be simple and focused on a single security issue. The goal is to make it easier for developers and security professionals to identify and fix security vulnerabilities in their mobile applications.
+# New MASTG Tests (Beta)
 
-The MASTG "Atomic Tests" are organized into categories based on the OWASP Mobile Application Security Verification Standard (MASVS) and have a weakness assigned from the OWASP Mobile Application Security Weakness Enumeration (MASWE).
+??? info "About the MASTG Tests"
 
-Each test includes:
+    The MASTG "Atomic Tests" are a new addition to the MAS project. They are a collection of small, individual tests that can be used to assess the security and privacy of a mobile application. Each test is designed to be simple and focused on a single issue. The goal is to make it easier for developers and security professionals to identify and fix issues in their mobile applications.
 
-- **Overview**: A brief description of the security issue being tested.
-- **Steps**: Detailed instructions on how to test for the security issue.
-- **Observation**: The output of the test and what it means.
-- **Evaluation**: How to interpret the results of the test.
+    Tests are organized into categories based on the [OWASP MASVS](/MASVS) and have a weakness assigned from the [OWASP MASWE](/MASWE).
 
-The MASTG "Atomic Tests" are currently in beta and are being actively developed. We welcome feedback and contributions from the community. If you have suggestions for new tests or improvements to existing tests, please open an issue or pull request on the [GitHub repository](https://www.github.com/OWASP/owasp-mastg).
+    Each test includes:
+
+    - **Overview**: A brief description of the test.
+    - **Steps**: A set of steps to follow to identify the weakness in a mobile application.
+    - **Observation**: A description of the results of running the test against an application.
+    - **Evaluation**: Specific instructions for evaluating the results of the test.
+
+    Each test comes with a collection of demos that demonstrate the weakness in a sample application. These demos are written in markdown and are located in the [Demos](/MASTG/demos) section of the MASTG.

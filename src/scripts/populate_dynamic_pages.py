@@ -167,25 +167,23 @@ for test_type in test_types:
 
         append_to_file(list_of_dicts_to_md_table(tests_by_category, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests/index.md")
 
-# tests-beta/overview.md
+# tests-beta/index.md
 
 column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type"}
 
 tests_beta = get_all_tests_beta()
 tests_beta_columns_reordered = [reorder_dict_keys(test, column_titles.keys()) for test in tests_beta]
 
-append_to_file("---\nhide:\n  - toc\n---\n\n", "docs/MASTG/tests-beta/overview.md")
-append_to_file(list_of_dicts_to_md_table(tests_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests-beta/overview.md")
+append_to_file(list_of_dicts_to_md_table(tests_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests-beta/index.md")
 
-# demos-beta/overview.md
+# demos-beta/index.md
 
 column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'tools': "Tools"}
 
 demos_beta = get_all_demos_beta()
 demos_beta_columns_reordered = [reorder_dict_keys(demo, column_titles.keys()) for demo in demos_beta]
 
-append_to_file("---\nhide:\n  - toc\n---\n\n", "docs/MASTG/demos/overview.md")
-append_to_file(list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/demos/overview.md")
+append_to_file(list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/demos/index.md")
 
 # tools/index.md
 
@@ -222,15 +220,14 @@ for app_type in app_types:
     apps_of_type = [reorder_dict_keys(app, column_titles.keys()) for app in apps if app['platform'] == app_type]
     append_to_file(list_of_dicts_to_md_table(apps_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/apps/index.md")
 
-# weaknesses/overview.md
+# weaknesses/index.md
 
 column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'L1': 'L1', 'L2': 'L2', 'R': 'R', 'P': 'P', 'status': 'Status'}
 
 weaknesses = get_all_weaknessess()
 weaknesses_columns_reordered = [reorder_dict_keys(weakness, column_titles.keys()) for weakness in weaknesses]
 
-append_to_file("---\nhide:\n  - toc\n---\n\n", "docs/MASWE/overview.md")
-append_to_file(list_of_dicts_to_md_table(weaknesses_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASWE/overview.md")
+append_to_file(list_of_dicts_to_md_table(weaknesses_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASWE/index.md")
 
 
 # talks.md
