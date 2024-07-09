@@ -6,6 +6,8 @@ edit_uri: "" # disable edit button
 
 nav:
   - Home: index.md
+  - "MASWE (Beta)": 
+    - ... | MASWE/**/*.md
   - MASTG:
       - MASTG/index.md
       - Intro:
@@ -70,6 +72,8 @@ nav:
           - ... | flat | MASTG/tools/android/*.md
         - iOS:
           - ... | flat | MASTG/tools/ios/*.md
+        - Network:
+          - ... | flat | MASTG/tools/network/*.md
       - Apps:
         - MASTG/apps/index.md
         - Android:
@@ -125,7 +129,7 @@ copyright: |
     <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
   </div>
   <span style="font-size: smaller">
-    &#169; OWASP Foundation 2023. This work is licensed under 
+    &#169; OWASP Foundation 2024. This work is licensed under 
     <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
   </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span> <span>This website uses cookies to analyze our traffic and only share that information with our analytics partners. <a href="https://github.com/OWASP/owasp-mastg/blob/master/about_cookies.md">Learn more</a>.</span>
   <div style="color: #6a6868; font-size: smaller"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website and covers designed by Carlos Holguera.</i></div>
@@ -137,6 +141,13 @@ theme:
   favicon: assets/logo_circle.png
   icon:
     repo: fontawesome/brands/github
+    tag:
+      android: material/android
+      ios: material/apple
+      p: material/eye-circle-outline
+      l1: material/circle
+      l2: material/circle-multiple-outline
+      r: material/circle-double
   features:
     - search.suggest
     - search.share
@@ -148,6 +159,7 @@ theme:
     - navigation.top
     - navigation.tracking
     - navigation.indexes
+    - content.code.copy
 
   palette:
     # - primary: #499FFF 
@@ -162,33 +174,54 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css
 extra_javascript:
-  - javascripts/tablesort.min.js
-  - javascripts/tablesorts.js
   - javascripts/external_links.js
+  - https://code.jquery.com/jquery-3.5.1.js
+  - https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js
+  - javascripts/datatables.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
   - awesome-pages
   - mermaid2
+  - tags
+      # tags_file: tags.md # TODO: bug in mkdocs? dynamic tags from hooks not appearing in tags.md
 markdown_extensions:
   - meta
   - toc:
       permalink: true
   - attr_list
+  - md_in_html
   - admonition
   - tables
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.progressbar
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.snippets:
+      check_paths: true
+      restrict_base_path: false
+      base_path: !relative
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+
+hooks:
+  - docs/hooks/replace_snippets.py
+  - docs/hooks/update_titles.py
+  - docs/hooks/maswe-beta-banner.py
+  - docs/hooks/add-tags.py
 
 extra:
   generator: false # removed but recreated in copyright above
@@ -208,3 +241,10 @@ extra:
     # - icon: fontawesome/solid/paper-plane
     #   link: mailto:sven.schleier@owasp.org
     #   name: Sven Schleier
+  tags:
+    android: android
+    ios: ios
+    P: p
+    L1: l1
+    L2: l2
+    R: r

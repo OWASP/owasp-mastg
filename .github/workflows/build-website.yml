@@ -26,15 +26,15 @@ jobs:
       - name: Get Latest MASVS Release Tag
         run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: "OWASP/owasp-masvs"
           fetch-depth: 1
           path: owasp-masvs/
       - name: Generate MASVS yaml
         run: python3 ./owasp-masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./owasp-masvs/Document -c ./owasp-masvs/controls
-      # - name: Populate MASVS Categories Markdown Files
-      #   run: python3 ./owasp-masvs/src/populate_masvs_categories_md.py -d ./owasp-masvs/Document -w
+      - name: Populate MASVS Categories Markdown Files
+        run: python3 ./owasp-masvs/tools/populate_masvs_categories_md.py -d ./owasp-masvs/Document -w
       - run: ./src/scripts/structure_masvs.sh
 
       - name: Generate MASVS Control Markdown Files

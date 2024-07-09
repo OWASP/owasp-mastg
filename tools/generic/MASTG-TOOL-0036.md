@@ -44,10 +44,10 @@ codeSigningPolicy   optional
 isDebuggerAttached  false
 ```
 
-To search in memory for a specific keyword, you may use the search command `\/`:
+To search in memory for a specific keyword, you may use the search command `:/`:
 
 ```bash
-[0x00000000]> \/ unacceptable
+[0x00000000]> :/ unacceptable
 Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
 Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
 ...
@@ -60,7 +60,7 @@ hits: 23
 To output the search results in JSON format, we simply add `j` to our previous search command (just as we do in the r2 shell). This can be used in most of the commands:
 
 ```bash
-[0x00000000]> \/j unacceptable
+[0x00000000]> :/j unacceptable
 Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
 Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
 ...
@@ -105,10 +105,10 @@ To list or set a breakpoint use the command db. This is useful when analyzing/mo
 [0x00000000]> :db
 ```
 
-Finally, remember that you can also run Frida JavaScript code with `\.` plus the name of the script:
+Finally, remember that you can also run Frida JavaScript code with `:.` plus the name of the script:
 
 ```bash
-[0x00000000]> \. agent.js
+[0x00000000]> :. agent.js
 ```
 
 You can find more examples on [how to use r2frida](https://github.com/enovella/r2frida-wiki "Using r2frida") on their Wiki project.

@@ -18,7 +18,7 @@ There are no hard written rules for performing static analysis, but there are fe
 
 In addition to the techniques learned in the "[Disassembling and Decompiling](#disassembling-and-decompiling "Disassembling and Decompiling")" section, for this section you'll need some understanding of the [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime"). For instance, functions like `_objc_msgSend` or `_objc_release` are specially meaningful for the Objective-C runtime.
 
-We will be using the [UnCrackable App for iOS Level 1](0x08b-Reference-Apps.md#ios-uncrackable-l1), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field.
+We will be using the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1"), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field.
 
 <img src="Images/Chapters/0x06c/manual_reversing_app_home_screen2.png" width="400px" />
 

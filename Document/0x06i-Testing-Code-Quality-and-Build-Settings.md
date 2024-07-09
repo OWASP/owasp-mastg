@@ -97,7 +97,7 @@ See the [Technical Q&A QA1788 Building a Position Independent Executable](https:
 
 ### Debuggable Apps
 
-Apps can be made [debuggable](0x06c-Reverse-Engineering-and-Tampering.md#debugging) by adding the [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key to the app entitlements file and setting it to `true`.
+Apps can be made [debuggable](../techniques/android/MASTG-TECH-0031.md) by adding the [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key to the app entitlements file and setting it to `true`.
 
 While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program. To do that you need to determine the mode in which your app is to be generated to check the flags in the environment:
 

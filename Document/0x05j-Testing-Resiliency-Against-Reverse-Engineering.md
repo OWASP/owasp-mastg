@@ -219,7 +219,7 @@ for (int i = 1; ; i = 0)
 }
 ```
 
-Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: on stock Android builds, [OTA updates Google's public certificates](https://www.netspi.com/blog/technical/mobile-application-penetration-testing/android-root-detection-techniques/ "Android Root Detection Techniques").
+Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: on stock Android builds, [OTA updates Google's public certificates](https://www.netspi.com/blog/technical-blog/mobile-application-penetration-testing/android-root-detection-techniques/ "Android Root Detection Techniques").
 
 ### Anti-Debugging
 
@@ -555,8 +555,8 @@ To bypass this, we must modify the app's behavior slightly (the easiest ways to 
 
 There are two topics related to file integrity:
 
- 1. _Code integrity checks:_ In the ["Tampering and Reverse Engineering on Android"](0x05c-Reverse-Engineering-and-Tampering.md) chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this bypassing process more involved, a protection scheme can be augmented with CRC checks on the app bytecode, native libraries, and important data files. These checks can be implemented on both the Java and the native layer. The idea is to have additional controls in place so that the app only runs correctly in its unmodified state, even if the code signature is valid.
- 2. _The file storage integrity checks:_ The integrity of files that the application stores on the SD card or public storage and the integrity of key-value pairs that are stored in `SharedPreferences` should be protected.
+ 1. Code integrity checks: You can use CRC checks as an additional protection layer for the app bytecode, native libraries, and important data files. This way the app would only run correctly in its unmodified state, even if the code signature is valid.
+ 2. File storage integrity checks: The integrity of files that the application stores on the SD card or public storage and the integrity of key-value pairs that are stored in `SharedPreferences` should be protected.
 
 #### Sample Implementation - Application Source Code
 

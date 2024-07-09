@@ -55,9 +55,9 @@ hide:
 
 <a href="../checklists"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/mas_checklist.png" /></a>
 
-<br><br><br>
+<br>
 
-<a href="https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MAS_Checklist.xlsx" class="md-button md-button--primary" style="margin-top: 0.6em;"> Download the Checklist</a>
+<button class="mas-button" style="margin-top: 1.8em;" onclick="window.location.href='https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MAS_Checklist.xlsx';"> Download the Checklist</button>
 
 </center>
 

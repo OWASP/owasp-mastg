@@ -1,0 +1,11 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                 
+    AndroidManifest_reversed.xml 
+       rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest
+          [MASVS-STORAGE] Make sure to encrypt files in external storage if necessary  
+                                                                                       
+            2┆ <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>

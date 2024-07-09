@@ -48,6 +48,8 @@ def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
 
 def append_to_file(new_content, file_path):
     file = Path(file_path)
+    if not file.exists():
+        file.touch()
     content = file.read_text() + new_content
     file.write_text(content)
 
@@ -72,6 +74,25 @@ def get_mastg_components_dict(name):
                         frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
                     components.append(frontmatter)
         return components
+
+def get_all_weaknessess():
+    # weaknessess are located in the MASWE folder and all such files are called weakness.md. 
+    # We need to retrieve all of them and get their frontmatter, then return them as a list of dictionaries.
+    weaknesses = []
+    for file in glob.glob("docs/MASWE/**/weakness.md", recursive=True):
+        with open(file, 'r') as f:
+            content = f.read()
+    
+            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+            # set path in frontmatter as the path from MASWE folder as is
+            frontmatter['path'] = f"/MASWE/{os.path.splitext(os.path.relpath(file, 'docs/MASWE'))[0]}"
+            # id is a link containing the alias and this path
+            frontmatter['id'] = f"[{frontmatter['alias']}]({frontmatter['path']})"
+            frontmatter['masvs_v2_id'] = frontmatter['mappings']['masvs-v2'][0]
+            frontmatter['masvs_category'] = frontmatter['masvs_v2_id'][:frontmatter['masvs_v2_id'].rfind('-')]
+
+            weaknesses.append(frontmatter)
+    return weaknesses
 
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
@@ -135,6 +156,18 @@ for app_type in app_types:
     append_to_file(f"## {app_type.title()} Apps\n\n<br>\n\n", "docs/MASTG/apps/index.md")
     apps_of_type = [reorder_dict_keys(app, column_titles.keys()) for app in apps if app['platform'] == app_type]
     append_to_file(list_of_dicts_to_md_table(apps_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/apps/index.md")
+
+# weaknesses/overview.md
+
+column_titles = {'id': 'Alias', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'profiles': 'Profiles'}
+
+weaknesses = get_all_weaknessess()
+masvs_categories = ["MASVS-STORAGE", "MASVS-CRYPTO", "MASVS-AUTH", "MASVS-NETWORK", "MASVS-PLATFORM", "MASVS-CODE","MASVS-RESILIENCE", "MASVS-PRIVACY"]
+
+for masvs_category in masvs_categories:
+    append_to_file(f"## {masvs_category}\n\n<br>\n\n", "docs/MASWE/overview.md")
+    weaknesses_of_type = [reorder_dict_keys(weakness, column_titles.keys()) for weakness in weaknesses if weakness['masvs_category'] == masvs_category]
+    append_to_file(list_of_dicts_to_md_table(weaknesses_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASWE/overview.md")
 
 # talks.md
 

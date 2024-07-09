@@ -6,23 +6,6 @@ The MASTG is a living document that changes and adapts to the most recent securi
 
 > 🇯🇵 A translation of the MASTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
 
-That said, we **strongly encourage further translations of the MASVS as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mastg/releases/latest) mapping to the MASTG for free.
-
 ## MASVS Translations
 
-To add a new language you have to follow the steps from both sections below.
-
-1. Create a folder with the language of choice, e.g. `Document-ja`.
-2. Copy an existing `metadata.md` from another language and modify it for the new language.
-3. Add the language to the list of languages in `export.py`
-4. Update `.github/workflows/docgenerator.yml` and add the action steps for the new language.
-5. Update `../LANGS.md` to include the new language.
-6. Extend the `../README.md` with the newly available language.
-7. Release the MASVS.
-
-## In the MASTG
-
-IMPORTANT: only after releasing the MASVS!
-
-1. Add the new language to `src/scripts/gen_all_excel.sh`.
-2. Push and verify that the new Checklist is correctly generated for the new language.
+Starting with MASVS v2.0.0, translations will no longer be included to focus on the development of MASTG v2.0.0. We encourage the community to create and maintain their own translations. Thank you to all the past translators who generously volunteered their time and expertise to make the MASVS accessible to non-English speaking communities. We truly appreciate your contributions and hope to continue working together in the future. The past MASVS v1.5.0 translations are still available in the [MASVS repo](https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0).
