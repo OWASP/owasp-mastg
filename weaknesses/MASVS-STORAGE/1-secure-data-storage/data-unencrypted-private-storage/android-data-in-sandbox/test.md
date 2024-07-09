@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Sensitive Data Written to Private Data Directory (Sandbox) Unencrypted
+title: Data Stored in the App Sandbox at Runtime
 type: [dynamic, filesystem]
 mitigations:
 - android-use-keystore
