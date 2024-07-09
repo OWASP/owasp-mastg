@@ -4,10 +4,12 @@ alias: data-insufficient-access-restrictions-internal
 platform: [android]
 profiles: [L1, L2]
 mappings:
-- masvs-v1: [MSTG-STORAGE-2]
-- masvs-v2: [MASVS-STORAGE-2]
-- mastg-v1: [MASTG-TEST-0052, MASTG-TEST-0001]
-- cwe: [CWE-552, CWE-922]
+  masvs-v1: [MSTG-STORAGE-2]
+  masvs-v2: [MASVS-STORAGE-2]
+  mastg-v1: [MASTG-TEST-0052, MASTG-TEST-0001]
+  cwe: [CWE-552, CWE-922]
+  android: https://developer.android.com/about/versions/nougat/android-7.0-changes#permfilesys
+
 ---
 
 ## Overview
