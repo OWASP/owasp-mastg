@@ -118,6 +118,7 @@ def get_all_tests_beta():
             frontmatter['path'] = f"/MASTG/tests-beta/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/tests-beta'))[0]}"
             test_id = frontmatter['id']            
             frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             
             tests.append(frontmatter)
     return tests
@@ -135,6 +136,7 @@ def get_all_demos_beta():
             frontmatter['path'] = f"/MASTG/demos/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/demos'))[0]}"
             test_id = frontmatter['id']            
             frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             
             demos.append(frontmatter)
     return demos
