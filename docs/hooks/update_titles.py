@@ -18,7 +18,7 @@ def on_page_markdown(markdown, page, **kwargs):
             page.meta['title'] = f"{prefix}{page.meta.get('title', '')}"
             break
     
-    if any(keyword in path for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-"]):
+    if any(keyword in path for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-"]):
         # the component ID is the file basename without the extension
         page.meta['id'] = path.split('/')[-1].split('.')[0]
         page.meta['title'] = f"{page.meta['id']}: {page.meta.get('title', '')}"

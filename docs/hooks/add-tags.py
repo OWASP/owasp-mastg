@@ -22,6 +22,12 @@ def on_page_markdown(markdown, page, **kwargs):
     if page.meta.get('profiles'):
         for profile in page.meta.get('profiles', []):
             tags.append(profile)
+
+    if page.meta.get('weakness'):
+        tags.append(page.meta.get('weakness'))
+    if page.meta.get('test'):
+        tags.append(page.meta.get('test'))
+    
     if mappings:=page.meta.get('mappings'):
         if masvs_v2:=mappings.get('masvs-v2'):
             for masvs_id in masvs_v2:

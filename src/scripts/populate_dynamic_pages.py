@@ -105,6 +105,40 @@ def get_all_weaknessess():
 
     return weaknesses
 
+def get_all_tests_beta():
+
+    tests = []
+
+    for file in glob.glob("docs/MASTG/tests-beta/**/MASTG-TEST-*.md", recursive=True):
+        with open(file, 'r') as f:
+            content = f.read()
+    
+            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+
+            frontmatter['path'] = f"/MASTG/tests-beta/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/tests-beta'))[0]}"
+            test_id = frontmatter['id']            
+            frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            
+            tests.append(frontmatter)
+    return tests
+
+def get_all_demos_beta():
+
+    demos = []
+
+    for file in glob.glob("docs/MASTG/demos/**/MASTG-DEMO-*.md", recursive=True):
+        with open(file, 'r') as f:
+            content = f.read()
+    
+            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+
+            frontmatter['path'] = f"/MASTG/demos/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/demos'))[0]}"
+            test_id = frontmatter['id']            
+            frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            
+            demos.append(frontmatter)
+    return demos
+
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
 
@@ -132,6 +166,26 @@ for test_type in test_types:
         tests_by_category.sort(key=lambda x: x['masvs_v2_id'])
 
         append_to_file(list_of_dicts_to_md_table(tests_by_category, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests/index.md")
+
+# tests-beta/overview.md
+
+column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type"}
+
+tests_beta = get_all_tests_beta()
+tests_beta_columns_reordered = [reorder_dict_keys(test, column_titles.keys()) for test in tests_beta]
+
+append_to_file("---\nhide:\n  - toc\n---\n\n", "docs/MASTG/tests-beta/overview.md")
+append_to_file(list_of_dicts_to_md_table(tests_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests-beta/overview.md")
+
+# demos-beta/overview.md
+
+column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'tools': "Tools"}
+
+demos_beta = get_all_demos_beta()
+demos_beta_columns_reordered = [reorder_dict_keys(demo, column_titles.keys()) for demo in demos_beta]
+
+append_to_file("---\nhide:\n  - toc\n---\n\n", "docs/MASTG/demos/overview.md")
+append_to_file(list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/demos/overview.md")
 
 # tools/index.md
 
