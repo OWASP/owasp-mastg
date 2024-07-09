@@ -11,9 +11,7 @@ prerequisites:
 
 ## Overview
 
-Android apps use a variety of APIs to write data to internal storage. If you only need to inspect the list of created/modified files and their contents, the most effective approach is a snapshot-based approach like the one used in this test.
-
-This has the limitation that you won't know the APIs and locations in your code that are responsible; if you need to know, you should rather follow a dynamic analysis approach based on method tracing. 
+The goal of this test is to retrieve the files written to the external storage and inspect them regardless of the APIs used to write them. It uses a simple approach based on [file retrieval from the device storage](/MASTG/techniques/android/MASTG-TECH-0002) before and after the app is exercised to identify the files created during the app's execution and to check if they contain sensitive data.
 
 ## Steps
 
@@ -25,12 +23,12 @@ This has the limitation that you won't know the APIs and locations in your code 
 
 4. Take a second copy of the app's private data directory for offline analysis and make a diff using the first copy to identify all files created or modify during your testing session.
 
-5. Attempt to identify and decode data that has been encoded using methods such as base64 encoding, hexadecimal representation, URL encoding, escape sequences, wide characters and common data obfuscation methods such as xoring. Also consider identifying and decompressing compressed files such as tar or zip. These methods obscure but do not protect sensitive data.
-
 ## Observation
 
-Data extracted from the app's private data directory which has been decompressed, decoded or deobfuscated where required.
+The output should contain a list of files that were created in the app's private storage during  execution.
 
 ## Evaluation
+
+Attempt to identify and decode data that has been encoded using methods such as base64 encoding, hexadecimal representation, URL encoding, escape sequences, wide characters and common data obfuscation methods such as xoring. Also consider identifying and decompressing compressed files such as tar or zip. These methods obscure but do not protect sensitive data.
 
 Search the extracted data for items such as keys, passwords and any sensitive data inputted into the app. The test case fails if you find any of this sensitive data.

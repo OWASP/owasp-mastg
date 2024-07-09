@@ -7,9 +7,9 @@ mappings:
   masvs-v1: [MSTG-STORAGE-2]
   masvs-v2: [MASVS-STORAGE-1, MASVS-CRYPTO-2]
   mastg-v1: [MASTG-TEST-0052, MASTG-TEST-0001]
-refs:
-  - https://developer.android.com/privacy-and-security/risks/backup-leaks#risk:-storing-sensitive-data-unencrypted
-  - https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/encrypting_your_app_s_files
+  cwe: [311]
+  android: https://developer.android.com/privacy-and-security/risks/backup-leaks#risk:-storing-sensitive-data-unencrypted
+  ios: https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/encrypting_your_app_s_files
 ---
 
 ## Overview
@@ -31,6 +31,6 @@ Mobile apps may need to store sensitive data locally within private storage loca
 
 ## Mitigations
 
-- Avoid storing sensitive data locally if not required for application functionality helps reduce the scope for risks. For example keeping PII server-side, rendering it at time of use, and removing any cached data on logout.
-- Use the platform's hardware-backed keystore solution to store the key used for encryption.
+- Avoid storing sensitive data locally if not required for application functionality to reduce the likelihood and impact of this weakness. For example keeping PII server-side, rendering it at time of use, and removing any cached data on logout.
+- Use the platform's hardware-backed keystore solution to store keys used for encryption.
 - Use platform features for encrypting data at rest to safely store files and preferences.
