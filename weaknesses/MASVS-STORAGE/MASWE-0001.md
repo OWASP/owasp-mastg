@@ -11,6 +11,7 @@ mappings:
   android: https://developer.android.com/privacy-and-security/risks/log-info-disclosure
 refs:
   - https://stackoverflow.com/questions/45270547/is-read-logs-a-normal-or-dangerous-android-permission
+status: new
 ---
 
 ## Overview

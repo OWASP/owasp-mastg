@@ -8,6 +8,7 @@ mappings:
   masvs-v1: [MSTG-NETWORK-1]
   masvs-v2: [MASVS-PRIVACY-1]
   cwe: [359]
+status: new
 ---
 
 ## Overview

@@ -10,7 +10,7 @@ mappings:
   mastg-v1: [MASTG-TEST-0052, MASTG-TEST-0001]
   cwe: [311]
   android: https://developer.android.com/privacy-and-security/risks/sensitive-data-external-storage
-
+status: new
 ---
 
 ## Overview

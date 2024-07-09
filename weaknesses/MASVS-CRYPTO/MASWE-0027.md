@@ -13,6 +13,7 @@ observed_examples:
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6386
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-3419
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4102
+status: new
 ---
 
 ## Overview
