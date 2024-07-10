@@ -1,6 +1,7 @@
 ---
 platform: android
-title: File System Snapshots from Internal Storage 
+title: File System Snapshots from Internal Storage
+id: MASTG-DEMO-0010
 tools: [adb]
 code: [kotlin]
 ---
