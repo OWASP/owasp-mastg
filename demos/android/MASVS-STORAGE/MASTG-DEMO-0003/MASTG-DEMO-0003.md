@@ -19,11 +19,11 @@ This requires special app access called ["All files access"](https://developer.a
 
 Let's run our semgrep rule against the reversed java code.
 
-{{ rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-apis.yml }}
+{{ ../../../../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-apis.yml }}
 
 And another one against the sample manifest file.
 
-{{ rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest.yml }}
+{{ ../../../../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest.yml }}
 
 {{ run.sh }}
 
