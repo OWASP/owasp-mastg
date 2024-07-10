@@ -8,6 +8,7 @@ mitigations:
 - android-use-androidx-security
 prerequisites:
 - identify-sensitive-data
+weakness: MASWE-0006
 ---
 
 ## Overview

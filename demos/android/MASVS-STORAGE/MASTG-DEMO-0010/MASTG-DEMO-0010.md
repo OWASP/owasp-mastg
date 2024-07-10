@@ -4,6 +4,7 @@ title: File System Snapshots from Internal Storage
 id: MASTG-DEMO-0010
 tools: [adb]
 code: [kotlin]
+test: MASTG-TEST-0207
 ---
 
 ### Sample
