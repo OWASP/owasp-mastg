@@ -35,6 +35,19 @@ hide:
 <button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS.pdf';"> Download the MASVS</button>
 
 </center>
+
+<center>
+
+<h2>OWASP MASWE</h2>
+
+<a href="../MASWE"><img style="border-radius: 3px; margin: 2em;" width="300px" class="grow" src="assets/maswe_cover.png"></a>
+
+<br>
+
+<button class="mas-button" onclick="window.location.href='../MASWE';"> Access the Beta</button>
+
+</center>
+
 <center>
 
 <h2>OWASP MASTG</h2>

@@ -97,6 +97,9 @@
             "pattern": "^/MASTG/"
         },
         {
+            "pattern": "^/MASWE/"
+        },
+        {
             "pattern": "^/checklists/"
         }
         

@@ -5,8 +5,9 @@ log = logging.getLogger('mkdocs')
 
 beta_banner = """
 !!! example "BETA"
-    This is a beta version of the [MASWE (Mobile Application Security Weakness Enumeration)](https://mas.owasp.org/MASWE/). The content is still under development and may change in terms of structure, IDs and content.
-    Your feedback and questions are welcome! Please post them to [MASWE Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-feedback).
+    This content is in **beta** and still under active development, so it is subject to change any time (e.g. structure, IDs, content, URLs, etc.).
+    
+    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
 """
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
@@ -14,7 +15,7 @@ beta_banner = """
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
-    if "MASWE/" in path:
+    if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/"]):
         markdown = f"{beta_banner}\n\n{markdown}"
 
     return markdown
