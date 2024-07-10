@@ -18,7 +18,7 @@ The goal of this test is to retrieve the files written to the **internal storage
 
 1. Start the device.
 
-2. Take a first [copy of the app's private data directory](../../../../../techniques/android/MASTG-TECH-0008.md) to have as a reference for offline analysis.
+2. Take a first [copy of the app's private data directory](/MASTG/techniques/android/MASTG-TECH-0008.md) to have as a reference for offline analysis.
 
 3. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Taking note of the data you input can help identify it later using tools to search for it.
 
