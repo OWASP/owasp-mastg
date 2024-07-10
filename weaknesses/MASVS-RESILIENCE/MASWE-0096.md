@@ -10,8 +10,8 @@ mappings:
 
 draft:
   description: Use payload/End-2-End Encryption. Even if the connection is encrypted
-    (e.g. HTTPS), performing a MITM attack should not reveal any sensitive infomation
-    (e.g. about the inner workings of the app and its operarations. This is not neccessarily
+    (e.g. HTTPS), performing a MITM attack should not reveal any sensitive information
+    (e.g. about the inner workings of the app and its operations. This is not necessarily
     related to privacy).
   topics: null
 status: draft
