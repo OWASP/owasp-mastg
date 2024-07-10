@@ -63,15 +63,8 @@ def get_mastg_components_dict(name):
                     content = f.read()
         
                     frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-                    # is is the basename of the file without the extension
-                    id = os.path.splitext(os.path.basename(file))[0]
-                    if "-TEST" in id:
-                        masvs_id = frontmatter['masvs_v2_id'][0]
-                        masvs_category = masvs_id[:masvs_id.rfind('-')]
-                        frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
-
-                    else:
-                        frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
+                    component_id = os.path.splitext(os.path.basename(file))[0]
+                    frontmatter['id'] = f"[{component_id}](/{os.path.splitext(os.path.relpath(file, f"docs/"))[0]}/)"
                     components.append(frontmatter)
         return components
 
@@ -154,7 +147,8 @@ for test_type in test_types:
     append_to_file(f"## {test_type.title()} tests\n\n<br>\n\n", "docs/MASTG/tests/index.md")
     tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests if test['platform'] == test_type]
     for test in tests_of_type:
-        test['masvs_v2_id'] = test['masvs_v2_id'][0]
+        if test.get("masvs_v2_id"):
+            test['masvs_v2_id'] = test['masvs_v2_id'][0]
         if test.get("masvs_v1_id"):
             test['masvs_v1_id'] = "<br>".join([f"{v1_id}" for v1_id in test['masvs_v1_id']])
     
