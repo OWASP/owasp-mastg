@@ -34,6 +34,8 @@ A password:
 
 {{ new_files/secret.txt }}
 
+The file was created in `/data/user/0/org.owasp.mastestapp/files/` which is equivalent to `/data/data/org.owasp.mastestapp/files/`.
+
 ### Evaluation
 
 This test fails because the file is not encrypted and contains sensitive data (a password). You can further confirm this by reverse engineering the app and inspecting the code.
