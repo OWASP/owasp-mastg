@@ -1,8 +1,7 @@
 ---
 hide: toc
+title: Mobile Application Security Weakness Enumeration (MASWE)
 ---
-
-# MASWE (Mobile Application Security Weakness Enumeration)
 
 ??? info "About the MASWE"
 

@@ -1,9 +1,8 @@
 ---
 hide: toc
+title: New MASTG Tests (Beta)
 status: new
 ---
-
-# New MASTG Tests (Beta)
 
 ??? info "About the MASTG Tests"
 

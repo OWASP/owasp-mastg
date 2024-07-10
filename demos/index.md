@@ -1,9 +1,8 @@
 ---
 hide: toc
+title: MASTG Demos
 status: new
 ---
-
-# MASTG Demos
 
 ??? info "About the MASTG Demos"
 
