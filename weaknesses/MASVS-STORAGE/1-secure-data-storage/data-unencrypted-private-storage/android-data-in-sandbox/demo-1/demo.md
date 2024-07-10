@@ -8,7 +8,7 @@ code: [kotlin]
 
 ### Sample
 
-The snippet below shows sample code that creates a file on the internal storage using the `getFilesDir` method.
+The snippet below shows sample code that creates a file on the **internal storage** using using the [`filesDir`](https://developer.android.com/reference/android/content/Context#getFilesDir()) property of the context object.
 
 {{ MastgTest.kt }}
 
