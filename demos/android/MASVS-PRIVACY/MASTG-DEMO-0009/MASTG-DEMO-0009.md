@@ -23,7 +23,7 @@ emulator -avd Pixel_3a_API_33_arm64-v8a -writable-system
 
 Run mitmproxy with the custom script for logging sensitive data and dump the relevant traffic to a file.
 
-Note that the script is preconfigured with data that's already considered sensitive for this application. When running this test in a real-world scenario, you should determine what is considered [sensitive data](../../../../../../Document/0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Sensitive Data") based on the app's privacy policy and relevant privacy regulations. One recommended way to do this is by checking the app's privacy policy and the App Store Privacy declarations.
+Note that the script is preconfigured with data that's already considered sensitive for this application. When running this test in a real-world scenario, you should determine what is considered [sensitive data](/MASTG/General/0x04b-Mobile-App-Security-Testing#identifying-sensitive-data "Sensitive Data") based on the app's privacy policy and relevant privacy regulations. One recommended way to do this is by checking the app's privacy policy and the App Store Privacy declarations.
 
 {{ mitm_sensitive_logger.py }}
 

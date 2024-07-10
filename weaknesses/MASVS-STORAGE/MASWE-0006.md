@@ -19,7 +19,7 @@ status: new
 
 Mobile apps may need to store sensitive data locally within private storage locations such as the application sandbox and this data is at risk of exposure via, for example, incorrect file permissions, an app vulnerability, device vulnerability or data backup mechanisms.
 
-[Sensitive data](../../prerequisites/identify-sensitive-data.md "Sensitive Data") may include personally identifiable information (PII), passwords, cryptographic keys or session tokens.
+[Sensitive data](/MASTG/General/0x04b-Mobile-App-Security-Testing#identifying-sensitive-data "Sensitive Data") may include personally identifiable information (PII), passwords, cryptographic keys or session tokens.
 
 ## Impact
 
