@@ -10,7 +10,7 @@ mappings:
 refs:
 - https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication
 - https://www.w3.org/TR/webauthn-2/
-- https://fidoalliance.org/multi-device-fido-credentials/
+- https://fidoalliance.org/white-paper-multi-device-fido-credentials/
 - https://developers.google.com/identity/fido
 - https://developers.google.com/identity/fido#what_are_passkeys
 - https://fidoalliance.org/developers/
