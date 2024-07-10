@@ -301,8 +301,8 @@ markdown_extensions:
       check_paths: true
       restrict_base_path: false
       base_path:
-        - !relative
-        - docs/MASTG/
+        - !relative # allows to include snippets from the same folder
+        # - docs/MASTG/ # alternative to include snippets from specific folders
   - pymdownx.tabbed:
       alternate_style: true
       combine_header_slug: true
