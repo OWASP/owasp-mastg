@@ -13,6 +13,15 @@ masvs_v1_levels:
 
 ## Overview
 
+This test case focuses on identifying potentially sensitive data stored by an application and verifying if it is securely stored. The following checks should be performed:
+
+- Analyze data storage in the source code.
+- Be sure to trigger all possible functionality in the application (e.g. by clicking everywhere possible) in order to ensure data generation.
+- Check all application generated and modified files and ensure that the storage method is sufficiently secure.
+    - This includes `NSUserDefaults`, databases, KeyChain, Internal Storage, External Storage, etc.
+
+**NOTE:** For MASVS L1 compliance, it is sufficient to store data unencrypted in the application's internal storage directory (sandbox). For L2 compliance, additional encryption is required using cryptographic keys securely managed in the iOS KeyChain. This includes using envelope encryption (DEK+KEK) or equivalent methods.
+
 ## Static Analysis
 
 When you have access to the source code of an iOS app, identify sensitive data that's saved and processed throughout the app. This includes passwords, secret keys, and personally identifiable information (PII), but it may as well include other data identified as sensitive by industry regulations, laws, and company policies. Look for this data being saved via any of the local storage APIs listed below.

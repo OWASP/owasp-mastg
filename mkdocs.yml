@@ -6,6 +6,25 @@ edit_uri: "" # disable edit button
 
 nav:
   - Home: index.md
+  - "MASWE (Beta)": 
+    - MASWE/index.md
+    - MASVS-STORAGE:
+      - ... | flat | MASWE/MASVS-STORAGE/*.md
+    - MASVS-CRYPTO:
+      - ... | flat | MASWE/MASVS-CRYPTO/*.md
+    - MASVS-AUTH:
+      - ... | flat | MASWE/MASVS-AUTH/*.md
+    - MASVS-NETWORK:
+      - ... | flat | MASWE/MASVS-NETWORK/*.md
+    - MASVS-PLATFORM:
+      - ... | flat | MASWE/MASVS-PLATFORM/*.md
+    - MASVS-CODE:
+      - ... | flat | MASWE/MASVS-CODE/*.md
+    - MASVS-RESILIENCE:
+      - ... | flat | MASWE/MASVS-RESILIENCE/*.md
+    - MASVS-PRIVACY:
+      - ... | flat | MASWE/MASVS-PRIVACY/*.md
+
   - MASTG:
       - MASTG/index.md
       - Intro:
@@ -54,6 +73,78 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
           - MASVS-PRIVACY:
             - ... | flat | MASTG/tests/ios/MASVS-PRIVACY/*.md
+      - Tests (v2 Beta):
+        - MASTG/tests-beta/index.md
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests-beta/android/MASVS-STORAGE/MASTG-TEST-*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests-beta/android/MASVS-CRYPTO/MASTG-TEST-*.md
+          # - MASVS-AUTH:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-AUTH/MASTG-TEST-*.md
+          # - MASVS-NETWORK:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-NETWORK/MASTG-TEST-*.md
+          # - MASVS-PLATFORM:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-PLATFORM/MASTG-TEST-*.md
+          # - MASVS-CODE:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-CODE/MASTG-TEST-*.md
+          # - MASVS-RESILIENCE:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-RESILIENCE/MASTG-TEST-*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/tests-beta/android/MASVS-PRIVACY/MASTG-TEST-*.md
+        # - iOS:
+          # - MASVS-STORAGE:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-STORAGE/MASTG-TEST-*.md
+          # - MASVS-CRYPTO:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-CRYPTO/MASTG-TEST-*.md
+          # - MASVS-AUTH:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-AUTH/MASTG-TEST-*.md
+          # - MASVS-NETWORK:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-NETWORK/MASTG-TEST-*.md
+          # - MASVS-PLATFORM:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-PLATFORM/MASTG-TEST-*.md
+          # - MASVS-CODE:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-CODE/MASTG-TEST-*.md
+          # - MASVS-RESILIENCE:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-RESILIENCE/MASTG-TEST-*.md
+          # - MASVS-PRIVACY:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-PRIVACY/MASTG-TEST-*.md 
+      - Demos (v2 Beta):
+        - MASTG/demos/index.md
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/demos/android/MASVS-STORAGE/**/MASTG-DEMO-*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/demos/android/MASVS-CRYPTO/**/MASTG-DEMO-*.md
+          # - MASVS-AUTH:
+          #   - ... | flat | MASTG/demos/android/MASVS-AUTH/**/MASTG-DEMO-*.md
+          # - MASVS-NETWORK:
+          #   - ... | flat | MASTG/demos/android/MASVS-NETWORK/**/MASTG-DEMO-*.md
+          # - MASVS-PLATFORM:
+          #   - ... | flat | MASTG/demos/android/MASVS-PLATFORM/**/MASTG-DEMO-*.md
+          # - MASVS-CODE:
+          #   - ... | flat | MASTG/demos/android/MASVS-CODE/**/MASTG-DEMO-*.md
+          # - MASVS-RESILIENCE:
+          #   - ... | flat | MASTG/demos/android/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/demos/android/MASVS-PRIVACY/**/MASTG-DEMO-*.md
+        # - iOS:
+        #   - MASVS-STORAGE:
+        #     - ... | flat | MASTG/demos/ios/MASVS-STORAGE/**/MASTG-DEMO-*.md
+        #   - MASVS-CRYPTO:
+        #     - ... | flat | MASTG/demos/ios/MASVS-CRYPTO/**/MASTG-DEMO-*.md
+        #   - MASVS-AUTH:
+        #     - ... | flat | MASTG/demos/ios/MASVS-AUTH/**/MASTG-DEMO-*.md
+        #   - MASVS-NETWORK:
+        #     - ... | flat | MASTG/demos/ios/MASVS-NETWORK/**/MASTG-DEMO-*.md
+        #   - MASVS-PLATFORM:
+        #     - ... | flat | MASTG/demos/ios/MASVS-PLATFORM/**/MASTG-DEMO-*.md
+        #   - MASVS-CODE:
+        #     - ... | flat | MASTG/demos/ios/MASVS-CODE/**/MASTG-DEMO-*.md
+        #   - MASVS-RESILIENCE:
+        #     - ... | flat | MASTG/demos/ios/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
+        #   - MASVS-PRIVACY:
+        #     - ... | flat | MASTG/demos/ios/MASVS-PRIVACY/**/MASTG-DEMO-*.md
       - Techniques:
         - MASTG/techniques/index.md
         - Generic:
@@ -70,6 +161,8 @@ nav:
           - ... | flat | MASTG/tools/android/*.md
         - iOS:
           - ... | flat | MASTG/tools/ios/*.md
+        - Network:
+          - ... | flat | MASTG/tools/network/*.md
       - Apps:
         - MASTG/apps/index.md
         - Android:
@@ -125,7 +218,7 @@ copyright: |
     <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
   </div>
   <span style="font-size: smaller">
-    &#169; OWASP Foundation 2023. This work is licensed under 
+    &#169; OWASP Foundation 2024. This work is licensed under 
     <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
   </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span> <span>This website uses cookies to analyze our traffic and only share that information with our analytics partners. <a href="https://github.com/OWASP/owasp-mastg/blob/master/about_cookies.md">Learn more</a>.</span>
   <div style="color: #6a6868; font-size: smaller"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website and covers designed by Carlos Holguera.</i></div>
@@ -137,6 +230,15 @@ theme:
   favicon: assets/logo_circle.png
   icon:
     repo: fontawesome/brands/github
+    tag:
+      android: material/android
+      ios: material/apple
+      p: material/eye-circle-outline
+      l1: material/circle
+      l2: material/circle-multiple-outline
+      r: material/circle-double
+      draft: material/information-outline
+      new: material/alert-decagram
   features:
     - search.suggest
     - search.share
@@ -148,6 +250,7 @@ theme:
     - navigation.top
     - navigation.tracking
     - navigation.indexes
+    - content.code.copy
 
   palette:
     # - primary: #499FFF 
@@ -162,33 +265,56 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css
 extra_javascript:
-  - javascripts/tablesort.min.js
-  - javascripts/tablesorts.js
   - javascripts/external_links.js
+  - https://code.jquery.com/jquery-3.5.1.js
+  - https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js
+  - javascripts/datatables.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
   - awesome-pages
   - mermaid2
+  - tags
+      # tags_file: tags.md # TODO: bug in mkdocs? dynamic tags from hooks not appearing in tags.md
 markdown_extensions:
   - meta
   - toc:
       permalink: true
   - attr_list
+  - md_in_html
   - admonition
   - tables
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.progressbar
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.snippets:
+      check_paths: true
+      restrict_base_path: false
+      base_path:
+        - !relative # allows to include snippets from the same folder
+        # - docs/MASTG/ # alternative to include snippets from specific folders
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+
+hooks:
+  - docs/hooks/replace_snippets.py
+  - docs/hooks/update_titles.py
+  - docs/hooks/maswe-beta-banner.py
+  - docs/hooks/add-tags.py
 
 extra:
   generator: false # removed but recreated in copyright above
@@ -208,3 +334,15 @@ extra:
     # - icon: fontawesome/solid/paper-plane
     #   link: mailto:sven.schleier@owasp.org
     #   name: Sven Schleier
+  tags:
+    android: android
+    ios: ios
+    P: p
+    L1: l1
+    L2: l2
+    R: r
+    draft: draft
+    new: new
+  status:
+    draft: This page is in draft.
+    new: New in this beta!

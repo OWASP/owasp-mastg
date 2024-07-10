@@ -1,0 +1,36 @@
+rules:
+  - id: mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api-public
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for methods that returns locations to "external storage" which is shared with other apps
+    message: "[MASVS-STORAGE] Make sure to encrypt files at these locations if necessary"
+    pattern-either:
+      - pattern: $X.getExternalStorageDirectory(...)
+      - pattern: $X.getExternalStoragePublicDirectory(...)
+      - pattern: $X.getDownloadCacheDirectory(...)
+      - pattern: Intent.ACTION_CREATE_DOCUMENT
+  - id: mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api-scoped
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for methods that returns locations to "scoped external storage"
+    message: "[MASVS-STORAGE] These locations might be accessible to other apps on Android 10 and below given relevant permissions"
+    pattern-either:
+      - pattern: $X.getExternalFilesDir(...)
+      - pattern: $X.getExternalFilesDirs(...)
+      - pattern: $X.getExternalCacheDir(...)
+      - pattern: $X.getExternalCacheDirs(...)
+      - pattern: $X.getExternalMediaDirs(...)
+  - id: mastg-android-data-unencrypted-shared-storage-no-user-interaction-mediastore
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule scans for uses of MediaStore API that writes data to the external storage. This data can be accessed by other apps.
+    message: "[MASVS-STORAGE] Make sure to want this data to be shared with other apps"
+    pattern-either:
+      - pattern: import android.provider.MediaStore
+      - pattern: $X.MediaStore

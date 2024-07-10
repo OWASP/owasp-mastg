@@ -13,7 +13,7 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-[Decompile the APK](../../../Document/0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code) and [review it](../../../Document/0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code) to determine whether the codebase has been obfuscated.
+[Decompile the APK](../../../techniques/android/MASTG-TECH-0017.md "Decompiling Java Code") and [review it](../../../techniques/android/MASTG-TECH-0023.md "Reviewing Decompiled Java Code") to determine whether the codebase has been obfuscated.
 
 Below you can find a sample for an obfuscated code block:
 

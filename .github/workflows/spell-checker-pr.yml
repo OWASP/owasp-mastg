@@ -1,0 +1,29 @@
+name: Spell Checker (PR)
+
+on:
+  pull_request:
+
+jobs:
+  codespell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get Changed Files from Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # get file names and seperate them with space ' '
+          files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only | xargs -I {} sh -c 'echo "./{}"' | tr '\n' ' ')
+          echo "CHANGED_FILES=$files" >> "$GITHUB_ENV"          
+
+      - name: Output Changed Files
+        run: echo ${{ env.CHANGED_FILES }}
+          
+      - name: Check for Spelling Errors for Changed Files
+        uses: codespell-project/actions-codespell@master
+        with:
+          check_filenames: true
+          skip: "*.json,*.yml,*.apk,*.ipa,*.svg"
+          ignore_words_list: "aas,aaS,ba,bund,compliancy,firt,ist,keypair,ligh,Manuel,Manual,ro,ser,synopsys,theses,zuser,lief"
+          path: ${{ env.CHANGED_FILES }}

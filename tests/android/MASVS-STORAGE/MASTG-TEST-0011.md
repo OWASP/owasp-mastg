@@ -72,7 +72,7 @@ This doesn't, however, guarantee that the content will be overwritten at runtime
 
 There is no silver bullet for this problem because different solutions have different consequences. For example, you may perform additional calculations (e.g., XOR the data into a dummy buffer), but you'll have no way to know the extent of the compiler's optimization analysis. On the other hand, using the overwritten data outside the compiler's scope (e.g., serializing it in a temp file) guarantees that it will be overwritten but obviously impacts performance and maintenance.
 
-Then, using `Arrays.fill` to overwrite the data is a bad idea because the method is an obvious hooking target (see the chapter "[Tampering and Reverse Engineering on Android](../../../Document/0x05c-Reverse-Engineering-and-Tampering.md)" for more details).
+Then, using `Arrays.fill` to overwrite the data is a bad idea because the method is an obvious hooking target (see ["Method Hooking"](../../techniques/android/MASTG-TECH-0043.md "Disassembling Native Code") for more details).
 
 The final issue with the above example is that the content was overwritten with zeroes only. You should try to overwrite critical objects with random data or content from non-critical objects. This will make it really difficult to construct scanners that can identify sensitive data on the basis of its management.
 
