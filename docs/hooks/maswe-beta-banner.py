@@ -57,7 +57,7 @@ def get_mastg_v1_coverage(meta):
 
         mastg_v1_tests = "\n".join([f"    - [{test} - {mastg_v1_tests_metadata[test]['title']} ({mastg_v1_tests_metadata[test]['platform']})]({mastg_v1_tests_metadata[test]['link']})" for test in mastg_v1_tests_map_list])
         if mastg_v1_tests == "":
-            mastg_v1_tests = "No MASTG v1 tests are related to this weakness."
+            mastg_v1_tests = "    No MASTG v1 tests are related to this weakness."
     return mastg_v1_tests
 
 def get_info_banner(meta):
@@ -67,7 +67,7 @@ def get_info_banner(meta):
     refs = meta.get('refs', None)
     refs_section = ""
     if refs:
-        refs_section = "    **Useful References:**\n\n"
+        refs_section = "    ## References\n\n"
         refs_section += "\n".join([f"    - <{ref}>" for ref in refs])
 
     draft_info = meta.get('draft', None)
@@ -77,13 +77,11 @@ def get_info_banner(meta):
     if draft_info.get('note', None):
         description += "\n\n" + "> Note: " + draft_info.get('note', None)
 
-    areas = draft_info.get('areas', None)
-    areas_section = ""
-    if areas:
-        areas_section = "    **Relevant Areas:**\n\n"
-        areas_section += "\n".join([f"    - {area}" for area in areas])
-    else:
-        areas = ""
+    topics = draft_info.get('topics', None)
+    topics_section = ""
+    if topics:
+        topics_section = "    ## Relevant Topics\n\n"
+        topics_section += "\n".join([f"    - {topic}" for topic in topics])
     
     mastg_v1_tests = get_mastg_v1_coverage(meta)
 
@@ -95,15 +93,15 @@ def get_info_banner(meta):
 
     <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
     
-    **Initial Description or Hints:**
+    ## Initial Description or Hints
 
     {description}
     
-{areas_section}
+{topics_section}
     
 {refs_section}
 
-    **MASTG v1 Coverage:**
+    ## MASTG v1 Coverage
 
 {mastg_v1_tests}
 """
