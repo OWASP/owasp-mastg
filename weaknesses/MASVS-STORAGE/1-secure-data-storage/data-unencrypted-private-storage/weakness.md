@@ -1,5 +1,6 @@
 ---
 title: Sensitive Data Stored Unencrypted in Private Storage Locations
+id: MASWE-0006
 alias: data-unencrypted-private-storage
 platform: [android, ios]
 profiles: [L2]
