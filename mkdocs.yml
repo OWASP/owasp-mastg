@@ -7,7 +7,24 @@ edit_uri: "" # disable edit button
 nav:
   - Home: index.md
   - "MASWE (Beta)": 
-    - ... | MASWE/**/*.md
+    - MASWE/index.md
+    - MASVS-STORAGE:
+      - ... | flat | MASWE/MASVS-STORAGE/*.md
+    - MASVS-CRYPTO:
+      - ... | flat | MASWE/MASVS-CRYPTO/*.md
+    - MASVS-AUTH:
+      - ... | flat | MASWE/MASVS-AUTH/*.md
+    - MASVS-NETWORK:
+      - ... | flat | MASWE/MASVS-NETWORK/*.md
+    - MASVS-PLATFORM:
+      - ... | flat | MASWE/MASVS-PLATFORM/*.md
+    - MASVS-CODE:
+      - ... | flat | MASWE/MASVS-CODE/*.md
+    - MASVS-RESILIENCE:
+      - ... | flat | MASWE/MASVS-RESILIENCE/*.md
+    - MASVS-PRIVACY:
+      - ... | flat | MASWE/MASVS-PRIVACY/*.md
+
   - MASTG:
       - MASTG/index.md
       - Intro:
@@ -56,6 +73,78 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
           - MASVS-PRIVACY:
             - ... | flat | MASTG/tests/ios/MASVS-PRIVACY/*.md
+      - Tests (v2 Beta):
+        - MASTG/tests-beta/index.md
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests-beta/android/MASVS-STORAGE/MASTG-TEST-*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests-beta/android/MASVS-CRYPTO/MASTG-TEST-*.md
+          # - MASVS-AUTH:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-AUTH/MASTG-TEST-*.md
+          # - MASVS-NETWORK:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-NETWORK/MASTG-TEST-*.md
+          # - MASVS-PLATFORM:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-PLATFORM/MASTG-TEST-*.md
+          # - MASVS-CODE:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-CODE/MASTG-TEST-*.md
+          # - MASVS-RESILIENCE:
+          #   - ... | flat | MASTG/tests-beta/android/MASVS-RESILIENCE/MASTG-TEST-*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/tests-beta/android/MASVS-PRIVACY/MASTG-TEST-*.md
+        # - iOS:
+          # - MASVS-STORAGE:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-STORAGE/MASTG-TEST-*.md
+          # - MASVS-CRYPTO:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-CRYPTO/MASTG-TEST-*.md
+          # - MASVS-AUTH:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-AUTH/MASTG-TEST-*.md
+          # - MASVS-NETWORK:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-NETWORK/MASTG-TEST-*.md
+          # - MASVS-PLATFORM:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-PLATFORM/MASTG-TEST-*.md
+          # - MASVS-CODE:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-CODE/MASTG-TEST-*.md
+          # - MASVS-RESILIENCE:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-RESILIENCE/MASTG-TEST-*.md
+          # - MASVS-PRIVACY:
+          #   - ... | flat | MASTG/tests-beta/ios/MASVS-PRIVACY/MASTG-TEST-*.md 
+      - Demos (v2 Beta):
+        - MASTG/demos/index.md
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/demos/android/MASVS-STORAGE/**/MASTG-DEMO-*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/demos/android/MASVS-CRYPTO/**/MASTG-DEMO-*.md
+          # - MASVS-AUTH:
+          #   - ... | flat | MASTG/demos/android/MASVS-AUTH/**/MASTG-DEMO-*.md
+          # - MASVS-NETWORK:
+          #   - ... | flat | MASTG/demos/android/MASVS-NETWORK/**/MASTG-DEMO-*.md
+          # - MASVS-PLATFORM:
+          #   - ... | flat | MASTG/demos/android/MASVS-PLATFORM/**/MASTG-DEMO-*.md
+          # - MASVS-CODE:
+          #   - ... | flat | MASTG/demos/android/MASVS-CODE/**/MASTG-DEMO-*.md
+          # - MASVS-RESILIENCE:
+          #   - ... | flat | MASTG/demos/android/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/demos/android/MASVS-PRIVACY/**/MASTG-DEMO-*.md
+        # - iOS:
+        #   - MASVS-STORAGE:
+        #     - ... | flat | MASTG/demos/ios/MASVS-STORAGE/**/MASTG-DEMO-*.md
+        #   - MASVS-CRYPTO:
+        #     - ... | flat | MASTG/demos/ios/MASVS-CRYPTO/**/MASTG-DEMO-*.md
+        #   - MASVS-AUTH:
+        #     - ... | flat | MASTG/demos/ios/MASVS-AUTH/**/MASTG-DEMO-*.md
+        #   - MASVS-NETWORK:
+        #     - ... | flat | MASTG/demos/ios/MASVS-NETWORK/**/MASTG-DEMO-*.md
+        #   - MASVS-PLATFORM:
+        #     - ... | flat | MASTG/demos/ios/MASVS-PLATFORM/**/MASTG-DEMO-*.md
+        #   - MASVS-CODE:
+        #     - ... | flat | MASTG/demos/ios/MASVS-CODE/**/MASTG-DEMO-*.md
+        #   - MASVS-RESILIENCE:
+        #     - ... | flat | MASTG/demos/ios/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
+        #   - MASVS-PRIVACY:
+        #     - ... | flat | MASTG/demos/ios/MASVS-PRIVACY/**/MASTG-DEMO-*.md
       - Techniques:
         - MASTG/techniques/index.md
         - Generic:
@@ -148,6 +237,8 @@ theme:
       l1: material/circle
       l2: material/circle-multiple-outline
       r: material/circle-double
+      draft: material/information-outline
+      new: material/alert-decagram
   features:
     - search.suggest
     - search.share
@@ -209,7 +300,9 @@ markdown_extensions:
   - pymdownx.snippets:
       check_paths: true
       restrict_base_path: false
-      base_path: !relative
+      base_path:
+        - !relative # allows to include snippets from the same folder
+        # - docs/MASTG/ # alternative to include snippets from specific folders
   - pymdownx.tabbed:
       alternate_style: true
       combine_header_slug: true
@@ -248,3 +341,8 @@ extra:
     L1: l1
     L2: l2
     R: r
+    draft: draft
+    new: new
+  status:
+    draft: This page is in draft.
+    new: New in this beta!

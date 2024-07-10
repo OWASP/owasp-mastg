@@ -125,6 +125,14 @@
   display: inline-block;
 }
 
+.mas-dot-purple {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #9933CC;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .md-footer__inner:not([hidden]){
   display: none;
 }
@@ -227,6 +235,7 @@
 table.dataTable {
   background-color: white;
   color: #3a3a3a;
+  border-bottom: 1px solid #ccc !important;
 }
 
 table.dataTable th {
@@ -292,4 +301,14 @@ table.dataTable th {
 [data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_filter label,
 [data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_filter label {
   color: white;
+}
+
+
+
+.md-typeset details {
+  border: 0px;
+}
+
+.md-typeset .admonition {
+  border: 0px;
 }

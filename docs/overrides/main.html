@@ -2,40 +2,6 @@
 
 {% block content %}
 
-    <div class="masvs-chips">
-        {% if page.meta.platform %}
-        <div class="masvs-v1">
-            <span class="masvs-chips-title">Platform</span>
-            <div class="masvs-chip mas-blue-chip">{{ page.meta.platform }}</div>
-        </div>
-        {% endif %}
-
-        {% if page.meta.masvs_category %}
-        <div class="masvs-v2">
-            <span class="masvs-chips-title">MASVS Group</span>
-            <a href="https://mas.owasp.org/MASVS/" class="masvs-chip masvs-v2-chip masvs-category">{{ page.meta.masvs_category }}</a>
-        </div>
-        {% endif %}
-
-        {% if page.meta.masvs_v1_id %}
-        <div class="masvs-v1">
-            <span class="masvs-chips-title">MASVS v1</span>
-            {% for id in page.meta.masvs_v1_id %}
-            <a href="https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0" class="masvs-chip masvs-v1-chip">{{ id }}</a>
-            {% endfor %}
-        </div>
-        {% endif %}
-    
-        {% if page.meta.masvs_v2_id %}
-        <div class="masvs-v2">
-            <span class="masvs-chips-title">MASVS v2</span>
-            {% for id in page.meta.masvs_v2_id %}
-            <a href="https://mas.owasp.org/MASVS/controls/{{ id }}" class="masvs-chip masvs-v2-chip">{{ id }}</a>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </div>
-
     {% if page.meta.source %}
     <span>Available at: </span><a href="{{ page.meta.source }}"> {{ page.meta.source }}</a>
     <br><br>
@@ -58,7 +24,7 @@
             "MASVS-PRIVACY": "8B5F9E",
         }
         var keys = Object.keys(MASVS_COLORS);
-        var elements = document.querySelectorAll('.md-nav__link, .masvs-v2-chip');
+        var elements = document.querySelectorAll('.md-nav__link, .md-tag');
         
         if (elements.length > 0) {
             for (const element of elements) {
@@ -77,11 +43,17 @@
                             var keyParts = elementKey.split('-');
                             var category = keyParts.slice(0, keyParts.length - 1).join('-');
                             
-                            if (element.classList.contains("masvs-v2-chip")) {
+                            if (element.classList.contains("md-tag")) {
                                 color = MASVS_COLORS[category];
                             }
                             else {
                                 color = MASVS_COLORS[category] + "b0";
+                                element.style.margin = "0.5em 0.5em 0.5em 0.2em";
+                                element.style.borderRadius = "5px";
+                                element.style.padding = "0.3em";
+                                if (element.classList.contains("md-nav__link--active")) {
+                                    element.style.height = "6em";
+                                }
                             }
                         }
                         else {
@@ -91,16 +63,21 @@
                             if (!element.classList.contains("masvs-category")) {
                                 element.style.fontSize = "1.2em";
                             }
+                            element.style.margin = "0.5em 0.5em 0.5em 0.2em";
+                            element.style.borderRadius = "5px";
+                            element.style.padding = "0.3em";
+                            if (element.classList.contains("md-nav__link--active")) {
+                                element.style.height = "6em";
+                            }
                         }
                         element.style.backgroundColor = "#" + color;
-                        element.style.margin = "0.5em 0.5em 0.5em 0.2em";
-                        element.style.borderRadius = "5px";
                         element.style.color = "white";
-                        element.style.padding = "0.3em";
-                        if (element.classList.contains("md-nav__link--active")) {
-                            element.style.height = "6em";
-                        }
                     }
+                }
+                if (element.innerHTML.trim().includes("MSTG-")) {
+                    element.style.color = "#aaaaaa";
+                    // add tooltip to say that these IDs are deprecated
+                    element.title = "This ID is deprecated. Please use the MASVS v2 IDs instead.";
                 }
             }
         }
