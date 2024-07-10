@@ -1,13 +1,15 @@
 ---
 title: Sensitive Data Hardcoded in the App Package
+id: MASWE-0005
 alias: data-hardcoded-app-package
 platform: [android, ios]
 profiles: [L1, L2]
 mappings:
-  - masvs-v2: [MASVS-STORAGE-1]
-  - mastg-v1: []
-refs:
-  - https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
+  masvs-v2: [MASVS-STORAGE-1]
+  mastg-v1: []
+  cwe: [259, 321, 798]
+  android: https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
+status: new
 ---
 
 ## Overview
@@ -34,6 +36,7 @@ Sensitive data can be hardcoded in several areas:
 ## Mitigations
 
 To mitigate the risks associated with hardcoded sensitive data, developers should:
+
 - Use platform specific solutions to encrypt sensitive data, such as Android Keystore or iOS Keychain, before storing them locally.
 - Implement proper key management practices, including key rotation and using environment-specific keys.
 - Avoid storing sensitive data within the app package or source code, and instead securely retrieve it from server-side services that provide secure storage, access control, and auditing for sensitive data. For example, AWS Secrets Manager, Azure Key Vault, or Google Cloud Secret Manager are some popular managed secrets storage solutions. The app can securely retrieve the necessary secrets at runtime through secure, authenticated API calls.
@@ -41,4 +44,3 @@ To mitigate the risks associated with hardcoded sensitive data, developers shoul
 - If data must be hardcoded, such as some API keys, be sure to configure them with the minimum required permissions to reduce the impact in case of exposure. Many services allow you to create keys with restricted access, which limits the operations that can be performed.
 - Regularly audit the codebase and dependencies for hardcoded sensitive data (e.g. using tools such as [gitLeaks](https://github.com/gitleaks/gitleaks)).
 - While not foolproof, and **to be used as a last resort** when no other secure options are available, code and resource obfuscation and encryption can deter attackers by making it more difficult to analyze your app and discover hard-coded secrets.
-
