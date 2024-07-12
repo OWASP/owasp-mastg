@@ -1,5 +1,6 @@
 :root {
   --md-primary-fg-color: #499FFF;
+  --mas-blue: #499FFF;
   --mas-gradient: linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
 }
 
@@ -229,6 +230,32 @@
 
 .mas-button:active {
   background: var(--mas-gradient);
+}
+
+.mas-test-button,
+.mas-demo-button {
+  background-color: var(--mas-blue); /* Adjust this value for .mas-demo-button if needed */
+  color: white;
+  margin: 1em 0;
+  border-radius: .3rem;
+  display: block;
+  padding: .8rem;
+  transition: background-color .25s;
+  min-width: 100%;
+  text-align: left;
+  cursor: pointer; /* Add this line to show the pointer cursor */
+}
+
+.mas-demo-button {
+  background-color: #9900ff; /* Adjusted to match the hex value format */
+}
+
+.mas-test-button:hover {
+  background-color: #2e7fd5; 
+}
+
+.mas-demo-button:hover {
+  background-color: #aa33ff;
 }
 
 /* Default DataTables styling for light mode */
