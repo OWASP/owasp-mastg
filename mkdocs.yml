@@ -203,7 +203,8 @@ nav:
   - "MAS Crackmes": 
       - crackmes/index.md
       - ... | flat | crackmes/*.md
-  - news.md
+  - Blog:
+      - blog/index.md
   - talks.md
   - "&#11088; Contribute":
       - contributing.md
@@ -276,6 +277,7 @@ plugins:
   - search
   - awesome-pages
   - mermaid2
+  - blog
   - tags
       # tags_file: tags.md # TODO: bug in mkdocs? dynamic tags from hooks not appearing in tags.md
 markdown_extensions:
@@ -315,7 +317,6 @@ hooks:
   - docs/hooks/update_titles.py
   - docs/hooks/maswe-beta-banner.py
   - docs/hooks/add-tags.py
-  - docs/hooks/add-cross-references.py
 
 extra:
   generator: false # removed but recreated in copyright above
