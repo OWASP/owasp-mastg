@@ -42,5 +42,8 @@ jobs:
 
       - name: Populate Dynamic Pages
         run: python3 src/scripts/populate_dynamic_pages.py
+
+      - name: Generate Cross-References
+        run: python3 src/scripts/generate_cross_references.py
       
       - run: mkdocs gh-deploy --force --clean --verbose
