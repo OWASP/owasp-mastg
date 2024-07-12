@@ -75,7 +75,7 @@ def get_info_banner(meta):
     description = draft_info.get('description', None)
 
     if draft_info.get('note', None):
-        description += "\n\n" + "> Note: " + draft_info.get('note', None)
+        description += "\n\n" + "> Note: " + draft_info.get('note', None) + "\n"
 
     topics = draft_info.get('topics', None)
     topics_section = ""
