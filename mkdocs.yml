@@ -315,6 +315,7 @@ hooks:
   - docs/hooks/update_titles.py
   - docs/hooks/maswe-beta-banner.py
   - docs/hooks/add-tags.py
+  - docs/hooks/add-cross-references.py
 
 extra:
   generator: false # removed but recreated in copyright above
