@@ -204,7 +204,7 @@ nav:
       - crackmes/index.md
       - ... | flat | crackmes/*.md
   - News:
-      - blog/index.md
+      - news/index.md
   - talks.md
   - "&#11088; Contribute":
       - contributing.md
@@ -278,7 +278,10 @@ plugins:
   - awesome-pages
   - mermaid2
   - blog:
+  # https://squidfunk.github.io/mkdocs-material/plugins/blog/
+      blog_dir: news
       pagination_per_page: 10
+      post_excerpt_max_authors: 2
   - tags
       # tags_file: tags.md # TODO: bug in mkdocs? dynamic tags from hooks not appearing in tags.md
 markdown_extensions:
