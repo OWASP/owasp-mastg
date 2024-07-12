@@ -1,7 +1,7 @@
 ---
 title: "Call For Authors: The Ultimate Open-Source Mobile App Reverse Engineering Guide"
 date: 2016-12-04
-author: sven
+authors: [sven]
 ---
 
 Reverse engineering is an art, and describing every available facet of it would fill a whole library. The sheer range techniques and possible specializations is mind-blowing: One can spend years working on a very specific, isolated sub-problem, such as automating malware analysis or developing novel de-obfuscation methods. For mobile app security testers, it can be challenging to filter through the vast amount of information and build a working methodology. Things become even more problematic when one is tasked to assess apps that are heavily obfuscated and have anti-tampering measures built in.

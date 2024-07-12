@@ -1,7 +1,7 @@
 ---
 title: "MASVS v2.0.0 Release"
 date: 2023-04-01
-author: carlos
+authors: [carlos, sven]
 ---
 
 We are thrilled to announce the release of the new version of the [OWASP Mobile Application Security Verification Standard (MASVS) v2.0.0](https://github.com/OWASP/owasp-masvs/releases/tag/v2.0.0). With this update, we have set out to achieve several key objectives to ensure that MASVS remains a leading industry standard for mobile application security.

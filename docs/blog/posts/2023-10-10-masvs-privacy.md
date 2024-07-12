@@ -1,13 +1,13 @@
 ---
 title: "MASVS-PRIVACY"
 date: 2023-10-10
-author: carlos
+authors: [carlos, sven]
 ---
 
 Mobile applications frequently access sensitive user data to deliver their core functionalities. This data ranges from personally identifiable information (PII), health metrics, location data, to device identifiers. Mobile devices are a constant companion to users, always connected, and equipped with numerous sensors—including cameras, microphones, GPS and BLE—that generate data capable of inferring user behavior and even identifying individuals. The landscape is further complicated by advanced tracking techniques, the integration of third-party SDKs, and a heightened awareness of privacy issues among users and regulators. As a response, there's a growing trend towards on-device processing to keep user data localized and more secure.
 
 <center>
-<img style="width: 80%; border-radius: 5px" src="../assets/news/masvs_privacy.png"/>
+<img style="width: 80%; border-radius: 5px" src="/assets/news/masvs_privacy.png"/>
 </center>
 
 <!-- more -->

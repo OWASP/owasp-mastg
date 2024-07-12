@@ -1,7 +1,7 @@
 ---
 title: "From Slack to GitHub Discussions"
 date: 2021-11-17
-author: carlos
+authors: [carlos, sven]
 ---
 
 Hello everyone,

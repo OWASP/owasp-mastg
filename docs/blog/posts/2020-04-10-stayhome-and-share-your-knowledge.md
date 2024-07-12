@@ -1,7 +1,7 @@
 ---
 title: "#StayHome and share your knowledge!"
 date: 2020-04-10
-author: sven
+authors: [sven]
 ---
 
 Hi everybody,

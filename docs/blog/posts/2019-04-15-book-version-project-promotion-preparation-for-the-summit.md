@@ -1,7 +1,7 @@
 ---
 title: "Book Version, Project Promotion & Preparation for the Summit"
 date: 2019-04-15
-author: sven
+authors: [sven]
 ---
 
 Given that most news is already shared via OWASP Slack over the last quarter, we still see that it is good to share a summary of all of the good things outside of Slack using this news section. In this update we have a lot to share! While we started off this year with an improved version of the MASVS and MSTG, things have not been quiet: there has been a huge development in master of the MSTG and many issues have been raised and fixed. In the meantime, we have worked on an actual print of the book! 

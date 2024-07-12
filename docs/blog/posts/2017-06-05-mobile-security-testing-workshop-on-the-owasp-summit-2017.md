@@ -1,7 +1,7 @@
 ---
 title: "Mobile Security Testing Workshop on the OWASP Summit 2017"
 date: 2017-06-05
-author: sven
+authors: [sven]
 ---
 
 The OWASP MSTG team is organizing a 5-days mobile security track on the OWASP Summit 2017. The track consists of a series of book sprints, each of which focuses on producing content for a specific section in the OWASP MSTG, as well as proof-reading and editing the existing content. The goal is to make as much progress on the guide as is humanly possible. Depending on the number of participants, we’ll split into sub-groups to work on different subsections or topic areas.

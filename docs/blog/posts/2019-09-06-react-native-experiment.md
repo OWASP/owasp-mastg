@@ -1,7 +1,7 @@
 ---
 title: "React Native Experiment"
 date: 2019-09-06
-author: sven
+authors: [sven]
 ---
 
 ## React native experiment!

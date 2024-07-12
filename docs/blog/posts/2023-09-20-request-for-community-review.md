@@ -1,7 +1,7 @@
 ---
 title: "Request for Community Review: New Risk Assessment Formula for Mobile Applications"
 date: 2023-09-20
-author: carlos
+authors: [carlos, sven]
 ---
 
 ## Sep 20th, 2023: Request for Community Review: New Risk Assessment Formula for Mobile Applications
@@ -10,7 +10,7 @@ We are excited to announce the release of a new collaborative effort between ind
 
 <!-- more -->
 
-<a href="https://docs.google.com/document/d/1dnjXoHpVL5YmZTqVEC9b9JOfu6EzQiizZAHVAeDoIlo/edit?usp=sharing"><img style="border-radius: 5px" src="../assets/news/mas_formula_paper.png"/></a>
+<a href="https://docs.google.com/document/d/1dnjXoHpVL5YmZTqVEC9b9JOfu6EzQiizZAHVAeDoIlo/edit?usp=sharing"><img style="border-radius: 5px" src="/assets/news/mas_formula_paper.png"/></a>
 
 **Document Highlights:**
 

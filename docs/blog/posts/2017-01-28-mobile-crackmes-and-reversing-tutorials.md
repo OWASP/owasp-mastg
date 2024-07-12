@@ -1,7 +1,7 @@
 ---
 title: "Mobile Crackmes and Reversing Tutorials"
 date: 2017-01-28
-author: sven
+authors: [sven]
 ---
 
 A key goal of the OWASP Mobile Testing Project is to build the ultimate learning resource and reference guide for mobile app reversers. As hands-on hacking is by far the best way to learn, we'd like to link most of the content to practical examples.

@@ -1,7 +1,7 @@
 ---
 title: "Mobile App Security Verification Standard Update"
 date: 2017-04-05
-author: sven
+authors: [sven]
 ---
 
 Version 0.9.3 of the MASVS is now [available for download](https://github.com/OWASP/owasp-masvs/releases/tag/0.9.3). This release contains several bug fixes and modifications to security requirements:

@@ -1,7 +1,7 @@
 ---
 title: "MASTG Refactor Part 2 - Techniques, Tools & Reference Apps"
 date: 2023-09-29
-author: carlos
+authors: [carlos, sven]
 ---
 
 We are thrilled to announce the second phase of the MASTG (Mobile Application Security Testing Guide) refactor. These changes aim to enhance the usability and accessibility of the MASTG.
@@ -9,7 +9,7 @@ We are thrilled to announce the second phase of the MASTG (Mobile Application Se
 The primary focus of this new refactor is the reorganization of the MASTG content into different components, each housed in its dedicated section/folder and existing now as individual pages in our website (markdown files with metadata/frontmatter in GitHub):
 
 <center>
-<img style="width: 80%; border-radius: 5px" src="../assets/news/mastg_refactor_2.png"/>
+<img style="width: 80%; border-radius: 5px" src="/assets/news/mastg_refactor_2.png"/>
 </center>
 
 <!-- more -->

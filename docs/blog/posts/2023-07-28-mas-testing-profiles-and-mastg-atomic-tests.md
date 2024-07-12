@@ -1,7 +1,7 @@
 ---
 title: "MAS Testing Profiles and MASTG Atomic Tests"
 date: 2023-07-28
-author: carlos
+authors: [carlos, sven]
 ---
 
 The MASTG refactoring is a significant upgrade that addresses some existing challenges and introduces exciting new features. It aims to streamline compliance, simplify testing and improve usability for security testers and other stakeholders.
@@ -15,7 +15,7 @@ As part of the MASVS refactoring, we've replaced the three traditional verificat
 The [new MAS Testing Profiles](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing) include revamped versions of the traditional levels and one new addition:
 
 <center>
-<img style="width: 60%; border-radius: 5px" src="../assets/news/mas_profiles.png"/>
+<img style="width: 60%; border-radius: 5px" src="/assets/news/mas_profiles.png"/>
 </center>
 
 Another interesting addition we're exploring for the near future is a 'Privacy' profile, which would focus on [tests that consider the privacy implications of various app features and functionalities](https://mas.owasp.org/MASTG/General/0x04i-Testing-User-Privacy-Protection/). We believe that this profile can become an essential tool in an era where privacy has become a significant concern.
@@ -27,7 +27,7 @@ Another interesting addition we're exploring for the near future is a 'Privacy' 
 One of the key changes in the MASTG refactoring is the introduction of the [new MASTG Atomic Tests](https://docs.google.com/spreadsheets/d/1Go5GpVvKJqTDxGbSLBPZb1hmYi5lXRc1D1AfrTTkUkY/edit?usp=sharing). The existing tests are currently quite large and often cover more than one MASVS control. With the introduction of Atomic Tests, we'll break these tests down into smaller, more manageable pieces. Our goal is to make these tests as self-contained and specific as possible to allow for reduced ambiguity, better understanding and easier execution. Each atomic test will have its unique ID for easy reference and traceability and will be mapped to the relevant controls from the MASVS.
 
 <center>
-<img style="width: 60%; border-radius: 5px" src="../assets/news/mastg_tests_refactoring.png"/>
+<img style="width: 60%; border-radius: 5px" src="/assets/news/mastg_tests_refactoring.png"/>
 </center>
 
 But before we can start writing the new atomic tests, we need to finalize the proposal for the new MASTG Atomic Tests including mappings to the MASVS controls and the new MAS Testing profiles.
