@@ -38,4 +38,4 @@ The reversing part of the guide consists of the following chapters:
 
 #### How To Join
 
-Read the [Contribution Guide](https://github.com/OWASP/owasp-mastg/blob/master/CONTRIBUTING.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
+Read the [Contribution Guide](https://github.com/OWASP/owasp-mastg/blob/master/.github/CONTRIBUTING.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
