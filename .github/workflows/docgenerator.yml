@@ -94,10 +94,10 @@ jobs:
         repository: "OWASP/owasp-masvs.git"
         ref: ${{env.MASVS_VERSION}}
         fetch-depth: 1
-        path: src/scripts/owasp-masvs
+        path: owasp-masvs
 
     - name: Get MASVS Current Commit ID
-      run: cd src/scripts/owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      run: cd owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
     - name: Confirm MASTG Current Commit ID
       run: echo ${{env.MASVS_COMMIT}}
 
