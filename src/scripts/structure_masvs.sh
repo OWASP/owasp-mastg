@@ -5,8 +5,8 @@ if [ ! -d "../owasp-masvs/" ] ; then
   exit 1
 fi
 
-cp ../owasp-masvs/Document/*-*.md docs/MASVS/
-cp ../owasp-masvs/controls/ docs/MASVS/
+cp -r ../owasp-masvs/Document/*-*.md docs/MASVS/
+cp -r ../owasp-masvs/controls/ docs/MASVS/controls/
 
 if [[ "$(uname)" == "Darwin" ]]; then
     SED="gsed"

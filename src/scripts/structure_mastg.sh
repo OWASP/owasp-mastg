@@ -1,18 +1,18 @@
 #!/bin/bash
 
-cp -r tests docs/MASTG/
-cp -r techniques docs/MASTG/
-cp -r tools docs/MASTG/
-cp -r apps docs/MASTG/
-cp -r weaknesses/** docs/MASWE/
-cp -r tests-beta docs/MASTG/
-cp -r demos docs/MASTG/
-cp -r rules docs/MASTG/
+mkdir -p docs/MASWE
+
+directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules")
+
+for dir in "${directories[@]}"; do
+    cp -r "$dir" docs/MASTG/ || { echo "Failed to copy $dir"; exit 1; }
+done
+
+cp -r weaknesses/** docs/MASWE/ || { echo "Failed to copy weaknesses"; exit 1; }
 
 cp -r Document/0x0*.md docs/MASTG
 cp docs/MASTG/0x08b-Reference-Apps.md docs/MASTG/apps/index.md
 cp docs/MASTG/0x08a-Testing-Tools.md docs/MASTG/tools/index.md
-
 cp Document/tests.md docs/MASTG/tests/index.md
 cp Document/techniques.md docs/MASTG/techniques/index.md
 

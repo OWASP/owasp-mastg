@@ -172,7 +172,7 @@ nav:
   - MASVS:
       - MASVS/index.md
       - Intro:
-        - ... | flat | MASVS/Intro/*
+        - ... | flat | MASVS/0[1-4]*.md
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
       - ... | flat | MASVS/controls/MASVS-STORAGE*.md
       - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md

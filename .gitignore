@@ -14,8 +14,9 @@ logs
 *.docx
 *.epub
 docs/MASVS/**/
-docs/MASVS/*-MASVS-*.md
+docs/MASVS/*-*.md
 docs/MASTG/**/
+docs/MASTG/0x*.md
 docs/assets/Images
 docs/checklists/MASVS-*.md
 docs/talks.md
