@@ -9,15 +9,15 @@ CHECKLIST_DICT = combine_data_for_checklist.get_checklist_dict()
 
 def get_platform_icon(platform):
     if platform == "android":
-        return '<span style="font-size: x-large; color: #54b259;"> :material-android: </span><span style="display: none;">platform:android</span>'
+        return '<span style="font-size: x-large; color: #54b259;" title="Android"> :material-android: </span><span style="display: none;">platform:android</span>'
     elif platform == "ios":
-        return '<span style="font-size: x-large; color: #007aff;"> :material-apple: </span><span style="display: none;">platform:ios</span>'
+        return '<span style="font-size: x-large; color: #007aff;" title="iOS"> :material-apple: </span><span style="display: none;">platform:ios</span>'
     elif platform == "generic":
-        return '<span style="font-size: x-large; color: darkgrey;"> :material-asterisk: </span><span style="display: none;">platform:generic</span>'
+        return '<span style="font-size: x-large; color: darkgrey;" title="Generic"> :material-asterisk: </span><span style="display: none;">platform:generic</span>'
     elif platform == "network":
-        return '<span style="font-size: x-large; color: #9383e2;"> :material-web: </span><span style="display: none;">platform:network</span>'
+        return '<span style="font-size: x-large; color: #9383e2;" title="Network"> :material-web: </span><span style="display: none;">platform:network</span>'
     else:
-        return '<span style="font-size: x-large; color: darkgrey;"> :material-progress-question: </span><span style="display: none;">platform:unknown</span>'
+        return '<span style="font-size: x-large; color: darkgrey;" title="Unknown"> :material-progress-question: </span><span style="display: none;">platform:unknown</span>'
 
 def get_level_icon(level, value):
     if level == "L1" and value == True:
