@@ -1,6 +1,6 @@
 echo "$PWD"
 if [ ! -d "../../owasp-masvs/" ] ; then
-  echo "Error: Clone owasp-masvs to same directory as owasp-mastg"
+  echo "Error: Please clone owasp-masvs to same directory as owasp-mastg"
   exit
 fi
 
