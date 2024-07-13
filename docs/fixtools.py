@@ -120,7 +120,9 @@ def find_words_in_md_files(directory):
                             if not toolname in tooldict.keys():
                                 print("Missing: ", toolname)
                             else:
-                                content = content.replace(toolname, tooldict[toolname])
+                                content = content.replace("@@@"+toolname, "#" + tooldict[toolname])
+                                with open(file_path, 'w', encoding='utf-8') as f:
+                                    f.write(content)
                             
                         # print(f"File: {file_path}")
                         # print(f"Matches: {matches}")

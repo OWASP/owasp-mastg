@@ -1,7 +1,7 @@
 ---
 title: Reverse Engineering Android Apps
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 Android's openness makes it a favorable environment for reverse engineers, offering big advantages that are not available with iOS. Because Android is open-source, you can study its source code at the Android Open Source Project (AOSP) and modify the OS and its standard tools any way you want. Even on standard retail devices, it is possible to do things like activating developer mode and sideloading apps without jumping through many hoops. From the powerful tools shipping with the SDK to the wide range of available reverse engineering tools, there's a lot of niceties to make your life easier.

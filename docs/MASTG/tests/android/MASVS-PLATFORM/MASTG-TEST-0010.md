@@ -7,7 +7,7 @@ platform: android
 title: Finding Sensitive Information in Auto-Generated Screenshots
 masvs_v1_levels:
 - L2
-last_updated: May 08, 2023
+last_updated: July 13, 2024
 ---
 
 ## Overview

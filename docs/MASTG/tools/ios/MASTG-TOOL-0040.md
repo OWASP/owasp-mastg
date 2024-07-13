@@ -2,7 +2,7 @@
 title: MobSF for iOS
 platform: ios
 source: https://github.com/MobSF/Mobile-Security-Framework-MobSF
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 By running MobSF locally on a macOS host you'll benefit from a slightly better class-dump output.

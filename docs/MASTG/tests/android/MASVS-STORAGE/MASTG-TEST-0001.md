@@ -9,7 +9,7 @@ title: Testing Local Storage for Sensitive Data
 masvs_v1_levels:
 - L1
 - L2
-last_updated: March 01, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview

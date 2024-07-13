@@ -7,7 +7,7 @@ platform: android
 title: Testing Anti-Debugging Detection
 masvs_v1_levels:
 - R
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 ## Bypassing Debugger Detection
@@ -21,7 +21,7 @@ The following methods describe different approaches to bypass debugger detection
 
 ### Bypassing Example: UnCrackable App for Android Level 2
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [UnCrackable App for Android Level 2](../../../apps/android/MASTG-APP-0004.md "UnCrackable App for Android Level 2").
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in #MASTG-APP-0004.
 
 At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a _native_ method.
 

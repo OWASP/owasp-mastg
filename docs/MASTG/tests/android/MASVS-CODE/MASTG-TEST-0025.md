@@ -8,16 +8,16 @@ title: Testing for Injection Flaws
 masvs_v1_levels:
 - L1
 - L2
-last_updated: April 27, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview
 
 To test for [injection flaws](../../../Document/0x04h-Testing-Code-Quality.md#injection-flaws "Injection Flaws") you need to first rely on other tests and check for functionality that might have been exposed:
 
-- ["Testing Deep Links"](../MASVS-PLATFORM/MASTG-TEST-0028.md)
-- ["Testing for Sensitive Functionality Exposure Through IPC"](../MASVS-PLATFORM/MASTG-TEST-0029.md)
-- ["Testing for Overlay Attacks"](../MASVS-PLATFORM/MASTG-TEST-0035.md)
+- #MASTG-TEST-0028
+- #MASTG-TEST-0029
+- #MASTG-TEST-0035
 
 ## Static Analysis
 

@@ -8,7 +8,7 @@ title: Make Sure That Free Security Features Are Activated
 masvs_v1_levels:
 - L1
 - L2
-last_updated: February 16, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview
@@ -62,7 +62,7 @@ All the features are enabled in these examples:
 
 ## Dynamic Analysis
 
-These checks can be performed dynamically using [objection](../../../Document/0x08a-Testing-Tools.md#objection). Here's one example:
+These checks can be performed dynamically using #MASTG-TOOL-0038. Here's one example:
 
 ```bash
 com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary

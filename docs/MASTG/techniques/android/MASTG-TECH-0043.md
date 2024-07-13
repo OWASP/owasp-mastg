@@ -1,7 +1,7 @@
 ---
 title: Method Hooking
 platform: android
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 ## Xposed
@@ -67,7 +67,7 @@ Just like regular Android apps, modules for Xposed are developed and deployed wi
 
 ## Frida
 
-We'll use Frida to solve the [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md) and demonstrate how we can easily bypass root detection and extract secret data from the app.
+We'll use Frida to solve the #MASTG-APP-0003 and demonstrate how we can easily bypass root detection and extract secret data from the app.
 
 When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 

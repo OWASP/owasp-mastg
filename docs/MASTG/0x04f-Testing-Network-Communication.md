@@ -212,8 +212,8 @@ In many cases, it is most practical to configure a system proxy on the mobile de
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
-- [Burp Suite](0x08a-Testing-Tools.md#burp-suite)
-- [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap)
+- #MASTG-TOOL-0077
+- #MASTG-TOOL-0079
 
 To use the interception proxy, you'll need to run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
@@ -223,7 +223,7 @@ Using a proxy breaks SSL certificate verification and the app will usually fail 
 
 ## Intercepting Non-HTTP Traffic
 
-Interception proxies such as #MASTG-TOOL-0077 and [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
+Interception proxies such as #MASTG-TOOL-0077 and #MASTG-TOOL-0079 won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") and
 - [Mitm-relay](https://github.com/jrmdev/mitm_relay "Mitm-relay").
@@ -473,7 +473,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
     sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
     ```
 
-    As last step, you need to set the option 'Support invisible proxy' in the listener settings of [Burp Suite](0x08a-Testing-Tools.md#burp-suite).
+    As last step, you need to set the option 'Support invisible proxy' in the listener settings of #MASTG-TOOL-0007.
 
 - 3rd way: Instead of bettercap an alternative is tweaking the `/etc/hosts` on the mobile phone. Add an entry into `/etc/hosts` for the target domain and point it to the IP address of your intercepting proxy. This creates a similar situation of being MITM as with bettercap and you need to redirect port 443 to the port which is used by your interception proxy. The redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to the original location and port.
 

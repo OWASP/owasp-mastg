@@ -1,7 +1,7 @@
 ---
 title: Host-Device Data Transfer
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 ## Using adb
@@ -31,7 +31,7 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-First, connect to the app with Objection as explained in "[Recommended Tools - Objection](0x08a-Testing-Tools.md#objection "Testing Tools - Objection")". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
+First, connect to the app with Objection as explained in #MASTG-TOOL-0038. Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
 ```bash
 $ frida-ps -U | grep -i owasp

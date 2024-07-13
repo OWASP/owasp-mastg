@@ -7,7 +7,7 @@ platform: ios
 title: Testing Obfuscation
 masvs_v1_levels:
 - R
-last_updated: May 08, 2023
+last_updated: July 13, 2024
 ---
 
 ## Overview

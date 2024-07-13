@@ -8,7 +8,7 @@ title: Testing Random Number Generation
 masvs_v1_levels:
 - L1
 - L2
-last_updated: June 02, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview
@@ -28,4 +28,4 @@ If you want to test for randomness, you can try to capture a large set of number
 
 ## Dynamic Analysis
 
-You can use [method tracing](../../../techniques/android/MASTG-TECH-0033.md "Method Tracing") on the mentioned classes and methods to determine input / output values being used.
+You can use #MASTG-TECH-0033 on the mentioned classes and methods to determine input / output values being used.

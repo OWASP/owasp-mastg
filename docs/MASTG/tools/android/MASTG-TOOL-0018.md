@@ -2,7 +2,7 @@
 title: jadx
 platform: android
 source: https://github.com/skylot/jadx
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 jadx (Dex to Java Decompiler) is a command line and [GUI tool](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview "jadx gui features overview") for producing Java source code from Android DEX and APK files - <https://github.com/skylot/jadx>

@@ -1,7 +1,7 @@
 ---
 title: Native Code Tracing
 platform: android
-last_updated: February 14, 2024
+last_updated: July 13, 2024
 ---
 
 Native methods tracing can be performed with relative ease compared to Java method tracing. `frida-trace` is a CLI tool for dynamically tracing function calls. It makes tracing native functions trivial and can be very useful for collecting information about an application.

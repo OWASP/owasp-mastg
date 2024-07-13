@@ -8,7 +8,7 @@ title: Testing Data Encryption on the Network
 masvs_v1_levels:
 - L1
 - L2
-last_updated: April 27, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview
@@ -40,10 +40,10 @@ For more information refer to the article ["Security with HTTPS and SSL"](https:
 
 Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
-- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](../../../Document/0x08a-Testing-Tools.md#owasp-zap) or [Burp Suite](../../../Document/0x08a-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
+- Capture all HTTP(S) and Websocket traffic with an interception proxy like #MASTG-TOOL-0079 or #MASTG-TOOL-0077 and make sure all requests are made via HTTPS instead of HTTP.
 - Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
-> Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check ["Testing Custom Certificate Stores and Certificate Pinning"](../MASVS-NETWORK/MASTG-TEST-0022.md).
+> Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check #MASTG-TEST-0022.
 
 For more details refer to:
 

@@ -1,7 +1,7 @@
 ---
 title: Debugging
 platform: ios
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 Coming from a Linux background you'd expect the `ptrace` system call to be as powerful as you're used to but, for some reason, Apple decided to leave it incomplete. iOS debuggers such as LLDB use it for attaching, stepping or continuing the process but they cannot use it to read or write memory (all `PT_READ_*` and `PT_WRITE*` requests are missing). Instead, they have to obtain a so-called Mach task port (by calling `task_for_pid` with the target process ID) and then use the Mach IPC interface API functions to perform actions such as suspending the target process and reading/writing register states (`thread_get_state`/`thread_set_state`) and virtual memory (`mach_vm_read`/`mach_vm_write`).
@@ -37,7 +37,7 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 </plist>
 ```
 
-Apply the entitlement with [codesign](../../tools/ios/MASTG-TOOL-0101.md "codesign"):
+Apply the entitlement with #MASTG-TOOL-0101:
 
 ```bash
 codesign -s - --entitlements entitlements.plist -f debugserver
@@ -137,7 +137,7 @@ Typing `image list` gives a list of main executable and all dependent libraries.
 
 ## Debugging Release Apps
 
-In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1") and solve it using a debugger.
+In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the #MASTG-APP-0025 and solve it using a debugger.
 
 In contrast to a debug build, the code compiled for a release build is optimized to achieve maximum performance and minimum binary build size. As a general best practice, most of the debug symbols are stripped for a release build, adding a layer of complexity when reverse engineering and debugging the binaries.
 
@@ -156,7 +156,7 @@ When a binary is opened in a disassembler like Ghidra, it loads a binary by emul
 
 <img src="../../../../../assets/Images/Chapters/0x06c/debugging_ghidra_image_base_address.png" width="100%" />
 
-From our previous analysis of the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1") in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset 0x100004520. This is our _breakpoint offset_.
+From our previous analysis of the #MASTG-APP-0025 in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset 0x100004520. This is our _breakpoint offset_.
 
 <img src="../../../../../assets/Images/Chapters/0x06c/debugging_ghidra_breakpoint.png" width="100%" />
 

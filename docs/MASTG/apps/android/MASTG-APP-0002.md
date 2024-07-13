@@ -2,7 +2,7 @@
 title: Android License Validator
 platform: android
 source: https://mas.owasp.org/crackmes/Android#android-license-validator
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 The Android License Validator is a crackme that implements a key validation function in native code, packaged as a standalone ELF executable for Android devices. Analyzing native code is often more challenging than Java, which is why critical business logic is frequently written this way.

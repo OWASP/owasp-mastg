@@ -2,7 +2,7 @@
 title: iOS UnCrackable L2
 platform: ios
 source: https://mas.owasp.org/crackmes/iOS#ios-uncrackable-l2
-last_updated: April 28, 2024
+last_updated: July 13, 2024
 ---
 
 This app holds a secret inside - and this time it won't be tampered with!

@@ -1,7 +1,7 @@
 ---
-title: Reverse Engineering LALALA
+title: Reverse Engineering
 platform: generic
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
-Revffffffflalalalffferse engineering is the process of taking an app apart to find out how it works. You can do this by examining the compiled app (static analysis), observing the app during runtime (dynamic analysis), or a combination of both.
+Reverse engineering is the process of taking an app apart to find out how it works. You can do this by examining the compiled app (static analysis), observing the app during runtime (dynamic analysis), or a combination of both.

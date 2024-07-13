@@ -7,7 +7,7 @@ platform: android
 title: Testing Emulator Detection
 masvs_v1_levels:
 - R
-last_updated: May 11, 2024
+last_updated: July 13, 2024
 ---
 
 ## Bypassing Emulator Detection

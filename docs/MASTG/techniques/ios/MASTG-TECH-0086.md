@@ -1,7 +1,7 @@
 ---
 title: Method Tracing
 platform: ios
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.

@@ -1,7 +1,7 @@
 ---
 title: Getting Loaded Classes and Methods Dynamically
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 You can use the command `Java` in the Frida CLI to access the Java runtime and retrieve information from the running app. Remember that, unlike Frida for iOS, in Android you need to wrap your code inside a `Java.perform` function. Thus, it's more convenient to use Frida scripts to e.g. get a list of loaded Java classes and their corresponding methods and fields or for more complex information gathering or instrumentation. One such scripts is listed below. The script to list class's methods used below is available on [Github](https://github.com/frida/frida-java-bridge/issues/44 "Github").

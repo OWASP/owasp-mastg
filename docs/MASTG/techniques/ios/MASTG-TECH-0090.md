@@ -1,7 +1,7 @@
 ---
 title: Patching
 platform: ios
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 IPA files are actually ZIP archives, so you can use any ZIP tool to unpack the archive.
@@ -18,7 +18,7 @@ IF you want to use Frida on non-jailbroken devices you'll need to include `Frida
 curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
-Copy `FridaGadget.dylib` into the app directory and use [optool](../../tools/ios/MASTG-TOOL-0059.md "optool") to add a load command to the "UnCrackable Level 1" binary.
+Copy `FridaGadget.dylib` into the app directory and use #MASTG-TOOL-0059 to add a load command to the "UnCrackable Level 1" binary.
 
 ```bash
 $ unzip UnCrackable_Level1.ipa

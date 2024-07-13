@@ -8,12 +8,12 @@ platform: ios
 title: Testing Local Authentication
 masvs_v1_levels:
 - L2
-last_updated: May 08, 2023
+last_updated: July 13, 2024
 ---
 
 ## Overview
 
-The usage of frameworks in an app can be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using [otool](../../../Document/0x08a-Testing-Tools.md#otool):
+The usage of frameworks in an app can be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using #MASTG-TOOL-0060:
 
 ```bash
 otool -L <AppName>.app/<AppName>

@@ -1,7 +1,7 @@
 ---
 title: Getting Loaded Classes and Methods dynamically
 platform: ios
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.

@@ -1,14 +1,14 @@
 ---
 title: Decompiling Java Code
 platform: android
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 In Android app security testing, if the application is based solely on Java and doesn't have any native code (C/C++ code), the reverse engineering process is relatively easy and recovers (decompiles) almost all the source code. In those cases, black-box testing (with access to the compiled binary, but not the original source code) can get pretty close to white-box testing.
 
 Nevertheless, if the code has been purposefully obfuscated (or some tool-breaking anti-decompilation tricks have been applied), the reverse engineering process may be very time-consuming and unproductive. This also applies to applications that contain native code. They can still be reverse engineered, but the process is not automated and requires knowledge of low-level details.
 
-If you want to look directly into Java source code on a GUI, simply open your APK using #MASTG-TOOL-0018 or [Bytecode Viewer](0x08a-Testing-Tools.md#bytecode-viewer).
+If you want to look directly into Java source code on a GUI, simply open your APK using #MASTG-TOOL-0018 or #MASTG-TOOL-0014.
 
 Android decompilers go one step further and attempt to convert Android bytecode back into Java source code, making it more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. The above mentioned tools embed, and sometimes even combine, popular free decompilers such as:
 
@@ -20,7 +20,7 @@ Android decompilers go one step further and attempt to convert Android bytecode 
 
 Alternatively you can use the #MASTG-TOOL-0010 extension for Visual Studio Code or run #MASTG-TOOL-0012 on your APK or use the exported files from the previous tools to open the reversed source code on your preferred IDE.
 
-In the following example we'll be using [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md). First, let's install the app on a device or emulator and run it to see what the crackme is about.
+In the following example we'll be using #MASTG-APP-0003. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 <img src="../../../../../assets/Images/Chapters/0x05c/crackme-1.png" width="400px" />
 

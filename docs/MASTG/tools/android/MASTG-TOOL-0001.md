@@ -1,7 +1,7 @@
 ---
 title: Frida for Android
 platform: android
-last_updated: May 13, 2024
+last_updated: July 13, 2024
 ---
 
 Frida supports interaction with the Android Java runtime though the [Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API"). You'll be able to hook and call both Java and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
@@ -29,7 +29,7 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 
 In order to set up Frida on your Android device:
 
-- If your device is not rooted, you can also use Frida, please refer to ["Dynamic Analysis on Non-Rooted Devices"](../../techniques/android/MASTG-TECH-0026.md "Dynamic Analysis on Non-Rooted Devices").
+- If your device is not rooted, you can also use Frida, please refer to #MASTG-TECH-0026.
 - If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
 
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
@@ -129,7 +129,7 @@ Java.perform(function () {
 
 The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function implementation prints a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
 
-The [JADX decompiler](#jadx) (v1.3.3 and above) can generate Frida snippets through its graphical code browser. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md):
+The [JADX decompiler](#jadx) (v1.3.3 and above) can generate Frida snippets through its graphical code browser. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG #MASTG-APP-0003:
 
 <img src="../../../../../assets/Images/Chapters/0x08a/jadx_copy_frida_snippet.png" width="100%" />
 

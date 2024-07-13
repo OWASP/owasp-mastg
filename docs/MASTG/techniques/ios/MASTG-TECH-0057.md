@@ -1,7 +1,7 @@
 ---
 title: Listing Installed Apps
 platform: ios
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 When targeting apps that are installed on the device, you'll first have to figure out the correct bundle identifier of the application you want to analyze. You can use `frida-ps -Uai` to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
@@ -21,6 +21,6 @@ $ frida-ps -Uai
 
 It also shows which of them are currently running. Take a note of the "Identifier" (bundle identifier) and the PID if any as you'll need them afterwards.
 
-You can also directly open [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") and after selecting your iOS device you'll get the list of installed apps.
+You can also directly open #MASTG-TOOL-0061 and after selecting your iOS device you'll get the list of installed apps.
 
 <img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_installed_apps.png" width="400px" />

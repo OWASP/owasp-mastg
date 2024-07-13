@@ -9,7 +9,7 @@ hide:
 
 <a href="https://github.com/OWASP/owasp-mastg/">:material-github: GitHub Repo</a>
 
-The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP MASVS](/MASVS/).
+The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP MASVS](MASVS/index.md).
 
 <br>
 

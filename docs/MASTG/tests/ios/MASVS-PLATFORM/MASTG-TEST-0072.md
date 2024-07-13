@@ -8,7 +8,7 @@ title: Testing App Extensions
 masvs_v1_levels:
 - L1
 - L2
-last_updated: February 16, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview

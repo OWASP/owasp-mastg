@@ -1,7 +1,7 @@
 ---
 title: Accessing the Device Shell
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the Android shell both remotely from your host computer with/without a USB cable and locally from the device itself.

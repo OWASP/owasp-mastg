@@ -7,7 +7,7 @@ platform: android
 title: Testing File Integrity Checks
 masvs_v1_levels:
 - R
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 ## Bypassing File Integrity Checks

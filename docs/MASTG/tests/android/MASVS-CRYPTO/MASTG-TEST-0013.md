@@ -8,7 +8,7 @@ title: Testing Symmetric Cryptography
 masvs_v1_levels:
 - L1
 - L2
-last_updated: May 13, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview
@@ -31,7 +31,7 @@ For each identified instance verify if the used symmetric keys:
 
 For each hardcoded symmetric key, verify that is not used in security-sensitive contexts as the only method of encryption.
 
-As an example we illustrate how to locate the use of a hardcoded encryption key. First [disassemble and decompile](../../../techniques/android/MASTG-TECH-0017.md "Decompiling Java Code") the app to obtain Java code, e.g. by using [jadx](../../../tools/android/MASTG-TOOL-0018.md).
+As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble and decompile (#MASTG-TECH-0017.md) the app to obtain Java code, e.g. by using #MASTG-TOOL-0018.
 
 Now search the files for the usage of the `SecretKeySpec` class, e.g. by simply recursively grepping on them or using jadx search function:
 
@@ -45,4 +45,4 @@ This will return all classes using the `SecretKeySpec` class. Now examine those 
 
 ## Dynamic Analysis
 
-You can use [method tracing](../../../techniques/android/MASTG-TECH-0033.md "Method Tracing") on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of [RMS - Runtime Mobile Security](../../../Document/0x08a-Testing-Tools.md#RMS-Runtime-Mobile-Security).
+You can use #MASTG-TECH-0033 on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of #MASTG-TOOL-0037.

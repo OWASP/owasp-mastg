@@ -1,7 +1,7 @@
 ---
 title: Process Exploration
 platform: android
-last_updated: May 15, 2024
+last_updated: July 13, 2024
 ---
 
 When testing an app, process exploration can provide the tester with deep insights into the app process memory. It can be achieved via runtime instrumentation and allows to perform tasks such as:
@@ -183,7 +183,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ### Memory Dump
 
-You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section [Dynamic Analysis on Non-Rooted Devices](#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices"). To use these tools on a rooted phone, simply have frida-server installed and running.
+You can dump the app's process memory with #MASTG-TOOL-0038 and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section [Dynamic Analysis on Non-Rooted Devices](#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices"). To use these tools on a rooted phone, simply have frida-server installed and running.
 
 > Note: When using these tools, you might get several memory access violation errors which can normally be ignored. These tools inject a Frida agent and try to dump all the mapped memory of the app regardless of the access permissions (read/write/execute). Therefore, when the injected Frida agent tries to read a region that's not readable, it'll return the corresponding _memory access violation errors_. Refer to previous section "Memory Maps and Inspection" for more details.
 
@@ -210,7 +210,7 @@ $ r2 /Users/foo/memory_Android/memory
 1136 0x00065270 0x00065270  14  15 () ascii Hello from C++
 ```
 
-Alternatively you can use Fridump. This time, we will input a string and see if we can find it in the memory dump. For this, open the [MASTG Hacking Playground](0x08b-Reference-Apps.md#mastg-hacking-playground) app, navigate to "OMTG_DATAST_002_LOGGING" and enter "owasp-mstg" to the password field. Next, run Fridump:
+Alternatively you can use Fridump. This time, we will input a string and see if we can find it in the memory dump. For this, open the #MASTG-APP-0011 app, navigate to "OMTG_DATAST_002_LOGGING" and enter "owasp-mstg" to the password field. Next, run Fridump:
 
 ```bash
 python3 fridump.py -U sg.vp.owasp_mobile.omtg_android -s

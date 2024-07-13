@@ -1,7 +1,7 @@
 ---
 title: Get Open Files
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 You can use `lsof` with the flag `-p <pid>` to return the list of open files for the specified process. See the [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") for more options.

@@ -1,7 +1,7 @@
 ---
 title: Repackaging Apps
 platform: android
-last_updated: May 13, 2024
+last_updated: July 13, 2024
 ---
 
 If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.
@@ -14,4 +14,4 @@ objection patchapk --source app-release.apk
 
 The patched application then needs to be installed using adb.
 
-> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["Repackaging & Re-Signing"](../../techniques/android/MASTG-TECH-0039.md "Repackaging & Re-Signing").
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to #MASTG-TECH-0039.

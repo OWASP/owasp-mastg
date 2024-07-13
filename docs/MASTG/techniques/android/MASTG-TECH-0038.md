@@ -1,7 +1,7 @@
 ---
 title: Patching
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 Making small changes to the Android Manifest or bytecode is often the quickest way to fix small annoyances that prevent you from testing or reverse engineering an app. On Android, two issues in particular happen regularly:

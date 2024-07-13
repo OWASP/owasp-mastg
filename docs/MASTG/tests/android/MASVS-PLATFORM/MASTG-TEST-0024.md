@@ -8,7 +8,7 @@ title: Testing for App Permissions
 masvs_v1_levels:
 - L1
 - L2
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 ## Overview

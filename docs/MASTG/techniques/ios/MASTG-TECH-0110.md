@@ -1,7 +1,7 @@
 ---
 title: Intercepting Flutter HTTPS Traffic
 platform: ios
-last_updated: June 24, 2024
+last_updated: July 13, 2024
 ---
 
 Flutter is an open-source UI software development kit (SDK) created by Google. It is used for building natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store. The application doesn't use the proxy configuration of the system and sends the data directly to the server. Connections are verified against built-in certificates, so any certificates installed on the system are simply ignored. Due to this, it is not possible to intercept HTTPS requests as the certificate of the proxy will never be trusted.
@@ -38,7 +38,7 @@ Please enter your BurpSuite IP: 192.168.29.216
 
 This will create a **release.RE.ipa** file in the output folder.
 
-2. [Sign](../../techniques/ios/MASTG-TECH-0092.md) the patched **release.RE.ipa** with the Apple certificates. This will create a signed ".ipa" file in the output folder.
+2. Sign (#MASTG-TECH-0092) the patched **release.RE.ipa** with the Apple certificates. This will create a signed ".ipa" file in the output folder.
 
 3. Install the signed patched app on the mobile device.
 
@@ -55,7 +55,7 @@ This will create a **release.RE.ipa** file in the output folder.
 
 1. Configure using [WIFI hotspot / openVPN](https://blog.nviso.eu/2020/06/12/intercepting-flutter-traffic-on-ios/) method to redirect requests to Burp.
 
-2. Install the [app](../../apps/ios/MASTG-APP-0025.md) on the mobile device.
+2. Install the #MASTG-APP-0025 on the mobile device.
 
 3. Configure the interception proxy. For example, in Burp:
 
@@ -64,7 +64,7 @@ This will create a **release.RE.ipa** file in the output folder.
 - Select `Bind to address` to `All interfaces`.
 - Request Handling -> support for invisible proxying.
 
-4. Run the [disable-flutter-tls.js](../../tools/generic/MASTG-TOOL-0101.md) frida script.
+4. Run the #MASTG-TOOL-0101 frida script.
 
 ```bash
 frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js

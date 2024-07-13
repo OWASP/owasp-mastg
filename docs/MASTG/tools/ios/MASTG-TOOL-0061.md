@@ -2,7 +2,7 @@
 title: Grapefruit
 platform: ios
 source: https://github.com/ChiChou/grapefruit
-last_updated: October 01, 2023
+last_updated: July 13, 2024
 ---
 
 [Grapefruit](https://github.com/ChiChou/grapefruit "Grapefruit") is an iOS app  assessment tool that is using the Frida server on the iOS device and is abstracting many penetration testing tasks into a Web UI. It can be installed via `npm`.

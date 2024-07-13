@@ -1,7 +1,7 @@
 ---
 title: Execution Tracing
 platform: ios
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 Tracing involves recording the information about a program's execution. In contrast to Android, there are limited options available for tracing various aspects of an iOS app. In this section we will be heavily relying on tools such as Frida for performing tracing.

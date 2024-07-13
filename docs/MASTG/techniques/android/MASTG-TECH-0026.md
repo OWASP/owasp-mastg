@@ -1,7 +1,7 @@
 ---
 title: Dynamic Analysis on Non-Rooted Devices
 platform: android
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 Non-rooted devices have the benefit of replicating an environment that the application is intended to run on.
@@ -10,7 +10,7 @@ Thanks to tools like #MASTG-TOOL-0038, you can patch the app in order to test it
 
 Now you can use objection to dynamically analyze the application on non-rooted devices.
 
-The following commands summarize how to patch and start dynamic analysis using objection using the [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md) as an example:
+The following commands summarize how to patch and start dynamic analysis using objection using the #MASTG-APP-0003 as an example:
 
 ```bash
 # Download the Uncrackable APK

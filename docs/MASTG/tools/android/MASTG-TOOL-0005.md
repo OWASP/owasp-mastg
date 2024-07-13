@@ -1,7 +1,7 @@
 ---
 title: Android NDK
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 The Android NDK contains prebuilt versions of the native compiler and toolchain. Both the GCC and Clang compilers have traditionally been supported, but active support for GCC ended with NDK revision 14. The device architecture and host OS determine the appropriate version. The prebuilt toolchains are in the `toolchains` directory of the NDK, which contains one subdirectory for each architecture.

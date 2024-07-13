@@ -1,7 +1,7 @@
 ---
 title: Static Analysis on iOS
 platform: ios
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.

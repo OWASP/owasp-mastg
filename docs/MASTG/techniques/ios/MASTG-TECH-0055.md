@@ -1,7 +1,7 @@
 ---
 title: Repackaging Apps
 platform: ios
-last_updated: May 13, 2024
+last_updated: July 13, 2024
 ---
 
 If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.
@@ -20,4 +20,4 @@ ios-deploy --bundle Payload/my-app.app -W -d
 
 Refer to ["Installing Apps"](#installing-apps) to learn about other installation methods. Some of them doesn't require you to have a macOS.
 
-> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["Repackaging and Re-Signing"](../../techniques/ios/MASTG-TECH-0092.md "Repackaging and Re-Signing").
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to #MASTG-TECH-0092.

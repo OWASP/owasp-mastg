@@ -1,7 +1,7 @@
 ---
 title: Installing Apps
 platform: android
-last_updated: July 07, 2024
+last_updated: July 13, 2024
 ---
 
 ## Basic APK Installation

@@ -1,7 +1,7 @@
 ---
 title: Method Hooking
 platform: ios
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 ## Frida

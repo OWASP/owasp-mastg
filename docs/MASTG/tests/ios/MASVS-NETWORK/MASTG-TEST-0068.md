@@ -7,7 +7,7 @@ platform: ios
 title: Testing Custom Certificate Stores and Certificate Pinning
 masvs_v1_levels:
 - L2
-last_updated: April 27, 2024
+last_updated: July 13, 2024
 ---
 
 ## Overview
@@ -34,9 +34,9 @@ The following third-party libraries include pinning functionality:
 
 ### Server certificate pinning
 
-Follow the instructions from the Dynamic Analysis section of ["Testing Endpoint Identity Verification](../MASVS-NETWORK/MASTG-TEST-0067.md). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
+Follow the instructions from the Dynamic Analysis section of #MASTG-TEST-0067. If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
 
-As a quick smoke test, you can try to bypass certificate pinning using [objection](../../../Document/0x08a-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](../../../Document/0x06b-iOS-Security-Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
+As a quick smoke test, you can try to bypass certificate pinning using #MASTG-TOOL-0038 as described in #MASTG-TECH-0064. Pinning related APIs being hooked by objection should appear in objection's output.
 
 <img src="../../../../../assets/Images/Chapters/0x06b/ios_ssl_pinning_bypass.png" width="100%" />
 

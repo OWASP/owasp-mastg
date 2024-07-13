@@ -2,7 +2,7 @@
 title: r2frida
 platform: generic
 source: https://github.com/nowsecure/r2frida
-last_updated: May 15, 2024
+last_updated: July 13, 2024
 ---
 
 [r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. r2frida can be used in both on Android and iOS, allowing you to:

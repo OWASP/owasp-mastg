@@ -1,7 +1,7 @@
 ---
 title: Listing Installed Apps
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 When targeting apps that are installed on the device, you'll first have to figure out the correct package name of the application you want to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager) or by using `frida-ps`:

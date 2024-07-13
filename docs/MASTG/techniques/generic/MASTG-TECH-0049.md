@@ -1,7 +1,7 @@
 ---
 title: Dynamic Analysis
 platform: generic
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 Dynamic Analysis tests the mobile app by executing and running the app binary and analyzing its workflows for vulnerabilities. For example, vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
@@ -10,7 +10,7 @@ Dynamic Analysis tests the mobile app by executing and running the app binary an
 - Vulnerabilities in the tested environments
 - Weak input validation and bad input/output encoding as they are processed through one or multiple services
 
-Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/ "MobSF"), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
+Analysis can be assisted by automated tools, such as #MASTG-TOOL-0035, while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
 
 ## Basic Information Gathering
 

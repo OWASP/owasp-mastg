@@ -8,7 +8,7 @@ title: Make Sure That Free Security Features Are Activated
 masvs_v1_levels:
 - L1
 - L2
-last_updated: May 08, 2023
+last_updated: July 13, 2024
 ---
 
 ## Overview
@@ -17,7 +17,7 @@ last_updated: May 08, 2023
 
 Test the app native libraries to determine if they have the PIE and stack smashing protections enabled.
 
-You can use [radare2's rabin2](../../../Document/0x08a-Testing-Tools.md#radare2) to get the binary information. We'll use the [UnCrackable App for Android Level 4](../../../Document/0x08b-Reference-Apps.md#android-uncrackable-l4) v1.0 APK as an example.
+You can use #MASTG-TOOL-0028 to get the binary information. We'll use the #MASTG-APP-0015 v1.0 APK as an example.
 
 All native libraries must have `canary` and `pic` both set to `true`.
 

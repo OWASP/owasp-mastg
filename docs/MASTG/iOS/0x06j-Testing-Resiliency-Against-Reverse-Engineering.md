@@ -99,7 +99,7 @@ do {
 
 **Checking Protocol Handlers:**
 
-The app might be attempting to call well-known protocol handlers such as `cydia://` (available by default after installing [Cydia](0x08a-Testing-Tools.md#cydia "Cydia")).
+The app might be attempting to call well-known protocol handlers such as `cydia://` (available by default after installing #MASTG-TOOL-0047).
 
 ```swift
 if let url = URL(string: "cydia://package/com.example.package"), UIApplication.shared.canOpenURL(url) {
@@ -119,7 +119,7 @@ If the automated bypasses aren't effective you need to get your hands dirty and 
 
 When you need to reverse engineer a binary looking for jailbreak detection, the most obvious way is to search for known strings, such as "jail" or "jailbreak". Note that this won't be always effective, especially when resilience measures are in place or simply when the the developer has avoided such obvious terms.
 
-Example: Download the [Damn Vulnerable iOS application (DVIA-v2)](0x08b-Reference-Apps.md#dvia-v2), unzip it, load the main binary into #MASTG-TOOL-0073 and wait for the analysis to complete.
+Example: Download the #MASTG-APP-0024, unzip it, load the main binary into #MASTG-TOOL-0073 and wait for the analysis to complete.
 
 ```sh
 r2 -A ./DVIA-v2-swift/Payload/DVIA-v2.app/DVIA-v2
@@ -182,7 +182,7 @@ There are several anti-debugging techniques applicable to iOS which can be categ
 
 #### Using ptrace
 
-As seen in ["Debugging"](../techniques/ios/MASTG-TECH-0084.md "Debugging"), the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
+As seen in #MASTG-TECH-0084, the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
 
 Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
 
@@ -247,7 +247,7 @@ There are two common approaches to check file integrity: using application sourc
 
 #### Application Source Code Integrity Checks
 
-In ["Debugging"](../techniques/ios/MASTG-TECH-0084.md), we discuss the iOS IPA application signature check. We also learn that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
+In "Debugging" (#MASTG-TECH-0084), we discuss the iOS IPA application signature check. We also learn that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
 
 Apple takes care of integrity checks with DRM. However, additional controls (such as in the example below) are possible. The `mach_header` is parsed to calculate the start of the instruction data, which is used to generate the signature. Next, the signature is compared to the given signature. Make sure that the generated signature is stored or coded somewhere else.
 
@@ -433,7 +433,7 @@ The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and
 
 #### Name Obfuscation
 
-The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation was applied, symbol names remain meaningful and can be easily read straight from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the [Damn Vulnerable iOS App (DVIA-v2)](0x08b-Reference-Apps.md#dvia-v2).
+The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation was applied, symbol names remain meaningful and can be easily read straight from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the #MASTG-APP-0024.
 
 ```assembly
 __T07DVIA_v232JailbreakDetectionViewControllerC20jailbreakTest4TappedyypF:

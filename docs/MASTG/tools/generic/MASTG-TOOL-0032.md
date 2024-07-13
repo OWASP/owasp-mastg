@@ -2,7 +2,7 @@
 title: Frida CodeShare
 platform: generic
 source: https://codeshare.frida.re/
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 [Frida CodeShare](https://codeshare.frida.re/ "Frida CodeShare") is a repository containing a collection of ready-to-run Frida scripts which can enormously help when performing concrete tasks both on Android as on iOS as well as also serve as inspiration to build your own scripts. Two representative examples are:

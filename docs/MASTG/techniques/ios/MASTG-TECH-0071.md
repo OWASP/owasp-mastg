@@ -1,7 +1,7 @@
 ---
 title: Retrieving Strings
 platform: ios
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 Strings are always a good starting point while analyzing a binary, as they provide context to the associated code. For instance, an error log string such as "Cryptogram generation failed" gives us a hint that the adjoining code might be responsible for the generation of a cryptogram.

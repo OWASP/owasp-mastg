@@ -1,7 +1,7 @@
 ---
 title: Automated Static Analysis
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 You should use tools for efficient static analysis. They allow the tester to focus on the more complicated business logic. A plethora of static code analyzers are available, ranging from open source scanners to full-blown enterprise-ready scanners. The best tool for the job depends on budget, client requirements, and the tester's preferences.

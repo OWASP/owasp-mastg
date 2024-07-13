@@ -2,7 +2,7 @@
 title: iOS UnCrackable L1
 platform: ios
 source: https://mas.owasp.org/crackmes/iOS#ios-uncrackable-l1
-last_updated: April 28, 2024
+last_updated: July 13, 2024
 ---
 
 A secret string is hidden somewhere in this app. Find a way to extract it.

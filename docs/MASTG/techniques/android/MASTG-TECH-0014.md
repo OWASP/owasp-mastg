@@ -1,7 +1,7 @@
 ---
 title: Static Analysis on Android
 platform: android
-last_updated: February 14, 2024
+last_updated: July 13, 2024
 ---
 
 Static analysis is a technique used to examine and evaluate the source code of a mobile application without executing it. This method is instrumental in identifying potential security vulnerabilities, coding errors, and compliance issues. Static analysis tools can scan the entire codebase automatically, making them a valuable asset for developers and security auditors.

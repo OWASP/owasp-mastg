@@ -1,7 +1,7 @@
 ---
 title: Accessing App Data Directories
 platform: ios
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
@@ -125,7 +125,7 @@ Regular           420  None                ...  Info.plist
 Regular           493  None                ...  iGoat-Swift
 ```
 
-You can also visualize the Bundle directory from [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") by clicking on **Finder** -> **Bundle**:
+You can also visualize the Bundle directory from #MASTG-TOOL-0061 by clicking on **Finder** -> **Bundle**:
 
 <img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_bundle_dir.png" width="100%" />
 

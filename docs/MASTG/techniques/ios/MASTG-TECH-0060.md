@@ -1,7 +1,7 @@
 ---
 title: Monitoring System Logs
 platform: ios
-last_updated: October 01, 2023
+last_updated: July 13, 2024
 ---
 
 Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode **Devices** window as follows:

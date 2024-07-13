@@ -1,7 +1,7 @@
 ---
 title: Information Gathering - API Usage
 platform: ios
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 The iOS platform provides many built-in libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network and location libraries. Determining the presence of these libraries in an application can give us valuable information about its underlying working.

@@ -1,7 +1,7 @@
 ---
 title: Dumping KeyChain Data
 platform: ios
-last_updated: May 01, 2024
+last_updated: July 13, 2024
 ---
 
 Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
@@ -33,7 +33,7 @@ Finally, since the keychain dumper is executed from within the application conte
 
 ## Grapefruit (Jailbroken / non-Jailbroken)
 
-With [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") it's possible to access the keychain data of the app you have selected. Inside the **Storage** section, click on **Keychain** and you can see a listing of the stored Keychain information.
+With #MASTG-TOOL-0061 it's possible to access the keychain data of the app you have selected. Inside the **Storage** section, click on **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_keychain.png" width="100%" />
 

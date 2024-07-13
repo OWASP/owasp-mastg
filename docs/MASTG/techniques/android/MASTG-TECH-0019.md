@@ -1,7 +1,7 @@
 ---
 title: Retrieving Strings
 platform: android
-last_updated: September 29, 2023
+last_updated: July 13, 2024
 ---
 
 While performing any kind of binary analysis, strings can be considered as one of the most valuable starting points as they provide context. For example, an error log string like "Data encryption failed." gives us a hint that the adjoining code might be responsible for performing some kind of encryption operation.

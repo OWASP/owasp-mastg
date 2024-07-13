@@ -1,6 +1,7 @@
 # Reference applications
 
 The applications listed below can be used as training materials. Note: only the MASTG apps and Crackmes are tested and maintained by the MAS project.
+
 | ID                                                   | Name                              | Platform                                                                                                                                          |
 |:-----------------------------------------------------|:----------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
 | #MASTG-APP-0026     | iOS UnCrackable L2                | <span style="font-size: x-large; color: #007aff;" title="iOS"> :material-apple: </span><span style="display: none;">platform:ios</span>           |

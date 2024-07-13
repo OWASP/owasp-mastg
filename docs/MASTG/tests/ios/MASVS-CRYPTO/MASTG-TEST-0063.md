@@ -8,7 +8,7 @@ title: Testing Random Number Generation
 masvs_v1_levels:
 - L1
 - L2
-last_updated: May 08, 2023
+last_updated: July 13, 2024
 ---
 
 ## Overview
