@@ -13,8 +13,8 @@ log = logging.getLogger('mkdocs')
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
-    # Only apply the transformation if the page is demo.md
-    if path.endswith('demo.md'):
+    # Only apply the transformation if the page is a demo file
+    if "MASTG-DEMO-" in path:
         def replace_placeholder(match):
             files = match.group(1).split('#')
             if len(files) == 1:
@@ -39,5 +39,5 @@ def on_page_markdown(markdown, page, **kwargs):
         updated_markdown = re.sub(r'\{\{\s*(.*?)\s*\}\}', replace_placeholder, markdown)
         return updated_markdown
 
-    # If the page is not demo.md, return the original markdown unchanged
+    # If the page is not a demo, return the original markdown unchanged
     return markdown

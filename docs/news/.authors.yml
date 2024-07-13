@@ -1,0 +1,9 @@
+authors:
+  carlos:
+    name: Carlos Holguera
+    description: Creator
+    avatar: https://github.com/OWASP/owasp-mastg/blob/master/docs/assets/carlos.jpg?raw=true
+  sven:
+    name: Sven Schleier
+    description: Creator
+    avatar: https://github.com/OWASP/owasp-mastg/blob/master/docs/assets/sven.jpg?raw=true

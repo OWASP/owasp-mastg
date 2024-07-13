@@ -5,6 +5,7 @@ mkdir -p docs/MASTG/General
 mkdir -p docs/MASTG/Android
 mkdir -p docs/MASTG/iOS
 mkdir -p docs/MASTG/References
+mkdir -p docs/MASTG/rules
 mkdir -p docs/MASWE
 
 cp Document/0x0[1-6]*.md docs/MASTG
@@ -14,6 +15,9 @@ cp -r techniques docs/MASTG/
 cp -r tools docs/MASTG/
 cp -r apps docs/MASTG/
 cp -r weaknesses/** docs/MASWE/
+cp -r tests-beta docs/MASTG/
+cp -r demos docs/MASTG/
+cp -r rules docs/MASTG/
 
 cp Document/tests.md docs/MASTG/tests/index.md
 cp Document/0x08b-Reference-Apps.md docs/MASTG/apps/index.md
