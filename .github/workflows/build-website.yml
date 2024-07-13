@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.actor == 'cpholguera' || github.actor == 'sushi2k'
+    if: github.actor == 'cpholguera' || github.actor == 'sushi2k' || github.actor == 'TheDauntless'
     steps:
       - uses: actions/checkout@v4
         with:
