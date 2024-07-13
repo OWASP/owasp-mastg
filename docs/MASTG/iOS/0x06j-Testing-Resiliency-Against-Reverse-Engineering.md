@@ -119,7 +119,7 @@ If the automated bypasses aren't effective you need to get your hands dirty and 
 
 When you need to reverse engineer a binary looking for jailbreak detection, the most obvious way is to search for known strings, such as "jail" or "jailbreak". Note that this won't be always effective, especially when resilience measures are in place or simply when the the developer has avoided such obvious terms.
 
-Example: Download the [Damn Vulnerable iOS application (DVIA-v2)](0x08b-Reference-Apps.md#dvia-v2), unzip it, load the main binary into @@@radare2 and wait for the analysis to complete.
+Example: Download the [Damn Vulnerable iOS application (DVIA-v2)](0x08b-Reference-Apps.md#dvia-v2), unzip it, load the main binary into #MASTG-TOOL-0073 and wait for the analysis to complete.
 
 ```sh
 r2 -A ./DVIA-v2-swift/Payload/DVIA-v2.app/DVIA-v2

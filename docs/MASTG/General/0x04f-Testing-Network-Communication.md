@@ -223,7 +223,7 @@ Using a proxy breaks SSL certificate verification and the app will usually fail 
 
 ## Intercepting Non-HTTP Traffic
 
-Interception proxies such as @@@burp-suite and [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
+Interception proxies such as #MASTG-TOOL-0077 and [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") and
 - [Mitm-relay](https://github.com/jrmdev/mitm_relay "Mitm-relay").
@@ -481,7 +481,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
-When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`) you need to specify where traffic should go next, after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in @@@burp-suite to the original location:
+When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`) you need to specify where traffic should go next, after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in #MASTG-TOOL-0077 to the original location:
 
 1. Go to **Proxy** tab and click on **Options**
 2. Select and edit your listener from the list of proxy listeners.

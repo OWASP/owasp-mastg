@@ -170,7 +170,7 @@ Running an app in the emulator gives you powerful ways to monitor and manipulate
 
 ### Custom Tooling with Reverse Engineering Frameworks
 
-Even though most professional GUI-based disassemblers feature scripting facilities and extensibility, they are simply not well-suited to solving particular problems. Reverse engineering frameworks allow you to perform and automate any kind of reversing task without depending on a heavy-weight GUI. Notably, most reversing frameworks are open source and/or available for free. Popular frameworks with support for mobile architectures include @@@radare2 and #MASTG-TOOL-0030.
+Even though most professional GUI-based disassemblers feature scripting facilities and extensibility, they are simply not well-suited to solving particular problems. Reverse engineering frameworks allow you to perform and automate any kind of reversing task without depending on a heavy-weight GUI. Notably, most reversing frameworks are open source and/or available for free. Popular frameworks with support for mobile architectures include #MASTG-TOOL-0073 and #MASTG-TOOL-0030.
 
 #### Example: Program Analysis with Symbolic/Concolic Execution
 
