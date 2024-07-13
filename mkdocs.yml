@@ -28,15 +28,14 @@ nav:
   - MASTG:
       - MASTG/index.md
       - Intro:
-        - ... | flat | MASTG/Intro/*.md
-        - ... | flat | MASTG/References/*.md
-      - Theory:
-        - General Concepts:
-          - ... | flat | MASTG/General/*.md
-        - Android Security Testing:
-          - ... | flat | MASTG/Android/*.md
-        - iOS Security Testing: 
-          - ... | flat | MASTG/iOS/*.md
+        - ... | flat | MASTG/0x0[1-2]*.md # Overview of the project (0x03) is redundant in the web.
+        - ... | flat | MASTG/0x09*.md
+      - General Concepts:
+        - ... | flat | MASTG/0x04*.md
+      - Android Security Testing:
+        - ... | flat | MASTG/0x05*.md
+      - iOS Security Testing: 
+        - ... | flat | MASTG/0x06*.md
       - Tests:
         - MASTG/tests/index.md
         - Android:
@@ -173,7 +172,7 @@ nav:
   - MASVS:
       - MASVS/index.md
       - Intro:
-        - ... | flat | MASVS/Intro/*
+        - ... | flat | MASVS/0[1-4]*.md
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
       - ... | flat | MASVS/controls/MASVS-STORAGE*.md
       - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md
