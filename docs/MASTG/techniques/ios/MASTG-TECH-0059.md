@@ -85,7 +85,7 @@ Data directory:
   - Content in this directory is not backed up.
   - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
 
-Let's take a closer look at [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift)'s Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
+Let's take a closer look at iGoat-Swift's Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
 
 ```bash
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
@@ -137,4 +137,4 @@ As well as the Data directory in **Finder** -> **Home**:
 
 <img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
 
-Refer to the [Testing Data Storage](0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
+Refer to the [Testing Data Storage](../../0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.

@@ -13,7 +13,7 @@ last_updated: July 13, 2024
 
 ## Overview
 
-When testing for [implicit intents](../../../Document/0x05h-Testing-Platform-Interaction.md#implicit-intents) you need to check if they are vulnerable to injection attacks or potentially leaking sensitive data.
+When testing for [implicit intents](../../../0x05h-Testing-Platform-Interaction.md#implicit-intents) you need to check if they are vulnerable to injection attacks or potentially leaking sensitive data.
 
 ## Static Analysis
 

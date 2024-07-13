@@ -13,7 +13,7 @@ last_updated: July 13, 2024
 
 ## Overview
 
-To test for [Java objects exposed through WebViews](../../../Document/0x05h-Testing-Platform-Interaction.md#java-objects-exposed-through-webviews "Java Objects Exposed Through WebViews") check the app for WebViews having JavaScript enabled and determine whether the WebView is creating any JavaScript interfaces aka. "JavaScript Bridges". Finally, check whether an attacker could potentially inject malicious JavaScript code.
+To test for [Java objects exposed through WebViews](../../../0x05h-Testing-Platform-Interaction.md#java-objects-exposed-through-webviews "Java Objects Exposed Through WebViews") check the app for WebViews having JavaScript enabled and determine whether the WebView is creating any JavaScript interfaces aka. "JavaScript Bridges". Finally, check whether an attacker could potentially inject malicious JavaScript code.
 
 ## Static Analysis
 

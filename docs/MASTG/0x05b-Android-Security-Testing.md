@@ -74,7 +74,7 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - #MASTG-TOOL-0035
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
-Please also verify the ["Testing Tools"](0x08a-Testing-Tools.md) chapter at the end of this book.
+Please also verify the ["Testing Tools"](./tools/index.md) chapter at the end of this book.
 
 #### Getting Privileged Access
 

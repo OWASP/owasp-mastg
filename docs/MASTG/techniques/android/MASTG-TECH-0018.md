@@ -92,7 +92,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ## radare2
 
-To open the file in #MASTG-TOOL-0028 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Android-Security-Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
+To open the file in #MASTG-TOOL-0028 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](../../0x05b-Android-Security-Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
 ```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
@@ -152,7 +152,7 @@ This said, please see section "[Reviewing Disassembled Native Code](#reviewing-d
 
 ## IDA Pro
 
-If you own an [IDA Pro](0x08a-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
+If you own an [IDA Pro](../../0x08a-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
 <img src="../../../../../assets/Images/Chapters/0x05c/IDA_open_file.jpg" width="100%" />
 

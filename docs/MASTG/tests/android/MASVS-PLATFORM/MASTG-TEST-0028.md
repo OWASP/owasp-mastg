@@ -13,7 +13,7 @@ last_updated: July 13, 2024
 
 ## Overview
 
-Any existing [deep links](../../../Document/0x05h-Testing-Platform-Interaction.md#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc.
+Any existing [deep links](../../../0x05h-Testing-Platform-Interaction.md#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc.
 
 - Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
 - Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
@@ -35,7 +35,7 @@ The Android version in which the app runs also influences the risk of using deep
 
 **Inspecting the Android Manifest:**
 
-You can easily determine whether deep links (with or without custom URL schemes) are defined by [decoding the app using apktool](../../../Document/0x05b-Android-Security-Testing.md#exploring-the-app-package) and inspecting the Android Manifest file looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
+You can easily determine whether deep links (with or without custom URL schemes) are defined by [decoding the app using apktool](../../../0x05b-Android-Security-Testing.md#exploring-the-app-package) and inspecting the Android Manifest file looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
 
 - **Custom Url Schemes**: The following example specifies a deep link with a custom URL scheme called `myapp://`.
 
@@ -212,7 +212,7 @@ public final class WebViewActivity extends AppCompatActivity {
 
 You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has #MASTG-TEST-0031.
 
-The same WebView might be also rendering an attacker controlled parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](../../../Document/0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws) within the context of the WebView:
+The same WebView might be also rendering an attacker controlled parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](../../../0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws) within the context of the WebView:
 
 ```default
 deeplinkdemo://load.html?attacker_controlled=<svg onload=alert(1)>
@@ -220,8 +220,8 @@ deeplinkdemo://load.html?attacker_controlled=<svg onload=alert(1)>
 
 But there are many other possibilities. Be sure to check the following sections to learn more about what to expect and how to test different scenarios:
 
-- ["Cross-Site Scripting Flaws"](../../../Document/0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws).
-- ["Injection Flaws"](../../../Document/0x04h-Testing-Code-Quality.md#injection-flaws).
+- ["Cross-Site Scripting Flaws"](../../../0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws).
+- ["Injection Flaws"](../../../0x04h-Testing-Code-Quality.md#injection-flaws).
 - #MASTG-TEST-0034.
 - #MASTG-TEST-0027
 - #MASTG-TEST-0031

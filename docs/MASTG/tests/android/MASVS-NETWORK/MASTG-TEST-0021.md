@@ -30,7 +30,7 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 Applications targeting Android 7.0 (API level 24) or higher will use a **default Network Security Configuration that doesn't trust any user supplied CAs**, reducing the possibility of MITM attacks by luring users to install malicious CAs.
 
-[Decode the app using apktool](../../../Document/0x05b-Android-Security-Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal to or higher than `24`.
+[Decode the app using apktool](../../../0x05b-Android-Security-Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal to or higher than `24`.
 
 ```txt
 grep targetSdkVersion UnCrackable-Level3/apktool.yml
@@ -41,12 +41,12 @@ However, even if `targetSdkVersion >=24`, the developer can disable default prot
 
 ### Analyzing Custom Trust Anchors
 
-Search for the [Network Security Configuration](../../../Document/0x05g-Testing-Network-Communication.md#android-network-security-configuration) file and inspect any custom `<trust-anchors>` defining `<certificates src="user">` (which should be avoided).
+Search for the [Network Security Configuration](../../../0x05g-Testing-Network-Communication.md#android-network-security-configuration) file and inspect any custom `<trust-anchors>` defining `<certificates src="user">` (which should be avoided).
 
 You should carefully analyze the [precedence of entries](https://developer.android.com/training/articles/security-config#ConfigInheritance):
 
 - If a value is not set in a `<domain-config>` entry or in a parent `<domain-config>`, the configurations in place will be based on the `<base-config>`
-- If not defined in this entry, the [default configurations](../../../Document/0x05g-Testing-Network-Communication.md#default-configurations) will be used.
+- If not defined in this entry, the [default configurations](../../../0x05g-Testing-Network-Communication.md#default-configurations) will be used.
 
 Take a look at this example of a Network Security Configuration for an app targeting Android 9 (API level 28):
 
@@ -65,7 +65,7 @@ Take a look at this example of a Network Security Configuration for an app targe
 
 Some observations:
 
-- There's no `<base-config>`, meaning that the [default configuration](../../../Document/0x05g-Testing-Network-Communication.md#default-configurations) for Android 9 (API level 28) or higher will be used for all other connections (only `system` CA will be trusted in principle).
+- There's no `<base-config>`, meaning that the [default configuration](../../../0x05g-Testing-Network-Communication.md#default-configurations) for Android 9 (API level 28) or higher will be used for all other connections (only `system` CA will be trusted in principle).
 - However, the `<domain-config>` overrides the default configuration allowing the app to trust both `system` and `user` CAs for the indicated `<domain>` (owasp.org).
 - This doesn't affect subdomains because of `includeSubdomains="false"`.
 
@@ -169,4 +169,4 @@ To test improper certificate verification launch a MITM attack using an intercep
   3. Go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in an invalid hostname, e.g., example.org.
   4. Run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
 
-If you're still not able to see any decrypted HTTPS traffic, your application might be implementing [certificate pinning](../../../Document/0x04f-Testing-Network-Communication.md#restricting-trust-identity-pinning).
+If you're still not able to see any decrypted HTTPS traffic, your application might be implementing [certificate pinning](../../../0x04f-Testing-Network-Communication.md#restricting-trust-identity-pinning).

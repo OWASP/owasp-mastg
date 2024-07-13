@@ -13,7 +13,7 @@ last_updated: July 13, 2024
 
 ## Overview
 
-To test for [WebView protocol handlers](../../../Document/0x05h-Testing-Platform-Interaction.md#webview-protocol-handlers "WebView Protocol Handlers") check the app for WebView usage and evaluate whether or not the WebView should have resource access. If resource access is necessary you need to verify that it's implemented following best practices.
+To test for [WebView protocol handlers](../../../0x05h-Testing-Platform-Interaction.md#webview-protocol-handlers "WebView Protocol Handlers") check the app for WebView usage and evaluate whether or not the WebView should have resource access. If resource access is necessary you need to verify that it's implemented following best practices.
 
 ## Static Analysis
 

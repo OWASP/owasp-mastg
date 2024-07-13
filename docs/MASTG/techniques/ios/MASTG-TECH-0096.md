@@ -14,7 +14,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
 
-In the following sections you will be using #MASTG-TOOL-0036 to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift)) that should be running on your iPhone (connected per USB). Use the following command:
+In the following sections you will be using #MASTG-TOOL-0036 to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [iGoat-Swift](#igoat-swift)) that should be running on your iPhone (connected per USB). Use the following command:
 
 ```bash
 r2 frida://usb//iGoat-Swift
@@ -59,7 +59,7 @@ If you're only interested into the modules (binaries and libraries) that the app
 0x0000000100f60000 Realm
 ```
 
-As you might expect you can correlate the addresses of the libraries with the memory maps: e.g. the main app binary [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) is located at `0x0000000100b7c000` and the Realm Framework at `0x0000000100f60000`.
+As you might expect you can correlate the addresses of the libraries with the memory maps: e.g. the main app binary iGoat-Swift is located at `0x0000000100b7c000` and the Realm Framework at `0x0000000100f60000`.
 
 You can also use objection to display the same information.
 
@@ -125,9 +125,9 @@ Now take the first hit, seek to it and check your current location in the memory
 0x0000000100b7c000 - 0x0000000100de0000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
 ```
 
-As expected, you are located in the region of the main [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) binary (r-x, read and execute). In the previous section, you saw that the main binary is located between `0x0000000100b7c000` and `0x0000000100e97000`.
+As expected, you are located in the region of the main iGoat-Swift binary (r-x, read and execute). In the previous section, you saw that the main binary is located between `0x0000000100b7c000` and `0x0000000100e97000`.
 
-Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app and navigate in the menu to **Authentication** -> **Remote Authentication** -> **Start**. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on **Login** just yet. Perform the following two steps.
+Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the iGoat-Swift app and navigate in the menu to **Authentication** -> **Remote Authentication** -> **Start**. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on **Login** just yet. Perform the following two steps.
 
 ```bash
 [0x00000000]> :/ owasp-mstg

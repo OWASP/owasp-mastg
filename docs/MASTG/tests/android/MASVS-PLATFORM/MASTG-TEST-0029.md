@@ -13,7 +13,7 @@ last_updated: July 13, 2024
 
 ## Overview
 
-To test for [sensitive functionality exposure through IPC](../../../Document/0x05h-Testing-Platform-Interaction.md#sensitive-functionality-exposure-through-ipc "Sensitive Functionality Exposure Through IPC") mechanisms you should first enumerate all the IPC mechanisms the app uses and then try to identify whether sensitive data is leaked when the mechanisms are used.
+To test for [sensitive functionality exposure through IPC](../../../0x05h-Testing-Platform-Interaction.md#sensitive-functionality-exposure-through-ipc "Sensitive Functionality Exposure Through IPC") mechanisms you should first enumerate all the IPC mechanisms the app uses and then try to identify whether sensitive data is leaked when the mechanisms are used.
 
 ## Static Analysis
 

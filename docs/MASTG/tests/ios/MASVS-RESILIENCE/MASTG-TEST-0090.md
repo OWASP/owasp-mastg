@@ -33,7 +33,7 @@ Work on bypassing the defenses and answer the following questions:
 
 **File Storage Integrity Checks:**
 
-Go to the app data directories as indicated in section ["Accessing App Data Directories"](../../../Document/0x06b-iOS-Security-Testing.md#accessing-app-data-directories) and modify some files.
+Go to the app data directories as indicated in section ["Accessing App Data Directories"](../../../0x06b-iOS-Security-Testing.md#accessing-app-data-directories) and modify some files.
 
 Next, work on bypassing the defenses and answer the following questions:
 

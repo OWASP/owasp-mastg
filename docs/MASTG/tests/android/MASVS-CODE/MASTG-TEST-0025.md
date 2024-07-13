@@ -13,7 +13,7 @@ last_updated: July 13, 2024
 
 ## Overview
 
-To test for [injection flaws](../../../Document/0x04h-Testing-Code-Quality.md#injection-flaws "Injection Flaws") you need to first rely on other tests and check for functionality that might have been exposed:
+To test for [injection flaws](../../../0x04h-Testing-Code-Quality.md#injection-flaws "Injection Flaws") you need to first rely on other tests and check for functionality that might have been exposed:
 
 - #MASTG-TEST-0028
 - #MASTG-TEST-0029

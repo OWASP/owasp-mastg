@@ -13,7 +13,7 @@ last_updated: July 13, 2024
 
 ## Overview
 
-When testing [app permissions](../../../Document/0x05h-Testing-Platform-Interaction.md#app-permissions "App Permissions") the goal is to try and reduce the amount of permissions used by your app to the absolute minimum. While going through each permission, remember that it is best practice first to try and [evaluate whether your app needs to use this permission](https://developer.android.com/training/permissions/evaluating) because many functionalities such as taking a photo can be done without, limiting the amount of access to sensitive data. If permissions are required you will then make sure that the request/response to access the permission is handled handled correctly.
+When testing [app permissions](../../../0x05h-Testing-Platform-Interaction.md#app-permissions "App Permissions") the goal is to try and reduce the amount of permissions used by your app to the absolute minimum. While going through each permission, remember that it is best practice first to try and [evaluate whether your app needs to use this permission](https://developer.android.com/training/permissions/evaluating) because many functionalities such as taking a photo can be done without, limiting the amount of access to sensitive data. If permissions are required you will then make sure that the request/response to access the permission is handled handled correctly.
 
 ## Static Analysis
 
@@ -29,7 +29,7 @@ Go through the permissions with the developer to identify the purpose of every p
 
 Besides going through the AndroidManifest.xml file manually, you can also use the Android Asset Packaging tool (aapt) to examine the permissions of an APK file.
 
-> aapt comes with the Android SDK within the build-tools folder. It requires an APK file as input. You may list the APKs in the device by running `adb shell pm list packages -f | grep -i <keyword>` as seen in "[Listing Installed Apps](../../../Document/0x05b-Android-Security-Testing.md#listing-installed-apps "Listing Installed Apps")".
+> aapt comes with the Android SDK within the build-tools folder. It requires an APK file as input. You may list the APKs in the device by running `adb shell pm list packages -f | grep -i <keyword>` as seen in "[Listing Installed Apps](../../../0x05b-Android-Security-Testing.md#listing-installed-apps "Listing Installed Apps")".
 
 ```bash
 $ aapt d permissions app-x86-debug.apk

@@ -50,7 +50,7 @@ The most relevant items are:
 - `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
 - `Frameworks/` contains the app native libraries as .dylib or .framework files.
 - `PlugIns/` may contain app extensions as .appex files (not present in the example).
-- [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
+- iGoat-Swift is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
 - Various resources such as images/icons, `*.nib` files (storing the user interfaces of iOS app), localized content (`<language>.lproj`), text files, audio files, etc.
 
 ## The Info.plist File
@@ -74,10 +74,10 @@ The file might be formatted in XML or binary (bplist). You can convert it to XML
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
 
-- App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- Exported/imported _custom document types_: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network Communication](0x06g-Testing-Network-Communication.md)")
+- App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](../../0x06h-Testing-Platform-Interaction.md)")
+- Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](../../0x06h-Testing-Platform-Interaction.md)")
+- Exported/imported _custom document types_: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](../../0x06h-Testing-Platform-Interaction.md)")
+- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network Communication](../../0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
