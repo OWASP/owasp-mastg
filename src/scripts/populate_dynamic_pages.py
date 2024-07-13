@@ -66,6 +66,7 @@ def get_mastg_components_dict(name):
                     component_id = os.path.splitext(os.path.basename(file))[0]
                     component_path = os.path.splitext(os.path.relpath(file, "docs/"))[0]
                     frontmatter['id'] = f"[{component_id}](/{component_path})"
+                    frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     components.append(frontmatter)
         return components
 
