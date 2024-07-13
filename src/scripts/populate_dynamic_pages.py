@@ -9,11 +9,15 @@ CHECKLIST_DICT = combine_data_for_checklist.get_checklist_dict()
 
 def get_platform_icon(platform):
     if platform == "android":
-        return '<span style="font-size: large; color: darkgrey;"> :material-android: </span><span style="display: none;">platform:android</span>'
+        return '<span style="font-size: x-large; color: #54b259;"> :material-android: </span><span style="display: none;">platform:android</span>'
     elif platform == "ios":
-        return '<span style="font-size: large; color: darkgrey;"> :material-apple: </span><span style="display: none;">platform:ios</span>'
-    elif platform == "general":
-        return '<span style="font-size: large; color: darkgrey;"> :material-asterisk: </span>'
+        return '<span style="font-size: x-large; color: #007aff;"> :material-apple: </span><span style="display: none;">platform:ios</span>'
+    elif platform == "generic":
+        return '<span style="font-size: x-large; color: darkgrey;"> :material-asterisk: </span><span style="display: none;">platform:generic</span>'
+    elif platform == "network":
+        return '<span style="font-size: x-large; color: #9383e2;"> :material-web: </span><span style="display: none;">platform:network</span>'
+    else:
+        return '<span style="font-size: x-large; color: darkgrey;"> :material-progress-question: </span><span style="display: none;">platform:unknown</span>'
 
 def get_level_icon(level, value):
     if level == "L1" and value == True:
@@ -66,7 +70,10 @@ def get_mastg_components_dict(name):
                     component_id = os.path.splitext(os.path.basename(file))[0]
                     component_path = os.path.splitext(os.path.relpath(file, "docs/"))[0]
                     frontmatter['id'] = f"[{component_id}](/{component_path})"
-                    frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
+                    if frontmatter.get('platform') and type(frontmatter['platform']) == list:
+                        frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
+                    else:
+                        frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
                     components.append(frontmatter)
         return components
 
