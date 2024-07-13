@@ -6,7 +6,7 @@ last_updated: September 29, 2023
 
 ## Using Objection
 
-You can use the `list_frameworks` command in @@@objection to list all the application's bundles that represent Frameworks.
+You can use the `list_frameworks` command in #MASTG-TOOL-0038 to list all the application's bundles that represent Frameworks.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks

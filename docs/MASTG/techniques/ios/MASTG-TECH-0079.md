@@ -8,7 +8,7 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 ## Automated Repackaging
 
-@@@objection automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+#MASTG-TOOL-0038 automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
 
 Using objection's repackaging feature is sufficient for most of use cases. However, in some complex scenarios you might need more fine-grained control or a more customizable repackaging process. In that case, you can read a detailed explanation of the repackaging and resigning process in ["Manual Repackaging"](#manual-repackaging).
 
@@ -30,7 +30,7 @@ Depending on whether you're registered as an iOS developer, you can obtain a cer
 
 **With an iOS developer account:**
 
-If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the @@@security command (macOS only) to list your signing identities:
+If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the #MASTG-TOOL-0063 command (macOS only) to list your signing identities:
 
 ```bash
 $ security find-identity -v
@@ -46,7 +46,7 @@ In the examples below, I use my signing identity, which is associated with my co
 
 Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
 
-Once you've obtained the provisioning profile, you can check its contents with the @@@security command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
+Once you've obtained the provisioning profile, you can check its contents with the #MASTG-TOOL-0063 command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
 ```bash
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist

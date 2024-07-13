@@ -109,7 +109,7 @@ if let url = URL(string: "cydia://package/com.example.package"), UIApplication.s
 
 #### Automated Jailbreak Detection Bypass
 
-The quickest way to bypass common Jailbreak detection mechanisms is @@@objection. You can find the implementation of the jailbreak bypass in the [jailbreak.ts script](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
+The quickest way to bypass common Jailbreak detection mechanisms is #MASTG-TOOL-0038. You can find the implementation of the jailbreak bypass in the [jailbreak.ts script](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
 
 #### Manual Jailbreak Detection Bypass
 
@@ -473,7 +473,7 @@ Applications are often compiled with hardcoded keys, licences, tokens and endpoi
 
 #### Recommended Tools
 
-- @@@swiftshield can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
+- #MASTG-TOOL-0068 can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation (IR) instead of the source code. It can be used for symbol obfuscation, string encryption and control flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
 Learn more about iOS obfuscation techniques in the paper ["Protecting Million-User iOS Apps with Obfuscation: Motivations, Pitfalls, and Experience"](https://faculty.ist.psu.edu/wu/papers/obf-ii.pdf "Paper - Protecting Million-User iOS Apps with Obfuscation: Motivations, Pitfalls, and Experience").

@@ -11,7 +11,7 @@ Although you can use a Linux or Windows host computer for testing, you'll find t
 The following is the most basic iOS app testing setup:
 
 - Ideally macOS host computer with admin rights
-- @@@xcode and [Xcode Command Line Tools](0x08a-Testing-Tools.md#xcode-command-line-tools) installed.
+- #MASTG-TOOL-0070 and [Xcode Command Line Tools](0x08a-Testing-Tools.md#xcode-command-line-tools) installed.
 - Wi-Fi network that permits client-to-client traffic.
 - At least one jailbroken iOS device (of the desired iOS version).
 - [Burp Suite](0x08a-Testing-Tools.md#burp-suite) or other interception proxy tool.

@@ -6,7 +6,7 @@ last_updated: September 29, 2023
 
 ## Using adb
 
-You can copy files to and from a device by using the @@@adb commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
+You can copy files to and from a device by using the #MASTG-TOOL-0004 commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```bash
 adb push foo.txt /sdcard/foo.txt

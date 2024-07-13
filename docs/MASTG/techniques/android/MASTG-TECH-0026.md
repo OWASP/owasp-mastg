@@ -6,7 +6,7 @@ last_updated: May 01, 2024
 
 Non-rooted devices have the benefit of replicating an environment that the application is intended to run on.
 
-Thanks to tools like @@@objection, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app). To do that you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library.
+Thanks to tools like #MASTG-TOOL-0038, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app). To do that you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library.
 
 Now you can use objection to dynamically analyze the application on non-rooted devices.
 

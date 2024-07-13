@@ -17,7 +17,7 @@ Beware that you do not have control over these sites and you cannot guarantee wh
 
 ## Using gplaycli
 
-You can use @@@gplaycli to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
+You can use #MASTG-TOOL-0016 to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
 
 ```bash
 $ gplaycli -p -v -d com.google.android.keep

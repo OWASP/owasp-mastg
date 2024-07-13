@@ -6,7 +6,7 @@ last_updated: May 11, 2024
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](#obtaining-and-extracting-apps).
 
-APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using @@@apktool which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
+APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using #MASTG-TOOL-0011 which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
 
 ```bash
 $ apktool d UnCrackable-Level3.apk
@@ -39,7 +39,7 @@ The following files are unpacked:
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, it's better to unpack the APK using @@@apktool.
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, it's better to unpack the APK using #MASTG-TOOL-0011.
 
 ```bash
 $ ls -alh

@@ -4,7 +4,7 @@ platform: android
 last_updated: September 29, 2023
 ---
 
-Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the @@@angr binary analysis framework as our symbolic execution engine.
+Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the #MASTG-TOOL-0030 binary analysis framework as our symbolic execution engine.
 
 To demonstrate this technique we'll use a crackme called [Android License Validator](0x08b-Reference-Apps.md#android-license-validator "Android License Validator"). The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
 
@@ -22,7 +22,7 @@ Incorrect serial (wrong format).
 
 ```
 
-So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as @@@iaito. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as #MASTG-TOOL-0098. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
 
 <img src="../../../../../assets/Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 
