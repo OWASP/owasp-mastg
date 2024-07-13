@@ -140,7 +140,6 @@ def reorder_dict_keys(original_dict, key_order):
 # tests/index.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'last_updated': 'Last Updated'} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
-
 tests = get_mastg_components_dict("docs/MASTG/tests")
 test_types = ["android", "ios"]
 for test_type in test_types:

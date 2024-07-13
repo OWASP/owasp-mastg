@@ -1,6 +1,5 @@
 #!/bin/bash
 
-mkdir -p docs/MASTG
 mkdir -p docs/MASTG/Intro      
 mkdir -p docs/MASTG/General
 mkdir -p docs/MASTG/Android
