@@ -1,0 +1,35 @@
+{
+  "name": "MkDocs-VSCode",
+  "build": {
+    "context": "..",
+    "dockerfile": "../Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "debug.javascript.usePreview": false
+      },
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "yzhang.markdown-all-in-one",
+        "redhat.vscode-yaml",
+        "shardulm94.trailing-spaces",
+        "oderwat.indent-rainbow",
+        "msjsdiag.debugger-for-chrome",
+        "ms-python.python",
+        "ms-python.debugpy",
+        "davidanson.vscode-markdownlint",
+        "timonwong.shellcheck",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    8000
+  ]
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  //"remoteUser": "vscode"
+}
