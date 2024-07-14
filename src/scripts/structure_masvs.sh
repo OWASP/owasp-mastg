@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ -d "../owasp-masvs/" ] ; then
     MASVS_DIR=../owasp-masvs
 elif [ -d "./owasp-masvs/" ] ; then
