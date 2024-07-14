@@ -6,15 +6,15 @@ from glob import glob
 import yaml
 log = logging.getLogger('mkdocs')
 
-mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}}
+mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}}
 
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
-    if not path.endswith('/index.md'):
+    if not path.endswith('/index.md') or True:
 
-        pageRefs = {"TECH":[], "TOOL":[], "TEST": [], "APP": []}
+        pageRefs = {"TECH":[], "TOOL":[], "TEST": [], "APP": [], "MASWE": [], "MASVS": []}
         def replaceReference(match):
             refType = match.group(2)
 
@@ -28,7 +28,7 @@ def on_page_markdown(markdown, page, **kwargs):
             if refType == "TOOL":
                 icon = ":material-tools: "
             elif refType == "TEST":
-                icon = ":material-check-bold: "
+                icon = ":octicons-checklist-24: "
             elif refType == "APP":
                 icon = ":fontawesome-solid-mobile-screen-button: "
             else:
@@ -36,7 +36,34 @@ def on_page_markdown(markdown, page, **kwargs):
 
             return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
 
+        def replaceReferenceMASWE(match):
+            refType = "MASWE"
+
+            pageRefs[refType].append(match.group(1))
+
+            if not match in mapping[refType]:
+                target = getTargetForRef(match.group(1), path)
+                mapping[refType][match] = target
+
+            icon = ":fontawesome-solid-link-slash: "
+            return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
+
+        def replaceReferenceMASVS(match):
+            refType = "MASVS"
+
+            pageRefs[refType].append(match.group(1))
+
+            if not match in mapping[refType]:
+                target = getTargetForRef(match.group(1), path)
+                mapping[refType][match] = target
+
+            icon = ":material-book-multiple: "
+            return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
+
+
         updated_markdown = re.sub(r'#(MASTG-(TECH|TOOL|TEST|APP)-\d{3,})', replaceReference, markdown)
+        updated_markdown = re.sub(r'#(MASWE-\d{3,})', replaceReferenceMASWE, updated_markdown)
+        updated_markdown = re.sub(r'#(MASVS-\w{})', replaceReferenceMASVS, updated_markdown)
         tags = page.meta.get('tags', [])
         page.meta["tools"] = list(set(pageRefs["TOOL"]))
         page.meta["techniques"] = list(set(pageRefs["TECH"]))
@@ -47,7 +74,7 @@ def on_page_markdown(markdown, page, **kwargs):
     return markdown
 
 def getTargetForRef(id, path):
-    searchFor = f'./docs/MASTG/**/{id}.md'
+    searchFor = f'./docs/**/{id}.md'
 
     files = glob(searchFor, recursive=True)
 

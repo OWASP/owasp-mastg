@@ -322,6 +322,7 @@ hooks:
   - docs/hooks/add-tags.py
   - docs/hooks/add-cross-references.py
   - docs/hooks/resolve_references.py
+  - docs/hooks/create_dynamic_tables.py
 
 extra:
   generator: false # removed but recreated in copyright above
