@@ -154,10 +154,7 @@ def set_icons_for_web(checklist):
             row['Control / MASTG Test'] = f"#{row['MASTG-TEST-ID']}"
             row['L1'] = get_level_icon('L1', row['L1'])
             row['L2'] = get_level_icon('L2', row['L2'])
-            row['R'] = get_level_icon('R', row['R'])
-
-        del row['path']
-        
+            row['R'] = get_level_icon('R', row['R'])        
 
 def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
     if column_titles is None: column_titles = {key:key.title() for (key,_) in data[0].items()}
@@ -379,7 +376,17 @@ hide:
         checklist = CHECKLIST_DICT[ID]
 
         set_icons_for_web(checklist)
-        content = list_of_dicts_to_md_table(checklist, column_titles, column_align) + "\n\n<br><br>"
+
+        cleaned_checklist = []
+        for check in checklist:
+            cleaned_check = dict(check)
+
+            del cleaned_check['path']
+            if 'MASTG-TEST-ID' in cleaned_check:
+                del cleaned_check['MASTG-TEST-ID']
+            cleaned_checklist.append(cleaned_check)
+        
+        content = list_of_dicts_to_md_table(cleaned_checklist, column_titles, column_align) + "\n\n<br><br>"
         
         # add temporary warning
         content = page.format(content)

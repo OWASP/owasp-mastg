@@ -12,6 +12,7 @@ mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
+    # Always true, but nice for debugging
     if not path.endswith('/index.md') or True:
 
         pageRefs = {"TECH":[], "TOOL":[], "TEST": [], "APP": [], "MASWE": [], "MASVS": []}
@@ -83,10 +84,6 @@ def getTargetForRef(id, path):
         return {"file": "ERROR", "title": "error"}
     
     file_url =   os.path.relpath(files[0], "./docs/" + path)[3:]
-    # log.error("From: " + path)
-    # log.error("Tooo: " + files[0])
-    # log.error(file_url)
-    # log.error(" ")
 
     with open(files[0], 'r') as f:
         content = f.read()
