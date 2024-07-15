@@ -3,39 +3,33 @@ import yaml
 import mkdocs.plugins
 import os
 import glob
-
+import pathlib
 log = logging.getLogger('mkdocs')
 
 
 def gather_metadata(directory, id_key):
     metadata = {}
-    for file in glob.glob(f"./docs/{directory}/**/MASWE-*.md", recursive=True):
+    for file in glob.glob(f"./docs/{directory}/**/*.md", recursive=True):
         if file.endswith("index.md"):
             continue
 
         with open(file, 'r') as f:
             content = f.read()
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-            # path is file without the .md extension, 'weaknesses/MASVS-STORAGE/MASWE-0004.md' -> weaknesses/MASVS-STORAGE/MASWE-0004
             
             if not id_key in frontmatter:
                 log.error(f"Missing frontmatter ID in {file}")
                 continue
 
-            frontmatter["path"] = file[:-3]
-            # replace weaknesses with MASWE in path
-            frontmatter["path"] = frontmatter["path"].replace("weaknesses", "/MASWE")
-            if directory == "tests-beta" or directory == "demos":
-                frontmatter["path"] = frontmatter["path"].replace("tests-beta", "/MASTG/tests-beta")
-                frontmatter["path"] = frontmatter["path"].replace("demos", "/MASTG/demos") 
-
+            frontmatter["path"] = file.replace("./docs/", "") # os.path.relpath(file, "./docs")
+          
             metadata[frontmatter[id_key]] = frontmatter
     return metadata
 
 def generate_cross_references():
     weaknesses = gather_metadata("MASWE", "id")
-    tests = gather_metadata("tests-beta", "id")
-    demos = gather_metadata("demos", "id")
+    tests = gather_metadata("MASTG/tests-beta", "id")
+    demos = gather_metadata("MASTG/demos", "id")
 
     cross_references = {
         "weaknesses": {},
@@ -91,7 +85,10 @@ def on_page_markdown(markdown, page, config, **kwargs):
             tests = cross_references["weaknesses"][weakness_id]
             meta['tests'] = tests
             if tests:
-                tests_section = "## Tests\n\n" + "\n".join([f"<button class='mas-test-button' onclick='window.location=\"{test['path']}\"'>{get_platform_icon(test['platform'])} {test['id']}: {test['title']}</button>" for test in tests])
+                tests_section =  "## Tests\n\n" 
+                for test in tests:
+                    relPath = os.path.relpath(test['path'], os.path.dirname(path))
+                    tests_section += f"[{get_platform_icon(test['platform'])} {test['id']}: {test['title']}]({relPath}){{: .mas-test-button}} "
                 markdown += f"\n\n{tests_section}"
 
     if "MASTG-TEST-" in path:
@@ -100,7 +97,11 @@ def on_page_markdown(markdown, page, config, **kwargs):
             demos = cross_references["tests"][test_id]
             meta['demos'] = demos
             if demos:
-                demos_section = "## Demos\n\n" + "\n".join([f"<button class='mas-demo-button' onclick='window.location=\"{demo['path']}\"'>{get_platform_icon(demo['platform'])} {demo['id']}: {demo['title']}</button>" for demo in demos])
+                demos_section = "## Demos\n\n"
+                for demo in demos:
+                    relPath = os.path.relpath(demo['path'], os.path.dirname(path))
+                    demos_section += f"[{get_platform_icon(demo['platform'])} {demo['id']}: {demo['title']}]({relPath}){{: .mas-demo-button}} "
+
                 markdown += f"\n\n{demos_section}"
 
     return markdown
