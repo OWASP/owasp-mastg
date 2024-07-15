@@ -17,4 +17,4 @@ status: new
     - **Observation**: A description of the results of running the test against an application.
     - **Evaluation**: Specific instructions for evaluating the results of the test.
 
-    Each test comes with a collection of demos that demonstrate the weakness in a sample application. These demos are written in markdown and are located in the [Demos](../..//MASTG/demos) section of the MASTG.
+    Each test comes with a collection of demos that demonstrate the weakness in a sample application. These demos are written in markdown and are located in the [Demos](../../MASTG/demos/index.md) section of the MASTG.
