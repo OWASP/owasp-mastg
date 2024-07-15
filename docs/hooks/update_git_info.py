@@ -1,4 +1,9 @@
+import logging
+import mkdocs.plugins
 import subprocess
+
+log = logging.getLogger('mkdocs')
+
 
 def get_last_commit_date(file_path):
     try:
@@ -16,3 +21,20 @@ def get_last_commit_date(file_path):
 if __name__ == '__main__':
     print(get_last_commit_date('./CONTRIBUTING.md'))
 
+
+
+
+
+# https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
+@mkdocs.plugins.event_priority(-50)
+def on_page_markdown(markdown, page, config, **kwargs):
+
+    path = page.file.abs_src_path
+    localPath = page.file.src_uri
+    
+    if localPath.startswith("news/"):
+        # Auto generated, so not part of git
+        return
+
+    last_updated = get_last_commit_date(path)
+    page.meta["last_updated"] = last_updated
