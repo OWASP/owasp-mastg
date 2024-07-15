@@ -1,0 +1,13 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                            
+    MastgTest_reversed.java 
+       rules.mastg-android-non-random-use                                  
+          [MASVS-CRYPTO-1] The application makes use of non-random sources.
+                                                                           
+           22┆ int random1 = (int) new Date().getTime();
+            ⋮┆----------------------------------------
+           24┆ int random2 = c.get(14);
