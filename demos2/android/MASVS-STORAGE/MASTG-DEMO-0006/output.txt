@@ -1,0 +1,8 @@
+Log.v("MASTG", "key: MAS-Sensitive-Value")
+Log.i("MASTG", "key: MAS-Sensitive-Password")
+Log.w("MASTG", "test: MAS-Sensitive-Value-IV")
+Log.d("MASTG", "test: MAS-Sensitive-Value-IV-2")
+Log.e("MASTG", "test: MAS-Sensitive-Value")
+Log.wtf("MASTG", "test: MAS-Sensitive-Value")
+Log.wtf(0, "MASTG", "test: MAS-Sensitive-Value", null, false, false)
+Logger.severe("MAS-Sensitive-Key")

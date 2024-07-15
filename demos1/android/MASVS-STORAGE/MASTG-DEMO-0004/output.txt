@@ -1,0 +1,12 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                            
+    MastgTest_reversed.java 
+       rules.mastg-android-data-unencrypted-shared-storage-no-user-interaction-external-api-scoped 
+          [MASVS-STORAGE] These locations might be accessible to other apps on Android 10 and below
+          given relevant permissions                                                               
+                                                                                                   
+           25┆ File externalStorageDir = this.context.getExternalFilesDir(null);
