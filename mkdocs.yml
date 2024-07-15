@@ -323,6 +323,7 @@ hooks:
   - docs/hooks/add-cross-references.py
   - docs/hooks/resolve_references.py
   - docs/hooks/create_dynamic_tables.py
+  - docs/hooks/update_git_info.py
 
 extra:
   generator: false # removed but recreated in copyright above
