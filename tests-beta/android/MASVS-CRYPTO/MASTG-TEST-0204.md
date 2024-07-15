@@ -1,12 +1,14 @@
 ---
 platform: android
 title: Insecure Random API Usage
+id: MASTG-TEST-0204
 type: [static]
 mitigations:
 - android-use-secure-random
 prerequisites:
 - identify-sensitive-data
 - identify-security-relevant-contexts
+weakness: MASWE-0027
 ---
 
 ## Overview
@@ -15,7 +17,7 @@ Android apps sometimes use insecure pseudorandom number generators (PRNGs) such 
 
 ## Steps
 
-1. Run a #MASTG-TECH-0014 tool on the app and look for insecure random APIs.
+1. Run a [static analysis](/MASTG/techniques/android/MASTG-TECH-0014) tool on the app and look for insecure random APIs.
 
 ## Observation
 

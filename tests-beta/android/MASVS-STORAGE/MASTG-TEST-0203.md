@@ -1,8 +1,10 @@
 ---
 platform: android
 title: Leakage of Sensitive Data via Logging APIs
+id: MASTG-TEST-0203
 apis: [Log, Logger, System.out.print, System.err.print, java.lang.Throwable#printStackTrace]
 type: [dynamic]
+weakness: MASWE-0001
 ---
 
 ## Overview
@@ -13,7 +15,7 @@ On Android platforms, logging APIs like `Log`, `Logger`, `System.out.print`, `Sy
 
 1. Install and run the app.
 2. Navigate to the screen of the mobile app you want to analyse the log output from.
-3. Execute a #MASTG-TECH-0033 (using e.g. #MASTG-TOOL-0031) by attaching to the running app, targeting logging APIs and save the output.
+3. Execute a [method trace](/MASTG/techniques/android/MASTG-TECH-0033) (using e.g. [Frida](/MASTG/tools/generic/MASTG-TOOL-0031)) by attaching to the running app, targeting logging APIs and save the output.
 
 ## Observation
 
