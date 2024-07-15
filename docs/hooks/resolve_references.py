@@ -6,7 +6,7 @@ from glob import glob
 import yaml
 log = logging.getLogger('mkdocs')
 
-mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}}
+mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}, "DEMO": {}}
 
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, **kwargs):
@@ -15,7 +15,7 @@ def on_page_markdown(markdown, page, **kwargs):
     # Always true, but nice for debugging
     if not path.endswith('/index.md') or True:
 
-        pageRefs = {"TECH":[], "TOOL":[], "TEST": [], "APP": [], "MASWE": [], "MASVS": []}
+        pageRefs = {"TECH":[], "TOOL":[], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": []}
         def replaceReference(match):
             refType = match.group(2)
 
@@ -32,6 +32,8 @@ def on_page_markdown(markdown, page, **kwargs):
                 icon = ":octicons-checklist-24: "
             elif refType == "APP":
                 icon = ":fontawesome-solid-mobile-screen-button: "
+            elif refType == "DEMO":
+                icon = ":material-presentation: "
             else:
                 icon = ":material-flask: "
 
@@ -62,7 +64,7 @@ def on_page_markdown(markdown, page, **kwargs):
             return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
 
 
-        updated_markdown = re.sub(r'#(MASTG-(TECH|TOOL|TEST|APP)-\d{3,})', replaceReference, markdown)
+        updated_markdown = re.sub(r'#(MASTG-(TECH|TOOL|TEST|APP|DEMO)-\d{3,})', replaceReference, markdown)
         updated_markdown = re.sub(r'#(MASWE-\d{3,})', replaceReferenceMASWE, updated_markdown)
         updated_markdown = re.sub(r'#(MASVS-\w{})', replaceReferenceMASVS, updated_markdown)
         tags = page.meta.get('tags', [])

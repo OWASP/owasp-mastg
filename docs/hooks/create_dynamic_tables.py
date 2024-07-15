@@ -230,7 +230,7 @@ def get_all_tests_beta():
             frontmatter['path'] = f"/MASTG/tests-beta/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/tests-beta'))[0]}"
 
             test_id = frontmatter['id']            
-            frontmatter['id'] = test_id #f"[{test_id}]({frontmatter['path']})"
+            frontmatter['id'] = test_id
             frontmatter['title'] = f"#{frontmatter['id']}"            
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             
@@ -249,7 +249,8 @@ def get_all_demos_beta():
 
             frontmatter['path'] = f"/MASTG/demos/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/demos'))[0]}"
             test_id = frontmatter['id']            
-            frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            frontmatter['id'] = test_id 
+            frontmatter['title'] = f"#{test_id}"
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             
             demos.append(frontmatter)
@@ -289,7 +290,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         return append_to_page(markdown, list_of_dicts_to_md_table(tests_beta_columns_reordered, column_titles))
 
-    elif path.endswith("demos-deta/index.md"):
+    elif path.endswith("demos/index.md"):
         # demos-beta/index.md
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'tools': "Tools"}
