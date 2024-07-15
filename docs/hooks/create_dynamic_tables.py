@@ -228,8 +228,10 @@ def get_all_tests_beta():
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
 
             frontmatter['path'] = f"/MASTG/tests-beta/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/tests-beta'))[0]}"
+
             test_id = frontmatter['id']            
-            frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            frontmatter['id'] = test_id #f"[{test_id}]({frontmatter['path']})"
+            frontmatter['title'] = f"#{frontmatter['id']}"            
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             
             tests.append(frontmatter)
