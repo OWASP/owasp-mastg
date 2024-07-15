@@ -164,12 +164,6 @@ def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
 def append_to_page(markdown, new_content):
 
     return markdown + new_content + "\n\n<br>\n\n"
-    file = Path(file_path)
-    if not file.exists():
-        file.touch()
-    content = file.read_text() + new_content
-    file.write_text(content)
-
 
 
 def get_mastg_components_dict(name):
