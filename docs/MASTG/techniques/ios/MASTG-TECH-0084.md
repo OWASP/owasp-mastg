@@ -154,15 +154,15 @@ The final breakpoint address to be used in the debugger is the sum of the above 
 
 When a binary is opened in a disassembler like Ghidra, it loads a binary by emulating the respective operating system's loader. The address at which the binary is loaded is called _image base address_. All the code and symbols inside this binary can be addressed using a constant address offset from this image base address. In Ghidra, the image base address can be obtained by determining the address of the start of a Mach-O file. In this case, it is 0x100000000.
 
-<img src="../../../../../assets/Images/Chapters/0x06c/debugging_ghidra_image_base_address.png" width="100%" />
+<img src="/Images/Chapters/0x06c/debugging_ghidra_image_base_address.png" width="100%" />
 
 From our previous analysis of the #MASTG-APP-0025 in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset 0x100004520. This is our _breakpoint offset_.
 
-<img src="../../../../../assets/Images/Chapters/0x06c/debugging_ghidra_breakpoint.png" width="100%" />
+<img src="/Images/Chapters/0x06c/debugging_ghidra_breakpoint.png" width="100%" />
 
 For the second address, we need to determine the _ASLR shift offset_ for a given process. The ASLR offset can be determined by using the LLDB command `image list -o -f`. The output is shown in the screenshot below.
 
-<img src="../../../../../assets/Images/Chapters/0x06c/debugging_lldb_image_list.png" width="100%" />
+<img src="/Images/Chapters/0x06c/debugging_lldb_image_list.png" width="100%" />
 
 In the output, the first column contains the sequence number of the image ([X]), the second column contains the randomly generated ASLR offset, while 3rd column contains the full path of the image and towards the end, content in the bracket shows the image base address after adding ASLR offset to the original image base address (0x100000000 + 0x70000 = 0x100070000). You will notice the image base address of 0x100000000 is same as in Ghidra. Now, to obtain the effective memory address for a code location we only need to add ASLR offset to the address identified in Ghidra. The effective address to set the breakpoint will be 0x100004520 + 0x70000 = 0x100074520. The breakpoint can be set using command `b 0x100074520`.
 
@@ -170,7 +170,7 @@ In the output, the first column contains the sequence number of the image ([X]),
 
 After putting the breakpoint and running the app, the execution will be halted once the breakpoint is hit. Now you can access and explore the current state of the process. In this case, you know from the previous static analysis that the register `X0` contains the hidden string, thus let's explore it. In LLDB you can print Objective-C objects using the `po` (_print object_) command.
 
-<img src="../../../../../assets/Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png" width="100%" />
+<img src="/Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png" width="100%" />
 
 Voila, the crackme can be easily solved aided by static analysis and a debugger. There are plethora of features implemented in LLDB, including changing the value of the registers, changing values in the process memory and even [automating tasks using Python scripts](https://lldb.llvm.org/use/python.html "LLDB - Python Scripting").
 

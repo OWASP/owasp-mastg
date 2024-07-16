@@ -6,7 +6,7 @@ last_updated: July 13, 2024
 
 Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
 
-<img src="../../../../../assets/Images/Chapters/0x06a/iOS_Folder_Structure.png" width="400px" />
+<img src="/Images/Chapters/0x06a/iOS_Folder_Structure.png" width="400px" />
 
 On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) assigned for its directory names.
 
@@ -127,14 +127,14 @@ Regular           493  None                ...  iGoat-Swift
 
 You can also visualize the Bundle directory from #MASTG-TOOL-0061 by clicking on **Finder** -> **Bundle**:
 
-<img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_bundle_dir.png" width="100%" />
+<img src="/Images/Chapters/0x06b/grapefruit_bundle_dir.png" width="100%" />
 
 Including the `Info.plist` file:
 
-<img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_plist_view.png" width="100%" />
+<img src="/Images/Chapters/0x06b/grapefruit_plist_view.png" width="100%" />
 
 As well as the Data directory in **Finder** -> **Home**:
 
-<img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
+<img src="/Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
 
 Refer to the [Testing Data Storage](../../0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.

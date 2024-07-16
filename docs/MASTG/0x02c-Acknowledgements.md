@@ -61,7 +61,7 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 ## Our MAS Advocates
 
-<img src="../../../assets/Images/Other/nowsecure-logo.png" width="350px" />
+<img src="/Images/Other/nowsecure-logo.png" width="350px" />
 
 [NowSecure](https://www.nowsecure.com) has provided consistent high-impact contributions to the project and has successfully helped spread the word.
 
@@ -119,4 +119,4 @@ Additionally:
 
 While both the MASVS and the MASTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MASTG in any way. The Donation Packages are described on our [OWASP Project page](https://mas.owasp.org/donate/ "OWASP MAS Donation Packages").
 
-<img src="../../../assets/Images/Donators/donators.png"/>
+<img src="/Images/Donators/donators.png"/>

@@ -208,19 +208,19 @@ And of course you can also use the disassembler capabilities of r2 and print the
 
 r2 commands normally accept options (see `pd?`), e.g. you can limit the opcodes displayed by appending a number ("N") to the command `pd N`.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/r2_pd_10.png" width="100%" />
+<img src="/Images/Chapters/0x05b/r2_pd_10.png" width="100%" />
 
 Instead of just printing the disassembly to the console you may want to enter the so-called **Visual Mode** by typing `V`.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/r2_visualmode_hex.png" width="100%" />
+<img src="/Images/Chapters/0x05b/r2_visualmode_hex.png" width="100%" />
 
 By default, you will see the hexadecimal view. By typing `p` you can switch to different views, such as the disassembly view:
 
-<img src="../../../../../assets/Images/Chapters/0x05b/r2_visualmode_disass.png" width="100%" />
+<img src="/Images/Chapters/0x05b/r2_visualmode_disass.png" width="100%" />
 
 Radare2 offers a **Graph Mode** that is very useful to follow the flow of the code. You can access it from the Visual Mode by typing `V`:
 
-<img src="../../../../../assets/Images/Chapters/0x05b/r2_graphmode.png" width="100%" />
+<img src="/Images/Chapters/0x05b/r2_graphmode.png" width="100%" />
 
 This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://book.rada.re/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 

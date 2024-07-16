@@ -8,11 +8,11 @@ Following the example from ["Decompiling Java Code"](#decompiling-java-code), we
 
 When analyzing obfuscated code, annotating class names, method names, and other identifiers as you go along is a good practice. Open the `MainActivity` class in the package `sg.vantagepoint.uncrackable1`. The method `verify` is called when you tap the "verify" button. This method passes the user input to a static method called `a.a`, which returns a boolean value. It seems plausible that `a.a` verifies user input, so we'll refactor the code to reflect this.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/check_input.jpg" width="100%" />
+<img src="/Images/Chapters/0x05c/check_input.jpg" width="100%" />
 
 Right-click the class name (the first `a` in `a.a`) and select Refactor -> Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later). `a.a` now becomes `Validator.a`. Follow the same procedure to rename the static method `a` to `check_input`.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/refactored.jpg" width="100%" />
+<img src="/Images/Chapters/0x05c/refactored.jpg" width="100%" />
 
 Congratulations, you just learned the fundamentals of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program until you understand it completely or, at least, well enough for whatever you want to achieve.
 

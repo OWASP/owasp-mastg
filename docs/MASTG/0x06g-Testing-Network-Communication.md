@@ -158,7 +158,7 @@ The [Apple Developer Documentation](https://developer.apple.com/documentation/se
 - tighten trust: reject credentials that would otherwise be accepted by the system.
 - etc.
 
-<img src="../../../assets/Images/Chapters/0x06g/manual-server-trust-evaluation.png" width="100%" />
+<img src="/Images/Chapters/0x06g/manual-server-trust-evaluation.png" width="100%" />
 
 References:
 

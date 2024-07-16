@@ -23,4 +23,4 @@ It also shows which of them are currently running. Take a note of the "Identifie
 
 You can also directly open #MASTG-TOOL-0061 and after selecting your iOS device you'll get the list of installed apps.
 
-<img src="../../../../../assets/Images/Chapters/0x06b/grapefruit_installed_apps.png" width="400px" />
+<img src="/Images/Chapters/0x06b/grapefruit_installed_apps.png" width="400px" />

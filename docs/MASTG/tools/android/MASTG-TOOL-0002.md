@@ -7,7 +7,7 @@ last_updated: July 13, 2024
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/mobsf_android.png" width="100%" />
+<img src="/Images/Chapters/0x05b/mobsf_android.png" width="100%" />
 
 The following is displayed:
 

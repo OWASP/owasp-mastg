@@ -105,6 +105,6 @@ window.webkit.messageHandlers.javaScriptBridge.postMessage(["getSecret"]);
 
 Of course, you may also use the Exploitation Helper it provides:
 
-<img src="../../../../../assets/Images/Chapters/0x06h/exploit_javascript_bridge.png" width="400px" />
+<img src="/Images/Chapters/0x06h/exploit_javascript_bridge.png" width="400px" />
 
 See another example for a vulnerable iOS app and function that is exposed to a WebView in [#thiel2] page 156.

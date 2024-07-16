@@ -21,7 +21,7 @@ wget https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/01_HelloWor
 
 > This app is not exactly spectacular, all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support, which is just enough to show the basic principles of JNI calls.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/helloworld.png" width="200px" />
+<img src="/Images/Chapters/0x05c/helloworld.png" width="200px" />
 
 Decompile the APK with `apkx`.
 
@@ -62,7 +62,7 @@ JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFro
 
 So where is the native implementation of this function? If you look into the "lib" directory of the unzipped APK archive, you'll see several subdirectories (one per supported processor architecture), each of them containing a version of the native library, in this case `libnative-lib.so`. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on. Before moving ahead, pay attention to the first parameter passed to the current JNI function. It is the same `JNIEnv` data structure which was discussed earlier in this section.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/archs.jpg" width="300px" />
+<img src="/Images/Chapters/0x05c/archs.jpg" width="300px" />
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on macOS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
@@ -154,6 +154,6 @@ This said, please see section "[Reviewing Disassembled Native Code](#reviewing-d
 
 If you own an [IDA Pro](../../0x08a-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/IDA_open_file.jpg" width="100%" />
+<img src="/Images/Chapters/0x05c/IDA_open_file.jpg" width="100%" />
 
 > The freeware version of IDA Pro unfortunately does not support the ARM processor type.

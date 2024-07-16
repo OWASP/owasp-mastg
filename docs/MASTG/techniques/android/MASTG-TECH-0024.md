@@ -66,11 +66,11 @@ The workflow can be further improved by using [r2ghidra](https://github.com/rada
 
 We assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_ MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="400px" />
+<img src="/Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="400px" />
 
 Not a lot of code there, but you should analyze it. The first thing you need to know is that the first argument passed to every JNI function is a JNI interface pointer. An interface pointer is a pointer to a pointer. This pointer points to a function table: an array of even more pointers, each of which points to a JNI interface function (is your head spinning yet?). The function table is initialized by the Java VM and allows the native function to interact with the Java environment.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/JNI_interface.png" width="100%" />
+<img src="/Images/Chapters/0x05c/JNI_interface.png" width="100%" />
 
 With that in mind, let's have a look at each line of assembly code.
 
@@ -116,4 +116,4 @@ After opening the library in Ghidra we can see all the functions defined in the 
 
 Inside the current function there is a call to another function, whose address is obtained by accessing an offset in the `JNIEnv` pointer (found as `plParm1`). This logic has been diagrammatically demonstrated above as well. The corresponding C code for the disassembled function is shown in the **Decompiler** window. This decompiled C code makes it much easier to understand the function call being made. Since this function is small and extremely simple, the decompilation output is very accurate, this can change drastically when dealing with complex functions.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/Ghidra_decompiled_function.png" width="100%" />
+<img src="/Images/Chapters/0x05c/Ghidra_decompiled_function.png" width="100%" />

@@ -12,7 +12,7 @@ In order to use `frida-trace`, a Frida server should be running on the device. A
 frida-trace -U -i "open" com.android.chrome
 ```
 
-<img src="../../../../../assets/Images/Chapters/0x05c/frida_trace_native_functions.png" width="100%" />
+<img src="/Images/Chapters/0x05c/frida_trace_native_functions.png" width="100%" />
 
 Note how, by default, only the arguments passed to the function are shown, but not the return values. Under the hood, `frida-trace` generates one little JavaScript handler file per matched function in the auto-generated `__handlers__` folder, which Frida then injects into the process. You can edit these files for more advanced usage such as obtaining the return value of the functions, their input parameters, accessing the memory, etc. Check Frida's [JavaScript API](https://www.frida.re/docs/javascript-api/ "JavaScript API") for more details.
 

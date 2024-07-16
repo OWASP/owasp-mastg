@@ -67,6 +67,6 @@ sys.stdin.read()
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (as explained in the section "Monitoring System Logs" from the chapter "iOS Basic Security Testing"). Try opening a new URL in Safari, e.g. <https://github.com/OWASP/owasp-mastg>; you should see Frida's output in the logs as well as in your terminal.
 
-<img src="../../../../../assets/Images/Chapters/0x06c/frida-xcode-log.png" width="100%" />
+<img src="/Images/Chapters/0x06c/frida-xcode-log.png" width="100%" />
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.

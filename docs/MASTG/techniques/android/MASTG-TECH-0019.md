@@ -14,7 +14,7 @@ With Ghidra, strings can be obtained by simply loading the DEX file and selectin
 
 > Loading an APK file directly into Ghidra might lead to inconsistencies. Thus it is recommended to extract the DEX file by unzipping the APK file and then loading it into Ghidra.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/ghidra_dex_strings.png" width="100%" />
+<img src="/Images/Chapters/0x05c/ghidra_dex_strings.png" width="100%" />
 
 With Dextra, you can dump all the strings using the following command:
 

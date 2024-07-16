@@ -324,6 +324,7 @@ hooks:
   - docs/hooks/resolve_references.py
   - docs/hooks/create_dynamic_tables.py
   - docs/hooks/update_git_info.py
+  - docs/hooks/fix_image_references.py
 
 extra:
   generator: false # removed but recreated in copyright above

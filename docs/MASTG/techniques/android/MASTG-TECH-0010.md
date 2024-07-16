@@ -73,11 +73,11 @@ nc localhost 11111 | wireshark -k -S -i -
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/Android_Wireshark.png" width="100%" />
+<img src="/Images/Chapters/0x05b/Android_Wireshark.png" width="100%" />
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" width="400px" />
+<img src="/Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" width="400px" />
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
@@ -85,7 +85,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/FCM-notifications-overview.png" width="100%" />
+<img src="/Images/Chapters/0x05b/FCM-notifications-overview.png" width="100%" />
 
 Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
@@ -132,7 +132,7 @@ The interception proxy must listen to the port specified in the port forwarding 
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/FCM_Intercept.png" width="100%" />
+<img src="/Images/Chapters/0x05b/FCM_Intercept.png" width="100%" />
 
 ### End-to-End Encryption for Push Notifications
 

@@ -133,31 +133,31 @@ To set up IDE debugging, first create your Android project in IntelliJ and copy 
 
 Once you tap the app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/waitfordebugger.png" width="300px" />
+<img src="/Images/Chapters/0x05c/waitfordebugger.png" width="300px" />
 
 Now you can set breakpoints and attach to the app process with the "Attach Debugger" toolbar button.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="100%" />
+<img src="/Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="100%" />
 
 Note that only method breakpoints work when debugging an app from decompiled sources. Once a method breakpoint is reached, you'll get the chance to single step during the method execution.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/Choose_Process.png" width="300px" />
+<img src="/Images/Chapters/0x05c/Choose_Process.png" width="300px" />
 
 After you choose the app from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate` method. This app triggers anti-debugging and anti-tampering controls within the `onCreate` method. That's why setting a breakpoint on the `onCreate` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
 
 Next, single-step through the `onCreate` method by clicking "Force Step Into" in Debugger view. The "Force Step Into" option allows you to debug the Android framework functions and core Java classes that are normally ignored by debuggers.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/Force_Step_Into.png" width="100%" />
+<img src="/Images/Chapters/0x05c/Force_Step_Into.png" width="100%" />
 
 Once you "Force Step Into", the debugger will stop at the beginning of the next method, which is the `a` method of the class `sg.vantagepoint.a.c`.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="100%" />
+<img src="/Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="100%" />
 
 This method searches for the "su" binary within a list of directories (`/system/xbin` and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
 
 You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a` method.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/step_over.png" width="100%" />
+<img src="/Images/Chapters/0x05c/step_over.png" width="100%" />
 
 Step into the `System.getenv` method with the "Force Step Into" feature.
 
@@ -165,33 +165,33 @@ After you get the colon-separated directory names, the debugger cursor will retu
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/step_out.png" width="100%" />
+<img src="/Images/Chapters/0x05c/step_out.png" width="100%" />
 
 After the `a` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
-<img src="../../../../../assets/Images/Chapters/0x05c/set_value.png" width="100%" />
+<img src="/Images/Chapters/0x05c/set_value.png" width="100%" />
 
-<img src="../../../../../assets/Images/Chapters/0x05c/modified_binary_name.png" width="100%" />
+<img src="/Images/Chapters/0x05c/modified_binary_name.png" width="100%" />
 
 Once you modify the binary name or the directory name, `File.exists` should return `false`.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/file_exists_false.png" width="100%" />
+<img src="/Images/Chapters/0x05c/file_exists_false.png" width="100%" />
 
 This defeats the first root detection control of the app. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" width="400px" />
+<img src="/Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" width="400px" />
 
-<img src="../../../../../assets/Images/Chapters/0x05c/MainActivity_verify.png" width="100%" />
+<img src="/Images/Chapters/0x05c/MainActivity_verify.png" width="100%" />
 
 The secret code is verified by the method `a` of class `sg.vantagepoint.uncrackable1.a`. Set a breakpoint on method `a` and "Force Step Into" when you reach the breakpoint. Then, single-step until you reach the call to `String.equals`. This is where user input is compared with the secret string.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="100%" />
+<img src="/Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="100%" />
 
 You can see the secret string in the "Variables" view when you reach the `String.equals` method call.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/secret_code.png" width="100%" />
+<img src="/Images/Chapters/0x05c/secret_code.png" width="100%" />
 
-<img src="../../../../../assets/Images/Chapters/0x05c/success.png" width="400px" />
+<img src="/Images/Chapters/0x05c/success.png" width="400px" />
 
 ## Debugging Native Code
 

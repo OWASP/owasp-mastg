@@ -42,8 +42,8 @@ If the option has not been set, the application is vulnerable to screen capturin
 
 While black-box testing the app, navigate to any screen that contains sensitive information and click the home button to send the app to the background, then press the app switcher button to see the snapshot. As shown below, if `FLAG_SECURE` is set (left image), the snapshot will be empty; if the flag has not been set (right image), activity information will be shown:
 
-<img src="../../../../../assets/Images/Chapters/0x05d/2.png" width="200px" />
-<img src="../../../../../assets/Images/Chapters/0x05d/1.png" width="200px" />
+<img src="/Images/Chapters/0x05d/2.png" width="200px" />
+<img src="/Images/Chapters/0x05d/1.png" width="200px" />
 
 On devices supporting [file-based encryption (FBE)](https://source.android.com/security/encryption/file-based "FBE"), snapshots are stored in the `/data/system_ce/<USER_ID>/<IMAGE_FOLDER_NAME>` folder. `<IMAGE_FOLDER_NAME>` depends on the vendor but most common names are `snapshots` and `recent_images`. If the device doesn't support FBE, the `/data/system/<IMAGE_FOLDER_NAME>` folder is used.
 

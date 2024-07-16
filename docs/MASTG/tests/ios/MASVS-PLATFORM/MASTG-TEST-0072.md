@@ -26,7 +26,7 @@ The static analysis will take care of:
 
 If you have the original source code you can search for all occurrences of `NSExtensionPointIdentifier` with Xcode (cmd+shift+f) or take a look into "Build Phases / Embed App extensions":
 
-<img src="../../../../../assets/Images/Chapters/0x06h/xcode_embed_app_extensions.png" width="100%" />
+<img src="/Images/Chapters/0x06h/xcode_embed_app_extensions.png" width="100%" />
 
 There you can find the names of all embedded app extensions followed by `.appex`, now you can navigate to the individual app extensions in the project.
 
@@ -88,7 +88,7 @@ Only the data types present here and not having `0` as `MaxCount` will be suppor
 
 Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group") and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults") API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11 "An app extension’s container is distinct from its containing app’s container"):
 
-<img src="../../../../../assets/Images/Chapters/0x06h/app_extensions_container_restrictions.png" width="400px" />
+<img src="/Images/Chapters/0x06h/app_extensions_container_restrictions.png" width="400px" />
 
 As also mentioned in the guide, the app must set up a shared container if the app extension uses the `NSURLSession` class to perform a background upload or download, so that both the extension and its containing app can access the transferred data.
 
@@ -113,7 +113,7 @@ For this we should hook `NSExtensionContext - inputItems` in the data originatin
 
 Following the previous example of Telegram we will now use the "Share" button on a text file (that was received from a chat) to create a note in the Notes app with it:
 
-<img src="../../../../../assets/Images/Chapters/0x06h/telegram_share_extension.png" width="400px" />
+<img src="/Images/Chapters/0x06h/telegram_share_extension.png" width="400px" />
 
 If we run a trace, we'd see the following output:
 

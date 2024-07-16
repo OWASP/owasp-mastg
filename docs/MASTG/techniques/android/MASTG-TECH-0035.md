@@ -16,7 +16,7 @@ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
 
 > The `-l` option can be provided multiple times to trace multiple libraries, or `*` can be provided to trace all libraries. This, however, may provide a lot of output.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/jni_tracing_helloworldjni.png" width="100%" />
+<img src="/Images/Chapters/0x05c/jni_tracing_helloworldjni.png" width="100%" />
 
 In the output you can see the trace of a call to `NewStringUTF` made from the native code (its return value is then given back to Java code, see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code)" for more details). Note how similarly to frida-trace, the output is colorized helping to visually distinguish the different threads.
 

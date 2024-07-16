@@ -263,7 +263,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 2. Wait for the **AirDrop** popup to appear and click on **Accept**.
 3. As there is no default app that will open the file, it switches to the **Open with...** popup. There, we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
 
-    <img src="../../../../../assets/Images/Chapters/0x06h/airdrop_openwith.png" width="400px" />
+    <img src="/Images/Chapters/0x06h/airdrop_openwith.png" width="400px" />
 
 4. After selecting **SomeFileManager** we can see the following:
 

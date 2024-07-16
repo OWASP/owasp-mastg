@@ -29,7 +29,7 @@ The first step to test custom URL schemes is finding out whether an application 
 
 If you have the original source code and want to view registered protocol handlers, simply open the project in Xcode, go to the **Info** tab and open the **URL Types** section as presented in the screenshot below:
 
-<img src="../../../../../assets/Images/Chapters/0x06h/URL_scheme.png" width="100%" />
+<img src="/Images/Chapters/0x06h/URL_scheme.png" width="100%" />
 
 Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in the app’s `Info.plist` file (example from [iGoat-Swift](https://github.com/OWASP/iGoat-Swift "iGoat-Swift")):
 
@@ -375,7 +375,7 @@ Now we know that:
 
 The call was successful and we see now that the [iGoat](#igoat) app was open:
 
-<img src="../../../../../assets/Images/Chapters/0x06h/iGoat_opened_via_url_scheme.jpg" width="400px" />
+<img src="/Images/Chapters/0x06h/iGoat_opened_via_url_scheme.jpg" width="400px" />
 
 Notice that we can also see that the caller (source application) was Safari if we look in the upper-left corner of the screenshot.
 
@@ -432,7 +432,7 @@ The output is truncated for better readability. This time you see that `UIApplic
 
 You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behavior.
 
-<img src="../../../../../assets/Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png" width="400px" />
+<img src="/Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png" width="400px" />
 
 First of all we let frida-trace generate the stubs for us:
 
@@ -515,7 +515,7 @@ There you can observe the following:
 
 It is interesting to see that if you navigate again to "<https://telegram.me/fridadotre>", click on **cancel** and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
 
-<img src="../../../../../assets/Images/Chapters/0x06h/open_in_telegram_via_universallink.png" width="400px" />
+<img src="/Images/Chapters/0x06h/open_in_telegram_via_universallink.png" width="400px" />
 
 You can try this while tracing both methods:
 

@@ -22,7 +22,7 @@ Alternatively you can use the #MASTG-TOOL-0010 extension for Visual Studio Code 
 
 In the following example we'll be using #MASTG-APP-0003. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/crackme-1.png" width="400px" />
+<img src="/Images/Chapters/0x05c/crackme-1.png" width="400px" />
 
 Seems like we're expected to find some kind of secret code!
 
@@ -34,20 +34,20 @@ The easiest way to run CFR is through #MASTG-TOOL-0012, which also packages `dex
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because IntelliJ uses the package name to identify the correct process.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/intellij_new_project.jpg" width="100%" />
+<img src="/Images/Chapters/0x05c/intellij_new_project.jpg" width="100%" />
 
 In the next dialog, pick any API number; you don't actually want to compile the project, so the number doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
 
 Once you have created the project, expand the "1: Project" view on the left and navigate to the folder `app/src/main/java`. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/delete_package.jpg" width="400px" />
+<img src="/Images/Chapters/0x05c/delete_package.jpg" width="400px" />
 
 Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the `sg` directory into the now empty `Java` folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
-<img src="../../../../../assets/Images/Chapters/0x05c/drag_code.jpg" width="100%" />
+<img src="/Images/Chapters/0x05c/drag_code.jpg" width="100%" />
 
 You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
-<img src="../../../../../assets/Images/Chapters/0x05c/final_structure.jpg" width="400px" />
+<img src="/Images/Chapters/0x05c/final_structure.jpg" width="400px" />
 
 See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.

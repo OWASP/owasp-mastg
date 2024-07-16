@@ -23,7 +23,7 @@ $ adb pull /sdcard
 
 Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/android-studio-file-device-explorer.png" width="400px" />
+<img src="/Images/Chapters/0x05b/android-studio-file-device-explorer.png" width="400px" />
 
 If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 

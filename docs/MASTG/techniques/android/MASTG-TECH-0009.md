@@ -8,7 +8,7 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
-<img src="../../../../../assets/Images/Chapters/0x05b/log_output_Android_Studio.png" width="100%" />
+<img src="/Images/Chapters/0x05b/log_output_Android_Studio.png" width="100%" />
 
 - You can execute Logcat with adb to store the log output permanently:
 

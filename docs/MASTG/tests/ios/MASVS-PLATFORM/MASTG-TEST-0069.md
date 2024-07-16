@@ -32,7 +32,7 @@ If having the original source code, you can verify the permissions included in t
 
 You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
 
-<img src="../../../../../assets/Images/Chapters/0x06h/purpose_strings_xcode.png" width="100%" />
+<img src="/Images/Chapters/0x06h/purpose_strings_xcode.png" width="100%" />
 
 ### Review Info.plist
 
@@ -189,7 +189,7 @@ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 
 Now we open the share dialog:
 
-<img src="../../../../../assets/Images/Chapters/0x06h/telegram_share_something.png" width="400px" />
+<img src="/Images/Chapters/0x06h/telegram_share_something.png" width="400px" />
 
 The following methods are displayed:
 
@@ -242,6 +242,6 @@ We see that `+[CLLocationManager authorizationStatus]` returned `0x4` ([CLAuthor
 
 Next, there is a _visual_ way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to trigger them in order to be listed on that screen.
 
-<img src="../../../../../assets/Images/Chapters/0x06h/settings_allow_screen.png" width="100%" />
+<img src="/Images/Chapters/0x06h/settings_allow_screen.png" width="100%" />
 
 For example, in the previous example, the "Location" entry was not being listed until we triggered the permission dialogue for the first time. Once we did it, no matter if we allowed the access or not, the the "Location" entry will be displayed.

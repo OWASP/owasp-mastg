@@ -22,7 +22,7 @@ The following procedure, which works on the Android emulator that ships with And
     - Enter "127.0.0.1" in the **Host Name** field and your proxy port in the **Port number** field (e.g., "8080")
     - Tap **Apply**
 
-<img src="../../../../../assets/Images/Chapters/0x05b/emulator-proxy.png" width="100%" />
+<img src="/Images/Chapters/0x05b/emulator-proxy.png" width="100%" />
 
 HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 

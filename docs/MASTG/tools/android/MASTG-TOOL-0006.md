@@ -14,7 +14,7 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 
 An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
 
-<img src="../../../../../assets/Images/Chapters/0x05c/sdk_manager.jpg" width="100%" />
+<img src="/Images/Chapters/0x05c/sdk_manager.jpg" width="100%" />
 
 Installed SDKs are on the following paths:
 

@@ -7,7 +7,7 @@ last_updated: July 13, 2024
 
 [Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written by Ole André Vadla Ravnås that works by injecting the [QuickJS](https://bellard.org/quickjs/) JavaScript engine (previously [Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
 
-<img src="../../../../../assets/Images/Chapters/0x04/frida_logo.png" style="width: 80%; border-radius: 5px; margin: 2em" />
+<img src="/Images/Chapters/0x04/frida_logo.png" style="width: 80%; border-radius: 5px; margin: 2em" />
 
 To install Frida locally, simply run:
 
@@ -25,7 +25,7 @@ In contrast, Frida implements code injection by writing code directly into the p
 - The agent establishes a bi-directional communication channel back to the tool (e.g. the Frida REPL or your custom Python script).
 - The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
 
-<img src="../../../../../assets/Images/Chapters/0x04/frida.png" width="100%" />
+<img src="/Images/Chapters/0x04/frida.png" width="100%" />
 
 - _Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")_
 
