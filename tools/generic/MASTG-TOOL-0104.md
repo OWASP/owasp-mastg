@@ -17,7 +17,7 @@ Use `file` to check the type and confirm you are dealing with actual Hermes byte
 $ file main.jsbundle
 main.jsbundle: Hermes JavaScript bytecode, version 90
 ```
-If instead you see that its a plain text file, it can likely just be opened with any text editor and hermes-dec isn't needed:
+If instead you see that it's a plain text file, it can be opened with any text editor and hermes-dec isn't needed:
 
 ```bash
 $ file main.jsbundle
