@@ -28,7 +28,7 @@ jobs:
           done
           matrix="${matrix%,}]}"
           echo "matrix=$matrix" >> $GITHUB_ENV
-          echo "::set-output name=matrix::$matrix"
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"
@@ -36,9 +36,11 @@ jobs:
   build:
     needs: generate-matrix
     runs-on: ubuntu-latest
+    timeout-minutes: 60  # Increase this value as needed
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
-
+      max-parallel: 3  # Limit the number of parallel jobs
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
