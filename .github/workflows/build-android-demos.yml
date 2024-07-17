@@ -1,4 +1,5 @@
 name: Build Android Demos
+
 on:
   push:
     branches:
@@ -29,14 +30,19 @@ jobs:
         run: |
           for demo in demos/android/MASTG-DEMO-*; do
             if [ -d "$demo" ]; then
+              echo "Processing $demo"
               cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt || true
               cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml || true
               cd MASTestApp-Android
               ./gradlew assembleDebug
               cd ..
-              mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk"
+              mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk" || echo "Failed to move APK for $demo"
+              echo "APK for $demo moved to $demo.apk"
             fi
           done
+
+      - name: List generated APKs
+        run: ls -l demos/android/*.apk
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4
