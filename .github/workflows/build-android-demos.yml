@@ -15,10 +15,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 11
+      - name: set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
       - name: Clone MASTestApp-Android repository
         run: git clone https://github.com/cpholguera/MASTestApp-Android.git
