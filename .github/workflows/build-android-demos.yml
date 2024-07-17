@@ -1,6 +1,7 @@
-name: Build Single Android Demo
+name: Build All Android Demos
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -9,8 +10,34 @@ on:
       - master
 
 jobs:
-  build:
+  generate-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          demos=$(find demos/android -type d -name "MASTG-DEMO-*")
+          matrix="{\"demo\":["
+          for demo in $demos; do
+            matrix="${matrix}\"$demo\","
+          done
+          matrix="${matrix%,}]}"
+          echo "matrix=$matrix" >> $GITHUB_ENV
+          echo "::set-output name=matrix::$matrix"
+
+      - name: Print matrix
+        run: echo "${{ steps.set-matrix.outputs.matrix }}"
+
+  build:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
@@ -27,7 +54,7 @@ jobs:
 
       - name: Replace files and build APK
         run: |
-          demo="demos/android/MASVS-CRYPTO/MASTG-DEMO-0007"
+          demo="${{ matrix.demo }}"
           if [ -d "$demo" ]; then
             echo "Processing $demo"
             [ -f "$demo/MastgTest.kt" ] && cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt && echo "Copied MastgTest.kt for $demo" || echo "No MastgTest.kt found for $demo"
@@ -39,9 +66,10 @@ jobs:
             cd ..
             if [ $build_status -eq 0 ]; then
               echo "Build succeeded for $demo"
+              apk_name="$(basename "$demo").apk"
               if [ -f "MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk" ]; then
-                mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk"
-                echo "APK for $demo moved to $demo.apk"
+                mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$apk_name"
+                echo "APK for $demo moved to $apk_name"
               else
                 echo "APK not found for $demo"
               fi
@@ -54,15 +82,15 @@ jobs:
 
       - name: Set APK name variable
         id: set_apk_name
-        run: echo "APK_NAME=$(basename demos/android/MASVS-CRYPTO/MASTG-DEMO-0007.apk)" >> $GITHUB_ENV
+        run: echo "APK_NAME=$(basename ${{ matrix.demo }}).apk" >> $GITHUB_ENV
 
       - name: List generated APK
         run: |
           echo "Listing generated APK in demos/android directory:"
-          ls -l demos/android/MASVS-CRYPTO/MASTG-DEMO-0007.apk || echo "No APK found."
+          ls -l "${{ env.APK_NAME }}" || echo "No APK found."
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APK_NAME }}
-          path: demos/android/MASVS-CRYPTO/MASTG-DEMO-0007.apk
+          path: "${{ env.APK_NAME }}"
