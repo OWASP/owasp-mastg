@@ -15,26 +15,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: set up JDK 17
+      - name: Clone MASTestApp-Android repository
+        run: git clone https://github.com/cpholguera/MASTestApp-Android.git
+
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
-      - name: Clone MASTestApp-Android repository
-        run: git clone https://github.com/cpholguera/MASTestApp-Android.git
-
       - name: Replace files and build APKs
         run: |
           for demo in demos/android/MASTG-DEMO-*; do
             if [ -d "$demo" ]; then
-              cp -f $demo/MastgTest.kt MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt || true
-              cp -f $demo/AndroidManifest.xml MASTestApp-Android/app/src/main/AndroidManifest.xml || true
+              cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt || true
+              cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml || true
               cd MASTestApp-Android
               ./gradlew assembleDebug
               cd ..
-              mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk $demo.apk
+              mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk"
             fi
           done
 
