@@ -13,7 +13,7 @@ class MastgTest (private val context: Context){
         val externalStorageDir = context.getExternalFilesDir(null)
 
         val fileName = File(externalStorageDir, "secret.txt")
-        val fileContent = "secr3tPa$$W0rd\n"
+        val fileContent = "secr3tPa\$\$W0rd\n"
 
         try {
             FileOutputStream(fileName).use { output ->
