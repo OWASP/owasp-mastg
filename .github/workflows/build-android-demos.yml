@@ -31,16 +31,31 @@ jobs:
           for demo in demos/android/MASTG-DEMO-*; do
             if [ -d "$demo" ]; then
               echo "Processing $demo"
-              cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt || true
-              cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml || true
+              if [ -f "$demo/MastgTest.kt" ]; then
+                echo "Copying MastgTest.kt for $demo"
+                cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt
+              else
+                echo "No MastgTest.kt found for $demo"
+              fi
+              if [ -f "$demo/AndroidManifest.xml" ]; then
+                echo "Copying AndroidManifest.xml for $demo"
+                cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml
+              else
+                echo "No AndroidManifest.xml found for $demo"
+              fi
               cd MASTestApp-Android
+              echo "Building APK for $demo"
               ./gradlew assembleDebug
               build_status=$?
               cd ..
               if [ $build_status -eq 0 ]; then
                 echo "Build succeeded for $demo"
-                mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk" || echo "Failed to move APK for $demo"
-                echo "APK for $demo moved to $demo.apk"
+                if [ -f "MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk" ]; then
+                  mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk"
+                  echo "APK for $demo moved to $demo.apk"
+                else
+                  echo "APK not found for $demo"
+                fi
               else
                 echo "Build failed for $demo"
               fi
