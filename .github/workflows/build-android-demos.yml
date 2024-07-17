@@ -24,55 +24,37 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Copy MastgTest.kt
+      - name: Replace files and build APK
         run: |
           demo="demos/android/MASVS-CRYPTO/MASTG-DEMO-0007"
           if [ -d "$demo" ]; then
-            if [ -f "$demo/MastgTest.kt" ]; then
-              echo "Copying MastgTest.kt for $demo"
-              cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt
+            echo "Processing $demo"
+            [ -f "$demo/MastgTest.kt" ] && cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt && echo "Copied MastgTest.kt for $demo" || echo "No MastgTest.kt found for $demo"
+            [ -f "$demo/AndroidManifest.xml" ] && cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml && echo "Copied AndroidManifest.xml for $demo" || echo "No AndroidManifest.xml found for $demo"
+            cd MASTestApp-Android
+            echo "Building APK for $demo"
+            ./gradlew assembleDebug --stacktrace
+            build_status=$?
+            cd ..
+            if [ $build_status -eq 0 ]; then
+              echo "Build succeeded for $demo"
+              if [ -f "MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk" ]; then
+                mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk"
+                echo "APK for $demo moved to $demo.apk"
+              else
+                echo "APK not found for $demo"
+              fi
             else
-              echo "No MastgTest.kt found for $demo"
+              echo "Build failed for $demo"
             fi
           else
             echo "Demo directory not found: $demo"
           fi
 
-      - name: Copy AndroidManifest.xml
-        run: |
-          demo="demos/android/MASVS-CRYPTO/MASTG-DEMO-0007"
-          if [ -d "$demo" ]; then
-            if [ -f "$demo/AndroidManifest.xml" ]; then
-              echo "Copying AndroidManifest.xml for $demo"
-              cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml
-            else
-              echo "No AndroidManifest.xml found for $demo"
-            fi
-          else
-            echo "Demo directory not found: $demo"
-          fi
-
-      - name: Build APK
-        run: |
-          demo="demos/android/MASVS-CRYPTO/MASTG-DEMO-0007"
-          cd MASTestApp-Android
-          echo "Building APK for $demo"
-          ./gradlew assembleDebug --stacktrace
-          build_status=$?
-          cd ..
-          if [ $build_status -eq 0 ]; then
-            echo "Build succeeded for $demo"
-            if [ -f "MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk" ]; then
-              mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$demo.apk"
-              echo "APK for $demo moved to $demo.apk"
-            else
-              echo "APK not found for $demo"
-            fi
-          else
-            echo "Build failed for $demo"
-          fi
+      - name: Set APK name variable
+        id: set_apk_name
+        run: echo "APK_NAME=$(basename demos/android/MASVS-CRYPTO/MASTG-DEMO-0007.apk)" >> $GITHUB_ENV
 
       - name: List generated APK
         run: |
@@ -82,5 +64,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-demo-apk
+          name: ${{ env.APK_NAME }}
           path: demos/android/MASVS-CRYPTO/MASTG-DEMO-0007.apk
