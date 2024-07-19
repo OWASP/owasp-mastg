@@ -1,7 +1,7 @@
 ---
 title: Native Code Tracing
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 As discussed earlier in this chapter, iOS applications can also contain native code (C/C++ code) and it can be traced using the `frida-trace` CLI as well. For example, you can trace calls to the `open` function by running the following command:

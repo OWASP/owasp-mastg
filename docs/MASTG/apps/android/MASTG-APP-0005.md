@@ -2,7 +2,7 @@
 title: Android UnCrackable L3
 platform: android
 source: https://mas.owasp.org/crackmes/Android#android-uncrackable-l3
-last_updated: July 13, 2024
+
 ---
 
 The crackme from hell! A secret string is hidden somewhere in this app. Find a way to extract it.

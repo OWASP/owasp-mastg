@@ -1,7 +1,7 @@
 ---
 title: Exploring the App Package
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in #MASTG-TECH-0054.

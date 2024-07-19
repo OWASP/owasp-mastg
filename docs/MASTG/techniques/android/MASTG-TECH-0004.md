@@ -1,7 +1,7 @@
 ---
 title: Repackaging Apps
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.

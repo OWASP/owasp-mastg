@@ -1,7 +1,7 @@
 ---
 title: Logging Sensitive Data from Network Traffic
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 #MASTG-TOOL-0097 can be used to intercept network traffic from Android apps. This technique is useful for identifying sensitive data that is sent over the network, as well as for identifying potential security vulnerabilities.

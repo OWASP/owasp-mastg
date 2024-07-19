@@ -1,7 +1,7 @@
 ---
 title: Method Tracing
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 In contrast to method profiling, which tells you how frequently a method is being called, method tracing helps you to also determine its input and output values. This technique can prove to be very useful when dealing with applications that have a big codebase and/or are obfuscated.

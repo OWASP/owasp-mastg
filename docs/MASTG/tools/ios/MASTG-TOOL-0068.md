@@ -2,7 +2,7 @@
 title: SwiftShield
 platform: ios
 source: https://github.com/rockbruno/swiftshield
-last_updated: July 13, 2024
+
 ---
 
 [SwiftShield](https://github.com/rockbruno/swiftshield "SwiftShield") is a tool that generates irreversible, encrypted names for your iOS project's objects (including your Pods and Storyboards). This raises the bar for reverse engineers and will produce less helpful output when using reverse engineering tools such as class-dump and Frida.

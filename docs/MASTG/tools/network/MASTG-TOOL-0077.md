@@ -2,7 +2,7 @@
 title: Burp Suite
 platform: network
 source: https://portswigger.net/burp/communitydownload
-last_updated: July 13, 2024
+
 ---
 
 Burp Suite is an integrated platform for performing security testing mobile and web applications.

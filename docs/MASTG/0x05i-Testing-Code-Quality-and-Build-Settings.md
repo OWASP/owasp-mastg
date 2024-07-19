@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-CODE
 platform: android
-last_updated: ''
+
 ---
 
 # Android Code Quality and Build Settings

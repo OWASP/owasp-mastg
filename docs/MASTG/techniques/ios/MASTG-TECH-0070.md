@@ -1,7 +1,7 @@
 ---
 title: Extracting Information from the Application Binary
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 You can use radare to get information about the binary, such as the architecture, the list of shared libraries, the list of classes and methods, strings and more.

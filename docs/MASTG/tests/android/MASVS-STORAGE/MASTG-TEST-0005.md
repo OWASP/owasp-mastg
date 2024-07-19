@@ -8,7 +8,7 @@ title: Determining Whether Sensitive Data Is Shared with Third Parties via Notif
 masvs_v1_levels:
 - L1
 - L2
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

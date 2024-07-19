@@ -1,7 +1,7 @@
 ---
 title: Host-Device Data Transfer
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 There might be various scenarios where you might need to transfer data from the iOS device or app data sandbox to your host computer or vice versa. The following section will show you different ways on how to achieve that.

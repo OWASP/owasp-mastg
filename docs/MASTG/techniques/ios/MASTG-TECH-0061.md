@@ -1,7 +1,7 @@
 ---
 title: Dumping KeyChain Data
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.

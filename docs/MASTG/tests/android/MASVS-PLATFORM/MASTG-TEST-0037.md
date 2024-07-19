@@ -7,7 +7,7 @@ platform: android
 title: Testing WebViews Cleanup
 masvs_v1_levels:
 - L2
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

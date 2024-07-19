@@ -2,7 +2,7 @@
 title: dsdump
 platform: ios
 source: https://github.com/DerekSelander/dsdump
-last_updated: July 13, 2024
+
 ---
 
 [dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.

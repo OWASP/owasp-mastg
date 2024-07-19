@@ -1,7 +1,7 @@
 ---
 title: Dynamic Analysis on Non-Jailbroken Devices
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup (e.g. the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") to enable dynamic testing with Frida and related tools such as objection). This way, you can instrument the app and do everything you need to do for  dynamic analysis (of course, you can't break out of the sandbox this way). However, this technique only works if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).

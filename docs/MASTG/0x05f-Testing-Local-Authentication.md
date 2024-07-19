@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-AUTH
 platform: android
-last_updated: ''
+
 ---
 
 # Android Local Authentication

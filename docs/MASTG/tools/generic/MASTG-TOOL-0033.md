@@ -2,7 +2,7 @@
 title: Ghidra
 platform: generic
 source: https://github.com/NationalSecurityAgency/ghidra
-last_updated: July 13, 2024
+
 ---
 
 [Ghidra](https://github.com/NationalSecurityAgency/ghidra) is an open source software reverse engineering (SRE) suite of tools developed by the United State of America's National Security Agency's (NSA) Research Directorate. Ghidra is a versatile tool which comprises of a disassembler, decompiler and a built-in scripting engine for advanced usage. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and also look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts. In this section, we will have walk-through on how to create a project, view disassembly and decompiled code for a binary.

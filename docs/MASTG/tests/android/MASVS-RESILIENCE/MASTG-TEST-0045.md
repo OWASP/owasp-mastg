@@ -7,7 +7,7 @@ platform: android
 title: Testing Root Detection
 masvs_v1_levels:
 - R
-last_updated: July 13, 2024
+
 ---
 
 ## Bypassing Root Detection

@@ -8,7 +8,7 @@ platform: ios
 title: Testing File Integrity Checks
 masvs_v1_levels:
 - R
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

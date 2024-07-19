@@ -2,7 +2,7 @@
 title: ios-app-signer
 platform: ios
 source: https://github.com/DanTheMan827/ios-app-signer
-last_updated: July 13, 2024
+
 ---
 
 [ios-app-signer](https://github.com/DanTheMan827/ios-app-signer) is a GUI-based tool for macOS that allows you to re-sign iOS apps and bundle them into IPA files ready to be installed on an iOS device. It can be installed using the `.app` file from the [GitHub releases](https://github.com/DanTheMan827/ios-app-signer/releases) or via brew on macOS:

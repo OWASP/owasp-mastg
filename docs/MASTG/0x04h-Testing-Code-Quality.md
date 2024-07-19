@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-CODE
 platform: all
-last_updated: ''
+
 ---
 
 # Mobile App Code Quality

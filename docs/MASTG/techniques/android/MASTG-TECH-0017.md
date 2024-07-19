@@ -1,7 +1,7 @@
 ---
 title: Decompiling Java Code
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 In Android app security testing, if the application is based solely on Java and doesn't have any native code (C/C++ code), the reverse engineering process is relatively easy and recovers (decompiles) almost all the source code. In those cases, black-box testing (with access to the compiled binary, but not the original source code) can get pretty close to white-box testing.

@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-CRYPTO
 platform: all
-last_updated: ''
+
 ---
 
 # Mobile App Cryptography

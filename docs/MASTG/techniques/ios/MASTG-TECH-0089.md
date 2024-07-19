@@ -1,7 +1,7 @@
 ---
 title: Symbolic Execution
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 TODO: Currently don't have this, but we do have this section below which does talk about Angr and a small intro referring to Android

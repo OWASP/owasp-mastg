@@ -1,7 +1,7 @@
 ---
 title: Get Open Connections
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 You can find system-wide networking information in `/proc/net` or just by inspecting the `/proc/<pid>/net` directories (for some reason not process specific). There are multiple files present in these directories, of which `tcp`, `tcp6` and `udp` might be considered relevant from the tester's perspective.

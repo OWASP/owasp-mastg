@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-CRYPTO
 platform: android
-last_updated: ''
+
 ---
 
 # Android Cryptographic APIs

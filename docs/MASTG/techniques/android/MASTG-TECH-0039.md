@@ -1,7 +1,7 @@
 ---
 title: Repackaging & Re-Signing
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 ## Repackaging

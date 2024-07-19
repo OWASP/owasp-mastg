@@ -1,7 +1,7 @@
 ---
 title: Android SDK
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:

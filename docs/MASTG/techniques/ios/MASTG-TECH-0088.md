@@ -1,7 +1,7 @@
 ---
 title: Emulation-based Analysis
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 ## iOS Simulator

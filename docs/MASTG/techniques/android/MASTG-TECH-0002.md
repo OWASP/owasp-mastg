@@ -1,7 +1,7 @@
 ---
 title: Host-Device Data Transfer
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 ## Using adb

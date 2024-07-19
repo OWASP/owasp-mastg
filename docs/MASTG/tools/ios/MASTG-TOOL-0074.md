@@ -2,7 +2,7 @@
 title: objection for iOS
 platform: ios
 source: https://github.com/sensepost/objection
-last_updated: July 13, 2024
+
 ---
 
 Objection offers several features specific to iOS. You can find the [full list of features](https://github.com/sensepost/objection/wiki/Features) on the project's page, but here are a few interesting ones:

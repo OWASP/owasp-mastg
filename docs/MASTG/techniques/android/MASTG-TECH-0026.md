@@ -1,7 +1,7 @@
 ---
 title: Dynamic Analysis on Non-Rooted Devices
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 Non-rooted devices have the benefit of replicating an environment that the application is intended to run on.

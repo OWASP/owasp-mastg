@@ -2,7 +2,7 @@
 title: APKLab
 platform: android
 source: https://github.com/APKLab/APKLab
-last_updated: July 13, 2024
+
 ---
 
 [APKLab](https://github.com/APKLab/APKLab "APKLab") is a convenient Visual Studio Code extension leveraging tools such as [apktool](#apktool) and [jadx](#jadx) to enable features including app unpacking, decompilation, code patching (e.g. for MITM), and repackaging straight from the IDE.

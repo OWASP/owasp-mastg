@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: ios
-last_updated: ''
+
 ---
 
 # iOS Network Communication

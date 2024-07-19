@@ -1,7 +1,7 @@
 ---
 title: Repackaging and Re-Signing
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 Tampering an app invalidates the main executable's code signature, so this won't run on a non-jailbroken device. You'll need to replace the provisioning profile and sign both the main executable and the files you've made include (e.g. `FridaGadget.dylib`) with the certificate listed in the profile.

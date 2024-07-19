@@ -1,7 +1,7 @@
 ---
 title: Monitoring System Logs
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 On Android you can easily inspect the log of system messages by using [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat"). There are two ways to execute Logcat:

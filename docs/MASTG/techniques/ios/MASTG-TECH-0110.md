@@ -1,7 +1,7 @@
 ---
 title: Intercepting Flutter HTTPS Traffic
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 Flutter is an open-source UI software development kit (SDK) created by Google. It is used for building natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store. The application doesn't use the proxy configuration of the system and sends the data directly to the server. Connections are verified against built-in certificates, so any certificates installed on the system are simply ignored. Due to this, it is not possible to intercept HTTPS requests as the certificate of the proxy will never be trusted.

@@ -1,7 +1,7 @@
 ---
 title: Reviewing Disassembled Objective-C and Swift Code
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 In this section we will be exploring iOS application's binary code manually and perform static analysis on it. Manual analysis can be a slow process and requires immense patience. A good manual analysis can make the dynamic analysis more successful.

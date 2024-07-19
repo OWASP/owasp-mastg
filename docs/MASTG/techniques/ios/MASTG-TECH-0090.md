@@ -1,7 +1,7 @@
 ---
 title: Patching
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 IPA files are actually ZIP archives, so you can use any ZIP tool to unpack the archive.

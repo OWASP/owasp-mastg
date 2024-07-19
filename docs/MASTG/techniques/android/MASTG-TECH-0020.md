@@ -1,7 +1,7 @@
 ---
 title: Retrieving Cross References
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 ## Java and Kotlin

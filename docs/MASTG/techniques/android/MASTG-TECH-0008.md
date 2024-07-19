@@ -1,7 +1,7 @@
 ---
 title: Accessing App Data Directories
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 Once you have installed the app, there is further information to explore, where tools like objection come in handy.

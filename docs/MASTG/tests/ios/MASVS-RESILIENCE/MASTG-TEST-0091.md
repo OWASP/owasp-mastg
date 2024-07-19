@@ -7,7 +7,7 @@ platform: ios
 title: Testing Reverse Engineering Tools Detection
 masvs_v1_levels:
 - R
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-AUTH
 platform: ios
-last_updated: ''
+
 ---
 
 # iOS Local Authentication

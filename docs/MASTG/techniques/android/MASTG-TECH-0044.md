@@ -1,7 +1,7 @@
 ---
 title: Process Exploration
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 When testing an app, process exploration can provide the tester with deep insights into the app process memory. It can be achieved via runtime instrumentation and allows to perform tasks such as:

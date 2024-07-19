@@ -1,7 +1,7 @@
 ---
 title: Runtime Reverse Engineering
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.

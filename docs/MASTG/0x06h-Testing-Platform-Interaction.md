@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-PLATFORM
 platform: ios
-last_updated: ''
+
 ---
 
 # iOS Platform APIs

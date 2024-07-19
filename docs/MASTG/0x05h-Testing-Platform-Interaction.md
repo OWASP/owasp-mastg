@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-PLATFORM
 platform: android
-last_updated: ''
+
 ---
 
 # Android Platform APIs

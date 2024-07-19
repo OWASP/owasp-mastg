@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-STORAGE
 platform: ios
-last_updated: ''
+
 ---
 
 # iOS Data Storage

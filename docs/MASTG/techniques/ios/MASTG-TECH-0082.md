@@ -1,7 +1,7 @@
 ---
 title: Get Loaded Native Libraries
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 ## Using Objection

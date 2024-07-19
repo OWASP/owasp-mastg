@@ -1,7 +1,7 @@
 ---
 title: Dynamic Analysis
 platform: generic
-last_updated: July 13, 2024
+
 ---
 
 Dynamic Analysis tests the mobile app by executing and running the app binary and analyzing its workflows for vulnerabilities. For example, vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:

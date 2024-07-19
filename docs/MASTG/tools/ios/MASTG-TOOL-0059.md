@@ -2,7 +2,7 @@
 title: optool
 platform: ios
 source: https://github.com/alexzielenski/optool
-last_updated: July 13, 2024
+
 ---
 
 [optool](https://github.com/alexzielenski/optool) is a tool which interfaces with MachO binaries in order to insert/remove load commands, strip code signatures, resign, and remove aslr.

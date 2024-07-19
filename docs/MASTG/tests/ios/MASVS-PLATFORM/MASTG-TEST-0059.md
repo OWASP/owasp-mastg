@@ -7,7 +7,7 @@ platform: ios
 title: Testing Auto-Generated Screenshots for Sensitive Information
 masvs_v1_levels:
 - L2
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

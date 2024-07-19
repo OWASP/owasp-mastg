@@ -1,7 +1,7 @@
 ---
 title: Library Injection
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 If you want to use Frida on non-jailbroken devices you'll need to include `FridaGadget.dylib`. Download it first:

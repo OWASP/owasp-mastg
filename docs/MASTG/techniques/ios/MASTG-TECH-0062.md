@@ -1,7 +1,7 @@
 ---
 title: Basic Network Monitoring/Sniffing
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have #MASTG-TOOL-0081 installed on your macOS host computer.

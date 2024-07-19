@@ -1,7 +1,7 @@
 ---
 title: Accessing App Data Directories
 platform: ios
-last_updated: July 13, 2024
+
 ---
 
 Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:

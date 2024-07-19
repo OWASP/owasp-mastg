@@ -1,7 +1,7 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: all
-last_updated: ''
+
 ---
 
 # Mobile App Network Communication

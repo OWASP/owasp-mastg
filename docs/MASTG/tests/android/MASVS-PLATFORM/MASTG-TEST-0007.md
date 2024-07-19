@@ -8,7 +8,7 @@ title: Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechan
 masvs_v1_levels:
 - L1
 - L2
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 title: Taint Analysis
 platform: android
-last_updated: July 13, 2024
+
 ---
 
 Taint analysis is an information flow analysis technique that tracks the flow of sensitive information within a program. For example, it can determine whether geolocation data collected in an Android app is being transmitted to third-party domains.

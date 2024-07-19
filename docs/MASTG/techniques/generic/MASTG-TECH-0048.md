@@ -1,7 +1,7 @@
 ---
 title: Static Analysis
 platform: generic
-last_updated: July 13, 2024
+
 ---
 
 For white-box source code testing, you'll need a setup similar to the developer's setup, including a test environment that includes the Android SDK and an IDE. Access to either a physical device or an emulator (for debugging the app) is recommended.

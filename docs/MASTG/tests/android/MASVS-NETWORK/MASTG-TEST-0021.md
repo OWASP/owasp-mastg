@@ -8,7 +8,7 @@ title: Testing Endpoint Identify Verification
 masvs_v1_levels:
 - L1
 - L2
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

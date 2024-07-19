@@ -7,7 +7,7 @@ platform: ios
 title: Testing Jailbreak Detection
 masvs_v1_levels:
 - R
-last_updated: July 13, 2024
+
 ---
 
 ## Overview

@@ -2,7 +2,7 @@
 title: APKiD
 platform: android
 source: https://github.com/rednaga/APKiD
-last_updated: July 13, 2024
+
 ---
 
 [APKiD](https://github.com/rednaga/APKiD) gives you information about how an APK was made. It identifies many compilers, packers, obfuscators, and other weird stuff.

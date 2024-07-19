@@ -7,7 +7,7 @@ platform: ios
 title: Making Sure that the App Is Properly Signed
 masvs_v1_levels:
 - R
-last_updated: July 13, 2024
+
 ---
 
 ## Overview
