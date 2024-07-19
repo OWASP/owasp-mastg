@@ -4,16 +4,16 @@ platform: android
 source: https://github.com/WithSecureLabs/drozer
 ---
 
-[drozer](https://github.com/WithSecureLabs/drozer "drozer on GitHub") a security testing framework for Android. that allows you to search for security vulnerabilities in apps and devices by assuming the role of an app interacting with Android Runtime, other apps' IPC endpoints, and the underlying OS.
+[drozer](https://github.com/WithSecureLabs/drozer "drozer on GitHub") is a security testing framework for Android that allows you to search for security vulnerabilities in apps and devices by assuming the role of an app interacting with the Android Runtime, other apps' IPC endpoints, and the underlying OS.
 
-drozer helps to reduce the time taken for Android security assessments by automating tedious and time-consuming tasks. It allows testers and reverse-engineers to:
+drozer can be used during Android security assessments to automate tasks. It allows testers and reverse-engineers to:
 
 - Discover and interact with the attack surface exposed by Android apps.
 - Execute dynamic Java-code on a device, to avoid the need to compile and install small test scripts.
 
-drozer runs both in Android emulators and on real devices. It does not require USB debugging or other development features to be enabled; so you can perform assessments on devices in their production state to get better results.
+drozer runs both in Android emulators and on real devices. It does not require USB debugging or other development features to be enabled; so you can perform assessments on devices in their production state to simulate attacks.
 
-You can easily extend drozer with additional modules to find, test and exploit other weaknesses; this, combined with scripting possibilities, helps to automate regression testing for security issues.
+You can extend drozer with additional modules to find, test and exploit other weaknesses; this, combined with scripting possibilities, helps to automate regression testing for security issues.
 
 ## Installing drozer
 
@@ -103,7 +103,7 @@ Selecting ebe9fcc0c47b28da (Google sdk_gphone64_x86_64 12)
 drozer Console (v3.0.0)
 dz>
 ```
-The prompt confirms the Android ID of the device you have connected to, along with the manufacturer, model and Android software version.
+The prompt confirms the Android ID of the device you have connected to, along with the manufacturer, model and Android OS version.
 
 ### Example usage
 
@@ -135,7 +135,7 @@ In order to launch an exported activity, use the following command:
 run app.activity.start --component <package> <component name>
 ```
 
-When calling `app.activity.start`, you can build a much more complex intent. As with all drozer modules, you can request more usage information:
+When calling `app.activity.start`, you can build a much more complex intent. As with all drozer modules, you can request more usage information by using the command `help`:
 
 ```
 dz> help app.activity.start
@@ -143,7 +143,7 @@ Attempting to run shell module
 usage: run app.activity.start [-h] [--action ACTION] [--category CATEGORY [CATEGORY ...]] [--component PACKAGE COMPONENT] [--data-uri DATA_URI] [--extra TYPE KEY VALUE] [--flags FLAGS [FLAGS ...]] [--mimetype MIMETYPE]
 ```
 
-You can learn more about how intents are created by running `help intents`
+You can learn more about how intents are created by running `help intents`.
 
 #### Further information
 
@@ -155,4 +155,4 @@ Other resources where you might find useful information are:
 
 - [Official drozer User Manual](https://labs.withsecure.com/tools/drozer "drozer User Manual")
 - [drozer GitHub page](https://github.com/WithSecureLabs/drozer "GitHub repo - drozer")
-- [drozer Agent GitHub page](https://github.com/WithSecureLabs/drozer "GitHub repo - drozer-agent")
+- [drozer Agent GitHub page](https://github.com/WithSecureLabs/drozer-agent "GitHub repo - drozer-agent")
