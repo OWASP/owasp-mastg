@@ -19,6 +19,5 @@ draft:
   - Check for MITM resiliency, e.g. with trusted interceptor cert. consider "proxy
     unaware apps"
 status: draft
-
 ---
 

@@ -7,7 +7,6 @@ platform: ios
 title: Testing Custom Certificate Stores and Certificate Pinning
 masvs_v1_levels:
 - L2
-
 ---
 
 ## Overview

@@ -18,6 +18,5 @@ draft:
   - is not enforced only locally but server-side
   - check if relies on static responses from the remote endpoint such as `"message":"Success"`
 status: draft
-
 ---
 

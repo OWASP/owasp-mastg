@@ -16,6 +16,5 @@ draft:
     may expose cryptographic vulnerabilities, affecting data integrity.
   topics: null
 status: draft
-
 ---
 

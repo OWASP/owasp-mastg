@@ -17,6 +17,5 @@ draft:
     keychain items when a fingerprint is added or removed. See kSecAccessControlTouchIDCurrentSet,
     biometryCurrentSet.
 status: draft
-
 ---
 

@@ -2,7 +2,6 @@
 title: Cydia
 platform: ios
 source: https://cydia.saurik.com/
-
 ---
 
 Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.

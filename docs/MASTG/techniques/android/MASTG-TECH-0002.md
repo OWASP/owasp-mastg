@@ -1,7 +1,6 @@
 ---
 title: Host-Device Data Transfer
 platform: android
-
 ---
 
 ## Using adb

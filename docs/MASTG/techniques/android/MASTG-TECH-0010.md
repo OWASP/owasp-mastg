@@ -1,7 +1,6 @@
 ---
 title: Basic Network Monitoring/Sniffing
 platform: android
-
 ---
 
 [Remotely sniffing all Android traffic in real-time is possible](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark") with #MASTG-TOOL-0080, netcat (nc), and #MASTG-TOOL-0081. First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):

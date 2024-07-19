@@ -1,7 +1,6 @@
 ---
 title: Automated Static Analysis
 platform: ios
-
 ---
 
 Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools #MASTG-TOOL-0035 and #MASTG-TOOL-0038 have some static and dynamic analysis functionality. Additional tools are on the ["Testing Tools"](../../tools/index.md) page.

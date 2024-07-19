@@ -12,6 +12,5 @@ draft:
   topics:
   - prevent decompilation
 status: draft
-
 ---
 

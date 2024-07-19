@@ -7,7 +7,6 @@ platform: android
 title: Testing Runtime Integrity Checks
 masvs_v1_levels:
 - R
-
 ---
 
 ## Effectiveness Assessment

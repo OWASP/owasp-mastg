@@ -7,7 +7,6 @@ platform: android
 title: Testing Emulator Detection
 masvs_v1_levels:
 - R
-
 ---
 
 ## Bypassing Emulator Detection

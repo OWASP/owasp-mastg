@@ -8,7 +8,6 @@ title: Determining Whether the Keyboard Cache Is Disabled for Text Input Fields
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

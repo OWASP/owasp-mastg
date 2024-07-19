@@ -8,7 +8,6 @@ title: Determining Whether Sensitive Data Is Exposed via IPC Mechanisms
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

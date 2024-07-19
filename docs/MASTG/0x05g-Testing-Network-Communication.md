@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: android
-
 ---
 
 # Android Network Communication

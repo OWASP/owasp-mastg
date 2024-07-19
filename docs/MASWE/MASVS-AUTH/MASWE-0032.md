@@ -31,6 +31,5 @@ draft:
     if you need to log into a third-party service, use ASWebAuthenticationSession
     instead
 status: draft
-
 ---
 

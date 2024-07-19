@@ -8,7 +8,6 @@ title: Testing the TLS Settings
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

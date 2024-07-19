@@ -17,6 +17,5 @@ draft:
     context should be avoided to ensure the integrity and authenticity of the data.
   topics: null
 status: draft
-
 ---
 

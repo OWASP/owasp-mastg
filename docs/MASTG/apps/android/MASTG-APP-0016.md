@@ -2,7 +2,6 @@
 title: Finstergram
 platform: android
 source: https://github.com/netlight/finstergram
-
 ---
 
 Finstergram is an Android application designed with built-in security vulnerabilities to facilitate learning and teaching about common security issues in Android apps. To get started, simply open and build the project in your preferred version of Android Studio.

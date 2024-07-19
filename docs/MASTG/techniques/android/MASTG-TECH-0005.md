@@ -1,7 +1,6 @@
 ---
 title: Installing Apps
 platform: android
-
 ---
 
 ## Basic APK Installation

@@ -2,7 +2,6 @@
 title: mitmproxy
 platform: network
 source: https://github.com/mitmproxy/mitmproxy/
-
 ---
 
 [mitmproxy](https://mitmproxy.org/ "mitmproxy") is a free and open source interactive HTTPS intercepting proxy.

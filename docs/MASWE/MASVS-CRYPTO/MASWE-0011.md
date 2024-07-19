@@ -16,6 +16,5 @@ draft:
   topics:
   - long-lived keys (cryptoperiods as per NIST.SP.800-57pt1r5)
 status: draft
-
 ---
 

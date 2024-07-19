@@ -8,7 +8,6 @@ title: Testing Data Encryption on the Network
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

@@ -7,7 +7,6 @@ platform: android
 title: Testing whether the App is Debuggable
 masvs_v1_levels:
 - R
-
 ---
 
 ## Overview

@@ -8,7 +8,6 @@ title: Testing Custom URL Schemes
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

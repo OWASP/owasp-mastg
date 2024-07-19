@@ -20,6 +20,5 @@ draft:
     (DEK+KEK) (considered "equivalent protection")
   - Key Wrapping (NIST.SP.800-175Br1 5.3.5)
 status: draft
-
 ---
 

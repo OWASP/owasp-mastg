@@ -2,7 +2,6 @@
 title: MobSF for Android
 platform: android
 source: https://github.com/MobSF/Mobile-Security-Framework-MobSF
-
 ---
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.

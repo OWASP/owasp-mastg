@@ -8,7 +8,6 @@ title: Testing the Purposes of Keys
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

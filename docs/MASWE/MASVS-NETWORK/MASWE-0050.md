@@ -30,6 +30,5 @@ draft:
   - Watch Communications
   - Peer-to-peer communications (e.g. WiFi-direct, Nearby)
 status: draft
-
 ---
 

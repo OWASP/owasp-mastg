@@ -7,7 +7,6 @@ platform: ios
 title: Testing for Debugging Code and Verbose Error Logging
 masvs_v1_levels:
 - R
-
 ---
 
 ## Overview

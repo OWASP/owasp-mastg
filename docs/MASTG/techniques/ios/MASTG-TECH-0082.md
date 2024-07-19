@@ -1,7 +1,6 @@
 ---
 title: Get Loaded Native Libraries
 platform: ios
-
 ---
 
 ## Using Objection

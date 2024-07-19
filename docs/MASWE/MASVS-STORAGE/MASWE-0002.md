@@ -17,6 +17,5 @@ draft:
   topics:
   - File permissions (Android)
 status: draft
-
 ---
 

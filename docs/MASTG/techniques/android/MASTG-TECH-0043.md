@@ -1,7 +1,6 @@
 ---
 title: Method Hooking
 platform: android
-
 ---
 
 ## Xposed

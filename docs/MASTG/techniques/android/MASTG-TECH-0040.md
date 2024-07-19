@@ -1,7 +1,6 @@
 ---
 title: Waiting for the Debugger
 platform: android
-
 ---
 
 The #MASTG-APP-0003 is not stupid: it notices that it has been run in debuggable mode and reacts by shutting down. A modal dialog is shown immediately, and the crackme terminates once you tap "OK".

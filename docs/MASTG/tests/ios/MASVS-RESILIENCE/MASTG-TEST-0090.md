@@ -8,7 +8,6 @@ platform: ios
 title: Testing File Integrity Checks
 masvs_v1_levels:
 - R
-
 ---
 
 ## Overview

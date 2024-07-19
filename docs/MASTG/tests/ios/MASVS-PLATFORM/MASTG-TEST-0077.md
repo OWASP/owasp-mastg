@@ -8,7 +8,6 @@ title: Testing WebView Protocol Handlers
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

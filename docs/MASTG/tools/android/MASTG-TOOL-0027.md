@@ -2,7 +2,6 @@
 title: Xposed
 platform: android
 source: https://github.com/ElderDrivers/EdXposed
-
 ---
 
 > Xposed does not work on Android 9 (API level 28). However, it was unofficially ported in 2019 under the name EdXposed, supporting Android 8-10 (API level 26 till 29). You can find the code and usage examples at [EdXposed](https://github.com/ElderDrivers/EdXposed "EdXposed") Github repo.

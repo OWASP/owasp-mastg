@@ -16,6 +16,5 @@ draft:
   topics:
   - hardcoded keys used at runtime
 status: draft
-
 ---
 

@@ -2,7 +2,6 @@
 title: InsecureShop
 platform: android
 source: https://github.com/hax0rgb/InsecureShop/
-
 ---
 
 InsecureShop is an intentionally designed Android application that showcases vulnerabilities, aiming to educate developers and security experts about common pitfalls within modern Android apps. It serves as a dynamic platform for refining Android pentesting skills.

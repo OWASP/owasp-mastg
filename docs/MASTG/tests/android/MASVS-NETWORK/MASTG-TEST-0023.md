@@ -7,7 +7,6 @@ platform: android
 title: Testing the Security Provider
 masvs_v1_levels:
 - L2
-
 ---
 
 ## Overview

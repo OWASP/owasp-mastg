@@ -8,7 +8,6 @@ title: Determining Whether Native Methods Are Exposed Through WebViews
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

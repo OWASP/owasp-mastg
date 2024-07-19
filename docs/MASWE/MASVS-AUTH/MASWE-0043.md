@@ -14,6 +14,5 @@ draft:
   - use the OS Local Auth
   - binding to keys stored in the platform KeyStore
 status: draft
-
 ---
 

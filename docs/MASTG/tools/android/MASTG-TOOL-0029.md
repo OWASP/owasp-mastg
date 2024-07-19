@@ -2,7 +2,6 @@
 title: objection for Android
 platform: android
 source: https://github.com/sensepost/objection
-
 ---
 
 Objection offers several features specific to Android. You can find the [full list of features](https://github.com/sensepost/objection/wiki/Features) on the project's page, but here are a few interesting ones:

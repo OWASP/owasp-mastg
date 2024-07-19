@@ -8,7 +8,6 @@ title: Determining Whether Sensitive Data Is Shared with Third Parties
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

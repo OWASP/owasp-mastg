@@ -12,6 +12,5 @@ draft:
   topics:
   - Using WebView.getHttpAuthUsernamePassword / WebViewClient.onReceivedHttpAuthRequest
 status: draft
-
 ---
 

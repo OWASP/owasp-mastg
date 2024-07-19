@@ -9,7 +9,6 @@ title: Verifying the Configuration of Cryptographic Standard Algorithms
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

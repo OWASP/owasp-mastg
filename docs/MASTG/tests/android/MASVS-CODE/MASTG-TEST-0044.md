@@ -8,7 +8,6 @@ title: Make Sure That Free Security Features Are Activated
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

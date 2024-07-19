@@ -18,6 +18,5 @@ draft:
   - Screenshots not deleted when backgrounding
   - Auto-Generated Screenshots
 status: draft
-
 ---
 

@@ -19,6 +19,5 @@ draft:
   - use of SharedWebcredentials
   - use of WebAuthn/ASAuthorization
 status: draft
-
 ---
 

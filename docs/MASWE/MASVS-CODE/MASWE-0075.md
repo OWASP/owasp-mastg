@@ -20,6 +20,5 @@ draft:
   - AppUpdateManager on Android
   - itunes check on app version on iOS
 status: draft
-
 ---
 

@@ -28,6 +28,5 @@ draft:
   - set prefersEphemeralWebBrowserSession to true before calling start for a session
     on iOS
 status: draft
-
 ---
 

@@ -2,7 +2,6 @@
 title: House
 platform: android
 source: https://github.com/nccgroup/house
-
 ---
 
 [House](https://github.com/nccgroup/house "House") is a runtime mobile application analysis toolkit for Android apps, developed and maintained by the NCC Group and is written in Python.

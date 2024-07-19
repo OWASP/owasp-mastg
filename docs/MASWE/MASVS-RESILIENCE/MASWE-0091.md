@@ -13,6 +13,5 @@ draft:
   topics:
   - anti-deobfuscation techniques
 status: draft
-
 ---
 

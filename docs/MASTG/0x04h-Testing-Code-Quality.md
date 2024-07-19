@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-CODE
 platform: all
-
 ---
 
 # Mobile App Code Quality

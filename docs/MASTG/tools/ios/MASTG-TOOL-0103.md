@@ -6,7 +6,6 @@ host:
 - windows
 - linux
 - macOS
-
 ---
 
 IPSW calls itself an "iOS/macOS Research Swiss Army Knife". In general, IPSW allows you to obtain iOS specific files (IPSW, OTA, ...) and also statically analyze them. For application analysis, the most interesting features are the Objective-C and Swift class-dumps. Other features are available (kernelcache parser, device-tree parser, disassembler, etc) but are only useful if you're analyzing the security of the OS itself.

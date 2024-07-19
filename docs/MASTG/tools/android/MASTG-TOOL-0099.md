@@ -2,7 +2,6 @@
 title: FlowDroid
 platform: android
 source: https://github.com/secure-software-engineering/FlowDroid
-
 ---
 
 [FlowDroid](https://github.com/secure-software-engineering/FlowDroid) is an open-source tool based in [soot](https://github.com/soot-oss/soot "soot"), a framework dedicated to analyzing and translating Java bytecode for easier analysis. The tool handles the nuances of Android app lifecycles (like `onCreate`, `onStart`, `onPause`, and others) and its UI components during analysis and performs taint analysis that is:

@@ -13,6 +13,5 @@ draft:
   topics:
   - NotificationListenerService
 status: draft
-
 ---
 

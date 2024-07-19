@@ -8,7 +8,6 @@ title: Checking for Weaknesses in Third Party Libraries
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

@@ -7,7 +7,6 @@ platform: android
 title: Testing Memory for Sensitive Data
 masvs_v1_levels:
 - L2
-
 ---
 
 ## Overview

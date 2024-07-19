@@ -22,6 +22,5 @@ draft:
   - Weak encryption modes (e.g. ECB, etc.)
   - Cipher.getInstance("AES") defaults to ECB (Android)
 status: draft
-
 ---
 

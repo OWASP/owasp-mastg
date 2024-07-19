@@ -1,7 +1,6 @@
 ---
 title: Emulation-based Analysis
 platform: ios
-
 ---
 
 ## iOS Simulator

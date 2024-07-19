@@ -8,7 +8,6 @@ platform: ios
 title: Testing Local Authentication
 masvs_v1_levels:
 - L2
-
 ---
 
 ## Overview

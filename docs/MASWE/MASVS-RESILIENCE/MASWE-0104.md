@@ -25,6 +25,5 @@ draft:
   - Effectiveness Assessment (e.g. bypassing the detection)
   note: consider Static Code Modification? / Repackaging Detection Not Implemented
 status: draft
-
 ---
 

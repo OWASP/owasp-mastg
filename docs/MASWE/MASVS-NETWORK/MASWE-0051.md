@@ -16,6 +16,5 @@ draft:
   - no loopback
   - no binding to INADDR_ANY
 status: draft
-
 ---
 

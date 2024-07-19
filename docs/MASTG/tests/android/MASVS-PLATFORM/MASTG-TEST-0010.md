@@ -7,7 +7,6 @@ platform: android
 title: Finding Sensitive Information in Auto-Generated Screenshots
 masvs_v1_levels:
 - L2
-
 ---
 
 ## Overview

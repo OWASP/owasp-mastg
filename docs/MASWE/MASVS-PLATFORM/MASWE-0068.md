@@ -15,6 +15,5 @@ draft:
   topics:
   - addJavascriptInterface
 status: draft
-
 ---
 

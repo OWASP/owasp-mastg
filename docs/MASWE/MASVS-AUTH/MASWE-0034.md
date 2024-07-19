@@ -12,6 +12,5 @@ draft:
   topics:
   - Confirm Credentials
 status: draft
-
 ---
 

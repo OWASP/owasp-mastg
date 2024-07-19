@@ -1,7 +1,6 @@
 ---
 title: Setting Up an Interception Proxy
 platform: android
-
 ---
 
 Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; #MASTG-TOOL-0079 and #MASTG-TOOL-0077 are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.

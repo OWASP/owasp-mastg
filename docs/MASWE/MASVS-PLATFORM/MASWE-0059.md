@@ -13,6 +13,5 @@ draft:
   - (ab)using the clipboard
   - using localhost server
 status: draft
-
 ---
 

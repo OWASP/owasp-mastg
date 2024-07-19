@@ -7,7 +7,6 @@ platform: ios
 title: Testing Emulator Detection
 masvs_v1_levels:
 - R
-
 ---
 
 ## Overview

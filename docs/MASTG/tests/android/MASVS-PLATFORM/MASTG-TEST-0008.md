@@ -8,7 +8,6 @@ title: Checking for Sensitive Data Disclosure Through the User Interface
 masvs_v1_levels:
 - L1
 - L2
-
 ---
 
 ## Overview

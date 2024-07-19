@@ -7,7 +7,6 @@ platform: android
 title: Testing Obfuscation
 masvs_v1_levels:
 - R
-
 ---
 
 ## Overview

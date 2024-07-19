@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-RESILIENCE
 platform: ios
-
 ---
 
 # iOS Anti-Reversing Defenses

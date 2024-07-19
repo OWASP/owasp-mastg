@@ -7,7 +7,6 @@ platform: android
 title: Making Sure that the App is Properly Signed
 masvs_v1_levels:
 - R
-
 ---
 
 ## Overview
