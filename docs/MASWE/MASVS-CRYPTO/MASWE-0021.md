@@ -17,5 +17,6 @@ draft:
   topics:
   - Weak hashing algorithms (e.g. MD5, SHA1, etc.)
 status: draft
+
 ---
 

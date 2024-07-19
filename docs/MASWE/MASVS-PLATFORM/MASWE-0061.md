@@ -14,5 +14,6 @@ draft:
   - restricting use of certain extensions via `application:shouldAllowExtensionPointIdentifier:`
   - Third-Party Keyboards Not Disabled via UIApplicationKeyboardExtensionPointIdentifier
 status: draft
+
 ---
 

@@ -18,5 +18,6 @@ draft:
     and authorization controls should be implemented on the server-side.
   - biometry only used as part of MFA authentication and not as the only auth method
 status: draft
+
 ---
 
