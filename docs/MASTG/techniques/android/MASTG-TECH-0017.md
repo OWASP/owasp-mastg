@@ -14,7 +14,7 @@ Android decompilers go one step further and attempt to convert Android bytecode 
 
 - [JD](http://java-decompiler.github.io/ "JD")
 - [JAD](http://www.javadecompilers.com/jad "JAD")
-- [jadx](https://github.com/skylot/jadx "jadx")
+- #MASTG-TOOL-0018
 - [Procyon](https://github.com/mstrobel/procyon "Procyon")
 - [CFR](https://www.benf.org/other/cfr/ "CFR")
 
@@ -50,4 +50,4 @@ You'll end up with a structure that resembles the original Android Studio projec
 
 <img src="/Images/Chapters/0x05c/final_structure.jpg" width="400px" />
 
-See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.
+See the section #MASTG-TECH-0023 to learn on how to proceed when inspecting the decompiled Java code.
