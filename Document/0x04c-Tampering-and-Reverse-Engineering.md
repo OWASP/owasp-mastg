@@ -165,7 +165,7 @@ QEMU based emulators for Android take into consideration the RAM, CPU, battery p
 
 In simple words, an emulator is a much closer imitation of the targeted platform, while a simulator mimics only a part of it.
 
-Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, because no free or open source emulator exists for iOS (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). The only iOS emulator available is a commercial SaaS solution - [Corellium](../techniques/ios/MASTG-TECH-0088.md#corellium).
+Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, because no free or open source emulator exists for iOS (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). The only iOS emulator available is a commercial SaaS solution. For more information, see the [Corellium tools page](../tools/MASTG-TOOL-0105.md).
 
 ### Custom Tooling with Reverse Engineering Frameworks
 
