@@ -69,7 +69,7 @@ Unlike the Android emulator, which fully emulates the hardware of an actual Andr
 
 ### Testing on an Emulator
 
-[Corellium](../tools/MASTG-TOOL-0105.md) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
+[Corellium](../tools/MASTG-TOOL-0105.md) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model that does not offer community licenses.
 
 ### Getting Privileged Access
 
