@@ -4,28 +4,43 @@ platform: generic
 source: https://corellium.com
 ---
 
-Corellium is an iOS and Android device virtualization platform that provides a various tools for security researchers, developers, and testers. It allows users to create and manage virtual devices, perform dynamic analysis, and test applications in a controlled environment.
+Corellium is an iOS and Android device virtualization platform that allows users to create and manage virtual devices, perform dynamic analysis, and test applications in a controlled environment.
 
 ## Overview
 
-Corellium offers a cloud-based solution that enables users to run virtualized iOS and Android devices. These virtual devices can be used for various purposes, including security testing, app development, and research. Corellium provides a web-based interface for managing virtual devices, as well as APIs for automation and integration with other tools.
+Corellium offers a cloud-based solution that enables users to run virtualized iOS and Android devices. These virtual devices can be used for various purposes, including security testing, app development, and research. Corellium provides a web-based interface for managing the virtual devices, as well as APIs for automation and integration with other tools.
 
-## Benefits
+## iOS emulation
 
-1. **Scalability**: Corellium allows users to create multiple virtual devices, making it easy to scale testing efforts.
-2. **Accessibility**: The cloud-based platform can be accessed from anywhere, enabling remote collaboration and testing.
-3. **Isolation**: Virtual devices run in isolated environments, reducing the risk of affecting real devices or networks.
-4. **Flexibility**: Corellium supports a wide range of iOS and Android versions, allowing users to test applications on different OS versions and configurations.
-5. **Advanced Features**: Corellium provides advanced features such as kernel debugging, dynamic instrumentation, and network analysis.
+Corellium is the only available commercial option for iOS emulation. It is possible to launch all types of iOS devices with any supported iOS version. Each device can be jailbroken from the start, so even recent versions of iOS can be used to analyze applications.
 
-## Limitations
+Through the GUI, Corellium provides multiple features that are interesting for security testing:
 
-1. **Cost**: Corellium is a commercial solution with a subscription-based pricing model, which may be expensive for some users.
-2. **Availability**: Corellium is primarily targeted at enterprise users and may not be accessible to individual researchers or small teams.
-3. **Learning Curve**: The platform offers a wide range of features, which may require some time to learn and master.
+* Built-in file browser
+* Built-in Frida server
+* App overview and IPA installer
+* Certificate-pinning bypass (may not always work)
+* Snapshot management
 
-## Use Cases
+While Corellium has some very powerfull tools to analyze both applications and iOS itself, it does have a few important limitations:
 
-1. **Security Testing**: Corellium is widely used by security researchers to identify vulnerabilities in iOS and Android applications. The platform's advanced features, such as kernel debugging and dynamic instrumentation, make it a powerful tool for in-depth security analysis.
-2. **App Development**: Developers can use Corellium to test their applications on different OS versions and configurations, ensuring compatibility and performance across a wide range of devices.
-3. **Research**: Corellium provides a controlled environment for conducting research on mobile operating systems and applications. Researchers can use the platform to study malware, analyze system behavior, and develop new security techniques.
+* **No App Store**: The devices do not have the App Store, which means you cannot use a Corellium device to obtain a decrypted version of an IPA file.
+* **No Apple Services**: Access to Apple services (including iMessage and push notifications) is unavailable.
+* **No Camera / Cellular / NFC / Bluetooth**: Apps running on Corellium do not have access to these peripherals.
+
+## Android emulation
+
+Android images are available in both the `user` and `userdebug` configuration and all images are rooted by default. Google Play and other Google Services are not installed by default, but Corellium does allow you to install them via an OpenGApps package.
+
+Through the GUI, Corellium provides multiple features that are interesting for security testing:
+
+* Built-in file browser
+* Built-in Frida server
+* App overview and IPA installer
+* Certificate-pinning bypass (may not always work)
+* Snapshot management
+
+However, some features are not supported:
+
+* **TrustZone**: It is not possible to access a Keymaster, or use PlayReady or WideFine.
+* **SELinux in Permissive mode**: SELinux is set to permissive mode, which may be detected by applications. This is typically not the case for physical devices rooted with Magisk or KernelSU.
