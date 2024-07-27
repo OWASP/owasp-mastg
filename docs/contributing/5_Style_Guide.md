@@ -6,8 +6,7 @@ The following rules are meant to ensure consistency of the MASTG:
 2. Refrain from advertising commercial tools or services;
 3. When giving technical instructions, address the reader in the second person.
 
-
-!!! tip ""
+!!! tip "Technical Writing"
     
     We recommend you to take these free Google courses when writing or reviewing content for the MAS project:
 
@@ -20,11 +19,11 @@ The following rules are meant to ensure consistency of the MASTG:
 
 The primary measure for amount of content on a page should be based on the purpose it serves.
 
-- Use short pages
+#### Use short pages
 
 Those containing one or two screens of text at most. Users are scanning for link choices. Use longer pages (those that require more scrolling or reading) deeper within the chapter where content can be printed and read later.
 
-- For very large sections of information
+#### For very large sections of information
 
 Consider creating a supporting document and linking to it from the page rather than displaying all the information directly on the page.
 
@@ -384,7 +383,7 @@ This produces the following result:
 public static void main(String[] args) { System.out.println(" Hello World!"); } }
 ```
 
-When including shell commands, make sure to the language for correct syntax highlighting (e.g. `shell` or `bash`) and remove any host names and usernames from the command prompt, e.g.:
+When including shell commands, make sure to use the correct language for syntax highlighting (e.g. `shell` or `bash`) and remove any host names and usernames from the command prompt, e.g.:
 
 ```markdown
     ```shell

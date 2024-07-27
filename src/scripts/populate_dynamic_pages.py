@@ -7,23 +7,27 @@ import combine_data_for_checklist
 
 CHECKLIST_DICT = combine_data_for_checklist.get_checklist_dict()
 
-# checklist functions
-
 def get_platform_icon(platform):
     if platform == "android":
-        return '<span style="font-size: large; color: darkgrey;"> :material-android: </span>'
+        return '<span style="font-size: x-large; color: #54b259;" title="Android"> :material-android: </span><span style="display: none;">platform:android</span>'
     elif platform == "ios":
-        return '<span style="font-size: large; color: darkgrey;"> :material-apple: </span>'
-    elif platform == "general":
-        return '<span style="font-size: large; color: darkgrey;"> :material-asterisk: </span>'
+        return '<span style="font-size: x-large; color: #007aff;" title="iOS"> :material-apple: </span><span style="display: none;">platform:ios</span>'
+    elif platform == "generic":
+        return '<span style="font-size: x-large; color: darkgrey;" title="Generic"> :material-asterisk: </span><span style="display: none;">platform:generic</span>'
+    elif platform == "network":
+        return '<span style="font-size: x-large; color: #9383e2;" title="Network"> :material-web: </span><span style="display: none;">platform:network</span>'
+    else:
+        return '<span style="font-size: x-large; color: darkgrey;" title="Unknown"> :material-progress-question: </span><span style="display: none;">platform:unknown</span>'
 
 def get_level_icon(level, value):
     if level == "L1" and value == True:
-        return '<span class="mas-dot-blue"></span>'
+        return '<span class="mas-dot-blue"></span><span style="display: none;">profile:L1</span>'
     elif level == "L2" and value == True:
-        return '<span class="mas-dot-green"></span>'
+        return '<span class="mas-dot-green"></span><span style="display: none;">profile:L2</span>'
     elif level == "R" and value == True:
-        return '<span class="mas-dot-orange"></span>'
+        return '<span class="mas-dot-orange"></span><span style="display: none;">profile:R</span>'
+    elif level == "P" and value == True:
+        return '<span class="mas-dot-purple"></span><span style="display: none;">profile:P</span>'
 
 def set_icons_for_web(checklist):
     for row in checklist:
@@ -63,111 +67,148 @@ def get_mastg_components_dict(name):
                     content = f.read()
         
                     frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-                    # is is the basename of the file without the extension
-                    id = os.path.splitext(os.path.basename(file))[0]
-                    if "-TEST" in id:
-                        masvs_id = frontmatter['masvs_v2_id'][0]
-                        masvs_category = masvs_id[:masvs_id.rfind('-')]
-                        frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{masvs_category}/{id})"
-
+                    component_id = os.path.splitext(os.path.basename(file))[0]
+                    component_path = os.path.splitext(os.path.relpath(file, "docs/"))[0]
+                    frontmatter['id'] = f"[{component_id}](/{component_path})"
+                    if frontmatter.get('platform') and type(frontmatter['platform']) == list:
+                        frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     else:
-                        frontmatter['id'] = f"[{id}](/MASTG/{name.split('/')[2]}/{frontmatter['platform']}/{id})"
+                        frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
                     components.append(frontmatter)
         return components
 
 def get_all_weaknessess():
-    # weaknessess are located in the MASWE folder and all such files are called weakness.md. 
-    # We need to retrieve all of them and get their frontmatter, then return them as a list of dictionaries.
+
     weaknesses = []
-    for file in glob.glob("docs/MASWE/**/weakness.md", recursive=True):
+
+    for file in glob.glob("docs/MASWE/**/MASWE-*.md", recursive=True):
         with open(file, 'r') as f:
             content = f.read()
     
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-            # set path in frontmatter as the path from MASWE folder as is
+
             frontmatter['path'] = f"/MASWE/{os.path.splitext(os.path.relpath(file, 'docs/MASWE'))[0]}"
-            # id is a link containing the alias and this path
-            frontmatter['id'] = f"[{frontmatter['alias']}]({frontmatter['path']})"
+            weaknesses_id = frontmatter['id']            
+            frontmatter['id'] = f"[{weaknesses_id}]({frontmatter['path']})"
             frontmatter['masvs_v2_id'] = frontmatter['mappings']['masvs-v2'][0]
             frontmatter['masvs_category'] = frontmatter['masvs_v2_id'][:frontmatter['masvs_v2_id'].rfind('-')]
-
+            frontmatter['L1'] = get_level_icon('L1', "L1" in frontmatter['profiles'])
+            frontmatter['L2'] = get_level_icon('L2', "L2" in frontmatter['profiles'])
+            frontmatter['R'] = get_level_icon('R', "R" in frontmatter['profiles'])
+            frontmatter['P'] = get_level_icon('P', "P" in frontmatter['profiles'])
+            frontmatter['status'] = frontmatter.get('status', 'new')
+            status = frontmatter['status']
+            if status == 'new':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+            elif status == 'draft':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{weaknesses_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
             weaknesses.append(frontmatter)
+
     return weaknesses
+
+def get_all_tests_beta():
+
+    tests = []
+
+    for file in glob.glob("docs/MASTG/tests-beta/**/MASTG-TEST-*.md", recursive=True):
+        with open(file, 'r') as f:
+            content = f.read()
+    
+            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+
+            frontmatter['path'] = f"/MASTG/tests-beta/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/tests-beta'))[0]}"
+            test_id = frontmatter['id']            
+            frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+            
+            tests.append(frontmatter)
+    return tests
+
+def get_all_demos_beta():
+
+    demos = []
+
+    for file in glob.glob("docs/MASTG/demos/**/MASTG-DEMO-*.md", recursive=True):
+        with open(file, 'r') as f:
+            content = f.read()
+    
+            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+
+            frontmatter['path'] = f"/MASTG/demos/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/demos'))[0]}"
+            test_id = frontmatter['id']            
+            frontmatter['id'] = f"[{test_id}]({frontmatter['path']})"
+            frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+            
+            demos.append(frontmatter)
+    return demos
 
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
 
 # tests/index.md
 
-column_titles = {'id': 'ID', 'title': 'Name', 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'last_updated': 'Last Updated'} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
-
+column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'last_updated': 'Last Updated'} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
 tests = get_mastg_components_dict("docs/MASTG/tests")
-test_types = ["android", "ios"]
-for test_type in test_types:
-    append_to_file(f"## {test_type.title()} tests\n\n<br>\n\n", "docs/MASTG/tests/index.md")
-    tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests if test['platform'] == test_type]
-    for test in tests_of_type:
+tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests]
+for test in tests_of_type:
+    if test.get("masvs_v2_id"):
         test['masvs_v2_id'] = test['masvs_v2_id'][0]
-        if test.get("masvs_v1_id"):
-            test['masvs_v1_id'] = "<br>".join([f"{v1_id}" for v1_id in test['masvs_v1_id']])
-    
+    if test.get("masvs_v1_id"):
+        test['masvs_v1_id'] = "<br>".join([f"{v1_id}" for v1_id in test['masvs_v1_id']])
+append_to_file(list_of_dicts_to_md_table(tests_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests/index.md")
 
-    for group_id, checklist in CHECKLIST_DICT.items():
-        append_to_file(f"### {group_id}\n\n<br>\n\n", "docs/MASTG/tests/index.md")
+# tests-beta/index.md
 
-        tests_by_category = [test for test in tests_of_type if test['masvs_v2_id'].startswith(group_id)]
+column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type"}
 
-        # sort the dicts within tests_by_category by MASVS ID
-        tests_by_category.sort(key=lambda x: x['masvs_v2_id'])
+tests_beta = get_all_tests_beta()
+tests_beta_columns_reordered = [reorder_dict_keys(test, column_titles.keys()) for test in tests_beta]
 
-        append_to_file(list_of_dicts_to_md_table(tests_by_category, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests/index.md")
+append_to_file(list_of_dicts_to_md_table(tests_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tests-beta/index.md")
+
+# demos-beta/index.md
+
+column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'tools': "Tools"}
+
+demos_beta = get_all_demos_beta()
+demos_beta_columns_reordered = [reorder_dict_keys(demo, column_titles.keys()) for demo in demos_beta]
+
+append_to_file(list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASTG/demos/index.md")
 
 # tools/index.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'refs': 'Refs', 'techniques': 'Techniques'
 
 tools = get_mastg_components_dict("docs/MASTG/tools")
-tool_types = ["generic", "android", "ios", "network"]
-for tool_type in tool_types:
-    append_to_file(f"## {tool_type.title()} Tools\n\n<br>\n\n", "docs/MASTG/tools/index.md")
-    tools_of_type = [reorder_dict_keys(tool, column_titles.keys()) for tool in tools if tool['platform'] == tool_type]
-    append_to_file(list_of_dicts_to_md_table(tools_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tools/index.md")
+tools_of_type = [reorder_dict_keys(tool, column_titles.keys()) for tool in tools]
+append_to_file("\n" + list_of_dicts_to_md_table(tools_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/tools/index.md")
 
 # techniques/index.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'tools': 'Tools'
 
 techniques = get_mastg_components_dict("docs/MASTG/techniques")
-technique_types = ["generic", "android", "ios"]
-
-for technique_type in technique_types:
-    append_to_file(f"## {technique_type.title()} Techniques\n\n<br>\n\n", "docs/MASTG/techniques/index.md")
-    techniques_of_type = [reorder_dict_keys(technique, column_titles.keys()) for technique in techniques if technique['platform'] == technique_type]
-    append_to_file(list_of_dicts_to_md_table(techniques_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/techniques/index.md")
+techniques_of_type = [reorder_dict_keys(technique, column_titles.keys()) for technique in techniques]
+append_to_file(list_of_dicts_to_md_table(techniques_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/techniques/index.md")
 
 # apps/index.md
 
 column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"} # TODO , 'techniques': 'Used in'
 
 apps = get_mastg_components_dict("docs/MASTG/apps")
-app_types = ["android", "ios"]
+apps_of_type = [reorder_dict_keys(app, column_titles.keys()) for app in apps]
+append_to_file(list_of_dicts_to_md_table(apps_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/apps/index.md")
 
-for app_type in app_types:
-    append_to_file(f"## {app_type.title()} Apps\n\n<br>\n\n", "docs/MASTG/apps/index.md")
-    apps_of_type = [reorder_dict_keys(app, column_titles.keys()) for app in apps if app['platform'] == app_type]
-    append_to_file(list_of_dicts_to_md_table(apps_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASTG/apps/index.md")
+# weaknesses/index.md
 
-# weaknesses/overview.md
-
-column_titles = {'id': 'Alias', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'profiles': 'Profiles'}
+column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'L1': 'L1', 'L2': 'L2', 'R': 'R', 'P': 'P', 'status': 'Status'}
 
 weaknesses = get_all_weaknessess()
-masvs_categories = ["MASVS-STORAGE", "MASVS-CRYPTO", "MASVS-AUTH", "MASVS-NETWORK", "MASVS-PLATFORM", "MASVS-CODE","MASVS-RESILIENCE", "MASVS-PRIVACY"]
+weaknesses_columns_reordered = [reorder_dict_keys(weakness, column_titles.keys()) for weakness in weaknesses]
 
-for masvs_category in masvs_categories:
-    append_to_file(f"## {masvs_category}\n\n<br>\n\n", "docs/MASWE/overview.md")
-    weaknesses_of_type = [reorder_dict_keys(weakness, column_titles.keys()) for weakness in weaknesses if weakness['masvs_category'] == masvs_category]
-    append_to_file(list_of_dicts_to_md_table(weaknesses_of_type, column_titles) + "\n\n<br>\n\n", "docs/MASWE/overview.md")
+append_to_file(list_of_dicts_to_md_table(weaknesses_columns_reordered, column_titles) + "\n\n<br>\n\n", "docs/MASWE/index.md")
+
 
 # talks.md
 
@@ -194,7 +235,7 @@ warning = '''\
 !!! warning "Temporary Checklist"
     This checklist contains the **old MASVS v1 verification levels (L1, L2 and R)** which we are currently reworking into "security testing profiles". The levels were assigned according to the MASVS v1 ID that the test was previously covering and might differ in the upcoming version of the MASTG and MAS Checklist.
 
-    For the upcoming of the MASTG version we will progressively split the MASTG tests into smaller tests, the so-called "atomic tests" and assign the new MAS profiles accordingly.
+    For the upcoming of the MASTG version we will progressively split the MASTG tests into smaller tests, the so-called "atomic tests" and assign the new [MAS profiles](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing) to their respective MASWE weaknesses.
 '''
 
 os.makedirs(CHECKLISTS_DIR, exist_ok=True)
