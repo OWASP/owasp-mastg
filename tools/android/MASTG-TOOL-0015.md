@@ -17,7 +17,7 @@ You can extend drozer with additional modules to find, test and exploit other we
 
 ## Installing drozer and Setup
 
-Detailed instructions on how to install and setup the drozer console on your machine and the drozer agent on the Android phone can be found in the [drozer Github repo](https://github.com/WithSecureLabs/drozer "Installation instructions of drozer").
+Detailed instructions on how to install and set up the drozer console on your machine and the drozer agent on the Android phone can be found in the [drozer Github repo](https://github.com/WithSecureLabs/drozer "Installation instructions of drozer").
 
 ### Example usage
 
