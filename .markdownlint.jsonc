@@ -4,14 +4,15 @@
     "MD004": {"style": "dash"},                   // ul-style
     "MD007": { "indent": 4 },                     // ul-indent
     "MD013": false,                               // line-length
-    "MD024": {"allow_different_nesting": true},   // no-duplicate-header
+    "MD024": {"siblings_only": true},             // no-duplicate-header
     "MD026": {"punctuation": ".,;:"},             // no-trailing-punctuation (allows !?)
     "MD033": false,                               // no-inline-html
     "MD035": {"style": "---"},                    // hr-style
     "MD036": {"punctuation": ".,;:!。"},          // no-emphasis-as-header
     "MD041": false,                               // first-line-h1
+    "MD045": false,                               // no-alt-text
     "MD046": {"style": "fenced"} ,                // code-block-style
-    "MD049": {"style": "underscore"},              // emphasis-style
-    "MD050": {"style": "asterisk"}              // strong-style
+    "MD049": {"style": "underscore"},             // emphasis-style
+    "MD050": {"style": "asterisk"}                // strong-style
 
   }

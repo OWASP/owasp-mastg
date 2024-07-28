@@ -19,5 +19,4 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v16.0.0
         with:
           config: ".markdownlint.jsonc"
-          globs: "**/*.md"
-          ignore: "src, node_modules, Crackmes, Samples"
+
