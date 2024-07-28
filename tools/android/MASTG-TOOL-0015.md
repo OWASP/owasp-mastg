@@ -57,7 +57,7 @@ In order to launch an exported activity, use the following command:
 run app.activity.start --component <package> <component name>
 ```
 
-When calling `app.activity.start`, you can build a much more complex intent. As with all drozer modules, you can request more usage information by using the command `help`:
+When calling `app.activity.start`, you can build a much more complex intent. As with all drozer modules, you can request more usage information by using the `help` command:
 
 ```
 dz> help app.activity.start
