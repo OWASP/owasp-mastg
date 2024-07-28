@@ -23,7 +23,7 @@ Note that in order to install an IPA on Corellium devices it has to be unencrypt
 
 To use Unicorn's _full power_, we would need to implement all the necessary infrastructure which generally is readily available from the operating system, e.g. binary loader, linker and other dependencies or use another higher level frameworks such as [Qiling](https://qiling.io "Qiling") which leverages Unicorn to emulate CPU instructions, but understands the OS context. However, this is superfluous for this very localized challenge where only executing a small part of the binary will suffice.
 
-While performing manual analysis in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we determined that the function at address 0x1000080d4 is responsible for dynamically generating the secret string. As we're about to see, all the necessary code is pretty much self-contained in the binary, making this a perfect scenario to use a CPU emulator like Unicorn.
+While performing manual analysis in "[Reviewing Disassembled Native Code](MASTG-TECH-0077.md)", we determined that the function at address 0x1000080d4 is responsible for dynamically generating the secret string. As we're about to see, all the necessary code is pretty much self-contained in the binary, making this a perfect scenario to use a CPU emulator like Unicorn.
 
 <img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" width="100%" />
 

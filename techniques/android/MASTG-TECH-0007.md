@@ -3,7 +3,7 @@ title: Exploring the App Package
 platform: android
 ---
 
-Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](#obtaining-and-extracting-apps).
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](MASTG-TECH-0003.md).
 
 APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using [apktool](0x08a-Testing-Tools.md#apktool) which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
 

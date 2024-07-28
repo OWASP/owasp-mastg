@@ -9,14 +9,13 @@ You can find an introduction to binary analysis using binary analysis frameworks
 
 For Android, we used Angr's symbolic execution engine to solve a challenge. In this section, we will firstly use Unicorn to solve the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1") challenge and then we will revisit the Angr binary analysis framework to analyze the challenge but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
 
-
 ## Angr
 
 [Angr](../../tools/android/MASTG-TOOL-0030.md "angr") is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
 
 > The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case.
 
-While manually analyzing the code in the [Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string.
+While manually analyzing the code in the [Reviewing Disassembled Native Code](MASTG-TECH-0077.md "Reviewing Disassembled Native Code")" section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string.
 
 If we revisit that function, we can see that it involves multiple sub-function calls and interestingly none of these functions have any dependencies on other library calls or system calls. This is a perfect case to use Angr's concrete execution engine. Follow the steps below to solve this challenge:
 

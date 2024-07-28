@@ -49,4 +49,4 @@ You'll end up with a structure that resembles the original Android Studio projec
 
 <img src="Images/Chapters/0x05c/final_structure.jpg" width="400px" />
 
-See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.
+See the section "[Reviewing Decompiled Java Code](MASTG-TECH-0023.md "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.

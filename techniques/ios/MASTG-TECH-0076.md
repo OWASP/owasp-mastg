@@ -16,9 +16,11 @@ There are no hard written rules for performing static analysis, but there are fe
 
 ## Objective-C
 
-In addition to the techniques learned in the "[Disassembling and Decompiling](#disassembling-and-decompiling "Disassembling and Decompiling")" section, for this section you'll need some understanding of the [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime"). For instance, functions like `_objc_msgSend` or `_objc_release` are specially meaningful for the Objective-C runtime.
+To effectively review disassembled native code, it's important to have a basic understanding of the [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime"). Functions like `_objc_msgSend` and `_objc_release` are particularly significant within the Objective-C runtime.
 
-We will be using the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1"), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field.
+In addition to what you've learned in ["Disassembling Native Code"](MASTG-TECH-0068.md "Disassembling Native Code"), we will apply these concepts using the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1"). The objective of this app is to find a secret string hidden within its binary.
+
+The application features a simple home screen, allowing user interaction by inputting custom strings into the provided text field. Our goal is to reverse engineer the app to uncover the hidden secret string.
 
 <img src="Images/Chapters/0x06c/manual_reversing_app_home_screen2.png" width="400px" />
 
@@ -59,4 +61,4 @@ In our first step, we observed that the application verifies the input string on
 
 <img src="Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png" width="600px" />
 
-Now we have followed the complete flow and have all the information about the application flow. We also concluded that the hidden flag is present in a text label and in order to determine the value of the label, we need to revisit `viewDidLoad` function, and understand what is happening in the native function identified. Analysis of the native function is discussed in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")".
+Now we have followed the complete flow and have all the information about the application flow. We also concluded that the hidden flag is present in a text label and in order to determine the value of the label, we need to revisit `viewDidLoad` function, and understand what is happening in the native function identified. Analysis of the native function is discussed in "[Reviewing Disassembled Native Code](MASTG-TECH-0077.md)".
