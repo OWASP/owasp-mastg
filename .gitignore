@@ -29,3 +29,7 @@ __handlers__
 risks2/
 docs/MASWE/**/
 docs/MASWE/*.md
+package-lock.json
+package.json
+cross_references.yaml
+OWASP_MASVS.yaml
