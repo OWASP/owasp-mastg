@@ -21,8 +21,6 @@ Detailed instructions on how to install and setup the drozer console on your mac
 
 ### Example usage
 
-Refer to the [Official drozer User Manual](https://labs.withsecure.com/tools/drozer "drozer User Manual") for a more comprehensive list of guided examples.
-
 Once drozer is set up, you can use drozer to perform reconnaissance and exploitation of Android applications from the perspective of a malicious app on the device. [The drozer User Manual](https://labs.withsecure.com/tools/drozer#3 "drozer User Manual") introduces an intentionally vulnerable application - [sieve](https://github.com/WithSecureLabs/sieve "GitHub repo - sieve") - together with step-by-step exploitation instructions.
 
 Some common drozer commands include:
