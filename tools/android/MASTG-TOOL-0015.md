@@ -31,7 +31,7 @@ Some common drozer commands include:
 run app.package.list -f <keyword>
 ```
 
-This lists basic informations about any packages containing the word "<keyword>" in their bundle identifier. This includes package names, key directories used by the application, and any permissions used or defined by the application.
+This lists basic information about any packages containing the word "<keyword>" in their bundle identifier. This includes package names, key directories used by the application, and any permissions used or defined by the application.
 
 #### Enumerating the attack surface of an app
 
