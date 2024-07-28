@@ -27,7 +27,7 @@ Some common drozer commands include:
 
 #### Searching for applications on the device
 
-```
+```sh
 run app.package.list -f <keyword>
 ```
 
@@ -35,7 +35,7 @@ This lists basic information about any packages containing the word "<keyword>" 
 
 #### Enumerating the attack surface of an app
 
-```
+```sh
 run app.package.attacksurface <package>
 ```
 
@@ -43,7 +43,7 @@ This command inspects the target app's manifest and provides a report on any exp
 
 Once the attack surface has been identified, you can obtain more specific information about each component class. For example, to list  Activities, you can use the following command:
 
-```
+```sh
 run app.activity.info -a <package>
 ```
 
@@ -53,13 +53,13 @@ This lists the names of all exported Activities, together with the permissions r
 
 In order to launch an exported activity, use the following command:
 
-```
+```sh
 run app.activity.start --component <package> <component name>
 ```
 
 When calling `app.activity.start`, you can build a much more complex intent. As with all drozer modules, you can request more usage information by using the `help` command:
 
-```
+```sh
 dz> help app.activity.start
 Attempting to run shell module
 usage: run app.activity.start [-h] [--action ACTION] [--category CATEGORY [CATEGORY ...]] [--component PACKAGE COMPONENT] [--data-uri DATA_URI] [--extra TYPE KEY VALUE] [--flags FLAGS [FLAGS ...]] [--mimetype MIMETYPE]
