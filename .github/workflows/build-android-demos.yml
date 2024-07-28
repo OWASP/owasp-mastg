@@ -5,9 +5,13 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'demos/**'
   pull_request:
     branches:
       - master
+    paths:
+      - 'demos/**'
 
 jobs:
   generate-matrix:
