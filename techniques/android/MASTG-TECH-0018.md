@@ -147,7 +147,7 @@ There is a thing that is worth noticing about radare2 vs other disassemblers lik
 >
 > People that are used to [IDA](0x08a-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08a-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
-This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
+This said, please see section "[Reviewing Disassembled Native Code](MASTG-TECH-0024.md)" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
 
 ## IDA Pro
 
