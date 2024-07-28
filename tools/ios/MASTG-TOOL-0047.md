@@ -9,7 +9,6 @@ Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for ja
 Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left:
 
 - <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
-- <https://cydia.akemi.ai/>: Add "Karen's Repo" to get the AppSync package.
 - <https://build.frida.re>: Install Frida by adding the repository to Cydia.
 - <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
 - <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
