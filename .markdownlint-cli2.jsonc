@@ -3,8 +3,13 @@
         "**/*.md"
       ],
     
-      "ignores": [
-        "src, node_modules, Crackmes, Samples, .github, docs/contributing/5_Style_Guide.md"
-      ],
+    "ignores": [
+      "src",
+      "node_modules",
+      "Crackmes",
+      "Samples",
+      ".github",
+      "docs/contributing/5_Style_Guide.md"
+    ],
       "gitignore": true
 }
