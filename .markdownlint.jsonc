@@ -11,8 +11,9 @@
     "MD036": {"punctuation": ".,;:!。"},          // no-emphasis-as-header
     "MD041": false,                               // first-line-h1
     "MD045": false,                               // no-alt-text
-    "MD046": {"style": "fenced"} ,                // code-block-style
+    "MD046": false,                               // code-block-style (unsupported admonitions)
     "MD049": {"style": "underscore"},             // emphasis-style
-    "MD050": {"style": "asterisk"}                // strong-style
+    "MD050": {"style": "asterisk"},               // strong-style
+    "MD055": {"style": "leading_and_trailing"}    // table-pipe-style
 
   }
