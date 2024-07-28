@@ -128,7 +128,7 @@ Java.perform(function () {
 
 The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function implementation prints a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
 
-The [JADX decompiler](#jadx) (v1.3.3 and above) can generate Frida snippets through its graphical code browser. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md):
+The [JADX decompiler](MASTG-TOOL-0018.md) (v1.3.3 and above) can generate Frida snippets through its graphical code browser. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md):
 
 <img src="Images/Chapters/0x08a/jadx_copy_frida_snippet.png" width="100%" />
 
@@ -200,4 +200,3 @@ public void android.view.View.cancelLongPress()
 public final void android.view.View.cancelPendingInputEvents()
 ...
 ```
-
