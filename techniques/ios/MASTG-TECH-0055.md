@@ -17,6 +17,6 @@ Finally, the app needs to be installed (sideloaded) and run with debugging commu
 ios-deploy --bundle Payload/my-app.app -W -d
 ```
 
-Refer to ["Installing Apps"](#installing-apps) to learn about other installation methods. Some of them doesn't require you to have a macOS.
+Refer to ["Installing Apps"](MASTG-TECH-0056.md) to learn about other installation methods. Some of them doesn't require you to have a macOS.
 
 > This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["Repackaging and Re-Signing"](../../techniques/ios/MASTG-TECH-0092.md "Repackaging and Re-Signing").

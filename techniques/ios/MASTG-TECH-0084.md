@@ -155,7 +155,7 @@ When a binary is opened in a disassembler like Ghidra, it loads a binary by emul
 
 <img src="Images/Chapters/0x06c/debugging_ghidra_image_base_address.png" width="100%" />
 
-From our previous analysis of the [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1") in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset 0x100004520. This is our _breakpoint offset_.
+The value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset 0x100004520. This is our _breakpoint offset_.
 
 <img src="Images/Chapters/0x06c/debugging_ghidra_breakpoint.png" width="100%" />
 

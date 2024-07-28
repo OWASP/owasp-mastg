@@ -7,4 +7,4 @@ platform: android
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/ota.html "OTA Installation").
 
-Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting with Magisk").
+Learn more about [rooting your device with Magisk](/Document/0x05b-Android-Security-Testing.md#rooting-with-magisk "Rooting with Magisk").
