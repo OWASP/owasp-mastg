@@ -31,7 +31,7 @@ Hint: it is related to alcoholic beverages.
 
 ??? info "Installation"
     Open the "Device" window in Xcode and drag the IPA file into the list below "Installed Apps".
-    
+
     Note 1: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
     
     Note 2: Due to its anti-tampering mechanisms the app won't run correctly if the main executable is modified and/or re-signed.

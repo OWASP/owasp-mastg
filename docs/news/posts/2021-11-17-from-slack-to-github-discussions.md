@@ -10,8 +10,8 @@ times change, our project evolves and being able to hear you and discuss with yo
 
 `TL;DR: we deprecate Slack in favor of GitHub Discussions as our primary communication channel.`
 
-https://github.com/OWASP/owasp-mastg/discussions/
-https://github.com/OWASP/owasp-masvs/discussions/
+<https://github.com/OWASP/owasp-mastg/discussions/>
+<https://github.com/OWASP/owasp-masvs/discussions/>
 
 <!-- more -->
 
@@ -25,7 +25,7 @@ All our contributors do have a GitHub account (or should! now you have a reason 
 
 ### Separation
 
-We want to separation regarding actionable things to do (issues) and ideas/proposals (now "Ideas" Discussion). Having it all in GitHub makes it sooo much easier for us to manage, reference, etc. 
+We want to separation regarding actionable things to do (issues) and ideas/proposals (now "Ideas" Discussion). Having it all in GitHub makes it sooo much easier for us to manage, reference, etc.
 
 > Think of it this way: Discussions are for talking and GitHub Issues are for doing. This helps minimize distractions, keep teams on track, and address topics and questions clearly in a dedicated forum. Plus, you can move seamlessly between the two as well by converting an issue to a discussion and vice versa with a simple click.
 
@@ -45,4 +45,4 @@ Soon we will be able to see insights regarding the discussions. You guessed it, 
 or:
 <img src="https://user-images.githubusercontent.com/29175115/142167464-aae0badc-d662-4c51-a8dd-61da9545e32d.png" width="400" />
 
-_For this announcement we partially mapped this nice GitHub article to our project (recommended read): https://github.blog/2021-11-10-7-unique-software-collaboration-features-in-github-discussions/_
+_For this announcement we partially mapped this nice GitHub article to our project (recommended read): <https://github.blog/2021-11-10-7-unique-software-collaboration-features-in-github-discussions/>_

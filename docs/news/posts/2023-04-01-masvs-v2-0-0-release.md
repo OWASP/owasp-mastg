@@ -15,7 +15,7 @@ We are thrilled to announce the release of the new version of the [OWASP Mobile 
 
 We believe that these changes will make the OWASP MASVS v2.0.0 an even more valuable resource for developers and security practitioners alike, and we are excited to see how the industry embraces these updates.
 
-The MASVS v2.0.0 was presented at the OWASP AppSec Dublin 2023, you can watch the presentation [ ▶️ here](https://www.youtube.com/watch?v=GxcabVcCEiQ).
+The MASVS v2.0.0 was presented at the OWASP AppSec Dublin 2023, you can watch the presentation [▶️ here](https://www.youtube.com/watch?v=GxcabVcCEiQ).
 
 ### Why are there no levels in the new MASVS controls?
 
