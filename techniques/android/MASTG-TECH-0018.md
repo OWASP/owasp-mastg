@@ -87,7 +87,7 @@ To support both older and newer ARM processors, Android apps ship with multiple 
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See the section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" below to learn on how to proceed when inspecting the disassembled native code.
+Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See the section "[Reviewing Disassembled Native Code](MASTG-TECH-0024.md "Reviewing Disassembled Native Code")" below to learn on how to proceed when inspecting the disassembled native code.
 
 ## radare2
 
@@ -147,7 +147,7 @@ There is a thing that is worth noticing about radare2 vs other disassemblers lik
 >
 > People that are used to [IDA](0x08a-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08a-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
-This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
+This said, please see section "[Reviewing Disassembled Native Code](MASTG-TECH-0024.md)" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
 
 ## IDA Pro
 

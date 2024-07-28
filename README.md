@@ -28,7 +28,7 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 
 <br>
 
-## Trusted by ...
+## Trusted by
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption/).
 

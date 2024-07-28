@@ -2,7 +2,8 @@ site_name: OWASP Mobile Application Security
 repo_url: https://github.com/OWASP/owasp-mastg
 repo_name: OWASP/owasp-mastg
 # use_directory_urls: false # only set for mkdocs build
-edit_uri: "" # disable edit button
+editor_url_mastg: "https://github.com/OWASP/owasp-mastg/edit/master/"
+editor_url_masvs: "https://github.com/OWASP/owasp-masvs/edit/master/"
 
 nav:
   - Home: index.md
@@ -251,6 +252,7 @@ theme:
     - navigation.tracking
     - navigation.indexes
     - content.code.copy
+    - content.action.edit
 
   palette:
     # - primary: #499FFF 
@@ -321,6 +323,7 @@ hooks:
   - docs/hooks/maswe-beta-banner.py
   - docs/hooks/add-tags.py
   - docs/hooks/add-cross-references.py
+  - docs/hooks/edit_button_uri.py
 
 extra:
   generator: false # removed but recreated in copyright above

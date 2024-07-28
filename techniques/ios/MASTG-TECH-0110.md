@@ -19,23 +19,23 @@ There are generally two approaches to this: **reFlutter** and **Frida**.
 
 1. Patch the app to enable traffic interception.
 
-Run the command to patch the app and select the option **Traffic monitoring and interception** and then enter the IP of the machine on which the interception proxy is running.
+    Run the command to patch the app and select the option **Traffic monitoring and interception** and then enter the IP of the machine on which the interception proxy is running.
 
-```plaintext
-$ reflutter demo.ipa
+    ```plaintext
+    $ reflutter demo.ipa
 
-Choose an option:
+    Choose an option:
 
-    Traffic monitoring and interception
-    Display absolute code offset for functions
+        Traffic monitoring and interception
+        Display absolute code offset for functions
 
-[1/2]? 1
+    [1/2]? 1
 
-Example: (192.168.1.154) etc.
-Please enter your BurpSuite IP: 192.168.29.216
-```
+    Example: (192.168.1.154) etc.
+    Please enter your BurpSuite IP: 192.168.29.216
+    ```
 
-This will create a **release.RE.ipa** file in the output folder.
+    This will create a **release.RE.ipa** file in the output folder.
 
 2. [Sign](../../techniques/ios/MASTG-TECH-0092.md) the patched **release.RE.ipa** with the Apple certificates. This will create a signed ".ipa" file in the output folder.
 
@@ -43,10 +43,10 @@ This will create a **release.RE.ipa** file in the output folder.
 
 4. Configure the interception proxy. For example, in Burp:
 
-- Under Proxy -> Proxy settings -> Add new Proxy setting.
-- Bind listening Port to `8083`.
-- Select `Bind to address` to `All interfaces`.
-- Request Handling -> support for invisible proxying.
+   - Under Proxy -> Proxy settings -> Add new Proxy setting.
+   - Bind listening Port to `8083`.
+   - Select `Bind to address` to `All interfaces`.
+   - Request Handling -> support for invisible proxying.
 
 5. Open the app and start intercepting traffic.
 
@@ -58,15 +58,15 @@ This will create a **release.RE.ipa** file in the output folder.
 
 3. Configure the interception proxy. For example, in Burp:
 
-- Under Proxy -> Proxy settings -> Add new Proxy setting.
-- Bind listening Port to `8080`.
-- Select `Bind to address` to `All interfaces`.
-- Request Handling -> support for invisible proxying.
+   - Under Proxy -> Proxy settings -> Add new Proxy setting.
+   - Bind listening Port to `8080`.
+   - Select `Bind to address` to `All interfaces`.
+   - Request Handling -> support for invisible proxying.
 
 4. Run the [disable-flutter-tls.js](../../tools/generic/MASTG-TOOL-0101.md) frida script.
 
-```bash
-frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
-```
+    ```bash
+    frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
+    ```
 
 5. Start intercepting traffic.
