@@ -3,7 +3,7 @@ title: Logging Sensitive Data from Network Traffic
 platform: android
 ---
 
-[mitmproxy](MASTG-TOOL-0097) can be used to intercept network traffic from Android apps. This technique is useful for identifying sensitive data that is sent over the network, as well as for identifying potential security vulnerabilities.
+[mitmproxy](../../tools/network/MASTG-TOOL-0097.md) can be used to intercept network traffic from Android apps. This technique is useful for identifying sensitive data that is sent over the network, as well as for identifying potential security vulnerabilities.
 
 Once with mitmproxy installed and your device configured to use it, you can create a python script to filter the traffic and extract the sensitive data. For example, the following script will extract all the data sent in the requests and responses only if the data is considered sensitive. For this example we consider sensitive data to be any data that contains the strings "dummyPassword" or "sampleUser", so we include them in the `SENSITIVE_STRINGS` list.
 

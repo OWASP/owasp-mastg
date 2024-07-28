@@ -1,0 +1,102 @@
+name: Build All Android Demos
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'demos/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'demos/**'
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          demos=$(find demos/android -type d -name "MASTG-DEMO-*")
+          matrix="{\"demo\":["
+          for demo in $demos; do
+            matrix="${matrix}\"$demo\","
+          done
+          matrix="${matrix%,}]}"
+          echo "matrix=$matrix" >> $GITHUB_ENV
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
+      - name: Print matrix
+        run: echo "${{ steps.set-matrix.outputs.matrix }}"
+
+  build:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 60  # Increase this value as needed
+    strategy:
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+      max-parallel: 3  # Limit the number of parallel jobs
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clone MASTestApp-Android repository
+        run: git clone https://github.com/cpholguera/MASTestApp-Android.git
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Replace files and build APK
+        run: |
+          demo="${{ matrix.demo }}"
+          if [ -d "$demo" ]; then
+            echo "Processing $demo"
+            [ -f "$demo/MastgTest.kt" ] && cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt && echo "Copied MastgTest.kt for $demo" || echo "No MastgTest.kt found for $demo"
+            [ -f "$demo/AndroidManifest.xml" ] && cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml && echo "Copied AndroidManifest.xml for $demo" || echo "No AndroidManifest.xml found for $demo"
+            cd MASTestApp-Android
+            echo "Building APK for $demo"
+            ./gradlew assembleDebug --stacktrace
+            build_status=$?
+            cd ..
+            if [ $build_status -eq 0 ]; then
+              echo "Build succeeded for $demo"
+              apk_name="$(basename "$demo").apk"
+              if [ -f "MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk" ]; then
+                mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$apk_name"
+                echo "APK for $demo moved to $apk_name"
+              else
+                echo "APK not found for $demo"
+              fi
+            else
+              echo "Build failed for $demo"
+            fi
+          else
+            echo "Demo directory not found: $demo"
+          fi
+
+      - name: Set APK name variable
+        id: set_apk_name
+        run: echo "APK_NAME=$(basename ${{ matrix.demo }}).apk" >> $GITHUB_ENV
+
+      - name: List generated APK
+        run: |
+          echo "Listing generated APK in demos/android directory:"
+          ls -l "${{ env.APK_NAME }}" || echo "No APK found."
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APK_NAME }}
+          path: "${{ env.APK_NAME }}"

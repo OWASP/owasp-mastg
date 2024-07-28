@@ -1,5 +1,7 @@
 :root {
   --md-primary-fg-color: #499FFF;
+  --mas-blue: #499FFF;
+  --mas-gradient: linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
 }
 
 /* Wider space for pages */
@@ -22,6 +24,14 @@
 
 .md-typeset__table table:not([class]) {
   display: table
+}
+
+.md-header {
+  background: var(--mas-gradient);
+}
+
+.md-tabs {
+  background: var(--mas-gradient);
 }
 
 @keyframes pump {
@@ -116,6 +126,14 @@
   display: inline-block;
 }
 
+.mas-dot-purple {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #9933CC;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .md-footer__inner:not([hidden]){
   display: none;
 }
@@ -171,10 +189,11 @@
   height: 3em;
   line-height: 2em;
   text-align: center;
-  background: linear-gradient(90deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background: var(--mas-gradient);
   background-size: 300%;
   border-radius: 8px;
   z-index: 1;
+  transition: background 0.3s ease;
 }
 
 .mas-button:hover {
@@ -186,7 +205,6 @@
   0% {
     background-position: 0%;
   }
-
   100% {
     background-position: 400%;
   }
@@ -200,7 +218,7 @@
   right: -5px;
   bottom: -5px;
   z-index: -1;
-  background: linear-gradient(90deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background: var(--mas-gradient);
   background-size: 400%;
   border-radius: 8px;
   transition: 1s;
@@ -211,5 +229,113 @@
 }
 
 .mas-button:active {
-  background: linear-gradient(32deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background: var(--mas-gradient);
+}
+
+.mas-test-button,
+.mas-demo-button {
+  background-color: var(--mas-blue); /* Adjust this value for .mas-demo-button if needed */
+  color: white;
+  margin: 1em 0;
+  border-radius: .3rem;
+  display: block;
+  padding: .8rem;
+  transition: background-color .25s;
+  min-width: 100%;
+  text-align: left;
+  cursor: pointer; /* Add this line to show the pointer cursor */
+}
+
+.mas-demo-button {
+  background-color: #9900ff; /* Adjusted to match the hex value format */
+}
+
+.mas-test-button:hover {
+  background-color: #2e7fd5; 
+}
+
+.mas-demo-button:hover {
+  background-color: #aa33ff;
+}
+
+/* Default DataTables styling for light mode */
+table.dataTable {
+  background-color: white;
+  color: #3a3a3a;
+  border-bottom: 1px solid #ccc !important;
+}
+
+table.dataTable th {
+  border-bottom: 1px solid #ccc !important;
+}
+
+/* Dark mode DataTables styling */
+[data-md-color-scheme="slate"] table.dataTable,
+[data-md-color-scheme="dark"] table.dataTable {
+  background-color: var(--md-default-bg-color);
+  color: white;
+}
+
+[data-md-color-scheme="slate"] table.dataTable th,
+[data-md-color-scheme="dark"] table.dataTable th {
+  background-color: var(--md-default-bg-color);
+  color: white;
+}
+
+[data-md-color-scheme="slate"] table.dataTable td,
+[data-md-color-scheme="dark"] table.dataTable td {
+  background-color: var(--md-default-bg-color);
+  color: white;
+}
+
+/* Adjusting pagination buttons and other elements */
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_paginate .paginate_button,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: white !important;
+}
+
+/* Adjust  .dataTables_info */
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_info,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_info {
+  color: white;
+}
+
+/* add margin to dataTables_filter and dataTables_info independent of color scheme */
+
+.dataTables_filter {
+  margin: 1em 0 2em 0;
+}
+
+.dataTables_info {
+  margin: 1em 0 2em 0;
+  padding-top: 0px !important;
+  color: #aaaaaa !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 10px !important;
+  margin-left: 10px !important;
+}
+
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_filter input,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_filter input {
+  background-color: #3a3a3a;
+  color: white;
+  border: 1px solid #555;
+}
+
+
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_filter label,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_filter label {
+  color: white;
+}
+
+
+
+.md-typeset details {
+  border: 0px;
+}
+
+.md-typeset .admonition {
+  border: 0px;
 }

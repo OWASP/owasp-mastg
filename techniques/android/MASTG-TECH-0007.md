@@ -3,7 +3,7 @@ title: Exploring the App Package
 platform: android
 ---
 
-Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](#obtaining-and-extracting-apps).
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](MASTG-TECH-0003.md).
 
 APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using [apktool](0x08a-Testing-Tools.md#apktool) which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
 
@@ -71,7 +71,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 The app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
 
-Refer to the section "[Reviewing Decompiled Java Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more information about how to reverse engineer DEX files.
+Refer to ["Reviewing Decompiled Java Code"](../../techniques/android/MASTG-TECH-0023.md "Reviewing Decompiled Java Code") for more information about how to reverse engineer DEX files.
 
 ## Compiled App Binary
 
@@ -117,7 +117,7 @@ File    ...  libstlport_shared.so
 File    ...  libsqlcipher_android.so
 ```
 
-For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to the section "[Reviewing Disassemble Native Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-disassembled-native-code "Reviewing Disassemble Native Code")" in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more information about how to reverse engineer these libraries.
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to ["Reviewing Disassembled Native Code"](../../techniques/android/MASTG-TECH-0024.md "Reviewing Disassembled Native Code") for more information about how to reverse engineer these libraries.
 
 ## Other App Resources
 

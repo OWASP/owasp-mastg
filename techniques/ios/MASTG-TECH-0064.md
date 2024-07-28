@@ -11,7 +11,7 @@ This section describes various ways to bypass SSL Pinning and gives guidance abo
 
 ## Methods for Jailbroken and Non-jailbroken Devices
 
-If you have a jailbroken device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08a-Testing-Tools.md#objection) command ([repackage your app](#repackaging-apps) if you're using a non-jailbroken device):
+If you have a jailbroken device with frida-server installed, you can bypass SSL pinning by running the following [Objection](/tools/ios/MASTG-TOOL-0074.md) command ([repackage your app](MASTG-TECH-0055.md) if you're using a non-jailbroken device):
 
 ```bash
 ios sslpinning disable

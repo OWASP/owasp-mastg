@@ -1,0 +1,15 @@
+rules:
+  - id: mastg-android-data-unencrypted-shared-storage-no-user-interaction-manifest
+    severity: WARNING
+    languages:
+      - generic
+    metadata:
+      summary: This rule scans for permissions that allows your app to write to external storage or shared storage
+    message: "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
+    pattern-either:
+      - pattern: WRITE_EXTERNAL_STORAGE
+      - pattern: MANAGE_EXTERNAL_STORAGE
+      - pattern: ACCESS_ALL_EXTERNAL_STORAGE
+      - pattern: requestLegacyExternalStorage="true"
+      - pattern: preserveLegacyExternalStorage="true"
+      - pattern: android:requestRawExternalStorageAccess="true"

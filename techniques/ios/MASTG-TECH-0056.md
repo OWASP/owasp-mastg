@@ -9,9 +9,12 @@ Different methods exist for installing an IPA package onto an iOS device, which 
 
 > Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not possible to install apps.
 
-## Cydia Impactor
+## Sideloadly
 
-[Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor") was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading (and even APK files to Android devices). Cydia Impactor is available for Windows, macOS and Linux. A [step by step guide and troubleshooting steps are available on yalujailbreak.net](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
+[Sideloadly](https://sideloadly.io/ "Sideloadly") allows you to obtain a valid signature for a given IPA file and then install it to a connected iOS device. In addition to signing and installing an IPA file, Sideloadly also allows you to inject tweaks, change the App or Bundle name or make other limited modifications to the IPA metadata. Sideloadly is available on both macOS and Windows.
+
+!!! warning "Do not use your personal Apple account"
+    To sign an IPA file, you will need a valid iOS developer account, either free or paid. Both types come with certain restrictions, as explained on the Sideloadly website. We recommend creating a dedicated developer account for signing test applications, and **not** using your personal Apple account.
 
 ## libimobiledevice
 
@@ -47,7 +50,7 @@ ipainstaller App_name.ipa
 
 ## ios-deploy
 
-On macOS you can also use the [ios-deploy](0x08a-Testing-Tools.md#ios-deploy) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
+On macOS you can also use the [ios-deploy](/MASTG/tools/ios/MASTG-TOOL-0054/) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
 unzip Name.ipa
@@ -92,7 +95,6 @@ It is important to note that changing this value will break the original signatu
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
-
 
 One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your host computer or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 

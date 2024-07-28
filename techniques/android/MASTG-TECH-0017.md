@@ -19,7 +19,7 @@ Android decompilers go one step further and attempt to convert Android bytecode 
 
 Alternatively you can use the [APKLab](0x08a-Testing-Tools.md#apklab) extension for Visual Studio Code or run [apkx](0x08a-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the reversed source code on your preferred IDE.
 
-In the following example we'll be using [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1). First, let's install the app on a device or emulator and run it to see what the crackme is about.
+In the following example we'll be using [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 <img src="Images/Chapters/0x05c/crackme-1.png" width="400px" />
 
@@ -49,4 +49,4 @@ You'll end up with a structure that resembles the original Android Studio projec
 
 <img src="Images/Chapters/0x05c/final_structure.jpg" width="400px" />
 
-See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.
+See the section "[Reviewing Decompiled Java Code](MASTG-TECH-0023.md "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.

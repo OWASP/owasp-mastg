@@ -18,7 +18,7 @@ There are several ways to bypass certificate pinning for a black box test, depen
 - Objection: Use the `android sslpinning disable` command.
 - Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
 
-If you have a rooted device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08a-Testing-Tools.md#objection) command ([repackage your app](#repackaging-apps) if you're using a non-rooted device):
+If you have a rooted device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08a-Testing-Tools.md#objection) command ([repackage your app](MASTG-TECH-0004.md) if you're using a non-rooted device):
 
 ```bash
 android sslpinning disable
