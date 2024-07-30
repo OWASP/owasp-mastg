@@ -6,22 +6,6 @@
             "type": "shell",
             "command": "./src/scripts/structure_mastg.sh",
             "problemMatcher": []
-        },
-        {
-            "label": "Run transform_files.py",
-            "type": "shell",
-            "command": "${workspaceFolder}/.venv/bin/python",
-            "args": ["src/scripts/transform_files.py"],
-            "problemMatcher": [],
-            "dependsOn": "Run structure_mastg.sh"
-        },
-        {
-            "label": "Run populate_dynamic_pages.py",
-            "type": "shell",
-            "command": "${workspaceFolder}/.venv/bin/python",
-            "args": ["src/scripts/populate_dynamic_pages.py"],
-            "problemMatcher": [],
-            "dependsOn": "Run transform_files.py"
         }
     ]
 }
