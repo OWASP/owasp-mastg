@@ -13,7 +13,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
 
-In the following sections you will be using @MASTG-TOOL-0036 to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [iGoat-Swift](#igoat-swift)) that should be running on your iPhone (connected per USB). Use the following command:
+In the following sections you will be using @MASTG-TOOL-0036 to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [iGoat-Swift](https://github.com/OWASP/iGoat-Swift)) that should be running on your iPhone (connected per USB). Use the following command:
 
 ```bash
 r2 frida://usb//iGoat-Swift
