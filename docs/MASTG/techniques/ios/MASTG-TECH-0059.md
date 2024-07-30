@@ -124,7 +124,7 @@ Regular           420  None                ...  Info.plist
 Regular           493  None                ...  iGoat-Swift
 ```
 
-You can also visualize the Bundle directory from #MASTG-TOOL-0061 by clicking on **Finder** -> **Bundle**:
+You can also visualize the Bundle directory from @MASTG-TOOL-0061 by clicking on **Finder** -> **Bundle**:
 
 <img src="/Images/Chapters/0x06b/grapefruit_bundle_dir.png" width="100%" />
 

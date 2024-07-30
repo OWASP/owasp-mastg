@@ -16,7 +16,7 @@ masvs_v1_levels:
 
 Test the app native libraries to determine if they have the PIE and stack smashing protections enabled.
 
-You can use #MASTG-TOOL-0028 to get the binary information. We'll use the #MASTG-APP-0015 v1.0 APK as an example.
+You can use @MASTG-TOOL-0028 to get the binary information. We'll use the @MASTG-APP-0015 v1.0 APK as an example.
 
 All native libraries must have `canary` and `pic` both set to `true`.
 

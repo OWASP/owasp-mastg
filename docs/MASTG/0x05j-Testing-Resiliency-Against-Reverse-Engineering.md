@@ -836,7 +836,7 @@ _Inline hooks_ work by overwriting a few instructions at the beginning or end of
 
 The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
-Android apps can implement some of those obfuscation techniques using different tooling. For example, #MASTG-TOOL-0022 offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
+Android apps can implement some of those obfuscation techniques using different tooling. For example, @MASTG-TOOL-0022 offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
 
 > Decompiling Java classes is trivial, therefore it is recommended to always applying some basic obfuscation to the production bytecode.
 

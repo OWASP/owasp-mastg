@@ -82,7 +82,7 @@ A special mention goes for the **contribution to the MASVS Refactoring**:
 - Feedback on each category proposal
 - Statistics from internal analysis
 
-In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the #MASTG-APP-0015.
+In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the @MASTG-APP-0015.
 
 Additionally:
 

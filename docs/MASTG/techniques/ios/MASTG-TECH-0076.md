@@ -18,7 +18,7 @@ There are no hard written rules for performing static analysis, but there are fe
 
 To effectively review disassembled native code, it's important to have a basic understanding of the [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime"). Functions like `_objc_msgSend` and `_objc_release` are particularly significant within the Objective-C runtime.
 
-In addition to what you've learned in #MASTG-TECH-0068, we will apply these concepts using #MASTG-APP-0025. The objective of this app is to find a secret string hidden within its binary.
+In addition to what you've learned in @MASTG-TECH-0068, we will apply these concepts using @MASTG-APP-0025. The objective of this app is to find a secret string hidden within its binary.
 
 The application features a simple home screen, allowing user interaction by inputting custom strings into the provided text field. Our goal is to reverse engineer the app to uncover the hidden secret string.
 

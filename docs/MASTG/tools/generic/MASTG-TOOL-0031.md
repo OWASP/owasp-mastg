@@ -50,10 +50,10 @@ Frida also provides a couple of simple tools built on top of the Frida API and a
 
 In addition, you'll also find several open source Frida-based tools, such as:
 
-- #MASTG-TOOL-0061: a Runtime Application Instrument toolkig for iOS.
+- @MASTG-TOOL-0061: a Runtime Application Instrument toolkig for iOS.
 - [Fridump](https://github.com/Nightbringer21/fridump "fridump"): a memory dumping tool for both Android and iOS.
-- #MASTG-TOOL-0038: a runtime mobile security assessment framework.
-- #MASTG-TOOL-0036: a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
+- @MASTG-TOOL-0038: a runtime mobile security assessment framework.
+- @MASTG-TOOL-0036: a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
 - [jnitrace](https://github.com/chame1eon/jnitrace "jnitrace"): a tool for tracing usage of the Android JNI runtime methods by a native library.
 
 We will be using all of these tools throughout the guide.

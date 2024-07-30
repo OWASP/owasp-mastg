@@ -72,7 +72,7 @@ This doesn't, however, guarantee that the content will be overwritten at runtime
 
 There is no silver bullet for this problem because different solutions have different consequences. For example, you may perform additional calculations (e.g., XOR the data into a dummy buffer), but you'll have no way to know the extent of the compiler's optimization analysis. On the other hand, using the overwritten data outside the compiler's scope (e.g., serializing it in a temp file) guarantees that it will be overwritten but obviously impacts performance and maintenance.
 
-Then, using `Arrays.fill` to overwrite the data is a bad idea because the method is an obvious hooking target (see #MASTG-TECH-0043 for more details).
+Then, using `Arrays.fill` to overwrite the data is a bad idea because the method is an obvious hooking target (see @MASTG-TECH-0043 for more details).
 
 The final issue with the above example is that the content was overwritten with zeroes only. You should try to overwrite critical objects with random data or content from non-critical objects. This will make it really difficult to construct scanners that can identify sensitive data on the basis of its management.
 
@@ -271,7 +271,7 @@ There are various ways to analyze the memory of a process, e.g. live analysis vi
 
 ### Retrieving and Analyzing a Memory Dump
 
-Whether you are using a rooted or a non-rooted device, you can dump the app's process memory with #MASTG-TOOL-0038 and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in #MASTG-TECH-0044, in the chapter "Tampering and Reverse Engineering on Android".
+Whether you are using a rooted or a non-rooted device, you can dump the app's process memory with @MASTG-TOOL-0038 and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in @MASTG-TECH-0044, in the chapter "Tampering and Reverse Engineering on Android".
 
 After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
 
@@ -307,10 +307,10 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 
 ### Runtime Memory Analysis
 
-Instead of dumping the memory to your host computer, you can alternatively use #MASTG-TOOL-0036. With it, you can analyze and inspect the app's memory while it's running.
+Instead of dumping the memory to your host computer, you can alternatively use @MASTG-TOOL-0036. With it, you can analyze and inspect the app's memory while it's running.
 For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `:` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
-For more information, options and approaches, please refer to #MASTG-TECH-0044 for more information.
+For more information, options and approaches, please refer to @MASTG-TECH-0044 for more information.
 
 ### Explicitly Dumping and Analyzing the Java Heap
 

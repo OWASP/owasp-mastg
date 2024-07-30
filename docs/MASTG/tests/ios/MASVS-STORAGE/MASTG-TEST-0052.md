@@ -61,7 +61,7 @@ You can analyze the app's data directory on a non-jailbroken iOS device by using
 
 > Note that tools like iMazing don't copy data directly from the device. They try to extract data from the backups they create. Therefore, getting all the app data that's stored on the iOS device is impossible: not all folders are included in backups. Use a jailbroken device or repackage the app with Frida and use a tool like objection to access all the data and files.
 
-If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Tampering and Reverse Engineering on iOS" chapter), you can use #MASTG-TOOL-0038 to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition") as explained in the chapter "Basic Security Testing on iOS", section "[Host-Device Data Transfer](../../../0x06b-iOS-Security-Testing.md#host-device-data-transfer "Host-Device Data Transfer")".
+If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Tampering and Reverse Engineering on iOS" chapter), you can use @MASTG-TOOL-0038 to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition") as explained in the chapter "Basic Security Testing on iOS", section "[Host-Device Data Transfer](../../../0x06b-iOS-Security-Testing.md#host-device-data-transfer "Host-Device Data Transfer")".
 
 The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS".
 
@@ -97,7 +97,7 @@ Then you can monitor and verify the changes in the filesystem of the app and inv
 
 ### Dynamic Analysis with Objection
 
-You can use the #MASTG-TOOL-0038 runtime mobile exploration toolkit to find vulnerabilities caused by the application's data storage mechanism. Objection can be used without a Jailbroken device, but it will require [patching the iOS Application](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Objection").
+You can use the @MASTG-TOOL-0038 runtime mobile exploration toolkit to find vulnerabilities caused by the application's data storage mechanism. Objection can be used without a Jailbroken device, but it will require [patching the iOS Application](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Objection").
 
 #### Reading the Keychain
 

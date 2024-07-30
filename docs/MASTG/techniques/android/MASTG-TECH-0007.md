@@ -5,7 +5,7 @@ platform: android
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](MASTG-TECH-0003.md).
 
-APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using #MASTG-TOOL-0011 which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
+APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using @MASTG-TOOL-0011 which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
 
 ```bash
 $ apktool d UnCrackable-Level3.apk
@@ -38,7 +38,7 @@ The following files are unpacked:
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, it's better to unpack the APK using #MASTG-TOOL-0011.
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, it's better to unpack the APK using @MASTG-TOOL-0011.
 
 ```bash
 $ ls -alh
@@ -71,7 +71,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 The app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
 
-Refer to #MASTG-TECH-0023 for more information about how to reverse engineer DEX files.
+Refer to @MASTG-TECH-0023 for more information about how to reverse engineer DEX files.
 
 ## Compiled App Binary
 
@@ -117,7 +117,7 @@ File    ...  libstlport_shared.so
 File    ...  libsqlcipher_android.so
 ```
 
-For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to #MASTG-TECH-0024 for more information about how to reverse engineer these libraries.
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to @MASTG-TECH-0024 for more information about how to reverse engineer these libraries.
 
 ## Other App Resources
 

@@ -173,9 +173,9 @@ After decompressing the APK file, Cordova/Phonegap files will be located in the 
 
 ## Dynamic Analysis
 
-Follow the instructions from #MASTG-TEST-0021. If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
+Follow the instructions from @MASTG-TEST-0021. If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
 
-As a quick smoke test, you can try to bypass certificate pinning using #MASTG-TOOL-0038 as described in #MASTG-TECH-0012. Pinning related APIs being hooked by objection should appear in objection's output.
+As a quick smoke test, you can try to bypass certificate pinning using @MASTG-TOOL-0038 as described in @MASTG-TECH-0012. Pinning related APIs being hooked by objection should appear in objection's output.
 
 <img src="/Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="600px"/>
 

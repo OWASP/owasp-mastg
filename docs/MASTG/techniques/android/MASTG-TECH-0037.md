@@ -3,9 +3,9 @@ title: Symbolic Execution
 platform: android
 ---
 
-Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the #MASTG-TOOL-0030 binary analysis framework as our symbolic execution engine.
+Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the @MASTG-TOOL-0030 binary analysis framework as our symbolic execution engine.
 
-To demonstrate this technique we'll use a crackme called #MASTG-APP-0002. The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
+To demonstrate this technique we'll use a crackme called @MASTG-APP-0002. The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
 
 ```bash
 $ adb push validate /data/local/tmp
@@ -21,7 +21,7 @@ Incorrect serial (wrong format).
 
 ```
 
-So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as #MASTG-TOOL-0098. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as @MASTG-TOOL-0098. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
 
 <img src="/Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 
@@ -202,7 +202,7 @@ WARNING | ... | cle.loader | The main binary is a position-independent executabl
 b'JACE6ACIARNAAIIA'
 ```
 
-Now you can run the validate binary on your Android device to verify the solution (see #MASTG-APP-0002).
+Now you can run the validate binary on your Android device to verify the solution (see @MASTG-APP-0002).
 
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.
 

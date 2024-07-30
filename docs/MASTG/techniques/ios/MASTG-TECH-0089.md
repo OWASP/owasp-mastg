@@ -5,13 +5,13 @@ platform: ios
 
 TODO: Currently don't have this, but we do have this section below which does talk about Angr and a small intro referring to Android
 
-You can find an introduction to binary analysis using binary analysis frameworks in #MASTG-TECH-0015. We recommend you to revisit that content and refresh the concepts on this subject.
+You can find an introduction to binary analysis using binary analysis frameworks in @MASTG-TECH-0015. We recommend you to revisit that content and refresh the concepts on this subject.
 
-For Android, we used Angr's symbolic execution engine to solve a challenge. In this section, we will firstly use Unicorn to solve the #MASTG-APP-0025 challenge and then we will revisit the Angr binary analysis framework to analyze the challenge but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
+For Android, we used Angr's symbolic execution engine to solve a challenge. In this section, we will firstly use Unicorn to solve the @MASTG-APP-0025 challenge and then we will revisit the Angr binary analysis framework to analyze the challenge but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
 
 ## Angr
 
-#MASTG-TOOL-0030 is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
+@MASTG-TOOL-0030 is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
 
 > The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case.
 

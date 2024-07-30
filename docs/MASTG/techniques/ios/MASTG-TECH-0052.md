@@ -7,7 +7,7 @@ One of the most common things you do when testing an app is accessing the device
 
 ## Remote Shell
 
-In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either #MASTG-TOOL-0047 (see screenshot below) or #MASTG-TOOL-0064 installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either @MASTG-TOOL-0047 (see screenshot below) or @MASTG-TOOL-0064 installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 <img src="/Images/Chapters/0x06b/cydia.png" width="300px" />
 
@@ -45,9 +45,9 @@ If you forget your password and want to reset it to the default `alpine`:
 
 ## Connect to a Device via SSH over USB
 
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use #MASTG-TOOL-0069 to connect to your device's SSH server via USB.
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use @MASTG-TOOL-0069 to connect to your device's SSH server via USB.
 
-Connect macOS to an iOS device by installing and starting #MASTG-TOOL-0055:
+Connect macOS to an iOS device by installing and starting @MASTG-TOOL-0055:
 
 ```bash
 $ brew install libimobiledevice

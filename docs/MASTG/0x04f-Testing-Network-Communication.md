@@ -211,8 +211,8 @@ In many cases, it is most practical to configure a system proxy on the mobile de
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
-- #MASTG-TOOL-0077
-- #MASTG-TOOL-0079
+- @MASTG-TOOL-0077
+- @MASTG-TOOL-0079
 
 To use the interception proxy, you'll need to run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
@@ -222,7 +222,7 @@ Using a proxy breaks SSL certificate verification and the app will usually fail 
 
 ## Intercepting Non-HTTP Traffic
 
-Interception proxies such as #MASTG-TOOL-0077 and #MASTG-TOOL-0079 won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
+Interception proxies such as @MASTG-TOOL-0077 and @MASTG-TOOL-0079 won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") and
 - [Mitm-relay](https://github.com/jrmdev/mitm_relay "Mitm-relay").
@@ -260,8 +260,8 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 
 In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use #MASTG-TOOL-0081 to sniff any traffic from the mobile device.
-- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider #MASTG-TOOL-0076 or use your own access point to redirect network traffic from the mobile device to your host computer (see below).
+- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use @MASTG-TOOL-0081 to sniff any traffic from the mobile device.
+- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider @MASTG-TOOL-0076 or use your own access point to redirect network traffic from the mobile device to your host computer (see below).
 - On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
 - On macOS, you can create a "Remote Virtual Interface" for sniffing all traffic on an iOS device. We'll describe this method in the chapter "Basic Security Testing on iOS".
 
@@ -273,7 +273,7 @@ To be able to get a man-in-the-middle position your host computer should be in t
 
 #### MITM Attack
 
-Start your preferred network analyzer tool first, then start #MASTG-TOOL-0076 with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
+Start your preferred network analyzer tool first, then start @MASTG-TOOL-0076 with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
 ```bash
 $ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
@@ -472,7 +472,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
     sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
     ```
 
-    As last step, you need to set the option 'Support invisible proxy' in the listener settings of #MASTG-TOOL-0007.
+    As last step, you need to set the option 'Support invisible proxy' in the listener settings of @MASTG-TOOL-0007.
 
 - 3rd way: Instead of bettercap an alternative is tweaking the `/etc/hosts` on the mobile phone. Add an entry into `/etc/hosts` for the target domain and point it to the IP address of your intercepting proxy. This creates a similar situation of being MITM as with bettercap and you need to redirect port 443 to the port which is used by your interception proxy. The redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to the original location and port.
 
@@ -480,7 +480,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
-When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`) you need to specify where traffic should go next, after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in #MASTG-TOOL-0077 to the original location:
+When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`) you need to specify where traffic should go next, after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in @MASTG-TOOL-0077 to the original location:
 
 1. Go to **Proxy** tab and click on **Options**
 2. Select and edit your listener from the list of proxy listeners.

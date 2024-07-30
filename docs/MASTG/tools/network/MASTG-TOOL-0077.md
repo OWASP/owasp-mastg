@@ -17,4 +17,4 @@ PortSwigger provides good tutorials on setting up both Android as iOS devices to
 - [Configuring an iOS Device to Work With Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
 - [Installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device").
 
-Please refer to #MASTG-TECH-0011 (Android) and #MASTG-TECH-0063 (iOS) for more information.
+Please refer to @MASTG-TECH-0011 (Android) and @MASTG-TECH-0063 (iOS) for more information.

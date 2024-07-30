@@ -19,4 +19,4 @@ ios-deploy --bundle Payload/my-app.app -W -d
 
 Refer to ["Installing Apps"](MASTG-TECH-0056.md) to learn about other installation methods. Some of them doesn't require you to have a macOS.
 
-> This repackaging method is enough for most use cases. For more advanced repackaging, refer to #MASTG-TECH-0092.
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to @MASTG-TECH-0092.
