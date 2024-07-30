@@ -2,7 +2,7 @@
 title: Authentication Tokens Not Validated
 id: MASWE-0038
 alias: unvalidated-auth-tokens
-platform: [android, ios]
+platform: [android, 
 profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-AUTH-3]
