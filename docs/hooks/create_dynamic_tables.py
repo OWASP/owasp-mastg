@@ -163,7 +163,7 @@ def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
 
 def append_to_page(markdown, new_content):
 
-    return markdown + new_content + "\n\n<br>\n\n"
+    return markdown + "\n"+ new_content + "\n\n<br>\n\n"
 
 
 def get_mastg_components_dict(name):

@@ -84,7 +84,7 @@ def getTargetForRef(id, path):
         log.error("Unknown reference: " + id)
         return {"file": "ERROR", "title": "error"}
     
-    file_url =   os.path.relpath(files[0], "./docs/" + path)[3:]
+    file_url =   os.path.relpath(files[0], "./docs/" + os.path.dirname(path))
 
     with open(files[0], 'r') as f:
         content = f.read()
