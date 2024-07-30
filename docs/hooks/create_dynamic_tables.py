@@ -151,7 +151,7 @@ def set_icons_for_web(checklist):
         # if it's a test row, set the icons for platform and levels
         else:
             row['Platform'] = get_platform_icon(row['Platform'])
-            row['Control / MASTG Test'] = f"#{row['MASTG-TEST-ID']}"
+            row['Control / MASTG Test'] = f"@{row['MASTG-TEST-ID']}"
             row['L1'] = get_level_icon('L1', row['L1'])
             row['L2'] = get_level_icon('L2', row['L2'])
             row['R'] = get_level_icon('R', row['R'])        
@@ -179,7 +179,7 @@ def get_mastg_components_dict(name):
                     component_id = os.path.splitext(os.path.basename(file))[0]
                     component_path = os.path.splitext(os.path.relpath(file, "docs/"))[0]
                     frontmatter['id'] = component_id
-                    frontmatter['title'] = f"#{component_id}"
+                    frontmatter['title'] = f"@{component_id}"
                     if frontmatter.get('platform') and type(frontmatter['platform']) == list:
                         frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     else:
@@ -199,7 +199,7 @@ def get_all_weaknessess():
             frontmatter['path'] = f"/MASWE/{os.path.splitext(os.path.relpath(file, 'docs/MASWE'))[0]}"
             weaknesses_id = frontmatter['id']
             frontmatter['id'] = weaknesses_id
-            frontmatter['title'] = f"#{frontmatter['id']}"            
+            frontmatter['title'] = f"@{frontmatter['id']}"            
             frontmatter['masvs_v2_id'] = frontmatter['mappings']['masvs-v2'][0]
             frontmatter['masvs_category'] = frontmatter['masvs_v2_id'][:frontmatter['masvs_v2_id'].rfind('-')]
             frontmatter['L1'] = get_level_icon('L1', "L1" in frontmatter['profiles'])
@@ -231,7 +231,7 @@ def get_all_tests_beta():
 
             test_id = frontmatter['id']            
             frontmatter['id'] = test_id
-            frontmatter['title'] = f"#{frontmatter['id']}"            
+            frontmatter['title'] = f"@{frontmatter['id']}"            
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             
             tests.append(frontmatter)
@@ -250,7 +250,7 @@ def get_all_demos_beta():
             frontmatter['path'] = f"/MASTG/demos/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/demos'))[0]}"
             test_id = frontmatter['id']            
             frontmatter['id'] = test_id 
-            frontmatter['title'] = f"#{test_id}"
+            frontmatter['title'] = f"@{test_id}"
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             
             demos.append(frontmatter)

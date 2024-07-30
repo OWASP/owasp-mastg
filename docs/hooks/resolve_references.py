@@ -13,7 +13,7 @@ def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
     # Always true, but nice for debugging
-    if not path.endswith('/index.md') or True:
+    if True:
 
         pageRefs = {"TECH":[], "TOOL":[], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": []}
         def replaceReference(match):
@@ -72,7 +72,6 @@ def on_page_markdown(markdown, page, **kwargs):
         page.meta["techniques"] = list(set(pageRefs["TECH"]))
 
         return updated_markdown
-
 
     return markdown
 
