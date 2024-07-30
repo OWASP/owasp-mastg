@@ -1,0 +1,11 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                            
+  MastgTest_keylength.swift
+    ❯❱ rules.weak_key_size
+          Cryptographic implementations with insufficient key length are being used.
+                                                                                    
+            3┆ let algorithm = CCAlgorithm(kCCAlgorithm3DES)

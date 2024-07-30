@@ -1,0 +1,15 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                                  
+  MastgTest_keylength.java
+    ❯❱ rules.weak_key_size
+          Cryptographic implementations with insufficient key length are being used.
+                                                                                    
+            1┆ KeyPairGenerator keyPairGen1 = KeyPairGenerator.getInstance("RSA");
+            2┆ keyPairGen1.initialize(1024); // BAD: Key size is less than 2048
+            ⋮┆----------------------------------------
+            4┆ KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+            5┆ keyGen.init(64); // BAD: Key size is less than 256

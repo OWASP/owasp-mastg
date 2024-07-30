@@ -1,0 +1,8 @@
+rules:
+  - id: weak_key_size
+    severity: WARNING
+    languages: 
+      - swift
+    message: >-
+       Cryptographic implementations with insufficient key length are being used.
+    pattern: kCCAlgorithm3DES
