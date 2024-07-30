@@ -301,7 +301,7 @@ Note that in such a case the anchor (everything after the `#`) should be lowerca
 Pictures should be uploaded to the Images/Chapters directory. Afterwards they should be embedded by using the image tag, a width of 500px should be specified. For example:
 
 ```markdown
-<img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
+<img src="/Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
 - *iOS Data Protection Key Hierarchy*
 ```
 
