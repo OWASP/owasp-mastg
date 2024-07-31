@@ -12,3 +12,5 @@ python3 src/scripts/populate_dynamic_pages.py
 python3 src/scripts/generate_cross_references.py
 # python3 src/scripts/generate_redirects.py
 mkdocs serve -a 0.0.0.0:8000
+
+## Test
