@@ -4,7 +4,7 @@ title: Weak Cryptographic Key Generation
 tools: [semgrep]
 code: [java]
 id: MASTG-DEMO-0009
-test: MASTG-TEST-0206
+test: MASTG-TEST-0208
 ---
 
 ### Sample

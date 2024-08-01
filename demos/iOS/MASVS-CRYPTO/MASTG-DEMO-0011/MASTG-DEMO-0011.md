@@ -4,7 +4,7 @@ title: Common Uses of Insecure algorithm
 tools: [semgrep]
 code: [swift]
 id: MASTG-DEMO-0010
-test: MASTG-TEST-0207
+test: MASTG-TEST-0209
 ---
 
 ### Sample
