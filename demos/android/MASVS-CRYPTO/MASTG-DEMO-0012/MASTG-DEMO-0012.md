@@ -3,7 +3,7 @@ platform: android
 title: Weak Cryptographic Key Generation
 tools: [semgrep]
 code: [java]
-id: MASTG-DEMO-0009
+id: MASTG-DEMO-0012
 test: MASTG-TEST-0208
 ---
 

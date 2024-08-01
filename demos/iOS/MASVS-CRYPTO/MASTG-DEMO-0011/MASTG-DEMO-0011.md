@@ -3,7 +3,7 @@ platform: ios
 title: Common Uses of Insecure algorithm
 tools: [semgrep]
 code: [swift]
-id: MASTG-DEMO-0010
+id: MASTG-DEMO-0011
 test: MASTG-TEST-0209
 ---
 
