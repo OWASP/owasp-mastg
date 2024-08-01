@@ -20,4 +20,4 @@ The output should contain a **list of locations where insufficient key lengths a
 
 ## Evaluation
 
-The test case fails if you can find the use of algorithm using appropiate key size within the source code. This also fails if less popular algorithms are used.
+The test case fails if you can find the use of algorithm using appropriate key size within the source code. This also fails if less popular algorithms are used.
