@@ -21,7 +21,7 @@ refs:
 
 The key size, also known as the key length, is dependent on the number of bits. Encryption algorithms that utilize insufficient key sizes are vulnerable to attacks, while longer keys typically entail more intricate encryption.
 
-Weak pseudorandom number generator (PRNG) can undermine cryptographic security by generating predictable or low-entropy keys. This reduces the effectiveness of the key length and makes it easier for attackers to guess or reproduce keys. Weak PRNGs can also produce repeated patterns, leading to further vulnerabilities. Ensuring the use of strong, cryptographically secure PRNGs with high-entropy seeding is essential for robust key security.
+A weak pseudorandom number generator (PRNG) can undermine cryptographic security by generating predictable or low-entropy keys. This reduces the effectiveness of the key length and makes it easier for attackers to guess or reproduce keys. Weak PRNGs can also produce repeated patterns, leading to further vulnerabilities. Ensuring the use of strong, cryptographically secure PRNGs with high-entropy seeding is essential for robust key security.
 
 ## Impact
 
