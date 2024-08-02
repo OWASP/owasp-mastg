@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-NETWORK-3]
   masvs-v2: [MASVS-NETWORK-1]
-  cwe: [CWE-295]
+  cwe: [295]
 
 draft:
   description: e.g. not checking the certificate chain, not checking the hostname,
