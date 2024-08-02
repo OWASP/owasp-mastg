@@ -7,7 +7,7 @@ Dumping the KeyChain data can be done with multiple tools, but not all of them w
 
 ## Objection (Jailbroken / non-Jailbroken)
 
-The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
+The KeyChain data can easily be viewed using Objection. First, connect objection to the @MASTG-APP-0028 app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
 ```bash
 $ objection --gadget="iGoat-Swift" explore

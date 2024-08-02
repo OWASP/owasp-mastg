@@ -16,9 +16,9 @@ Objection offers several features specific to iOS. You can find the [full list o
 All these tasks and more can be easily done by using the commands in objection's REPL. For example, you can obtain the classes used in an app, functions of classes or information about the bundles of an app by running:
 
 ```bash
-OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list classes
-OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list class_methods <ClassName>
-OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
+$ ios hooking list classes
+$ ios hooking list class_methods <ClassName>
+$ ios bundles list_bundles
 ```
 
 If you have a jailbroken device with frida-server installed, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, it is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms.

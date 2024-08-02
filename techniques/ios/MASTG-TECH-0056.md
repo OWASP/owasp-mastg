@@ -27,7 +27,7 @@ brew install libimobiledevice
 brew install ideviceinstaller
 ```
 
-After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
+After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`. Let's install and debug the @MASTG-APP-0028 app with the following commands:
 
 ```bash
 # The following command will show detailed information about the iOS device connected via USB.

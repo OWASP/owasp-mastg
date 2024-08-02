@@ -11,7 +11,7 @@ On iOS, system applications can be found in the `/Applications` directory while 
 
 In order to easily obtain the installation directory information for user-installed apps you can follow the following methods:
 
-Connect to the terminal on the device and run the command `ipainstaller` ([IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console")) as follows:
+Connect to the terminal on the device and run the command `ipainstaller` ([IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console")) to install @MASTG-APP-0028 as follows:
 
 ```bash
 iPhone:~ root# ipainstaller -l
@@ -25,7 +25,7 @@ Application: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-
 Data: /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
 ```
 
-Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in "[Using Objection on iOS](/tools/ios/MASTG-TOOL-0074.md)".
+Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in "[Using Objection on iOS](/tools/ios/MASTG-TOOL-0074.md)". In this case we're connecting to @MASTG-APP-0028:
 
 ```bash
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # env
