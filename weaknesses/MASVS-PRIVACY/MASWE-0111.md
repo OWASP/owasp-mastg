@@ -5,7 +5,7 @@ alias: transperency-data-collection-usage
 platform: ["android", "ios"]
 profiles: ["P"]
 mappings:
-  masvs-v1: [MASVS-STORAGE-2]
+  masvs-v1: [MASVS-STORAGE-12]
   masvs-v2: [MASVS-PRIVACY-3]
   cwe: [359]
 status: new
