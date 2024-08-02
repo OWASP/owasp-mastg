@@ -5,7 +5,7 @@ alias: user-data-control
 platform: ["android", "ios"]
 profiles: ["P"]
 mappings:
-  masvs-v1: [MSTG-NETWORK-1]
+  masvs-v1: [MSTG-STORAGE-12]
   masvs-v2: [MASVS-PRIVACY-4]
   cwe: [359]
 status: new
