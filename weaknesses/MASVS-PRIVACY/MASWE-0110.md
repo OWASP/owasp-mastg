@@ -5,7 +5,7 @@ alias: user-identification-and-tracking
 platform: ["android", "ios"]
 profiles: ["P"]
 mappings:
-  masvs-v1: [MSTG-NETWORK-1]
+  masvs-v1: 
   masvs-v2: [MASVS-PRIVACY-2]
   cwe: [359]
 status: new
