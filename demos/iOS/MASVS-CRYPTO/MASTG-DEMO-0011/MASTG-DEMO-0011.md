@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Common Uses of Insecure algorithm
-tools: [semgrep]
+tools: [MASTG-TOOL-0105]
 code: [swift]
 id: MASTG-DEMO-0011
 test: MASTG-TEST-0209
@@ -29,4 +29,4 @@ The rule has identified two instances in the code file where an insecure 3DES al
 
 Review each of the reported instances.
 
-- Line 3 using `kCCAlgorithm3DES` creates a symmetric key with a size of 168 bit.
+- Line 3 using `kCCAlgorithm3DES`, which creates a symmetric key with a size of 168 bit.

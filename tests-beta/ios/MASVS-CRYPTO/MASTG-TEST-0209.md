@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Weak Cryptographic Key Generation 
-tools: [semgrep]
+id: MASTG-TEST-0209
 type: [static]
 weakness: MASWE-0009
 ---

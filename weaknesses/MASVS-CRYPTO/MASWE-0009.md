@@ -26,10 +26,10 @@ A weak pseudorandom number generator (PRNG) can undermine cryptographic security
 ## Impact
 
 - **Risk of Brute-Force Attacks**:
-With a shorter key length, the number of possible combinations decreases, increasing the likelihood of an attacker successfully cracking the encryption through brute force method. Not only the length, but also if the PRNG was having a predictable input.
+A shorter key length increases the likelihood of an attacker successfully cracking the encryption using brute force attacks; not only the length, but also whether the PRNG had a predictable input can be exploited in brute force attacks.
 
 - **Loss of  Confidentiality**:
-Encryption is utilized to safeguard the confidentiality of data, allowing only authorized users to access it. Weak encryption keys can enable attackers to obtain encrypted information and exploit it.
+Encryption is used to safeguard the confidentiality of data so that only authorized users can access it. Weak encryption keys can allow attackers to obtain encrypted information for disclosure and unauthorized access.
 
 - **Loss of Integrity**:
 Weak cryptographic key generation can undermine the integrity of data, as it creates a vulnerability that attackers can exploit to tamper with or alter the information.
@@ -40,13 +40,12 @@ Weak cryptographic key generation can undermine the integrity of data, as it cre
 The libraries, algorithms and cryptographic schemes used by the application are out of date.
 
 - **Use of Insecure Algorithms**:
-The use of deprecated algorithms (e.g using the 1024-bit RSA key or 160-bit ECDSA key) in an application poses significant security risks to data.
+Using deprecated algorithms (such as the 1024-bit RSA key or 160-bit ECDSA key) in an application poses significant security risks to data.
 
 - **Weak PRNG**:
-Weak PRNG can introduce vulnerabilities in cryptographic key generation by providing insufficient entropy, making it easier for attackers to guess the key.
+A weak PRNG can introduce vulnerabilities in cryptographic key generation by providing insufficient entropy, making it easier for attackers to guess the key.
 
 ## Mitigations
 
 - A secure pseudorandom number generator ([PRNG](https://developer.android.com/privacy-and-security/risks/weak-prng)) should be used to avoid predictable keys.
-- The key length should meet industry standards as specified in [NIST Special Publication 800-131A](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) to provide long-term protection.
-- Algorithms and cryptographic schemes used in third-party libraries must be verified to ensure that they are not deprecated and used properly.
+- The cryptographic schemes and key length used in the app and third-party libraries should meet industry standards as specified in [NIST Special Publication 800-131A](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) to provide long-term protection.

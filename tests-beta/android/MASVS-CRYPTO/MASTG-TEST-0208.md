@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Weak Cryptographic Key Generation 
-tools: [semgrep]
+id: MASTG-TEST-0208
 type: [static]
 weakness: MASWE-0009
 ---
@@ -12,12 +12,12 @@ The application appears to utilize a symmetric algorithm  with a weak key config
 
 ## Steps
 
-1. Run a static analysis tool like semgrep on the code and look for uses of algorithm with insufficient key length.
+1. Run a static analysis tool such as `semgrep` on the code and look for uses of algorithms with insufficient key length.
 
 ## Observation
 
-The output should contain a **list of locations where insufficient key lengths are used** .
+The output should contain a **list of locations where insufficient key lengths are used**.
 
 ## Evaluation
 
-The test case fails if you can find the use of algorithm using appropriate key size within the source code. This also fails if less popular algorithms are used.
+The test case fails if you can find the use of algorithms using inappropriate key sizes within the source code. This also fails if deprecated algorithms are used.
