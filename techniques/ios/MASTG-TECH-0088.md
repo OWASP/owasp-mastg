@@ -25,7 +25,7 @@ To use Unicorn's _full power_, we would need to implement all the necessary infr
 
 While performing manual analysis in "[Reviewing Disassembled Native Code](MASTG-TECH-0077.md)", we determined that the function at address 0x1000080d4 is responsible for dynamically generating the secret string. As we're about to see, all the necessary code is pretty much self-contained in the binary, making this a perfect scenario to use a CPU emulator like Unicorn.
 
-<img src="/Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" width="100%" />
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" width="100%" />
 
 If we analyze that function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither it's performing any system calls. The only access external to the functions occurs for instance at address 0x1000080f4, where a value is being stored to address 0x10000dbf0, which maps to the `__data` section.
 
@@ -42,7 +42,7 @@ To solve the challenge using Unicorn we will perform the following steps:
 
 To extract the content of `__text` and `__data` section from the Mach-O binary we will use [LIEF](https://lief.quarkslab.com/ "Lief"), which provides a convenient abstraction to manipulate multiple executable file formats. Before loading these sections to memory, we need to determine their base addresses, e.g. by using Ghidra, Radare2 or IDA Pro.
 
-<img src="/Images/Chapters/0x06c/uncrackable_sections.png" width="500px"/>
+<img src="Images/Chapters/0x06c/uncrackable_sections.png" width="500px"/>
 
 From the above table, we will use the base address 0x10000432c for `__text` and 0x10000d3e8 for `__data` section to load them at in the memory.
 

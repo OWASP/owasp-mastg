@@ -37,7 +37,7 @@ Follow the instructions from the Dynamic Analysis section of @MASTG-TEST-0067. I
 
 As a quick smoke test, you can try to bypass certificate pinning using @MASTG-TOOL-0038 as described in @MASTG-TECH-0064. Pinning related APIs being hooked by objection should appear in objection's output.
 
-<img src="/Images/Chapters/0x06b/ios_ssl_pinning_bypass.png" width="100%" />
+<img src="Images/Chapters/0x06b/ios_ssl_pinning_bypass.png" width="100%" />
 
 However, keep in mind that:
 

@@ -41,9 +41,6 @@ jobs:
     - name: Assemble Chapters
       run: python3 src/scripts/assemble_chapters_for_pdf.py
 
-    - name: Fix Image Links
-      run: sed -i 's/\/Images\//Images\//g' Document/*.md
-
     - name: Generate English PDF
       run: ./src/pandocker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
 

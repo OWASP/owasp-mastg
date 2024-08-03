@@ -40,7 +40,7 @@ grep -r "SecretKeySpec"
 
 This will return all classes using the `SecretKeySpec` class. Now examine those files and trace which variables are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
 
-<img src="/Images/Chapters/0x5e/static_encryption_key.png" width="600px"/>
+<img src="Images/Chapters/0x5e/static_encryption_key.png" width="600px"/>
 
 ## Dynamic Analysis
 

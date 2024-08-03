@@ -26,11 +26,11 @@ else
     SED="sed"
 fi
 
-find docs/MASTG/tests -name "*.md" -exec $SED -i 's#<img src="/Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG/techniques -name "*.md" -exec $SED -i 's#<img src="/Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG/tools -name "*.md" -exec $SED -i 's#<img src="/Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG/apps -name "*.md" -exec $SED -i 's#<img src="/Images/#<img src="../../../../../assets/Images/#g' {} \;
-find docs/MASTG -name "*.md" -exec $SED -i 's#<img src="/Images/#<img src="../../../assets/Images/#g' {} \;
+find docs/MASTG/tests -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG/techniques -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG/tools -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG/apps -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../../../assets/Images/#g' {} \;
+find docs/MASTG -name "*.md" -exec $SED -i 's#<img src="Images/#<img src="../../../assets/Images/#g' {} \;
 
 find docs/MASTG -name "*.md" -exec $SED -i 's#Document/##g' {} \;
 find docs/MASWE -name "*.md" -exec $SED -i 's#Document/#MASTG/#g' {} \;

@@ -19,7 +19,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 After starting @MASTG-TOOL-0061 you can select the app that is in scope for testing. There are various functions available, of which one is called "Finder". When selecting it, you will get a listing of the directories of the app sandbox.
 
-<img src="/Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
 
 When navigating through the directories and selecting a file, a pop-up will show up and display the data either as hexadecimal or text. When closing this pop-up you have various options available for the file, including:
 
@@ -27,7 +27,7 @@ When navigating through the directories and selecting a file, a pop-up will show
 - Plist viewer
 - Download
 
-<img src="/Images/Chapters/0x06b/grapefruit_file_download.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_file_download.png" width="100%" />
 
 ## Objection
 

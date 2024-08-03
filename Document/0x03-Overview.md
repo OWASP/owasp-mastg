@@ -6,7 +6,7 @@ New technology always introduces new security risks, and security concerns for m
 
 First, the Project recommends that your mobile app security strategies should be based on the [OWASP Mobile Application Security _Verification Standard_ (MASVS)](https://mas.owasp.org/MASVS/), which defines a mobile app security model and lists generic security requirements for mobile apps. MASVS is designed to be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. After you have determined how OWASP MASVS applies to your mobile app's security model, the Project suggests that you use the [OWASP Mobile Application Security _Testing Guide_ (MASTG)](https://mas.owasp.org/MASTG/). The Testing Guide maps to the same basic set of security requirements offered by the MASVS and depending on the context, they can be used individually or combined to achieve different objectives.
 
-<img src="/Images/Chapters/0x03/owasp-mobile-overview.png" width="50%" />
+<img src="Images/Chapters/0x03/owasp-mobile-overview.png" width="50%" />
 
 For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the ["Mobile App Security Testing"](0x04b-Mobile-App-Security-Testing.md) chapter we'll describe how you can apply the checklist and MASTG to a mobile app penetration test.
 

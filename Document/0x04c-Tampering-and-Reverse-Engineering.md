@@ -121,7 +121,7 @@ This technique replaces standard binary operators like addition or subtraction w
 
 Control flow flattening replaces original code with a more complex representation. The transformation breaks the body of a function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because it removes the natural conditional constructs that usually make the code easier to read.
 
-<img src="/Images/Chapters/0x06j/control-flow-flattening.png" width="100%" />
+<img src="Images/Chapters/0x06j/control-flow-flattening.png" width="100%" />
 
 The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](https://web.archive.org/web/20240414202600/http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
 

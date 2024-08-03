@@ -5,7 +5,7 @@ hide:
 
 # OWASP MASVS
 
-<img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" src="../assets/masvs_cover.png">
+<img src="../assets/masvs_cover.png" align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" >
 
 <a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
 

@@ -187,7 +187,7 @@ OAuth 2.0 defines four roles:
 
 Note: The API fulfills both the Resource Server and Authorization Server roles. Therefore, we will refer to both as the API.
 
-<img src="/Images/Chapters/0x04e/abstract_oath2_flow.png" width="400px" />
+<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="400px" />
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 

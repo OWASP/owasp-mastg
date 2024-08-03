@@ -51,6 +51,6 @@ PID  Name
 499  Gadget
 ```
 
-<img src="/Images/Chapters/0x06b/fridaStockiOS.png" width="100%" />
+<img src="Images/Chapters/0x06b/fridaStockiOS.png" width="100%" />
 
 When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/support/code-signing/ "Code Signing") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.

@@ -9,7 +9,7 @@ One of the most common things you do when testing an app is accessing the device
 
 In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either @MASTG-TOOL-0047 (see screenshot below) or @MASTG-TOOL-0064 installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
-<img src="/Images/Chapters/0x06b/cydia.png" width="300px" />
+<img src="Images/Chapters/0x06b/cydia.png" width="300px" />
 
 In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the **Settings -> Wi-Fi** menu and tapping once on the info icon of the network you're connected to.
 

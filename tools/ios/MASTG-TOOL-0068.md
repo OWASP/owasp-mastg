@@ -39,11 +39,11 @@ SwiftShield is now detecting class and method names and is replacing their ident
 
 In the original source code you can see all the class and method identifiers:
 
-<img src="/Images/Chapters/0x06j/no_obfuscation.jpg" width="400px" />
+<img src="Images/Chapters/0x06j/no_obfuscation.jpg" width="400px" />
 
 SwiftShield was now replacing all of them with encrypted values that leave no trace to their original name or intention of the class/method:
 
-<img src="/Images/Chapters/0x06j/swiftshield_obfuscated.jpg" width="400px" />
+<img src="Images/Chapters/0x06j/swiftshield_obfuscated.jpg" width="400px" />
 
 After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
 

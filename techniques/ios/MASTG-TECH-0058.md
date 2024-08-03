@@ -97,11 +97,11 @@ iOS apps can make their codebase modular by using different elements. In the MAS
 
 You can view native libraries in @MASTG-TOOL-0061 by clicking on the Modules icon in the left menu bar:
 
-<img src="/Images/Chapters/0x06b/grapefruit_modules.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_modules.png" width="100%" />
 
 And get a more detailed view including their imports/exports:
 
-<img src="/Images/Chapters/0x06b/grapefruit_modules_detail.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_modules_detail.png" width="100%" />
 
 They are available in the `Frameworks` folder in the IPA, you can also inspect them from the terminal:
 
@@ -134,4 +134,4 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-<img src="/Images/Chapters/0x06b/grapefruit_db_view.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_db_view.png" width="100%" />

@@ -177,7 +177,7 @@ Follow the instructions from @MASTG-TEST-0021. If doing so doesn't lead to traff
 
 As a quick smoke test, you can try to bypass certificate pinning using @MASTG-TOOL-0038 as described in @MASTG-TECH-0012. Pinning related APIs being hooked by objection should appear in objection's output.
 
-<img src="/Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="600px"/>
+<img src="Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="600px"/>
 
 However, keep in mind that:
 

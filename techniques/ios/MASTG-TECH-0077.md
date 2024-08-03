@@ -17,7 +17,7 @@ Decompilers can help us in analyzing native code, but they should be used with c
 
 We will be analyzing the native function identified in `viewDidLoad` function in the previous section. The function is located at offset 0x1000080d4. The return value of this function used in the `setText` function call for the label. This text is used to compare against the user input. Thus, we can be sure that this function will be returning a string or equivalent.
 
-<img src="/Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" width="100%" />
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" width="100%" />
 
 The first thing we can see in the disassembly of the function is that there is no input to the function. The registers X0-X7 are not read throughout the function. Also, there are multiple calls to other functions like the ones at 0x100008158, 0x10000dbf0 etc.
 
@@ -36,6 +36,6 @@ The return value from the function (found in W0), is stored to the address in re
 
 To determine the value of the hidden flag we need to know the return value of each of the subsequent function calls identified above. When analyzing the function 0x100006fb4, we can observe that this function is much bigger and more complex than the previous one we analyzed. Function graphs can be very helpful when analyzing complex functions, as it helps into better understanding the control flow of the function. Function graphs can be obtained in Ghidra by clicking the **Display function graph** icon in the sub-menu.
 
-<img src="/Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png" width="100%" />
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png" width="100%" />
 
 Manually analyzing all the native functions completely will be time consuming and might not be the wisest approach. In such a scenario using a [dynamic analysis](MASTG-TECH-0067.md) approach is highly recommended. For instance, by using the techniques like hooking or simply debugging the application, we can easily determine the returned values. Normally it's a good idea to use a dynamic analysis approach and then fallback to manually analyzing the functions in a feedback loop. This way you can benefit from both approaches at the same time while saving time and reducing effort.

@@ -23,11 +23,11 @@ Incorrect serial (wrong format).
 
 So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as @MASTG-TOOL-0098. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
 
-<img src="/Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
+<img src="Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 
 The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward, we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
 
-<img src="/Images/Chapters/0x05c/graph_1874.png" width="100%" />
+<img src="Images/Chapters/0x05c/graph_1874.png" width="100%" />
 
 `strlen` is called at offset `0x000018a8`, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string (which totals 10 bytes in raw). The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
 
@@ -123,17 +123,17 @@ We can now use this information about the expected input to further look into th
 
 Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
 
-<img src="/Images/Chapters/0x05c/loop_1784.png" width="100%" />
+<img src="Images/Chapters/0x05c/loop_1784.png" width="100%" />
 
 XOR is a very commonly used technique to _encrypt_ information where obfuscation is the goal rather than security. **XOR should not be used for any serious encryption**, as it can be cracked using frequency analysis. Therefore, the mere presence of XOR encryption in such a validation logic always requires special attention and analysis.
 
 Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against the return value from a sub-function call at `0x000017e8`.
 
-<img src="/Images/Chapters/0x05c/values_compare_17dc.png" width="100%" />
+<img src="Images/Chapters/0x05c/values_compare_17dc.png" width="100%" />
 
 Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Especially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution is helpful in exactly those situations. In the above crackme, the symbolic execution engine can determine the constraints on each byte of the input string by mapping a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`).
 
-<img src="/Images/Chapters/0x05c/graph_ifelse_1760.png" width="100%" />
+<img src="Images/Chapters/0x05c/graph_ifelse_1760.png" width="100%" />
 
 The constraints obtained from the above steps are passed to a solver engine, which finds an input that satisfies them - a valid license key.
 

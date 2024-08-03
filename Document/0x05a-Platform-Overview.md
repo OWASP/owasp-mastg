@@ -16,7 +16,7 @@ Visit the official [Android developer documentation website](https://developer.a
 
 Android's software stack is composed of several different layers. Each layer defines interfaces and offers specific services.
 
-<img src="/Images/Chapters/0x05a/android_software_stack.png" width="400px" />
+<img src="Images/Chapters/0x05a/android_software_stack.png" width="400px" />
 
 **Kernel:** At the lowest level, Android is based on a [variation of the Linux Kernel](https://source.android.com/devices/architecture/kernel) containing some significant additions, including [Low Memory Killer](https://source.android.com/devices/tech/perf/lmkd), wake locks, the [Binder IPC](https://source.android.com/devices/architecture/hidl/binder-ipc) driver, etc. For the purpose of the MASTG, we'll focus on the user-mode part of the OS, where Android significantly differs from a typical Linux distribution. The two most important components for us are the managed runtime used by applications (ART/Dalvik) and [Bionic](https://en.wikipedia.org/wiki/Bionic_(software) "Android (Bionic)"), Android’s version of glibc, the GNU C library.
 
@@ -26,7 +26,7 @@ Android's software stack is composed of several different layers. Each layer def
 
 Dalvik bytecode is an optimized version of Java bytecode. It is created by first compiling the Java or Kotlin code to Java bytecode, using the javac and kotlinc compilers respectively, producing .class files. Finally, the Java bytecode is converted to Dalvik bytecode using the d8 tool. Dalvik bytecode is packed within APK and AAB files in the form of .dex files and is used by a managed runtime on Android to execute it on the device.
 
-<img src="/Images/Chapters/0x05a/java_vs_dalvik.png" width="400px" />
+<img src="Images/Chapters/0x05a/java_vs_dalvik.png" width="400px" />
 
 Before Android 5.0 (API level 21), Android executed bytecode on the Dalvik Virtual Machine (DVM), where it was translated into machine code at execution time, a process known as _just-in-time_ (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation.
 
@@ -36,7 +36,7 @@ Since Android 5.0 (API level 21), Android executes bytecode on the Android Runti
 - **JIT** happens at runtime.
 - **Profile-guided compilation** is a hybrid approach that was introduced in Android 7 (API level 24) to combat the downsides of AOT. At first, the application will use JIT compilation, and Android keeps track of all the parts of the application that are frequently used. This information is stored in an application profile and when the device is idle, a compilation (dex2oat) daemon runs which AOT compiles the identified frequent code paths from the profile.
 
-<img src="/Images/Chapters/0x05a/java2oat.png" width="100%" />
+<img src="Images/Chapters/0x05a/java2oat.png" width="100%" />
 
 Source: <https://lief-project.github.io/doc/latest/tutorials/10_android_formats.html>
 
@@ -211,7 +211,7 @@ Apps are executed in the Android Application Sandbox, which separates the app da
 
 Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
 
-<img src="/Images/Chapters/0x05a/Selection_003.png" width="400px" />
+<img src="Images/Chapters/0x05a/Selection_003.png" width="400px" />
 
 We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different user accounts:
 
@@ -452,7 +452,7 @@ The term _Binder_ stands for a lot of different things, including:
 
 The Binder framework includes a client-server communication model. To use IPC, apps call IPC methods in proxy objects. The proxy objects transparently _marshall_ the call parameters into a _parcel_ and send a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests and delivers messages to the destination object. From the perspective of the client app, all of this seems like a regular method call, all the heavy lifting is done by the Binder framework.
 
-<img src="/Images/Chapters/0x05a/binder.jpg" width="400px" />
+<img src="Images/Chapters/0x05a/binder.jpg" width="400px" />
 
 - _Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://1library.net/document/z33dd47z-android-android-interprocess-communication-thorsten-schreiber-somorovsky-bussmeyer.html "Android Binder")_
 
@@ -656,7 +656,7 @@ The original version of app signing implements the signed APK as a standard sign
 
 With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification. You can see the [APK signature verification process for v2 Scheme](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process") below.
 
-<img src="/Images/Chapters/0x05a/apk-validation-process.png" width="400px" />
+<img src="Images/Chapters/0x05a/apk-validation-process.png" width="400px" />
 
 #### APK Signature Scheme (v3 Scheme)
 
@@ -665,7 +665,7 @@ The v3 APK Signing Block format is the same as v2. V3 adds information about the
 The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatibility work, the old signing certificates sign the new set of certificates, thus providing each new key with evidence that it should be as trusted as the older key(s).
 It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certificates signing the new set of certificates, rather than signing them one-by-one. You can see the [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process") below.
 
-<img src="/Images/Chapters/0x05a/apk-validation-process-v3-scheme.png" width="400px" />
+<img src="Images/Chapters/0x05a/apk-validation-process-v3-scheme.png" width="400px" />
 
 #### APK Signature Scheme (v4 Scheme)
 

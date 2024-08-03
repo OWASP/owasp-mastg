@@ -1,6 +1,6 @@
 # Frontispiece
 
-<img src="/Images/owasp_mas_header.png" width="100%" />
+<img src="Images/owasp_mas_header.png" width="100%" />
 
 ## About the OWASP MASTG
 
@@ -9,7 +9,7 @@ The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MASTG-Adoption.md).
 
 <a href="0x02b-MASVS-MASTG-Adoption.md">
-<img src="/Images/Other/trusted-by-logos.png"/>
+<img src="Images/Other/trusted-by-logos.png"/>
 </a>
 
 ## Authors
@@ -68,4 +68,4 @@ If you find any inconsistencies or typos please open an issue in the OWASP MASTG
 
 Copyright © The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
-<img src="/Images/CC-license.png" width="150px" />
+<img src="Images/CC-license.png" width="150px" />

@@ -184,7 +184,7 @@ Every file stored on the iOS file system is encrypted with its own per-file key,
 
 The following illustration shows the [iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide").
 
-<img src="/Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="100%" />
+<img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="100%" />
 
 Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"):
 

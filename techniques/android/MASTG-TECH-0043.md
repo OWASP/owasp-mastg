@@ -70,7 +70,7 @@ We'll use Frida to solve the @MASTG-APP-0003 and demonstrate how we can easily b
 
 When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 
-<img src="/Images/Chapters/0x05c/crackme-frida-1.png" width="400px" />
+<img src="Images/Chapters/0x05c/crackme-frida-1.png" width="400px" />
 
 Let's see how we can prevent this.
 

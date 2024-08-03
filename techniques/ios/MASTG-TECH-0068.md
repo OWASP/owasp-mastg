@@ -19,11 +19,11 @@ If you have a license for IDA Pro, you can analyze the app binary using IDA Pro 
 
 To get started, simply open the app binary in IDA Pro.
 
-<img src="/Images/Chapters/0x06c/ida_macho_import.png" width="100%" />
+<img src="Images/Chapters/0x06c/ida_macho_import.png" width="100%" />
 
 Upon opening the file, IDA Pro will perform auto-analysis, which can take a while depending on the size of the binary. Once the auto-analysis is completed you can browse the disassembly in the **IDA View** (Disassembly) window and explore functions in the **Functions** window, both shown in the screenshot below.
 
-<img src="/Images/Chapters/0x06c/ida_main_window.png" width="100%" />
+<img src="Images/Chapters/0x06c/ida_main_window.png" width="100%" />
 
 A regular IDA Pro license does not include a decompiler by default and requires an additional license for the Hex-Rays decompiler, which is expensive. In contrast, Ghidra comes with a very capable free builtin decompiler, making it a compelling alternative to use for reverse engineering.
 

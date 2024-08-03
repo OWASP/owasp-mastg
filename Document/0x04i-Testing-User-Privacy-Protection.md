@@ -63,7 +63,7 @@ Since regular security testing helps developers identify key vulnerabilities in 
 
 As part of the process to provide more transparency into the app's security architecture, Google has introduced the [MASA (Mobile Application Security Assessment)](https://appdefensealliance.dev/masa) program as part of the [App Defense Alliance (ADA)](https://appdefensealliance.dev/). Since MASA is a globally recognized standard for mobile app security to the mobile app ecosystem, Google is acknowledging the importance of security in this industry. Developers can work directly with an Authorized Lab partner to initiate a security assessment that is independently validated against a set of MASVS Level 1 requirements, and Google will recognize this effort by allowing them to disclose these tests in the app's Data Safety section.
 
-<img src="/Images/Chapters/0x04i/masa_framework.png" width="100%"/>
+<img src="Images/Chapters/0x04i/masa_framework.png" width="100%"/>
 
 > If you are a developer and would like to participate, complete the [Independent Security Review form](https://docs.google.com/forms/d/e/1FAIpQLSdBl_eCNcUeUVDiB2duiJLZ5s4AV5AhDVuOz_1u8S9qhcXF5g/viewform "Google Play - Independent Security Review form").
 

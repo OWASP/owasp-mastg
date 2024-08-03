@@ -202,11 +202,11 @@ void anti_debug() {
 
 **Bypass:** To demonstrate how to bypass this technique we'll use an example of a disassembled binary that implements this approach:
 
-<img src="/Images/Chapters/0x06j/ptraceDisassembly.png" width="100%" />
+<img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="100%" />
 
 Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (`0xB0 0x47` in Little Endian) with the `NOP` (`0x00 0xBF` in Little Endian) instruction. After patching, the code will be similar to the following:
 
-<img src="/Images/Chapters/0x06j/ptracePatched.png" width="100%" />
+<img src="Images/Chapters/0x06j/ptracePatched.png" width="100%" />
 
 [Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between bytecode and instruction mnemonics.
 
@@ -220,11 +220,11 @@ The [Apple Documentation Archive](https://developer.apple.com/library/content/qa
 
 **Bypass:** One way to bypass this check is by patching the binary. When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
 
-<img src="/Images/Chapters/0x06j/sysctlOriginal.png" width="100%" />
+<img src="Images/Chapters/0x06j/sysctlOriginal.png" width="100%" />
 
 After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in bytecode), the patched code is similar to the following:
 
-<img src="/Images/Chapters/0x06j/sysctlPatched.png" width="100%" />
+<img src="Images/Chapters/0x06j/sysctlPatched.png" width="100%" />
 
 You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
@@ -458,7 +458,7 @@ This technique replaces standard binary operators like addition or subtraction w
 
 Control flow flattening replaces original code with a more complex representation. The transformation breaks the body of a function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because it removes the natural conditional constructs that usually make the code easier to read.
 
-<img src="/Images/Chapters/0x06j/control-flow-flattening.png" width="600px">
+<img src="Images/Chapters/0x06j/control-flow-flattening.png" width="600px">
 
 The image shows how control flow flattening alters code. See ["Obfuscating C++ programs via control flow flattening"](https://web.archive.org/web/20240414202600/http://ac.inf.elte.hu/Vol_030_2009/003.pdf) for more information.
 

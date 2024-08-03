@@ -50,7 +50,7 @@ You can retrieve it yourself using your browser and navigating to `https://<doma
 
 Alternatively, you can use the [Apple App Site Association (AASA) Validator](https://branch.io/resources/aasa-validator/ "AASA"). After entering the domain, it will display the file, verify it for you and show the results (e.g. if it is not being properly served over HTTPS). See the following example from apple.com `https://www.apple.com/.well-known/apple-app-site-association`:
 
-<img src="/Images/Chapters/0x06h/apple-app-site-association-file_validation.png" width="100%" />
+<img src="Images/Chapters/0x06h/apple-app-site-association-file_validation.png" width="100%" />
 
 ```json
 {
@@ -251,11 +251,11 @@ One of them should offer the "Open in app" option and the other should not.
 
 If we long press on the first one (`http://www.apple.com/shop/buy-iphone/iphone-xr`) it only offers the option to open it (in the browser).
 
-<img src="/Images/Chapters/0x06h/forbidden_universal_link.png" width="400px" />
+<img src="Images/Chapters/0x06h/forbidden_universal_link.png" width="400px" />
 
 If we long press on the second (`http://www.apple.com/today`) it shows options to open it in Safari and in "Apple Store":
 
-<img src="/Images/Chapters/0x06h/allowed_universal_link.png" width="400px" />
+<img src="Images/Chapters/0x06h/allowed_universal_link.png" width="400px" />
 
 > Note that there is a difference between a click and a long press. Once we long press a link and select an option, e.g. "Open in Safari", this will become the default option for all future clicks until we long press again and select another option.
 
@@ -305,7 +305,7 @@ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 
 Write `https://t.me/addstickers/radare` (found through a quick Internet research) and open it from the Notes app.
 
-<img src="/Images/Chapters/0x06h/telegram_add_stickers_universal_link.png" width="400px" />
+<img src="Images/Chapters/0x06h/telegram_add_stickers_universal_link.png" width="400px" />
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 

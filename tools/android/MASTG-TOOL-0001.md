@@ -130,7 +130,7 @@ The above script calls `Java.perform` to make sure that your code gets executed 
 
 @MASTG-TOOL-0018 can generate Frida snippets through its graphical code browser. To use this feature, open the APK or DEX with `jadx-gui`, browse to the target method, right click the method name, and select "Copy as frida snippet (f)". For example using the MASTG @MASTG-APP-0003:
 
-<img src="/Images/Chapters/0x08a/jadx_copy_frida_snippet.png" width="100%" />
+<img src="Images/Chapters/0x08a/jadx_copy_frida_snippet.png" width="100%" />
 
 The above steps place the following output in the pasteboard, which you can then paste in a JavaScript file and feed into `frida -U -l`.
 

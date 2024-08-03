@@ -168,7 +168,7 @@ BroadcastReceivers should use the `android:permission` attribute;  otherwise, ot
 
 You can enumerate IPC components with @MASTG-TOOL-0035. To list all exported IPC components, upload the APK file and the components collection will be displayed in the following screen:
 
-<img src="/Images/Chapters/0x05h/MobSF_Show_Components.png" width="100%" />
+<img src="Images/Chapters/0x05h/MobSF_Show_Components.png" width="100%" />
 
 ### Content Providers
 

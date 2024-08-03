@@ -34,7 +34,7 @@ Finally, since the keychain dumper is executed from within the application conte
 
 With @MASTG-TOOL-0061 it's possible to access the keychain data of the app you have selected. Inside the **Storage** section, click on **Keychain** and you can see a listing of the stored Keychain information.
 
-<img src="/Images/Chapters/0x06b/grapefruit_keychain.png" width="100%" />
+<img src="Images/Chapters/0x06b/grapefruit_keychain.png" width="100%" />
 
 ## Keychain-dumper (Jailbroken)
 

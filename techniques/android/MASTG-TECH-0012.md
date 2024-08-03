@@ -26,7 +26,7 @@ android sslpinning disable
 
 Here's an example of the output:
 
-<img src="/Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="100%" />
+<img src="Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="100%" />
 
 See also [Objection's help on Disabling SSL Pinning for Android](https://github.com/sensepost/objection/blob/master/objection/console/helpfiles/android.sslpinning.disable.txt) for further information and inspect the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/android/pinning.ts "pinning.ts") file to understand how the bypass works.
 

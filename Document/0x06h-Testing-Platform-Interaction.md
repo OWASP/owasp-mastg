@@ -254,7 +254,7 @@ A JavaScript Bridge can be enabled when using `WKWebView` and `UIWebView`. See S
 - An Action ("Share") button.
 - A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
 
-<img src="/Images/Chapters/0x06h/sfsafariviewcontroller.png" width="400px" />
+<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="400px" />
 
 There are a couple of things to consider:
 
@@ -408,7 +408,7 @@ For other capabilities such as HealthKit, the user has to be asked for permissio
 
 [_Purpose strings_](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037322 "Provide a Purpose String") or_usage description strings_ are custom texts that are offered to users in the system's permission request alert when requesting permission to access protected data or resources.
 
-<img src="/Images/Chapters/0x06h/permission_request_alert.png" width="400px" />
+<img src="Images/Chapters/0x06h/permission_request_alert.png" width="400px" />
 
 If linking on or after iOS 10, developers are required to include purpose strings in their app's [`Info.plist`](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW5 "The Information Property List File") file. Otherwise, if the app attempts to access protected data or resources without having provided the corresponding purpose string, [the access will fail and the app might even crash](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources").
 
@@ -516,7 +516,7 @@ You can learn more about Universal Links in the post ["Learning about Universal 
 
 Starting on iOS 6 it is possible for third-party apps to share data (items) via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide "Share Activity Sheet" that appears after clicking on the "Share" button.
 
-<img src="/Images/Chapters/0x06h/share_activity_sheet.png" width="100%" />
+<img src="Images/Chapters/0x06h/share_activity_sheet.png" width="100%" />
 
 The available built-in sharing mechanisms (aka. Activity Types) include:
 
@@ -550,7 +550,7 @@ There are three important elements here:
 
 For example, the user selects text in the _host app_, clicks on the "Share" button and selects one "app" or action from the list. This triggers the _app extension_ of the _containing app_. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13 "An app extension can communicate indirectly with its containing app") which pretty good summarizes this:
 
-<img src="/Images/Chapters/0x06h/app_extensions_communication.png" width="100%" />
+<img src="Images/Chapters/0x06h/app_extensions_communication.png" width="100%" />
 
 ##### Security Considerations
 
