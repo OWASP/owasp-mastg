@@ -3,7 +3,7 @@ title: Exploring the App Package
 platform: android
 ---
 
-Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](MASTG-TECH-0003.md).
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in @MASTG-TECH-0003.
 
 APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using @MASTG-TOOL-0011 which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
 
@@ -62,7 +62,7 @@ Here's a non-exhaustive list of some info and the corresponding keywords that yo
 
 - App permissions: `permission` (see "[Android Platform APIs](../../Document/0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")")
 - Backup allowance: `android:allowBackup` (see "[Data Storage on Android](../../Document/0x05d-Testing-Data-Storage.md "Testing Data Storage)"))
-- App components: `activity`, `service`, `provider`, `receiver` (see "[Android Platform APIs](../../Document/0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")" and "[Data Storage on Android](../../0x05d-Testing-Data-Storage.md "Testing Data Storage)"))
+- App components: `activity`, `service`, `provider`, `receiver` (see "[Android Platform APIs](../../Document/0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")" and "[Data Storage on Android](../../Document/0x05d-Testing-Data-Storage.md "Testing Data Storage)"))
 - Debuggable flag: `debuggable` (see "[Code Quality and Build Settings of Android Apps](../../Document/0x05i-Testing-Code-Quality-and-Build-Settings.md "Testing Code Quality and Build Settings")")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
