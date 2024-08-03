@@ -298,7 +298,7 @@ Note that in such a case the anchor (everything after the `#`) should be lowerca
 
 ## 5. Insert Pictures
 
-Pictures must always be an HTML `<img` element instead of the ususal markdown image format.
+Pictures must always be an HTML `<img` element instead of the usual markdown image format.
 
 - `src` being the first value.
 - a `width` may be specified.
