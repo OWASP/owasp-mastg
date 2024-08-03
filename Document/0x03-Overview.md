@@ -32,22 +32,6 @@ Many mobile app penetration testers have a background in network and web app pen
 
 ## OWASP MASVS Overview: Key Areas in Mobile Application Security
 
-This overview discusses how the MASVS defines and describes the key areas of mobile security:
-
-- [Introduction to the OWASP Mobile Application Security Project](#introduction-to-the-owasp-mobile-application-security-project)
-  - [How to Use the Mobile Application Security Project](#how-to-use-the-mobile-application-security-project)
-  - [What's Covered in the Mobile Testing Guide](#whats-covered-in-the-mobile-testing-guide)
-  - [Navigating the OWASP MASTG](#navigating-the-owasp-mastg)
-  - [How Security Personnel Should Address Mobile Security Testing](#how-security-personnel-should-address-mobile-security-testing)
-  - [OWASP MASVS Overview: Key Areas in Mobile Application Security](#owasp-masvs-overview-key-areas-in-mobile-application-security)
-    - [MASVS-STORAGE: Data Storage and Privacy](#masvs-storage-data-storage-and-privacy)
-    - [MASVS-CRYPTO: Cryptography](#masvs-crypto-cryptography)
-    - [MASVS-AUTH: Authentication and Authorization](#masvs-auth-authentication-and-authorization)
-    - [MASVS-NETWORK: Network Communication](#masvs-network-network-communication)
-    - [MASVS-PLATFORM: Interaction with the Mobile Platform](#masvs-platform-interaction-with-the-mobile-platform)
-    - [MASVS-CODE: Code Quality and Exploit Mitigation](#masvs-code-code-quality-and-exploit-mitigation)
-    - [MASVS-RESILIENCE: Anti-Tampering and Anti-Reversing](#masvs-resilience-anti-tampering-and-anti-reversing)
-
 ### MASVS-STORAGE: Data Storage and Privacy
 
 The Standard is based on the principle that protecting sensitive data, such as user credentials and private information, is crucial to mobile security. If an app does not use operating system APIs properly, especially those that handle local storage or inter-process communication (IPC), the app could expose sensitive data to other apps running on the same device or may unintentionally leak data to cloud storage, backups, or the keyboard cache. And since mobile devices are more likely to be or lost or stolen, attackers can actually gain physical access to the device, which would make it easier to retrieve the data.
