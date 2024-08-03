@@ -24,7 +24,7 @@ Next, even when using a low-level API which is supposed to make secure connectio
 
 ### Testing for Cleartext Traffic
 
-Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default (thanks to the [default Network Security Configuration](../../../0x05g-Testing-Network-Communication.md#default-configurations)) but there are multiple ways in which an application can still send it:
+Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default (thanks to the [default Network Security Configuration](../../../Document/0x05g-Testing-Network-Communication.md#default-configurations)) but there are multiple ways in which an application can still send it:
 
 - Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case the Network Security Configuration is configured.
 - Configuring the Network Security Configuration to enable cleartext traffic by setting the `cleartextTrafficPermitted` attribute to true on `<domain-config>` elements.
@@ -46,5 +46,5 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 
 For more details refer to:
 
-- ["Intercepting Traffic on the Network Layer"](../../../0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer) from chapter "Mobile App Network Communication"
+- ["Intercepting Traffic on the Network Layer"](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer) from chapter "Mobile App Network Communication"
 - @MASTG-TECH-0010

@@ -11,7 +11,7 @@ masvs_v1_levels:
 
 ## Overview
 
-To test for [WebViews cleanup](../../../0x05h-Testing-Platform-Interaction.md#webviews-cleanup "WebViews Cleanup") you should inspect all APIs related to WebView data deletion and try to fully track the data deletion process.
+To test for [WebViews cleanup](../../../Document/0x05h-Testing-Platform-Interaction.md#webviews-cleanup "WebViews Cleanup") you should inspect all APIs related to WebView data deletion and try to fully track the data deletion process.
 
 ## Static Analysis
 

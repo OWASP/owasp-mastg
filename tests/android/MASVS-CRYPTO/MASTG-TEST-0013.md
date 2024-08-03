@@ -20,7 +20,7 @@ Identify all the instances of symmetric key encryption in code and look for any 
 - specifications for a key generator (such as `KeyGenParameterSpec`, `KeyPairGeneratorSpec`, `KeyPairGenerator`, `KeyGenerator`, `KeyProperties`, etc.)
 - classes importing `java.security.*`, `javax.crypto.*`, `android.security.*`, `android.security.keystore.*`
 
-Check also the [list of common cryptographic configuration issues](../../../0x04g-Testing-Cryptography.md#common-configuration-issues).
+Check also the [list of common cryptographic configuration issues](../../../Document/0x04g-Testing-Cryptography.md#common-configuration-issues).
 
 For each identified instance verify if the used symmetric keys:
 

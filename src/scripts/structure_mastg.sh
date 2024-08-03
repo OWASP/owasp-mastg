@@ -2,7 +2,7 @@
 
 mkdir -p docs/MASWE
 
-directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules" "weaknesses")
+directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules")
 
 for dir in "${directories[@]}"; do
     rm -rf "docs/MASTG/$dir"
