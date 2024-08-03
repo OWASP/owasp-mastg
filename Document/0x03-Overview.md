@@ -6,7 +6,7 @@ New technology always introduces new security risks, and security concerns for m
 
 First, the Project recommends that your mobile app security strategies should be based on the [OWASP Mobile Application Security _Verification Standard_ (MASVS)](https://mas.owasp.org/MASVS/), which defines a mobile app security model and lists generic security requirements for mobile apps. MASVS is designed to be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. After you have determined how OWASP MASVS applies to your mobile app's security model, the Project suggests that you use the [OWASP Mobile Application Security _Testing Guide_ (MASTG)](https://mas.owasp.org/MASTG/). The Testing Guide maps to the same basic set of security requirements offered by the MASVS and depending on the context, they can be used individually or combined to achieve different objectives.
 
-<img src="/Images/Chapters/0x03/owasp-mobile-overview.png" alt="image" width="50%" />
+<img src="/Images/Chapters/0x03/owasp-mobile-overview.png" width="50%" />
 
 For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the ["Mobile App Security Testing"](0x04b-Mobile-App-Security-Testing.md) chapter we'll describe how you can apply the checklist and MASTG to a mobile app penetration test.
 
@@ -34,13 +34,19 @@ Many mobile app penetration testers have a background in network and web app pen
 
 This overview discusses how the MASVS defines and describes the key areas of mobile security:
 
-- [Data Storage and Privacy](#masvs-storage-data-storage-and-privacy)
-- [Cryptography](#masvs-crypto-cryptography)
-- [Authentication and Authorization](#masvs-auth-authentication-and-authorization)
-- [Network Communication](#masvs-network-network-communication)
-- [Interaction with the Mobile Platform](#masvs-platform-interaction-with-the-mobile-platform)
-- [Code Quality and Exploit Mitigation](#masvs-code-code-quality-and-exploit-mitigation)
-- [Anti-Tampering and Anti-Reversing](#masvs-resilience-anti-tampering-and-anti-reversing)
+- [Introduction to the OWASP Mobile Application Security Project](#introduction-to-the-owasp-mobile-application-security-project)
+  - [How to Use the Mobile Application Security Project](#how-to-use-the-mobile-application-security-project)
+  - [What's Covered in the Mobile Testing Guide](#whats-covered-in-the-mobile-testing-guide)
+  - [Navigating the OWASP MASTG](#navigating-the-owasp-mastg)
+  - [How Security Personnel Should Address Mobile Security Testing](#how-security-personnel-should-address-mobile-security-testing)
+  - [OWASP MASVS Overview: Key Areas in Mobile Application Security](#owasp-masvs-overview-key-areas-in-mobile-application-security)
+    - [MASVS-STORAGE: Data Storage and Privacy](#masvs-storage-data-storage-and-privacy)
+    - [MASVS-CRYPTO: Cryptography](#masvs-crypto-cryptography)
+    - [MASVS-AUTH: Authentication and Authorization](#masvs-auth-authentication-and-authorization)
+    - [MASVS-NETWORK: Network Communication](#masvs-network-network-communication)
+    - [MASVS-PLATFORM: Interaction with the Mobile Platform](#masvs-platform-interaction-with-the-mobile-platform)
+    - [MASVS-CODE: Code Quality and Exploit Mitigation](#masvs-code-code-quality-and-exploit-mitigation)
+    - [MASVS-RESILIENCE: Anti-Tampering and Anti-Reversing](#masvs-resilience-anti-tampering-and-anti-reversing)
 
 ### MASVS-STORAGE: Data Storage and Privacy
 
