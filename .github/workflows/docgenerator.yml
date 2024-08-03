@@ -38,6 +38,9 @@ jobs:
     - name: Get Latest MASVS Release Tag
       run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
+    - name: Fix Image Links
+      run: sed -i 's/\/Images\//Images\//g' Document/*.md
+
     - name: Assemble Chapters
       run: python3 src/scripts/assemble_chapters_for_pdf.py
 
