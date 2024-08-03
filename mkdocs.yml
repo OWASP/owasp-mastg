@@ -2,8 +2,12 @@ site_name: OWASP Mobile Application Security
 repo_url: https://github.com/OWASP/owasp-mastg
 repo_name: OWASP/owasp-mastg
 # use_directory_urls: false # only set for mkdocs build
-editor_url_mastg: "https://github.com/OWASP/owasp-mastg/edit/master/"
-editor_url_masvs: "https://github.com/OWASP/owasp-masvs/edit/master/"
+
+# https://www.mkdocs.org/user-guide/configuration/#validation
+# due to our use of mkdocs-awesome-pages-plugin, we need to ignore absolute links for nav
+validation:
+  nav:
+    absolute_links: ignore
 
 nav:
   - Home: index.md
