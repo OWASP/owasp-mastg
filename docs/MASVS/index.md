@@ -11,7 +11,7 @@ hide:
 
 The **OWASP MASVS (Mobile Application Security Verification Standard)** is the industry standard for mobile app security. It can be used by mobile software architects and developers seeking to develop secure mobile applications, as well as security testers to ensure completeness and consistency of test results.
 
-To complement the MASVS, the OWASP MAS project also provides the [OWASP Mobile Application Security Testing Guide (MASTG)](../MASTG/index.md), the [OWASP Mobile Application Security Weakness Enumeration (MASWE)](../MASWE/index.md) and the [OWASP MAS Checklist](../checklists/index.md) which together are the perfect companion for verifying the controls listed in the OWASP MASVS and demonstrate compliance.
+To complement the MASVS, the OWASP MAS project also provides the [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.org/MASTG), the [OWASP Mobile Application Security Weakness Enumeration (MASWE)](https://mas.owasp.org/MASWE) and the [OWASP MAS Checklist](../checklists/index.md) which together are the perfect companion for verifying the controls listed in the OWASP MASVS and demonstrate compliance.
 
 <br>
 
