@@ -136,4 +136,4 @@ As well as the Data directory in **Finder** -> **Home**:
 
 <img src="/Images/Chapters/0x06b/grapefruit_data_dir.png" width="100%" />
 
-Refer to the [Testing Data Storage](../../0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
+Refer to the [Testing Data Storage](../../Document/0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.

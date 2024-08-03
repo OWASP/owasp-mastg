@@ -77,7 +77,7 @@ As mentioned before, starting with Android 7.0 (API level 24), the Android OS wi
 
 ## Bypassing the Network Security Configuration
 
-In this section we will present several methods to bypass Android's [Network Security Configuration](../../0x05g-Testing-Network-Communication.md#android-network-security-configuration).
+In this section we will present several methods to bypass Android's [Network Security Configuration](../../Document/0x05g-Testing-Network-Communication.md#android-network-security-configuration).
 
 ### Adding Custom User Certificates to the Network Security Configuration
 
@@ -277,7 +277,7 @@ iptables -t nat -F
 
 #### bettercap
 
-Read ["Simulating a Man-in-the-Middle Attack"](../../0x04f-Testing-Network-Communication.md#simulating-a-man-in-the-middle-attack-with-bettercap "Simulating a MitM Attack") for further preparation and instructions for running bettercap.
+Read ["Simulating a Man-in-the-Middle Attack"](../../Document/0x04f-Testing-Network-Communication.md#simulating-a-man-in-the-middle-attack-with-bettercap "Simulating a MitM Attack") for further preparation and instructions for running bettercap.
 
 The host computer where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP address below (X.X.X.X) with the IP address of your Android device.
 
