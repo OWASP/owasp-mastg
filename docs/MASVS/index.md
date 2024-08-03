@@ -23,14 +23,14 @@ To complement the MASVS, the OWASP MAS project also provides the [OWASP Mobile A
 
 The standard is divided into various groups of controls, labeled **MASVS-XXXXX**, that represent the most critical areas of the mobile attack surface:
 
-- [**MASVS-STORAGE**](./05-MASVS-STORAGE.md): Secure storage of sensitive data on a device (data-at-rest).
-- [**MASVS-CRYPTO**](./06-MASVS-CRYPTO.md): Cryptographic functionality used to protect sensitive data.
-- [**MASVS-AUTH**](./07-MASVS-AUTH.md): Authentication and authorization mechanisms used by the mobile app.
-- [**MASVS-NETWORK**](./08-MASVS-NETWORK.md): Secure network communication between the mobile app and remote endpoints (data-in-transit).
-- [**MASVS-PLATFORM**](./09-MASVS-PLATFORM.md): Secure interaction with the underlying mobile platform and other installed apps.
-- [**MASVS-CODE**](./10-MASVS-CODE.md): Security best practices for data processing and keeping the app up-to-date.
-- [**MASVS-RESILIENCE**](./11-MASVS-RESILIENCE.md): Resilience to reverse engineering and tampering attempts.
-- [**MASVS-PRIVACY**](./12-MASVS-PRIVACY.md): Privacy controls to protect user privacy.
+- [**MASVS-STORAGE**](05-MASVS-STORAGE.md): Secure storage of sensitive data on a device (data-at-rest).
+- [**MASVS-CRYPTO**](06-MASVS-CRYPTO.md): Cryptographic functionality used to protect sensitive data.
+- [**MASVS-AUTH**](07-MASVS-AUTH.md): Authentication and authorization mechanisms used by the mobile app.
+- [**MASVS-NETWORK**](08-MASVS-NETWORK.md): Secure network communication between the mobile app and remote endpoints (data-in-transit).
+- [**MASVS-PLATFORM**](09-MASVS-PLATFORM.md): Secure interaction with the underlying mobile platform and other installed apps.
+- [**MASVS-CODE**](10-MASVS-CODE.md): Security best practices for data processing and keeping the app up-to-date.
+- [**MASVS-RESILIENCE**](11-MASVS-RESILIENCE.md): Resilience to reverse engineering and tampering attempts.
+- [**MASVS-PRIVACY**](12-MASVS-PRIVACY.md): Privacy controls to protect user privacy.
 
 !!! warning "MAS Testing Profiles"
     **Starting on v2.0.0 the MASVS does not contain "verification levels"**. The MAS project has traditionally provided three verification levels (L1, L2 and R), which were revisited during the MASVS refactoring in 2023, and have been reworked as ["MAS Testing Profiles"](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing) and moved over to the [OWASP MASWE](../MASWE/index.md).

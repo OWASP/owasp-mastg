@@ -74,8 +74,6 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - @MASTG-TOOL-0035
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
-Please also verify the ["Testing Tools"](./tools/index.md) chapter at the end of this book.
-
 #### Getting Privileged Access
 
 _Rooting_ (i.e., modifying the OS so that you can run commands as the root user) is recommended for testing on a real device. This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. These privileges in turn allow you to use techniques like code injection and function hooking more easily.

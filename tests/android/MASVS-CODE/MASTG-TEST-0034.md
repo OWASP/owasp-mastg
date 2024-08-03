@@ -61,7 +61,7 @@ If you need to counter memory-dumping, make sure that very sensitive information
 
 ### ORM
 
-When you use an ORM library, make sure that the data is stored in an encrypted database and the class representations are individually encrypted before storing it. See the chapters "[Data Storage on Android](../../../Document/0x05d-Testing-Data-Storage.md)" and "[Android Cryptographic APIs](../../../0x05e-Testing-Cryptography.md)" for more details. You can check for the following keywords in the corresponding libraries:
+When you use an ORM library, make sure that the data is stored in an encrypted database and the class representations are individually encrypted before storing it. See the chapters "[Data Storage on Android](../../../Document/0x05d-Testing-Data-Storage.md)" and "[Android Cryptographic APIs](../../../Document/0x05e-Testing-Cryptography.md)" for more details. You can check for the following keywords in the corresponding libraries:
 
 **`OrmLite`** Search the source code for the following keywords:
 
