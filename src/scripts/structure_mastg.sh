@@ -1,11 +1,15 @@
 #!/bin/bash
 
-directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules")
+mkdir -p docs/MASWE
+
+directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules" "weaknesses")
 
 for dir in "${directories[@]}"; do
     rm -rf "docs/MASTG/$dir"
     cp -r "$dir" docs/MASTG/ || { echo "Failed to copy $dir"; exit 1; }
 done
+
+cp -r weaknesses/** docs/MASWE/ || { echo "Failed to copy weaknesses"; exit 1; }
 
 cp -r Document/0x0*.md docs/MASTG
 cp docs/MASTG/0x08b-Reference-Apps.md docs/MASTG/apps/index.md
