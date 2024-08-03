@@ -120,7 +120,7 @@ try {
 }
 ```
 
-For more information, take a look at [Securely Storing Sensitive Data in RAM](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM").
+For more information, take a look at [Securely Storing Sensitive Data in RAM](https://github.com/nowsecure/secure-mobile-development/blob/master/en/coding-practices/securely-store-sensitive-data-in-ram.md).
 
 In the "Static Analysis" section, we mentioned the proper way to handle cryptographic keys when you are using `AndroidKeyStore` or `SecretKey`.
 

@@ -10,6 +10,9 @@
             "pattern": "https://github.com/commjoen/contributors-mstg"
         },
         {
+            "pattern": "https://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html"
+        },
+        {
             "pattern": "http://127.0.0.1:8000"
         },
         {
@@ -77,6 +80,9 @@
         },
         {
             "pattern": "^https://www.netspi.com/blog/technical-blog/"
+        },
+        {
+            "pattern": "^https://web.archive.org"
         },
         {
             "pattern": "^MASTG/"
