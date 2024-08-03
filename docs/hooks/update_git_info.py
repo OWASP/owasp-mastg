@@ -22,19 +22,13 @@ if __name__ == '__main__':
     print(get_last_commit_date('./CONTRIBUTING.md'))
 
 
-
-
-
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-50)
-def on_page_markdown(markdown, page, config, **kwargs):
+def on_page_markdown(markdown, page, **kwargs):
 
-    path = page.file.abs_src_path
-    localPath = page.file.src_uri
-    
-    if localPath.startswith("news/"):
-        # Auto generated, so not part of git
-        return
+    abs_path = page.file.abs_src_path
 
-    last_updated = get_last_commit_date(path)
-    page.meta["last_updated"] = last_updated
+    if any(substring in abs_path for substring in ["MASWE/", "MASTG/"]) and "index.md" not in abs_path:
+        last_updated = get_last_commit_date(abs_path)
+        page.meta["last_updated"] = last_updated
+    return markdown
