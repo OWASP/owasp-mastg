@@ -17,7 +17,7 @@ masvs_v1_levels:
 
 Inspect the Network Security Configuration looking for any `<pin-set>` elements. Check their `expiration` date, if any. If expired, certificate pinning will be disabled for the affected domains.
 
-> **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](../../../0x05b-Android-Security-Testing.md#monitoring-system-logs):
+> **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the system logs (see @MASTG-TECH-0009):
 
 ```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed

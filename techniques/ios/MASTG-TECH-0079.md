@@ -17,7 +17,7 @@ Thanks to Apple's confusing provisioning and code-signing system, re-signing an 
 
 We'll use @MASTG-TOOL-0059, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://research.nccgroup.com/2016/10/12/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
 
-To reproduce the steps listed below, download @MASTG-APP-0025 from the OWASP Mobile Testing Guide repository. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
+To reproduce the steps listed below, download @MASTG-APP-0025. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
 
 > Please note that the following steps apply to macOS only, as Xcode is only available for macOS.
 

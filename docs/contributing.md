@@ -34,7 +34,7 @@ Please be sure to take a careful look at our [Code of Conduct](https://github.co
 
 ## Our Contributors
 
-All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](MASTG/Intro/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
+All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
 
 **Update March 2023: We're creating a new concept for contributions that aligns with the new MASTG v2 workflows. Stay tuned...**
 

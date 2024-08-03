@@ -26,8 +26,6 @@ In the context of anti-reversing, the goal of root detection is to make running 
 
 For Android, we define "root detection" a bit more broadly, including custom ROMs detection, i.e., determining whether the device is a stock Android build or a custom build.
 
-In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [OWASP UnCrackable Apps for Android](0x08b-Reference-Apps.md#android-crackmes) that accompany the OWASP Mobile Testing Guide.
-
 Root detection can also be implemented through libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer").
 
 #### Google Play Integrity
