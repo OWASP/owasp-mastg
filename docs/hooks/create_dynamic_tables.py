@@ -357,18 +357,6 @@ def on_page_markdown(markdown, page, **kwargs):
         column_titles = {'MASVS-ID': 'MASVS-ID', 'Platform': "Platform", 'Control / MASTG Test': 'Control / MASTG Test', 'L1': 'L1', 'L2': 'L2', 'R': 'R'}
         column_align = ("left", "center", "left", "center", "center", "center")
 
-        page = '''\
----
-hide:
-    - toc
----
-!!! warning "Temporary Checklist"
-    This checklist contains the **old MASVS v1 verification levels (L1, L2 and R)** which we are currently reworking into "security testing profiles". The levels were assigned according to the MASVS v1 ID that the test was previously covering and might differ in the upcoming version of the MASTG and MAS Checklist.
-
-    For the upcoming of the MASTG version we will progressively split the MASTG tests into smaller tests, the so-called "atomic tests" and assign the new [MAS profiles](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing) to their respective MASWE weaknesses.
-
-{}
-        '''
         ID = re.compile(r"^checklists/(MASVS-\w*)\.md$").match(path).group(1)
         checklist = CHECKLIST_DICT[ID]
 
@@ -385,10 +373,7 @@ hide:
         
         content = list_of_dicts_to_md_table(cleaned_checklist, column_titles, column_align) + "\n\n<br><br>"
         
-        # add temporary warning
-        content = page.format(content)
-
-        return content
+        return append_to_page(markdown, content)
 
 
     return markdown
