@@ -101,7 +101,7 @@ e search.in=perm:r--
 e search.quiet=false
 ```
 
-For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know should be located in the main binary of the app (for example, the anme of the @MASTG-APP-0028 app):
+For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know should be located in the main binary of the app (for example, the name of the @MASTG-APP-0028 app):
 
 ```bash
 [0x00000000]> :/ iGoat

@@ -189,8 +189,7 @@ Supersu-by far the most popular rooting tool-runs an authentication daemon named
 
 You can use the Android package manager to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
-```default
-com.thirdparty.superuser
+```txt
 eu.chainfire.supersu
 com.noshufou.android.su
 com.koushikdutta.superuser
