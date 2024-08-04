@@ -248,8 +248,8 @@ theme:
       test: octicons/codescan-checkmark-24
       app: octicons/code-square-24
       demo: material/flask-outline
-      tech: material/magic-staff
-      maswe: material/skull-scan-outline
+      tech: material/magic-staff # fontawesome/solid/wand-magic-sparkles
+      maswe: octicons/shield-24
       masvs: simple/owasp
   features:
     - search.suggest
