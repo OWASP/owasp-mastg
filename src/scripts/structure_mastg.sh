@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 mkdir -p docs/MASWE
 
