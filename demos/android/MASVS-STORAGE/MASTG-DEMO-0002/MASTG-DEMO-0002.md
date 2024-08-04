@@ -2,7 +2,6 @@
 platform: android
 title: External Storage APIs Tracing with Frida
 id: MASTG-DEMO-0002
-tools: [frida]
 code: [kotlin]
 test: MASTG-TEST-0201
 ---

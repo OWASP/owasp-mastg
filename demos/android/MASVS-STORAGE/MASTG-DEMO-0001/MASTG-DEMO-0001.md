@@ -2,7 +2,6 @@
 platform: android
 title: File System Snapshots from External Storage
 id: MASTG-DEMO-0001
-tools: [adb]
 code: [kotlin]
 test: MASTG-TEST-0200
 ---

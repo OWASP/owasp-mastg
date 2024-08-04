@@ -2,7 +2,6 @@
 platform: android
 title: Detecting Sensitive Data in Network Traffic
 id: MASTG-DEMO-0009
-tools: [mitmproxy]
 code: [kotlin]
 test: MASTG-TEST-0206
 ---

@@ -2,7 +2,6 @@
 platform: android
 title: Tracing Common Logging APIs Looking for Secrets
 id: MASTG-DEMO-0006
-tools: [frida-trace]
 code: [kotlin]
 test: MASTG-TEST-0203
 ---

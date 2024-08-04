@@ -2,7 +2,6 @@
 platform: android
 title: App Writing to External Storage via the MediaStore API
 id: MASTG-DEMO-0005
-tools: [semgrep]
 code: [kotlin]
 test: MASTG-TEST-0202
 ---
