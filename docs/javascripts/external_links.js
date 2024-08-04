@@ -13,6 +13,11 @@ document$.subscribe(function () {
         continue; // Skip this link
       }
 
+      // Exclude links that include github.com/OWASP
+      if (link.href.includes('github.com/OWASP')) {
+        continue; // Skip this link
+      }
+
       if (link.hostname !== window.location.hostname) {
         link.setAttribute('target', '_blank');
 
