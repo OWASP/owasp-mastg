@@ -68,4 +68,4 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 
 By using @MASTG-TOOL-0036 you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `:` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
-For more information, options and approaches, please refer to @MASTG-TECH-0096.md.
+For more information, options and approaches, please refer to @MASTG-TECH-0096.

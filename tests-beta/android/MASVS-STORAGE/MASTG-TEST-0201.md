@@ -13,7 +13,7 @@ Android apps use a variety of APIs to obtain a file path and store a file. Colle
 
 ## Steps
 
-1. Make sure you have @MASTG-TOOL-0031 installed.
+1. Make sure you have @MASTG-TOOL-0001 installed.
 2. Install the app.
 3. Execute a script to spawn the app with Frida and log all interactions with files.
 4. Navigate to the screen of the app that you want to analyse.

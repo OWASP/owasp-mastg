@@ -19,7 +19,7 @@ The snippet below shows sample code that creates two files in the external stora
 2. Execute `run.sh`.
 3. Close the app once you finish testing.
 
-The `run.sh` script will inject a Frida script called `script.js`.
+The `run.sh` script will inject a @MASTG-TOOL-0001 script called `script.js`.
 
 {{ run.sh }}
 

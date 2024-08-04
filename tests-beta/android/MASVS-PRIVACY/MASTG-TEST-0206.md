@@ -19,7 +19,7 @@ The goal of this test is to verify that sensitive data is not being sent over th
 ## Steps
 
 1. Start the device.
-2. Start logging sensitive data from network traffic (@MASTG-TECH-0100).
+2. Start logging sensitive data from network traffic (@MASTG-TECH-0100). For example using @MASTG-TOOL-0097.
 3. Launch and use the app going through the various workflows while inputting sensitive data wherever you can. Especially, places where you know that will trigger network traffic.
 
 ## Observation
