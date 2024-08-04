@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 mkdir -p docs/MASTG
 mkdir -p docs/MASWE
