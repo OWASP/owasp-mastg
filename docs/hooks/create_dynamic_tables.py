@@ -23,28 +23,29 @@ def get_mastg_tests_dict():
     mastg_tests = {}
 
     for file in glob.glob("docs/MASTG/tests/**/*.md", recursive=True):
-        with open(file, 'r') as f:
-            id = ""
-            content = f.read()
-            platform = get_platform(file)
-            try:
-                frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-                masvs_v2_id = frontmatter['masvs_v2_id']
-                frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
-                if masvs_v2_id:
-                    id = masvs_v2_id[0] 
-                    if id not in mastg_tests:
-                        mastg_tests[id] = {}
-                    if platform not in mastg_tests[id]:
-                        mastg_tests[id][platform] = []
+        if "index.md" not in file:
+            with open(file, 'r') as f:
+                id = ""
+                content = f.read()
+                platform = get_platform(file)
+                try:
+                    frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+                    masvs_v2_id = frontmatter['masvs_v2_id']
+                    frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
+                    if masvs_v2_id:
+                        id = masvs_v2_id[0] 
+                        if id not in mastg_tests:
+                            mastg_tests[id] = {}
+                        if platform not in mastg_tests[id]:
+                            mastg_tests[id][platform] = []
 
-                    MASTG_TEST_ID = re.compile(r".*(MASTG-TEST-\d*).md$").match(file).group(1)
-                    frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
-                    mastg_tests[id][platform].append(frontmatter)
-                else:
-                    print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
-            except StopIteration:
-                continue
+                        MASTG_TEST_ID = re.compile(r".*(MASTG-TEST-\d*).md$").match(file).group(1)
+                        frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
+                        mastg_tests[id][platform].append(frontmatter)
+                    else:
+                        print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                except StopIteration:
+                    continue
     return mastg_tests
 
 def retrieve_masvs(version="latest"):
