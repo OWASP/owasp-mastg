@@ -1,7 +1,7 @@
 import logging
 import yaml
 import mkdocs.plugins
-import glob
+import glob, os
 from collections import defaultdict
 
 log = logging.getLogger('mkdocs')
@@ -9,21 +9,24 @@ log = logging.getLogger('mkdocs')
 def get_v1_tests_data():
 
     masvs_v1_tests_metadata = {}
-
     # Each test has an ID which is the filename
-    for file in glob.glob("tests/**/*.md", recursive=True):
-        with open(file, 'r') as f:
-            content = f.read()
-            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-            # masvs category is frontmatter['masvs_v2_id'][0] without the final number. Example: MASVS-STORAGE-2 -> MASVS-STORAGE
-            masvs_category = frontmatter['masvs_v2_id'][0][:-2]
-            platform = frontmatter['platform']
-            # get id from filename without extension
-            id = file.split('/')[-1].split('.')[0]
-            link = f"https://mas.owasp.org/MASTG/tests/{platform}/{masvs_category}/{id}/"
-            frontmatter['link'] = link
-            
-            masvs_v1_tests_metadata[id] = frontmatter
+    for file in glob.glob("./tests/**/*.md", recursive=True):
+        if "index.md" not in file:
+            try:
+                with open(file, 'r') as f:
+                    content = f.read()
+                    frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+                    # masvs category is frontmatter['masvs_v2_id'][0] without the final number. Example: MASVS-STORAGE-2 -> MASVS-STORAGE
+                    masvs_category = frontmatter['masvs_v2_id'][0][:-2]
+                    platform = frontmatter['platform']
+                    # get id from filename without extension
+                    id = file.split('/')[-1].split('.')[0]
+                    link = f"https://mas.owasp.org/MASTG/tests/{platform}/{masvs_category}/{id}/"
+                    frontmatter['link'] = link
+                    
+                    masvs_v1_tests_metadata[id] = frontmatter
+            except:
+                log.warn("No frontmatter in " + file)
 
     # Populate the defaultdict with MASVS v1 IDs and corresponding MASTG-TEST IDs
     masvs_v1_mapping = defaultdict(list)

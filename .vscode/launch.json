@@ -21,8 +21,7 @@
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/.venv/bin/python3"
-            },
-            "preLaunchTask": "Run populate_dynamic_pages.py"
+            }
         }
     ]
 }

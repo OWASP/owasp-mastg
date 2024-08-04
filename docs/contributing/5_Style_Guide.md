@@ -298,11 +298,16 @@ Note that in such a case the anchor (everything after the `#`) should be lowerca
 
 ## 5. Insert Pictures
 
-Pictures should be uploaded to the Images/Chapters directory. Afterwards they should be embedded by using the image tag, a width of 500px should be specified. For example:
+Pictures must always be an HTML `<img` element instead of the usual markdown image format.
+
+- `src` being the first value.
+- a `width` may be specified.
+- they must be included in the corresponding directory, e.g. in `Document/Images/Chapters` for MASTG chapters.
+
+For example:
 
 ```markdown
-<img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
-- *iOS Data Protection Key Hierarchy*
+<img src="Images/Chapters/0x05b/r2_pd_10.png" width="80%" />
 ```
 
 ## 6. Punctuation Conventions

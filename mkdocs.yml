@@ -2,8 +2,12 @@ site_name: OWASP Mobile Application Security
 repo_url: https://github.com/OWASP/owasp-mastg
 repo_name: OWASP/owasp-mastg
 # use_directory_urls: false # only set for mkdocs build
-editor_url_mastg: "https://github.com/OWASP/owasp-mastg/edit/master/"
-editor_url_masvs: "https://github.com/OWASP/owasp-masvs/edit/master/"
+
+# https://www.mkdocs.org/user-guide/configuration/#validation
+# due to our use of mkdocs-awesome-pages-plugin, we need to ignore absolute links for nav
+validation:
+  nav:
+    absolute_links: ignore
 
 nav:
   - Home: index.md
@@ -240,6 +244,13 @@ theme:
       r: material/circle-double
       draft: material/information-outline
       new: material/alert-decagram
+      tool: octicons/tools-24
+      test: octicons/codescan-checkmark-24
+      app: octicons/code-square-24
+      demo: material/flask-outline
+      tech: material/magic-staff # fontawesome/solid/wand-magic-sparkles
+      maswe: octicons/shield-24
+      masvs: simple/owasp
   features:
     - search.suggest
     - search.share
@@ -324,6 +335,10 @@ hooks:
   - docs/hooks/add-tags.py
   - docs/hooks/add-cross-references.py
   - docs/hooks/edit_button_uri.py
+  - docs/hooks/resolve_references.py
+  - docs/hooks/create_dynamic_tables.py
+  - docs/hooks/update_git_info.py
+  - docs/hooks/add-checklists-banner.py
 
 extra:
   generator: false # removed but recreated in copyright above
@@ -352,6 +367,13 @@ extra:
     R: r
     draft: draft
     new: new
+    tool: tool
+    test: test
+    app: app
+    demo: demo
+    tech: tech
+    maswe: maswe
+    masvs: masvs
   status:
     draft: This page is in draft.
     new: New in this beta!

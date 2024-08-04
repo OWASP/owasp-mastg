@@ -56,9 +56,9 @@ crypto   true
 
 In order to retrieve the unencrypted version, you can use [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump"). It will extract the unencrypted version from memory while the application is running on the device.
 
-First, configure [Frida-ios-dump](0x08a-Testing-Tools.md#frida-ios-dump) `dump.py`:
+First, configure @MASTG-TOOL-0054 `dump.py`:
 
-- set it to use `localhost` with port `2222` when using [iproxy](0x08a-Testing-Tools.md#iproxy), or to the actual IP address and port of the device from which you want to dump the binary.
+- set it to use `localhost` with port `2222` when using @MASTG-TOOL-0055, or to the actual IP address and port of the device from which you want to dump the binary.
 - update the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you have set.
 
 Enumerate the apps installed on the device by running `python dump.py -l`:
@@ -76,7 +76,7 @@ Enumerate the apps installed on the device by running `python dump.py -l`:
 
 You can dump the selected app, for example Telegram, by running `python dump.py ph.telegra.Telegraph`
 
-After a couple of seconds, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using [ios-deploy](0x08a-Testing-Tools.md#ios-deploy) `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
+After a couple of seconds, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using @MASTG-TOOL-0054 `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
 You can verify that the app binary is now unencrypted:
 
@@ -91,7 +91,7 @@ The app binary may contain multiple architectures, such as `armv7` (32-bit) and 
 
 One example is the [Damn Vulnerable iOS App DVIA v1](https://github.com/prateek147/DVIA/) to demonstrate this.
 
-Unzip the app and run [otool](0x08a-Testing-Tools.md#otool):
+Unzip the app and run @MASTG-TOOL-0060:
 
 ```bash
 unzip DamnVulnerableiOSApp.ipa

@@ -2,7 +2,6 @@
 platform: android
 title: App Writing to External Storage with Scoped Storage Restrictions
 id: MASTG-DEMO-0004
-tools: [semgrep]
 code: [kotlin]
 test: MASTG-TEST-0202
 ---

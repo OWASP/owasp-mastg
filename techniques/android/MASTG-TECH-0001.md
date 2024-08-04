@@ -7,7 +7,7 @@ One of the most common things you do when testing an app is accessing the device
 
 ## Remote Shell
 
-In order to connect to the shell of an Android device from your host computer, [adb](0x08a-Testing-Tools.md#adb) is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
+In order to connect to the shell of an Android device from your host computer, @MASTG-TOOL-0004 is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
 
 For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
@@ -25,7 +25,7 @@ bullhead:/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 ```
 
-> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your host computer and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "[Host-Device Data Transfer](MASTG-TECH-0002.md)" below.
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your host computer and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in @MASTG-TECH-0002 below.
 
 ### Connect to Multiple Devices
 
@@ -54,8 +54,8 @@ See the full instructions and considerations in the [Android Developers Document
 
 ### Connect to a Device via SSH
 
-If you prefer, you can also enable SSH access. A convenient option is to use [Termux](/tools/android/MASTG-TOOL-0026.md), which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
+If you prefer, you can also enable SSH access. A convenient option is to use @MASTG-TOOL-0026, which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
 ## On-device Shell App
 
-While usually using an on-device shell (terminal emulator) such as [Termux](/tools/android/MASTG-TOOL-0026.md) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or to check some configuration.
+While usually using an on-device shell (terminal emulator) such as @MASTG-TOOL-0026 might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or to check some configuration.

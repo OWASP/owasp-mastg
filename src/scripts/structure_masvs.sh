@@ -18,7 +18,7 @@ else
     SED="sed"
 fi
 
-mkdir -p docs/assets/Images/MASVS
-cp $MASVS_DIR/Document/images/* docs/assets/Images/MASVS
+mkdir -p docs/MASVS/Images
+cp $MASVS_DIR/Document/images/* docs/MASVS/Images
 $SED -i "s#images/#../../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
 $SED -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/*.md

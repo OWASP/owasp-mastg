@@ -68,7 +68,7 @@ There are generally two approaches to this: **reFlutter** and **Frida**.
     $ iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination <Your-Proxy-IP>:8080 
     ```
 
-2. Install the [app](../../apps/android/MASTG-APP-0016.md) on the mobile device.
+2. Install the @MASTG-APP-0016 on the mobile device.
 
 3. Configure the interception proxy. For example, in Burp:
 
@@ -77,7 +77,7 @@ There are generally two approaches to this: **reFlutter** and **Frida**.
    - Select `Bind to address` to `All interfaces`.
    - Request Handling -> support for invisible proxying.
 
-4. Run the [disable-flutter-tls.js](../../tools/generic/MASTG-TOOL-0101.md) frida script.
+4. Run the @MASTG-TOOL-0101 frida script.
 
     ```bash
     frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js

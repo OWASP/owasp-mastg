@@ -17,7 +17,7 @@ Android applications sometimes use non-random sources to generate "random" value
 
 ## Steps
 
-1. Run a [static analysis](/MASTG/techniques/android/MASTG-TECH-0014) tool on the app and look for uses of non-random sources.
+1. Run a static analysis (@MASTG-TECH-0014) tool on the app and look for uses of non-random sources.
 
 ## Observation
 

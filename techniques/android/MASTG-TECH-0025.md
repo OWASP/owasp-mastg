@@ -14,5 +14,5 @@ There are several open source tools for automated security analysis of an APK.
 
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS") (archived)
-- [MobSF](0x08a-Testing-Tools.md#mobsf)
+- @MASTG-TOOL-0035
 - [QARK](https://github.com/linkedin/qark/ "QARK")

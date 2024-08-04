@@ -87,11 +87,11 @@ To support both older and newer ARM processors, Android apps ship with multiple 
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See the section "[Reviewing Disassembled Native Code](MASTG-TECH-0024.md "Reviewing Disassembled Native Code")" below to learn on how to proceed when inspecting the disassembled native code.
+Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See @MASTG-TECH-0024 to learn on how to proceed when inspecting the disassembled native code.
 
 ## radare2
 
-To open the file in [radare2](0x08a-Testing-Tools.md#radare2) you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Android-Security-Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
+To open the file in @MASTG-TOOL-0028 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](../../Document/0x05b-Android-Security-Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
 ```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
@@ -145,13 +145,13 @@ There is a thing that is worth noticing about radare2 vs other disassemblers lik
 
 > Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it’s done by default.
 >
-> People that are used to [IDA](0x08a-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08a-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
+> People that are used to IDA Pro or Hopper just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
-This said, please see section "[Reviewing Disassembled Native Code](MASTG-TECH-0024.md)" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
+This said, please see @MASTG-TECH-0024 to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
 
 ## IDA Pro
 
-If you own an [IDA Pro](0x08a-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
+If you own an [IDA Pro](https://hex-rays.com/ida-pro/) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
 <img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="100%" />
 

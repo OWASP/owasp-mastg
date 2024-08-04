@@ -7,7 +7,7 @@ Dumping the KeyChain data can be done with multiple tools, but not all of them w
 
 ## Objection (Jailbroken / non-Jailbroken)
 
-The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
+The KeyChain data can easily be viewed using Objection. First, connect objection to the @MASTG-APP-0028 app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
 ```bash
 $ objection --gadget="iGoat-Swift" explore
@@ -32,13 +32,13 @@ Finally, since the keychain dumper is executed from within the application conte
 
 ## Grapefruit (Jailbroken / non-Jailbroken)
 
-With [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") it's possible to access the keychain data of the app you have selected. Inside the **Storage** section, click on **Keychain** and you can see a listing of the stored Keychain information.
+With @MASTG-TOOL-0061 it's possible to access the keychain data of the app you have selected. Inside the **Storage** section, click on **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/grapefruit_keychain.png" width="100%" />
 
 ## Keychain-dumper (Jailbroken)
 
-You can use [Keychain-dumper](0x08a-Testing-Tools.md#keychain-dumper) dump the jailbroken device's KeyChain contents. Once you have it running on your device:
+You can use @MASTG-TOOL-0056 to dump the jailbroken device's KeyChain contents. Once you have it running on your device:
 
 ```bash
 iPhone:~ root# /tmp/keychain_dumper
