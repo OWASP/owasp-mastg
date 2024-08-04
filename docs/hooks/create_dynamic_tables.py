@@ -294,7 +294,7 @@ def on_page_markdown(markdown, page, **kwargs):
     elif path.endswith("demos/index.md"):
         # demos-beta/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'tools': "Tools"}
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test"} # TODO , 'tools': "Tools"
 
         demos_beta = get_all_demos_beta()
         demos_beta_columns_reordered = [reorder_dict_keys(demo, column_titles.keys()) for demo in demos_beta]
