@@ -1,5 +1,7 @@
 #!/bin/bash
+set -euxo pipefail
 
+mkdir -p docs/MASTG
 mkdir -p docs/MASWE
 
 directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules")
