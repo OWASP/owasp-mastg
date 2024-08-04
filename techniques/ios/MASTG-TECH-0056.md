@@ -27,7 +27,7 @@ brew install libimobiledevice
 brew install ideviceinstaller
 ```
 
-After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
+After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`. Let's install and debug the @MASTG-APP-0028 app with the following commands:
 
 ```bash
 # The following command will show detailed information about the iOS device connected via USB.
@@ -50,7 +50,7 @@ ipainstaller App_name.ipa
 
 ## ios-deploy
 
-On macOS you can also use the [ios-deploy](/MASTG/tools/ios/MASTG-TOOL-0054/) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
+On macOS you can also use the @MASTG-TOOL-0054/ tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
 unzip Name.ipa

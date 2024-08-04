@@ -94,7 +94,7 @@ Use the main `r2` utility to access the **r2 shell**. You can load DEX binaries 
 r2 classes.dex
 ```
 
-Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in ["Disassembling Native Code"](../../techniques/android/MASTG-TECH-0018.md "Disassembling Native Code").
+Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in @MASTG-TECH-0018.
 
 Once in the r2 shell, you can also access functions offered by the other radare2 utilities. For example, running `i` will print the information of the binary, exactly as `rabin2 -I` does.
 
@@ -221,6 +221,6 @@ Radare2 offers a **Graph Mode** that is very useful to follow the flow of the co
 
 <img src="Images/Chapters/0x05b/r2_graphmode.png" width="100%" />
 
-This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://book.rada.re/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
+This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://book.rada.re/first_steps/commandline_flags.html). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 
-Please refer to ["Disassembling Native Code"](../../techniques/android/MASTG-TECH-0018.md "Disassembling Native Code") for more detailed use of radare2 on Android, especially when analyzing native libraries. You may also want to read the [official radare2 book](https://book.rada.re/ "Radare2 book").
+Please refer to @MASTG-TECH-0018 for more detailed use of radare2 on Android, especially when analyzing native libraries. You may also want to read the [official radare2 book](https://book.rada.re/ "Radare2 book").

@@ -235,7 +235,8 @@
 .mas-test-button,
 .mas-demo-button {
   background-color: var(--mas-blue); /* Adjust this value for .mas-demo-button if needed */
-  color: white;
+  color: white !important;
+  line-height: 1em !important;
   margin: 1em 0;
   border-radius: .3rem;
   display: block;
