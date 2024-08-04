@@ -1,4 +1,7 @@
-# Testing Tools
+---
+hide: toc
+title: Testing Tools
+---
 
 ??? info "About the MASTG Tools"
 
