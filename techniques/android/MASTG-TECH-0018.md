@@ -87,7 +87,7 @@ To support both older and newer ARM processors, Android apps ship with multiple 
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See the section "[Reviewing Disassembled Native Code](MASTG-TECH-0024.md "Reviewing Disassembled Native Code")" below to learn on how to proceed when inspecting the disassembled native code.
+Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See @MASTG-TECH-0024 to learn on how to proceed when inspecting the disassembled native code.
 
 ## radare2
 

@@ -15,7 +15,7 @@ For Android, we used Angr's symbolic execution engine to solve a challenge. In t
 
 > The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case.
 
-While manually analyzing the code in the [Reviewing Disassembled Native Code](MASTG-TECH-0077.md "Reviewing Disassembled Native Code")" section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string.
+While manually analyzing the code in @MASTG-TECH-0077, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string.
 
 If we revisit that function, we can see that it involves multiple sub-function calls and interestingly none of these functions have any dependencies on other library calls or system calls. This is a perfect case to use Angr's concrete execution engine. Follow the steps below to solve this challenge:
 

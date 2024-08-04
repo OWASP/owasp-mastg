@@ -61,4 +61,4 @@ In our first step, we observed that the application verifies the input string on
 
 <img src="Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png" width="600px" />
 
-Now we have followed the complete flow and have all the information about the application flow. We also concluded that the hidden flag is present in a text label and in order to determine the value of the label, we need to revisit `viewDidLoad` function, and understand what is happening in the native function identified. Analysis of the native function is discussed in "[Reviewing Disassembled Native Code](MASTG-TECH-0077.md)".
+Now we have followed the complete flow and have all the information about the application flow. We also concluded that the hidden flag is present in a text label and in order to determine the value of the label, we need to revisit `viewDidLoad` function, and understand what is happening in the native function identified. Analysis of the native function is discussed in @MASTG-TECH-0077.

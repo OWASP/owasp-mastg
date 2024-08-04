@@ -182,7 +182,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ### Memory Dump
 
-You can dump the app's process memory with @MASTG-TOOL-0038 and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process can be found at @MASTG-TECH-0026. To use these tools on a rooted device, simply have frida-server installed and running.
+You can dump the app's process memory with @MASTG-TOOL-0038 and @MASTG-TOOL-0106. To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process can be found at @MASTG-TECH-0026. To use these tools on a rooted device, simply have frida-server installed and running.
 
 > Note: When using these tools, you might get several memory access violation errors which can normally be ignored. These tools inject a Frida agent and try to dump all the mapped memory of the app regardless of the access permissions (read/write/execute). Therefore, when the injected Frida agent tries to read a region that's not readable, it'll return the corresponding _memory access violation errors_. Refer to previous section "Memory Maps and Inspection" for more details.
 

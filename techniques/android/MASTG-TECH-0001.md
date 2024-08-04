@@ -25,7 +25,7 @@ bullhead:/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 ```
 
-> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your host computer and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "[Host-Device Data Transfer](MASTG-TECH-0002.md)" below.
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your host computer and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in @MASTG-TECH-0002 below.
 
 ### Connect to Multiple Devices
 

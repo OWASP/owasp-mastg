@@ -168,7 +168,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ## Memory Dump
 
-You can dump the app's process memory with @MASTG-TOOL-0038 and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is described in @MASTG-TECH-0079. To use these tools on a jailbroken phone, simply have frida-server installed and running.
+You can dump the app's process memory with @MASTG-TOOL-0038 and @MASTG-TOOL-0106. To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is described in @MASTG-TECH-0079. To use these tools on a jailbroken phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
