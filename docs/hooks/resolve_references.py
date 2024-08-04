@@ -60,7 +60,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
     updated_markdown = re.sub(r'@(MASTG-(TECH|TOOL|TEST|APP|DEMO)-\d{3,})', replaceReference, markdown)
     updated_markdown = re.sub(r'@(MASWE-\d{3,})', replaceReferenceMASWE, updated_markdown)
     updated_markdown = re.sub(r'@(MASVS-\w+)', replaceReferenceMASVS, updated_markdown)
-    tags = page.meta.get('tags', [])
+
     page.meta["tools"] = list(set(pageRefs["TOOL"]))
     page.meta["techniques"] = list(set(pageRefs["TECH"]))
 
