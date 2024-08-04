@@ -244,6 +244,13 @@ theme:
       r: material/circle-double
       draft: material/information-outline
       new: material/alert-decagram
+      tool: octicons/tools-24
+      test: octicons/codescan-checkmark-24
+      app: octicons/code-square-24
+      demo: material/flask-outline
+      tech: material/magic-staff
+      maswe: material/skull-scan-outline
+      masvs: simple/owasp
   features:
     - search.suggest
     - search.share
@@ -361,6 +368,13 @@ extra:
     R: r
     draft: draft
     new: new
+    tool: tool
+    test: test
+    app: app
+    demo: demo
+    tech: tech
+    maswe: maswe
+    masvs: masvs
   status:
     draft: This page is in draft.
     new: New in this beta!

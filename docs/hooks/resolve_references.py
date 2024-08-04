@@ -4,15 +4,21 @@ import mkdocs.plugins
 import os
 from glob import glob
 import yaml
+
 log = logging.getLogger('mkdocs')
 
 mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}, "DEMO": {}}
 
 @mkdocs.plugins.event_priority(-50)
-def on_page_markdown(markdown, page, **kwargs):
+def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
 
-    pageRefs = {"TECH":[], "TOOL":[], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": []}
+    icons = config.get('theme').get('icon').get('tag', {})
+
+    icons_for_text = {key.upper(): f":{value.replace('/', '-')}: " for key, value in icons.items()}
+
+    pageRefs = {"TECH": [], "TOOL": [], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": []}
+    
     def replaceReference(match):
         refType = match.group(2)
 
@@ -22,17 +28,7 @@ def on_page_markdown(markdown, page, **kwargs):
             target = getTargetForRef(match.group(1), path)
             mapping[refType][match] = target
 
-        icon = ""
-        if refType == "TOOL":
-            icon = ":octicons-tools-24: "
-        elif refType == "TEST":
-            icon = ":octicons-codescan-checkmark-24: "
-        elif refType == "APP":
-            icon = ":octicons-code-square-24: "
-        elif refType == "DEMO":
-            icon = ":material-flask-outline: "
-        elif refType == "TECH":
-            icon = ":material-magic-staff: "
+        icon = icons_for_text.get(refType, ":octicons-question-24: ")
 
         return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
 
@@ -45,7 +41,7 @@ def on_page_markdown(markdown, page, **kwargs):
             target = getTargetForRef(match.group(1), path)
             mapping[refType][match] = target
 
-        icon = ":material-skull-scan-outline: "
+        icon = icons_for_text.get(refType, ":octicons-question-24: ")
         return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
 
     def replaceReferenceMASVS(match):
@@ -57,7 +53,7 @@ def on_page_markdown(markdown, page, **kwargs):
             target = getTargetForRef(match.group(1), path)
             mapping[refType][match] = target
 
-        icon = ":simple-owasp: "
+        icon = icons_for_text.get(refType, ":octicons-question-24: ")
         return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
 
 
@@ -85,4 +81,4 @@ def getTargetForRef(id, path):
         content = f.read()
         metadata = next(yaml.safe_load_all(content))
 
-        return {"file":file_url, "title":metadata['title']}
+        return {"file": file_url, "title": metadata['title']}
