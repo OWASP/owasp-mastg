@@ -1,38 +1,53 @@
 ---
 title: Potentially Weak Cryptography Implementations
-id: MASWE-0019
 alias: potentially-weak-crypto-impl
 platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v1: [MSTG-CRYPTO-2]
   masvs-v2: [MASVS-CRYPTO-1, MASVS-CODE-3]
+  mastg-v1: [MASTG-TEST-0061, MASTG-TEST-0014]
 
-refs:
-- https://cwe.mitre.org/data/definitions/1240.html
-- https://cwe.mitre.org/data/definitions/327.html
-- https://developer.android.com/reference/javax/crypto/Cipher#getInstance(java.lang.String)
-- https://developer.android.com/privacy-and-security/security-gms-provider
-- https://developer.android.com/privacy-and-security/cryptography#bc-algorithms
-- https://developer.android.com/privacy-and-security/cryptography#jetpack_security_crypto_library
-- https://developer.android.com/privacy-and-security/cryptography#crypto_provider
-- https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
-- https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile
-draft:
-  description: Don't use outdated or known weak implementations and don't build your
-    own cryptography. Using custom cryptography instead of relying on established,
-    expert-designed APIs or certified modules exposes apps to vulnerabilities due
-    to potential implementation flaws and lack of rigorous security review.
-  topics:
-  - platform-provided cryptographic APIs (e.g. conscrypt/CryptoKit)
-  - custom-made cryptographic APIs (e.g. via xor, bit flipping, etc. or cryptographic
-    constants or values such as sbox, etc.)
-  - custom algorithms, primitives, protocols
-  - specify Cipher.getInstance provider (Android)
-  - Android Security Provider (Android)
-  - Jetpack Security Crypto Library (Android)
-  - BoucyCastle algorithms (Android)
-status: draft
-
+refs: 
+ - https://cwe.mitre.org/data/definitions/1240.html
+ - https://cwe.mitre.org/data/definitions/327.html
+ - https://developer.android.com/reference/javax/crypto/Cipher#getInstance(java.lang.String)
+ - https://developer.android.com/privacy-and-security/security-gms-provider
+ - https://developer.android.com/privacy-and-security/cryptography#bc-algorithms
+ - https://developer.android.com/privacy-and-security/cryptography#jetpack_security_crypto_library
+ - https://developer.android.com/privacy-and-security/cryptography#crypto_provider
+ - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
+ - https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile
 ---
 
+## Overview
+
+The use of outdated or known weak implementations, as well as custom built cryptography poses a significant security risk, as their potential implementation flaws and lack of security review exposes apps to vulnerabilities. Instead, always use certified, expert-designed modules for cryptographic purposes.
+
+## Impact
+
+Using weak or outdated cryptography implementations can lead to a variety of security issues, including but not limited to:
+
+- **Read application data**: Encrypted sensitive data may be compromised by the use of a weak or broken cryptographic algorithm, as it could render it as unencrypted plaintext.
+- **Modify application data**: Integrity-verified application files may be altered due to the use of broken cryptographic algorithms.
+- **Hide sources of data**: Broken cryptographic algorithms may lead to the source of the data of the application to not be proven, if this algorithms are used to ensure the identity of the source of them.
+
+## Modes of Introduction
+
+
+Weak, outdated or custom cryptographic algorithms can be found in several areas:
+
+- **App Source Code**: In modules where cryptographic algorithms are used.
+- **Libraries**: Third-party or app dependencies where cryptographic algorithms are imported.
+
+
+## Mitigations
+
+To mitigate the risks associated with weak cryptographic implementations, developers should:
+
+- Use strong and up-to-date cryptographic algorithms to manage data.
+- Do not implement custom-made cryptographic algorithms, as they may be exposed to attacks.
+- Manage and protect cryptoghraphic keys, using Android KeyStore or iOS Keychain.
+- When using cryptographic algorithms, do not omit steps in order to improve performance. These steps are often essential for preventing attacks.
+- Regularly audit the codebase and dependencies for outdated cryptographic algorithms.
+- Security crypto libraries such as Jetpack or BouncyCastle are deprecated for many algorithms, avoid using them.
