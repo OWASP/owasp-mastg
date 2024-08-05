@@ -34,12 +34,10 @@ Using weak or outdated cryptography implementations can lead to a variety of sec
 
 ## Modes of Introduction
 
-
 Weak, outdated or custom cryptographic algorithms can be found in several areas:
 
 - **App Source Code**: In modules where cryptographic algorithms are used.
 - **Libraries**: Third-party or app dependencies where cryptographic algorithms are imported.
-
 
 ## Mitigations
 
