@@ -13,6 +13,7 @@ refs:
   - https://developer.android.com/privacy-and-security/risks/unsafe-trustmanager
   - https://developer.android.com/privacy-and-security/risks/unsafe-hostname
   - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-52r2.pdf#page=17
+  - https://developer.android.com/privacy-and-security/security-ssl#tls-1.3-enabled-by-default
   - https://support.google.com/faqs/answer/7071387?hl=en
   - https://developer.android.com/reference/android/webkit/WebViewClient.html?sjid=15211564825735678155-EU#onReceivedSslError(android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError)
   - https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket
