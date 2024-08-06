@@ -3,7 +3,7 @@ title: Setting Up an Interception Proxy
 platform: android
 ---
 
-Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](../../tools/network/MASTG-TOOL-0079.md "OWASP ZAP") and [Burp Suite](../../tools/network/MASTG-TOOL-0077.md "Burp Suite") Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
+Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; @MASTG-TOOL-0079 and @MASTG-TOOL-0077 are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
 
 ## Interception Proxy for a Virtual Device
 
@@ -69,7 +69,7 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
-> A video of setting up [OWASP ZAP](../../tools/network/MASTG-TOOL-0079.md "OWASP ZAP") with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
+> A video of setting up @MASTG-TOOL-0079 with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
 
 A few other differences: from Android 8.0 (API level 26) onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 (API level 28) onward, the SSLSocket and SSLEngine will behave a little bit different in terms of error handling when something goes wrong during the handshakes.
 
@@ -122,7 +122,7 @@ To implement this new setting you must follow the steps below:
     apktool b
     ```
 
-- You need to repackage the app, as explained in "[Repackaging Apps](../../techniques/android/MASTG-TECH-0004.md "Repackaging Apps")". For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
+- You need to repackage the app, as explained in "@MASTG-TECH-0004". For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 

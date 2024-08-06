@@ -13,7 +13,7 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-[Decompile the APK](../../../techniques/android/MASTG-TECH-0017.md "Decompiling Java Code") and [review it](../../../techniques/android/MASTG-TECH-0023.md "Reviewing Decompiled Java Code") to determine whether the codebase has been obfuscated.
+Decompile the APK (@MASTG-TECH-0017) and review it (@MASTG-TECH-0023) to determine whether the codebase has been obfuscated.
 
 Below you can find a sample for an obfuscated code block:
 
@@ -56,13 +56,13 @@ For native code:
 
 Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind and in the ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) presentation by Eduardo Novella.
 
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. Tools such as [APKiD](../../../Document/0x08a-Testing-Tools.md#apkid) may give you additional indications about which techniques were used for the target app such as obfuscators, packers and anti-debug measures.
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. Tools such as @MASTG-TOOL-0009 may give you additional indications about which techniques were used for the target app such as obfuscators, packers and anti-debug measures.
 
 ## Dynamic Analysis
 
-You can use [APKiD](../../../Document/0x08a-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
+You can use @MASTG-TOOL-0009 to detect if the app has been obfuscated.
 
-Example using the [UnCrackable App for Android Level 4](../../../Document/0x08b-Reference-Apps.md#android-uncrackable-l4):
+Example using the @MASTG-APP-0015:
 
 ```sh
 apkid owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk

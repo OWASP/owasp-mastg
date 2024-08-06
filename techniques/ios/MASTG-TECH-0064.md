@@ -11,7 +11,7 @@ This section describes various ways to bypass SSL Pinning and gives guidance abo
 
 ## Methods for Jailbroken and Non-jailbroken Devices
 
-If you have a jailbroken device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08a-Testing-Tools.md#objection) command ([repackage your app](#repackaging-apps) if you're using a non-jailbroken device):
+If you have a jailbroken device with frida-server installed, you can bypass SSL pinning by running the following @MASTG-TOOL-0038 command (see @MASTG-TECH-0055 if you're using a non-jailbroken device):
 
 ```bash
 ios sslpinning disable
@@ -27,8 +27,8 @@ See also [Objection's help on Disabling SSL Pinning for iOS](https://github.com/
 
 If you have a jailbroken device you can try one of the following tools that can automatically disable SSL Pinning:
 
-- "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the [Cydia](0x08a-Testing-Tools.md#cydia) store. It will hook on to all high-level API calls and bypass certificate pinning.
-- The [Burp Suite Mobile Assistant](0x08a-Testing-Tools.md#burp-suite-mobile-assistant) app can also be used to bypass certificate pinning.
+- "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the @MASTG-TOOL-0047 store. It will hook on to all high-level API calls and bypass certificate pinning.
+- The @MASTG-TOOL-0077 app can also be used to bypass certificate pinning.
 
 ## When the Automated Bypasses Fail
 

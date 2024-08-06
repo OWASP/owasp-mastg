@@ -6,7 +6,7 @@ hide:
 
 # &#128172; Connect with Us
 
-<img src="../assets/logo_circle.png" width="150px" style="margin-left: 4em; margin-top: 0em;" align="right">
+<img src="../../assets/logo_circle.png" width="150px" style="margin-left: 4em; margin-top: 0em;" align="right">
 
 You can follow and reach out to the OWASP MAS team in many ways.
 
@@ -28,7 +28,7 @@ If you'd like to contribute, take a look at our [Contributions page](contributin
 
 ## Carlos Holguera
 
-<img src="../assets/carlos.jpg" width="150px" style="border-radius: 50%; margin-left: 4em;" align="right">
+<img src="../../assets/carlos.jpg" width="150px" style="border-radius: 50%; margin-left: 4em;" align="right">
 
 Carlos is a mobile security research engineer who has gained many years of hands-on experience in the field of security testing for mobile apps and embedded systems such as automotive control units and IoT devices. He is passionate about reverse engineering and dynamic instrumentation of mobile apps and is continuously learning and sharing his knowledge.
 
@@ -42,7 +42,7 @@ Carlos is a mobile security research engineer who has gained many years of hands
 
 ## Sven Schleier
 
-<img src="../assets/sven.jpg" width="150px" style="border-radius: 50%; margin-left: 4em;" align="right">
+<img src="../../assets/sven.jpg" width="150px" style="border-radius: 50%; margin-left: 4em;" align="right">
 
 Sven is an experienced web and mobile penetration tester and assessed everything from historic Flash applications to progressive mobile apps. He is also a security engineer that supported many projects end-to-end during the SDLC to "build security in". He was speaking at local and international meetups and conferences and is conducting hands-on workshops about web application and mobile app security.
 

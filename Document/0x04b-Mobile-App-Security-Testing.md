@@ -53,8 +53,6 @@ Automated analysis tools can be used to speed up the review process of Static Ap
 
 Although some static code analysis tools incorporate a lot of information about the rules and semantics required to analyze mobile apps, they may produce many false positives, particularly if they are not configured for the target environment. A security professional must therefore always review the results.
 
-The chapter ["Testing Tools"](0x08a-Testing-Tools.md) includes a list of static analysis tools, which can be found at the end of this book.
-
 ### Dynamic Analysis
 
 The focus of DAST is the testing and evaluation of apps via their real-time execution. The main objective of dynamic analysis is finding security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted both at the mobile platform layer and against the backend services and APIs, where the mobile app's request and response patterns can be analyzed.

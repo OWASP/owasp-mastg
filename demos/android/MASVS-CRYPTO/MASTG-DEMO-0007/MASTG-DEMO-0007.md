@@ -2,7 +2,6 @@
 platform: android
 title: Common Uses of Insecure Random APIs
 id: MASTG-DEMO-0007
-tools: [semgrep]
 code: [java]
 test: MASTG-TEST-0204
 ---

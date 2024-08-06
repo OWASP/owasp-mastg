@@ -28,13 +28,13 @@ Although we greatly appreciate any and all contributions to the project, there a
 - **No advertisement**: The OWASP mobile Security Project cannot be used as a platform for advertisement of commercial tools, companies or individuals. Technical content such as the implementation of certain techniques or tests should be written with free and open-source tools in mind. Commercial tools are typically not accepted, but might be referenced in some specific cases.
 - **No unnecessary self-promotion of tools or blog posts**: If you have a relation with one of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
 
-Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](contact.md) in case of doubt.
+Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](contact.md) in case of doubt.
 
 <br>
 
 ## Our Contributors
 
-All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](MASTG/Intro/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
+All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
 
 **Update March 2023: We're creating a new concept for contributions that aligns with the new MASTG v2 workflows. Stay tuned...**
 
@@ -57,7 +57,7 @@ _Coming soon..._
 
 The latest version of the MASVS v1 including all translations is available here: <https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0>
 
-| Project Lead | Lead Author | Contributors and Reviewers
+| Project Lead | Lead Author | Contributors and Reviewers |
 | ------- | --- | ----------------- |
 | Sven Schleier and Carlos Holguera | Bernhard Mueller, Sven Schleier, Jeroen Willemsen and Carlos Holguera | Alexander Antukh, Mesheryakov Aleksey, Elderov Ali, Bachevsky Artem, Jeroen Beckers, Jon-Anthoney de Boer, Ben Cheney, Will Chilcutt, Stephen Corbiaux, Ratchenko Denis, Ryan Dewhurst, @empty_jack, Ben Gardiner, Manuel Delgado, Anton Glezman, Josh Grossman, Sjoerd Langkemper, Vinícius Henrique Marangoni, Martin Marsicano, Roberto Martelloni, @PierrickV, Julia Potapenko, Andrew Orobator, Mehrad Rafii, Javier Ruiz, Abhinav Sejpal, Stefaan Seys, Yogesh Sharma, Prabhant Singh, Nikhil Soni, Anant Shrivastava, Francesco Stillavato, Abdessamad Temmar, Pauchard Thomas, Lukasz Wierzbicki |
 

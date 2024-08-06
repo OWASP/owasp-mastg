@@ -41,9 +41,6 @@ jobs:
     - name: Assemble Chapters
       run: python3 src/scripts/assemble_chapters_for_pdf.py
 
-    - name: Process Files
-      run: python3 src/scripts/transform_files.py
-
     - name: Generate English PDF
       run: ./src/pandocker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
 
@@ -94,10 +91,10 @@ jobs:
         repository: "OWASP/owasp-masvs.git"
         ref: ${{env.MASVS_VERSION}}
         fetch-depth: 1
-        path: src/scripts/owasp-masvs
+        path: owasp-masvs
 
     - name: Get MASVS Current Commit ID
-      run: cd src/scripts/owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      run: cd owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
     - name: Confirm MASTG Current Commit ID
       run: echo ${{env.MASVS_COMMIT}}
 

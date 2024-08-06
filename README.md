@@ -1,4 +1,4 @@
-<a href="https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring"><img width="180px" align="right" style="float: right;" src="Document/Images/masvs_refactor.png"></a>
+<img width="180px" align="right" style="float: right;" src="cover.png">
 
 # OWASP Mobile Application Security Testing Guide (MASTG)
 
@@ -28,11 +28,11 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 
 <br>
 
-## Trusted by ...
+## Trusted by
 
-The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://mas.owasp.org/MASTG/Intro/0x02b-MASVS-MASTG-Adoption/).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption/).
 
-<a href="https://mas.owasp.org/MASTG/Intro/0x02b-MASVS-MASTG-Adoption/">
+<a href="https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption/">
 <img src="Document/Images/Other/trusted-by-logos.png"/>
 </a>
 
@@ -40,11 +40,11 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 ## 🥇 MAS Advocates
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements).
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](https://mas.owasp.org/MASTG/0x02c-Acknowledgements).
 
 <br>
 
-<a href="https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements#our-mastg-advocates">
+<a href="https://mas.owasp.org/MASTG/0x02c-Acknowledgements#our-mastg-advocates">
 <img src="Document/Images/Other/nowsecure-logo.png" width="200px;" />
 </a>
 

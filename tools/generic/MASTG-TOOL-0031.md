@@ -1,9 +1,6 @@
 ---
 title: Frida
 platform: generic
-# device_requirements: ['jailbroken', 'non-jailbroken', 'rooted', 'non-rooted']
-# host_requirements: ['Windows', 'Linux', 'macOS']
-# techniques: ['TECH-0001', 'TECH-0010'] -> automatically added by reading from tools/
 source: https://github.com/frida/frida
 ---
 
@@ -34,7 +31,7 @@ In contrast, Frida implements code injection by writing code directly into the p
 Frida offers three modes of operation:
 
 1. Injected: this is the most common scenario when frida-server is running as a daemon in the iOS or Android device. frida-core is exposed over TCP, listening on localhost:27042 by default. Running in this mode is not possible on devices that are not rooted or jailbroken.
-2. Embedded: this is the case when your device is not rooted nor jailbroken (you cannot use ptrace as an unprivileged user), you're responsible for the injection of the [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library by embedding it into your app, manually or via third-party tools such as [Objection](#objection).
+2. Embedded: this is the case when your device is not rooted nor jailbroken (you cannot use ptrace as an unprivileged user), you're responsible for the injection of the [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library by embedding it into your app, manually or via third-party tools such as @MASTG-TOOL-0038.
 3. Preloaded: similar to `LD_PRELOAD` or `DYLD_INSERT_LIBRARIES`. You can configure the frida-gadget to run autonomously and load a script from the filesystem (e.g. path relative to where the Gadget binary resides).
 
 Independently of the chosen mode, you can make use of the [Frida JavaScript APIs](https://www.frida.re/docs/javascript-api/ "Frida JavaScript APIs") to interact with the running process and its memory. Some of the fundamental APIs are:
@@ -53,11 +50,11 @@ Frida also provides a couple of simple tools built on top of the Frida API and a
 
 In addition, you'll also find several open source Frida-based tools, such as:
 
-- [Grapefruit](https://github.com/ChiChou/grapefruit "Grapefruit"): a Runtime Application Instrument toolkig for iOS.
-- [Fridump](https://github.com/Nightbringer21/fridump "fridump"): a memory dumping tool for both Android and iOS.
-- [Objection](https://github.com/sensepost/objection "objection"): a runtime mobile security assessment framework.
-- [r2frida](https://github.com/nowsecure/r2frida "r2frida"): a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
-- [jnitrace](https://github.com/chame1eon/jnitrace "jnitrace"): a tool for tracing usage of the Android JNI runtime methods by a native library.
+- @MASTG-TOOL-0061: a Runtime Application Instrument toolkig for iOS.
+- @MASTG-TOOL-0106: a memory dumping tool for both Android and iOS.
+- @MASTG-TOOL-0038: a runtime mobile security assessment framework.
+- @MASTG-TOOL-0036: a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
+- @MASTG-TOOL-0107: a tool for tracing usage of the Android JNI runtime methods by a native library.
 
 We will be using all of these tools throughout the guide.
 

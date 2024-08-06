@@ -27,7 +27,7 @@ brew install libimobiledevice
 brew install ideviceinstaller
 ```
 
-After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
+After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`. Let's install and debug the @MASTG-APP-0028 app with the following commands:
 
 ```bash
 # The following command will show detailed information about the iOS device connected via USB.
@@ -50,7 +50,7 @@ ipainstaller App_name.ipa
 
 ## ios-deploy
 
-On macOS you can also use the [ios-deploy](/MASTG/tools/ios/MASTG-TOOL-0054/) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
+On macOS you can also use the @MASTG-TOOL-0054/ tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
 unzip Name.ipa
@@ -95,7 +95,6 @@ It is important to note that changing this value will break the original signatu
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
-
 
 One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your host computer or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 

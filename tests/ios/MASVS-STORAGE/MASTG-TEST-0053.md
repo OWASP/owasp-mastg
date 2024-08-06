@@ -37,6 +37,6 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 
 ## Dynamic Analysis
 
-In the section "Monitoring System Logs" of the chapter "iOS Basic Security Testing" various methods for checking the device logs are explained. Navigate to a screen that displays input fields that take sensitive user information.
+See @MASTG-TECH-0060 and once you're set up, navigate to a screen that displays input fields that take sensitive user information.
 
 After starting one of the methods, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.

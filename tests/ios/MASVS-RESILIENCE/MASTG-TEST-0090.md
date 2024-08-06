@@ -14,7 +14,7 @@ masvs_v1_levels:
 
 **Application Source Code Integrity Checks:**
 
-Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in ["Patching"](../../../techniques/ios/MASTG-TECH-0090.md), and run it.
+Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in @MASTG-TECH-0090, and run it.
 
 The app should respond in some way. For example by:
 
@@ -32,7 +32,7 @@ Work on bypassing the defenses and answer the following questions:
 
 **File Storage Integrity Checks:**
 
-Go to the app data directories as indicated in section ["Accessing App Data Directories"](../../../Document/0x06b-iOS-Security-Testing.md#accessing-app-data-directories) and modify some files.
+Go to the app data directories as indicated in @MASTG-TECH-0059 and modify some files.
 
 Next, work on bypassing the defenses and answer the following questions:
 
