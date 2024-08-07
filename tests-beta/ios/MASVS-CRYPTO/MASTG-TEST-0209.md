@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Weak Cryptographic Key Generation 
+title: Inappropriate Key Sizes
 id: MASTG-TEST-0209
 type: [static]
 weakness: MASWE-0009

@@ -47,5 +47,4 @@ A weak PRNG can introduce vulnerabilities in cryptographic key generation by pro
 
 ## Mitigations
 
-- A secure pseudorandom number generator ([PRNG](https://developer.android.com/privacy-and-security/risks/weak-prng)) should be used to avoid predictable keys.
 - The cryptographic schemes and key length used in the app and third-party libraries should meet industry standards as specified in [NIST Special Publication 800-131A](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) to provide long-term protection.

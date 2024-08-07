@@ -1,1 +1,1 @@
-semgrep -c  ../../../../rules/mastg-ios-weak_key_generation.yml ./MastgTest_keylength.swift --text -o output.txt
+semgrep -c  ../../../../rules/mastg-ios-weak_key_generation.yml ./MastgTest.swift --text -o output.txt

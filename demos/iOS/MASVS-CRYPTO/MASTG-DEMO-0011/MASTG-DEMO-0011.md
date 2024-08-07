@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Common Uses of Insecure algorithm
-tools: [MASTG-TOOL-0105]
+tools: @MASTG-TOOL-0105
 code: [swift]
 id: MASTG-DEMO-0011
 test: MASTG-TEST-0209
@@ -9,7 +9,7 @@ test: MASTG-TEST-0209
 
 ### Sample
 
-{{ MastgTest_keylength.swift }}
+{{ MastgTest.swift }}
 
 ### Steps
 

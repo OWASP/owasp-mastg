@@ -4,7 +4,7 @@
 │ 1 Code Finding │
 └────────────────┘
                                             
-  MastgTest_keylength.swift
+  MastgTest.swift
     ❯❱ rules.weak_key_size
           Cryptographic implementations with insufficient key length are being used.
                                                                                     

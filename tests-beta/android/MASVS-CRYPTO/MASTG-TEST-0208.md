@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Weak Cryptographic Key Generation 
+title: Inappropriate Key Sizes 
 id: MASTG-TEST-0208
 type: [static]
 weakness: MASWE-0009
@@ -20,4 +20,4 @@ The output should contain a **list of locations where insufficient key lengths a
 
 ## Evaluation
 
-The test case fails if you can find the use of algorithms using inappropriate key sizes within the source code. This also fails if deprecated algorithms are used.
+The test case fails if you can find the use of inappropriate key sizes within the source code.
