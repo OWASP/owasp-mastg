@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Weak Cryptographic Key Generation
-tools: @MASTG-TOOL-0105
+tools: @MASTG-TOOL-0109
 code: [java]
 id: MASTG-DEMO-0012
 test: MASTG-TEST-0208
