@@ -30,4 +30,4 @@ The output should contain a network traffic sensitive data log that includes the
 
 The test case fails if you can find the sensitive data you entered in the app that is not stated in the App Store Privacy declarations.
 
-Note that this test does not provide any code locations where the sensitive data is being sent over the network. In order to identify the code locations, you can use static analysis tools like [semgrep](https://semgrep.dev/) or dynamic analysis tools like @MASTG-TOOL-0031.
+Note that this test does not provide any code locations where the sensitive data is being sent over the network. In order to identify the code locations, you can use static analysis tools like @MASTG-TOOL-0110 or dynamic analysis tools like @MASTG-TOOL-0031.
