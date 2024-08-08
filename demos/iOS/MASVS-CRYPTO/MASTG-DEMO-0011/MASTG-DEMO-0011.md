@@ -29,4 +29,4 @@ The rule has identified two instances in the code file where an insecure 3DES al
 
 Review each of the reported instances.
 
-- Line 3 using `kCCAlgorithm3DES`, which creates a symmetric key with a size of 168 bit.
+- Line 3 is using `kCCAlgorithm3DES`, which creates a symmetric key with a size of 168 bit.

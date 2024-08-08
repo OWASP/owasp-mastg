@@ -30,4 +30,4 @@ The rule has identified all the location in the code file where weak cipher key 
 Review each of the reported instances.
 
 - Line 2 has initialized the RSA key size of 1024 bits.
-- Line 5 using `keyGen.init(64)` which creates a symmetric key with a size of 64 bits (8 bytes).
+- Line 5 is using `keyGen.init(64)` which creates a symmetric key with a size of 64 bits (8 bytes).
