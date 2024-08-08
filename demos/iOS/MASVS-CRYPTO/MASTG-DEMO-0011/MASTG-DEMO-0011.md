@@ -1,7 +1,6 @@
 ---
 platform: ios
 title: Common Uses of Insecure algorithm
-tools: @MASTG-TOOL-0109
 code: [swift]
 id: MASTG-DEMO-0011
 test: MASTG-TEST-0209
@@ -13,7 +12,7 @@ test: MASTG-TEST-0209
 
 ### Steps
 
-Let's run our semgrep rule against the sample code.
+Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 {{ ../../../../rules/mastg-ios-weak_key_generation.yml }}
 

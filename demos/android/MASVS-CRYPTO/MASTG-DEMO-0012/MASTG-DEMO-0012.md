@@ -1,7 +1,6 @@
 ---
 platform: android
 title: Weak Cryptographic Key Generation
-tools: @MASTG-TOOL-0109
 code: [java]
 id: MASTG-DEMO-0012
 test: MASTG-TEST-0208
@@ -13,7 +12,7 @@ test: MASTG-TEST-0208
 
 ### Steps
 
-Let's run our semgrep rule against the sample code.
+Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 {{ ../../../../rules/mastg-android-weak-crypto-key-generation.yml }}
 

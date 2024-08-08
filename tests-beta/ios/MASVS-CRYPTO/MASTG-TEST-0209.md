@@ -12,7 +12,7 @@ The application appears to utilize a symmetric algorithm with a weak key configu
 
 ## Steps
 
-1. Run a static analysis tool (semgrep) on the app and look for uses of insecure algorithm.
+1. Run a static analysis tool such as @MASTG-TOOL-0110 on the app and look for uses of insecure algorithm.
 
 ## Observation
 

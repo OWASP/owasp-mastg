@@ -12,7 +12,7 @@ The application appears to utilize a symmetric algorithm  with a weak key config
 
 ## Steps
 
-1. Run a static analysis tool such as `semgrep` on the code and look for uses of algorithms with insufficient key length.
+1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for uses of algorithms with insufficient key length.
 
 ## Observation
 
