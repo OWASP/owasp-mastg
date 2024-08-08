@@ -7,7 +7,7 @@ type: [static]
 
 ## Overview
 
-The application appears to utilize a harcoded key for its cryptographic implementations.
+The application appears to utilize a hardcoded key for its cryptographic implementations.
 
 ## Steps
 
