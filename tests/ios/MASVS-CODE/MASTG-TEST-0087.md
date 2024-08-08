@@ -61,7 +61,7 @@ All the features are enabled in these examples:
 
 ## Dynamic Analysis
 
-These checks can be performed dynamically using [objection](../../../Document/0x08a-Testing-Tools.md#objection). Here's one example:
+These checks can be performed dynamically using @MASTG-TOOL-0038. Here's one example:
 
 ```bash
 com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary

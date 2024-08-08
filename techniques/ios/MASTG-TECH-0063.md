@@ -3,7 +3,7 @@ title: Setting up an Interception Proxy
 platform: ios
 ---
 
-[Burp Suite](0x08a-Testing-Tools.md#burp-suite) is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+@MASTG-TOOL-0007 is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your iOS device and host computer are connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
@@ -11,7 +11,7 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 
 ## Using Burp via USB on a Jailbroken Device
 
-In the section [Accessing the Device Shell](0x06b-iOS-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use [iproxy](0x08a-Testing-Tools.md#iproxy) to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In @MASTG-TECH-0052 you can learn how to use @MASTG-TOOL-0055 to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 

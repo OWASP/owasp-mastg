@@ -2,7 +2,6 @@
 platform: android
 title: Common Uses of Insecure Random APIs
 id: MASTG-DEMO-0007
-tools: [semgrep]
 code: [java]
 test: MASTG-TEST-0204
 ---
@@ -13,7 +12,7 @@ test: MASTG-TEST-0204
 
 ### Steps
 
-Let's run our semgrep rule against the sample code.
+Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 {{ ../../../../rules/mastg-android-insecure-random-use.yaml }}
 

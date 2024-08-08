@@ -37,7 +37,7 @@ There are generally two approaches to this: **reFlutter** and **Frida**.
 
     This will create a **release.RE.ipa** file in the output folder.
 
-2. [Sign](../../techniques/ios/MASTG-TECH-0092.md) the patched **release.RE.ipa** with the Apple certificates. This will create a signed ".ipa" file in the output folder.
+2. Sign (@MASTG-TECH-0092) the patched **release.RE.ipa** with the Apple certificates. This will create a signed ".ipa" file in the output folder.
 
 3. Install the signed patched app on the mobile device.
 
@@ -54,7 +54,7 @@ There are generally two approaches to this: **reFlutter** and **Frida**.
 
 1. Configure using [WIFI hotspot / openVPN](https://blog.nviso.eu/2020/06/12/intercepting-flutter-traffic-on-ios/) method to redirect requests to Burp.
 
-2. Install the [app](../../apps/ios/MASTG-APP-0025.md) on the mobile device.
+2. Install the @MASTG-APP-0025 on the mobile device.
 
 3. Configure the interception proxy. For example, in Burp:
 
@@ -63,7 +63,7 @@ There are generally two approaches to this: **reFlutter** and **Frida**.
    - Select `Bind to address` to `All interfaces`.
    - Request Handling -> support for invisible proxying.
 
-4. Run the [disable-flutter-tls.js](../../tools/generic/MASTG-TOOL-0101.md) frida script.
+4. Run the @MASTG-TOOL-0101 frida script.
 
     ```bash
     frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js

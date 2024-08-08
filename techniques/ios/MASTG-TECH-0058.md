@@ -3,7 +3,7 @@ title: Exploring the App Package
 platform: ios
 ---
 
-Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in ["Obtaining and Extracting Apps"](../../techniques/ios/MASTG-TECH-0054.md "Obtaining and Extracting Apps").
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the @MASTG-APP-0028 IPA as explained in @MASTG-TECH-0054.
 
 You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder containing the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
@@ -49,7 +49,7 @@ The most relevant items are:
 - `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
 - `Frameworks/` contains the app native libraries as .dylib or .framework files.
 - `PlugIns/` may contain app extensions as .appex files (not present in the example).
-- [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
+- iGoat-Swift is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
 - Various resources such as images/icons, `*.nib` files (storing the user interfaces of iOS app), localized content (`<language>.lproj`), text files, audio files, etc.
 
 ## The Info.plist File
@@ -73,10 +73,10 @@ The file might be formatted in XML or binary (bplist). You can convert it to XML
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
 
-- App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- Exported/imported _custom document types_: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network Communication](0x06g-Testing-Network-Communication.md)")
+- App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](../../Document/0x06h-Testing-Platform-Interaction.md)")
+- Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](../../Document/0x06h-Testing-Platform-Interaction.md)")
+- Exported/imported _custom document types_: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](../../Document/0x06h-Testing-Platform-Interaction.md)")
+- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network Communication](../../Document/0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
@@ -92,10 +92,10 @@ iOS apps can make their codebase modular by using different elements. In the MAS
     - Static Libraries can be used and will be compiled in the app binary.
     - Dynamic Libraries (typically having the `.dylib` extension) are also used but must be part of a framework bundle. Standalone Dynamic Libraries are [not supported](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) on iOS, watchOS, or tvOS, except for the system Swift libraries provided by Xcode.
 - [Frameworks](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) (since iOS 8). A Framework is a hierarchical directory that encapsulates a dynamic library, header files, and resources, such as storyboards, image files, and localized strings, into a single package.
-- [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
-- [Swift Packages](https://developer.apple.com/documentation/swift_packages): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
+- [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages).
+- [Swift Packages](https://developer.apple.com/documentation/xcode/swift-packages): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
 
-You can view native libraries in [Grapefruit](../../tools/ios/MASTG-TOOL-0061.md "Grapefruit") by clicking on the Modules icon in the left menu bar:
+You can view native libraries in @MASTG-TOOL-0061 by clicking on the Modules icon in the left menu bar:
 
 <img src="Images/Chapters/0x06b/grapefruit_modules.png" width="100%" />
 

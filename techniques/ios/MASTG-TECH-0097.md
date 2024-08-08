@@ -5,7 +5,7 @@ platform: ios
 
 Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
 
-We'll keep using the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app, open a session with r2frida `r2 frida://usb//iGoat-Swift` and you can start by displaying the target binary information by using the `:i` command:
+We'll keep using the @MASTG-APP-0028 app, open a session with @MASTG-TOOL-0036 `r2 frida://usb//iGoat-Swift` and you can start by displaying the target binary information by using the `:i` command:
 
 ```bash
 [0x00000000]> :i

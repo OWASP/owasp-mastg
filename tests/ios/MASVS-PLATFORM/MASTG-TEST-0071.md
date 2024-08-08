@@ -54,7 +54,7 @@ If not having the source code you can still take a look into the `Info.plist` fi
 
 A very complete explanation about the use of these keys can be found [on Stackoverflow](https://stackoverflow.com/questions/21937978/what-are-utimportedtypedeclarations-and-utexportedtypedeclarations-used-for-on-i "What are UTImportedTypeDeclarations and UTExportedTypeDeclarations used for on iOS?").
 
-Let's see a real-world example. We will take a File Manager app and take a look at these keys. We used [objection](https://github.com/sensepost/objection "objection") here to read the `Info.plist` file.
+Let's see a real-world example. We will take a File Manager app and take a look at these keys. We used @MASTG-TOOL-0038 here to read the `Info.plist` file.
 
 ```bash
 objection --gadget SomeFileManager run ios plist cat Info.plist
@@ -304,4 +304,4 @@ RET: 0x1
 
 If you look at the stack trace, you can see how `application:openURL:options:` called `__handleOpenURL:`, which called `moveItemAtPath:toPath:error:`. Notice that we have now this information without having the source code for the target app. The first thing that we had to do was clear: hook `application:openURL:options:`. Regarding the rest, we had to think a little bit and come up with methods that we could start tracing and are related to the file manager, for example, all methods containing the strings "copy", "move", "remove", etc. until we have found that the one being called was `moveItemAtPath:toPath:error:`.
 
-A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to the "[Testing Custom URL Schemes](../MASVS-PLATFORM/MASTG-TEST-0075.md)" section for more information.
+A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to @MASTG-TEST-0075 for more information.

@@ -17,7 +17,7 @@ Android apps sometimes use insecure pseudorandom number generators (PRNGs) such 
 
 ## Steps
 
-1. Run a [static analysis](/MASTG/techniques/android/MASTG-TECH-0014) tool on the app and look for insecure random APIs.
+1. Run a static analysis (@MASTG-TECH-0014) tool on the app and look for insecure random APIs.
 
 ## Observation
 

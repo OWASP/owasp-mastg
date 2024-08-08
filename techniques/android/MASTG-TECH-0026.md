@@ -5,11 +5,11 @@ platform: android
 
 Non-rooted devices have the benefit of replicating an environment that the application is intended to run on.
 
-Thanks to tools like [objection](0x08a-Testing-Tools.md#objection), you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app). To do that you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library.
+Thanks to tools like @MASTG-TOOL-0038, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app). To do that you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library.
 
 Now you can use objection to dynamically analyze the application on non-rooted devices.
 
-The following commands summarize how to patch and start dynamic analysis using objection using the [UnCrackable App for Android Level 1](../../apps/android/MASTG-APP-0003.md) as an example:
+The following commands summarize how to patch and start dynamic analysis using objection using the @MASTG-APP-0003 as an example:
 
 ```bash
 # Download the Uncrackable APK

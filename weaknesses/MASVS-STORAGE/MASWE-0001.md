@@ -16,7 +16,7 @@ status: new
 
 ## Overview
 
-Mobile apps may write [sensitive data](../../../../Document/0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Sensitive Data") to logs. This may include sensitive user data, such as passwords, credit card numbers, or other personally identifiable information (PII), as well as sensitive system data, such as cryptographic keys, session tokens, or other sensitive information.
+Mobile apps may write [sensitive data](../../Document/0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Sensitive Data") to logs. This may include sensitive user data, such as passwords, credit card numbers, or other personally identifiable information (PII), as well as sensitive system data, such as cryptographic keys, session tokens, or other sensitive information.
 
 Logging all possible information is very useful at development time, especially for debugging the app. However, in production it might not always be necessary and should be prevented whenever possible to avoid any accidentally exposure to potential attackers.
 

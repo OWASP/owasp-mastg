@@ -13,12 +13,6 @@ logs
 *.pdf
 *.docx
 *.epub
-docs/MASVS/**/
-docs/MASVS/*-*.md
-docs/MASTG/**/
-docs/MASTG/0x*.md
-docs/assets/Images
-docs/checklists/MASVS-*.md
 docs/talks.md
 owasp-masvs
 __pycache__
@@ -27,5 +21,10 @@ playground/
 __handlers__
 *.apk
 risks2/
-docs/MASWE/**/
-docs/MASWE/*.md
+docs/MASVS/**/
+docs/MASVS/*-*.md
+docs/MASTG
+docs/MASWE
+docs/assets/Images
+OWASP_MASVS.yaml
+cross_references.yaml

@@ -13,7 +13,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
 
-In the following sections you will be using [r2frida](0x08a-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift)) that should be running on your iPhone (connected per USB). Use the following command:
+In the following sections you will be using @MASTG-TOOL-0036 to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. @MASTG-APP-0028) that should be running on your iPhone (connected per USB). Use the following command:
 
 ```bash
 r2 frida://usb//iGoat-Swift
@@ -58,7 +58,7 @@ If you're only interested into the modules (binaries and libraries) that the app
 0x0000000100f60000 Realm
 ```
 
-As you might expect you can correlate the addresses of the libraries with the memory maps: e.g. the main app binary [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) is located at `0x0000000100b7c000` and the Realm Framework at `0x0000000100f60000`.
+As you might expect you can correlate the addresses of the libraries with the memory maps: e.g. the main app from @MASTG-APP-0028 is called "iGoat-Swift" and is located at `0x0000000100b7c000` and the Realm Framework at `0x0000000100f60000`.
 
 You can also use objection to display the same information.
 
@@ -101,7 +101,7 @@ e search.in=perm:r--
 e search.quiet=false
 ```
 
-For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know should be located in the main binary of the app:
+For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know should be located in the main binary of the app (for example, the name of the @MASTG-APP-0028 app):
 
 ```bash
 [0x00000000]> :/ iGoat
@@ -124,9 +124,9 @@ Now take the first hit, seek to it and check your current location in the memory
 0x0000000100b7c000 - 0x0000000100de0000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
 ```
 
-As expected, you are located in the region of the main [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) binary (r-x, read and execute). In the previous section, you saw that the main binary is located between `0x0000000100b7c000` and `0x0000000100e97000`.
+As expected, you are located in the region of the main iGoat-Swift binary (r-x, read and execute). In the previous section, you saw that the main binary is located between `0x0000000100b7c000` and `0x0000000100e97000`.
 
-Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) app and navigate in the menu to **Authentication** -> **Remote Authentication** -> **Start**. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on **Login** just yet. Perform the following two steps.
+Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the @MASTG-APP-0028 app and navigate in the menu to **Authentication** -> **Remote Authentication** -> **Start**. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on **Login** just yet. Perform the following two steps.
 
 ```bash
 [0x00000000]> :/ owasp-mstg
@@ -168,7 +168,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ## Memory Dump
 
-You can dump the app's process memory with [objection](0x08a-Testing-Tools.md#objection) and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](MASTG-TECH-0079.md). To use these tools on a jailbroken phone, simply have frida-server installed and running.
+You can dump the app's process memory with @MASTG-TOOL-0038 and @MASTG-TOOL-0106. To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is described in @MASTG-TECH-0079. To use these tools on a jailbroken phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 

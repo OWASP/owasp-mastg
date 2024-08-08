@@ -11,10 +11,10 @@ Although you can use a Linux or Windows host computer for testing, you'll find t
 The following is the most basic iOS app testing setup:
 
 - Ideally macOS host computer with admin rights
-- [Xcode](0x08a-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08a-Testing-Tools.md#xcode-command-line-tools) installed.
+- @MASTG-TOOL-0070 and @MASTG-TOOL-0071 installed.
 - Wi-Fi network that permits client-to-client traffic.
 - At least one jailbroken iOS device (of the desired iOS version).
-- [Burp Suite](0x08a-Testing-Tools.md#burp-suite) or other interception proxy tool.
+- @MASTG-TOOL-0007 or other interception proxy tool.
 
 ### Obtaining the UDID of an iOS device
 
@@ -69,7 +69,7 @@ Unlike the Android emulator, which fully emulates the hardware of an actual Andr
 
 ### Testing on an Emulator
 
-[Corellium](../techniques/ios/MASTG-TECH-0088.md#corellium) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
+@MASTG-TOOL-0108 is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
 
 ### Getting Privileged Access
 
@@ -80,7 +80,7 @@ iOS jailbreaking is often compared to Android rooting, but the process is actual
 
 On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
 
-The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08a-Testing-Tools.md#cydia "Cydia") or [Sileo](0x08a-Testing-Tools.md#sileo "Sileo")). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
+The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as @MASTG-TOOL-0047 or @MASTG-TOOL-0064). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
 
 Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 

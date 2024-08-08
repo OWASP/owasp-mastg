@@ -8,7 +8,7 @@ mappings:
   masvs-v2: [MASVS-CRYPTO-2, MASVS-CODE-4]
 
 refs:
-- https://mas.owasp.org/MASTG/Android/0x05d-Testing-Data-Storage/#secure-key-import-into-keystore
+- https://mas.owasp.org/MASTG/0x05d-Testing-Data-Storage/#secure-key-import-into-keystore
 - https://developer.android.com/privacy-and-security/keystore#ImportingEncryptedKeys
 - https://developer.android.com/reference/kotlin/android/security/keystore/KeyProtection
 - https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_as_data#2933724

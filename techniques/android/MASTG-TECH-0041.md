@@ -34,7 +34,7 @@ A well-known use case of this technique is loading the Frida gadget to an applic
 
 Many Android applications use native code in addition to Java code for various performance and security reasons. The native code is present in the form of ELF shared libraries. An ELF executable includes a list of shared libraries (dependencies) that are linked to the executable for it to function optimally. This list can be modified to insert an additional library to be injected into the process.
 
-Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using [LIEF](0x08a-Testing-Tools.md#LIEF) (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
+Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using @MASTG-TOOL-0034 (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
 
 ```python
 import lief
@@ -52,7 +52,7 @@ Above we looked into techniques which require some kind of modification of the a
 
 As the [ld.so man page](http://man7.org/linux/man-pages/man8/ld.so.8.html "LD.SO man page") states, symbols loaded from the library passed using `LD_PRELOAD` always get precedence, i.e. they are searched first by the loader while resolving the symbols, effectively overriding the original ones. This feature is often used to inspect the input parameters of some commonly used libc functions such as `fopen`, `read`, `write`, `strcmp`, etc., specially in obfuscated programs, where understanding their behavior may be challenging. Therefore, having an insight on which files are being opened or which strings are being compared may be very valuable. The key idea here is "function wrapping", meaning that you cannot patch system calls such as libc's `fopen`, but you can override (wrap) it including custom code that will, for instance, print the input parameters for you and still call the original `fopen` remaining transparent to the caller.
 
-On Android, setting `LD_PRELOAD` is slightly different compared to other Linux distributions. If you recall from the "[Platform Overview](0x05a-Platform-Overview.md#zygote "Platform Overview")" section, every application in Android is forked from Zygote, which is started very early during the Android boot-up. Thus, setting `LD_PRELOAD` on Zygote is not possible. As a workaround for this problem, Android supports the `setprop` (set property) functionality. Below you can see an example for an application with package name `com.foo.bar` (note the additional `wrap.` prefix):
+On Android, setting `LD_PRELOAD` is slightly different compared to other Linux distributions. If you recall from the "[Platform Overview](../../Document/0x05a-Platform-Overview.md#zygote "Platform Overview")" section, every application in Android is forked from Zygote, which is started very early during the Android boot-up. Thus, setting `LD_PRELOAD` on Zygote is not possible. As a workaround for this problem, Android supports the `setprop` (set property) functionality. Below you can see an example for an application with package name `com.foo.bar` (note the additional `wrap.` prefix):
 
 ```bash
 setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
