@@ -1,0 +1,11 @@
+rules:
+  - id: hardcoded-crypto-keys-usage
+    severity: WARNING
+    languages: 
+      - swift
+    message: >-
+      The application appears to utilize hardcoded-encryption keys in the code.
+    pattern-either:
+      - patterns:
+        - pattern-either:
+          - pattern: keyString
