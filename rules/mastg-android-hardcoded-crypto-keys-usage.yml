@@ -1,0 +1,14 @@
+rules:
+  - id: hardcoded-crypto-key-test
+    pattern-either:
+      - pattern: |
+          new SecretKeySpec($KEY.getBytes(), $ALGO)
+      - pattern: |
+            byte[] $KEY = "...".getBytes();
+            ...
+            new SecretKeySpec($KEY, $ALGO);
+    message: >-
+      Hardcoded cryptographic keys are found in use.
+    languages:
+      - java
+    severity: WARNING
