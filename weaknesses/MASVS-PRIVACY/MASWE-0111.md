@@ -1,7 +1,7 @@
 ---
-title: Transperency about data collection and usage
+title: Transparency about data collection and usage
 id: MASWE-0111
-alias: transperency-data-collection-usage
+alias: transparency-data-collection-usage
 platform: ["android", "ios"]
 profiles: ["P"]
 mappings:
