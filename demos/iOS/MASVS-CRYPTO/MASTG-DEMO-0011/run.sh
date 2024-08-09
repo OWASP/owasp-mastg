@@ -1,1 +1,1 @@
-semgrep -c  ../../../../rules/mastg-ios-weak_key_generation.yml ./MastgTest.swift --text -o output.txt
+r2 -q -i cccrypt.r2 -A ./Payload/MASTestApp.app/MASTestApp
