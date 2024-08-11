@@ -36,14 +36,17 @@ Weak cryptographic key generation can undermine the integrity of data, as it cre
 
 ## Modes of Introduction
 
-- **Third Party Libraries**:
-The libraries, algorithms and cryptographic schemes used by the application are out of date.
-
 - **Use of Insecure Algorithms**:
 Using deprecated algorithms (such as the 1024-bit RSA key or 160-bit ECDSA key) in an application poses significant security risks to data.
 
 - **Weak PRNG**:
 A weak PRNG can introduce vulnerabilities in cryptographic key generation by providing insufficient entropy, making it easier for attackers to guess the key.
+
+- **Relying on Non-Standard Implementations**:
+Relying on non-standard methods for encryption, such as using the `random()` method or encoding techniques like Base64, can lead to weak or reversible cipher texts.
+
+- **Third Party Libraries**:
+The algorithms, cryptographic schemes and key sizes offered by a third party library are out of date.
 
 ## Mitigations
 
