@@ -35,7 +35,7 @@ More on iOS testing can be found [here](https://support.corellium.com/features/a
 
 However, some features are not supported:
 
-- **TrustZone**: It is not possible to access a Keymaster, or use PlayReady or WideFine.
+- **TrustZone**: It is not possible to access a Keymaster, or use PlayReady or Widevine.
 - **SELinux in Permissive mode**: SELinux is set to permissive mode, which may be detected by applications. This is typically not the case for physical devices rooted with Magisk or KernelSU.
 
 More on Android testing can be found [here](https://support.corellium.com/features/apps/debug-test-android-apps).
