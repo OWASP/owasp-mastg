@@ -339,6 +339,7 @@ hooks:
   - docs/hooks/create_dynamic_tables.py
   - docs/hooks/update_git_info.py
   - docs/hooks/add-checklists-banner.py
+  - docs/hooks/test.py
 
 extra:
   generator: false # removed but recreated in copyright above
