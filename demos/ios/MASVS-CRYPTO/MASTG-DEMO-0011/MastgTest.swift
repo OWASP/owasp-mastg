@@ -1,37 +1,90 @@
-import SwiftUI
-import CommonCrypto
+import Foundation
+import Security
 
 struct MastgTest {
     static func mastgTest(completion: @escaping (String) -> Void) {
-        let key = "0123456789abcdef01234567" // 24-byte key for 3DES
-        let data = "This is a sample text".data(using: .utf8)!
         
-        // Create a buffer for encrypted data
-        var encryptedBytes = [UInt8](repeating: 0, count: data.count + kCCBlockSize3DES)
-        var numBytesEncrypted: size_t = 0
+        // Step 1: Generate an RSA key pair with a 1024-bit key size
+        let tag = "org.owasp.mas.rsa-1014".data(using: .utf8)!
+        let keyAttributes: [String: Any] = [
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+            kSecAttrKeySizeInBits as String: 1024,  // Using 1024-bit RSA key
+            kSecPrivateKeyAttrs as String:
+               [kSecAttrIsPermanent as String:    true,     // to store it in the Keychain
+                kSecAttrApplicationTag as String: tag]      // to find and retrieve it from the Keychain later
+        ]
         
-        let cryptStatus = data.withUnsafeBytes { dataBytes in
-            key.withCString { keyBytes in
-                CCCrypt(
-                    CCOperation(kCCEncrypt),              // Encrypt
-                    CCAlgorithm(kCCAlgorithm3DES),        // 3DES Algorithm
-                    CCOptions(kCCOptionPKCS7Padding),     // PKCS7 Padding
-                    keyBytes, kCCKeySize3DES,             // Key and key length
-                    nil,                                  // Initialization Vector (optional)
-                    dataBytes.baseAddress, data.count,    // Input data
-                    &encryptedBytes, encryptedBytes.count, // Output data
-                    &numBytesEncrypted                    // Number of bytes encrypted
-                )
-            }
+        var error: Unmanaged<CFError>?
+        guard let privateKey = SecKeyCreateRandomKey(keyAttributes as CFDictionary, &error) else {
+            completion("Failed to generate private key: \(String(describing: error))")
+            return
         }
         
-        if cryptStatus == kCCSuccess {
-            let encryptedData = Data(bytes: encryptedBytes, count: numBytesEncrypted)
-            let encryptedHex = encryptedData.map { String(format: "%02hhx", $0) }.joined()
-            let value = "Original:\n\n \(String(data: data, encoding: .utf8)!)\n\nEncrypted (Hex):\n \(encryptedHex)"
-            completion(value)
-        } else {
-            completion("Encryption failed with status: \(cryptStatus)")
+        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
+            completion("Failed to generate public key")
+            return
         }
+        
+        // Convert the private key to data (DER format)
+        guard let privateKeyData = SecKeyCopyExternalRepresentation(privateKey, &error) as Data? else {
+            completion("Failed to extract private key: \(String(describing: error))")
+            return
+        }
+        
+        // Encode the private key for display
+        //let privateKeyBase64 = privateKeyData.base64EncodedString()
+        let privateKeyHex = privateKeyData.map { String(format: "%02hhx", $0) }.joined()
+        
+        // Convert the public key to data (DER format)
+        guard let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, &error) as Data? else {
+            completion("Failed to extract public key: \(String(describing: error))")
+            return
+        }
+
+        // Encode the public key for display
+        // let publicKeyBase64 = publicKeyData.base64EncodedString()
+        let publicKeyHex = publicKeyData.map { String(format: "%02hhx", $0) }.joined()
+        
+        // Data to sign
+        let dataToSign = "This is a sample text".data(using: .utf8)!
+        
+        // Step 2: Sign the data with the private key
+        guard let signature = SecKeyCreateSignature(
+            privateKey,
+            SecKeyAlgorithm.rsaSignatureMessagePKCS1v15SHA256,
+            dataToSign as CFData,
+            &error
+        ) else {
+            completion("Signing failed: \(String(describing: error))")
+            return
+        }
+        
+        // Convert signature to hex string for display
+        let signatureHex = (signature as Data).map { String(format: "%02hhx", $0) }.joined()
+        
+        // Step 3: Verify the signature with the public key
+        let verificationStatus = SecKeyVerifySignature(
+            publicKey,
+            SecKeyAlgorithm.rsaSignatureMessagePKCS1v15SHA256,
+            dataToSign as CFData,
+            signature as CFData,
+            &error
+        )
+        
+        let verificationResult = verificationStatus ? "Signature is valid." : "Signature is invalid."
+        
+        let value = """
+        Original: \(String(data: dataToSign, encoding: .utf8)!)
+        
+        Private Key (Hex): \(privateKeyHex)
+        
+        Public Key (Hex): \(publicKeyHex)
+        
+        Signature (Hex): \(signatureHex)
+        
+        Verification: \(verificationResult)
+        """
+        
+        completion(value)
     }
 }

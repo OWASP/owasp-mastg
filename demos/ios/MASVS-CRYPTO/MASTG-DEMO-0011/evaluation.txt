@@ -1,9 +1,9 @@
-│           0x1000040c0      00008052       mov w0, 0           -> kCCEncrypt (0 for encryption)
-│           0x1000040c4      41008052       mov w1, 2           -> kCCAlgorithm3DES (2 for 3DES)
-│           0x1000040c8      22008052       mov w2, 1           -> kCCOptionPKCS7Padding (1 for PKCS7 padding)
-│           0x1000040cc      e30317aa       mov x3, x23         -> key (pointer to the encryption key)
-│           0x1000040d0      04038052       mov w4, 0x18        -> keyLength (0x18 or 24 bytes for 3DES)
-│           0x1000040d4      050080d2       mov x5, 0           -> iv (0 or NULL, implying no initialization vector)
-│           0x1000040d8      e60316aa       mov x6, x22         -> dataIn (pointer to the input data to be encrypted)
-│           0x1000040dc      e70319aa       mov x7, x25         -> dataOut (pointer to the output buffer where encrypted data will be stored)
-│           0x1000040e0      790d0094       bl sym.imp.CCCrypt  -> Call to CCCrypt function
+│       │   0x10000484c      080942f9       ldr x8, reloc.kSecAttrKeySizeInBits ; 0x10000c410   ->  Load the address of kSecAttrKeySizeInBits into x8
+│       │   0x100004850      000140f9       ldr x0, [x8]
+│       │   0x100004854      e30b0094       bl fcn.1000077e0
+│       │   0x100004858      800605a9       stp x0, x1, [x20, 0x50]
+│       │   0x10000485c      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
+│       │   0x100004860      089d41f9       ldr x8, reloc.Swift.Int    ; 0x10000c338
+│       │   0x100004864      883e00f9       str x8, [x20, 0x78]
+│       │   0x100004868      08808052       mov w8, 0x400                                       ->  Move 0x400 (1024 in decimal) into w8, the lower 32 bits of x8
+│       │   0x10000486c      883200f9       str x8, [x20, 0x60]                                 ->  Store the final value (1024-bit key size) into memory
