@@ -13,7 +13,6 @@ This section describes various ways to bypass SSL Pinning and gives guidance abo
 
 There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
 
-- Cydia Substrate: Install the [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller") package.
 - Frida: Use the [frida-multiple-unpinning](https://codeshare.frida.re/@akabe1/frida-multiple-unpinning/ "Project: frida-multiple-unpinning") script.
 - Objection: Use the `android sslpinning disable` command.
 - Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
@@ -29,6 +28,8 @@ Here's an example of the output:
 <img src="Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="100%" />
 
 See also [Objection's help on Disabling SSL Pinning for Android](https://github.com/sensepost/objection/blob/master/objection/console/helpfiles/android.sslpinning.disable.txt) for further information and inspect the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/android/pinning.ts "pinning.ts") file to understand how the bypass works.
+
+Note that the frida-multiple-unpinning script from @MASTG-TOOL-0032 covers more scenarios than the Objection script.
 
 ## Bypass Custom Certificate Pinning Statically
 
