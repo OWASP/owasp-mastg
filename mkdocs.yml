@@ -208,7 +208,7 @@ nav:
       - crackmes/index.md
       - ... | flat | crackmes/*.md
   - News:
-      - news/index.md
+      - news/archive/2024
   - talks.md
   - "&#11088; Contribute":
       - contributing.md
