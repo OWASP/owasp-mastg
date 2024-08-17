@@ -1,0 +1,9 @@
+│           0x1000040c0      00008052       mov w0, 0           -> kCCEncrypt (0 for encryption)
+│           0x1000040c4      41008052       mov w1, 2           -> kCCAlgorithm3DES (2 for 3DES)
+│           0x1000040c8      22008052       mov w2, 1           -> kCCOptionPKCS7Padding (1 for PKCS7 padding)
+│           0x1000040cc      e30317aa       mov x3, x23         -> key (pointer to the encryption key)
+│           0x1000040d0      04038052       mov w4, 0x18        -> keyLength (0x18 or 24 bytes for 3DES)
+│           0x1000040d4      050080d2       mov x5, 0           -> iv (0 or NULL, implying no initialization vector)
+│           0x1000040d8      e60316aa       mov x6, x22         -> dataIn (pointer to the input data to be encrypted)
+│           0x1000040dc      e70319aa       mov x7, x25         -> dataOut (pointer to the output buffer where encrypted data will be stored)
+│           0x1000040e0      790d0094       bl sym.imp.CCCrypt  -> Call to CCCrypt function
