@@ -8,10 +8,10 @@ weakness: MASWE-0009
 
 ## Overview
 
-In this test case, we will look for the use of algorithms with inappropriate key sizes in iOS apps. To do this, we need to focus on the cryptgraphic frameworks and libraries that are available in iOS and the methods that are used to generate cryptographic keys.
+In this test case, we will look for the use inappropriate key sizes in iOS apps. To do this, we need to focus on the cryptographic frameworks and libraries that are available in iOS and the methods that are used to generate cryptographic keys.
 
 - **CommonCrypto**: The [`CCCrypt`](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/CCCrypt.3cc.html) function is used for symmetric encryption and decryption and specifies the key size or key length in its fifth parameter `keyLength`.
-- **Security**: The [`SecKeyCreateRandomKey`](https://developer.apple.com/documentation/security/1399291-seckeycreaterandomkey) function is used to generate a random key using certain attributes including [`kSecAttrKeyType`](https://developer.apple.com/documentation/security/ksecattrkeytype) and [`kSecAttrKeySizeInBits`](https://developer.apple.com/documentation/security/ksecattrkeysizeinbits). The [`SecKeyGeneratePair`](https://developer.apple.com/documentation/security/1395339-seckeygeneratepair) function is deprecated in iOS 16.
+- **Security**: The [`SecKeyCreateRandomKey`](https://developer.apple.com/documentation/security/1823694-seckeycreaterandomkey) function is used to generate a random key using certain attributes including [`kSecAttrKeyType`](https://developer.apple.com/documentation/security/ksecattrkeytype) and [`kSecAttrKeySizeInBits`](https://developer.apple.com/documentation/security/ksecattrkeysizeinbits). The [`SecKeyGeneratePair`](https://developer.apple.com/documentation/security/1395339-seckeygeneratepair) function is deprecated in iOS 16.
 - **CryptoKit**: The [`AES.GCM`](https://developer.apple.com/documentation/cryptokit/aes/gcm) and [`ChaChaPoly`](https://developer.apple.com/documentation/cryptokit/chachapoly) classes are used for symmetric encryption and decryption.
 
 Since you don't usually generate keys directly in CryptoKit (the library does that for you automatically), we'll focus on the CommonCrypto and Security libraries in this test.
