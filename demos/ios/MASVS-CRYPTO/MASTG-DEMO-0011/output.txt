@@ -1,109 +1,70 @@
+Uses of SecKeyCreateRandomKey:
+0x1000078ac    1     12 sym.imp.SecKeyCreateRandomKey
+
+xrefs to SecKeyCreateRandomKey:
+sym.func.1000046f8 0x1000049a0 [CALL:--x] bl sym.imp.SecKeyCreateRandomKey
+
+Use of reloc.kSecAttrKeySizeInBits as input for SecKeyCreateRandomKey:
             ; CALL XREF from sym.func.1000063a0 @ 0x1000063d8(x)
 ┌ 2920: sym.func.1000046f8 (int64_t arg1, void *arg2, void *arg3);
+│           ; arg int64_t arg1 @ x0
+│           ; arg void *arg2 @ x1
+│           ; arg void *arg3 @ x2
+│           ; var void *var_0h @ sp+0x0
+│           ; var int64_t var_0h_14 @ sp+0x8
+│           ; var int64_t var_10h @ sp+0x10
+│           ; var int64_t var_10h_4 @ sp+0x18
+│           ; var void *var_20h @ sp+0x20
+│           ; var int64_t var_28h @ sp+0x28
+│           ; var int64_t var_30h @ sp+0x30
+│           ; var int64_t var_0h_12 @ sp+0x38
+│           ; var int64_t var_40h @ sp+0x40
+│           ; var int64_t var_0h_13 @ sp+0x48
+│           ; var void *var_50h_2 @ sp+0x50
+│           ; var int64_t var_0h_10 @ sp+0x58
+│           ; var int64_t var_0h_9 @ sp+0x60
+│           ; var void *var_0h_11 @ sp+0x68
+│           ; var int64_t var_0h_5 @ sp+0x70
+│           ; var int64_t var_0h_4 @ sp+0x78
+│           ; var int64_t var_80h @ sp+0x80
+│           ; var int64_t var_80h_2 @ sp+0x88
+│           ; var int64_t var_0h_2 @ sp+0x90
+│           ; var void *var_98h @ sp+0x98
+│           ; var void *var_98h_2 @ sp+0xa0
+│           ; var int64_t var_0h_7 @ sp+0xb0
+│           ; var int64_t var_b0h @ sp+0xb8
+│           ; var void *var_c0h @ sp+0xc0
+│           ; var void *arg0 @ sp+0xc8
+│           ; var int64_t var_0h_8 @ sp+0xd0
+│           ; var int64_t var_0h_6 @ sp+0xd8
+│           ; var void *var_e0h @ sp+0xe0
+│           ; var void *var_160h @ sp+0x160
+│           ; var int64_t var_0h_3 @ sp+0x210
+│           ; var int64_t var_60h @ sp+0x220
+│           ; var int64_t var_60h_2 @ sp+0x228
+│           ; var int64_t var_10h_2 @ sp+0x230
+│           ; var int64_t var_10h_3 @ sp+0x238
+│           ; var int64_t var_20h_2 @ sp+0x240
+│           ; var int64_t var_20h_3 @ sp+0x248
+│           ; var int64_t var_30h_2 @ sp+0x250
+│           ; var int64_t var_30h_3 @ sp+0x258
+│           ; var int64_t var_40h_2 @ sp+0x260
+│           ; var int64_t var_40h_3 @ sp+0x268
+│           ; var int64_t var_50h @ sp+0x270
+│           ; var int64_t var_50h_3 @ sp+0x278
+│           0x1000046f8      fc6fbaa9       stp x28, x27, [sp, -0x60]!
 ...
-│       │   0x100004800      f40300aa       mov x20, x0
-│       │   0x100004804      080000f0       adrp x8, 0x100007000
-│       │   0x100004808      0091c23d       ldr q0, [x8, 0xa40]
-│       │   0x10000480c      0004803d       str q0, [x0, 0x10]
-│       │   0x100004810      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x100004814      080d42f9       ldr x8, reloc.kSecAttrKeyType ; 0x10000c418
-│       │   0x100004818      000140f9       ldr x0, [x8]
-│       │   0x10000481c      f10b0094       bl fcn.1000077e0
-│       │   0x100004820      f50314aa       mov x21, x20
-│       │   0x100004824      a00e02f8       str x0, [x21, 0x20]!
-│       │   0x100004828      811600f9       str x1, [x20, 0x28]
-│       │   0x10000482c      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x100004830      081142f9       ldr x8, reloc.kSecAttrKeyTypeRSA ; 0x10000c420
-│       │   0x100004834      170140f9       ldr x23, [x8]
-│       │   0x100004838      000080d2       mov x0, 0
-│       │   0x10000483c      aa020094       bl sym.func.1000052e4
-│       │   0x100004840      802600f9       str x0, [x20, 0x48]
-│       │   0x100004844      971a00f9       str x23, [x20, 0x30]
-│       │   0x100004848      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x10000484c      080942f9       ldr x8, reloc.kSecAttrKeySizeInBits ; 0x10000c410
-│       │   0x100004850      000140f9       ldr x0, [x8]
-│       │   0x100004854      e30b0094       bl fcn.1000077e0
-│       │   0x100004858      800605a9       stp x0, x1, [x20, 0x50]
-│       │   0x10000485c      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x100004860      089d41f9       ldr x8, reloc.Swift.Int    ; 0x10000c338
-│       │   0x100004864      883e00f9       str x8, [x20, 0x78]
-│       │   0x100004868      08808052       mov w8, 0x400
-│       │   0x10000486c      883200f9       str x8, [x20, 0x60]
-│       │   0x100004870      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x100004874      081942f9       ldr x8, reloc.kSecPrivateKeyAttrs ; 0x10000c430
-│       │   0x100004878      000140f9       ldr x0, [x8]
-│       │   0x10000487c      d90b0094       bl fcn.1000077e0
-│       │   0x100004880      800608a9       stp x0, x1, [x20, 0x80]
-│       │   0x100004884      61820391       add x1, x19, 0xe0          ; void *arg1
-│       │   0x100004888      e0031baa       mov x0, x27                ; void *arg0
-│       │   0x10000488c      5c0c0094       bl sym.imp.swift_initStackObject ; void *swift_initStackObject(void *arg0, void *arg1)
-│       │   0x100004890      fb0300aa       mov x27, x0
-│       │   0x100004894      080000f0       adrp x8, 0x100007000
-│       │   0x100004898      0095c23d       ldr q0, [x8, 0xa50]
-│       │   0x10000489c      0004803d       str q0, [x0, 0x10]
-│       │   0x1000048a0      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x1000048a4      080542f9       ldr x8, reloc.kSecAttrIsPermanent ; 0x10000c408
-│       │   0x1000048a8      000140f9       ldr x0, [x8]
-│       │   0x1000048ac      cd0b0094       bl fcn.1000077e0
-│       │   0x1000048b0      fc031baa       mov x28, x27
-│       │   0x1000048b4      800f02f8       str x0, [x28, 0x20]!
-│       │   0x1000048b8      611700f9       str x1, [x27, 0x28]
-│       │   0x1000048bc      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x1000048c0      089941f9       ldr x8, reloc.Bool         ; 0x10000c330
-│       │   0x1000048c4      682700f9       str x8, [x27, 0x48]
-│       │   0x1000048c8      28008052       mov w8, 1
-│       │   0x1000048cc      68c30039       strb w8, [x27, 0x30]
-│       │   0x1000048d0      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x1000048d4      080142f9       ldr x8, reloc.kSecAttrApplicationTag ; 0x10000c400
-│       │   0x1000048d8      000140f9       ldr x0, [x8]
-│       │   0x1000048dc      c10b0094       bl fcn.1000077e0
-│       │   0x1000048e0      600705a9       stp x0, x1, [x27, 0x50]
-│       │   0x1000048e4      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x1000048e8      081140f9       ldr x8, [x8, 0x20]         ; 0x10000c020
-│       │                                                              ; reloc.Foundation.Data.
-│       │   0x1000048ec      683f00f9       str x8, [x27, 0x78]
-│       │   0x1000048f0      766306a9       stp x22, x24, [x27, 0x60]
-│       │   0x1000048f4      180c0094       bl sym.imp.objc_retain_x23
-│       │   0x1000048f8      e00316aa       mov x0, x22                ; int64_t arg2
-│       │   0x1000048fc      e10318aa       mov x1, x24
-│       │   0x100004900      7e020094       bl sym.func.1000052f8
-│       │   0x100004904      e0031baa       mov x0, x27                ; int64_t arg1
-│       │   0x100004908      3dffff97       bl sym.func.1000045fc
-│       │   0x10000490c      f70300aa       mov x23, x0
-│       │   0x100004910      e0031baa       mov x0, x27
-│       │   0x100004914      430c0094       bl sym.imp.swift_setDeallocating
-│       │   0x100004918      60000090       adrp x0, segment.__DATA    ; 0x100010000
-│       │   0x10000491c      00c00291       add x0, x0, 0xb0           ; int64_t arg1
-│       │   0x100004920      61020094       bl sym.func.1000052a4
-│       │   0x100004924      fb0300aa       mov x27, x0
-│       │   0x100004928      e0031caa       mov x0, x28
-│       │   0x10000492c      41008052       mov w1, 2
-│       │   0x100004930      e2031baa       mov x2, x27
-│       │   0x100004934      0e0c0094       bl sym.imp.swift_arrayDestroy
-│       │   0x100004938      60000090       adrp x0, segment.__DATA    ; 0x100010000
-│       │   0x10000493c      00e00291       add x0, x0, 0xb8           ; int64_t arg1
-│       │   0x100004940      59020094       bl sym.func.1000052a4
-│       │   0x100004944      805600f9       str x0, [x20, 0xa8]
-│       │   0x100004948      974a00f9       str x23, [x20, 0x90]
-│       │   0x10000494c      e00314aa       mov x0, x20                ; int64_t arg1
-│       │   0x100004950      2bffff97       bl sym.func.1000045fc
-│       │   0x100004954      f70300aa       mov x23, x0
-│       │   0x100004958      e00314aa       mov x0, x20
-│       │   0x10000495c      310c0094       bl sym.imp.swift_setDeallocating
-│       │   0x100004960      810a40f9       ldr x1, [x20, 0x10]
-│       │   0x100004964      e00315aa       mov x0, x21
-│       │   0x100004968      e2031baa       mov x2, x27
-│       │   0x10000496c      000c0094       bl sym.imp.swift_arrayDestroy
-│       │   0x100004970      7f6e00f9       str xzr, [x19, 0xd8]
-│       │   0x100004974      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x100004978      08d541f9       ldr x8, reloc._sypN        ; 0x10000c3a8
-│       │   0x10000497c      02210091       add x2, x8, 8
-│       │   0x100004980      41000090       adrp x1, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x100004984      218841f9       ldr x1, [x1, 0x310]
-│       │   0x100004988      43000090       adrp x3, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
-│       │   0x10000498c      638c41f9       ldr x3, [x3, 0x318]
-│       │   0x100004990      e00317aa       mov x0, x23
-│       │   0x100004994      8d0b0094       bl sym.imp._sSD10FoundationE19_bridgeToObjectiveCSo12NSDictionaryCyF
-│       │   0x100004998      f40300aa       mov x20, x0
-│       │   0x10000499c      61620391       add x1, x19, 0xd8
-│       │   0x1000049a0      c30b0094       bl sym.imp.SecKeyCreateRandomKey
+│           0x10000484c      080942f9       ldr x8, reloc.kSecAttrKeySizeInBits ; 0x10000c410
+│           0x100004850      000140f9       ldr x0, [x8]
+│           0x100004854      e30b0094       bl fcn.1000077e0
+│           0x100004858      800605a9       stp x0, x1, [x20, 0x50]
+│           0x10000485c      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
+│           0x100004860      089d41f9       ldr x8, reloc.Swift.Int    ; 0x10000c338
+│           0x100004864      883e00f9       str x8, [x20, 0x78]
+│           0x100004868      08808052       mov w8, 0x400
+│           0x10000486c      883200f9       str x8, [x20, 0x60]
+...
+│           0x100004998      f40300aa       mov x20, x0
+│           0x10000499c      61620391       add x1, x19, 0xd8
+│           0x1000049a0      c30b0094       bl sym.imp.SecKeyCreateRandomKey
+│           0x1000049a4      fb0300aa       mov x27, x0

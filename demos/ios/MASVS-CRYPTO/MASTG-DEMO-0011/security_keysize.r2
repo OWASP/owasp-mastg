@@ -1,11 +1,23 @@
-# Find the address of the CCCrypt function
+!printf "\n\n"
+
+!printf "Uses of SecKeyCreateRandomKey:\n"
 afl~SecKeyCreateRandomKey
 
-# Find all xrefs to CCCrypt (Replace the address with the one you find in the output)
+!printf "\n"
+
+!printf "xrefs to SecKeyCreateRandomKey:\n"
 axt @ 0x1000078ac
 
-# Seek to the function where CCCrypt is called (Replace with the address found from axt output)
-s sym.func.1000046f8
+!printf "\n"
 
-# Print the disassembly of the function
-pdf
+!printf "Use of reloc.kSecAttrKeySizeInBits as input for SecKeyCreateRandomKey:\n"
+pd 1 @ sym.func.1000046f8
+
+!printf "...\n"
+
+pd 9 @ 0x10000484c
+
+!printf "...\n"
+
+pd-- 2 @ 0x1000049a0
+
