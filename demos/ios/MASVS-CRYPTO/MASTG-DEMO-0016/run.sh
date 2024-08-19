@@ -1,1 +1,1 @@
-r2 -q -i cryptokit_hash.r2 -A ./Payload/MASTestApp.app/MASTestApp
+r2 -q -i cryptokit_hash.r2 -A MASTestApp
