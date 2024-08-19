@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Uses of Insecure Algorithms in CCCrypt with r2
+title: Uses of Insecure Encryption Algorithms in CommonCrypto with r2
 code: [swift]
 id: MASTG-DEMO-0014
 test: MASTG-TEST-0210
@@ -82,10 +82,8 @@ enum {
 };
 ```
 
-With this information we can now inspect the disassembled code and we'll see that the 3DES algorithm can be found by its numeric value `2` in the second argument of the `CCCrypt` function (`w1`):
+With this information we can now inspect the disassembled code and we'll see that the 3DES algorithm (`kCCAlgorithm3DES`) can be found by its numeric value `2` in the second argument of the `CCCrypt` function (`w1`). The `CCCrypt` function is called with a padding option of PKCS7, no initialization vector, and a key of 24 bytes:
 
 {{ evaluation.txt }}
 
-This call to `CCCrypt` is encrypting data using the 3DES algorithm with a padding option of PKCS7, no initialization vector, and a key of 24 bytes.
-
-In this case, the algorithm used is `kCCAlgorithm3DES`, which is considered insecure and should be replaced with a more secure algorithm such as `kCCAlgorithmAES128`.
+The test fails because the 3DES encryption algorithm was found in the code.
