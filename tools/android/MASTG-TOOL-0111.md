@@ -9,7 +9,8 @@ source: https://github.com/worawit/blutter
 This tool does require a specific environment to work, which can be found [here](https://github.com/worawit/blutter?tab=readme-ov-file#environment-setup).If you don’t want to setup the environment here is the docker support for the blutter tool.
 
 Use the apktool to Extract "lib" directory from apk file.
-```
+
+```bash
 python3 blutter.py path/to/app/lib/arm64-v8a out_dir
 ```
 
