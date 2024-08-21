@@ -31,7 +31,7 @@ Maliciously used Android virtualization software can lead to a variety of securi
 
 Virtualization software introduces an additional layer between an application and its underlying operating environment, fundamentally altering how applications interact with system resources. This extra layer creates a more permissive environment, which can have significant implications for both legitimate use and potential threats.
 
-In a virtualized environment, the software effectively isolates the application from the actual operating system and hardware, allowing for a controlled and often more flexible interaction between the application and the system. This permissive environment can bypass standard security measures by providing enhanced privileges and capabilities that would not be available in a non-virtualized setting.
+In a virtualized environment, the software effectively isolates the application from the actual operating system and hardware, allowing the virtualization software to monitor and control any interactions with the system. This is normally not possible on a non-rooted system.
 
 For example, by emulating or partially recreating the Android system within an application sandbox, virtualization software can enable behavior that might otherwise be restricted or monitored. This allows applications to execute in a way that sidesteps traditional security constraints, making it easier to analyze, manipulate, or modify their behavior.
 
