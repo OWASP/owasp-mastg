@@ -33,7 +33,7 @@ Virtualization software introduces an additional layer between an application an
 
 In a virtualized environment, the software effectively isolates the application from the actual operating system and hardware, allowing the virtualization software to monitor and control any interactions with the system. This is normally not possible on a non-rooted system.
 
-For example, by emulating or partially recreating the Android system within an application sandbox, virtualization software can enable behavior that might otherwise be restricted or monitored. This allows applications to execute in a way that sidesteps traditional security constraints, making it easier to analyze, manipulate, or modify their behavior.
+For example, by emulating or partially recreating the Android system within an application sandbox, virtualization software can fully interact with the virtualized environment, even though the app appears to be running on a non-modified Android system. The virtualization software has full control over what happens inside of the virtualized system and is not restricted by typical security constraints, which makes it easier to analyze, manipulate, or modify the target app's behavior.
 
 ## Mitigations
 
