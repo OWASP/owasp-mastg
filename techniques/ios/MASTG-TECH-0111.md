@@ -38,7 +38,6 @@ $ldid -e -A16777228:0 iGoat-Swift.app/iGoat-Swift
 </plist>
 ```
 
-
 ## ipsw
 
 The entitlements can be extracted using `ipsw macho info -e <binary>`. The `-a` flag is added to specify the desired architecture:
