@@ -11,13 +11,14 @@ To extract the entitlements from a MachO binary, the following tools can be used
 
 The different tools are used on the main binary of @MASTG-APP-0028, which contains two architectures.
 
-# ldid
+## ldid
 
 The entitlements can be extracted using `ldid -e <binary>`. The `-A` flag is added to specify the desired architecture (16777228:0, which is CPU_TYPE_ARM64:CPU_SUBTYPE_ARM64_ALL):
 
 ```bash
 $ldid -e -A16777228:0 iGoat-Swift.app/iGoat-Swift
 ```
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -38,13 +39,14 @@ $ldid -e -A16777228:0 iGoat-Swift.app/iGoat-Swift
 ```
 
 
-# ipsw
+## ipsw
 
 The entitlements can be extracted using `ipsw macho info -e <binary>`. The `-a` flag is added to specify the desired architecture:
 
 ```bash
 $ ipsw macho info -e iGoat-Swift.app/iGoat-Swift -a arm64
 ```
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -64,13 +66,14 @@ $ ipsw macho info -e iGoat-Swift.app/iGoat-Swift -a arm64
 </plist>
 ```
 
-# codesign
+## codesign
 
 The entitlements can be extracted using `codesign -d --entitlements - <binary>`. Make sure to include the `-` as the argument for the `--entitlements` flag:
 
 ```bash
 $ codesign -d --entitlements - iGoat-Swift.app/iGoat-Swift
 ```
+
 ```code
 Executable=/Users/owasp/iGoat/Payload/iGoat-Swift.app/iGoat-Swift
 [Dict]

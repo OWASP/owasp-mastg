@@ -94,7 +94,7 @@ Note: On iOS 12 and higher, use the following procedure to sign the debugserver 
    ```
 
 3) Type the following command to sign the debugserver binary using @MASTG-TOOL-0111:
-    
+
    ```bash
    ldid -Sentitlements.xml debugserver
    ```
