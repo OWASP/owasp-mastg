@@ -23,16 +23,16 @@ $ldid -e -A16777228:0 iGoat-Swift.app/iGoat-Swift
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>application-identifier</key>
-	<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-	<key>com.apple.developer.team-identifier</key>
-	<string>TNAJ496RHB</string>
-	<key>get-task-allow</key>
-	<true/>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-	</array>
+    <key>application-identifier</key>
+    <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+    <key>com.apple.developer.team-identifier</key>
+    <string>TNAJ496RHB</string>
+    <key>get-task-allow</key>
+    <true/>
+    <key>keychain-access-groups</key>
+    <array>
+        <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+    </array>
 </dict>
 </plist>
 ```
@@ -50,16 +50,16 @@ $ ipsw macho info -e iGoat-Swift.app/iGoat-Swift -a arm64
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>application-identifier</key>
-	<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-	<key>com.apple.developer.team-identifier</key>
-	<string>TNAJ496RHB</string>
-	<key>get-task-allow</key>
-	<true/>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>TNAJ496RHB.OWASP.iGoat-Swift</string>
-	</array>
+    <key>application-identifier</key>
+    <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+    <key>com.apple.developer.team-identifier</key>
+    <string>TNAJ496RHB</string>
+    <key>get-task-allow</key>
+    <true/>
+    <key>keychain-access-groups</key>
+    <array>
+        <string>TNAJ496RHB.OWASP.iGoat-Swift</string>
+    </array>
 </dict>
 </plist>
 ```
@@ -74,18 +74,18 @@ $ codesign -d --entitlements - iGoat-Swift.app/iGoat-Swift
 ```code
 Executable=/Users/owasp/iGoat/Payload/iGoat-Swift.app/iGoat-Swift
 [Dict]
-	[Key] application-identifier
-	[Value]
-		[String] TNAJ496RHB.OWASP.iGoat-Swift
-	[Key] com.apple.developer.team-identifier
-	[Value]
-		[String] TNAJ496RHB
-	[Key] get-task-allow
-	[Value]
-		[Bool] true
-	[Key] keychain-access-groups
-	[Value]
-		[Array]
-			[String] TNAJ496RHB.OWASP.iGoat-Swift
+    [Key] application-identifier
+    [Value]
+        [String] TNAJ496RHB.OWASP.iGoat-Swift
+    [Key] com.apple.developer.team-identifier
+    [Value]
+        [String] TNAJ496RHB
+    [Key] get-task-allow
+    [Value]
+        [Bool] true
+    [Key] keychain-access-groups
+    [Value]
+        [Array]
+            [String] TNAJ496RHB.OWASP.iGoat-Swift
 
 ```
