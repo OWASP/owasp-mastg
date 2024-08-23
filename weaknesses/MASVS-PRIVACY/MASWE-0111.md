@@ -23,7 +23,7 @@ The risk here is data being collected and shared without user awareness (therefo
 This risk can be introduced in various scenarios, including:
 
 - Sensor data or local data is collected without explicit user consent.
-- Though consent is present the user is not adequately informed about how the data is used or shared (like between apps and 3rd party SDKs).
+- Though consent is present the user is not adequately informed about how the data is used or shared (e.g. between the app and third-party SDKs).
 - Discrepancy between store declarations, privacy policy and actual behavior.
 
 

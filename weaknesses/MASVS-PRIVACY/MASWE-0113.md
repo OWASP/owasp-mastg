@@ -14,7 +14,7 @@ status: new
 ## Overview
 Consent should be freely given, specific, informed and unambiguous.
 
-The risk here is to bundle consent with the terms of services or the data processing outside of the original consent scope. 
+The risk here is to bundle consent with the terms of services or the processing of data outside of the original consent scope. 
 
 
 ## Modes of Introduction
@@ -22,7 +22,7 @@ The risk here is to bundle consent with the terms of services or the data proces
 This risk can be introduced in various scenarios, including:
 
 - Consent is bundled with the terms of services. For example, the consent language says ‘ by using this service, you agree to provide your data for research purposes.’
-- Consent covers the future use cases. For example, consent to pair one devices automatically applies to new devices in the future and no additional consent is obtained. 
+- Consent covers future use cases. For example, consent to pair one device automatically applies to new devices in the future and no additional consent is obtained. 
 
 
 

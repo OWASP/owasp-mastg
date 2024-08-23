@@ -19,7 +19,7 @@ Sensitive data might be used for secondary purposes or beyond the initial scope 
 This risk can be introduced in various scenarios, including:
 
 - Use of user data collected for secondary purpose without user consent or control.
-- Continuous access to user data without user controls.
+- Continuous access to user data without user control.
 
 
 ## Impact

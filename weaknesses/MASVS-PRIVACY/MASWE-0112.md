@@ -13,9 +13,9 @@ status: new
 
 ## Overview
 
-Offer users control over their data refers to giving the user the option of managing, deleting, modifying and revoking consent to their data. Including re prompting for consent when requesting more data than initially specified.
+Offering users control over their data refers to giving the user the option of managing, deleting, modifying and revoking access to their data. Including obtaining additional consent when requesting more data than initially specified.
 
-The risk here is the user not having control of their data once collected. To mitigate this risk, users should be provided the option to request deletion of collected data, revoke consent and allow users to modify privacy settings with granularity.
+The risk here is the user not having control of their data once collected. To mitigate this risk, users should have the option to request deletion of collected data and revoke consent. Additionally, users should be able to modify their privacy settings with granularity.
 
 
 ## Modes of Introduction

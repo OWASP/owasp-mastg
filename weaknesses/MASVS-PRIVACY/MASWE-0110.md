@@ -22,7 +22,7 @@ Technical barriers need to be established when utilizing complex ‘finger-print
 This risk can be introduced in various scenarios, including:
 
 - Unnecessary collection of identifiers like device IDs, IP addresses, behavioral patterns that can lead to user identification and tracking.
-- No anonymization and Pseudonymisation measures to strip data of any direct identifiers such as user ID or name before server side collection.
+- No anonymization and pseudonymisation measures to strip data of any direct identifiers such as user ID or name before server side collection.
 - Reusing signals collected for a specific purpose for other features (e.g fingerprinting for fraud detection).
 
 
