@@ -16,10 +16,11 @@ refs:
 - https://developer.android.com/privacy-and-security/cryptography
 - https://developer.android.com/reference/javax/crypto/KeyGenerator
 
+status: new
+
 ---
 
 ## Overview
-
 
 In cryptography, the security strength is heavily influenced by the methods used to generate cryptographic keys. One critical aspect is the key size, also known as the key length, which is measured in bits and must comply with the latest security best practices. Encryption algorithms that use insufficient key sizes are vulnerable to attack, while longer keys typically result in more complex encryption.
 
