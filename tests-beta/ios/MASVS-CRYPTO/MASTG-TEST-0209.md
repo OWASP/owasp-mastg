@@ -28,4 +28,3 @@ The output should contain the disassembled code of the functions using `CCCrypt`
 
 The test case fails if you can find the use of inappropriate key sizes within the source code. For example, a 1024-bit key size is considered weak for RSA encryption and a 128-bit key size is considered weak for AES encryption considering quantum computing attacks.
 
-See ["NIST Special Publication 800-57: Recommendation for Key Management: Part 1 – General"](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf) and ["NIST Special Publication 800-131A: Transitioning the Use of Cryptographic Algorithms and Key Lengths"](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) and ["BlueKrypt's Cryptographic Key Length Recommendation"](https://www.keylength.com/) for more information on cryptographic key sizes.
