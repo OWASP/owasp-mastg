@@ -1,23 +1,21 @@
-# original source: https://github.com/MobSF/mobsfscan/blob/main/mobsfscan/rules/semgrep/crypto/weak_key_size.yaml
 rules:
   - id: weak_key_size
-    patterns:
-      - pattern-either:
-          - pattern: |
-              $K = $G.getInstance("RSA");
-              ...
-              $K.initialize(1024, new SecureRandom());
-          - pattern: |
-              $K = $G.getInstance("RSA");
-              ...
-              $K.initialize(512, new SecureRandom());
-          - pattern: |
-              $K = $G.getInstance("AES");
-              ...
-              $K.init(128);
-    message: "Cryptographic implementations with insufficient key length are being used."
+    severity: WARNING
     languages:
       - java
-    severity: WARNING
     metadata:
-      cwe: cwe-326
+      summary: This rule looks for methods that create a weak key size in encryption algorithms.
+    message: "[MASVS-CRYPTO] Make sure that the key size is according to security best practices"
+    pattern-either:
+      - pattern: |
+          $K = $G.getInstance("RSA");
+          ...
+          $K.initialize(1024, new SecureRandom());
+      - pattern: |
+          $K = $G.getInstance("RSA");
+          ...
+          $K.initialize(512, new SecureRandom());
+      - pattern: |
+          $K = $G.getInstance("AES");
+          ...
+          $K.init(128);
