@@ -15,7 +15,7 @@ The Java Cryptography Architecture (JCA) provides foundational classes for key g
 - **`KeyGenerator`**: The [`KeyGenerator`](https://developer.android.com/reference/javax/crypto/KeyGenerator) class is used to generate symmetric keys including AES, DES, ChaCha20 or Blowfish, as well as various HMAC keys. The key size can be specified using the [`init(int keysize)`](https://developer.android.com/reference/javax/crypto/KeyGenerator#init(int)) method.
 - **`KeyPairGenerator`**: The [`KeyPairGenerator`](https://developer.android.com/reference/java/security/KeyPairGenerator) class is used for generating key pairs for asymmetric encryption (e.g., RSA, EC). The key size can be specified using the [`initialize(int keysize)`](https://developer.android.com/reference/java/security/KeyPairGenerator#initialize(int)) method.
 
-For more information you can consult the MASTG section about ["Key Generation"](../../../../Document/0x05e-Testing-Cryptography.md#key-generation).
+For more information you can consult the MASTG section about ["Key Generation"](../../../Document/0x05e-Testing-Cryptography.md#key-generation).
 
 ## Steps
 
