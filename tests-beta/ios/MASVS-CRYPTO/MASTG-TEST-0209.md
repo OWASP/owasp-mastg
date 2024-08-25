@@ -27,4 +27,3 @@ The output should contain the disassembled code of the functions using `CCCrypt`
 ## Evaluation
 
 The test case fails if you can find the use of inappropriate key sizes within the source code. For example, a 1024-bit key size is considered weak for RSA encryption and a 128-bit key size is considered weak for AES encryption considering quantum computing attacks.
-
