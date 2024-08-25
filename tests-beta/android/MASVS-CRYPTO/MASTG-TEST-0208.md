@@ -10,9 +10,11 @@ weakness: MASWE-0009
 
 In this test case, we will look for the use inappropriate key sizes in Android apps. To do this, we need to focus on the cryptographic frameworks and libraries that are available in Android and the methods that are used to generate cryptographic keys.
 
-In Android the class `KeyGenerator` offers different [encryption algorithms](https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyGenerator) for key creation. 
+In Android the class `KeyGenerator` is able to create keys for different [encryption algorithms](https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyGenerator). 
 
 There are a variety of different [KeyGenerator.init()](https://developer.android.com/reference/javax/crypto/KeyGenerator#public-methods) methods to initialise the key generation, where some require random bytes. The entropy of these random bytes will rely on the `SecureRandom` implementation in the available security provider, otherwise a system-provided source of randomness will be used.
+
+During the key generation you can select outdated encryption algorithms or insufficient key lengths and this is what we'll focus on in this test.
 
 ## Steps
 

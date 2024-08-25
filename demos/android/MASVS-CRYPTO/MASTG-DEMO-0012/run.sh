@@ -1,1 +1,1 @@
-NO_COLOR=true semgrep -c ../../../../rules/mastg-android-weak-crypto-key-generation.yml ./MastgTest.java --text -o output.txt 
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-weak_key_generation.yml ./MastgTest_reversed.java --text -o output.txt

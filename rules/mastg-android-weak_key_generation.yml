@@ -6,25 +6,18 @@ rules:
           - pattern: |
               $K = $G.getInstance("RSA");
               ...
-              $K.initialize(1024);
+              $K.initialize(1024, new SecureRandom());
           - pattern: |
               $K = $G.getInstance("RSA");
               ...
-              $K.initialize(512);
+              $K.initialize(512, new SecureRandom());
           - pattern: |
               $K = $G.getInstance("AES");
               ...
               $K.init(128);
-          - pattern: |
-              $K = $G.getInstance("AES");
-              ...
-              $K.init(64);
-    message: >-
-      Cryptographic implementations with insufficient key length are being used.
+    message: "Cryptographic implementations with insufficient key length are being used."
     languages:
       - java
     severity: WARNING
     metadata:
       cwe: cwe-326
-      
-      

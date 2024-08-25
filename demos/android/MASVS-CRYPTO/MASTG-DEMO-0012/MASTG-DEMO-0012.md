@@ -8,7 +8,7 @@ test: MASTG-TEST-0208
 
 ### Sample
 
-{{ MastgTest.java }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
@@ -20,13 +20,10 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified all the location in the code file where weak cipher key is used.
+The rule has identified some instances in the code file where an non-random source is used. The specified line numbers can be located in the original code for further investigation and remediation.
 
 {{ output.txt }}
 
 ### Evaluation
 
 Review each of the reported instances.
-
-- Line 2 has initialized the RSA key size of 1024 bits.
-- Line 5 is using `keyGen.init(64)` which creates a symmetric key with a size of 64 bits (8 bytes).
