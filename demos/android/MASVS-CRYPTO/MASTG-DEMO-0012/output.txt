@@ -1,0 +1,15 @@
+
+
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+
+    MastgTest_reversed.java
+    ❯❱ weak_key_size
+          Cryptographic implementations with insufficient key length are being used.
+
+           27┆ KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+           28┆ generator.initialize(1024, new SecureRandom());
+            ⋮┆----------------------------------------
+           31┆ KeyGenerator keyGen1 = KeyGenerator.getInstance("AES");
+           32┆ keyGen1.init(128);
