@@ -15,7 +15,7 @@ On Android platforms, logging APIs like `Log`, `Logger`, `System.out.print`, `Sy
 
 1. Install and run the app.
 2. Navigate to the screen of the mobile app you want to analyse the log output from.
-3. Execute a [method trace](/MASTG/techniques/android/MASTG-TECH-0033) (using e.g. [Frida](/MASTG/tools/generic/MASTG-TOOL-0031)) by attaching to the running app, targeting logging APIs and save the output.
+3. Execute a method trace (@MASTG-TECH-0033) (using e.g. @MASTG-TOOL-0001) by attaching to the running app, targeting logging APIs and save the output.
 
 ## Observation
 

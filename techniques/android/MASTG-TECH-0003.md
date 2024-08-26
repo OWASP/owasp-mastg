@@ -16,7 +16,7 @@ Beware that you do not have control over these sites and you cannot guarantee wh
 
 ## Using gplaycli
 
-You can use [gplaycli](0x08a-Testing-Tools.md#gplaycli) to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
+You can use @MASTG-TOOL-0016 to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
 
 ```bash
 $ gplaycli -p -v -d com.google.android.keep
@@ -69,7 +69,7 @@ With [Google Play Instant](https://developer.android.com/topic/google-play-insta
 
 The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
 
-Note: Instant apps require an App Bundle. App Bundles are described in the "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" section of the "Android Platform Overview" chapter.
+Note: Instant apps require an App Bundle. App Bundles are described in the "[App Bundles](../../Document/0x05a-Platform-Overview.md#app-bundles)" section of the "Android Platform Overview" chapter.
 
 **Static Analysis Considerations:**
 

@@ -4,7 +4,8 @@ masvs_v1_id:
 masvs_v2_id:
 - MASVS-STORAGE-2
 platform: android
-title: Determining Whether Sensitive Data Is Shared with Third Parties via Embedded Services
+title: Determining Whether Sensitive Data Is Shared with Third Parties via Embedded
+    Services
 masvs_v1_levels:
 - L1
 - L2
@@ -21,4 +22,4 @@ All data that's sent to third-party services should be anonymized to prevent exp
 ## Dynamic Analysis
 
 Check all requests to external services for embedded sensitive information.
-To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](../../../Document/0x08a-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](../../../Document/0x08a-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
+To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with @MASTG-TOOL-0077 or @MASTG-TOOL-0079. Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.

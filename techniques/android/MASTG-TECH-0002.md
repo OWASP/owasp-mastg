@@ -5,7 +5,7 @@ platform: android
 
 ## Using adb
 
-You can copy files to and from a device by using the [adb](0x08a-Testing-Tools.md#adb) commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
+You can copy files to and from a device by using the @MASTG-TOOL-0004 commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```bash
 adb push foo.txt /sdcard/foo.txt
@@ -30,7 +30,7 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-First, connect to the app with Objection as explained in "[Recommended Tools - Objection](0x08a-Testing-Tools.md#objection "Testing Tools - Objection")". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
+First, connect to the app with Objection as explained in @MASTG-TOOL-0038. Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
 ```bash
 $ frida-ps -U | grep -i owasp

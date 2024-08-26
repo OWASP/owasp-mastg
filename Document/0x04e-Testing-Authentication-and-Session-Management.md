@@ -146,15 +146,15 @@ Note that the secret is shared between the authentication server and the backend
 
 **Best Practices:**
 
-Verify that the implementation adheres to JWT [best practices](https://stormpath.com/blog/jwt-the-right-way "JWT the right way"):
+Verify that the implementation adheres to JWT [best practices](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html):
 
 - Verify that the HMAC is checked for all incoming requests containing a token.
 - Verify that the private signing key or HMAC secret key is never shared with the client. It should be available for the issuer and verifier only.
-- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. For example, by decoding the base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html "JSON Web Token for Java Cheat Sheet").
+- Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. For example, by decoding the base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied.
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
 - Make sure that cross service relay attacks are addressed with the `aud` (audience) claim, which defines for which application the token is entitled.
 - Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
-- Verify that the hashing algorithm is enforced. A common attack includes altering the token to use an empty signature (e.g., signature = "") and set the signing algorithm to `none`, indicating that "the integrity of the token has already been verified". [Some libraries](https://stormpath.com/blog/jwt-the-right-way) might treat tokens signed with the `none` algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
+- Verify that the hashing algorithm is enforced. A common attack includes altering the token to use an empty signature (e.g., signature = "") and set the signing algorithm to `none`, indicating that "the integrity of the token has already been verified". Some libraries might treat tokens signed with the `none` algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
 - Verify that tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and the backend doesn't process expired tokens. A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user logs in, the backend service issues a short-lived _access token_ and a long-lived _refresh token_. The application can then use the refresh token to obtain a new access token, if the access token expires.
 
 There are two different Burp Plugins that can help you for testing the vulnerabilities listed above:

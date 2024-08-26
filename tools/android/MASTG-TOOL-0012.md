@@ -12,4 +12,4 @@ cd apkx
 sudo ./install.sh
 ```
 
-This should copy apkx to `/usr/local/bin`. See ["Decompiling Java Code"](../../techniques/android/MASTG-TECH-0017.md "Decompiling Java Code") for more information about usage.
+This should copy apkx to `/usr/local/bin`. See @MASTG-TECH-0017 for more information about usage.

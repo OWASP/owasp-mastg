@@ -7,8 +7,17 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-NETWORK-3]
   masvs-v2: [MASVS-NETWORK-1]
-  cwe: [CWE-295]
+  cwe: [295]
 
+refs:
+  - https://developer.android.com/privacy-and-security/risks/unsafe-trustmanager
+  - https://developer.android.com/privacy-and-security/risks/unsafe-hostname
+  - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-52r2.pdf#page=17
+  - https://developer.android.com/privacy-and-security/security-ssl#tls-1.3-enabled-by-default
+  - https://support.google.com/faqs/answer/7071387?hl=en
+  - https://developer.android.com/reference/android/webkit/WebViewClient.html?sjid=15211564825735678155-EU#onReceivedSslError(android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError)
+  - https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket
+  - https://wiki.sei.cmu.edu/confluence/display/java/MSC00-J.+Use+SSLSocket+rather+than+Socket+for+secure+data+exchange
 draft:
   description: e.g. not checking the certificate chain, not checking the hostname,
     not checking the validity period, not checking the revocation status, etc. The

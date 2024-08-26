@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-NETWORK-2]
   masvs-v2: [MASVS-NETWORK-1]
-  cwe: [CWE-319]
+  cwe: [319]
 
 draft:
   description: The app sends or receives data over an insecure channel, such as HTTP,

@@ -2,7 +2,12 @@ site_name: OWASP Mobile Application Security
 repo_url: https://github.com/OWASP/owasp-mastg
 repo_name: OWASP/owasp-mastg
 # use_directory_urls: false # only set for mkdocs build
-edit_uri: "" # disable edit button
+
+# https://www.mkdocs.org/user-guide/configuration/#validation
+# due to our use of mkdocs-awesome-pages-plugin, we need to ignore absolute links for nav
+validation:
+  nav:
+    absolute_links: ignore
 
 nav:
   - Home: index.md
@@ -28,15 +33,14 @@ nav:
   - MASTG:
       - MASTG/index.md
       - Intro:
-        - ... | flat | MASTG/Intro/*.md
-        - ... | flat | MASTG/References/*.md
-      - Theory:
-        - General Concepts:
-          - ... | flat | MASTG/General/*.md
-        - Android Security Testing:
-          - ... | flat | MASTG/Android/*.md
-        - iOS Security Testing: 
-          - ... | flat | MASTG/iOS/*.md
+        - ... | flat | MASTG/0x0[1-2]*.md # Overview of the project (0x03) is redundant in the web.
+        - ... | flat | MASTG/0x09*.md
+      - General Concepts:
+        - ... | flat | MASTG/0x04*.md
+      - Android Security Testing:
+        - ... | flat | MASTG/0x05*.md
+      - iOS Security Testing: 
+        - ... | flat | MASTG/0x06*.md
       - Tests:
         - MASTG/tests/index.md
         - Android:
@@ -173,7 +177,7 @@ nav:
   - MASVS:
       - MASVS/index.md
       - Intro:
-        - ... | flat | MASVS/Intro/*
+        - ... | flat | MASVS/0[1-4]*.md
       - MASVS-STORAGE: MASVS/05-MASVS-STORAGE.md
       - ... | flat | MASVS/controls/MASVS-STORAGE*.md
       - MASVS-CRYPTO: MASVS/06-MASVS-CRYPTO.md
@@ -203,7 +207,8 @@ nav:
   - "MAS Crackmes": 
       - crackmes/index.md
       - ... | flat | crackmes/*.md
-  - news.md
+  - News:
+      - news
   - talks.md
   - "&#11088; Contribute":
       - contributing.md
@@ -239,6 +244,13 @@ theme:
       r: material/circle-double
       draft: material/information-outline
       new: material/alert-decagram
+      tool: octicons/tools-24
+      test: octicons/codescan-checkmark-24
+      app: octicons/code-square-24
+      demo: material/flask-outline
+      tech: material/magic-staff # fontawesome/solid/wand-magic-sparkles
+      maswe: octicons/shield-24
+      masvs: simple/owasp
   features:
     - search.suggest
     - search.share
@@ -251,6 +263,7 @@ theme:
     - navigation.tracking
     - navigation.indexes
     - content.code.copy
+    - content.action.edit
 
   palette:
     # - primary: #499FFF 
@@ -276,6 +289,11 @@ plugins:
   - search
   - awesome-pages
   - mermaid2
+  - blog:
+  # https://squidfunk.github.io/mkdocs-material/plugins/blog/
+      blog_dir: news
+      pagination_per_page: 10
+      post_excerpt_max_authors: 2
   - tags
       # tags_file: tags.md # TODO: bug in mkdocs? dynamic tags from hooks not appearing in tags.md
 markdown_extensions:
@@ -315,6 +333,12 @@ hooks:
   - docs/hooks/update_titles.py
   - docs/hooks/maswe-beta-banner.py
   - docs/hooks/add-tags.py
+  - docs/hooks/add-cross-references.py
+  - docs/hooks/edit_button_uri.py
+  - docs/hooks/resolve_references.py
+  - docs/hooks/create_dynamic_tables.py
+  - docs/hooks/update_git_info.py
+  - docs/hooks/add-checklists-banner.py
 
 extra:
   generator: false # removed but recreated in copyright above
@@ -343,6 +367,13 @@ extra:
     R: r
     draft: draft
     new: new
+    tool: tool
+    test: test
+    app: app
+    demo: demo
+    tech: tech
+    maswe: maswe
+    masvs: masvs
   status:
     draft: This page is in draft.
     new: New in this beta!

@@ -3,9 +3,9 @@ title: Symbolic Execution
 platform: android
 ---
 
-Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the [Angr](0x08a-Testing-Tools.md#angr) binary analysis framework as our symbolic execution engine.
+Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the @MASTG-TOOL-0030 binary analysis framework as our symbolic execution engine.
 
-To demonstrate this technique we'll use a crackme called [Android License Validator](0x08b-Reference-Apps.md#android-license-validator "Android License Validator"). The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
+To demonstrate this technique we'll use a crackme called @MASTG-APP-0002. The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
 
 ```bash
 $ adb push validate /data/local/tmp
@@ -21,7 +21,7 @@ Incorrect serial (wrong format).
 
 ```
 
-So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as [iaito](0x08a-Testing-Tools.md#iaito). The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as @MASTG-TOOL-0098. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and iaito chooses to load the binary at `0x0` as image base address.
 
 <img src="Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 
@@ -183,7 +183,7 @@ solution = found.solver.eval(found.memory.load(concrete_addr,10), cast_to=bytes)
 print(base64.b32encode(solution))
 ```
 
-As discussed previously in the section "[Dynamic Binary Instrumentation](0x04c-Tampering-and-Reverse-Engineering.md#static-and-dynamic-binary-analysis "Dynamic Binary Instrumentation")", the symbolic execution engine constructs a binary tree of the operations for the program input given and generates a mathematical equation for each possible path that might be taken. Internally, Angr explores all the paths between the two points specified by us, and passes the corresponding mathematical equations to the solver to return meaningful concrete results. We can access these solutions via `simulation_manager.found` list, which contains all the possible paths explored by Angr which satisfies our specified search criteria.
+As discussed previously in the section "[Dynamic Binary Instrumentation](../../Document/0x04c-Tampering-and-Reverse-Engineering.md#static-and-dynamic-binary-analysis "Dynamic Binary Instrumentation")", the symbolic execution engine constructs a binary tree of the operations for the program input given and generates a mathematical equation for each possible path that might be taken. Internally, Angr explores all the paths between the two points specified by us, and passes the corresponding mathematical equations to the solver to return meaningful concrete results. We can access these solutions via `simulation_manager.found` list, which contains all the possible paths explored by Angr which satisfies our specified search criteria.
 
 Take a closer look at the latter part of the script where the final solution string is being retrieved. The address of the string is obtained from address `r11 - 0x20`. This may appear magical at first, but a careful analysis of the function at `0x00001760` holds the clue, as it determines if the given input string is a valid license key or not. In the disassembly above, you can see how the input string to the function (in register R0) is stored into a local stack variable `0x0000176c      str r0, [var_20h]`. Hence, we decided to use this value to retrieve the final solution in the script. Using `found.solver.eval` you can ask the solver questions like "given the output of this sequence of operations (the current state in `found`), what must the input (at `addr`) have been?".
 
@@ -202,7 +202,7 @@ WARNING | ... | cle.loader | The main binary is a position-independent executabl
 b'JACE6ACIARNAAIIA'
 ```
 
-Now you can run the validate binary in your Android device to verify the solution as indicated [here](../Crackmes/README.md#android-license-validator).
+Now you can run the validate binary on your Android device to verify the solution (see @MASTG-APP-0002).
 
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.
 

@@ -14,7 +14,7 @@ masvs_v1_levels:
 
 Any existing [deep links](../../../Document/0x05h-Testing-Platform-Interaction.md#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc.
 
-- Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
+- Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-android-applinks#fix-errors), it can cause the system to not verify all Android App Links for that app.
 - Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
 
 All deep links must be enumerated and verified for correct website association. The actions they perform must be well tested, especially all input data, which should be deemed untrustworthy and thus should always be validated.
@@ -34,7 +34,7 @@ The Android version in which the app runs also influences the risk of using deep
 
 **Inspecting the Android Manifest:**
 
-You can easily determine whether deep links (with or without custom URL schemes) are defined by [decoding the app using apktool](../../../Document/0x05b-Android-Security-Testing.md#exploring-the-app-package) and inspecting the Android Manifest file looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
+You can easily determine whether deep links (with or without custom URL schemes) are defined by @MASTG-TECH-0007 and inspecting the Android Manifest file looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
 
 - **Custom Url Schemes**: The following example specifies a deep link with a custom URL scheme called `myapp://`.
 
@@ -84,7 +84,7 @@ It might seem as though this supports only `https://www.example.com` and `app://
 
 **Using Dumpsys:**
 
-Use [adb](../../../Document/0x08a-Testing-Tools.md#adb) to run the following command that will show all schemes:
+Use @MASTG-TOOL-0004 to run the following command that will show all schemes:
 
 ```bash
 adb shell dumpsys package com.example.package
@@ -115,7 +115,7 @@ Use the [Android "App Link Verification" Tester](https://github.com/inesmartins/
 
 **Only on Android 12 (API level 31) or higher:**
 
-You can use [adb](../../../Document/0x08a-Testing-Tools.md#adb) to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. This feature allows you to:
+You can use @MASTG-TOOL-0004 to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. This feature allows you to:
 
 - [invoke the verification process manually](https://developer.android.com/training/app-links/verify-site-associations#manual-verification).
 - [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-site-associations#reset-state).
@@ -188,7 +188,7 @@ Even if the deep link is correctly verified, the logic of the handler method sho
 
 First, obtain the name of the Activity from the Android Manifest `<activity>` element which defines the target `<intent-filter>` and search for usage of [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()") and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()"). This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data and if it could be subject to any kind of abuse.
 
-The following example is a snippet from an exemplary Kotlin app [decompiled with jadx](../../../techniques/android/MASTG-TECH-0017.md "Decompiling Java Code"). From the [static analysis](#check-for-deep-link-usage) we know that it supports the deep link `deeplinkdemo://load.html/` as part of `com.mstg.deeplinkdemo.WebViewActivity`.
+The following example is a snippet from an exemplary Kotlin app decompiled with @MASTG-TECH-0017. From the [static analysis](#check-for-deep-link-usage) we know that it supports the deep link `deeplinkdemo://load.html/` as part of `com.mstg.deeplinkdemo.WebViewActivity`.
 
 ```java
 // snippet edited for simplicity
@@ -209,7 +209,7 @@ public final class WebViewActivity extends AppCompatActivity {
             ...
 ```
 
-You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has [JavaScript enabled](../MASVS-PLATFORM/MASTG-TEST-0031.md).
+You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has @MASTG-TEST-0031.
 
 The same WebView might be also rendering an attacker controlled parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](../../../Document/0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws) within the context of the WebView:
 
@@ -221,10 +221,10 @@ But there are many other possibilities. Be sure to check the following sections 
 
 - ["Cross-Site Scripting Flaws"](../../../Document/0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws).
 - ["Injection Flaws"](../../../Document/0x04h-Testing-Code-Quality.md#injection-flaws).
-- ["Testing Object Persistence"](../MASVS-CODE/MASTG-TEST-0034.md).
-- ["Testing for URL Loading in WebViews"](../MASVS-CODE/MASTG-TEST-0027.md)
-- ["Testing JavaScript Execution in WebViews"](../MASVS-PLATFORM/MASTG-TEST-0031.md)
-- ["Testing WebView Protocol Handlers"](../MASVS-PLATFORM/MASTG-TEST-0032.md)
+- @MASTG-TEST-0034.
+- @MASTG-TEST-0027
+- @MASTG-TEST-0031
+- @MASTG-TEST-0032
 
 In addition, we recommend to search and read public reports (search term: `"deep link*"|"deeplink*" site:https://hackerone.com/reports/`). For example:
 
@@ -236,17 +236,17 @@ In addition, we recommend to search and read public reports (search term: `"deep
 
 ## Dynamic Analysis
 
-Here you will use the list of deep links from the static analysis to iterate and determine each handler method and the processed data, if any. You will first start a [Frida](../../../Document/0x08a-Testing-Tools.md#frida) hook and then begin invoking the deep links.
+Here you will use the list of deep links from the static analysis to iterate and determine each handler method and the processed data, if any. You will first start a @MASTG-TOOL-0031 hook and then begin invoking the deep links.
 
 The following example assumes a target app that accepts this deep link: `deeplinkdemo://load.html`. However, we don't know the corresponding handler method yet, nor the parameters it potentially accepts.
 
 **[Step 1] Frida Hooking:**
 
-You can use the script ["Android Deep Link Observer"](https://codeshare.frida.re/@leolashkevych/android-deep-link-observer/) from [Frida CodeShare](../../../Document/0x08a-Testing-Tools.md#frida-codeshare) to monitor all invoked deep links triggering a call to `Intent.getData`. You can also use the script as a base to include your own modifications depending on the use case at hand. In this case we [included the stack trace](https://github.com/FrenchYeti/frida-trick/blob/master/README.md) in the script since we are interested in the method which calls `Intent.getData`.
+You can use the script ["Android Deep Link Observer"](https://codeshare.frida.re/@leolashkevych/android-deep-link-observer/) from @MASTG-TOOL-0032 to monitor all invoked deep links triggering a call to `Intent.getData`. You can also use the script as a base to include your own modifications depending on the use case at hand. In this case we [included the stack trace](https://github.com/FrenchYeti/frida-trick/blob/master/README.md) in the script since we are interested in the method which calls `Intent.getData`.
 
 **[Step 2] Invoking Deep Links:**
 
-Now you can invoke any of the deep links using [adb](../../../Document/0x08a-Testing-Tools.md#adb) and the [Activity Manager (am)](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") which will send intents within the Android device. For example:
+Now you can invoke any of the deep links using @MASTG-TOOL-0004 and the [Activity Manager (am)](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") which will send intents within the Android device. For example:
 
 ```bash
 adb shell am start -W -a android.intent.action.VIEW -d "deeplinkdemo://load.html/?message=ok#part1"

@@ -55,7 +55,7 @@ If you'd like to apply please contact the project leaders by sending an email to
 - Advocate Companies may use the logo and links to MASVS/MASTG resources as part of their communication but cannot use them as an endorsement by OWASP as a preferred provider of software and services.
     - Example of what's ok: list MAS Advocate status on website home page, in "about company" slides in sales presentations, on sales collateral.
     - Example of what's not ok: a MAS Advocate cannot claim they are OWASP certified.
-- The quality of the application of the MASVS/MASTG by these companies [has not been vetted by the MAS team](https://mas.owasp.org/MASVS/Intro/04-Assessment_and_Certification/).
+- The quality of the application of the MASVS/MASTG by these companies [has not been vetted by the MAS team](https://mas.owasp.org/MASVS/04-Assessment_and_Certification/).
 
 > The OWASP Foundation is very grateful for the support by the individuals and organizations listed. However please note, the OWASP Foundation is strictly vendor neutral and does not endorse any of its supporters. MAS Advocates do not influence the content of the MASVS or MASTG in any way.
 
@@ -82,7 +82,7 @@ A special mention goes for the **contribution to the MASVS Refactoring**:
 - Feedback on each category proposal
 - Statistics from internal analysis
 
-In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](0x08b-Reference-Apps.md#android-uncrackable-l4).
+In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the @MASTG-APP-0015.
 
 Additionally:
 

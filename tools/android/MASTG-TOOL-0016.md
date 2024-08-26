@@ -18,4 +18,4 @@ Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.and
 Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
 ```
 
-> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in "[Alternative App Stores](#alternative-app-stores "Alternative App Stores")".
+> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in @MASTG-TECH-0003.

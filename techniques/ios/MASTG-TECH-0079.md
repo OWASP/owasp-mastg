@@ -7,7 +7,7 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 ## Automated Repackaging
 
-[Objection](0x08a-Testing-Tools.md#objection) automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+@MASTG-TOOL-0038 automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
 
 Using objection's repackaging feature is sufficient for most of use cases. However, in some complex scenarios you might need more fine-grained control or a more customizable repackaging process. In that case, you can read a detailed explanation of the repackaging and resigning process in ["Manual Repackaging"](#manual-repackaging).
 
@@ -15,9 +15,9 @@ Using objection's repackaging feature is sufficient for most of use cases. Howev
 
 Thanks to Apple's confusing provisioning and code-signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, Bundle IDs, application IDs, team identifiers, and how Apple's build tools connect them. Getting the OS to run a binary that hasn't been built via the default method (Xcode) can be a daunting process.
 
-We'll use [optool](0x08a-Testing-Tools.md#optool), Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://research.nccgroup.com/2016/10/12/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
+We'll use @MASTG-TOOL-0059, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://research.nccgroup.com/2016/10/12/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
 
-To reproduce the steps listed below, download [UnCrackable App for iOS Level 1](../../apps/ios/MASTG-APP-0025.md "UnCrackable App for iOS Level 1") from the OWASP Mobile Testing Guide repository. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
+To reproduce the steps listed below, download @MASTG-APP-0025. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
 
 > Please note that the following steps apply to macOS only, as Xcode is only available for macOS.
 
@@ -29,7 +29,7 @@ Depending on whether you're registered as an iOS developer, you can obtain a cer
 
 **With an iOS developer account:**
 
-If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the [`security`](0x08a-Testing-Tools.md#security) command (macOS only) to list your signing identities:
+If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the @MASTG-TOOL-0063 command (macOS only) to list your signing identities:
 
 ```bash
 $ security find-identity -v
@@ -43,9 +43,9 @@ In the examples below, I use my signing identity, which is associated with my co
 
 **With a Regular Apple ID:**
 
-Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
+Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://research.nccgroup.com/2016/10/12/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
 
-Once you've obtained the provisioning profile, you can check its contents with the [`security`](0x08a-Testing-Tools.md#security) command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
+Once you've obtained the provisioning profile, you can check its contents with the @MASTG-TOOL-0063 command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
 ```bash
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist

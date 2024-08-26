@@ -25,5 +25,5 @@ jobs:
         with:
           check_filenames: true
           skip: "*.json,*.yml,*.apk,*.ipa,*.svg"
-          ignore_words_list: "aas,aaS,ba,bund,compliancy,firt,ist,keypair,ligh,Manuel,Manual,ro,ser,synopsys,theses,zuser,lief"
+          ignore_words_list: "aas,aaS,ba,bund,compliancy,firt,ist,keypair,ligh,Manuel,Manual,ro,ser,synopsys,theses,zuser,lief,EDE"
           path: ${{ env.CHANGED_FILES }}

@@ -5,7 +5,7 @@ platform: android
 
 Static analysis is a technique used to examine and evaluate the source code of a mobile application without executing it. This method is instrumental in identifying potential security vulnerabilities, coding errors, and compliance issues. Static analysis tools can scan the entire codebase automatically, making them a valuable asset for developers and security auditors.
 
-Two good examples of static analysis tools are grep and [semgrep](https://semgrep.dev/). However, there are many other tools available, and you should choose the one that best fits your needs.
+Two good examples of static analysis tools are grep and @MASTG-TOOL-0110. However, there are many other tools available, and you should choose the one that best fits your needs.
 
 ## Example: Using grep for Manifest Analysis in Android Apps
 

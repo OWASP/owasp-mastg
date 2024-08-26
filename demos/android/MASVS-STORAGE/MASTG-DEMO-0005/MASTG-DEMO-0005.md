@@ -2,7 +2,6 @@
 platform: android
 title: App Writing to External Storage via the MediaStore API
 id: MASTG-DEMO-0005
-tools: [semgrep]
 code: [kotlin]
 test: MASTG-TEST-0202
 ---
@@ -15,7 +14,7 @@ The snippet below shows sample code that uses the `MediaStore` API to write a fi
 
 ### Steps
 
-Let's run our semgrep rule against the sample code.
+Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 {{ ../../../../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-apis.yml }}
 
