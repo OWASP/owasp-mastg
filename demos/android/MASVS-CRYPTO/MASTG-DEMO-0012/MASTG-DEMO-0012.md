@@ -14,7 +14,7 @@ test: MASTG-TEST-0208
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-weak-crypto-key-generation.yml }}
+{{ ../../../../rules/mastg-android-weak-key-generation.yml }}
 
 {{ run.sh }}
 
