@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Uses of Weak Key Size in CCCrypt with r2
+title: Uses of Weak Key Size in SecKeyCreateRandomKey with r2
 code: [swift]
 id: MASTG-DEMO-0011
 test: MASTG-TEST-0209
