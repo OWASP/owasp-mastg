@@ -1,8 +1,9 @@
 ---
+title: Use of Hardcoded Cryptographic Keys
 platform: android
-title: hardcoded-crypto-keys-usage
-tools: [semgrep]
+id: MASTG-TEST-0210
 type: [static]
+weakness: MASWE-0014
 ---
 
 ## Overview
