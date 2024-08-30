@@ -1,1 +1,0 @@
-NO_COLOR=true semgrep -c ../../../../rules/mastg-ios-hardcoded-keys.yaml ./MastgTest.swift --text -o output.txt
