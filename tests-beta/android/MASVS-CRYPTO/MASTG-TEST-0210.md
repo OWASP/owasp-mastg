@@ -1,5 +1,5 @@
 ---
-title: Use of Hardcoded Cryptographic Keys
+title: Use of Hardcoded Cryptographic Keys in Code
 platform: android
 id: MASTG-TEST-0210
 type: [static]
