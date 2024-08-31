@@ -1,5 +1,5 @@
 ---
-title: Use of Hardcoded Cryptographic Keys in APIs
+title: Use of Hardcoded Cryptographic Keys in Code
 platform: ios
 id: MASTG-TEST-0216
 type: [static]
