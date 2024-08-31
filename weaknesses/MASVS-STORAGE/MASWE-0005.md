@@ -37,11 +37,9 @@ API keys can be hardcoded in several areas:
 
 ## Mitigations
 
-To mitigate the risks associated with hardcoded API keys, developers should:
-
 - Use a stateful API service that provides secure authentication, client validation, and session controls. Implement dynamic tokens that expire after a reasonably short time (e.g., 1 hour). This can help reduce the impact of key exposure. Also, ensure proper error handling and logging to detect and respond to unauthorized access attempts. Consider using OAuth 2.0 and security libraries like AppAuth to simplify secure OAuth flows.
 - If a stateful API service is not viable, consider using a stateless API service with a middleware solution (sometimes known as API proxy or API Gateway). This involves proxying requests between the app and API endpoint. Use JSON Web Tokens (JWT) and JSON Web Signature (JWS) to store the vulnerable static key server-side rather than in the application (client). Implement secure key management practices and consider using a cloud key management service.
 - If API keys must be hardcoded, be sure to configure them with the minimum required permissions to reduce the impact in case of exposure. Many services allow you to create keys with restricted access, which limits the operations that can be performed.
 - Consider using a [Key Management Service](https://cloud.google.com/kms/docs/key-management-service) to get API keys on runtime after validating app integrity.
 - Regularly audit the codebase and dependencies for hardcoded sensitive data (e.g. using tools such as [gitLeaks](https://github.com/gitleaks/gitleaks)).
-- While not foolproof, and **to be used as a last resort** when no other secure options are available, code and resource obfuscation and encryption can deter attackers by making it more difficult to analyze your app and discover hardcoded secrets.
+- While not foolproof, and **to be used as a last resort** when no other secure options are available, code and resource obfuscation and encryption can deter attackers by making it more difficult to analyze your app and discover hardcoded secrets. Avoid custom implementations and use well-established solutions such as RASP (Runtime Application Self-Protection) which can ensure that the API keys are only fully assembled in memory when necessary, keeping them obfuscated or split across different components otherwise. RASP can also dynamically retrieve and manage keys securely at runtime by integrating with secure key management solutions.
