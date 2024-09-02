@@ -8,22 +8,22 @@ test: MASTG-TEST-0216
 
 ### Sample
 
-{{ MastgTest.swift }}
+{{ MastgTest.swift # function.asm }}
 
 ### Steps
 
 1. Unzip the app package and locate the main binary file (@MASTG-TECH-0058), which in this case is `./Payload/MASTestApp.app/MASTestApp`.
 2. Open the app binary with @MASTG-TOOL-0073 with the `-i` option to run this script.
 
-{{ cryptokit_hardcoded_rsa.r2 }}
+{{ cryptokit_hardcoded_ecdsa.r2 }}
 
 {{ run.sh }}
 
 ### Observation
 
-The output reveals the hardcoded ECDSA private key within the binary. This key is typically found in the disassembled code section, where it is loaded into memory for cryptographic operations. The presence of hardcoded keys can be identified by searching for sequences of bytes or strings corresponding to the key.
+The output reveals the different uses of `CryptoKit.P256.Signing.PrivateKey` functions, especially `sym.imp.CryptoKit.P256.Signing.PrivateKey.rawRepresentation` which is used to extract the raw representation of the private key. The output also reveals the hardcoded ECDSA private key within the binary's DATA section.
 
-{{ output.txt }}
+{{ output.asm # key.asm }}
 
 ### Evaluation
 

@@ -13,6 +13,6 @@ axt @ 0x100007904
 
 !printf "\n"
 
-pdf @ sym.func.10000491c > function.txt
+pdf @ sym.func.10000491c > function.asm
 
-px 607 @ 0x1000100c8 > key.txt
+px 607 @ 0x1000100c8 > key.asm
