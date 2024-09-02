@@ -1,1 +1,1 @@
-r2 -q -i sec_hardcoded_rsa.r2 -A MASTestApp
+r2 -q -i sec_hardcoded_rsa.r2 -A MASTestApp > output.txt
