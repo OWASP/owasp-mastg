@@ -1,0 +1,1 @@
+This app seems to exclude files from a backup but the developer might not be aware that the system doesn't guarantee that this file will be excluded from a backup. Make sure to encrypt this file if you want to prevent restoring this data.
