@@ -1,9 +1,9 @@
 ---
 platform: ios
-title: Uses of Weak Key Size in SecKeyCreateRandomKey with r2
+title: Sensitive Data Not Excluded From Backup
 code: [swift]
-id: MASTG-DEMO-0011
-test: MASTG-TEST-0206
+id: MASTG-DEMO-0013
+test: MASTG-TEST-0210
 ---
 
 ### Sample

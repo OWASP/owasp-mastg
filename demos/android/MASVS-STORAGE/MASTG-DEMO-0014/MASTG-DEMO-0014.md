@@ -1,9 +1,9 @@
 ---
 platform: android
 title: Sensitive Data Not Excluded From Backup
-id: MASTG-DEMO-0012
+id: MASTG-DEMO-0014
 code: [kotlin]
-test: MASTG-TEST-0205
+test: MASTG-TEST-0211
 ---
 
 ### Sample
