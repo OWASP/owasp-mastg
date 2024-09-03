@@ -25,4 +25,8 @@ The rule has identified one instance in the code file where hardcoded keys is us
 
 ### Evaluation
 
-The test fails because a hardcoded AES key was found in the code.
+The test fails because hardcoded cryptographic keys are present in the code. Specifically:
+
+- On line 24, a byte array that represents a cryptographic key is directly hardcoded into the source code.
+- This hardcoded key is then used on line 26 to create a `SecretKeySpec`.
+- Additionally, on line 30, another instance of hardcoded data is used to create a separate `SecretKeySpec`.

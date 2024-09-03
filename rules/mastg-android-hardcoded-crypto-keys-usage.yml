@@ -1,11 +1,11 @@
 rules:
-  - id: hardcoded-crypto-key-test
+  - id: mastg-android-hardcoded-crypto-keys-usage
+    severity: WARNING
     languages:
       - java
-    severity: WARNING
     metadata:
-      summary: This rule scans for hardcoded getting used.
-    message: Hardcoded cryptographic keys are found in use.
+      summary: This rule looks for hardcoded keys in use.
+    message: "[MASVS-CRYPTO-1] Hardcoded cryptographic keys found in use."
     pattern-either:
       - pattern: SecretKeySpec $_ = new SecretKeySpec($KEY, $ALGO);
       - pattern: |-
