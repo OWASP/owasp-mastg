@@ -25,7 +25,6 @@ The output contains information that `isExcludedFromBackupKey` was used in the a
 
 {{ output.txt }}
 
-
 ### Evaluation
 
 In the output we can see how the `kSecAttrKeySizeInBits` attribute is set to `1024` bits (0x400 in hexadecimal) using the `x8` register. This is later used to call `SecKeyCreateRandomKey`.

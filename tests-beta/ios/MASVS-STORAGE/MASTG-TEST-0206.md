@@ -14,7 +14,6 @@ iOS provides the [isExcludedFromBackup](https://developer.apple.com/documentatio
 
 1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary, or use a dynamic analysis tool like @MASTG-TOOL-0039, and look for uses of `isExcludedFromBackup` API.
 
-
 ## Observation
 
 Inspect all files that you marked with `isExcludedFromBackup`.

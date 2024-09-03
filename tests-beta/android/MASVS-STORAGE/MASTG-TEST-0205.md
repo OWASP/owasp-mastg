@@ -9,6 +9,7 @@ weakness: MASWE-0004
 ## Overview
 
 This test verifies whether your app correctly instructs the system to exclude sensitive files from backups. There are two distinct APIs for instructing the system to exclude files:
+
 1. [Auto Backup](https://developer.android.com/identity/data/autobackup)
 2. [Key-value backup](https://developer.android.com/identity/data/autobackup)
 Regardless of which API you use, Android provides a way to start the backup daemon to back up and restore your app's files. You can use this daemon to initiate the backup process and restore the app's data, allowing you to verify which files have been restored from the backup.
