@@ -1,1 +1,1 @@
- semgrep -c ../rules/mastg-android-hardcoded-crypto-keys-usage.yml ./hardcoded-key-in-use.java --text -o output.txt  
+ semgrep -c ../rules/mastg-android-hardcoded-crypto-keys-usage.yml ./MastgTest_reversed.java --text -o output.txt  
