@@ -35,10 +35,11 @@ The impact associated with such defects can be very broad and difficult to predi
 
 ## Modes of Introduction
 
-Weak, outdated or custom cryptographic algorithms can be found in several areas:
-
-- **App Source Code**: In modules where cryptographic algorithms are used.
-- **Libraries**: Third-party or app dependencies where cryptographic algorithms are imported.
+- **Deviation from standard libraries**: Not using well-known libraries for cryptography, such as those provided by the platforms like Conscrypt or CryptoKit, or other well-established libraries like OpenSSL, BouncyCastle, etc.
+- **Use of cryptographic constants**: Hardcoded cryptographic constants are typically used to implement cryptographic algorithms. These constants include S-boxes (substitution boxes) for block ciphers, permutation tables, etc.
+- **Use of low-level mathematical operations**: Low-level mathematical operations (such as bitwise operations, shifts, custom padding schemes) typically used in cryptographic algorithms.
+- **High entropy code**: An indicator of cryptographic implementations or heavily obfuscated code that may hide cryptographic algorithms from reverse engineering.
+- **Use of non-cryptographic functions**: Non-cryptographic functions such as Base64 encoding or XOR instead of encryption.
 
 ## Mitigations
 
