@@ -42,11 +42,6 @@ Weak, outdated or custom cryptographic algorithms can be found in several areas:
 
 ## Mitigations
 
-To mitigate the risks associated with weak cryptographic implementations, developers should:
-
-- Use strong and up-to-date cryptographic algorithms to manage data.
-- Do not implement custom-made cryptographic algorithms, as they may be exposed to attacks.
-- Manage and protect cryptoghraphic keys, using Android KeyStore or iOS Keychain.
-- When using cryptographic algorithms, do not omit steps in order to improve performance. These steps are often essential for preventing attacks.
-- Regularly audit the codebase and dependencies for outdated cryptographic algorithms.
-- Security crypto libraries such as Jetpack or BouncyCastle are deprecated for many algorithms, avoid using them.
+- **Use standard cryptographic libraries and avoid custom cryptography**: Avoid developing custom cryptographic algorithms or protocols. Always prefer well-established and widely accepted cryptographic libraries such as OpenSSL, BoringSSL, or platform-specific libraries such as Android's Keystore and Apple's CryptoKit. These libraries have undergone extensive testing and are regularly updated to address new security threats.
+- **Ensure compliance with security standards**: If you can't avoid using custom cryptography, make sure it's implemented to meet industry standards such as FIPS 140-2/3 (Federal Information Processing Standards) or the latest National Institute of Standards and Technology (NIST) recommendations.
+- **Perform periodic security audits**: If using custom cryptography is unavoidable, perform regular security audits (including thorough code reviews) to identify and remediate any flaws in your custom cryptographic implementations. Engage external security experts to provide an unbiased assessment.
