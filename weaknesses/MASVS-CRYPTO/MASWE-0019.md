@@ -26,11 +26,12 @@ The use of outdated or known weak implementations, as well as custom built crypt
 
 ## Impact
 
-Using weak or outdated cryptography implementations can lead to a variety of security issues, including but not limited to:
+Custom cryptographic implementations created without following established standards make them more susceptible to attacks such as brute force or differential cryptanalysis. In addition, cryptography is notoriously difficult to implement correctly, and even small errors in a custom solution, such as incorrect padding or faulty random number generation, can completely undermine the security of the system, exposing sensitive data to attackers.
 
-- **Read application data**: Encrypted sensitive data may be compromised by the use of a weak or broken cryptographic algorithm, as it could render it as unencrypted plaintext.
-- **Modify application data**: Integrity-verified application files may be altered due to the use of broken cryptographic algorithms.
-- **Hide sources of data**: Broken cryptographic algorithms may lead to the source of the data of the application to not be proven, if this algorithms are used to ensure the identity of the source of them.
+The impact associated with such defects can be very broad and difficult to predict or measure:
+
+- **Data breaches**: Weak encryption can lead to unauthorized access to sensitive data, resulting in data breaches.
+- **Compromised confidentiality, integrity, and authenticity**: The core principles of cryptography (confidentiality, integrity, and authenticity) are compromised. Attackers can decrypt, manipulate, or impersonate legitimate users or systems.
 
 ## Modes of Introduction
 
