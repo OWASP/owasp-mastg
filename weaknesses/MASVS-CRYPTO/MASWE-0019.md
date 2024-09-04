@@ -22,7 +22,7 @@ refs:
 
 ## Overview
 
-The use of outdated or known weak implementations, as well as custom built cryptography poses a significant security risk, as their potential implementation flaws and lack of security review exposes apps to vulnerabilities. Instead, always use certified, expert-designed modules for cryptographic purposes.
+Outdated, weak, or noncompliant cryptographic implementations, such as those that do not meet established security standards such as FIPS 140-2/3 (Federal Information Processing Standards), may use algorithms that have not been sufficiently tested or that lack certification, may not follow best practices for secure key management, or may include custom cryptographic solutions that haven't undergone rigorous peer review or formal validation.
 
 ## Impact
 
