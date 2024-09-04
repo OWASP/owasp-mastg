@@ -10,8 +10,13 @@ mappings:
   cwe: [327, 1240]
 
 refs: 
- - https://cwe.mitre.org/data/definitions/1240.html
- - https://cwe.mitre.org/data/definitions/327.html
+ - https://book.hacktricks.xyz/crypto-and-stego/cryptographic-algorithms
+ - https://www.researchgate.net/publication/290181523_Evaluation_of_Cryptography_Usage_in_Android_Applications
+ - https://www.scitepress.org/papers/2014/50563/50563.pdf
+ - https://pure.tugraz.at/ws/portalfiles/portal/23858147
+ - https://github.com/Wind-River/crypto-detector
+ - https://github.com/Rami114/cryptoscan/
+ - https://github.com/IAIK/CryptoSlice
  - https://developer.android.com/reference/javax/crypto/Cipher#getInstance(java.lang.String)
  - https://developer.android.com/privacy-and-security/security-gms-provider
  - https://developer.android.com/privacy-and-security/cryptography#bc-algorithms
