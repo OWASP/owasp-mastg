@@ -1,5 +1,6 @@
 ---
 title: Potentially Weak Cryptography Implementations
+id: MASWE-0019
 alias: potentially-weak-crypto-impl
 platform: [android, ios]
 profiles: [L2]
