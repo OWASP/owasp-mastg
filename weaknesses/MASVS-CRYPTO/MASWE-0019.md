@@ -50,6 +50,7 @@ The impact associated with such defects can be very broad and difficult to predi
 
 ## Mitigations
 
-- **Use standard cryptographic libraries and avoid custom cryptography**: Avoid developing custom cryptographic algorithms or protocols. Always prefer well-established and widely accepted cryptographic libraries such as OpenSSL, BoringSSL, or platform-specific libraries such as Android's Keystore and Apple's CryptoKit. These libraries have undergone extensive testing and are regularly updated to address new security threats.
+- **Use standard cryptographic libraries and avoid custom cryptography**: Avoid developing custom cryptographic algorithms or protocols. Always prefer well-established and widely accepted cryptographic libraries such as OpenSSL, BoringSSL, or platform-specific libraries such as Android's Conscrypt and Apple's CryptoKit. These libraries have undergone extensive testing and are regularly updated to address new security threats.
+
 - **Ensure compliance with security standards**: If you can't avoid using custom cryptography, make sure it's implemented to meet industry standards such as FIPS 140-2/3 (Federal Information Processing Standards) or the latest National Institute of Standards and Technology (NIST) recommendations.
 - **Perform periodic security audits**: If using custom cryptography is unavoidable, perform regular security audits (including thorough code reviews) to identify and remediate any flaws in your custom cryptographic implementations. Engage external security experts to provide an unbiased assessment.
