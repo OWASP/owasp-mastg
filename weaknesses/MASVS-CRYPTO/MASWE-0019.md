@@ -7,6 +7,7 @@ mappings:
   masvs-v1: [MSTG-CRYPTO-2]
   masvs-v2: [MASVS-CRYPTO-1, MASVS-CODE-3]
   mastg-v1: [MASTG-TEST-0061, MASTG-TEST-0014]
+  cwe: [327, 1240]
 
 refs: 
  - https://cwe.mitre.org/data/definitions/1240.html
