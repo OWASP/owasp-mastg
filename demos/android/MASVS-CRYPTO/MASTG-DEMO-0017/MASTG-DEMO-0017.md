@@ -1,6 +1,8 @@
 ---
 platform: android
 title: Use of Hardcoded AES Key in SecretKeySpec with semgrep
+id: MASTG-DEMO-0017
+test: MASTG-TEST-0212
 tools: [semgrep]
 code: [java]
 ---
@@ -13,7 +15,7 @@ code: [java]
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-hardcoded-crypto-keys-usage.yaml }}
+{{ ../../../../rules/mastg-android-hardcoded-crypto-keys-usage.yml }}
 
 {{ run.sh }}
 
