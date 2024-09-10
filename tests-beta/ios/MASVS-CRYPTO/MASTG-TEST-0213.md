@@ -10,7 +10,7 @@ weakness: MASWE-0014
 
 In this test case, we will examine iOS applications for the presence of hardcoded cryptographic keys. Hardcoded keys can be typically found in calls to cryptographic functions or stored as constants or variables within the code. In iOS, cryptographic keys are often used in the following frameworks:
 
-- **Security Framework**: The [`SecKeyCreateWithData`](https://developer.apple.com/documentation/security/2977516-seckeycreatewithdata) function allows developers to create a cryptographic key from raw data.
+- **Security Framework**: The [`SecKeyCreateWithData`](https://developer.apple.com/documentation/security/seckeycreatewithdata(_:_:_:)) function allows developers to create a cryptographic key from raw data.
 - **CommonCrypto**: The [`CCCrypt`](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/CCCrypt.3cc.html) can be initialized with raw key data in its `key` parameter.
 - **CryptoKit**: Although `CryptoKit` provides higher-level abstractions for cryptographic operations, developers might still hardcode cryptographic keys in different formats and feed it to methods like [`P256.Signing.PrivateKey.init(rawRepresentation:)`](https://developer.apple.com/documentation/cryptokit/p256/signing/privatekey/init(rawrepresentation:)) or similar.
 
