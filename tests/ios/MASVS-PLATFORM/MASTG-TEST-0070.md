@@ -40,7 +40,7 @@ Here's an example from Telegram's `.entitlements` file:
 
 More detailed information can be found in the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12-SW2 "Preparing Your App to Handle Universal Links").
 
-If you don't have the original source code you can still search for them, as explained in "Entitlements Embedded in the Compiled App Binary".
+If you don't have the original source code you can extract them from the MachO file as explained in @MASTG-TECH-0111.
 
 ### Retrieving the Apple App Site Association File
 

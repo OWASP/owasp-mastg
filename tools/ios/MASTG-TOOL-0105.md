@@ -1,5 +1,5 @@
 ---
-title: IPSW
+title: ipsw
 platform: ios
 source: https://github.com/blacktop/ipsw
 host:

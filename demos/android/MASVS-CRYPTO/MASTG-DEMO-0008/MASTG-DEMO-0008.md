@@ -14,7 +14,7 @@ test: MASTG-TEST-0205
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-non-random-use.yaml }}
+{{ ../../../../rules/mastg-android-non-random-use.yml }}
 
 {{ run.sh }}
 
