@@ -12,6 +12,7 @@ status: new
 ---
 
 ## Overview
+
 Sensitive data might be used for secondary purposes or beyond the initial scope without notice or consent from users, while a user consent is obtained for the collection of such data for the initial purpose.
 
 ## Modes of Introduction
