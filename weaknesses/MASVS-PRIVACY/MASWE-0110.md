@@ -28,11 +28,11 @@ This risk can be introduced in various scenarios, including:
 
 ## Impact
 
-The impact of exposing sensitive data in network traffic includes:
+The impact of user identification:
 
-- **Violation of User Privacy**: Users may not be aware that their personal information is being used for secondary purpose or continuous access, leading to privacy infringement.
+- **Violation of User Privacy**: Users may not be aware that their personal information is being collected for tracking purposes, leading to privacy infringement.
 - **Compliance and Legal Risks**: Breach of data protection laws and regulations (like GDPR), resulting in legal consequences and fines.
-- **Loss of User Trust**: Users losing trust in the application, leading to reputational damage and potential loss of business.
+- **Read Application Data**: If an app collects and exposes user data without proper anonymization, attackers could access and expose this data by reading the application's data storage. This could include sensitive information like names, addresses, financial details, and even health records.
 
 ## Mitigations
 
