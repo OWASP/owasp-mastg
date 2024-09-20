@@ -12,9 +12,9 @@ status: new
 ---
 
 ## Overview
-Preventing identification of users is concerned with the risk of collecting data in a way that leads to user identification and tracking. The risk of user identification and tracking should be mitigated by ensuring use of unlikable techniques such as data abstraction, anonymization and pseudonymization.
+Preventing identification of users is concerned with the risk of collecting data in a way that leads to user identification and tracking. The risk of user identification and tracking should be mitigated by ensuring use of unlinkability techniques such as data abstraction, anonymization and pseudonymization.
 
-Technical barriers need to be established when utilizing complex ‘finger-print’ like signals for specific purposes to prevent cross-usage and ensure each data stream serves its intended function without compromising user privacy.
+Technical barriers need to be established when utilizing complex ‘finger-print’ like data points for specific purposes to prevent cross-usage and ensure each data stream serves its intended function without compromising user privacy.
 
 
 ## Modes of Introduction
