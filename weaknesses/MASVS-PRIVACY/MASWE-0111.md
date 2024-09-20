@@ -30,11 +30,11 @@ This risk can be introduced in various scenarios, including:
 
 ## Impact
 
-The impact of exposing sensitive data in network traffic includes:
+The impact of collection of user data without user consent: 
 
-- **Violation of User Privacy**: Users may not be aware that their personal information is being used for secondary purpose or continuous access, leading to privacy infringement.
-- **Compliance and Legal Risks**: Breach of data protection laws and regulations (like GDPR), resulting in legal consequences and fines.
-- **Loss of User Trust**: Users losing trust in the application, leading to reputational damage and potential loss of business.
+-**Loss of User Trust**: Users losing trust in the application, leading to reputational damage and potential loss of business.
+-**Gain Privileges**: If users are not aware of how their data is being used, they cannot effectively assess the risks involved. This could lead to their data being used for purposes they find objectionable or harmful, such as targeted advertising, discrimination, or even identity theft.
+
 
 ## Mitigations
 
