@@ -25,7 +25,7 @@ This risk can be introduced in various scenarios, including:
 
 ## Impact
 
-The impact of exposing sensitive data in network traffic includes:
+The impact of exposing sensitive data beyond the initial scope includes:
 
 - **Violation of User Privacy**: Users may not be aware that their personal information is being used for secondary purpose or continuous access, leading to privacy infringement.
 - **Compliance and Legal Risks**: Breach of data protection laws and regulations (like GDPR), resulting in legal consequences and fines.
