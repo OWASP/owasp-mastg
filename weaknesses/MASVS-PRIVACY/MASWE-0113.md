@@ -21,7 +21,7 @@ The risk here is to bundle consent with the terms of services or the processing 
 
 This risk can be introduced in various scenarios, including:
 
-- Consent is bundled with the terms of services. For example, the consent language says ‘ by using this service, you agree to provide your data for research purposes.’
+- Consent is bundled with the terms of services. For example, the consent language says ‘by using this service, you agree to provide your data for research purposes.’
 - Consent covers future use cases. For example, consent to pair one device automatically applies to new devices in the future and no additional consent is obtained. 
 
 
