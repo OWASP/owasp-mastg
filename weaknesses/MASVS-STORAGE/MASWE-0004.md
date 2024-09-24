@@ -23,22 +23,23 @@ status: draft
 
 ## Overview
 
-iOS and Android automatically back up app's to the cloud. These files often include sensitive user and app data. Under certain conditions, the backup may not be adequately secured by the cloud provider, or a malicious actor may tamper with the backed-up files. It's a good practice to review how your app instructs the system to perform backups and exclude sensitive files. This page also covers local backups made to your laptop and device-to-device transfers.
+iOS and Android automatically back up app data to cloud services, and users can also create local backups on physical machines, or backups are automatically created during data transfers when switching between phones. When developers fail to properly configure how their app handles backups and neglect to exclude sensitive files, the backups may contain sensitive user and app data. Under certain conditions, the backups may not be adequately secured by the cloud provider, or a malicious actor could tamper with the backed up files, potentially altering the app's behavior or extracting confidential information.
 
 ## Impact
 
 - **Modification of app's behavior**: An attacker can tamper with data inside the backup, altering the app's logic. For example, they could modify a database that tracks the state of premium features and then restore the modified backup to the device. Another common scenario is backing up the device before redeeming a one-time coupon and restoring the backup afterward. This would allow the malicious actor to reuse the same coupon multiple times.
 
-- **Loss of confidentiality**: An attacker can extract sensitive data stored in the backup, such as personal information, photos, documents, and audio files.
+- **Loss of confidentiality**: Sensitive data stored in backups (e.g., personal information, photos, documents, audio files) may be extracted by attackers, leading to privacy breaches.
 
-- **Loss of secure material**: An attacker can extract passwords, cryptographic keys, and session tokens to facilitate additional attacks, such as identity theft or account takeover.
+- **Leakage of authentication material**: An attacker can extract passwords, cryptographic keys, and session tokens to facilitate additional attacks, such as identity theft, account takeover, or unauthorized access.
 
 ## Modes of Introduction
 
-- **System backs up app's data by default**: Backing up the device to the cloud is enabled by default for all apps once the user gives consent during setting up the phone for the first time.
-- **Users can back up app's data locally to a laptop**: Under certain conditions, an attacker can tamper the backup locally.
+- **Automatic System Backups**: By default, iOS and Android back up app data to the cloud once the user consents during the initial setup.
 
-- **Usage of Device-To-Device transfer**: Transferring data to another device enables an attacker to perform similar attacks.
+- **Local Backups**: Users can back up their devices to local systems (e.g., laptops). If local backups are stored unencrypted or not securely handled, attackers could tamper with this data.
+
+- **Device-To-Device Transfer**: Transferring data between devices (e.g., via iCloud or Google’s device-to-device migration tools) enables an attacker to perform similar attacks.
 
 ## Mitigations
 
