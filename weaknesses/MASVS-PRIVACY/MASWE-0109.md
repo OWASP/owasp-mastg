@@ -6,7 +6,7 @@ platform: ["android", "ios"]
 profiles: ["P"]
 mappings:
   masvs-v1: 
-  masvs-v2: [MASVS-PRIVACY-1, MASVS-PRIVACY-2, MASVS-PRIVACY-4]
+  masvs-v2: [MASVS-PRIVACY-1, MASVS-PRIVACY-3, MASVS-PRIVACY-4]
   cwe: [359]
 status: new
 ---
