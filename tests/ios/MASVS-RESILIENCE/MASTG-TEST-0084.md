@@ -49,7 +49,7 @@ In Objective-C, developers can use preprocessor macros to filter out debug code:
 In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D". So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
 
 ```default
-#if MSTG-DEBUG
+#if MSTG_DEBUG
     // Debug-only code
 #endif
 ```
