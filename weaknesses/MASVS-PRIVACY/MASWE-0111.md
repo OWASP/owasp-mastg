@@ -33,7 +33,7 @@ This risk can be introduced in various scenarios, including:
 The impact of collection of user data without user consent: 
 
 -**Loss of User Trust**: Users losing trust in the application, leading to reputational damage and potential loss of business.
--**Gain Privileges**: If users are not aware of how their data is being used, they cannot effectively assess the risks involved. This could lead to their data being used for purposes they find objectionable or harmful, such as targeted advertising, discrimination, or even identity theft.
+-**Missing Transparency**: If users are not aware of how their data is being used, they cannot effectively assess the risks involved. This could lead to their data being used for purposes they find objectionable or harmful, such as targeted advertising, discrimination, or even identity theft.
 
 
 ## Mitigations
