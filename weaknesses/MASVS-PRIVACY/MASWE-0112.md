@@ -32,8 +32,8 @@ This risk can be introduced in various scenarios, including:
 
 The impact of users lacking control over their data: 
 
-- **Loss of User Trust**: Users losing trust in the application, leading to reputational damage and potential loss of business.
--**Gain Privileges**: Users cannot manage, delete, or modify their data, leaving them vulnerable to potential misuse or unauthorized access.
+-**Loss of User Trust**: Users losing trust in the application, leading to reputational damage and potential loss of business.
+-**Loss of Control**: Users cannot manage, delete, or modify their data, leaving them vulnerable to potential misuse or unauthorized access.
 
 ## Mitigations
 
