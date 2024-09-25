@@ -84,3 +84,44 @@ There are generally two approaches to this: **reFlutter** and **Frida**.
     ```
 
 5. Start intercepting traffic.
+
+## Intercepting Traffic using HTTP Toolkit
+
+If the above methods don't work, you can try using HTTP Toolkit, which provides another way to intercept Flutter HTTPS traffic. Here’s how:
+
+1. Install HTTP Toolkit
+
+    - Install HTTP Toolkit on your Linux or Windows machine. You can download it from [here](https://httptoolkit.com/).
+
+2. Configure HTTP Toolkit
+
+    - Turn on the Android device and make sure it's connected to your machine.
+
+    - Go to HTTP Toolkit and select either `Intercept > Android App via Frida` or `Intercept > Android Device via ADB`. (For better results, the `Android Device via ADB` option is recommended since the Frida option is still in the development phase.)
+
+    - HTTP Toolkit will automatically perform the necessary configurations, and a connection request will pop up on your Android device. Accept it to start testing the app.
+
+3. Proxy HTTP Toolkit Traffic through Burp Suite
+
+    - In HTTP Toolkit, go to `Settings > Connection Settings`.
+
+    - Set the proxy option as `Use an HTTP Proxy`.
+
+    - Enter the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`) under the HTTP host proxy details and save it.
+
+    - Add the Burp certificate to Trusted CA Certificates.
+
+4. Configure Burp Suite
+
+    - In Burp Suite, go to `Proxy > Options > Proxy Listeners > Add`.
+
+    - Enter the port number configured in HTTP Toolkit settings.
+
+    - Select `All Interfaces` and save the configuration.
+
+5. Start Intercepting Traffic
+
+The setup should now look like this:
+    Android Device <-> HTTP Toolkit <-> Burp Suite
+    With this setup, HTTP Toolkit will start to proxy all requests from your device through Burp Suite.
+
