@@ -124,4 +124,3 @@ If the above methods don't work, you can try using HTTP Toolkit, which provides 
 The setup should now look like this:
     Android Device <-> HTTP Toolkit <-> Burp Suite
     With this setup, HTTP Toolkit will start to proxy all requests from your device through Burp Suite.
-
