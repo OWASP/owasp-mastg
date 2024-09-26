@@ -122,5 +122,5 @@ If the above methods don't work, you can try using HTTP Toolkit, which provides 
 5. Start Intercepting Traffic
 
 The setup should now look like this:
-    Android Device <-> HTTP Toolkit <-> Burp Suite
+    Android Device <-> HTTP Toolkit <-> Burp Suite <-> Server
     With this setup, HTTP Toolkit will start to proxy all requests from your device through Burp Suite.
