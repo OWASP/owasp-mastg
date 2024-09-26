@@ -107,7 +107,7 @@ If the above methods don't work, you can try using HTTP Toolkit, which provides 
 
     - Set the proxy option as `Use an HTTP Proxy`.
 
-    - Enter the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`) under the HTTP host proxy details and save it.
+    - Enter the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`, `127.0.0.1:8082`) under the HTTP host proxy details and save it.
 
     - Add the Burp certificate to Trusted CA Certificates.
 
