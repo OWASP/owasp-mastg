@@ -55,55 +55,55 @@ Note: On iOS 12 and higher, use the following procedure to sign the debugserver 
 
 2) Connect to the device via SSH and create the file, named entitlements.xml, with the following content:
 
-    ```xml
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-        <key>platform-application</key>
-        <true/>
-        <key>com.apple.private.security.no-container</key>
-        <true/>
-        <key>com.apple.private.skip-library-validation</key>
-        <true/>
-        <key>com.apple.backboardd.debugapplications</key>
-        <true/>
-        <key>com.apple.backboardd.launchapplications</key>
-        <true/>
-        <key>com.apple.diagnosticd.diagnostic</key>
-        <true/>
-        <key>com.apple.frontboard.debugapplications</key>
-        <true/>
-        <key>com.apple.frontboard.launchapplications</key>
-        <true/>
-        <key>com.apple.security.network.client</key>
-        <true/>
-        <key>com.apple.security.network.server</key>
-        <true/>
-        <key>com.apple.springboard.debugapplications</key>
-        <true/>
-        <key>com.apple.system-task-ports</key>
-        <true/>
-        <key>get-task-allow</key>
-        <true/>
-        <key>run-unsigned-code</key>
-        <true/>
-        <key>task_for_pid-allow</key>
-        <true/>
-    </dict>
-    </plist>
-    ```
+   ```xml
+   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   <plist version="1.0">
+   <dict>
+      <key>platform-application</key>
+      <true/>
+      <key>com.apple.private.security.no-container</key>
+      <true/>
+      <key>com.apple.private.skip-library-validation</key>
+      <true/>
+      <key>com.apple.backboardd.debugapplications</key>
+      <true/>
+      <key>com.apple.backboardd.launchapplications</key>
+      <true/>
+      <key>com.apple.diagnosticd.diagnostic</key>
+      <true/>
+      <key>com.apple.frontboard.debugapplications</key>
+      <true/>
+      <key>com.apple.frontboard.launchapplications</key>
+      <true/>
+      <key>com.apple.security.network.client</key>
+      <true/>
+      <key>com.apple.security.network.server</key>
+      <true/>
+      <key>com.apple.springboard.debugapplications</key>
+      <true/>
+      <key>com.apple.system-task-ports</key>
+      <true/>
+      <key>get-task-allow</key>
+      <true/>
+      <key>run-unsigned-code</key>
+      <true/>
+      <key>task_for_pid-allow</key>
+      <true/>
+   </dict>
+   </plist>
+   ```
 
-3) Type the following command to sign the debugserver binary:
+3) Type the following command to sign the debugserver binary using @MASTG-TOOL-0111:
 
-    ```bash
-    ldid -Sentitlements.xml debugserver
-    ```
+   ```bash
+   ldid -Sentitlements.xml debugserver
+   ```
 
 4) Verify that the debugserver binary can be executed via the following command:
 
-    ```bash
-    ./debugserver
-    ```
+```bash
+./debugserver
+```
 
 You can now attach debugserver to any process running on the device.
 

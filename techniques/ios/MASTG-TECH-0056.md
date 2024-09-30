@@ -50,7 +50,7 @@ ipainstaller App_name.ipa
 
 ## ios-deploy
 
-On macOS you can also use the @MASTG-TOOL-0054/ tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
+On macOS you can also use the @MASTG-TOOL-0054 tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
 unzip Name.ipa
