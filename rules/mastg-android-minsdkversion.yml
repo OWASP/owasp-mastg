@@ -1,0 +1,12 @@
+rules:
+  - id: mastg-android-minsdkversion
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      summary: This rule checks the value of minSdkVersion is set and is not lower than 30
+    message: "[MASVS-CODE] Ensure app only runs on a recent version of Android"
+    patterns:
+      - pattern: <uses-sdk android:minSdkVersion="$X" />
+      - metavariable-comparison:
+          comparison: int($X)<30
