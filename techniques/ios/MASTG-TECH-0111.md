@@ -7,7 +7,7 @@ To extract the entitlements from a MachO binary, the following tools can be used
 
 - @MASTG-TOOL-0111
 - @MASTG-TOOL-0105
-- @MASTG-TOOL-0101
+- @MASTG-TOOL-0114
 
 The following examples use these tools on the main binary of @MASTG-APP-0028, which contains two architectures.
 

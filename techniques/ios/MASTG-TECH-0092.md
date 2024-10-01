@@ -21,7 +21,7 @@ Next, we need to make sure that the Bundle ID in `Info.plist` matches the one sp
 
 ## Re-Signing
 
-Finally, we use the @MASTG-TOOL-0101 tool to re-sign both binaries. You need to use _your own_ signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -v`.
+Finally, we use the @MASTG-TOOL-0114 tool to re-sign both binaries. You need to use _your own_ signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -v`.
 
 ```bash
 $ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature

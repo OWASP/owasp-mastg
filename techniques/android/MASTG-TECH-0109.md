@@ -77,7 +77,7 @@ There are generally two approaches to this: **@MASTG-TOOL-0100** and **@MASTG-TO
    - Select `Bind to address` to `All interfaces`.
    - Request Handling -> support for invisible proxying.
 
-4. Run the @MASTG-TOOL-0001 frida script.
+4. Run the @MASTG-TOOL-0101 Frida script.
 
     ```bash
     frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
