@@ -12,10 +12,10 @@ In order to intercept Flutter HTTPS traffic, we need to deal with two problems:
 
 There are generally two approaches to this: **@MASTG-TOOL-0100** and **@MASTG-TOOL-0001**.
 
-- **@MASTG-TOOL-0100**: This tool creates a modified version of the Flutter module which is then repackaged into the APK. It configures the internal libraries to use a specified proxy and disable the TLS verification.
-- **@MASTG-TOOL-0001**: The [disable-flutter-tls.js script](https://github.com/NVISOsecurity/disable-flutter-tls-verification) can dynamically remove the TLS verification without the need for repackaging. As it doesn't modify the proxy configuration, additional steps are needed (e.g. ProxyDroid, DNS, iptables, ...).
+- **reFlutter**: This tool creates a modified version of the Flutter module which is then repackaged into the APK. It configures the internal libraries to use a specified proxy and disable the TLS verification.
+- **Frida**: The [disable-flutter-tls.js script](https://github.com/NVISOsecurity/disable-flutter-tls-verification) can dynamically remove the TLS verification without the need for repackaging. As it doesn't modify the proxy configuration, additional steps are needed (e.g. ProxyDroid, DNS, iptables, ...).
 
-## Intercepting Traffic using @MASTG-TOOL-0100
+## Intercepting Traffic using reFlutter
 
 1. Patch the app to enable traffic interception.
 
@@ -56,7 +56,7 @@ There are generally two approaches to this: **@MASTG-TOOL-0100** and **@MASTG-TO
 
 5. Open the app and start intercepting traffic.
 
-## Intercepting Traffic using ProxyDroid / iptables with @MASTG-TOOL-0001
+## Intercepting Traffic using ProxyDroid / iptables with Frida
 
 1. Configure [proxyDroid](https://blog.nviso.eu/2019/08/13/intercepting-traffic-from-android-flutter-applications/) or iptables rules to redirect requests to Burp.
 
