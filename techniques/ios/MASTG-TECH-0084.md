@@ -36,7 +36,7 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 </plist>
 ```
 
-Apply the entitlement with @MASTG-TOOL-0101:
+Apply the entitlement with @MASTG-TOOL-0114:
 
 ```bash
 codesign -s - --entitlements entitlements.plist -f debugserver
