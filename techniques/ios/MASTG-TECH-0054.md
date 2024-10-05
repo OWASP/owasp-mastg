@@ -58,7 +58,7 @@ In order to retrieve the unencrypted version, you can use [frida-ios-dump](https
 
 First, configure @MASTG-TOOL-0054 `dump.py`:
 
-- set it to use `localhost` with port `2222` when using @MASTG-TOOL-0055, or to the actual IP address and port of the device from which you want to dump the binary.
+- set it to use `localhost` with port `2222` when using @MASTG-TOOL-0055 (`iproxy 2222 22`), or to the actual IP address and port of the device from which you want to dump the binary. 
 - update the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you have set.
 
 Enumerate the apps installed on the device by running `python dump.py -l`:
@@ -74,7 +74,7 @@ Enumerate the apps installed on the device by running `python dump.py -l`:
    ...
 ```
 
-You can dump the selected app, for example Telegram, by running `python dump.py ph.telegra.Telegraph`
+You can dump the selected app, for example Telegram, by running `python dump.py -H 127.0.0.1 -p 2222 --user mobile -P alpine ph.telegra.Telegraph`, if you are using a SSH tunnel with `iproxy` and the default credentials on a jailbroken phone.
 
 After a couple of seconds, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using @MASTG-TOOL-0054 `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
