@@ -74,7 +74,7 @@ Enumerate the apps installed on the device by running `python dump.py -l`:
    ...
 ```
 
-You can dump the selected app, for example Telegram, by running `python dump.py -H 127.0.0.1 -p 2222 --user mobile -P alpine ph.telegra.Telegraph`, if you are using a SSH tunnel with `iproxy` and the default credentials on a jailbroken phone.
+You can dump the selected app, for example Telegram, by running `python dump.py -H 127.0.0.1 -p 2222 --user mobile -P alpine ph.telegra.Telegraph`, if you are using an SSH tunnel with `iproxy` and the default credentials on a jailbroken phone.
 
 After a couple of seconds, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using @MASTG-TOOL-0054 `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
