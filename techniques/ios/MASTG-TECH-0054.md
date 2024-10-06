@@ -58,7 +58,7 @@ In order to retrieve the unencrypted version, you can use [frida-ios-dump](https
 
 First, configure @MASTG-TOOL-0054 `dump.py`:
 
-- set it to use `localhost` with port `2222` when using @MASTG-TOOL-0055 (`iproxy 2222 22`), or to the actual IP address and port of the device from which you want to dump the binary. 
+- set it to use `localhost` with port `2222` when using @MASTG-TOOL-0055 (`iproxy 2222 22`), or to the actual IP address and port of the device from which you want to dump the binary.
 - update the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you have set.
 
 Enumerate the apps installed on the device by running `python dump.py -l`:
