@@ -1,5 +1,5 @@
 ---
-title: Patching
+title: Patching manually
 platform: ios
 ---
 
@@ -11,13 +11,9 @@ unzip UnCrackable-Level1.ipa
 
 ## Patching Example: Installing Frida Gadget
 
-IF you want to use Frida on non-jailbroken devices you'll need to include `FridaGadget.dylib`. Download it first:
+If you want to use Frida on non-jailbroken devices you'll need to include the `FridaGadget.dylib`. Download it first from the [Github release page](https://github.com/frida/frida/releases). The filename is `frida-gadget-<VERSION>-ios-universal.dylib` and is compressed.
 
-```bash
-curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
-```
-
-Copy `FridaGadget.dylib` into the app directory and use @MASTG-TOOL-0059 to add a load command to the "UnCrackable Level 1" binary.
+Copy the `FridaGadget.dylib` into the app directory and use @MASTG-TOOL-0059 to add a load command to the "UnCrackable Level 1" binary.
 
 ```bash
 $ unzip UnCrackable_Level1.ipa
