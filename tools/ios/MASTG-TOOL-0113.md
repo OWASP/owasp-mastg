@@ -15,7 +15,7 @@ Before executing fastlane:
 - [get a developer provisioning profile and certificate](https://mas.owasp.org/MASTG/techniques/ios/MASTG-TECH-0079/#getting-a-developer-provisioning-profile-and-certificate)
 - create a directory `fastlane` and create a `Fastfile` file as described in the documentation for [resigning](https://docs.fastlane.tools/actions/resign/).
 
-Example: 
+Example:
 
 ```yaml
 lane :resignipa do
@@ -27,7 +27,7 @@ lane :resignipa do
 end
 ```
 
-Afterwards execute the `fastlane resignipa` command. 
+Afterwards execute the `fastlane resignipa` command.
 
 ```bash
 $ fastlane resignipa
