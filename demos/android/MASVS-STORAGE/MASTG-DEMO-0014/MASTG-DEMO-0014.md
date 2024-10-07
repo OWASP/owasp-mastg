@@ -10,15 +10,13 @@ test: MASTG-TEST-0211
 
 The snippet below shows sample code that creates two files inside [`filesDir`](https://developer.android.com/reference/android/content/Context#getFilesDir()). One of the files is also marked as `exclude` inside `backup_rules.xml`.
 
-{{ MastgTest.kt }}
-
-{{ backup_rules.xml }}
+{{ MastgTest.kt # backup_rules.xml }}
 
 ### Steps
 
-1. Install an app on your device.
+1. Install the target app on your device.
 2. Execute `run_before.sh` which runs @MASTG-TOOL-0004.
-3. Open an app and exercise it to trigger file creations.
+3. Open the app and exercise it to trigger file creations.
 4. Execute `run_after.sh`.
 5. Close the app once you finish testing.
 
@@ -26,7 +24,7 @@ The snippet below shows sample code that creates two files inside [`filesDir`](h
 
 ### Observation
 
-There is a list of all restored files inside `output.txt`.
+The output contains a list of all restored files.
 
 {{ output.txt }}
 

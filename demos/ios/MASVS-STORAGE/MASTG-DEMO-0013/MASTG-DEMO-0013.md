@@ -27,8 +27,4 @@ The output contains information that `isExcludedFromBackupKey` was used in the a
 
 ### Evaluation
 
-In the output we can see how the `kSecAttrKeySizeInBits` attribute is set to `1024` bits (0x400 in hexadecimal) using the `x8` register. This is later used to call `SecKeyCreateRandomKey`.
-
-{{ evaluation.txt }}
-
 iOS doesn't guarantee that any file marked with `isExcludedFromBackupKey` will be excluded from a backup. Encrypt this file if necessary.

@@ -12,6 +12,7 @@ This test verifies whether your app correctly instructs the system to exclude se
 
 1. [Auto Backup](https://developer.android.com/identity/data/autobackup)
 2. [Key-value backup](https://developer.android.com/identity/data/autobackup)
+
 Regardless of which API you use, Android provides a way to start the backup daemon to back up and restore your app's files. You can use this daemon to initiate the backup process and restore the app's data, allowing you to verify which files have been restored from the backup.
 
 ## Steps
@@ -28,7 +29,7 @@ Regardless of which API you use, Android provides a way to start the backup daem
 
 6. Restore the data from the backup.
 
-7. Verify that restored files don't contain sensitive data. Test both Private and Shared storage locations.
+7. Verify that restored files don't contain sensitive data. Test both private and shared storage locations.
 
 ## Observation
 
