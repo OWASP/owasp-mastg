@@ -33,8 +33,8 @@ Regardless of which API you use, Android provides a way to start the backup daem
 
 ## Observation
 
-After installing the app for the second time and restoring data from the backup, inspect the files inside the Private and Shared storages and note down files with sensitive content.
+The output should contain a list of files that are restored from the backup.
 
 ## Evaluation
 
-Once you complete the list of restored files containing sensitive data, instruct the system to exclude them from the backup. If you use Auto Backup, mark them with `exclude` tag inside `backup_rules.xml` or `data_extraction_riles.xml` depending on your target API. Make sure you use fill out both `cloud-backup` and `device-transfer` parameters. If you use Key-value approach, set up your [BackupAgent](https://developer.android.com/identity/data/keyvaluebackup#BackupAgent) accordingly.
+Identify the files that contain sensitive data and instruct the system to exclude them from the backup. If you use Auto Backup, mark them with `exclude` tag inside `backup_rules.xml` or `data_extraction_riles.xml` depending on your target API. Make sure you use fill out both `cloud-backup` and `device-transfer` parameters. If you use Key-value approach, set up your [BackupAgent](https://developer.android.com/identity/data/keyvaluebackup#BackupAgent) accordingly.
