@@ -1,9 +1,9 @@
 ---
 platform: android
 title: Sensitive Data Not Excluded From Backup
-id: MASTG-DEMO-0014
+id: MASTG-DEMO-0020
 code: [kotlin]
-test: MASTG-TEST-0211
+test: MASTG-TEST-0216
 ---
 
 ### Sample
@@ -40,4 +40,4 @@ Note that the sample app wrote two files: `secret.txt` and `backup_excluded_secr
 
 ### Evaluation
 
-If you don't intend to restore this file, this test fails.
+The test fails because `secret.txt` is restored from the backup and it contains sensitive data.
