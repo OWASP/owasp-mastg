@@ -28,6 +28,6 @@ The rule has identified five instances in the code file where an insecure encryp
 
 Review each of the reported instances.
 
-- Line 37 seems the code utlize insecure DES algorithm.
+- Line 37 seems the code utilize insecure DES algorithm.
 - Line 56 seems to utilize Cipher.getInstance("AES") defaults to ECB, which  is insecure.
-- Line 79 seems the code utlize insecure 3DES algorithm.
+- Line 79 seems the code utilize insecure 3DES algorithm.
