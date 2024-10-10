@@ -17,7 +17,7 @@ Ensure that the release builds are properly signed to safeguard their integrity 
 - **Android 9 (API level 28) and above**: It's recommended to use both the **v2 and v3 signature schemes**. The v3 scheme supports **key rotation**, enabling developers to replace keys in the event of a compromise without invalidating old signatures.
 - **Android 11 (API level 30) and above**: Optionally include the **v4 signature scheme** to enable faster incremental updates.
 
-Avoid using the **v1 signature scheme** (JAR signing) scheme unless absolutely necessary for backward compatibility with Android 6.0 (API level 23) and below as it is considered insecure. For example, it is affected by the **Janus vulnerability (CVE-2017-13156)**, which can allow malicious actors to modify APK files without invalidating the v1 signature. As such, **v1 should never be relied on exclusively for devices running Android 7.0 and above**.
+Avoid using the **v1 signature scheme** (JAR signing) unless absolutely necessary for backward compatibility with Android 6.0 (API level 23) and below as it is considered insecure. For example, it is affected by the **Janus vulnerability (CVE-2017-13156)**, which can allow malicious actors to modify APK files without invalidating the v1 signature. As such, **v1 should never be relied on exclusively for devices running Android 7.0 and above**.
 
 You should also ensure that the APK's code-signing certificate is valid and belongs to the developer.
 
@@ -28,7 +28,7 @@ For further guidance, refer to the official [Android app signing documentation](
 APK signatures can be verified with the [apksigner](https://developer.android.com/tools/apksigner) tool. It is located at `[SDK-Path]/build-tools/[version]/apksigner`.
 
 ```bash
-$ apksigner verify --print-certs --verbose owntracks-release-gms-420503003.apk 
+$ apksigner verify --verbose example.apk 
 Verifies
 Verified using v1 scheme (JAR signing): false
 Verified using v2 scheme (APK Signature Scheme v2): true
@@ -39,12 +39,12 @@ Verified for SourceStamp: false
 Number of signers: 1
 ```
 
-The contents of the signing certificate can be also examined with apksigner.
+The contents of the signing certificate can be also examined with apksigner:
 
 ```bash
-$ apksigner verify --print-certs --verbose whatsapp.apk      
+$ apksigner verify --print-certs --verbose example.apk      
 [...]
-Signer #1 certificate DN: CN=OwnTracks Developers, OU=Android, O=OwnTracks
+Signer #1 certificate DN: CN=Example Developers, OU=Android, O=Example
 Signer #1 certificate SHA-256 digest: 1fc4de52d0daa33a9c0e3d67217a77c895b46266ef020fad0d48216a6ad6cb70
 Signer #1 certificate SHA-1 digest: 1df329fda8317da4f17f99be83aa64da62af406b
 Signer #1 certificate MD5 digest: 3dbdca9c1b56f6c85415b67957d15310
