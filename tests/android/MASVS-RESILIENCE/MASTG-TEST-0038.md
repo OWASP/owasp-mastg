@@ -28,7 +28,7 @@ For further guidance, refer to the official [Android app signing documentation](
 APK signatures can be verified with the [apksigner](https://developer.android.com/tools/apksigner) tool. It is located at `[SDK-Path]/build-tools/[version]/apksigner`.
 
 ```bash
-$ apksigner verify --verbose example.apk 
+$ apksigner verify --verbose example.apk
 Verifies
 Verified using v1 scheme (JAR signing): false
 Verified using v2 scheme (APK Signature Scheme v2): true
