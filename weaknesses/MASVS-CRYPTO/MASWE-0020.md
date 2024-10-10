@@ -27,12 +27,7 @@ status: draft
 
 ## Overview
 
-Weak encryption denotes cryptographic systems or implementations that exhibit vulnerabilities to attacks, allowing unauthorized individuals to decrypt secured data with minimal effort. This vulnerability may arise from several factors, including:
-
-1. Short key lengths
-2. Deprecated algorithms
-3. Poor implementation
-4. Outdated protocols
+Weak encryption denotes cryptographic systems or implementations that exhibit vulnerabilities to attacks, allowing unauthorized individuals to decrypt secured data with minimal effort. This inadequacy may arise from various reasons, such as, use of outdated algorithms, short key lengths, or improper implementation practices. For instance, the DES encryption standard, once considered robust, is now vulnerable to brute-force attacks because its key sizes are too small to withstand the capabilities of contemporary computing power. In a similar vein, hash functions like MD5 and SHA-1, which were previously popular for ensuring data integrity, are now deemed weak as attackers can easily generate hash collisions, resulting in security breaches.
 
 ## Impact
 
