@@ -10,10 +10,11 @@ In order to intercept Flutter HTTPS traffic, we need to deal with two problems:
 - Make sure the traffic is sent to the proxy.
 - Disable the TLS verification of any HTTPS connection.
 
-There are generally two approaches to this: **@MASTG-TOOL-0100** and **@MASTG-TOOL-0001**.
+There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOOL-0001** and **@MASTG-TOOL-0115**.
 
 - **reFlutter**: This tool creates a modified version of the Flutter module which is then repackaged into the APK. It configures the internal libraries to use a specified proxy and disable the TLS verification.
 - **Frida**: The [disable-flutter-tls.js script](https://github.com/NVISOsecurity/disable-flutter-tls-verification) can dynamically remove the TLS verification without the need for repackaging. As it doesn't modify the proxy configuration, additional steps are needed (e.g. ProxyDroid, DNS, iptables, ...).
+- **HTTP Toolkit**: The HTTP tookit uses firda scripts , to handle interception, manage certificate trust & disable certificate pinning & transparency checks, for MitM interception of HTTPS traffic on Android
 
 ## Intercepting Traffic using reFlutter
 
@@ -86,11 +87,6 @@ There are generally two approaches to this: **@MASTG-TOOL-0100** and **@MASTG-TO
 5. Start intercepting traffic.
 
 ## Intercepting Traffic using HTTP Toolkit
-
-If the above methods don't work, you can try using @MASTG-TOOL-0115, which provides another way to intercept Flutter HTTPS traffic.
-
-1. **Install HTTP Toolkit**
-    - You can download it from [here](https://httptoolkit.com/).
 
 2. **Configure HTTP Toolkit**
     - Turn on the Android device and make sure it's connected to your machine.
