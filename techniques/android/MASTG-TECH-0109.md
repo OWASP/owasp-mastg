@@ -14,7 +14,7 @@ There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOO
 
 - **reFlutter**: This tool creates a modified version of the Flutter module which is then repackaged into the APK. It configures the internal libraries to use a specified proxy and disable the TLS verification.
 - **Frida**: The [disable-flutter-tls.js script](https://github.com/NVISOsecurity/disable-flutter-tls-verification) can dynamically remove the TLS verification without the need for repackaging. As it doesn't modify the proxy configuration, additional steps are needed (e.g. ProxyDroid, DNS, iptables, ...).
-- **HTTP Toolkit**: The HTTP tookit uses firda scripts, to handle interception, manage certificate trust & disable certificate pinning & transparency checks, for MitM interception of HTTPS traffic on Android
+- **HTTP Toolkit**: The HTTP tookit uses firda scripts, to handle interception, manage certificate trust, disable certificate pinning and transparency checks for MitM interception of HTTPS traffic on Android
 
 ## Intercepting Traffic using reFlutter
 
