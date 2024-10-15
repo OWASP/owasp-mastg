@@ -89,8 +89,8 @@ There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOO
 ## Intercepting Traffic using HTTP Toolkit
 
 2. **Configure HTTP Toolkit**
-    - Turn on the Android device and make sure it's connected to your machine.
-    - Go to HTTP Toolkit and select one of these options:
+    - Connect the android device to the machine.
+    - Launch the HTTP Toolkit and choose one of the available options:
         - `Intercept > Android App via Frida` (experimental)
         - `Intercept > Android Device via ADB` (for better results)
     - Accept the connection request that will pop up on your Android device.
@@ -98,8 +98,7 @@ There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOO
 3. **Proxy HTTP Toolkit Traffic through Burp Suite**
     - In HTTP Toolkit, go to `Settings > Connection Settings`.
     - Set the proxy option as `Use an HTTP Proxy`.
-    - Enter the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`, `127.0.0.1:8082`) under the HTTP host proxy details and save it.
-    - Add the Burp certificate to Trusted CA Certificates.
+    - Configure the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`, `127.0.0.1:8082`) under the HTTP host proxy details and save it.
 
 4. **Configure Burp Suite**
     - In Burp Suite, go to `Proxy > Options > Proxy Listeners > Add`.
