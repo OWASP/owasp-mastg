@@ -376,11 +376,11 @@ Markdown blockquotes can be used for comments in the documents by using `>`
 
 Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks (` ``` `). GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
 
-```markdown
-    ```java
-    public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
-    ```
+````markdown
+```java
+public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
 ```
+````
 
 This produces the following result:
 
@@ -390,12 +390,12 @@ public static void main(String[] args) { System.out.println(" Hello World!"); } 
 
 When including shell commands, make sure to use the correct language for syntax highlighting (e.g. `shell` or `bash`) and remove any host names and usernames from the command prompt, e.g.:
 
-```markdown
-    ```shell
-    $ echo 'Hello World'
-    Hello World
-    ```
+````markdown
+```shell
+$ echo 'Hello World'
+Hello World
 ```
+````
 
 When a command requires parameters that need to be modified by the reader, surround them with angle brackets:
 

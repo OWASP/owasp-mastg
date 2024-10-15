@@ -13,35 +13,13 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-Inspect the app entitlements and check the value of `get-task-allow` key. If it is set to `true`, the app is debuggable.
-
-Using @MASTG-TOOL-0101 and @MASTG-APP-0028:
+Extract the entitlements from the app (@MASTG-TECH-0111) and check the value of the `get-task-allow` key. If it is set to `true`, the app is debuggable.
 
 ```bash
-$ codesign -d --entitlements - iGoat-Swift.app
-
-Executable=/Users/owasp/iGoat-Swift/Payload/iGoat-Swift.app/iGoat-Swift
-[Dict]
-    [Key] application-identifier
-    [Value]
-        [String] TNAJ496RHB.OWASP.iGoat-Swift
-    [Key] com.apple.developer.team-identifier
-    [Value]
-        [String] TNAJ496RHB
-    [Key] get-task-allow
-    [Value]
-        [Bool] true
-    [Key] keychain-access-groups
-    [Value]
-        [Array]
-            [String] TNAJ496RHB.OWASP.iGoat-Swift
-````
-
-Using ldid:
+$ ldid -e iGoat-Swift.app/iGoat-Swift
+```
 
 ```xml
-$ ldid -e iGoat-Swift.app/iGoat-Swift
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -62,6 +40,6 @@ $ ldid -e iGoat-Swift.app/iGoat-Swift
 
 ## Dynamic Analysis
 
-Check whether you can attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
+Check whether you can attach a debugger directly, as explained in @MASTG-TECH-0084.
 
 Note: if the application is equipped with anti-reverse engineering controls, then the debugger can be detected and stopped.
