@@ -95,13 +95,13 @@ There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOO
         - `Intercept > Android Device via ADB`.
     - Accept the connection request that will pop up on your Android device.
 
-2. Proxy HTTP Toolkit Traffic through Burp Suite
-   - HTTP Toolkit Configuration:
+2. Proxy HTTP Toolkit Traffic through Burp Suite:
+   - HTTP Toolkit Configuration
         - In HTTP Toolkit, go to `Settings > Connection Settings`.
         - Set the proxy option as `Use an HTTP Proxy`.
         - Configure the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`, `127.0.0.1:8082`) under the HTTP host proxy details and save it.
 
-   - Burp Configuration:
+   - Burp Configuration
         - In Burp Suite, go to `Proxy > Options > Proxy Listeners > Add`.
         - Enter the port number configured in HTTP Toolkit settings.
         - Select `All Interfaces` and save the configuration.
