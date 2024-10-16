@@ -91,8 +91,8 @@ There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOO
 1. Configure HTTP Toolkit
     - Connect the android device to the machine.
     - Launch the HTTP Toolkit and choose one of the available options:
-        - `Intercept > Android App via Frida` (experimental)
-        - `Intercept > Android Device via ADB` (for better results)
+        - `Intercept > Android App via Frida`.
+        - `Intercept > Android Device via ADB`.
     - Accept the connection request that will pop up on your Android device.
 
 2. Proxy HTTP Toolkit Traffic through Burp Suite
