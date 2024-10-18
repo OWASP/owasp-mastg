@@ -27,7 +27,11 @@ status: draft
 
 ## Overview
 
-Weak encryption denotes cryptographic systems or implementations that exhibit vulnerabilities to attacks, allowing unauthorized individuals to decrypt secured data with minimal effort. This inadequacy may arise from various reasons, such as, use of outdated algorithms, short key lengths, weak encryption modes(ECB) and improper implementation practices. For instance, the DES encryption standard, once considered robust, is now vulnerable to brute-force attacks because its key sizes are too small to withstand the capabilities of contemporary computing power. In a similar, hash functions like MD5 and SHA-1, which were previously popular for ensuring data integrity, are now deemed weak as attackers can easily generate hash collisions, resulting in security breaches.
+Weak encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorised individuals to decrypt secured data. This weakness can be due to a number of reasons, including the use of outdated algorithms, deprecated encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialisation Vector (IV). 
+
+For example the use of TDEA (Triple Data Encryption Algorithm), which is often referred to as "Triple DES" or "3DES" is disallowed by NIST since end of 2023, due to known attacks like, "meet-in-the-middle", collision attacks and [Sweet32](https://nvd.nist.gov/vuln/detail/CVE-2016-2183).
+
+Similarly, hash functions such as MD5 and SHA-1, which were previously popular for ensuring data integrity, are now considered deprecated as attackers can generate hash collisions, potentially leading to data tampering.
 
 ## Impact
 
