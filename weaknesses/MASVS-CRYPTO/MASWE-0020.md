@@ -41,7 +41,11 @@ Similarly, hash functions such as MD5 and SHA-1, which were previously popular f
 
 ## Mode of Introduction
 
-- **Use of Deprecated Algorithms** : Relying on outdated or weak cryptographic algorithms can produce keys that are less secure. Such algorithms are often characterized by vulnerabilities or the ability to use shorter key lengths, which increases their susceptibility to contemporary attacks and threatens the overall security of the application.
+- **Use of Deprecated Algorithms** : Relying on outdated or weak cryptographic algorithms can allow threat actors to attack the cipher text, key or exploit known vulnerabilities in the algorithm, for example through brute force attacks.
+- **Insecure Modes of Operation**:  Using modes that are considered deprecated increase the attack surface of encrypted information. For example the use of AES/ECB is deprecated as it divides the plaintext into blocks and encrypts each block separately using the same key. This makes the cipher text vulnerable to "known plaintext attacks" and leaks information about the structure of the original plaintext. 
+- **Predictable Initialization Vectors (IVs)**: If IVs are not random or unique, they can be exploited in attacks like ciphertext injection or pattern recognition. This compromises the confidentiality of encrypted data, especially in modes like CBC (Cipher Block Chaining).
+- **Weak Keys**: Short or easily guessable keys compromise encryption strength. The use of small key sizes (e.g., 56-bit keys in DES) can make the encryption susceptible to brute-force attacks. Best practices recommend keys of at least 256 bits for strong encryption.
+- **Misuse of Non-Cryptographic Operations**: Relying on techniques such as XOR, Base64 encoding, or simple obfuscation methods for security purposes. These methods provide no actual encryption and can be easily reversed or decoded, exposing sensitive data.
 
 ## Mitigations
 
