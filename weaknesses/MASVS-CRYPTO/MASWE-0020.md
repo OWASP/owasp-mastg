@@ -37,7 +37,7 @@ Similarly, hash functions such as MD5 and SHA-1, which were previously popular f
 
 - **Loss of Confidentiality**: Weak encryption may enable attackers to decipher and obtain sensitive information, resulting in unauthorized exposure and possible data breaches.
 
-- **Loss of Integrity**: Weak encryption may compromise the integrity of data, allowing adversaries to exploit vulnerabilities and potentially alter or manipulate the information without detection.
+- **Loss of Integrity**: Weak encryption can compromise the integrity of data, allowing adversaries to alter or manipulate the information without detection.
 
 ## Mode of Introduction
 
