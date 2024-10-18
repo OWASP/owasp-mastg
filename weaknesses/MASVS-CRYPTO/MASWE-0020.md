@@ -49,5 +49,5 @@ Similarly, hash functions such as MD5 and SHA-1, which were previously popular f
 
 ## Mitigations
 
-- Always use modern, well-established cryptographic libraries and APIs that follow best practices for entropy generation and key management.
+- Always use modern, well-established cryptographic libraries in mobile apps that follow best practices and offer cryptographic algorithms that are aligned with the recommendations by NIST.
 - It is recommended to use secure modes of Operation like CBC (Cipher Block Chaining).
