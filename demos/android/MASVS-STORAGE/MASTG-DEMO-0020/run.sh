@@ -1,7 +1,7 @@
 #!/bin/bash
 # USAGE: ./run.sh <package name>
 # EXAMPLE: ./run.sh org.owasp.mastestapp
-# SUMMARY: List all files restered from a backup
+# SUMMARY: List all files restored from a backup
 
 # Script from https://developer.android.com/identity/data/testingbackup
 # Initialize and create a backup
