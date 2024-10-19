@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Sensitive Data Not Excluded From Backup
+title: Uses of AutoBackup backup_rules.xml to Exclude Data From Backups
 id: MASTG-DEMO-0020
 code: [kotlin]
 test: MASTG-TEST-0216
@@ -24,19 +24,15 @@ The snippet below shows sample code that creates two files inside [`filesDir`](h
 
 ### Observation
 
-The output contains a list of all restored files.
+The output contains the list of all restored files which were written to the `./restored_files/` directory:
 
 {{ output.txt }}
 
-Their content is inside the `./restored_files/` directory and contains:
-
-A password:
+The app wrote two files: `backup_excluded_secret.txt` which is not restored because it is marked as `exclude` in the `backup_rules.xml` file, and `secret.txt`, which contains a password:
 
 {{ restored_files/secret.txt }}
 
-The file was created in `/data/user/0/org.owasp.mastestapp/files/` which is equivalent to `/data/data/org.owasp.mastestapp/files/`.
-
-Note that the sample app wrote two files: `secret.txt` and `backup_excluded_secret.txt`. The latter is not restored because it is marked as `exclude` in the `backup_rules.xml` file.
+Note that `/data/user/0/org.owasp.mastestapp/files/` is equivalent to `/data/data/org.owasp.mastestapp/files/`.
 
 ### Evaluation
 

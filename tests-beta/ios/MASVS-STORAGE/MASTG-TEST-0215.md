@@ -8,9 +8,11 @@ weakness: MASWE-0004
 
 ## Overview
 
-iOS provides the [`isExcludedFromBackup`](https://developer.apple.com/documentation/foundation/urlresourcevalues/1780002-isexcludedfrombackup) API to guide the system not to back up a given file. However, this API [does not guarantee that a file will be excluded](https://developer.apple.com/documentation/foundation/optimizing_your_app_s_data_for_icloud_backup/#3928527):
+This test verifies whether your app correctly instructs the system to exclude sensitive files from backups.
 
-> "The `isExcludedFromBackup` resource value exists only to provide guidance to the system about which files and directories it can exclude; it’s not a mechanism to guarantee those items never appear in a backup or on a restored device."
+Files in the `/tmp` and `/Library/Caches` subdirectories of the app container are excluded from iCloud Backups. For files and directories in any other locations within the app container, iOS provides the [`isExcludedFromBackup`](https://developer.apple.com/documentation/foundation/urlresourcevalues/1780002-isexcludedfrombackup) API to guide the system not to back up a given file or directory. However, this API [does not guarantee guarantee the actual exclusion](https://developer.apple.com/documentation/foundation/optimizing_your_app_s_data_for_icloud_backup/#3928527):
+
+> "The `isExcludedFromBackup` resource value exists only to provide guidance to the system about which files and directories it can exclude; it's not a mechanism to guarantee those items never appear in a backup or on a restored device."
 
 Therefore, the only way to properly protect your files from a backup is to encrypt them.
 
@@ -20,8 +22,10 @@ Therefore, the only way to properly protect your files from a backup is to encry
 
 ## Observation
 
-Inspect all files that you marked with `isExcludedFromBackup`.
+The output should contain the disassembled code of the functions using `isExcludedFromBackup` and if possible the list of affected files.
 
 ## Evaluation
 
-Make sure to encrypt any files you want to protect from a backup, as `isExcludedFromBackup` does not guarantee that a file will be excluded.
+The test case fails if you can find the use of `isExcludedFromBackup` within the source code and if any of the affected files can be considered sensitive.
+
+For the sensitive files found, and in addition to using `isExcludedFromBackup`, make sure to encrypt them, as `isExcludedFromBackup` does not guarantee the exclusion.

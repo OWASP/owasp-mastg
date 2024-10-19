@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Sensitive Data Not Excluded From Backup
+title: Uses of isExcludedFromBackupKey to Exclude Data From Backups
 code: [swift]
 id: MASTG-DEMO-0019
 test: MASTG-TEST-0215
@@ -21,10 +21,12 @@ The code snippet below shows sample code that creates a file and marks it with `
 
 ### Observation
 
-The output contains information that `isExcludedFromBackupKey` was used in the app.
+The output reveals the use of `isExcludedFromBackupKey` in the app.
 
 {{ output.txt }}
 
 ### Evaluation
 
 The test fails because `secret.txt` might be restored from the backup and it contains sensitive data.
+
+You can see the call to `isExcludedFromBackupKey` at `0x100004594` and the associated file, `secret.txt` at `0x10000443c`.
