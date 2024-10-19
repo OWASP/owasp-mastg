@@ -10,10 +10,11 @@ In order to intercept Flutter HTTPS traffic, we need to deal with two problems:
 - Make sure the traffic is sent to the proxy.
 - Disable the TLS verification of any HTTPS connection.
 
-There are generally two approaches to this: **@MASTG-TOOL-0100** and **@MASTG-TOOL-0001**.
+There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOOL-0001** and **@MASTG-TOOL-0115**.
 
 - **reFlutter**: This tool creates a modified version of the Flutter module which is then repackaged into the APK. It configures the internal libraries to use a specified proxy and disable the TLS verification.
 - **Frida**: The [disable-flutter-tls.js script](https://github.com/NVISOsecurity/disable-flutter-tls-verification) can dynamically remove the TLS verification without the need for repackaging. As it doesn't modify the proxy configuration, additional steps are needed (e.g. ProxyDroid, DNS, iptables, ...).
+- **HTTP Toolkit**: The HTTP toolkit uses firda scripts to handle interception, manage certificate trust, disable certificate pinning and transparency checks for MitM interception of HTTPS traffic on Android.
 
 ## Intercepting Traffic using reFlutter
 
@@ -87,27 +88,22 @@ There are generally two approaches to this: **@MASTG-TOOL-0100** and **@MASTG-TO
 
 ## Intercepting Traffic using HTTP Toolkit
 
-If the above methods don't work, you can try using @MASTG-TOOL-0115, which provides another way to intercept Flutter HTTPS traffic.
-
-1. **Install HTTP Toolkit**
-    - You can download it from [here](https://httptoolkit.com/).
-
-2. **Configure HTTP Toolkit**
-    - Turn on the Android device and make sure it's connected to your machine.
-    - Go to HTTP Toolkit and select one of these options:
-        - `Intercept > Android App via Frida` (experimental)
-        - `Intercept > Android Device via ADB` (for better results)
+1. Configure HTTP Toolkit
+    - Connect the android device to the machine.
+    - Launch the HTTP Toolkit and choose one of the available options:
+        - `Intercept > Android App via Frida`.
+        - `Intercept > Android Device via ADB`.
     - Accept the connection request that will pop up on your Android device.
 
-3. **Proxy HTTP Toolkit Traffic through Burp Suite**
-    - In HTTP Toolkit, go to `Settings > Connection Settings`.
-    - Set the proxy option as `Use an HTTP Proxy`.
-    - Enter the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`, `127.0.0.1:8082`) under the HTTP host proxy details and save it.
-    - Add the Burp certificate to Trusted CA Certificates.
+2. Proxy HTTP Toolkit Traffic through Burp Suite:
+   - HTTP Toolkit Configuration
+        - In HTTP Toolkit, go to `Settings > Connection Settings`.
+        - Set the proxy option as `Use an HTTP Proxy`.
+        - Configure the Burp Suite machine's IP and port (e.g., `192.168.8.2:8080`, `127.0.0.1:8082`) under the HTTP host proxy details and save it.
 
-4. **Configure Burp Suite**
-    - In Burp Suite, go to `Proxy > Options > Proxy Listeners > Add`.
-    - Enter the port number configured in HTTP Toolkit settings.
-    - Select `All Interfaces` and save the configuration.
+   - Burp Configuration
+        - In Burp Suite, go to `Proxy > Options > Proxy Listeners > Add`.
+        - Enter the port number configured in HTTP Toolkit settings.
+        - Select `All Interfaces` and save the configuration.
 
-5. **Start Intercepting Traffic**
+3. Start intercepting traffic.
