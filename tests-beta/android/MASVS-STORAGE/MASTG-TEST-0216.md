@@ -10,12 +10,11 @@ weakness: MASWE-0004
 
 This test verifies whether your app correctly instructs the system to exclude sensitive files from backups.
 
-Android provides two distinct approaches for instructing the system to exclude files:
+["Android Backups"](../../../0x05d-Testing-Data-Storage/#backups) can be implemented via [Auto Backup](https://developer.android.com/identity/data/autobackup) (Android 6.0 (API level 23) and higher) and [Key-value backup](https://developer.android.com/identity/data/keyvaluebackup) (Android 2.2 (API level 8) and higher). Auto Backup is the recommended approach by Android as it is enabled by default and requires no work to implement.
 
-1. [Auto Backup](https://developer.android.com/identity/data/autobackup)
-2. [Key-value backup](https://developer.android.com/identity/data/keyvaluebackup)
+To exclude specific files when using Auto Backup, developers must explicitly define exclusion rules in the `exclude` tag in `backup_rules.xml` (for Android 11 or lower using `android:fullBackupContent`) or `data_extraction_rules.xml` (for Android 12 and higher using `android:dataExtractionRules`), depending on the target API. The `cloud-backup` and `device-transfer` parameters can be used to exclude files from cloud backups and device-to-device transfers, respectively. The key-value backup approach requires developers to set up a [`BackupAgent`](https://developer.android.com/identity/data/keyvaluebackup#BackupAgent) or [`BackupAgentHelper`](https://developer.android.com/identity/data/keyvaluebackup#BackupAgentHelper) and specify what data should be backed up.
 
-Regardless of which approach the app used, Android provides a way to start the backup daemon to back up and restore your app's files. You can use this daemon to initiate the backup process and restore the app's data, allowing you to verify which files have been restored from the backup.
+Regardless of which approach the app used, Android provides a way to start the backup daemon to back up and restore app files. You can use this daemon for testing purposes and initiate the backup process and restore the app's data, allowing you to verify which files were restored from the backup.
 
 ## Steps
 
@@ -34,6 +33,7 @@ The output should contain a list of files that are restored from the backup.
 
 The test fails if any of the files are considered sensitive.
 
-For the sensitive files found, instruct the system to exclude them from the backup. 
-- If you are using Auto Backup, mark them with the `exclude` tag in `backup_rules.xml` or `data_extraction_riles.xml` depending on your target API. Make sure you use both `cloud-backup` and `device-transfer` parameters.
+For the sensitive files found, instruct the system to exclude them from the backup:
+
+- If you are using Auto Backup, mark them with the `exclude` tag in `backup_rules.xml` (for Android 11 or lower using `android:fullBackupContent`) or `data_extraction_rules.xml` (for Android 12 and higher using `android:dataExtractionRules`), depending on the target API. Make sure to use both the `cloud-backup` and `device-transfer` parameters.
 - If you are using the key-value approach, set up your [BackupAgent](https://developer.android.com/identity/data/keyvaluebackup#BackupAgent) accordingly.
