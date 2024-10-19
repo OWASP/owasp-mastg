@@ -11,13 +11,7 @@ mappings:
 refs:
 - https://developer.android.com/guide/topics/data/autobackup#include-exclude-android-11
 - https://developer.android.com/guide/topics/data/autobackup#include-exclude-android-12
-draft:
-  description: sensitive data can be excluded to prevent it from being backed up.
-  topics:
-  - '`android:fullBackupContent` (Android 11-) or `android:dataExtractionRules` (Android
-    12+)'
-  - iOS `isExcludedFromBackup` (iOS)
-status: draft
+status: new
 
 ---
 
