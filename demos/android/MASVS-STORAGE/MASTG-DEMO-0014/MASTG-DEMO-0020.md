@@ -8,9 +8,13 @@ test: MASTG-TEST-0216
 
 ### Sample
 
-The snippet below shows sample code that creates two files inside [`filesDir`](https://developer.android.com/reference/android/content/Context#getFilesDir()). One of the files is also marked as `exclude` inside `backup_rules.xml`.
+The following samples contain:
 
-{{ MastgTest.kt # backup_rules.xml }}
+- the Kotlin code that creates two files inside [`filesDir`](https://developer.android.com/reference/android/content/Context#getFilesDir()).
+- the AndroidManifest.xml with the `android:fullBackupContent` attribute (for Android 11 and lower).
+- the `backup_rules.xml` file including a rule to exclude one of the files using an `<exclude>` element.
+
+{{ MastgTest.kt # AndroidManifest.xml # backup_rules.xml }}
 
 ### Steps
 
