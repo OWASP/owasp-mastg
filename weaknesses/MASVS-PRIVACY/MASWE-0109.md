@@ -22,7 +22,6 @@ This risk can be introduced in various scenarios, including:
 - Use of user data collected for secondary purpose without user consent or control.
 - Continuous access to user data without user control.
 
-
 ## Impact
 
 The impact of exposing sensitive data beyond the initial scope includes:

@@ -15,12 +15,10 @@ status: new
 
 Lack of user data control refers to situations where users do not have the ability to manage, delete, modify, or revoke access to their personal data. Even after uninstalling apps, user data may still be retained on servers or shared with third parties (e.g., analytics or advertising platforms). This violates essential user data privacy rights, such as the GDPR's Intervenability Rights - the right to access (Article 15), rectify (Article 16), erasure or "right to be forgotten" (Article 17), restriction of processing (Article 18), and the right to object (Article 21).
 
-
 ## Modes of Introduction
 
 - **Lack of Proper Data Management Settings**: Failing to provide users with the ability to delete, export, modify, or opt out of data collection.
 - **Lack of Granular Privacy Settings**: Failing to provide privacy settings with sufficient granularity to allow users to control specific aspects of data collection and sharing, such as differentiating between location services, contacts, or media access.
-
 
 ## Impact
 

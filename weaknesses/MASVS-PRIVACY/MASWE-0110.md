@@ -17,14 +17,12 @@ Without proper controls, the collection of unique identifiers—such as device I
 
 The absence of unlinkability techniques like data abstraction, anonymization, and pseudonymization contributes to this risk. Additionally, failing to establish technical barriers when utilizing complex "fingerprint"-like data points can lead to unintended cross-usage of data, compromising user privacy.
 
-
 ## Modes of Introduction
 
 This risk can be introduced in various scenarios, including:
 
 - **Unnecessary collection of identifiers**: Identifiers such as device IDs, IP addresses, behavioral patterns can be used to identify and track users.
 - **Lack of Anonymization or Pseudonymization Measures**: Failure to implement anonymization or pseudonymization measures to strip data of direct identifiers such as user ID or name prior to server-side collection.
-
 
 ## Impact
 

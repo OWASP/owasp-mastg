@@ -19,7 +19,6 @@ Failure to follow these principles often results in users unknowingly agreeing t
 
 Moreover, users must have the ability to easily withdraw their consent at any time, and they should be clearly informed about how to do so, including the potential impact on app functionality. Developers must maintain a record of user consent and ensure that requests for consent are clear, separate from other terms, and legally valid, avoiding practices that obscure the full scope of data processing.
 
-
 ## Modes of Introduction
 
 - **Failure to Prompt for Consent Changes**: Failing to prompt the user for consent when data collection practices change or when additional data is collected beyond what was originally specified.
@@ -36,4 +35,3 @@ Moreover, users must have the ability to easily withdraw their consent at any ti
 - **Prompt for Consent on Changes**: Establish mechanisms for prompting users for consent if data collection practices change or if additional data is being collected, ensuring transparency when app functionality evolves.
 - **Obtain Clear and Explicit User Consent for Immediate Actions**: Before accessing sensitive resources like sensors or local data (e.g., camera, location), always request explicit permission from the user. Clearly explain why the permission is needed, using mechanisms like purpose strings on iOS or similar prompts on Android, to ensure users understand the immediate use of their data.
 - **Ensure Informed and Transparent Consent**: Provide users with clear, specific information about what data will be collected, how it will be used, and the potential impact. Consent should not be hidden in terms of service or bundled for future uses. Users must confirm consent separately for each purpose, especially when permissions extend beyond the initial request.
-
