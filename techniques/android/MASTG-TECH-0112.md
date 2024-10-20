@@ -47,7 +47,7 @@ Before we can run the scan, you will need to obtain an API key for NVD, which is
 
 In the `build.gradle` of `Module: app` (not the project `build.gradle` file), add the `dependencycheck` dependency in the latest version and the `dependencyCheck` configuration:
 
-```json
+```groovy
 plugins {
     ...
     id("org.owasp.dependencycheck") version "10.0.4" // This is the latest version at the time of writing, please update accordingly
