@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Usage of Dependencies with Known Vulnerabilities
+title: Identify Dependencies with Known Vulnerabilities by Scanning Dependency Managers Artifacts
 id: MASTG-TEST-0215
 type: [static]
 weakness: MASWE-0076
@@ -12,13 +12,13 @@ In this test case we are identifying dependencies with known vulnerabilities in 
 
 ## Steps
 
-1. In order to do this in the most efficient way you would need to ask the developer(s) which dependency managers are being used and to share the relevant file(s) created by them. Follow @MASTG-TECH-0113 for on overview of the package managers, relevant files you can request for and how to use @MASTG-TOOL-0116.
+1. In order to do this in the most efficient way you would need to ask the developer(s) which dependency managers are being used and to share the relevant file(s) created by them. Follow @MASTG-TECH-0113 for on overview of the package managers and request for the relevant files.
 
 2. Run a SCA analysis tool such as @MASTG-TOOL-0116 against the file(s) created by the dependency manager(s) and look for the use of vulnerable dependencies.
 
 ## Observation
 
-The output should include the dependency, the CVE identifiers and 
+The output should include the dependency and the CVE identifiers for any dependency with known vulnerabilities.
 
 ## Evaluation
 
