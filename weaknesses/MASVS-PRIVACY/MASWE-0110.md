@@ -1,5 +1,5 @@
 ---
-title: Prevention of user identification and tracking  
+title: User Identification and Tracking  
 id: MASWE-0110
 alias: user-identification-and-tracking
 platform: ["android", "ios"]
@@ -12,31 +12,26 @@ status: new
 ---
 
 ## Overview
-Preventing identification of users is concerned with the risk of collecting data in a way that leads to user identification and tracking. The risk of user identification and tracking should be mitigated by ensuring use of unlinkability techniques such as data abstraction, anonymization and pseudonymization.
 
-Technical barriers need to be established when utilizing complex ‘finger-print’ like data points for specific purposes to prevent cross-usage and ensure each data stream serves its intended function without compromising user privacy.
+Without proper controls, the collection of unique identifiers—such as device IDs, IP addresses, or behavioral patterns—can enable the identification and tracking of users across different services and over time. This lack of privacy safeguards can result in unauthorized profiling, targeted advertising without consent, and potential legal issues.
+
+The absence of unlinkability techniques like data abstraction, anonymization, and pseudonymization contributes to this risk. Additionally, failing to establish technical barriers when utilizing complex "fingerprint"-like data points can lead to unintended cross-usage of data, compromising user privacy.
 
 
 ## Modes of Introduction
 
 This risk can be introduced in various scenarios, including:
 
-- Unnecessary collection of identifiers like device IDs, IP addresses, behavioral patterns that can lead to user identification and tracking.
-- No anonymization and pseudonymisation measures to strip data of any direct identifiers such as user ID or name before server side collection.
-- Reusing signals collected for a specific purpose for other features (e.g fingerprinting for fraud detection).
+- **Unnecessary collection of identifiers**: Identifiers such as device IDs, IP addresses, behavioral patterns can be used to identify and track users.
+- **Lack of Anonymization or Pseudonymization Measures**: Failure to implement anonymization or pseudonymization measures to strip data of direct identifiers such as user ID or name prior to server-side collection.
 
 
 ## Impact
 
-The impact of user identification:
-
 - **Violation of User Privacy**: Users may not be aware that their personal information is being collected for tracking purposes, leading to privacy infringement.
 - **Compliance and Legal Risks**: Breach of data protection laws and regulations (like GDPR), resulting in legal consequences and fines.
-- **Read Application Data**: If an app collects and exposes user data without proper anonymization, attackers could access and expose this data by reading the application's data storage. This could include sensitive information like names, addresses, financial details, and even health records.
 
 ## Mitigations
 
-To mitigate this risk, consider the following strategies:
-
-- Ensure techniques like anonymisation and pseudonymisation are implemented to prevent user identification.
-- Avoid using identifiers that are unique, or probabilistically unique. Instead, opt for identifiers that can be reset.
+- **Use Anonymisation and Pseudonymisation**: Ensure techniques like anonymisation and pseudonymisation are implemented to prevent user identification.
+- **Avoid Unique Identifiers**: Avoid using identifiers that are unique, or probabilistically unique. Instead, opt for identifiers that can be reset.
