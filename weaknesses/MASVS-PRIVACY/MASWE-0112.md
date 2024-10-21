@@ -1,31 +1,40 @@
 ---
-title: Lack of User Data Control
+title: Inadequate Data Collection Declarations
 id: MASWE-0112
-alias: user-data-control
+alias: data-collection-declarations
 platform: ["android", "ios"]
 profiles: ["P"]
 mappings:
   masvs-v1: [MSTG-STORAGE-12]
-  masvs-v2: [MASVS-PRIVACY-4]
+  masvs-v2: [MASVS-PRIVACY-3]
   cwe: [359]
+refs:
+- https://support.apple.com/en-us/102188
+- https://support.apple.com/kb/HT211970
+- https://developer.apple.com/app-store/review/guidelines/#5.1.2
+- https://developer.apple.com/app-store/app-privacy-details/#data-collection
+- https://support.google.com/googleplay/android-developer/answer/10787469
 status: new
 ---
 
 ## Overview
 
-Lack of user data control refers to situations where users do not have the ability to manage, delete, modify, or revoke access to their personal data. Even after uninstalling apps, user data may still be retained on servers or shared with third parties (e.g., analytics or advertising platforms). This violates essential user data privacy rights, such as the GDPR's Intervenability Rights - the right to access (Article 15), rectify (Article 16), erasure or "right to be forgotten" (Article 17), restriction of processing (Article 18), and the right to object (Article 21).
+When a mobile app's stated data collection practices, such as those documented in Apple's [App Privacy Report](https://support.apple.com/en-us/102188) and [Privacy Nutrition Labels](https://support.apple.com/kb/HT211970), or Google's [Data Safety section](https://support.google.com/googleplay/android-developer/answer/10787469?hl=en), are incomplete or inconsistent with the app's actual behavior, users are prevented from making informed decisions about their privacy, including understanding whether data will be linked to their identity, used for tracking, or shared with third parties.
+
+These declarations must clearly outline what data is collected, how it is used, whether it is linked to the user's identity, and whether it is shared with third parties in accordance with the platform's policies.
 
 ## Modes of Introduction
 
-- **Lack of Proper Data Management Settings**: Failing to provide users with the ability to delete, export, modify, or opt out of data collection.
-- **Lack of Granular Privacy Settings**: Failing to provide privacy settings with sufficient granularity to allow users to control specific aspects of data collection and sharing, such as differentiating between location services, contacts, or media access.
+- **Undeclared Data Collection and Purpose**: Failing to declare what data is being collected (e.g., location, contacts, identifiers) and for what purposes (e.g., analytics, personalization), leaving users unaware of how their information is used.  
+- **Discrepancies in Declarations vs Behavior**: Differences between privacy label declarations (such as Apple's Privacy Nutrition Labels or Google's Data Safety Section) and the app's actual behavior, including undeclared data collection, sharing with third parties not mentioned in privacy labels, or using data for purposes not disclosed, which are against both Apple and Google guidelines.
 
 ## Impact
 
-- **Compliance and Legal Risks**: Without the proper user data controls in place, users may be unable to exercise essential privacy data rights, such as the right to access, rectify, erase, restrict processing or the right to object, which leaves them vulnerable to data misuse, such as targeted advertising, identity theft, or fraud. This can result in violations of data protection laws and regulations (such as GDPR), which can result in legal consequences and fines.
-- **Loss of User Trust**: When users perceive an app as mismanaging their data, it leads to reputational damage and a potential loss of business. Negative reviews in app stores can further deter new users, reducing adoption rates and revenue. Additionally, a lack of trust may lead to reduced engagement and erosion of brand loyalty, as users seek more privacy-conscious alternatives.
+- **Violation of User Privacy**: Users may unknowingly share data without fully understanding its purpose, which can lead to unauthorized sharing, profiling, or targeted advertising.  
+- **Loss of User Trust**: Inconsistent declarations can result in users losing trust in the app, leading to negative reviews, lower user engagement, and reduced retention.  
+- **Legal and Compliance Issues**: Inaccurate or inconsistent data declarations may lead to non-compliance with regulations like GDPR or CCPA, resulting in potential fines, legal action, or removal from app stores.
 
 ## Mitigations
 
-- **Implement Data Management Mechanisms**: Ensure that mechanisms are in place for users to delete, export, or modify their data, and provide granular controls for specific aspects of data collection and sharing (e.g., location services, contacts, media access).
-- **Offer Granular Privacy Settings**: Provide privacy settings with sufficient granularity, allowing users to control individual data collection categories (e.g., location, contacts) and manage their sharing preferences.
+- **Maintain Accurate Privacy Labels**: Comply with Apple's Privacy Nutrition Labels and Google's Data Safety Section requirements by providing accurate and transparent information about your data practices, including data collection and sharing with third parties.  
+- **Ensure Consistency in Declarations vs Behavior**: Keep your data collection practices documented and up to date in privacy policies, privacy labels, and app store listings. Ensure that these documents match the app's actual behavior to avoid discrepancies that could mislead users or violate platform policies.
