@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Weak Encryption
+title: Uses of Insecure Encryption Algorithms in Cipher with semgrep
 id: MASTG-DEMO-0016
 code: [java]
 test: MASTG-TEST-0211
