@@ -26,7 +26,7 @@ status: new
 
 ## Overview
 
-Weak encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorised individuals to decrypt secured data. This weakness can be due to a number of reasons, including the use of outdated algorithms, deprecated encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialisation Vector (IV). 
+Weak encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorised individuals to decrypt secured data. This weakness can be due to a number of reasons, including the use of outdated algorithms, deprecated encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialisation Vector (IV).
 
 For example the use of TDEA (Triple Data Encryption Algorithm), which is often referred to as "Triple DES" or "3DES" is disallowed by NIST since end of 2023, due to known attacks like, "meet-in-the-middle", collision attacks and [Sweet32](https://nvd.nist.gov/vuln/detail/CVE-2016-2183).
 

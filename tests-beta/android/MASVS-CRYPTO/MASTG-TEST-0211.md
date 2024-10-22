@@ -1,5 +1,5 @@
 ---
-title: Weak Encryption
+title: Weak Encryption Algorithms
 platform: android
 id: MASTG-TEST-0211
 type: [static]
