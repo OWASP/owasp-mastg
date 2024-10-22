@@ -20,7 +20,7 @@ draft:
   - Weak encryption algorithms (e.g. DES, 3DES, etc.)
   - Weak encryption modes (e.g. ECB, etc.)
   - Cipher.getInstance("AES") defaults to ECB (Android)
-status: draft
+status: new
 
 ---
 
