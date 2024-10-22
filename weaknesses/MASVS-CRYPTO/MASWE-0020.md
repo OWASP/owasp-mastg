@@ -11,7 +11,6 @@ mappings:
 refs:
 - https://support.google.com/faqs/answer/10046138?hl=en
 - https://support.google.com/faqs/answer/9450925?hl=en
-- https://support.google.com/faqs/answer/9450925?hl=en
 - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
 draft:
