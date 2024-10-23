@@ -92,5 +92,5 @@ There are generally three approaches to this: **@MASTG-TOOL-0100**, **@MASTG-TOO
 2. Launch the HTTP Toolkit and choose one of the available options:
     - `Intercept > Android App via Frida`.
     - `Intercept > Android Device via ADB`.
-3. Accept the connection request that will pop up on your Android device.
+3. Accept the connection request that will pop up on your android device.
 4. Start intercepting traffic.
