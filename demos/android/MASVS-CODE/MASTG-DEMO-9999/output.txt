@@ -1,0 +1,11 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                 
+    AndroidManifest_reversed.xml 
+       rules.mastg-android-minsdkversion
+          [MASVS-CODE] Ensure app only runs on a recent version of Android
+                                                                                       
+            2┆ <?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" android:compileSdkVersionCodename="14" package="org.owasp.mastestapp" platformBuildVersionCode="34" platformBuildVersionName="14">
