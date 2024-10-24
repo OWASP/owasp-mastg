@@ -1,41 +1,20 @@
-|title    |platform    |
-|---------|------------|
-|Reverse Engineering Flutter Applications | android |
+---
+title: Reverse Engineering Flutter Applications
+platform: android
+---
 
-Flutter is an open-source UI SDK by Google for building natively
-compiled applications across mobile, web, and desktop from a single codebase.
-Dart, the programming language used in Flutter, is key to its functionality,
-offering language features and performance optimizations that enable
-efficient development of high-quality cross-platform apps.
+Flutter is an open-source UI SDK by Google for building natively compiled applications across mobile, web, and desktop from a single codebase. Dart, the programming language used in Flutter, is key to its functionality, offering language features and performance optimizations that enable efficient development of high-quality cross-platform apps.
 
-A Dart snapshot is a pre-compiled representation of a
-Dart program that allows for faster startup times and efficient execution.
-In Flutter application development, the primary focus is
-on the AOT (Ahead-of-Time) snapshot, as it is used in all Flutter mobile applications.
+A Dart snapshot is a pre-compiled representation of a Dart program that allows for faster startup times and efficient execution. In Flutter application development, the primary focus is on the AOT (Ahead-of-Time) snapshot, as it is used in all Flutter mobile applications.
 
-There are significant challenges in reverse engineering Dart AOT snapshots
-due to several factors. The generated assembly code uses distinctive features,
-including specific registers, calling conventions, and
-integer encoding, making analysis more complex.
-In addition, information about each class in the snapshot must be read
-sequentially, preventing random access and requiring engineers to
-sift through potentially irrelevant classes to locate the one of interest.
-Moreover, the format lacks documentation and has evolved
-considerably over time, further complicating the reverse engineering process.
-These unique characteristics of the Flutter framework make
-reverse engineering Flutter applications particularly difficult.
+There are significant challenges in reverse engineering Dart AOT snapshots due to several factors. The generated assembly code uses distinctive features, including specific registers, calling conventions, and integer encoding, making analysis more complex. In addition, information about each class in the snapshot must be read
+sequentially, preventing random access and requiring engineers to sift through potentially irrelevant classes to locate the one of interest. Moreover, the format lacks documentation and has evolved considerably over time, further complicating the reverse engineering process. These unique characteristics of the Flutter framework make reverse engineering Flutter applications particularly difficult.
 
-Currently, a tool exists that can efficiently reverse engineer Flutter applications.
-One such tool is called [Blutter](https://github.com/worawit/blutter)
-which can be directly downloaded from Github.
+Currently, a tool exists that can efficiently reverse engineer Flutter applications. One such tool is called [Blutter](https://github.com/worawit/blutter) which can be directly downloaded from Github.
 
 ## Reversing Flutter with Blutter
 
-Executing the Blutter program is straightforward and can be done
-with a single command, as shown below. The user simply needs to
-specify the directory containing the `libflutter.so` file and the
-desired output directory. Then the "lib" directory will be extracted
-from the APK file.
+Executing the Blutter program is straightforward and can be done with a single command, as shown below. The user simply needs to specify the directory containing the `libflutter.so` file and the desired output directory. Then the "lib" directory will be extracted from the APK file.
 
 ```bash
 python3 blutter.py path/to/app/lib/arm64-v8a out_dir
@@ -43,10 +22,10 @@ python3 blutter.py path/to/app/lib/arm64-v8a out_dir
 
 The output generated from executing Blutter consists of
 
-* asm/* libapp assemblies with symbols
-* blutter_frida.js the Frida script template for the target application
-* objs.txt complete (nested) dump of Object from Object Pool
-* pp.txt all Dart objects in Object Pool
+- asm/* libapp assemblies with symbols
+- blutter_frida.js the Frida script template for the target application
+- objs.txt complete (nested) dump of Object from Object Pool
+- pp.txt all Dart objects in Object Pool
 
 ```bash
 ┌──(kali㉿kali)-[~/Desktop/Dummy_Output]
@@ -59,8 +38,7 @@ drwxrwxr-x   2   kali kali   4096    Oct 15 05:51 ida_script
 -rw-rw-r--   1   kali kali   2009647 Oct 15 05:51 pp.txt
 ```
 
-Below is an assembly example of a main function. The assembly generated from
-executing Blutter contains a function name ready to be used for analysis.
+Below is an assembly example of a main function. The assembly generated from executing Blutter contains a function name ready to be used for analysis.
 
 ```plaintext
   static _ main(/* No info */) async {
