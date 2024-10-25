@@ -31,4 +31,5 @@ When you have the source code:
 When you do not have the source code:
 
 - Use Xposed to hook into the `java.security` package, then hook into `java.security.Security` with the method `getProviders` (with no arguments). The return value will be an array of `Provider`.
+- Alternatively use [frida](https://frida.re/) with [a script like this](https://codeshare.frida.re/@platix/get-android-security-provider-mstg-network-6/) to do the same.
 - Determine whether the first provider is `GmsCore_OpenSSL`.
