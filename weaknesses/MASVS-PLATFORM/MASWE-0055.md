@@ -10,14 +10,20 @@ mappings:
 
 refs:
 - https://developer.android.com/about/versions/14/features/screenshot-detection
-draft:
-  description: no method is used to prevent specific content from being captured (e.g.
-    via FLAG_SECURE on Android and Secure Text Entry on iOS)
-  topics:
-  - Screenshots Not Prevented (e.g. via DETECT_SCREEN_CAPTURE on Android)
-  - Screenshots not deleted when backgrounding
-  - Auto-Generated Screenshots
 status: draft
 
 ---
 
+## Overview
+
+Mobile platforms allow users and third-party tools to record screens, which can expose sensitive data and increase the risk of data leakage.
+
+## Impact
+
+- **Loss of Confidentiality**: Under certain conditions, an attacker could access sensitive data previously displayed on the screen, potentially compromising confidentiality and enabling further attacks, such as identity theft or account takeover.
+
+## Modes of Introduction
+
+- **Third-party apps with a permission to recording record the screen**: Third-party apps may record the screen while sensitive content is displayed.
+- **Third-party apps with a permission to access the whole storage**: Third-party apps may access screenshots saved in storage after they are taken by the user or a tool.
+- **External tools may record the screen**: Tools such as [scrcpy](https://github.com/Genymobile/scrcpy) and [QuickTime](https://support.apple.com/guide/quicktime-player/welcome/mac) can record the device's screen via a USB connection.
