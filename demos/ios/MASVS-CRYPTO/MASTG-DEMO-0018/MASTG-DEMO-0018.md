@@ -29,7 +29,7 @@ The output contains the disassembled code of the function using `CCCrypt`.
 
 Inspect the disassembled code to identify the use of insecure algorithms.
 
-In [CommonCryptor.h](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h ) you can find the definition of the `CCCrypt` function:
+In [CommonCryptor.h](https://web.archive.org/web/20240606000307/https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h) you can find the definition of the `CCCrypt` function:
 
 ```c
 CCCryptorStatus CCCrypt(

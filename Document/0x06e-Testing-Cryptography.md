@@ -67,7 +67,7 @@ For more information about Apple CryptoKit, please visit the following resources
 
 ### CommonCrypto, SecKey and Wrapper libraries
 
-The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
+The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://web.archive.org/web/20240606000307/https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
 
 - The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations.
 - The `CommonDigest.h` gives the parameters for the hashing Algorithms.
