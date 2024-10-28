@@ -8,7 +8,7 @@ test: MASTG-TEST-0210
 
 ### Sample
 
-{{ MastgTest.swift }}
+{{ MastgTest.swift # function.asm # decompiled-o1-review.swift }}
 
 ### Steps
 
@@ -87,3 +87,5 @@ With this information we can now inspect the disassembled code and we'll see tha
 {{ evaluation.txt }}
 
 The test fails because the 3DES encryption algorithm was found in the code.
+
+**Note**: Using artificial intelligence we're able to decompile the disassembled code and review it. The output is a human-readable version of the assembly code. The AI decompiled code may not be perfect and might contain errors but, in this case, it clearly shows the use of `CCCrypt` and the associated algorithm.
