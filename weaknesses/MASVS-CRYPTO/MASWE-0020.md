@@ -13,13 +13,7 @@ refs:
 - https://support.google.com/faqs/answer/9450925?hl=en
 - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
-draft:
-  description: The use of outdated encryption methods like DES and 3DES may compromise
-    data confidentiality and integrity.
-  topics:
-  - Weak encryption algorithms (e.g. DES, 3DES, etc.)
-  - Weak encryption modes (e.g. ECB, etc.)
-  - Cipher.getInstance("AES") defaults to ECB (Android)
+
 status: new
 
 ---
