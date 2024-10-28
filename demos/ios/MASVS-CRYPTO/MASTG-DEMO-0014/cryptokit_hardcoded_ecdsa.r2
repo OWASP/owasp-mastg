@@ -1,5 +1,6 @@
 e asm.bytes = false
 e scr.color=false
+e asm.var=false
 
 !printf "Uses of CryptoKit.P256.Signing.PrivateKey:\n"
 afl~CryptoKit.P256.Signing.PrivateKey

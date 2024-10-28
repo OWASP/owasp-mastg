@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Common Uses of Insecure Random APIs
+title: Uses of Non-random Sources
 id: MASTG-DEMO-0008
 code: [java]
 test: MASTG-TEST-0205
