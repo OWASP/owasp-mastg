@@ -38,9 +38,6 @@ Weak padding schemes can completely undermine the security of the cryptographic 
 ## Mitigations
 
 - **Use standard cryptographic libraries and avoid custom cryptography**: Avoid developing custom cryptographic algorithms with custom padding schemes. Always prefer well-established and widely accepted cryptographic libraries such as OpenSSL, BoringSSL, or platform-specific libraries such as Android's Conscrypt and Apple's CryptoKit. These libraries have undergone extensive testing and are regularly updated to address new security threats.
-
 - **Implement proper and secure padding validation**: Use established and secure padding schemes, ensuring that padding is properly validated when necessary for the encryption mode. When possible, use authenticated encryption modes like GCM, which eliminate the need for padding and include built-in integrity verification.
-
 - **Regularly update cryptographic libraries**: Ensure the cryptographic libraries in use are up-to-date to avoid known vulnerabilities related to padding attacks.
-
 - **Perform periodic security audits**: If using custom cryptography is unavoidable, perform regular security audits (including thorough code reviews) to identify and remediate any flaws in your custom cryptographic implementations. Engage external security experts to provide an unbiased assessment.
