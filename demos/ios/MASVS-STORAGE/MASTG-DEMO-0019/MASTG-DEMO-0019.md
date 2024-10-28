@@ -23,7 +23,7 @@ The code snippet below shows sample code that creates a file and marks it with `
 
 The output reveals the use of `isExcludedFromBackupKey` in the app.
 
-{{ output.txt }}
+{{ output.asm }}
 
 ### Evaluation
 
