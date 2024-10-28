@@ -2,8 +2,6 @@ e asm.bytes = false
 e scr.color=false
 e asm.var=false
 
-!printf "\n\n"
-
 !printf "Uses of SecKeyCreateWithData:\n"
 afl~SecKeyCreateWithData
 

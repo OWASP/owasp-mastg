@@ -8,7 +8,7 @@ test: MASTG-TEST-0213
 
 ### Sample
 
-{{ MastgTest.swift # function.asm }}
+{{ MastgTest.swift # function.asm # decompiled-o1-review.swift }}
 
 ### Steps
 
@@ -28,3 +28,5 @@ The output reveals a call to `SecKeyCreateWithData` as well as the hardcoded RSA
 ### Evaluation
 
 The test fails because a hardcoded RSA private key was found in the code.
+
+**Note**: Using artificial intelligence we're able to decompile the disassembled code and review it. The output is a human-readable version of the assembly code. The AI decompiled code may not perfect and might contain errors but, in this case, it clearly shows the use of `SecKeyCreateWithData` and the associated private key.

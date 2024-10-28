@@ -1,45 +1,5 @@
             ; CALL XREF from sym.func.100005f30 @ 0x100005f68(x)
 ┌ 1840: sym.func.1000046dc (int64_t arg1, int64_t arg2, int64_t arg3);
-│           ; arg int64_t arg1 @ x0
-│           ; arg int64_t arg2 @ x1
-│           ; arg int64_t arg3 @ x2
-│           ; var int64_t var_0h_2 @ sp+0x0
-│           ; var int64_t var_0h_10 @ sp+0x8
-│           ; var int64_t var_10h @ sp+0x10
-│           ; var int64_t var_0h_11 @ sp+0x18
-│           ; var int64_t var_20h @ sp+0x20
-│           ; var int64_t var_0h_9 @ sp+0x28
-│           ; var int64_t var_30h @ sp+0x30
-│           ; var int64_t var_0h_8 @ sp+0x38
-│           ; var int64_t var_40h @ sp+0x40
-│           ; var void *var_e8h @ sp+0x48
-│           ; var int64_t var_50h_2 @ sp+0x50
-│           ; var int64_t var_e0h @ sp+0x58
-│           ; var int64_t var_d0h @ sp+0x60
-│           ; var int64_t var_d0h_2 @ sp+0x68
-│           ; var int64_t var_0h_4 @ sp+0x70
-│           ; var int64_t var_0h_3 @ sp+0x78
-│           ; var int64_t var_0h @ sp+0x80
-│           ; var void *var_a8h @ sp+0x88
-│           ; var void *var_a0h @ sp+0x90
-│           ; var int64_t var_0h_12 @ sp+0x98
-│           ; var void *var_0h_7 @ sp+0xb0
-│           ; var void *arg0 @ sp+0xb8
-│           ; var int64_t var_0h_13 @ sp+0xc0
-│           ; var int64_t var_0h_5 @ sp+0xc8
-│           ; var int64_t var_0h_6 @ sp+0xd0
-│           ; var int64_t var_60h @ sp+0xe0
-│           ; var int64_t var_60h_2 @ sp+0xe8
-│           ; var int64_t var_10h_2 @ sp+0xf0
-│           ; var int64_t var_10h_3 @ sp+0xf8
-│           ; var int64_t var_20h_2 @ sp+0x100
-│           ; var int64_t var_20h_3 @ sp+0x108
-│           ; var int64_t var_30h_2 @ sp+0x110
-│           ; var int64_t var_30h_3 @ sp+0x118
-│           ; var int64_t var_40h_2 @ sp+0x120
-│           ; var int64_t var_40h_3 @ sp+0x128
-│           ; var int64_t var_50h @ sp+0x130
-│           ; var int64_t var_50h_3 @ sp+0x138
 │           0x1000046dc      stp x28, x27, [sp, -0x60]!
 │           0x1000046e0      stp x26, x25, [var_10h]
 │           0x1000046e4      stp x24, x23, [var_20h]
