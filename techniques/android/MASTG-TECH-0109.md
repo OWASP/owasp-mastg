@@ -81,6 +81,6 @@ You can either configure @MASTG-TOOL-0120 or create `iptables` rules to redirect
      $ frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
      ```
 
-- Use the app and you should be able to  intercept HTTP traffic of the Flutter app.
+- Use the app and you should be able to intercept HTTP traffic of the Flutter app.
 
 Further explanations for this setup can be found in the blog post from [Nviso](https://blog.nviso.eu/2019/08/13/intercepting-traffic-from-android-flutter-applications/).
