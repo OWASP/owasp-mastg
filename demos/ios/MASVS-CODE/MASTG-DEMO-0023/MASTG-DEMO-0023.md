@@ -7,11 +7,11 @@ test: MASTG-TEST-0215
 
 ### Steps
 
-Execute `cdxgen` in the root directory of the Xcode project.
+Execute @MASTG-TOOL-0119 in the root directory of the Xcode project.
 
 {{ run.sh }}
 
-This will create a SBOM file that can be uploaded to @MASTG-TOOL-0117 by following @MASTG-TECH-0112.
+This will create a SBOM file that can be uploaded to @MASTG-TOOL-0117 by following @MASTG-TECH-0113.
 
 ### Observation
 

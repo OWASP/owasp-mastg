@@ -33,4 +33,4 @@ $ dependency-check --enableExperimental -f SARIF --nvdApiKey <YOUR-API-KEY> -s P
 
 The output is a SARIF file which can be viewed using the Sarif viewer plugin in @MASTG-TOOL-0118. If any known vulnerabilities are found, they will be listed with their CVE number and description.
 
-If you are scanning for CocoaPods or Carthage, you can use the same command again, but scan the corresponding dependency manager file instead.
+You can only scan one file at at time. If you are scanning for CocoaPods or Carthage, you can use the same command again, but scan the corresponding dependency manager file instead.

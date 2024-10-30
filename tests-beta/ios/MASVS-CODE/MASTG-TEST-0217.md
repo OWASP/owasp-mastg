@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Identify SwiftPM Dependencies with Known Vulnerabilities through usage of SBOM
+title: Identify Dependencies with Known Vulnerabilities through usage of SBOM
 id: MASTG-TEST-0217
 type: [static]
 weakness: MASWE-0076
@@ -18,7 +18,7 @@ In this test case we are identifying SwiftPM dependencies with known vulnerabili
 
 ## Observation
 
-The output should include the dependency and the CVE identifiers for any dependency with known vulnerabilities.
+The output should include the dependency name and the CVE identifiers for any dependency with known vulnerabilities.
 
 ## Evaluation
 
