@@ -5,7 +5,7 @@ platform: android
 
 Flutter is an open-source UI software development kit (SDK) created by Google. It is used to build natively compiled applications for mobile, web, and desktop from a single codebase. Flutter uses Dart, which is not proxy-aware and uses its own certificate store. A Flutter mobile app doesn't use the system's proxy configuration and sends the data directly to the server. Connections are verified against built-in certificates, so any certificates installed on the system are simply ignored. This makes it impossible to intercept HTTPS requests through a standard MiTM setup, as the proxy's certificate is never trusted.
 
-To intercept HTTPS traffic fom a Flutter app, we have to deal with two challenges:
+To intercept HTTPS traffic from a Flutter app, we have to deal with two challenges:
 
 - Ensure that the traffic is sent to the proxy.
 - Disable TLS verification on any HTTPS connection.
@@ -70,16 +70,16 @@ You can either configure @MASTG-TOOL-0120 or create `iptables` rules to redirect
 
 - Configure the interception proxy, like @MASTG-TOOL-0077:
 
-   - Under Proxy -> Proxy settings -> Add new Proxy setting.
-   - Bind listening Port to `8080`.
-   - Select `Bind to address` to `All interfaces`.
-   - Request Handling -> support for invisible proxying.
+    - Under Proxy -> Proxy settings -> Add new Proxy setting.
+    - Bind listening Port to `8080`.
+    - Select `Bind to address` to `All interfaces`.
+    - Request Handling -> support for invisible proxying.
 
 - Run the @MASTG-TOOL-0101 Frida script.
 
-    ```bash
-    $ frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
-    ```
+     ```bash
+     $ frida -U -f eu.nviso.flutterPinning -l disable-flutter-tls.js
+     ```
 
 - Use the app and you should be able to  intercept HTTP traffic of the Flutter app.
 
