@@ -10,10 +10,11 @@ mappings:
   cwe: [338, 337]
   android-risks: 
   - https://developer.android.com/privacy-and-security/risks/weak-prng
-observed_examples: 
-- https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6386
-- https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-3419
-- https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4102
+observed_examples:
+- https://nvd.nist.gov/vuln/detail/CVE-2013-6386
+- https://nvd.nist.gov/vuln/detail/CVE-2013-6386
+- https://nvd.nist.gov/vuln/detail/CVE-2006-3419
+- https://nvd.nist.gov/vuln/detail/CVE-2008-4102
 status: new
 ---
 
