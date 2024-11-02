@@ -8,10 +8,10 @@ mappings:
   masvs-v1: [MSTG-NETWORK-3]
   masvs-v2: [MASVS-NETWORK-1]
   cwe: [295]
-
-refs:
+  android-risks:
   - https://developer.android.com/privacy-and-security/risks/unsafe-trustmanager
   - https://developer.android.com/privacy-and-security/risks/unsafe-hostname
+refs:
   - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-52r2.pdf#page=17
   - https://developer.android.com/privacy-and-security/security-ssl#tls-1.3-enabled-by-default
   - https://support.google.com/faqs/answer/7071387?hl=en
