@@ -8,7 +8,8 @@ mappings:
   masvs-v1: [MSTG-CRYPTO-6]
   masvs-v2: [MASVS-CRYPTO-1]
   cwe: [338, 337]
-  android: https://developer.android.com/privacy-and-security/risks/weak-prng
+  android-risks: 
+  - https://developer.android.com/privacy-and-security/risks/weak-prng
 observed_examples: 
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6386
 - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-3419
