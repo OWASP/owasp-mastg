@@ -8,7 +8,8 @@ mappings:
   masvs-v2: [MASVS-AUTH-1]
   mastg-v1: []
   cwe: [798]
-  android: https://developer.android.com/privacy-and-security/risks/insecure-api-usage
+  android-risks:
+  - https://developer.android.com/privacy-and-security/risks/insecure-api-usage
 status: new
 refs:
 - https://cloud.google.com/docs/authentication/api-keys#securing
