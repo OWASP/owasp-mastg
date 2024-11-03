@@ -8,7 +8,8 @@ mappings:
   masvs-v1: [MSTG-STORAGE-7]
   masvs-v2: [MASVS-STORAGE-2, MASVS-PRIVACY-1]
   cwe: [200, 359, 497, 532]
-  android: https://developer.android.com/privacy-and-security/risks/log-info-disclosure
+  android-risks:
+  - https://developer.android.com/privacy-and-security/risks/log-info-disclosure
 refs:
   - https://stackoverflow.com/questions/45270547/is-read-logs-a-normal-or-dangerous-android-permission
 status: new

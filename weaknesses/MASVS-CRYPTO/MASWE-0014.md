@@ -8,7 +8,8 @@ mappings:
   masvs-v1: [MSTG-STORAGE-1]
   masvs-v2: [MASVS-CRYPTO-2, MASVS-STORAGE-1]
   cwe: [321]
-  android: https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
+  android-risks:
+  - https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
 refs:
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-175Br1.pdf

@@ -7,6 +7,8 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-STORAGE-2]
   masvs-v2: [MASVS-STORAGE-2]
+  android-risks:
+  - https://developer.android.com/privacy-and-security/risks/file-providers
 
 refs:
 - https://developer.android.com/about/versions/nougat/android-7.0-changes#permfilesys
@@ -16,6 +18,7 @@ draft:
     to other apps.
   topics:
   - File permissions (Android)
+  - improperly configured FileProvider (Android)
 status: draft
 
 ---
