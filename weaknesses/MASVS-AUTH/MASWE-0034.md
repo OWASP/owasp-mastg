@@ -12,6 +12,6 @@ draft:
   topics:
   - Confirm Credentials
 status: draft
-
+note: double check masvs-v2, the original MASTG-TEST-0017 is AUTH-2
 ---
 

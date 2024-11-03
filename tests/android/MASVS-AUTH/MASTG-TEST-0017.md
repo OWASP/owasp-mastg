@@ -8,6 +8,9 @@ platform: android
 title: Testing Confirm Credentials
 masvs_v1_levels:
 - L2
+status: deprecated
+cavered_by: [MASTG-TEST-0x17]
+deprecation_reason: New version available in MASTG V2
 ---
 
 ## Overview
