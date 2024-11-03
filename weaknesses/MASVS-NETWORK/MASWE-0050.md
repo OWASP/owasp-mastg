@@ -8,13 +8,16 @@ mappings:
   masvs-v1: [MSTG-NETWORK-2]
   masvs-v2: [MASVS-NETWORK-1]
   cwe: [319]
-  android:
+  android-risks:
     - https://developer.android.com/privacy-and-security/risks/cleartext-communications
+  android-core-app-quality: [SC-9, SC-N1, SC-N2]
 refs:
 - https://developer.apple.com/documentation/security/preventing-insecure-network-connections
 - https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity/nsexceptiondomains
 - https://developer.apple.com/documentation/network
 - https://developer.apple.com/documentation/foundation/urlsession
+- https://developer.android.com/privacy-and-security/security-best-practices#secure-communication
+- https://developer.android.com/privacy-and-security/security-tips#networking
 - https://developer.android.com/privacy-and-security/security-config#CleartextTrafficPermitted
 - https://developer.android.com/reference/javax/net/ssl/SSLSocket
 - https://developer.android.com/reference/android/security/NetworkSecurityPolicy#isCleartextTrafficPermitted()
@@ -58,7 +61,7 @@ If the connections were secured using encryption and proper authentication mecha
 - **Explicitly Disable Cleartext Traffic:** Never allow cleartext traffic globally in the app configuration. Ensure that cleartext traffic is explicitly disabled using security settings like the Network Security Configuration on Android and App Transport Security (ATS) on iOS. Prefer per-domain exceptions over global settings but use them carefully and only when there is no other option.
 - **Use Per-Domain Exceptions Sparingly:** If cleartext traffic is absolutely necessary for specific domains—for example, they do not handle sensitive data and data manipulation is not considered a risk—add exceptions carefully. Ensure these domains are trusted and essential for the app's functionality, and conduct a thorough risk assessment before including them.
 - **Prefer Server Fixes**: Whenever possible, work with the server team to enable secure communication. Instead of adding network security exceptions to the mobile app, such as allowing cleartext traffic or lowering the minimum TLS version, update server configurations to support HTTPS with valid certificates and modern TLS protocols.
-- **High-Level Network APIs:** Use high-level networking APIs that automatically handle encryption, certificate validation, and errors, such as `HttpsURLConnection` on Android or `URLSession` on iOS. Avoid using low-level networking APIs or custom network stacks that bypass the platform-provided network security features.
+- **High-Level Network APIs:** Use high-level networking APIs that automatically handle encryption, certificate validation, and errors, such as [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection) on Android or [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession) on iOS. Avoid using low-level networking APIs or custom network stacks that bypass the platform-provided network security features.
 - **Use Secure Cross-Platform Frameworks:** Ensure that cross-platform frameworks—such as React Native, Flutter, or Xamarin—are configured to enforce secure communication by default and do not allow cleartext traffic. Review the framework's documentation and adjust network security settings to align with best practices.
 - **Use Secure Third-Party Components**: Verify that any third-party libraries and SDKs used in the app enforce secure communication protocols, especially if they handle sensitive data or use low-level networking APIs. Ensure that these components are regularly updated to address any vulnerabilities.
 - **Implement Certificate Pinning**: Use certificate pinning with servers you control as an additional layer of security to prevent MITM attacks. Ensure proper implementation to handle certificate updates smoothly, and be cautious to avoid connectivity issues if certificates change. Avoid pinning certificates for third-party services unless you have control over their certificate management.

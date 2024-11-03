@@ -40,7 +40,36 @@ draft:
   - MITM via an arbitrary certificate signed by a trusted CA works
   - WebView clients (e.g. WebViewClient.onReceivedSslError, not TLS errors ignored,
     mixed content, insecure handlers)
-status: draft
+status: new
 
 ---
 
+## Overview
+
+Applications that do not properly validate SSL/TLS certificates during secure communication are susceptible to man-in-the-middle attacks and other security breaches. This weakness occurs when an application accepts invalid, expired, self-signed, or untrusted certificates without appropriate verification, compromising the integrity and confidentiality of data in transit.
+
+## Impact
+
+- **Man-in-the-Middle Attacks**: Attackers can intercept and manipulate data exchanged between the client and server.
+- **Data Exposure**: Sensitive information such as credentials, personal data, or financial information can be compromised.
+- **Unauthorized Access**: Attackers may gain unauthorized access to user accounts or systems by intercepting authentication tokens.
+- **Impersonation of Services**: Users may be deceived into interacting with malicious servers impersonating legitimate services.
+- **Data Integrity Loss**: Altered or corrupted data may be accepted by the application, leading to unreliable or malicious outcomes.
+
+## Modes of Introduction
+
+- **Disabling Certificate Validation**: Developers disable or bypass certificate validation checks to simplify development or troubleshoot connectivity issues.
+- **Accepting Self-Signed Certificates**: Applications accept self-signed or untrusted certificates without proper validation against trusted Certificate Authorities (CAs).
+- **Ignoring Hostname Verification**: Failing to verify that the certificate's hostname matches the server's hostname allows attackers to present valid certificates for other domains.
+- **Using Insecure Custom Trust Managers**: Implementing custom certificate validation logic that is incomplete, incorrect, or insecure.
+- **Inadequate Error Handling**: Proceeding with connections even when certificate validation errors occur, without alerting the user or terminating the connection.
+- **Trusting All Certificates**: Configuring the application to trust all certificates by default, without any validation.
+
+## Mitigations
+
+- **Enforce Strict Certificate Validation**: Always validate SSL/TLS certificates against a trusted set of Certificate Authorities (CAs) provided by the operating system or a trusted third party.
+- **Enable Hostname Verification**: Ensure that the application's network layer verifies the server's hostname against the certificate's Subject Alternative Name (SAN) or Common Name (CN).
+- **Use Standard Trust Managers**: Utilize well-established libraries and platform-provided APIs for certificate validation instead of custom implementations.
+- **Handle Validation Errors Properly**: Terminate the connection and alert the user whenever certificate validation fails due to issues like expiration, revocation, or mismatch.
+- **Avoid Accepting Self-Signed Certificates**: Do not accept self-signed or untrusted certificates in production environments unless there is a secure mechanism to trust them explicitly.
+- **Stay Updated with Security Protocols**: Use the latest versions of SSL/TLS protocols and ensure that weak ciphers and protocols are disabled.
