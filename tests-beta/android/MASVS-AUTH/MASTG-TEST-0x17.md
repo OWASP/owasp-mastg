@@ -10,6 +10,10 @@ weakness: MASWE-0034
 
 The ["Confirm Credential Flow"](../../../Document/0x05f-Testing-Local-Authentication.md#confirm-credential-flow) (since Android 6.0) is a convenience feature to reduce the number of times that a user has to authenticate to the device (e.g. via biometrics). It allows the app to unlock cryptographic materials from the `AndroidKeystore` whenever users unlocked the device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise the device needs to be unlocked again.
 
+Typically the app creates a key in the keystore with `setUserAuthenticationValidityDurationSeconds` and tries to encrypt some data with that key.
+
+If the user was authenticated the app will proceed to the target screen. Otherwise it will prompt the user to re-authenticate.
+
 If the app simply checks whether the user has unlocked a key or not, but the key is not actually used, e.g. to decrypt local storage or a message received from a remote endpoint, the app may be vulnerable to a local authentication bypass.
 
 ## Steps
