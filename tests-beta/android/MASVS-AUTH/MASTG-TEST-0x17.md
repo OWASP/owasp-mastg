@@ -5,23 +5,17 @@ id: MASTG-TEST-0x017
 type: [static, dynamic]
 available_since: 21
 deprecated_since: 29
-weakness: MASWE-0034
+weakness: MASWE-0044
 ---
 
 ## Overview
 
-The ["Confirm Credential Flow"](../../../Document/0x05f-Testing-Local-Authentication.md#confirm-credential-flow) (since Android 6.0) is a convenience feature to reduce the number of times that a user has to authenticate to the device (e.g. via biometrics). It allows the app to unlock cryptographic materials from the `AndroidKeystore` whenever users unlocked the device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise the device needs to be unlocked again.
-
-Typically the app creates a key in the keystore with `setUserAuthenticationValidityDurationSeconds` and tries to encrypt some data with that key.
-
-If the user was authenticated the app will proceed to the target screen. Otherwise it will prompt the user to re-authenticate.
-
-If the app simply checks whether the user has unlocked a key or not, but the key is not actually used, e.g. to decrypt local storage or a message received from a remote endpoint, the app may be vulnerable to a local authentication bypass.
+When an app implements a ["Confirm Credential Flow"](../../../Document/0x05f-Testing-Local-Authentication.md#confirm-credential-flow), if it only verifies whether the key is unlocked without actually using it (e.g., for decrypting local storage or validating data from a remote source), it may be vulnerable to local authentication bypass. Attackers could use dynamic instrumentation tools like @MASTG-TOOL-0001 to intercept and manipulate the logic, falsely simulating successful authentication.
 
 ## Steps
 
-1. Reverse engineer the app (@MASTG-TECH-0014)
-2. Search for uses of ConfirmCredentials and `setUserAuthenticationValidityDurationSeconds`.
+1. Reverse engineer the app (@MASTG-TECH-0014).
+2. Search for uses of [`setUserAuthenticationRequired`](https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder#setUserAuthenticationRequired(boolean)) or  [`createConfirmDeviceCredentialIntent`](https://developer.android.com/reference/android/app/KeyguardManager#createConfirmDeviceCredentialIntent(java.lang.CharSequence,%20java.lang.CharSequence)) and [`setUserAuthenticationValidityDurationSeconds`](https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder#setUserAuthenticationValidityDurationSeconds(int)).
 
 ## Observation
 
@@ -29,4 +23,8 @@ The output should contain the reverse engineered code that uses Confirm Credenti
 
 ## Evaluation
 
-The test case fails if the app does not use the key and simply checks if the user authenticated.
+The test case fails if the app only checks whether the key is unlocked without performing actual cryptographic operations, such as decrypting or verifying sensitive data.
+
+## Mitigation
+
+Ensure that the app uses the key to decrypt local storage or validate data from a remote source after the user has authenticated.

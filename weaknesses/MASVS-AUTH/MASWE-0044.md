@@ -1,5 +1,5 @@
 ---
-title: Biometric Authentication is Event-bound
+title: Local Authentication is Event-bound
 id: MASWE-0044
 alias: event-bound-biometric-auth
 platform: [android, ios]

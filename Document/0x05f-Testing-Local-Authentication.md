@@ -15,7 +15,9 @@ On Android, there are two mechanisms supported by the Android Runtime for local 
 
 ### Confirm Credential Flow
 
-The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to the device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked the device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise the device needs to be unlocked again.
+The ["Confirm Credential Flow"](https://developer.android.com/about/versions/marshmallow/android-6.0#confirm-credential) (introduced in Android 6.0) is designed to reduce the number of times a user must authenticate to the device (e.g., via biometrics). This flow allows apps to unlock cryptographic materials from the `AndroidKeystore` if the user has unlocked the device within a set time limit, configured using [`setUserAuthenticationValidityDurationSeconds`](https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder#setUserAuthenticationValidityDurationSeconds(int)). If this limit has expired, the device prompts the user to re-authenticate.
+
+In typical use, the app creates a key in the Keystore configured with `setUserAuthenticationValidityDurationSeconds`, then uses that key to attempt an encryption operation. If the authentication is successful, the app continues to the next step, such as navigating to a target screen. If not, the app will prompt the user to re-authenticate using the Confirm Credentials dialog.
 
 Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
 
