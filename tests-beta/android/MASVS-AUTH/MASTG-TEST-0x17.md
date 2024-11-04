@@ -3,6 +3,8 @@ platform: android
 title: Insecure Implementation of Confirm Credentials
 id: MASTG-TEST-0x017
 type: [static, dynamic]
+available_since: 21
+deprecated_since: 29
 weakness: MASWE-0034
 ---
 
