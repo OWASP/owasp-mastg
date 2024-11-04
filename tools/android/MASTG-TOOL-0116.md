@@ -1,12 +1,20 @@
 ---
 title: Blutter
 platform: android
+hosts:
+- linux
+- windows
+- macos
 source: https://github.com/worawit/blutter
 ---
 
-[Blutter](https://github.com/worawit/blutter) is an open-source tool created to support the reverse engineering of Flutter applications. Unlike other Flutter tools, Blutter parses the libapp.so file locally, without requiring you to run the app on a device. The tool is compatible Linux, Windows, and macOS, but can only analyse Android ARM64 apps. Blutter is capable of extracting and analyzing Dart objects, it provides annotations for instructions, including function names or pool objects when applicable, and it can generate Frida scripts for further analysis.
+[Blutter](https://github.com/worawit/blutter) is an open-source tool created to support the reverse engineering of Flutter applications. Unlike other Flutter tools, Blutter parses the libapp.so file statically, without requiring you to run the app on a device. Blutter can:
 
-This tool requires a specific environment to function. You can find the environment setup instructions [here](https://github.com/worawit/blutter?tab=readme-ov-file#environment-setup). Alternatively, if you prefer not to set up the environment manually, you can use the Docker file provided below.
+- Extracte and analyze Dart objects
+- Provides annotations for instructions, including function names or pool objects where applicable
+- Generate Frida scripts for further analysis
+
+This tool requires a specific environment to function, which is explained in the [setup instructions](https://github.com/worawit/blutter?tab=readme-ov-file#environment-setup). Alternatively, a [convenient Docker file can be found a PR](https://github.com/worawit/blutter/pull/50).
 
 Reference:
 [B(l)utter – Reversing Flutter Applications](https://www.youtube.com/watch?v=EU3KOzNkCdI)
