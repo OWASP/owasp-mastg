@@ -14,7 +14,7 @@ source: https://github.com/worawit/blutter
 - Provide annotations for instructions, including function names or pool objects where applicable
 - Generate Frida scripts for further analysis
 
-This tool requires a specific environment to function, which is explained in the [setup instructions](https://github.com/worawit/blutter?tab=readme-ov-file#environment-setup). Alternatively, a [convenient Docker file can be found a PR](https://github.com/worawit/blutter/pull/50).
+This tool requires a specific environment to function, which is explained in the [setup instructions](https://github.com/worawit/blutter?tab=readme-ov-file#environment-setup). Alternatively, a [convenient Docker file can be found in a PR](https://github.com/worawit/blutter/pull/50).
 
 Reference:
 [B(l)utter – Reversing Flutter Applications](https://www.youtube.com/watch?v=EU3KOzNkCdI)
