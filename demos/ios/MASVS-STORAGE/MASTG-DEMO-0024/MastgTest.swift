@@ -11,6 +11,6 @@ struct MastgTest {
     assertionFailure("Leaking \(token) from assertionFailure")
     preconditionFailure("Leaking \(token) from preconditionFailure")
     assert(false, "Leaking \(token) from assert")
-    completion("Succesfully logged a token: \(token)")
+    completion("Successfully logged a token: \(token)")
   }
 }

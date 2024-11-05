@@ -217,7 +217,7 @@
 │           0x100004348      stur x0, [var_bp_80h]
 │           0x10000434c      stur x9, [var_bp_78h]
 │           0x100004350      adrp x0, 0x10000c000
-│           0x100004354      add x0, x0, 0xbc0                         ; 0x10000cbc0 ; "Succesfully logged a token: "
+│           0x100004354      add x0, x0, 0xbc0                         ; 0x10000cbc0 ; "Successfully logged a token: "
 │           0x100004358      and w2, w8, 1
 │           0x10000435c      bl sym Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -> Swift.String ; sym.imp.Swift.String.init__builtinStringLiteral:_Builtin.RawPointer__utf8CodeUnitCount:_Builtin.Word__isASCII:_Builtin.Int1_____Swift.String
 │           0x100004360      str x1, [var_d8h]
