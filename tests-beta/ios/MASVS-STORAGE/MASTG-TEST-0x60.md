@@ -18,7 +18,7 @@ In this test, we’ll use @MASTG-TOOL-0106 to dump all strings from the app’s 
 
 1. Open your app
 2. Exercise it to trigger storing some information into the memory
-3. Run `Fridump` on it
+3. Run @MASTG-TOOL-0106 on it
 
 ## Observation
 
@@ -30,4 +30,7 @@ The test case fails if you can find the use of any sensitive string
 
 ## Mitigation
 
-Make sure that you overwrite and remove the references to sensitive strings immediately after you finish using them.
+- If you pass a sensitive data to another function, don't pass it via immutable data types, such as `String` and `NSString`. Use mutable data instead, so that you can overwrite it after use.
+- Avoid storing sensitive data inside global variables.
+- If you perform modification on sensitive data inside a function, make sure to overwrite all local variables after use.
+- Remove the references to sensitive strings immediately after you finish using them.
