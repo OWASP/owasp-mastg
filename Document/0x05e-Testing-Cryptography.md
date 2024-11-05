@@ -243,4 +243,4 @@ In general, `SecureRandom` should be used. However, if the Android versions belo
 
 Most developers should instantiate `SecureRandom` via the default constructor without any arguments. Other constructors are for more advanced uses and, if used incorrectly, can lead to decreased randomness and security. The PRNG provider backing `SecureRandom` uses the `SHA1PRNG` from `AndroidOpenSSL` (Conscrypt) provider.
 
-Check [Android Documentation](https://developer.android.com/privacy-and-security/risks/weak-prng) for details.
+Check the [Android Documentation](https://developer.android.com/privacy-and-security/risks/weak-prng) for more details.
