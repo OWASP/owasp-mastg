@@ -31,7 +31,7 @@ In a correct setup, it should not be possible to extract the app's PIN from the 
 - **Bruteforce of PIN locally**: If the PIN can be bruteforced locally based on information available in the local storage of the application, an attacker can dervice the PIN and authenticate either ont he victim's device, or on an attacker controlled device.
 - **Bruteforce of PIN on backend**: If the PIN is used directly on the backend to authenticate the user, an attacker can bruteforce the PIN directly on the backend to obtain a valid session.
 
-## Modes of introduction
+## Modes of Introduction
 
 - **Implementation of custom cryptographic algorithm**: The PIN code needs to be converted into an active session during authentication. By implementing a vulnerable cryptographic algorithm, the PIN may be extracted or bruteforced.
 
@@ -45,5 +45,6 @@ Secure authentication via a custom app PIN is only possible if:
 The general solution to this problem is to store cryptographic secrets during the initial secure onboarding step and combine them with the user-provided PIN to authenticate to the backend. The backend can then either return a session token so that the application can obtain authenticated data, or a cryptographic key which can be used to decrypt locally stored data.
 
 Potential industry standards to use:
-* [OCRA: OATH Challenge-Response Algorithm](https://www.rfc-editor.org/rfc/rfc6287). Note that the output length can be chosen much higher than the proposed configurations to protect against brute-force attacks.
-* [The OPAQUE Asymmetric PAKE Protocol](https://www.ietf.org/archive/id/draft-irtf-cfrg-opaque-02.html)
+
+- [OCRA: OATH Challenge-Response Algorithm](https://www.rfc-editor.org/rfc/rfc6287). Note that the output length can be chosen much higher than the proposed configurations to protect against brute-force attacks.
+- [The OPAQUE Asymmetric PAKE Protocol](https://www.ietf.org/archive/id/draft-irtf-cfrg-opaque-02.html)
