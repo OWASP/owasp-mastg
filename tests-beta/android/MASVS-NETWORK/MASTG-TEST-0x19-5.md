@@ -8,7 +8,7 @@ weakness: MASWE-0050
 
 ## Overview
 
-Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. 
+Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted.
 
 ## Steps
 
