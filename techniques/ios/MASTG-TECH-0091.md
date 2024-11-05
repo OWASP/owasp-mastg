@@ -8,16 +8,19 @@ The easiest way to inject Frida into an installed application is by using frida-
 As an alternative to this automated approach, see @MASTG-TECH-0090. 
 
 ## Patching with Sideloadly
+
 @MASTG-TOOL-0116 can be used to automatically inject libraries while repackaging and signing the app. To do so, click the `Advanced Options`, followed by `Inject dylibs/frameworks` and `+dylib/deb/bundle`:
 
 <img src="Images/Techniques/0091-SideloadlyFrida.png" width="400px" />
 
 
 ## Patching with Objection
+
 @MASTG-TOOL-0038 can inject the Frida Gadget into a given IPA file. The `objection explore` command expects an IPA file and a valid code signature. How this signature can be obtained is explained on [Objection's wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications).
 
 
 ## Launching the Repackaged App in Debug Mode
+
 After the app has been installed on the device, it needs to be launched in debug mode. This is not the case when launching the app via springboard (the application will crash), but it is possible with various tools as explained in @MASTG-TECH-0056. When the application is running in debug mode, Frida can be injected into the process with name `Gadget`:
 
 ```bash

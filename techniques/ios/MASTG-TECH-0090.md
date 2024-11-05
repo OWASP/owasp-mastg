@@ -52,6 +52,7 @@ zip -r patched.ipa Payload
 Finally, install the IPA as described in @MASTG-TECH-0056.
 
 ## Launching the Repackaged App in Debug Mode
+
 After the app has been installed on the device, it needs to be launched in debug mode. This is not the case when launching the app via springboard (the application will crash), but it is possible with various tools as explained in @MASTG-TECH-0056. When the application is running in debug mode, Frida can be injected into the process with name `Gadget`:
 
 ```bash
