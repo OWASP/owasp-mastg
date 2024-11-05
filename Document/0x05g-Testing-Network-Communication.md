@@ -129,8 +129,8 @@ If at least one of the pinned digests matches, the certificate chain will be con
 
 If your application targets an Android version lower than Android 7.0 Nougat (SDK version 24), the Android Security Configuration is not available, and you need to implement certificate pinning manually.
 
-!!! warning "Implementing Certificate Pinning Manally"
-    Implementing certificate pinning manually has a high risk of adding functionality to your application that makes the app even less secure. If you are adding this manally take extreme care of implementing this correctly.
+!!! warning "Implementing Certificate Pinning Manually"
+    Implementing certificate pinning manually has a high risk of adding functionality to your application that makes the app even less secure. If you are adding this manually take extreme care of implementing this correctly.
 
 Applications that use third-party networking libraries may utilize the libraries' certificate pinning functionality. For example, [okhttp](https://square.github.io/okhttp/features/https/#certificate-pinning-kt-java) can be set up with the `CertificatePinner` as follows:
 
