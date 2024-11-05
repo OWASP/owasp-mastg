@@ -1,5 +1,5 @@
 ---
-title: Cleartext traffic observed
+title: Cleartext Traffic Observed on the Network
 platform: network
 id: MASTG-TEST-0x19-5
 type: [dynamic]
