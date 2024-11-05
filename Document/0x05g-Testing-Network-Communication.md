@@ -119,6 +119,165 @@ If at least one of the pinned digests matches, the certificate chain will be con
 </network-security-config>
 ```
 
+!!! note "Expiration dates"
+    If you ["set an expiration date"](https://developer.android.com/privacy-and-security/security-config#CertificatePinning), make sure to update your application in time. Otherwise pinning will **not** be performed any more after that date.
+
+!!! warning "Technologies not using Network Security Configuration"
+    If your application uses low level networking APIs or SDKs like Flutter, the Network Security Configuration might not be used by default.
+
+### Certificate pinning without Android Network Security Configuration
+
+If your application targets an Android version lower than Android 7.0 Nougat (SDK version 24), the Android Security Configuration is not available, and you need to implement certificate pinning manually.
+
+#### TrustManager
+
+Implementing certificate pinning can for example be done with the following steps:
+
+- Obtain the certificate of the desired host(s).
+- Make sure the certificate is in .bks format.
+- Pin the certificate to an instance of the SSLContext used for the connection.
+
+To analyze the correct implementation of certificate pinning, the HTTP client should load the KeyStore:
+
+```java
+InputStream in = resources.openRawResource(certificateRawResource);
+keyStore = KeyStore.getInstance("BKS");
+keyStore.load(resourceStream, password);
+```
+
+Once the KeyStore has been loaded, you can use the TrustManager that trusts the CAs in the KeyStore:
+
+```java
+String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+tmf.init(keyStore);
+// Create an SSLContext that uses the TrustManager
+// SSLContext context = SSLContext.getInstance("TLSv1.3");
+sslContext.init(null, tmf.getTrustManagers(), null);
+```
+
+#### Network Libraries
+
+Applications that use third-party networking libraries may utilize the libraries' certificate pinning functionality. For example, [okhttp](https://square.github.io/okhttp/features/https/#certificate-pinning-kt-java) can be set up with the `CertificatePinner` as follows:
+
+```java
+OkHttpClient client = new OkHttpClient.Builder()
+        .certificatePinner(new CertificatePinner.Builder()
+            .add("example.com", "sha256/UwQAapahrjCOjYI3oLUx5AQxPBR02Jz6/E2pt0IeLXA=")
+            .build())
+        .build();
+```
+
+#### WebViews
+
+Applications that use a WebView component may utilize the WebViewClient's event handler for some kind of "certificate pinning" of each request before the target resource is loaded. The following code shows an example verification:
+
+```java
+WebView myWebView = (WebView) findViewById(R.id.webview);
+myWebView.setWebViewClient(new WebViewClient(){
+    private String expectedIssuerDN = "CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US;";
+
+    @Override
+    public void onLoadResource(WebView view, String url)  {
+        //From Android API documentation about "WebView.getCertificate()":
+        //Gets the SSL certificate for the main top-level page
+        //or null if there is no certificate (the site is not secure).
+        //
+        //Available information on SslCertificate class are "Issuer DN", "Subject DN" and validity date helpers
+        SslCertificate serverCert = view.getCertificate();
+        if(serverCert != null){
+            //apply either certificate or public key pinning comparison here
+                //Throw exception to cancel resource loading...
+            }
+        }
+    }
+});
+```
+
+Alternatively, it is better to use an OkHttpClient with configured pins and let it act as a proxy overriding `shouldInterceptRequest` of the `WebViewClient`.
+
+#### Xamarin Applications
+
+Applications developed in Xamarin will typically use `ServicePointManager` to implement pinning.
+
+Normally a function is created to check the certificate(s) and return the boolean value to the method `ServerCertificateValidationCallback`:
+
+```cs
+[Activity(Label = "XamarinPinning", MainLauncher = true)]
+    public class MainActivity : Activity
+    {
+        // SupportedPublicKey - Hexadecimal value of the public key.
+        // Use GetPublicKeyString() method to determine the public key of the certificate we want to pin. Uncomment the debug code in the ValidateServerCertificate function a first time to determine the value to pin.
+        private const string SupportedPublicKey = "3082010A02820101009CD30CF05AE52E47B7725D3783B..."; // Shortened for readability
+
+        private static bool ValidateServerCertificate(
+                object sender,
+                X509Certificate certificate,
+                X509Chain chain,
+                SslPolicyErrors sslPolicyErrors
+            )
+        {
+            //Log.Debug("Xamarin Pinning",chain.ChainElements[X].Certificate.GetPublicKeyString());
+            //return true;
+            return SupportedPublicKey == chain.ChainElements[1].Certificate.GetPublicKeyString();
+        }
+
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += ValidateServerCertificate;
+            base.OnCreate(savedInstanceState);
+            SetContentView(Resource.Layout.Main);
+            TesteAsync("https://security.claudio.pt");
+
+        }
+```
+
+In this particular example we are pinning the intermediate CA of the certificate chain. The output of the HTTP response will be available in the system logs.
+
+Sample Xamarin app with the previous example can be obtained on the [MASTG repository](https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk "Xamarin app with certificate pinning")
+
+
+After decompressing the APK file, use a .NET decompiler like dotPeak, ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
+
+Learn more:
+
+- Certificate and Public Key Pinning with Xamarin - <https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin>
+- ServicePointManager - <https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx>
+
+#### Cordova Applications
+
+Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is [PhoneGap SSL Certificate Checker](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin "PhoneGap SSL Certificate Checker plugin"). The `check` method is used to confirm the fingerprint and callbacks will determine the next steps.
+
+```javascript
+  // Endpoint to verify against certificate pinning.
+  var server = "https://www.owasp.org";
+  // SHA256 Fingerprint (Can be obtained via "openssl s_client -connect hostname:443 | openssl x509 -noout -fingerprint -sha256"
+  var fingerprint = "D8 EF 3C DF 7E F6 44 BA 04 EC D5 97 14 BB 00 4A 7A F5 26 63 53 87 4E 76 67 77 F0 F4 CC ED 67 B9";
+
+  window.plugins.sslCertificateChecker.check(
+          successCallback,
+          errorCallback,
+          server,
+          fingerprint);
+
+   function successCallback(message) {
+     alert(message);
+     // Message is always: CONNECTION_SECURE.
+     // Now do something with the trusted server.
+   }
+
+   function errorCallback(message) {
+     alert(message);
+     if (message === "CONNECTION_NOT_SECURE") {
+       // There is likely a man in the middle attack going on, be careful!
+     } else if (message.indexOf("CONNECTION_FAILED") >- 1) {
+       // There was no connection (yet). Internet may be down. Try again (a few times) after a little timeout.
+     }
+   }
+```
+
+After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the JavaScript code of the application to confirm its usage.
+
 ### Security Provider
 
 Android relies on a [security provider](https://developer.android.com/training/articles/security-gms-provider.html "Update your security provider to protect against SSL exploits") to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
