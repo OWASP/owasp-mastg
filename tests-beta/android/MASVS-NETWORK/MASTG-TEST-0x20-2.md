@@ -12,7 +12,7 @@ When you analyze the enabled TLS protocol versions statically, the result can be
 
 To reveal the actually used version, you can observe the traffic on the network, which will show the version the application and the server agreed on.
 
-If static analysis is not possible, analyzing the used TLS version on a network level can be a possible way of revealing an insecure verson.
+If static analysis is not possible, analyzing the used TLS version on a network level can be a possible way of revealing an insecure version.
 
 ## Steps
 
