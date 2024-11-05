@@ -3,7 +3,7 @@ title: Re-Signing
 platform: ios
 ---
 
-Tampering an app invalidates the code signature of the main executable, so it won't run on a non-jailbroken device.
+Tampering with an app invalidates the code signature of the main executable, so it won't run on a non-jailbroken device.
 
 You'll need to re-sign the IPA with your provisioning profile. This can be done in various ways with different tools:
 

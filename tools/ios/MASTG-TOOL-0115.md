@@ -2,18 +2,22 @@
 title: fastlane
 platform: ios
 source: https://github.com/fastlane/fastlane
+hosts:
+- macOS
+- linux
+- windows
 alternatives:
 - MASTG-TOOL-0114
 - MASTG-TOOL-0102
 ---
 
-[fastlane](https://github.com/fastlane/fastlane) is a tool for iOS and Android developers to automate tasks like dealing with provisioning profiles, and releasing mobile apps. Once setup it can be used to resign IPA files with your Xcode provisioning profile.
+[fastlane](https://github.com/fastlane/fastlane) is a tool for iOS and Android developers to automate tasks like dealing with provisioning profiles, and releasing mobile apps. Once set up, it can be used to resign IPA files with your Xcode provisioning profile.
 
 Before executing fastlane:
 
-- install fastlane via brew (`brew install fastlane`)
-- [get a developer provisioning profile and certificate](https://mas.owasp.org/MASTG/techniques/ios/MASTG-TECH-0079/#getting-a-developer-provisioning-profile-and-certificate)
-- create a directory `fastlane` and create a `Fastfile` file as described in the documentation for [resigning](https://docs.fastlane.tools/actions/resign/).
+- Install fastlane via brew (`brew install fastlane`)
+- [Obtain a developer provisioning profile and certificate](https://mas.owasp.org/MASTG/techniques/ios/MASTG-TECH-0079/#getting-a-developer-provisioning-profile-and-certificate)
+- Create a directory `fastlane` and create a `Fastfile` file as described in the documentation for [resigning](https://docs.fastlane.tools/actions/resign/).
 
 Example:
 
@@ -27,7 +31,7 @@ lane :resignipa do
 end
 ```
 
-Afterwards execute the `fastlane resignipa` command.
+Afterwards, execute the `fastlane resignipa` command.
 
 ```bash
 $ fastlane resignipa
@@ -52,8 +56,6 @@ $ fastlane resignipa
 [15:22:03]: fastlane.tools finished successfully 🎉
 ```
 
-After having this setup once, you only need to change the path in the `Fastfile` for the IPA you want to resign and execute the command again.
+After having this set up once, you only need to change the path in the `Fastfile` for the IPA you want to resign and execute the command again.
 
-Learn more:
-
-- ["Codesign an existing ipa file with fastlane resign"](https://docs.fastlane.tools/actions/resign/)
+More information can be found in the official documentation: ["Codesign an existing ipa file with fastlane resign"](https://docs.fastlane.tools/actions/resign/)
