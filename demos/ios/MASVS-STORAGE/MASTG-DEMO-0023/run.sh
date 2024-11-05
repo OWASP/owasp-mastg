@@ -1,0 +1,1 @@
+idevicesyslog > output.txt
