@@ -1,21 +1,32 @@
 ---
-title: Patching automated
+title: Injecting Frida Gadget into IPA Automatically
 platform: ios
 ---
 
-If you want to use Frida on non-jailbroken devices you'll need to include the `FridaGadget.dylib` into the IPA.
+The easiest way to inject Frida into an installed application is by using frida-server. However, if this is not possible, the Frida Gadget can be injected into a decrypted IPA file (see @MASTG-TECH-0054).
 
-The tool @MASTG-TOOL-0038 will automate this task for you. Follow the instructions in the wiki for [patching iOS Applications](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications).
+As an alternative to this automated approach, see @MASTG-TECH-0090. 
 
-Afterwards, you can [run the patched iOS app](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications).
+## Patching with Sideloadly
+@MASTG-TOOL-0116 can be used to automatically inject libraries while repackaging and signing the app. To do so, click the `Advanced Options`, followed by `Inject dylibs/frameworks` and `+dylib/deb/bundle`:
 
-If everything went well, the app should start in debugging mode with LLDB attached. Frida should then be able to attach to the app as well. You can verify this via the `frida-ps` command:
+<img src="Images/Techniques/0091-SideloadlyFrida.png" width="400px" />
+
+
+## Patching with Objection
+@MASTG-TOOL-0038 can inject the Frida Gadget into a given IPA file. The `objection explore` command expects an IPA file and a valid code signature. How this signature can be obtained is explained on [Objection's wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications).
+
+
+## Launching the Repackaged App in Debug Mode
+After the app has been installed on the device, it needs to be launched in debug mode. This is not the case when launching the app via springboard (the application will crash), but it is possible with various tools as explained in @MASTG-TECH-0056. When the application is running in debug mode, Frida can be injected into the process with name `Gadget`:
 
 ```bash
-$ frida-ps -U
-PID  Name
----  ------
-499  Gadget
+idevicedebug -d run sg.vp.UnCrackable1
+
+# In a new terminal
+frida -U -n Gadget
+...
+[iPhone::Gadget ]-> 
 ```
 
 ## Starting with iOS 17 and Xcode 15

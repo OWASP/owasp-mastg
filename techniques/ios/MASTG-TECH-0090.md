@@ -1,24 +1,38 @@
 ---
-title: Patching manually
+title: Injecting Frida Gadget into IPA Manually
 platform: ios
 ---
 
-IPA files are actually ZIP archives, so you can use any ZIP tool to unpack the archive.
+The easiest way to inject Frida into an installed application is by using frida-server. However, if this is not possible, the Frida Gadget can be injected into a decrypted IPA file (see @MASTG-TECH-0054).
+
+This technique describes a manual way of patching the IPA. Alternatively, see @MASTG-TECH-0091.
+
+## Obtaining the Frida Gadget
+
+The Frida Gadget can be downloaded from the [Github release page](https://github.com/frida/frida/releases). You are looking for the `frida-gadget-XX.YY.ZZ-ios-universal.dylib.xz` file. This file is compressed, so you need to decompress it using the `xz` tool. 
+
+```bash
+xz -d <frida-gadget-XX.YY.ZZ-ios-universal.dylib.xz> -c > FridaGadget.dylib
+```
+
+This will decompress the Frida Gadget and automatically save it to `FridaGadget.dylib`.
+
+## Adding the Frida Gadget to the IPA
+
+IPA files are ZIP archives, so you can use any ZIP tool to unpack the archive:
 
 ```bash
 unzip UnCrackable-Level1.ipa
 ```
 
-## Patching Example: Installing Frida Gadget
-
-If you want to use Frida on non-jailbroken devices you'll need to include the `FridaGadget.dylib`. Download it first from the [Github release page](https://github.com/frida/frida/releases). The filename is `frida-gadget-<VERSION>-ios-universal.dylib` and is compressed.
-
-Copy the `FridaGadget.dylib` into the app directory and use @MASTG-TOOL-0059 to add a load command to the "UnCrackable Level 1" binary.
+Next, copy the `FridaGadget.dylib` into the app directory and use @MASTG-TOOL-0059 to add a load command to the binary. The code below shows how this is done for the @MASTG-APP-0025:
 
 ```bash
-$ unzip UnCrackable_Level1.ipa
-$ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
-$ optool install -c load -p "@executable_path/FridaGadget.dylib"  -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
+unzip UnCrackable_Level1.ipa
+mkdir -p Payload/UnCrackable\ Level\ 1.app/Frameworks
+cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/Frameworks/
+optool install -c load -p "@executable_path/Frameworks/FridaGadget.dylib"  -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
+
 Found FAT Header
 Found thin header...
 Found thin header...
@@ -29,8 +43,22 @@ Successfully inserted a LC_LOAD_DYLIB command for arm64
 Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
 ```
 
-## Patching Example: Making an App Debuggable
+After injecting the load command, you need to recreate the IPA file:
 
-By default, an app available on the Apple App Store is not debuggable. In order to debug an iOS application, it must have the `get-task-allow` entitlement enabled. This entitlement allows other processes (like a debugger) to attach to the app. Xcode is not adding the `get-task-allow` entitlement in a distribution provisioning profile; it is only whitelisted and added in a development provisioning profile.
+```bash
+zip -r patched.ipa Payload
+```
 
-Thus, to debug an iOS application obtained from the App Store, it needs to be re-signed with a development provisioning profile with the `get-task-allow` entitlement. How to re-sign an application is discussed in the next section.
+Finally, install the IPA as described in @MASTG-TECH-0056.
+
+## Launching the Repackaged App in Debug Mode
+After the app has been installed on the device, it needs to be launched in debug mode. This is not the case when launching the app via springboard (the application will crash), but it is possible with various tools as explained in @MASTG-TECH-0056. When the application is running in debug mode, Frida can be injected into the process with name `Gadget`:
+
+```bash
+idevicedebug -d run sg.vp.UnCrackable1
+
+# In a new terminal
+frida -U -n Gadget
+...
+[iPhone::Gadget ]-> 
+```

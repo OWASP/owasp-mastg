@@ -11,7 +11,7 @@ Different methods exist for installing an IPA package onto an iOS device, which 
 
 ## Sideloadly
 
-[Sideloadly](https://sideloadly.io/ "Sideloadly") allows you to obtain a valid signature for a given IPA file and then install it to a connected iOS device. In addition to signing and installing an IPA file, Sideloadly also allows you to inject tweaks, change the App or Bundle name or make other limited modifications to the IPA metadata. Sideloadly is available on both macOS and Windows.
+@MASTG-TOOL-0116 is a GUI tool that can automate all required steps for you. It requires valid Apple developer credentials, as it will obtain a valid signature from Apple servers.
 
 !!! warning "Do not use your personal Apple account"
     To sign an IPA file, you will need a valid iOS developer account, either free or paid. Both types come with certain restrictions, as explained on the Sideloadly website. We recommend creating a dedicated developer account for signing test applications, and **not** using your personal Apple account.
@@ -26,6 +26,8 @@ The package for libimobiledevice will be available in your Linux package manager
 brew install libimobiledevice
 brew install ideviceinstaller
 ```
+
+If you have any issues, try installing the libraries from source, as the precompiled version may be outdated.
 
 After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`. Let's install and debug the @MASTG-APP-0028 app with the following commands:
 
