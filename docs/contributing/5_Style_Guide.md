@@ -388,11 +388,11 @@ This produces the following result:
 public static void main(String[] args) { System.out.println(" Hello World!"); } }
 ```
 
-When including shell commands, make sure to use the correct language for syntax highlighting (e.g. `shell` or `bash`) and remove any host names and usernames from the command prompt, e.g.:
+When including shell commands, make sure to use the correct language for syntax highlighting (e.g. `shell` or `bash`) and remove any prompt (host name, username, ...) from the commands, e.g.:
 
 ````markdown
 ```shell
-$ echo 'Hello World'
+echo 'Hello World'
 Hello World
 ```
 ````
@@ -400,7 +400,7 @@ Hello World
 When a command requires parameters that need to be modified by the reader, surround them with angle brackets:
 
 ```shell
-$ adb pull <remote_file> <target_destination>
+adb pull <remote_file> <target_destination>
 ```
 
 ### In-text Keywords
