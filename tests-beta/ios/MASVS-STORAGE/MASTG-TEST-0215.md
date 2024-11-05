@@ -10,7 +10,7 @@ weakness: MASWE-0004
 
 This test verifies whether your app correctly instructs the system to exclude sensitive files from backups.
 
-Files in the `/tmp` and `/Library/Caches` subdirectories of the app container are excluded from iCloud Backups. For files and directories in any other locations within the app container, iOS provides the [`isExcludedFromBackup`](https://developer.apple.com/documentation/foundation/urlresourcevalues/1780002-isexcludedfrombackup) API to guide the system not to back up a given file or directory. However, this API [does not guarantee guarantee the actual exclusion](https://developer.apple.com/documentation/foundation/optimizing_your_app_s_data_for_icloud_backup/#3928527):
+Files in the `/tmp` and `/Library/Caches` subdirectories of the app container are excluded from iCloud Backups. All other locations are automatically backed up by default. iOS provides the [`isExcludedFromBackup`](https://developer.apple.com/documentation/foundation/urlresourcevalues/1780002-isexcludedfrombackup) API to guide the system not to back up a given file or directory. However, this API [does not guarantee guarantee the actual exclusion](https://developer.apple.com/documentation/foundation/optimizing_your_app_s_data_for_icloud_backup/#3928527):
 
 > "The `isExcludedFromBackup` resource value exists only to provide guidance to the system about which files and directories it can exclude; it's not a mechanism to guarantee those items never appear in a backup or on a restored device."
 
