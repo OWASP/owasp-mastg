@@ -9,7 +9,7 @@ This technique describes a manual way of patching the IPA. Alternatively, see @M
 
 ## Obtaining the Frida Gadget
 
-The Frida Gadget can be downloaded from the [Github release page](https://github.com/frida/frida/releases). You are looking for the `frida-gadget-XX.YY.ZZ-ios-universal.dylib.xz` file. This file is compressed, so you need to decompress it using the `xz` tool. 
+The Frida Gadget can be downloaded from the [Github release page](https://github.com/frida/frida/releases). You are looking for the `frida-gadget-XX.YY.ZZ-ios-universal.dylib.xz` file. This file is compressed, so you need to decompress it using the `xz` tool.
 
 ```bash
 xz -d <frida-gadget-XX.YY.ZZ-ios-universal.dylib.xz> -c > FridaGadget.dylib

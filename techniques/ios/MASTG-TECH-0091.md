@@ -5,7 +5,7 @@ platform: ios
 
 The easiest way to inject Frida into an installed application is by using frida-server. However, if this is not possible, the Frida Gadget can be injected into a decrypted IPA file (see @MASTG-TECH-0054).
 
-As an alternative to this automated approach, see @MASTG-TECH-0090. 
+As an alternative to this automated approach, see @MASTG-TECH-0090.
 
 ## Patching with Sideloadly
 
@@ -13,11 +13,9 @@ As an alternative to this automated approach, see @MASTG-TECH-0090.
 
 <img src="Images/Techniques/0091-SideloadlyFrida.png" width="400px" />
 
-
 ## Patching with Objection
 
 @MASTG-TOOL-0038 can inject the Frida Gadget into a given IPA file. The `objection explore` command expects an IPA file and a valid code signature. How this signature can be obtained is explained on [Objection's wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications).
-
 
 ## Launching the Repackaged App in Debug Mode
 
