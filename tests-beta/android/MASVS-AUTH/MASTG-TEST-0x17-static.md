@@ -16,13 +16,13 @@ If the application uses event-based authentication instead of result-based authe
 ## Steps
 
 1. Identify keys created in the KeyStore which are protected by `setUserAuthenticationRequired`
-2. Identify how the key is used after the user has succesfully provided their biometrics or device credential. The exact method depends on the used API, but can include:
+2. Identify how the key is used after the user has successfully provided their biometrics or device credential. The exact method depends on the used API, but can include:
    1. BiometricPrompt.AuthenticationCallback.onAuthenticationSucceeded
    2. FingerprintManager.AuthenticationCallback.onAuthenticationSucceeded
 
 ## Observation
 
-The application may use the unlocked key to decrypt sensitive information, or it may simply continue with the flow and not use the key in any meaningful way. Note that only checking for the occurence of `setUserAuthenticationRequired` is not enough, as some applications will protect a key with user authentication in order to trigger the local authentication prompt, but not actually use it once it is unlocked.
+The application may use the unlocked key to decrypt sensitive information, or it may simply continue with the flow and not use the key in any meaningful way. Note that only checking for the occurrence of `setUserAuthenticationRequired` is not enough, as some applications will protect a key with user authentication in order to trigger the local authentication prompt, but not actually use it once it is unlocked.
 
 ## Evaluation
 

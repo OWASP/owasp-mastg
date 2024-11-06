@@ -18,7 +18,7 @@ There are two ways of implementing local authentication:
 
 The first implementation, event-based, is inherently insecure for multiple reasons:
 
-- Somewhere in the application there will be an if/else that distinguishes between a successful or a failed authentication attempt. By tampering with the application at runtime, it is possible to convince the application that the authentication attempt was succesful.
+- Somewhere in the application there will be an if/else that distinguishes between a successful or a failed authentication attempt. By tampering with the application at runtime, it is possible to convince the application that the authentication attempt was successful.
 - After a legitimate successful authentication, the application will either present sensitive information to the user, or it will allow the user to perform a specific action. This means that either some data is stored locally which is not properly protected, or some functionality is not properly protected and can be triggered even without proper user authentication.
 
 The second implementation, result-based, is considered secure because:
