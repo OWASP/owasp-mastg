@@ -1,7 +1,7 @@
 ---
 title: Insecure TLS Protocols in Network Traffic
 platform: network
-id: MASTG-TEST-0x20-2
+id: MASTG-TEST-0218
 type: [network]
 weakness: MASWE-0050
 ---
