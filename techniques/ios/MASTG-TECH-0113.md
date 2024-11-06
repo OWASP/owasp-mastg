@@ -5,6 +5,22 @@ platform: ios
 
 To retrieve debug symbols from iOS binaries you can use @MASTG-TOOL-0073, @MASTG-TOOL-0121 or @MASTG-TOOL-0041 to inspect all of the app binaries.
 
+## radare2
+
+Using @MASTG-TOOL-0073 with the command `is`:
+
+```bash
+r2 -A MASTestApp
+[0x100007408]> is~Sec
+70  0x00007894 0x100007894 LOCAL  FUNC 0        imp.SecKeyCopyExternalRepresentation
+71  0x000078a0 0x1000078a0 LOCAL  FUNC 0        imp.SecKeyCopyPublicKey
+72  0x000078ac 0x1000078ac LOCAL  FUNC 0        imp.SecKeyCreateRandomKey
+73  0x000078b8 0x1000078b8 LOCAL  FUNC 0        imp.SecKeyCreateSignature
+74  0x000078c4 0x1000078c4 LOCAL  FUNC 0        imp.SecKeyVerifySignature
+```
+
+Alternatively, you can use [rabin2 to obtain the symbols](https://book.rada.re/tools/rabin2/symbols.html) by running `rabin2 -s MASTestApp`.
+
 ## objdump
 
 The following snippet shows how you can apply @MASTG-TOOL-0121 on `MASTestApp` (the iOS main app executable) with the typical output of a binary containing debug symbols. Those are marked with the `d` (debug) flag. Check the [objdump man page](https://www.unix.com/man-page/osx/1/objdump/ "objdump man page") for information about various other symbol flag characters.
@@ -22,8 +38,7 @@ $ objdump --syms MASTestApp | grep " d " | grep "swift"
 
 ## nm
 
-With @MASTG-TOOL-0041 you can compare the symbols from a plain call to `nm` with the output of a call to `nm -a`. The latter also prints the debug symbols.
-The following command will show only debug symbols in a diff format. If this is empty, now debug symbols are present.
+With @MASTG-TOOL-0041 you can compare the symbols from a plain call to `nm` with the output of a call to `nm -a`. The latter also prints the debug symbols. The following command will show only debug symbols in a diff format. If this is empty, now debug symbols are present.
 
 ```bash
 $ diff <(nm MASTestApp) <(nm -a MASTestApp)
