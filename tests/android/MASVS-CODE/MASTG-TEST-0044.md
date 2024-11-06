@@ -8,6 +8,9 @@ title: Make Sure That Free Security Features Are Activated
 masvs_v1_levels:
 - L1
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0x44-1,MASTG-TEST-0x44-2]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
