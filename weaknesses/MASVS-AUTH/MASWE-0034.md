@@ -1,5 +1,5 @@
 ---
-title: Insecure Implementation of Confirm Credentials
+title: Insecure Local Authentication
 id: MASWE-0034
 alias: insecure-confirm-credentials
 platform: [android]

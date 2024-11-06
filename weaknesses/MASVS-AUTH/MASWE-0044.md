@@ -1,7 +1,7 @@
 ---
-title: Local Authentication is Event-bound
+title: Local Authentication is Event-based
 id: MASWE-0044
-alias: event-bound-biometric-auth
+alias: event-based-biometric-auth
 platform: [android, ios]
 profiles: [L2]
 mappings:
