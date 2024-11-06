@@ -16,8 +16,8 @@ To manage debugging symbols in Xcode, developers can adjust the following build 
 
 - **Generate Debug Symbols**: Xcode adds debugging symbols if the setting [`"Build Settings" > "Apple Clang - Code Generation" > "Generate Debug Symbols"`](https://developer.apple.com/documentation/xcode/build-settings-reference#Generate-Debug-Symbols) is set to `"Yes"`.
 - **Debug Information Format**: Found under [`"Build Settings" > "Build Options > "Debug Information Format"`](https://developer.apple.com/documentation/xcode/build-settings-reference#Debug-Information-Format), this setting determines the format of the debug information. Options include:
-  - **DWARF**: Embeds debugging information directly into the binary.
-  - **DWARF with dSYM File**: Generates a separate dSYM file containing debugging information.
+    - **DWARF**: Embeds debugging information directly into the binary.
+    - **DWARF with dSYM File**: Generates a separate dSYM file containing debugging information.
 
 Note that in compiled iOS applications, symbol names may undergo **name mangling** and additional **obfuscation techniques** to further obscure them, making reverse engineering more challenging. While demangling tools can decode standard mangled names (see @MASTG-TECH-0114), they may not effectively reverse custom obfuscation methods.
 
