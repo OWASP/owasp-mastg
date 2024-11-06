@@ -42,20 +42,10 @@ Understanding each relevant data storage function is crucial for performing the 
 The [SharedPreferences](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
 
-Example for Java:
-
-```java
-SharedPreferences sharedPref = getSharedPreferences("key", MODE_WORLD_READABLE);
-SharedPreferences.Editor editor = sharedPref.edit();
-editor.putString("username", "administrator");
-editor.putString("password", "supersecret");
-editor.commit();
-```
-
 Example for Kotlin:
 
 ```kotlin
-var sharedPref = getSharedPreferences("key", Context.MODE_WORLD_READABLE)
+var sharedPref = getSharedPreferences("key", Context.MODE_PRIVATE)
 var editor = sharedPref.edit()
 editor.putString("username", "administrator")
 editor.putString("password", "supersecret")
@@ -74,14 +64,31 @@ Once the activity has been called, the file key.xml will be created with the pro
 </map>
 ```
 
-- `MODE_WORLD_READABLE` allows all applications to access and read the contents of `key.xml`.
+- `MODE_PRIVATE` makes the file only accessible by the calling application
 
-```bash
-root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
--rw-rw-r-- u0_a118    170 2016-04-23 16:51 key.xml
+You might also use [EncryptedSharedPreferences](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences), which is an encryption wrapper of SharedPreferences. It automatically encrypts all data you pass to the preferences.
+
+```kotlin
+var masterKey: MasterKey? = null
+masterKey = Builder(this)
+    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+    .build()
+
+val sharedPreferences: SharedPreferences = EncryptedSharedPreferences.create(
+    this,
+    "secret_shared_prefs",
+    masterKey,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+)
+
+val editor = sharedPreferences.edit()
+editor.putString("username", "administrator")
+editor.putString("password", "supersecret")
+editor.commit()
 ```
 
-> Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated starting on API level 17. Although newer devices may not be affected by this, applications compiled with an `android:targetSdkVersion` value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (API level 17).
+> There are also other modes such as `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` but were deprecated starting on API level 17. Although newer devices may not be affected by this, applications compiled with an `android:targetSdkVersion` value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (API level 17).
 
 ### Databases
 
