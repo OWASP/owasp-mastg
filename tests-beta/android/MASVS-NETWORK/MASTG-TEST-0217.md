@@ -8,7 +8,7 @@ weakness: MASWE-0050
 
 ## Overview
 
-The Android Network Security Configuration does not provide direct control over specific TLS versions (unlike ["iOS"](https://developer.apple.com/documentation/bundleresources/information_property_list/nsexceptionminimumtlsversion)), and starting with Android 10, [TLS v1.3 is enabled by default](https://developer.android.com/privacy-and-security/security-ssl#Updates%20to%20SSL) for all TLS connections.
+The Android Network Security Configuration does not provide direct control over specific TLS versions (unlike [iOS](https://developer.apple.com/documentation/bundleresources/information_property_list/nsexceptionminimumtlsversion)), and starting with Android 10, [TLS v1.3 is enabled by default](https://developer.android.com/privacy-and-security/security-ssl#Updates%20to%20SSL) for all TLS connections.
 
 There are still several ways to enable insecure versions of TLS, including:
 
@@ -22,7 +22,7 @@ Some third-party libraries, such as [OkHttp](https://square.github.io/okhttp/), 
 
 For example, using `ConnectionSpec.COMPATIBLE_TLS` in OkHttp (via `okhttp3.ConnectionSpec.Builder.connectionSpecs(...)`) can lead to insecure TLS versions, like TLS 1.1, being enabled by default in certain versions. Refer to OkHttp's [configuration history](https://square.github.io/okhttp/security/tls_configuration_history/) for details on supported protocols.
 
-The API call `okhttp3.ConnectionSpec.Builder.tlsVersions(...)` can also be used to set the enabled protocols (["OkHttp documentation"](https://square.github.io/okhttp/features/https/)).
+The API call `okhttp3.ConnectionSpec.Builder.tlsVersions(...)` can also be used to set the enabled protocols ([OkHttp documentation](https://square.github.io/okhttp/features/https/)).
 
 ## Steps
 
@@ -35,4 +35,4 @@ The output contains a list of all enabled TLS versions in the above mentioned AP
 
 ## Evaluation
 
-The test case fails if any ["insecure TLS version"](https://mas.owasp.org/MASTG/0x04f-Testing-Network-Communication/#recommended-tls-settings) is directly enabled, or if the app enabled any settings allowing the use of outdated TLS versions, such as `okhttp3.ConnectionSpec.COMPATIBLE_TLS`.
+The test case fails if any [insecure TLS version](https://mas.owasp.org/MASTG/0x04f-Testing-Network-Communication/#recommended-tls-settings) is directly enabled, or if the app enabled any settings allowing the use of outdated TLS versions, such as `okhttp3.ConnectionSpec.COMPATIBLE_TLS`.
