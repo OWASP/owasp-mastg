@@ -31,3 +31,203 @@ The test case fails if the unlocked key is not used to unlock the protected data
 ## Mitigation
 
 Ensure that the app uses the unlocked key to decrypt local storage after the user has authenticated.
+
+### Implementing biometric authentication
+
+Make sure that the user has configured local authentication:
+
+```java
+KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+if (!mKeyguardManager.isKeyguardSecure()) {
+    // Show a message that the user hasn't set up a lock screen.
+}
+```
+
+- Create the key protected by local authentication. In order to use this key, the user needs to have unlocked the device in the last X seconds, or the device needs to be unlocked again.
+
+    ```java
+
+    try {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+        keyGenerator.init(new KeyGenParameterSpec.Builder(
+                "myLocalAuthenticationKey",
+                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT) 
+                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .setUserAuthenticationRequired(true) 
+                 // Require that the user has unlocked in the last 30 seconds
+                .setUserAuthenticationValidityDurationSeconds(30)
+                .build());
+        SecretKey key = keyGenerator.generateKey(); 
+    } catch (Exception e) {
+        throw new RuntimeException("Failed to generate key", e);
+    }
+    ```
+
+- Obtain a reference to a `Cipher` for the generated key:
+
+    ```java
+    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+    keyStore.load(null); 
+
+    SecretKey key = (SecretKey) keyStore.getKey("myLocalAuthenticationKey", null); 
+
+    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+    cipher.init(Cipher.DECRYPT_MODE , key); 
+    ```
+
+- Create a new BiometricPrompt.CryptoObject from the generated cipher.
+
+    ```java
+    BiometricPrompt.CryptoObject cryptoObject = null;
+    try {
+        cryptoObject = new BiometricPrompt.CryptoObject(cipher);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    ```
+
+- Trigger a BiometricPrompt to unlock the key:
+
+    ```java
+    BiometricPrompt.AuthenticationCallback authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
+        @Override
+        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+            Toast.makeText(context, "Authentication Succeeded", Toast.LENGTH_SHORT).show();
+
+            if (result.getCryptoObject() != null) {
+                // Perform secure operation with the CryptoObject (e.g., decryption)
+                try {
+                    Cipher cipher = result.getCryptoObject().getCipher();
+                    // Use  unlocked cipher
+                    byte[] decryptedData = cipher.doFinal(encryptedData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            Toast.makeText(context, "Authentication Failed", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onAuthenticationError(int errorCode, CharSequence errString) {
+            Toast.makeText(context, "Authentication Error: " + errString, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    // Configure the prompt
+    BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Authenticate")
+            .setSubtitle("Confirm your identity to proceed")
+            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+            .build();
+
+    // Launch the prompt
+    BiometricPrompt biometricPrompt = new BiometricPrompt((FragmentActivity) context,
+            Executors.newSingleThreadExecutor(), authenticationCallback);
+
+    biometricPrompt.authenticate(promptInfo, cryptoObject);
+    ```
+
+### FingerprintManager
+
+> This section describes how to implement biometric authentication by using the `FingerprintManager` class. Please keep in mind that this class is deprecated and the [Biometric library](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") should be used instead as a best practice. This section is just for reference, in case you come across such an implementation and need to analyze it.
+
+The creation of the key used to initialize the cipher wrapper can be traced back to the `CryptoObject`. Verify the key was both created using the `KeyGenerator` class in addition to `setUserAuthenticationRequired(true)` being called during creation of the `KeyGenParameterSpec` object (see code samples below).
+
+Safely implementing fingerprint authentication requires following a few simple principles, starting by first checking if that type of authentication is even available. On the most basic front, the device must run Android 6.0 or higher (API 23+). Four other prerequisites must also be verified:
+
+- The permission must be requested in the Android Manifest:
+
+    ```xml
+    <uses-permission
+        android:name="android.permission.USE_FINGERPRINT" />
+    ```
+
+- Fingerprint hardware must be available:
+
+    ```java
+    FingerprintManager fingerprintManager = (FingerprintManager)
+                    context.getSystemService(Context.FINGERPRINT_SERVICE);
+    fingerprintManager.isHardwareDetected();
+    ```
+
+- The user must have a protected lock screen:
+
+    ```java
+    KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+    keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
+    ```
+
+- At least one finger should be registered:
+
+    ```java
+    fingerprintManager.hasEnrolledFingerprints();
+    ```
+
+- The application should have permission to ask for a user fingerprint:
+
+    ```java
+    context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
+    ```
+
+If any of the above checks fail, the option for fingerprint authentication should not be offered.
+
+Not every Android device offers hardware-backed key storage. The `KeyInfo` class can be used to find out whether the key resides inside secure hardware such as a Trusted Execution Environment (TEE) or Secure Element (SE).
+
+```java
+SecretKeyFactory factory = SecretKeyFactory.getInstance(getEncryptionKey().getAlgorithm(), ANDROID_KEYSTORE);
+KeyInfo secetkeyInfo = (KeyInfo) factory.getKeySpec(yourencryptionkeyhere, KeyInfo.class);
+secetkeyInfo.isInsideSecureHardware()
+```
+
+On certain systems, it is possible to enforce the policy for biometric authentication through hardware as well. This is checked by:
+
+```java
+keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
+```
+
+If all requirements are met, the actual key can be created via the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`:
+
+```java
+generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
+
+generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
+        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+        .setUserAuthenticationRequired(true)
+        .build()
+);
+
+generator.generateKey();
+```
+
+To perform encryption or decryption with the protected key, create a `Cipher` object and initialize it with the key alias.
+
+```java
+SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
+
+if (mode == Cipher.ENCRYPT_MODE) {
+    cipher.init(mode, keyspec);
+```
+
+Keep in mind, a new key cannot be used immediately - it has to be authenticated through the `FingerprintManager` first. This involves wrapping the `Cipher` object into `FingerprintManager.CryptoObject` which is passed to `FingerprintManager.authenticate` before it will be recognized.
+
+```java
+cryptoObject = new FingerprintManager.CryptoObject(cipher);
+fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
+```
+
+The callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called when the authentication succeeds. The authenticated `CryptoObject` can then be retrieved from the result.
+
+```java
+public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+    cipher = result.getCryptoObject().getCipher();
+
+    //(... do something with the authenticated cipher object ...)
+}
+```
