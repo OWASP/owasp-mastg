@@ -8,6 +8,8 @@ title: Determining Whether Sensitive Data Is Shared with Third Parties
 masvs_v1_levels:
 - L1
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0206, MASTG-TEST-0217]
 ---
 
 ## Overview
