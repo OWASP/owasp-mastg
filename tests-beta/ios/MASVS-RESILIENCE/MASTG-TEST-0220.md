@@ -12,7 +12,6 @@ On iOS, code signatures verify the integrity and authenticity of an app's binary
 
 Using an outdated code signature format may expose the app to security risks, as older formats may lack support for current cryptographic standards and may be more vulnerable to manipulation. Adopting the latest code signature format helps maintain app integrity and ensures compatibility with the latest security features in iOS.
 
-
 ## Steps
 
 1. Extract the package as described in @MASTG-TECH-0058.
