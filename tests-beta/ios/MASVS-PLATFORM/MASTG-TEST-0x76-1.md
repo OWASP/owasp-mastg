@@ -8,7 +8,7 @@ weakness: MASWE-0072
 
 ## Overview
 
-`UIWebView` was deprecated in iOS 12.0 in favor of `WKWebView` which is available since iOS 8.0. `WKWebView` offers [better control over its capabilities](../../../Document/0x06h-Testing-Platform-Interaction/#uiwebview "iOS Platform APIs: UIWebView"), e.g. it allows you to disable JavaScript with `javaScriptEnabled` and it can verify resources with the `hasOnlySecureContent`. Thus, it should be preferred over `UIWebView`.
+`UIWebView` was deprecated in iOS 12.0 in favor of `WKWebView` which is available since iOS 8.0. `WKWebView` offers [better control over its capabilities](../../../Document/0x06h-Testing-Platform-Interaction.md "iOS Platform APIs: UIWebView"), e.g. it allows you to disable JavaScript with `javaScriptEnabled` and it can verify resources with the `hasOnlySecureContent`. Thus, it should be preferred over `UIWebView`.
 
 In this test we can check any references to `UIWebView` inside the binary.
 
