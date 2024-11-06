@@ -8,7 +8,7 @@ weakness: MASWE-0050
 
 ## Overview
 
-The Android Network Security Configuration does not provide direct control over specific TLS versions (unlike ["iOS"](https://developer.apple.com/documentation/bundleresources/information_property_list/nsexceptionminimumtlsversion)), and starting with Android 10, the secure TLS version 1.3 is enabled by default for all TLS connections.
+The Android Network Security Configuration does not provide direct control over specific TLS versions (unlike ["iOS"](https://developer.apple.com/documentation/bundleresources/information_property_list/nsexceptionminimumtlsversion)), and starting with Android 10, [TLS v1.3 is enabled by default](https://developer.android.com/privacy-and-security/security-ssl#Updates%20to%20SSL) for all TLS connections.
 
 There are still several ways to enable insecure versions of TLS, including:
 
@@ -18,11 +18,11 @@ An app can obtain an SSLContext using an insecure TLS protocol by calling `SSLCo
 
 ### Third-party Libraries
 
-Other libraries, such as [OkHttp](https://square.github.io/okhttp/), [Retrofit](https://square.github.io/retrofit/) or Apache HttpClient may have their own configurations for TLS protocols.
+Some third-party libraries, such as [OkHttp](https://square.github.io/okhttp/), [Retrofit](https://square.github.io/retrofit/) or Apache HttpClient, provide custom configurations for TLS protocols. These libraries may allow enabling outdated protocols if not carefully managed:
 
-For example, if the app uses OkHttp and sets the allowed TLS protocols to `ConnectionSpec.COMPATIBLE_TLS` by calling `okhttp3.ConnectionSpec.Builder.connectionSpecs(...)`, this results in one or more insecure TLS versions (e.g, in TLS v1.1 (see ["configuration history"](https://square.github.io/okhttp/security/tls_configuration_history/#okhttp-313))).
+For example, using `ConnectionSpec.COMPATIBLE_TLS` in OkHttp (via `okhttp3.ConnectionSpec.Builder.connectionSpecs(...)`) can lead to insecure TLS versions, like TLS 1.1, being enabled by default in certain versions. Refer to OkHttp's [configuration history](https://square.github.io/okhttp/security/tls_configuration_history/) for details on supported protocols.
 
-The API call `okhttp3.ConnectionSpec.Builder.tlsVersions(...)` (["OkHttp documentation"](https://square.github.io/okhttp/features/https/)) can also be used to set the enabled protocols.
+The API call `okhttp3.ConnectionSpec.Builder.tlsVersions(...)` can also be used to set the enabled protocols (["OkHttp documentation"](https://square.github.io/okhttp/features/https/)).
 
 ## Steps
 
@@ -35,4 +35,4 @@ The output contains a list of all enabled TLS versions in the above mentioned AP
 
 ## Evaluation
 
-The test case fails if any ["insecure TLS version"](https://mas.owasp.org/MASTG/0x04f-Testing-Network-Communication/#recommended-tls-settings) is directly enabled, or if the app enabled any settings allowing the use of outdated TLS versions, such as `okhttp3.ConnectionSpec.COMPATIBLE_TLS`.s
+The test case fails if any ["insecure TLS version"](https://mas.owasp.org/MASTG/0x04f-Testing-Network-Communication/#recommended-tls-settings) is directly enabled, or if the app enabled any settings allowing the use of outdated TLS versions, such as `okhttp3.ConnectionSpec.COMPATIBLE_TLS`.

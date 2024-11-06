@@ -8,11 +8,11 @@ weakness: MASWE-0050
 
 ## Overview
 
-When you analyze the enabled TLS protocol versions statically, the result can be that multiple versions are enabled in the application. Depending on the configuration of the server, one of those versions is chosen.
+While static analysis can identify configurations that allow insecure TLS versions, it may not accurately reflect the actual protocol used during live communications. This is because TLS version negotiation occurs between the client (app) and the server at runtime, where they agree on the most secure, mutually supported version.
 
-To reveal the actually used version, you can observe the traffic on the network, which will show the version the application and the server agreed on.
+By capturing and analyzing real network traffic, you can observe the TLS version actually negotiated and in use. This approach provides an accurate view of the protocol's security, accounting for the server’s configuration, which may enforce or limit specific TLS versions.
 
-If static analysis is not possible, analyzing the used TLS version on a network level can be a possible way of revealing an insecure version.
+In cases where static analysis is either incomplete or infeasible, examining network traffic can reveal instances where insecure TLS versions (e.g., TLS 1.0 or TLS 1.1) are actively in use.
 
 ## Steps
 
