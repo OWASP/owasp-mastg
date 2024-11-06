@@ -1,7 +1,7 @@
 ---
 title: aapt2
 platform: android
-source: https://play.google.com/store/apps/details?id=org.proxydroid&hl=en
+source: https://developer.android.com/tools/aapt2
 ---
 
 Android Asset Packaging tool (aapt2) is contained in the @MASTG-TOOL-0006 within the build-tools folder.
