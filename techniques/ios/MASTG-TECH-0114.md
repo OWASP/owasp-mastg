@@ -3,12 +3,9 @@ title: Demangling Symbols
 platform: ios
 ---
 
-To make some identifiers in the program unique, the compiler will process their symbol names. This process is
-called "name mangling" or simply "mangling". Often, the resulting symbols are hard to understand for humans. Additionally,
-their format is specific to the input language, the compiler and it may even be version dependent.
+To make some identifiers in the program unique, the compiler will process their symbol names. This process is called "name mangling" or simply "mangling". Often, the resulting symbols are hard to understand for humans. Additionally, their format is specific to the input language, the compiler and it may even be version dependent.
 
-You can use demangling tools to revert the mangling process. For Swift there is @MASTG-TOOL-0067, for C++ function names
-there is @MASTG-TOOL-0122.md.
+You can use demangling tools to revert the mangling process. For Swift there is @MASTG-TOOL-0067, for C++ function names there is @MASTG-TOOL-0122.md.
 
 ## swift-demangle
 
