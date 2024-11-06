@@ -8,11 +8,11 @@ weakness: MASWE-0047
 
 ## Overview
 
-There are various ways how ["certificate pinning"]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning-without-android-network-security-configuration") can be done for an application.
+There are various ways how [certificate pinning]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning-without-android-network-security-configuration") can be done for an application.
 
 Since statically finding all of the locations where certificate pinning is performed might not be feasible, this test case uses dynamic analysis to observe all connections the app makes.
 
-The goal of this test case is to dynamically check if the connection to a server can be intercepted using a ["Man-in-the-Middle attack"]("../../../Document/0x04f-Testing-Network-Communication.md#mitm-attack). If this is possible, it means the certificate is not pinned correctly or at all.
+The goal of this test case is to dynamically check if the connection to a server can be intercepted using a [Man-in-the-Middle attack]("../../../Document/0x04f-Testing-Network-Communication.md#mitm-attack). If this is possible, it means the certificate is not pinned correctly or at all.
 
 ## Steps
 

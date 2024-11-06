@@ -8,7 +8,7 @@ weakness: MASWE-0047
 
 ## Overview
 
-Apps can configure expiration dates for pinned certificates in the ["Network Security Configuration"]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning"). After the expiration date the pin is not used any more, and all installed CAs are trusted for that domain.
+Apps can configure expiration dates for pinned certificates in the [Network Security Configuration]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning"). After the expiration date the pin is not used any more, and all installed CAs are trusted for that domain.
 
 The goal of this test is to check if any expiration date is in the past.
 

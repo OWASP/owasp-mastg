@@ -120,7 +120,7 @@ If at least one of the pinned digests matches, the certificate chain will be con
 ```
 
 !!! note "Expiration dates"
-    If you ["set an expiration date"](https://developer.android.com/privacy-and-security/security-config#CertificatePinning), make sure to update your application in time. Otherwise pinning will **not** be performed at all after the configured date.
+    If you [set an expiration date](https://developer.android.com/privacy-and-security/security-config#CertificatePinning), make sure to update your application in time. Otherwise pinning will **not** be performed at all after the configured date.
 
 !!! warning "Technologies not using Network Security Configuration"
     If your application uses low level networking APIs or SDKs like Flutter, the Network Security Configuration might not be used by default. In those cases you need to enable certificate pinning specifically for the used technology.

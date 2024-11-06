@@ -8,7 +8,7 @@ weakness: MASWE-0047
 
 ## Overview
 
-Apps can configure certificate pinning using the ["Network Security Configuration"]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning"). For each domain, one or multiple digests can be pinned.
+Apps can configure certificate pinning using the [Network Security Configuration]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning"). For each domain, one or multiple digests can be pinned.
 
 Certificate pinning can also be done manually in the code. Depending on the used technologies, this can be done for example by:
 
@@ -16,7 +16,7 @@ Certificate pinning can also be done manually in the code. Depending on the used
 - configuring the used third party networking libraries to pin certificates,
 - use plugins to achieve certificate pinning for hybrid apps.
 
-Chapter ["Certificate pinning without Android Network Security Configuration"]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning-without-android-network-security-configuration") explains in more detail how this can be achieved in the app.
+Chapter [Certificate pinning without Android Network Security Configuration]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning-without-android-network-security-configuration") explains in more detail how this can be achieved in the app.
 
 The goal of this test is to check if any certificate pinning exists.
 
