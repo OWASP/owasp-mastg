@@ -25,4 +25,4 @@ The output shows the actually used TLS version.
 
 ## Evaluation
 
-The test case fails if any ["insecure TLS version"](https://mas.owasp.org/MASTG/0x04f-Testing-Network-Communication/#recommended-tls-settings) is used.
+The test case fails if any [insecure TLS version](https://mas.owasp.org/MASTG/0x04f-Testing-Network-Communication/#recommended-tls-settings) is used.
