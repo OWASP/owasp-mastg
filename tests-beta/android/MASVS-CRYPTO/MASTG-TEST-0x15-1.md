@@ -35,7 +35,7 @@ Reverse engineer the observed backtraces and try to determine the processes and 
 
 1. For each identified instance, identify the `KeyPair` objects used and how they are created or generated.
 
-1. For each `PrivateKey` and `PublicKey` identify for which processes it is being used: signing/verification and encryption/decription.
+1. For each `PrivateKey` and `PublicKey` identify for which processes it is being used: signing/verification and encryption/decryption.
     1. If a `KeyStore` is being used, you should check the [`KeyProperties`](https://developer.android.com/reference/android/security/keystore/KeyProperties) that are being defined in the `KeyPair` generation.
     1. Otherwise, you need to search where the `PrivateKey` and `PublicKey` of each `KeyPair` are being used, and check if they are being used in `Cipher` or `Signature` objects.
 
