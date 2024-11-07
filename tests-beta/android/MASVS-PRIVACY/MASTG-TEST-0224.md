@@ -8,16 +8,15 @@ weakness: MASWE-0053
 
 ## Overview
 
-This test checks whether your app prevents the caching of sensitive information entered into text fields. The keyboard may suggest previously entered text when typing in your app or other apps on the device. You can disable the caching mechanism for a text input by setting [`textNoSuggestions`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=the%20performance%20reasons.-,textNoSuggestions,-80001) on it.
+This test checks whether the target app prevents the caching of sensitive information entered into text fields. The keyboard may suggest previously entered text when typing in any app on the device.
 
-This test verifies whether your app makes use of `textNoSuggestions` attribute.
+The following attributes, if present, will prevent the caching mechanism for text inputs.
 
-Android also prevents the keyboard from caching inputs marked with the following attributes:
-
+- [`textNoSuggestions`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=the%20performance%20reasons.-,textNoSuggestions,-80001)
 - [`textPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType)
 - [`textVisiblePassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_URI.-,textVisiblePassword,-91)
 - [`numberPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_DECIMAL.-,numberPassword,-12)
-- [`textWebPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_PHONE.-,text,-1)
+- [`textWebPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_ADDRESS.-,textWebPassword,-e1)
 
 ## Steps
 
