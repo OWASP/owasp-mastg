@@ -17,8 +17,8 @@ Having this flag set to `true` [is not considered a vulnerability](https://devel
 
 ## Steps
 
-1. View the AndroidManifest.xml, e.g., via @MASTG-TOOL-0121.
-2. If the output of @MASTG-TOOL-0121 contains `application-debuggable`, the app has the debuggable flag set.
+1. View the AndroidManifest.xml using @MASTG-TECH-0110.
+2. The output shows if the application is debuggable (e.g. if `application-debuggable` is set in the output of @MASTG-TOOL-0123).
 
 ## Observation
 
