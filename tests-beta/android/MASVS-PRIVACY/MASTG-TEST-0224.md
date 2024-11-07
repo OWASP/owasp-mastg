@@ -12,15 +12,21 @@ This test checks whether the target app prevents the caching of sensitive inform
 
 The following attributes, if present, will prevent the caching mechanism for text inputs.
 
-- [`textNoSuggestions`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=the%20performance%20reasons.-,textNoSuggestions,-80001)
-- [`textPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType)
-- [`textVisiblePassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_URI.-,textVisiblePassword,-91)
-- [`numberPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_DECIMAL.-,numberPassword,-12)
-- [`textWebPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_ADDRESS.-,textWebPassword,-e1)
+| XML `android:inputType` | Code `InputType` | API level |
+| -- | --- | - |
+| [`textNoSuggestions`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=the%20performance%20reasons.-,textNoSuggestions,-80001) | [`TYPE_TEXT_FLAG_NO_SUGGESTIONS`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=TYPE_TEXT_FLAG_NO_SUGGESTIONS. "Text input type") | 3 |
+| [`textPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_SUGGESTIONS.-,textPassword,-81) | [`TYPE_TEXT_VARIATION_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_PASSWORD "Text password input type") | 3 |
+| [`textVisiblePassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_URI.-,textVisiblePassword,-91) | [`TYPE_TEXT_VARIATION_VISIBLE_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_VISIBLE_PASSWORD "Text visible password input type") | 3 |
+| [`numberPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_DECIMAL.-,numberPassword,-12) | [`TYPE_NUMBER_VARIATION_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_NUMBER_VARIATION_PASSWORD "A numeric password field") | 11 |
+| [`textWebPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_ADDRESS.-,textWebPassword,-e1) | [`TYPE_TEXT_VARIATION_WEB_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_WEB_PASSWORD "Text web password input type") | 11 |
+
+Android apps can use XML or code to create the UI. Many apps use both techniques simultaneously. So you should test both. After unpacking the APK with @MASTG-TOOL-0011, the XML files are in `/res/layout` directory. You can search for the code attributes with @MASTG-TOOL-0018.
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0018 or @MASTG-TOOL-0011 on the APK looking for uses of any of the above attributes.
+1. Statically search for the above XML attributes with @MASTG-TOOL-0011
+
+2. Statically search for above code attributes with @MASTG-TOOL-0018
 
 ## Observation
 
@@ -28,4 +34,4 @@ The output should indicate whether the app uses no-caching attributes.
 
 ## Evaluation
 
-The test case fails if any of the text fields in your app accepts sensitive data but do not use no-caching attributes.
+The test case fails if any of the text fields in your app accepts sensitive data but do not use no-caching attributes. If the app doesn't use the no-caching attributes at all, this may indicate that it doesn't provide any keyboard caching prevention.
