@@ -28,7 +28,7 @@ The test case fails if stack canaries are disabled.
 
 Developers need to ensure that the flags `-fstack-protector-strong`, or `-fstack-protector-all` are set in the compiler flags for all native libraries. This is especially important for custom C/C++ libraries that are not part of the NDK.
 
-When evaluating this please note that there are potential **expected false positives** for which the test case should be considered as passed. To be certain for these cases, they require manual review of the original source code and the compilation flags used. 
+When evaluating this please note that there are potential **expected false positives** for which the test case should be considered as passed. To be certain for these cases, they require manual review of the original source code and the compilation flags used.
 
 The following examples cover some of the false positive cases that might be encountered:
 
