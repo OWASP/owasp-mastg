@@ -7,15 +7,17 @@ type: [static]
 
 ## Overview
 
-This test checks whether your app prevents the caching of sensitive information entered into text fields. Cached text may be suggested later when typing in your app or other apps on the device. You can disable the caching mechanism for a text field by setting [UITextAutocorrectionTypeNo](https://developer.apple.com/documentation/uikit/uitextautocorrectiontype/uitextautocorrectiontypeno) on it.
+This test checks whether your app prevents the caching of sensitive information entered into text inputs. Cached text may be suggested later when typing in your app or other apps on the device. You can disable the caching mechanism for a text inputs by setting [UITextAutocorrectionTypeNo](https://developer.apple.com/documentation/uikit/uitextautocorrectiontype/uitextautocorrectiontypeno) on it.
 
-This test verifies whether your app make use of `UITextAutocorrectionTypeNo` flag.
+This test verifies whether your app makes use of `UITextAutocorrectionTypeNo` flag.
+
+iOS prevents the keyboard from caching inputs marked with the [secureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-securetextentry) flag. Ensure that you use this flag for all password fields
 
 ## Steps
 
 1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary to verify if your app uses `UITextAutocorrectionTypeNo`.
 
-2. If you app uses Storyboards or XIB files, check whether the UI elements use `UITextAutocorrectionTypeNo` flag.
+2. If you app uses Storyboards or XIB files, check whether the UI elements such as `UITextFields`, `UITextViews`, and `UISearchBars` use `UITextAutocorrectionTypeNo` flag.
 
 ## Observation
 
