@@ -1,6 +1,6 @@
 ---
 Title: Testing for URL Loading in WebViews
-ID: MASTG-TEST-0027
+ID: MASTG-TEST-0x27-1
 Link: https://mas.owasp.org/MASTG/tests/android/MASVS-CODE/MASTG-TEST-0027/
 Platform: android
 type: [static]
@@ -14,8 +14,9 @@ By default, navigation events inside of a WebView will redirect to the default b
 
 ## Steps
 
-1. 
-To test if the app is overriding the default page navigation logic by configuring a `WebViewClient`, search for and inspect the following interception callback functions:
+1. Examine the application's code (see @MASTG-TECH-0023)
+2. Look for occurences of WebViews being used and examine if they are configured with a custom `WebViewClient`.
+3. Search for and inspect the following interception callback functions for the `WebViewClient`:
 
 - `shouldOverrideUrlLoading` allows your application to either abort loading pages with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`. Considerations:
     - This method is not called for POST requests.
