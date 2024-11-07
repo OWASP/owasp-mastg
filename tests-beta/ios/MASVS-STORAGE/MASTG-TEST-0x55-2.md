@@ -14,7 +14,7 @@ This test checks whether the keyboard cache contains sensitive data from our app
 1. Jailbreak a device
 2. Reset your iOS device keyboard cache by navigating to `Settings > General > Reset > Reset Keyboard Dictionary`.
 3. Exercise the application and identify the functionalities that allow users to enter sensitive data.
-4. Use MASTG-TECH-0052 to retrieve the keyboard cache file with the extension `.dat` at `/private/var/mobile/Library/Keyboard/` and its subdirectories.
+4. Use @MASTG-TECH-0052 to retrieve the keyboard cache file with the extension `.dat` at `/private/var/mobile/Library/Keyboard/` and its subdirectories.
 
 ## Observation
 
