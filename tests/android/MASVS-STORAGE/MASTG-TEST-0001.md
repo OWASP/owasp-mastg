@@ -9,6 +9,8 @@ title: Testing Local Storage for Sensitive Data
 masvs_v1_levels:
 - L1
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0207, MASTG-TEST-0200]
 ---
 
 ## Overview
