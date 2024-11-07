@@ -8,7 +8,9 @@ weakness: MASWE-0067
 
 ## Overview
 
-This test case checks if the application has the debuggable flag set in the AndroidManifest.xml. If this flag is set, an attacker can attach a debugger, and e.g., read and modify internals of the application.
+This test case checks if the application has the debuggable flag ([`android:debuggable`](https://developer.android.com/guide/topics/manifest/application-element#debug)) set to `true` in the AndroidManifest.xml. If this flag is set, an attacker can attach a debugger, and e.g., read and modify internals of the application.
+
+Having this flag set to `true` [is not considered a vulnerability](https://developer.android.com/privacy-and-security/risks/android-debuggable), however, it allow attackers to have more access to the app and resources than intended.
 
 !!! note Other ways to debug the application
     Not enabling debugging in the AndroidManifest.xml does fully prevent all possibilities to debug the app. See @MASWE-0101 for more details on how to prevent debugging.
