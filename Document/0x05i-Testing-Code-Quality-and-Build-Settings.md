@@ -24,7 +24,7 @@ Three APK signing schemes are available:
 - APK Signature Scheme v3 (v3 scheme).
 
 The v2 signature, which is supported by Android 7.0 (API level 24) and above, offers improved security and performance compared to v1 scheme.
-The V3 signature, which is supported by Android 9 (API level 28) and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used. Note that it is only available via apksigner at the time of writing.
+The V3 signature, which is supported by Android 9 (API level 28) and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used. Note that it is only available via @MASTG-TOOL-0123 at the time of writing.
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
