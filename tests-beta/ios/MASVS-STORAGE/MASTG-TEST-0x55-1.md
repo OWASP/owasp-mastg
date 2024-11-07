@@ -10,7 +10,7 @@ weakness: MASWE-0053
 
 This test checks whether the target app prevents the caching of sensitive information entered into text fields. The keyboard may suggest previously entered text when typing in any app on the device.
 
-The following attributes, if present, will prevent the caching mechanism for text inputs:
+Any of the following attributes, if present, will prevent the caching mechanism for text inputs:
 
 - [`UITextAutocorrectionTypeNo`](https://developer.apple.com/documentation/uikit/uitextautocorrectiontype/uitextautocorrectiontypeno)
 - [`secureTextEntry`](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-securetextentry)
