@@ -45,7 +45,6 @@ Since Android 4.2 (API level 17) the `SharedPreferences` object can only be decl
 
 Consider the following example:
 
-
 ```kotlin
 var sharedPref = getSharedPreferences("key", Context.MODE_PRIVATE)
 var editor = sharedPref.edit()
