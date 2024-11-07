@@ -12,7 +12,7 @@ weakness: MASWE-0116
 
 Conversely, shared libraries with the `MH_DYLIB` file type (dylibs and frameworks) are inherently position-independent and do not utilize the `MH_PIE` flag.
 
-This test case checks if the main executable is compiled without PIE.
+This test case checks if the main executable is compiled with PIE.
 
 ## Steps
 
