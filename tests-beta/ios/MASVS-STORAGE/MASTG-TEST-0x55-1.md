@@ -3,26 +3,28 @@ platform: ios
 title: Sensitive Data Not Excluded From Keyboard Caching
 id: MASTG-TEST-0x55-1
 type: [static]
+weakness: MASWE-0053
 ---
 
 ## Overview
 
-This test checks whether your app prevents the caching of sensitive information entered into text fields. The keyboard may suggest previously entered text when typing in your app or other apps on the device. You can disable the caching mechanism for a text input by setting [UITextAutocorrectionTypeNo](https://developer.apple.com/documentation/uikit/uitextautocorrectiontype/uitextautocorrectiontypeno) flag on it.
+This test checks whether the target app prevents the caching of sensitive information entered into text fields. The keyboard may suggest previously entered text when typing in any app on the device.
 
-This test verifies whether your app makes use of `UITextAutocorrectionTypeNo` flag.
+The following attributes, if present, will prevent the caching mechanism for text inputs:
 
-iOS prevents the keyboard from caching inputs marked with the [secureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-securetextentry) flag by default. Ensure that you use this flag for all password fields
+- [`UITextAutocorrectionTypeNo`](https://developer.apple.com/documentation/uikit/uitextautocorrectiontype/uitextautocorrectiontypeno)
+- [`secureTextEntry`](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-securetextentry)
+
+If the app uses Storyboards or XIB files, check whether the UI elements such as `UITextFields`, `UITextViews`, and `UISearchBars` use the `UITextAutocorrectionTypeNo` attribute.
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary to verify if your app uses `UITextAutocorrectionTypeNo`.
-
-2. If your app uses Storyboards or XIB files, check whether the UI elements such as `UITextFields`, `UITextViews`, and `UISearchBars` use `UITextAutocorrectionTypeNo` flag.
+1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary to verify if your app uses the above attributes.
 
 ## Observation
 
-The output should indicate whether the app uses `UITextAutocorrectionTypeNo`.
+The output should indicate whether the app uses no-caching attributes.
 
 ## Evaluation
 
-The test case fails if any of the text fields in your app accepts sensitive data but does not use `UITextAutocorrectionTypeNo` or `secureTextEntry`.
+The test case fails if any of the text fields in your app accepts sensitive data but do not use no-caching attributes.
