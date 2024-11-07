@@ -10,7 +10,7 @@ MASVS v2: ['MASVS-CODE-4']
 
 ## Overview
 
-By default, navigation events inside of a WebView will redirect to the default browser application. However, it is possible to stay within the WebView and handle all new page loads. This can be dangerous, as the new page may be malicous and interact with either the JavaScript bridge, or phish the user. The application should monitor navigation events inside the WebView to make sure that only legitimate pages are loaded, while others are redirected to the browser application.
+By default, navigation events inside of a WebView will redirect to the default browser application. However, it is possible to stay within the WebView and handle all new page loads. This can be dangerous, as the new page may be malicious and interact with either the JavaScript bridge, or phish the user. The application should monitor navigation events inside the WebView to make sure that only legitimate pages are loaded, while others are redirected to the browser application.
 
 ## Steps
 

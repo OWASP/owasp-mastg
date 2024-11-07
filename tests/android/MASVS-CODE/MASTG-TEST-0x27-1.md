@@ -10,12 +10,12 @@ MASVS v2: ['MASVS-CODE-4']
 
 ## Overview
 
-By default, navigation events inside of a WebView will redirect to the default browser application. However, it is possible to stay within the WebView and handle all new page loads. This can be dangerous, as the new page may be malicous and interact with either the JavaScript bridge, or phish the user. The application should monitor navigation events inside the WebView to make sure that only legitimate pages are loaded, while others are redirected to the browser application.
+By default, navigation events inside of a WebView will redirect to the default browser application. However, it is possible to stay within the WebView and handle all new page loads. This can be dangerous, as the new page may be malicious and interact with either the JavaScript bridge, or phish the user. The application should monitor navigation events inside the WebView to make sure that only legitimate pages are loaded, while others are redirected to the browser application.
 
 ## Steps
 
 1. Examine the application's code (see @MASTG-TECH-0023)
-2. Look for occurences of WebViews being used and examine if they are configured with a custom `WebViewClient`.
+2. Look for occurrences of WebViews being used and examine if they are configured with a custom `WebViewClient`.
 3. Search for and inspect the following interception callback functions for the `WebViewClient`:
 
 - `shouldOverrideUrlLoading` allows your application to either abort loading pages with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`. Considerations:
@@ -41,4 +41,4 @@ The test case fails if the `WebView` has a custom `WebViewClient` and one of the
 - The `WebViewClient` is missing the `shouldOverrideUrlLoading` or `shouldInterceptRequest` handlers
 - The `shouldOverrideUrlLoading` or `shouldInterceptRequest` handlers do not correctly prevent untrusted data from being loaded in the `WebView`
 
-If the `WebView` does not have a custom `WebViewClient`, then any navigation event will automatically trigger the default browswer.
+If the `WebView` does not have a custom `WebViewClient`, then any navigation event will automatically trigger the default browser.
