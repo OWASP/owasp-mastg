@@ -11,12 +11,12 @@ weakness: MASWE-0104
 
 Applications need to be properly signed to safeguard their integrity and protect them from tampering. Android has evolved its signing schemes over time to enhance security, with newer versions offering more robust mechanisms. Check [APK Signing Schemes](../../../Document/0x05a-Platform-Overview.md#signing-process) for more details.
 
-This test checks if the insecure v1 signature scheme is enabled for applications targetting Android 7.0 (API level 24) and above.
+This test checks if the insecure v1 signature scheme is enabled for applications targeting Android 7.0 (API level 24) and above.
 
 ## Steps
 
 1. Obtain the `minSdkVersion` attribute from the AndroidManifest.xml, e.g., via @MASTG-TOOL-0121.
-2. List all used signature schemes using @MASTG-TECH-0116 to verify the APK signatures.
+2. List all used signature schemes using the `verify` command of @MASTG-TOOL-0123 as shown in @MASTG-TECH-0116.
 
 ## Observation
 

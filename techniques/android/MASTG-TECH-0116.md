@@ -19,7 +19,6 @@ Verified for SourceStamp: false
 Number of signers: 1
 ```
 
-
 ## Additional Signature Information
 
 Additional information about the signature including fields from the signing certificate, digest and key information can be also examined with @MASTG-TOOL-0123:
