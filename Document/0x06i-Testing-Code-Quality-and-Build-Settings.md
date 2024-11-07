@@ -51,7 +51,7 @@ Detecting the presence of [binary protection mechanisms](0x04h-Testing-Code-Qual
 Although Xcode enables all binary security features by default, it may be relevant to verify this for old applications or to check for compiler flag misconfigurations. The following features are applicable:
 
 - [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
-    - PIE applies to executable binaries (Mach-O type `MH_EXECUTE`).
+    - PIE applies to executable binaries (Mach-O type `MH_EXECUTE`) [source](https://web.archive.org/web/20230328221404/https://opensource.apple.com/source/cctools/cctools-921/include/mach-o/loader.h.auto.html).
     - However it's not applicable for libraries (Mach-O type `MH_DYLIB`).
 - [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
     - Both pure Objective-C, Swift and hybrid binaries should have ARC (Automatic Reference Counting) enabled.
