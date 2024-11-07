@@ -11,11 +11,11 @@ weakness: MASWE-0023
 The cipher padding used in a security sensitive context should be carefully selected, otherwise it can be used to compromise the confidentiality, integrity and authenticity of the encrypted data.
 
 In the case of symmetric block ciphers, a secure padding scheme is used to prevent that the last block is not filled data that could be exploited by the adversary.
-In the case of assymetric encryption (e.g., `RSA`), padding scheme is required to prevent deterministic encryption, i.e., that a specific plaintext always results in the same ciphertext.
+In the case of asymmetric encryption (e.g., `RSA`), padding scheme is required to prevent deterministic encryption, i.e., that a specific plaintext always results in the same ciphertext.
 
-Check the [documentation on attacks agains padding](../../../Document/0x04g-Testing-Cryptography.md#Padding-Oracle-Attacks-due-to-Weaker-Padding-or-Block-Operation-Implementations) for more complete examples.
+Check the [documentation on attacks against padding](../../../Document/0x04g-Testing-Cryptography.md#Padding-Oracle-Attacks-due-to-Weaker-Padding-or-Block-Operation-Implementations) for more complete examples.
 
-There are exceptions to this, as is the case of the [android recommended cipher](https://developer.android.com/privacy-and-security/cryptography#choose-algorithm) `AES/GCM/NoPadding`, in which `GCM` mode uses part of the authentication tag as padding for the blocs.
+There are exceptions to this, as is the case of the [android recommended cipher](https://developer.android.com/privacy-and-security/cryptography#choose-algorithm) `AES/GCM/NoPadding`, in which `GCM` mode uses part of the authentication tag as padding for the blocks.
 
 ## Steps
 
@@ -32,7 +32,7 @@ The test case fails if you can find at least one `Cipher` defined with a `transf
 - If you are using `RSA` algorithm, you are required to use `OAEPPadding` (or one of its versions);
 - Otherwise, weak padding such as NoPadding, ZeroPadding, etc. should be avoided unless you are sure that is secure for that specific combination (e.g., as is the case for `AES/GCM/NoPadding`).
 
-Check the documentation for [specific recomendation on padding schemes to use](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms).
+Check the documentation for [specific recommendation on padding schemes to use](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms).
 
 ## References
 
