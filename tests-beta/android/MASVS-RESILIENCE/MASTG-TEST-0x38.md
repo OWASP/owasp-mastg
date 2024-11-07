@@ -16,7 +16,7 @@ This test checks if the insecure v1 signature scheme is enabled for applications
 ## Steps
 
 1. View the `minSDK` version in the AndroidManifest.xml, e.g., via @MASTG-TOOL-0121, and make sure the app targets Android 7.0 (API level 24) and above.
-2. List all used signature schemes using @MASTG-TOOL-0122.
+2. List all used signature schemes using @MASTG-TOOL-0123.
 
 ## Observation
 

@@ -1,7 +1,7 @@
 ---
 title: apksigner
 platform: android
-source: (https://developer.android.com/tools/apksigner
+source: https://developer.android.com/tools/apksigner
 ---
 
 [apksigner](https://developer.android.com/tools/apksigner) is contained in the @MASTG-TOOL-0006 at `[SDK-Path]/build-tools/[version]/apksigner`.
