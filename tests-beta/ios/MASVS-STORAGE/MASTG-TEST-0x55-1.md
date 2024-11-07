@@ -17,7 +17,7 @@ iOS prevents the keyboard from caching inputs marked with the [secureTextEntry](
 
 1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary to verify if your app uses `UITextAutocorrectionTypeNo`.
 
-2. If you app uses Storyboards or XIB files, check whether the UI elements such as `UITextFields`, `UITextViews`, and `UISearchBars` use `UITextAutocorrectionTypeNo` flag.
+2. If your app uses Storyboards or XIB files, check whether the UI elements such as `UITextFields`, `UITextViews`, and `UISearchBars` use `UITextAutocorrectionTypeNo` flag.
 
 ## Observation
 
