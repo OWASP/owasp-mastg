@@ -16,7 +16,7 @@ axt @ 0x10000cc28
 pd-- 5 @ 0x100004594
 
 !printf "\n"
-!print "Search for secret.txt"
+!printf "Search for secret.txt"
 / secret.txt
 
 !printf "\n"
