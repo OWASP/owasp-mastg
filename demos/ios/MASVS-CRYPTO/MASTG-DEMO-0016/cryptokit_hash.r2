@@ -1,24 +1,24 @@
-!printf "\n\n"
+?e;?e
 
-!printf "Uses of CryptoKit.Insecure functions:\n"
+?e Uses of CryptoKit.Insecure functions:
 afl~Insecure.
 
-!printf "\n"
+?e
 
-!printf "xrefs to CryptoKit.Insecure.MD5:\n"
+?e xrefs to CryptoKit.Insecure.MD5:
 axt @ 0x100007280
 
-!printf "\n"
+?e
 
-!printf "xrefs to CryptoKit.Insecure.SHA1:\n"
+?e xrefs to CryptoKit.Insecure.SHA1:
 axt @ 0x10000728c
 
-!printf "\n"
+?e
 
-!printf "Use of MD5:\n"
+?e Use of MD5:
 pd-- 5 @ 0x1000046d8
 
-!printf "\n"
+?e
 
-!printf "Use of SHA1:\n"
+?e Use of SHA1:
 pd-- 5 @ 0x100004214
