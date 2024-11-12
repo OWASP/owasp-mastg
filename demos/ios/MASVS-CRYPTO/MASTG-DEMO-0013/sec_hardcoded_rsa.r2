@@ -1,16 +1,16 @@
-e asm.bytes = false
+e asm.bytes=false
 e scr.color=false
 e asm.var=false
 
-!printf "Uses of SecKeyCreateWithData:\n"
+?e Uses of SecKeyCreateWithData:
 afl~SecKeyCreateWithData
 
-!printf "\n"
+?e
 
-!printf "xrefs to SecKeyCreateWithData:\n"
+?e xrefs to SecKeyCreateWithData:
 axt @ 0x100007904
 
-!printf "\n"
+?e
 
 pdf @ sym.func.10000491c > function.asm
 

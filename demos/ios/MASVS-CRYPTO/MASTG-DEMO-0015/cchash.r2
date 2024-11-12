@@ -1,22 +1,22 @@
-!printf "\n\n"
+?e;?e
 
-!printf "Uses of CommonCrypto hash function:\n"
+?e Uses of CommonCrypto hash function:
 afl~CC_
 
-!printf "\n"
+?e
 
-!printf "xrefs to CC_MD5:\n"
+?e xrefs to CC_MD5:
 axt @ 0x1000071a8
 
-!printf "xrefs to CC_SHA1:\n"
+?e xrefs to CC_SHA1:
 axt @ 0x1000071b4
 
-!printf "\n"
+?e
 
-!printf "Use of MD5:\n"
+?e Use of MD5:
 pd-- 5 @ 0x1000048c4
 
-!printf "\n"
+?e
 
-!printf "Use of SHA1:\n"
+?e Use of SHA1:
 pd-- 5 @ 0x10000456c
