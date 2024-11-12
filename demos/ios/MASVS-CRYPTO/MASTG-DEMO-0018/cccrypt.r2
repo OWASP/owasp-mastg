@@ -2,7 +2,7 @@ e asm.bytes=false
 e scr.color=false
 e asm.var=false
 
-println Uses of the CCCrypt function:
+?e Uses of the CCCrypt function:
 afl~CCCrypt
 
 ?e
