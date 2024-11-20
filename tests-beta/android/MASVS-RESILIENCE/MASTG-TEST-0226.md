@@ -1,5 +1,5 @@
 ---
-title: Debuggable Flag Not Disabled in the AndroidManifest
+title: Debuggable Flag Enabled in the AndroidManifest
 platform: android
 id: MASTG-TEST-0226
 type: [static]
@@ -18,12 +18,12 @@ Having this flag set to `true` [is not considered a vulnerability](https://devel
 ## Steps
 
 1. View the AndroidManifest.xml using @MASTG-TECH-0117.
-2. The output shows if the application is debuggable (e.g. if `application-debuggable` is set in the output of @MASTG-TOOL-0123).
+2. Search the output for the debuggable flag (e.g. `android:debuggable` if using @MASTG-TOOL-0011 or `application-debuggable` if using @MASTG-TOOL-0124).
 
 ## Observation
 
-The output should contain the contents of the AndroidManifest.xml.
+The output should contain the value of the debuggable flag from the AndroidManifest.xml or be empty.
 
 ## Evaluation
 
-The test case fails if the debuggable flag is set.
+The test case fails if the debuggable flag is set to `true`.
