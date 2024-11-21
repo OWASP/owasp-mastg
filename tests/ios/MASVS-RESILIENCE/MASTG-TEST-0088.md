@@ -7,6 +7,8 @@ platform: ios
 title: Testing Jailbreak Detection
 masvs_v1_levels:
 - R
+status: deprecated
+covered_by: [MASTG-TEST-0088]
 ---
 
 ## Overview
