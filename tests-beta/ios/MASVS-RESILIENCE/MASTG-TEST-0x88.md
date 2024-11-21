@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Testing Jailbreak Detection
-id: MASTG-TEST-0088
+id: MASTG-TEST-0x88
 type: [dynamic]
 weakness: MASWE-0097
 ---
