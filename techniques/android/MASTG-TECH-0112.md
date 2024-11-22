@@ -16,11 +16,12 @@ There are significant challenges in reverse engineering Dart AOT snapshots due t
 
 Because of these challenges, analyzing Flutter applications effectively requires specialized tools and methods.
 
-Currently, a tool exists that can efficiently reverse engineer Flutter applications. One such tool is called [Blutter](https://github.com/worawit/blutter) which can be directly downloaded from Github.
+## Using Blutter
 
-## Reversing Flutter with Blutter
+To use @MASTG-TOOL-0116, you need to:
 
-Executing the Blutter program is straightforward and can be done with a single command, as shown below. The user simply needs to specify the directory containing the `libflutter.so` file and the desired output directory. Then the "lib" directory will be extracted from the APK file.
+1. **Extract the APK**: Unpack the APK file and locate the libflutter.so file.
+2. **Execute Blutter**: Run Blutter with the path to the libflutter.so file and specify an output directory.
 
 ```bash
 python3 blutter.py path/to/app/lib/arm64-v8a out_dir
