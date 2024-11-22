@@ -26,12 +26,12 @@ Executing the Blutter program is straightforward and can be done with a single c
 python3 blutter.py path/to/app/lib/arm64-v8a out_dir
 ```
 
-The output generated from executing Blutter consists of
+Blutter generates several files:
 
-- asm/* libapp assemblies with symbols
-- blutter_frida.js the Frida script template for the target application
-- objs.txt complete (nested) dump of Object from Object Pool
-- pp.txt all Dart objects in Object Pool
+- `asm/*`: Assembly files with symbols.
+- `blutter_frida.js`: A Frida script template for instrumenting the app.
+- `objs.txt`: A complete nested dump of objects from the object pool.
+- `pp.txt`: All Dart objects in the object pool.
 
 ```bash
 ┌──(kali㉿kali)-[~/Desktop/Dummy_Output]
