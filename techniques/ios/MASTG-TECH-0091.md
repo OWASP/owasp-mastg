@@ -9,7 +9,7 @@ As an alternative to this automated approach, see @MASTG-TECH-0090.
 
 ## Patching with Sideloadly
 
-@MASTG-TOOL-0116 can be used to automatically inject libraries while repackaging and signing the app. To do so, click the `Advanced Options`, followed by `Inject dylibs/frameworks` and `+dylib/deb/bundle`:
+@MASTG-TOOL-0118 can be used to automatically inject libraries while repackaging and signing the app. To do so, click the `Advanced Options`, followed by `Inject dylibs/frameworks` and `+dylib/deb/bundle`:
 
 <img src="Images/Techniques/0091-SideloadlyFrida.png" width="400px" />
 
