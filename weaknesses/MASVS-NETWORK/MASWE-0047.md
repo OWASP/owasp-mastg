@@ -47,6 +47,6 @@ Certificate pinning is a security technique used to ensure that an app only trus
 - **Use Trusted Pinning Libraries**: Refrain from writing custom pinning logic; instead, rely on established and well-maintained libraries and frameworks (e.g., TrustKit, OkHttp's `CertificatePinner`) and ensure they are correctly configured according to best practices.
 - **Secure Dynamic Pinning**: If dynamic pinning is necessary, retrieve pins over secure channels and validate them thoroughly before use.
 - **Pin to Public Keys Instead of Certificates**: Pin to the server's public keys rather than certificates to avoid issues with certificate expiration and renewals.
-- **Consistent Enforcement**: Apply pinning uniformly to all relevant network connections within the app.
+- **Consistent Enforcement**: Apply pinning uniformly for all connections to servers that you control.
 - **Regularly Update Pins**: Keep the pinned certificates or public keys up to date with the server's current configuration and have a process for updating the app when changes occur.
 - **Implement Backup Pins**: Include backup pins (hashes of additional trusted public keys) to prevent connectivity issues if the primary key changes.

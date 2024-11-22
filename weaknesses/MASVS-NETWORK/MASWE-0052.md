@@ -51,8 +51,8 @@ Applications that do not properly validate SSL/TLS certificates during secure co
 ## Impact
 
 - **Man-in-the-Middle Attacks**: Attackers can intercept and manipulate data exchanged between the client and server.
-- **Data Exposure**: Sensitive information such as credentials, personal data, or financial information can be compromised.
-- **Unauthorized Access**: Attackers may gain unauthorized access to user accounts or systems by intercepting authentication tokens.
+- **Data Exposure**: Sensitive information can be compromised.
+- **Unauthorized Access**: Attackers may gain unauthorized access to user accounts or systems by intercepting authentication tokens or credentials.
 - **Impersonation of Services**: Users may be deceived into interacting with malicious servers impersonating legitimate services.
 - **Data Integrity Loss**: Altered or corrupted data may be accepted by the application, leading to unreliable or malicious outcomes.
 
