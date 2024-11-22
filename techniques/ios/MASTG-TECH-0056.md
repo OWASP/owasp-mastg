@@ -3,7 +3,7 @@ title: Installing Apps
 platform: ios
 ---
 
-When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified "AppSync"), a package available in the Cydia store. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
+When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](https://github.com/akemin-dayo/AppSync "AppSync"), a package available in the Cydia store. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
 
 Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
 
@@ -11,7 +11,7 @@ Different methods exist for installing an IPA package onto an iOS device, which 
 
 ## Sideloadly
 
-@MASTG-TOOL-0116 is a GUI tool that can automate all required steps for you. It requires valid Apple developer credentials, as it will obtain a valid signature from Apple servers.
+@MASTG-TOOL-0118 is a GUI tool that can automate all required steps for you. It requires valid Apple developer credentials, as it will obtain a valid signature from Apple servers.
 
 !!! warning "Do not use your personal Apple account"
     To sign an IPA file, you will need a valid iOS developer account, either free or paid. Both types come with certain restrictions, as explained on the Sideloadly website. We recommend creating a dedicated developer account for signing test applications, and **not** using your personal Apple account.
