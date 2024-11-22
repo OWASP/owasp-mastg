@@ -34,18 +34,7 @@ Blutter generates several files:
 - `objs.txt`: A complete nested dump of objects from the object pool.
 - `pp.txt`: All Dart objects in the object pool.
 
-```bash
-┌──(kali㉿kali)-[~/Desktop/Dummy_Output]
-└─$ ls -l 
-total 3084
-drwxrwxr-x   117 kali kali   4096    Oct 15 05:51 asm
--rw-r--r--   1   kali kali   397168  Oct 15 05:51 blutter_frida.js
-drwxrwxr-x   2   kali kali   4096    Oct 15 05:51 ida_script
--rw-rw-r--   1   kali kali   740945  Oct 15 05:51 objs.txt
--rw-rw-r--   1   kali kali   2009647 Oct 15 05:51 pp.txt
-```
-
-Below is an assembly example of a main function. The assembly generated from executing Blutter contains a function name ready to be used for analysis.
+The assembly files in `asm/*` contain reconstructed functions with names, making it easier to trace the app's logic. Here's an excerpt of a `main` function:
 
 ```plaintext
   static _ main(/* No info */) async {
