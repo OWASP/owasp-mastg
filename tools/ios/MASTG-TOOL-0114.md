@@ -15,4 +15,4 @@ Learn more:
 - ["Signing Code Manually"](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html#//apple_ref/doc/uid/TP40005929-CH4-SW3) in Apple's Code Signing Guide
 - [Using the latest code signature format](https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format)
 - [codesign manpage](https://www.unix.com/man-page/osx/1/codesign/)
-- [codesign source code](https://opensource.apple.com/source/Security/Security-55471/sec/Security/Tool/codesign.c.auto.html)
+- [codesign source code](https://github.com/apple-oss-distributions/Security/blob/main/SecurityTool/sharedTool/codesign.c)
