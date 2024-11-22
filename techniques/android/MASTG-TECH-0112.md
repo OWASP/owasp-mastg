@@ -7,8 +7,14 @@ Flutter is an open source UI SDK from Google for building natively compiled appl
 
 A Dart snapshot is a pre-compiled representation of a Dart program that allows for faster startup times and efficient execution. Flutter application development focuses is on the AOT (Ahead-of-Time) snapshot, which is used in all Flutter mobile apps.
 
-There are significant challenges in reverse engineering Dart AOT snapshots due to several factors. The generated assembly code uses distinctive features, including specific registers, calling conventions, and integer encoding, making analysis more complex. In addition, information about each class in the snapshot must be read
-sequentially, preventing random access and requiring engineers to sift through potentially irrelevant classes to locate the one of interest. Moreover, the format lacks documentation and has evolved considerably over time, further complicating the reverse engineering process. These unique characteristics of the Flutter framework make reverse engineering Flutter applications particularly difficult.
+There are significant challenges in reverse engineering Dart AOT snapshots due to several factors:
+
+1. **Distinctive Assembly Code**: The generated assembly code uses unique registers, calling conventions, and integer encoding, complicating analysis.
+2. **Sequential Class Information**: Information about each class in the Dart AOT snapshot must be read sequentially, preventing random access and making it time-consuming to locate specific classes.
+3. **Lack of Documentation**: The Dart snapshot format lacks comprehensive documentation and has evolved over time, adding to the complexity.
+4. **Obfuscation and Optimization**: Flutter's build process may include [obfuscation](https://docs.flutter.dev/deployment/obfuscate) and optimization techniques that hinder reverse engineering efforts.
+
+Because of these challenges, analyzing Flutter applications effectively requires specialized tools and methods.
 
 Currently, a tool exists that can efficiently reverse engineer Flutter applications. One such tool is called [Blutter](https://github.com/worawit/blutter) which can be directly downloaded from Github.
 
