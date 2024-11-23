@@ -22,6 +22,6 @@ $ curl -X "PUT" "http://localhost:8081/api/v1/bom" \
   }'
 ```
 
-Go to frontend of dependency-check, which is <http://localhost:8080>, if you are using the default settings of the dependency-track docker container. Open the project you uploaded the SBOM to and you can verify if there are any vulnerable dependencies.
+Go to the frontend of dependency-check, which is <http://localhost:8080>, if you are using the default settings of the dependency-track docker container. Open the project you uploaded the SBOM to and you can verify if there are any vulnerable dependencies.
 
 > Note: Transitive dependencies are supported by @MASTG-TOOL-0117 for [Java and Kotlin](https://cyclonedx.github.io/cdxgen/#/PROJECT_TYPES).
