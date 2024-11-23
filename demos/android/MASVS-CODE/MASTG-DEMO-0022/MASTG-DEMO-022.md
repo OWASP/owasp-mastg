@@ -11,7 +11,7 @@ Execute `cdxgen` in the root directory of the Android Studio project.
 
 {{ run.sh }}
 
-This will create a SBOM file that can be uploaded to @MASTG-TOOL-0117 by following @MASTG-TECH-0116.
+This will create a SBOM file that can be uploaded to @MASTG-TOOL-0117 by following @MASTG-TECH-0122.
 
 ### Observation
 
