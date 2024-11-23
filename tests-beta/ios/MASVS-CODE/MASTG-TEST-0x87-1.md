@@ -1,5 +1,5 @@
 ---
-title: Position Independent Code (PIC) not enabled
+title: Position Independent Code (PIC) not Enabled
 platform: ios
 id: MASTG-TEST-0x87-1
 type: [static]
@@ -8,16 +8,20 @@ weakness: MASWE-0116
 
 ## Overview
 
-[PIE (Position Independent Executables)](../../../Document/0x04h-Testing-Code-Quality/#position-independent-code) are designed to enhance security by allowing executables to be loaded at random memory addresses, mitigating certain types of attacks. In the context Mach-O file format of iOS applications, PIE is applicable to executables with the `MH_EXECUTE` file type, which essentially means the main binary of the application.
+[PIE (Position Independent Executables)](../../../Document/0x04h-Testing-Code-Quality.md/#position-independent-code) are designed to enhance security by allowing executables to be loaded at random memory addresses, mitigating certain types of attacks.
 
-Conversely, shared libraries with the `MH_DYLIB` file type (dylibs and frameworks) are inherently position-independent and do not utilize the `MH_PIE` flag.
+In the context Mach-O file format of iOS applications:
+
+- PIE is applicable to executables with the `MH_EXECUTE` file type, which essentially means the main app binary (e.g. `YourApp.app/YourApp`).
+- Shared libraries with the `MH_DYLIB` file type (dylibs and frameworks) are inherently position-independent and do not utilize the `MH_PIE` flag.
 
 This test case checks if the main executable is compiled with PIE.
 
 ## Steps
 
-1. Extract the application.
-2. Run @MASTG-TECH-0115 on the main binary (`App.app/YourApp`) and grep for "pic" or the corresponding keyword used by the selected tool.
+1. Extract the application and identify the main binary (@MASTG-TECH-0054).
+2. Identify all shared libraries (@MASTG-TECH-0082).
+3. Run @MASTG-TECH-0118 on the main binary and grep for "pic" or the corresponding keyword used by the selected tool.
 
 ## Observation
 
