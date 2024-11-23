@@ -13,9 +13,9 @@ This test case checks if the main binary or any libraries of the app are compile
 This test applies to all binaries and libraries:
 
 - It is especially important for non-memory safe languages like Objective-C or C/C++.
-- For pure Swift apps, checking for stack canaries can be usually skipped, as Swift is considered a memory safe by design and conventional parsing techniques cannot detect stack canaries in Swift binaries (see section "canary – exceptions" of this [blog post](https://sensepost.com/blog/2021/on-ios-binary-protections/)).
+- For pure Swift apps, checking for stack canaries can be usually skipped, as Swift is considered a memory safe by design and conventional parsing techniques cannot detect stack canaries in Swift binaries (see the "canary – exceptions" section of this [blog post](https://sensepost.com/blog/2021/on-ios-binary-protections/)).
 
-To differentiate between Objective-C and Swift binaries, you can inspect the imports and linked libraries. Detecting Objective-C binaries is straightforward, but detecting pure Swift binaries is more challenging because depending on the Swift version and compiler settings, the binary might still contain Objective-C symbols or libraries. See section "identifying objc vs swift" of this [blog post](https://sensepost.com/blog/2021/on-ios-binary-protections/) for more details.
+To differentiate between Objective-C and Swift binaries, you can inspect the imports and linked libraries. Detecting Objective-C binaries is straightforward, but detecting pure Swift binaries is more challenging because depending on the Swift version and compiler settings, the binary may still contain Objective-C symbols or libraries. See the "identifying objc vs swift" section of this [blog post](https://sensepost.com/blog/2021/on-ios-binary-protections/) for more details.
 
 ## Steps
 
@@ -32,6 +32,6 @@ The output should contain a list of symbols of the main binary and each shared l
 
 The test case fails any binary or library is not purely Swift but does not contain methods indicating stack canaries like `objc_autorelease` or `objc_retainAutorelease`.
 
-**Note:** Checking for the symbol `__stack_chk_fail` only indicates that stack smashing protection is enabled somewhere in the app. Whilst stack canaries are typically enabled or disabled for the whole binary, there can be corner cases, where only parts of the application are protected. E.g., when the app developer statically links a library with enables stack smashing protection, but disables it for the whole application.
+**Note:** Checking for the `__stack_chk_fail` symbol only indicates that stack smashing protection is enabled somewhere in the app. While stack canaries are typically enabled or disabled for the entire binary, there may be corner cases where only parts of the application are protected. For example, if the app developer statically links a library with stack smashing protection enabled, but disables it for the entire application.
 
-If you want to be sure specific security critical methods are protected sufficiently, you need to reverse engineer each, and check for stack smashing protection manually.
+If you want to be sure that specific security-critical methods are sufficiently protected, you need to reverse-engineer each of them and manually check for stack smashing protection.

@@ -8,7 +8,7 @@ weakness: MASWE-0116
 
 ## Overview
 
-This test case checks if [ARC (Automatic Reference Counting)](../../../Document/0x04h-Testing-Code-Quality.md/#automatic-reference-counting) is anabled in iOS apps. ARC is a compiler feature in Objective-C and Swift that automates memory management, reducing the likelihood of memory leaks and other related issues. Enabling ARC is crucial for maintaining the security and stability of iOS applications.
+This test case checks if [ARC (Automatic Reference Counting)](../../../Document/0x04h-Testing-Code-Quality.md/#automatic-reference-counting) is enabled in iOS apps. ARC is a compiler feature in Objective-C and Swift that automates memory management, reducing the likelihood of memory leaks and other related issues. Enabling ARC is crucial for maintaining the security and stability of iOS applications.
 
 - **Objective-C Code:** ARC can be enabled by compiling with the `-fobjc-arc` flag in Clang.
 - **Swift Code:** ARC is enabled by default.
@@ -28,8 +28,8 @@ The output should contain a list of symbols of the main binary and each shared l
 
 ## Evaluation
 
-The test fails if any binary or library containing Objective-C or Swift code lacks ARC-related symbols. Presence of symbols such as `_objc_msgSend` (Objective-C) or `_swift_allocObject` (Swift) without corresponding ARC symbols indicates that ARC may not be enabled.
+The test fails if any binary or library containing Objective-C or Swift code is missing ARC-related symbols. The presence of symbols such as `_objc_msgSend` (Objective-C) or `_swift_allocObject` (Swift) without corresponding ARC symbols indicates that ARC may not be enabled.
 
-**Note:** Checking for these symbols only indicates that ARC is enabled somewhere in the app. Whilst typically ARC will be enabled or disabled for the whole binary, there can be corner cases, where only parts of the application or libraries are protected. For example, when the app developer statically links a library that has ARC enabled, but disables it for the whole application.
+**Note:** Checking for these symbols only indicates that ARC is enabled somewhere in the app. While ARC is typically enabled or disabled for the entire binary, there can be corner cases where only parts of the application or libraries are protected. For example, if the app developer statically links a library that has ARC enabled, but disables it for the entire application.
 
-If you want to be sure specific security critical methods are protected sufficiently, you need to reverse engineer each, and check for ARC manually or request the source code from the developer.
+If you want to be sure that specific security-critical methods are adequately protected, you need to reverse-engineer each of them and manually check for ARC, or request the source code from the developer.
