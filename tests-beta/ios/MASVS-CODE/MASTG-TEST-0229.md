@@ -1,7 +1,7 @@
 ---
 title: Stack Canaries not enabled
 platform: ios
-id: MASTG-TEST-0x87-2
+id: MASTG-TEST-0229
 type: [static]
 weakness: MASWE-0116
 ---
