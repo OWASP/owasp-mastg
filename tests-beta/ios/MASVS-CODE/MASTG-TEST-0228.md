@@ -1,7 +1,7 @@
 ---
 title: Position Independent Code (PIC) not Enabled
 platform: ios
-id: MASTG-TEST-0x87-1
+id: MASTG-TEST-0228
 type: [static]
 weakness: MASWE-0116
 ---
