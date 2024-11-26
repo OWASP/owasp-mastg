@@ -1,5 +1,5 @@
 ---
-title: Obtaining Compiler Provided Security Features
+title: Obtaining Compiler-Provided Security Features
 platform: android
 ---
 
