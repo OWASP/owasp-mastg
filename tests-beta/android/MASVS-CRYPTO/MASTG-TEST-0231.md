@@ -20,7 +20,7 @@ In this test we're going to focus on symmetric encryption modes such as [ECB (El
 
 **Out of Scope**: Asymmetric encryption modes like RSA are out of scope for this test because they don't use block modes like ECB.
 
-In the transformation strings like `"RSA/ECB/OAEPPadding"` or "RSA/ECB/PKCS1Padding", the inclusion of "ECB" in this context is misleading. Unlike symmetric ciphers, **RSA doesn't operate in block modes like ECB**. The "ECB" designation is a [placeholder in some cryptographic APIs](https://github.com/openjdk/jdk/blob/680ac2cebecf93e5924a441a5de6918cd7adf118/src/java.base/share/classes/com/sun/crypto/provider/RSACipher.java#L126) and doesn't imply that RSA uses ECB mode. Understanding these nuances helps prevent false positives.
+In the transformation strings like "RSA/ECB/OAEPPadding" or "RSA/ECB/PKCS1Padding", the inclusion of "ECB" in this context is misleading. Unlike symmetric ciphers, **RSA doesn't operate in block modes like ECB**. The "ECB" designation is a [placeholder in some cryptographic APIs](https://github.com/openjdk/jdk/blob/680ac2cebecf93e5924a441a5de6918cd7adf118/src/java.base/share/classes/com/sun/crypto/provider/RSACipher.java#L126) and doesn't imply that RSA uses ECB mode. Understanding these nuances helps prevent false positives.
 
 ## Steps
 
