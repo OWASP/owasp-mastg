@@ -20,7 +20,7 @@ In this test we're going to focus on symmetric encryption modes such as [ECB (El
 
 For example, the following transformations are all [considered vulnerable](https://support.google.com/faqs/answer/10046138?hl=en):
 
-- "AES" (uses AES/ECB mode by default)
+- "AES" (uses AES/ECB mode by [default](https://docs.oracle.com/javase/6/docs/technotes/guides/security/crypto/CryptoSpec.html#Cipher))
 - "AES/ECB/NoPadding"
 - "AES/ECB/PKCS5Padding"
 - "AES/ECB/ISO10126Padding"
