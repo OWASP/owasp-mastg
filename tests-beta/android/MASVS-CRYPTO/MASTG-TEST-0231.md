@@ -1,7 +1,7 @@
 ---
 title: Weak Encryption Modes
 platform: android
-id: MASTG-TEST-0222
+id: MASTG-TEST-0231
 type: [static, dynamic]
 weakness: MASWE-0020
 ---
