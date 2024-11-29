@@ -34,7 +34,6 @@ The output should contain a list of locations where insecure or deprecated encry
 
 The test case fails if any insecure encryption modes are identified in the app.
 
-
 ## Mitigation
 
 Replace insecure encryption modes with secure block cipher modes such as [AES-GCM or AES-CCM](https://csrc.nist.gov/pubs/sp/800/38/d/final) which are authenticated encryption modes that provide confidentiality, integrity, and authenticity.
