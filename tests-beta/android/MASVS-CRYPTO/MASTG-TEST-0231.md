@@ -12,8 +12,8 @@ To test for the [use of weak encryption modes](../../../Document/0x04g-Testing-C
 
 In Android development, the `Cipher` class from the Java Cryptography Architecture (JCA) is the primary API that allows you to specify the encryption mode for cryptographic operations. [`Cipher.getInstance`](https://developer.android.com/reference/javax/crypto/Cipher#getInstance(java.lang.String)) defines the transformation string, which includes the encryption algorithm, mode of operation, and padding scheme. The general format is `"Algorithm/Mode/Padding"`. For example:
 
-```java
-Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+```kotlin
+Cipher.getInstance("AES/CBC/PKCS5Padding")
 ```
 
 In this test we're going to focus on symmetric encryption modes such as [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_codebook_(ECB)) operate deterministically, dividing plaintext into blocks and encrypting them separately, which reveals patterns in the ciphertext. This makes it vulnerable to attacks like [known-plaintext attacks](https://en.wikipedia.org/wiki/Known-plaintext_attack) and [chosen-plaintext attacks](https://en.wikipedia.org/wiki/Chosen-plaintext_attack).
