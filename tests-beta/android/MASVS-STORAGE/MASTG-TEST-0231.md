@@ -9,19 +9,19 @@ weakness: MASWE-0001
 
 ## Overview
 
-This test verifies if an app uses API like `android.util.Log`, `Log`, `Logger`, `System.out.print`, `System.err.print`, and `java.lang.Throwable#printStackTrace`.
+This test verifies if an app uses logging APIs like `android.util.Log`, `Log`, `Logger`, `System.out.print`, `System.err.print`, and `java.lang.Throwable#printStackTrace`.
 
 ## Steps
 
-1. Run static analysis tool @MASTG-TEST-0018 to find all logging APIs.
+1. Use either @MASTG-TECH-0014 with a tool such as @MASTG-TOOL-0110 to identify all logging APIs.
 
 ## Observation
 
-The output should contain a list of locations where logging APIs is used.
+The output should contain a list of locations where logging APIs are used.
 
 ## Evaluation
 
-The test fails if an app logs sensitive information from any of the listed locations. Ideally, a release build shouldn’t use any logging functions, making it easier to assess sensitive data exposure
+The test fails if an app logs sensitive information from any of the listed locations. Ideally, a release build shouldn't use any logging functions, making it easier to assess sensitive data exposure.
 
 ## Mitigation
 
