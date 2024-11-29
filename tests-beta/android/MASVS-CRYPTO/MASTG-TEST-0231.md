@@ -25,8 +25,7 @@ For example, the following transformations are all [considered vulnerable](https
 - "AES/ECB/PKCS5Padding"
 - "AES/ECB/ISO10126Padding"
 
-You can learn more about ECB and other modes in [NIST SP 800-38A - Recommendation for Block Cipher Modes of Operation: Methods and Techniques](https://csrc.nist.gov/pubs/sp/800/38/a/final). Also check the [Decision to Revise NIST SP 800-38A, Recommendation for Block Cipher Modes of Operation: Methods and Techniques](https://csrc.nist.gov/news/2023/decision-to-revise-nist-sp-800-38a) and [NIST IR 8459
-Report on the Block Cipher Modes of Operation in the NIST SP 800-38 Series](https://nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8459.pdf) for the latest information. 
+You can learn more about ECB and other modes in [NIST SP 800-38A - Recommendation for Block Cipher Modes of Operation: Methods and Techniques](https://csrc.nist.gov/pubs/sp/800/38/a/final). Also check the [Decision to Revise NIST SP 800-38A, Recommendation for Block Cipher Modes of Operation: Methods and Techniques](https://csrc.nist.gov/news/2023/decision-to-revise-nist-sp-800-38a) and [NIST IR 8459 Report on the Block Cipher Modes of Operation in the NIST SP 800-38 Series](https://nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8459.pdf) for the latest information.
 
 **Out of Scope**: Asymmetric encryption modes like RSA are out of scope for this test because they don't use block modes like ECB.
 
