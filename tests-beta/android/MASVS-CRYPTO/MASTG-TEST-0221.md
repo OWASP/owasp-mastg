@@ -25,3 +25,5 @@ The output should contain a list of locations where insecure symmetric encryptio
 ## Evaluation
 
 The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) encryption algorithms being used.
+
+For example, [DES (Data Encryption Standard) and 3DES (Triple DES)](https://developer.android.com/privacy-and-security/risks/broken-cryptographic-algorithm), are deprecated by [NIST SP 800-131A Rev. 2](https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final) due to vulnerabilities such as brute-force attacks and meet-in-the-middle attacks. Replace them with stronger alternatives, such as [AES-256](https://developer.android.com/privacy-and-security/cryptography#choose-algorithm), which is widely recognized as secure for modern apps.
