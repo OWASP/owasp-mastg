@@ -17,7 +17,7 @@ note: move to cleartext traffic as a mode/test and repurpose for https://develop
 
 ## Overview
 
-Applications that transmit data using insecure non-HTTP protocols such as FTP, SMTP, or unencrypted TCP sockets are vulnerable to interception, eavesdropping, and manipulation by attackers. These protocols lack built-in encryption and authentication mechanisms, allowing sensitive information to be exposed during transmission. Without proper security measures, data sent over these channels can be easily accessed by unauthorized parties.
+Applications that transmit data using insecure non-HTTP protocols that don't use TLS such as FTP, SMTP, or unencrypted TCP sockets are vulnerable to interception, eavesdropping, and manipulation by attackers. These protocols lack built-in encryption and authentication mechanisms, allowing sensitive information to be exposed during transmission. Without proper security measures, data sent over these channels can be easily accessed by unauthorized parties.
 
 ## Impact
 
@@ -37,7 +37,7 @@ Applications that transmit data using insecure non-HTTP protocols such as FTP, S
 
 ## Mitigations
 
-- **Use Secure Protocols**: Replace insecure protocols with secure alternatives that provide encryption and authentication, such as FTPS, SFTP, SMTPS, or HTTPS.
+- **Use Secure Protocols**: Replace insecure protocols with secure alternatives that provide encryption and authentication, such as FTPS, SFTP or SMTPS.
 - **Implement Encryption**: If using custom protocols, ensure that data is encrypted in transit using standard encryption algorithms like TLS.
 - **Enable Protocol Security Features**: Configure protocols to use their built-in security features, such as enabling TLS for SMTP or FTP.
 - **Update Legacy Systems**: Work with legacy system providers to upgrade or replace systems to support secure communication protocols.

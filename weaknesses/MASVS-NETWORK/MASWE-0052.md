@@ -46,11 +46,11 @@ status: new
 
 ## Overview
 
-Applications that do not properly validate SSL/TLS certificates during secure communication are susceptible to man-in-the-middle attacks and other security breaches. This weakness occurs when an application accepts invalid, expired, self-signed, or untrusted certificates without appropriate verification, compromising the integrity and confidentiality of data in transit.
+Apps that do not properly validate TLS certificates during secure communication are susceptible to Machine-in-the-Middle (MITM) attacks and other security threats. This weakness occurs when an app accepts invalid, expired, self-signed, or untrusted certificates without appropriate verification, compromising the integrity and confidentiality of data in transit.
 
 ## Impact
 
-- **Man-in-the-Middle Attacks**: Attackers can intercept and manipulate data exchanged between the client and server.
+- **Machine-in-the-Middle (MITM) Attacks**: Attackers can intercept and manipulate data exchanged between the client and server.
 - **Data Exposure**: Sensitive information can be compromised.
 - **Unauthorized Access**: Attackers may gain unauthorized access to user accounts or systems by intercepting authentication tokens or credentials.
 - **Impersonation of Services**: Users may be deceived into interacting with malicious servers impersonating legitimate services.
@@ -67,9 +67,9 @@ Applications that do not properly validate SSL/TLS certificates during secure co
 
 ## Mitigations
 
-- **Enforce Strict Certificate Validation**: Always validate SSL/TLS certificates against a trusted set of Certificate Authorities (CAs) provided by the operating system or a trusted third party.
+- **Enforce Strict Certificate Validation**: Always validate TLS certificates against a trusted set of Certificate Authorities (CAs) provided by the operating system or a trusted third party.
 - **Enable Hostname Verification**: Ensure that the application's network layer verifies the server's hostname against the certificate's Subject Alternative Name (SAN) or Common Name (CN).
 - **Use Standard Trust Managers**: Utilize well-established libraries and platform-provided APIs for certificate validation instead of custom implementations.
 - **Handle Validation Errors Properly**: Terminate the connection and alert the user whenever certificate validation fails due to issues like expiration, revocation, or mismatch.
 - **Avoid Accepting Self-Signed Certificates**: Do not accept self-signed or untrusted certificates in production environments unless there is a secure mechanism to trust them explicitly.
-- **Stay Updated with Security Protocols**: Use the latest versions of SSL/TLS protocols and ensure that weak ciphers and protocols are disabled.
+- **Stay Updated with Security Protocols**: Use the latest versions of TLS protocols and ensure that weak ciphers and protocols are disabled.

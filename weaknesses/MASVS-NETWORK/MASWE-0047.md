@@ -38,7 +38,7 @@ Certificate pinning is a security technique used to ensure that an app only trus
 - **Dynamic Pinning without Security**: Retrieving pins dynamically over insecure channels without proper validation, making it easy for attackers to supply malicious pins.
 - **Pinning to Insecure Certificates**: Pinning to self-signed, expired, or untrusted certificates that can be exploited.
 - **Partial or Inconsistent Pinning**: Only applying pinning to certain network requests or failing to enforce it consistently across the app.
-- **Weak Validation Logic**: Custom pinning implementations that do not correctly validate the certificate chain or public key. For example, accepting any certificate that chains to a trusted root instead of a specific certificate or public key.
+- **Weak Validation Logic**: Custom pinning implementations that do not correctly validate the certificate chain or public key. For example, accepting any certificate that chains to a trusted root CA instead of a specific certificate or public key.
 - **Lack of Backup Pins**: Not including backup pins to prevent connectivity issues if the primary pin is no longer valid.
 
 ## Mitigations
@@ -46,7 +46,7 @@ Certificate pinning is a security technique used to ensure that an app only trus
 - **Prefer Platform-provided Solutions**: Use platform-provided mechanisms like Android's Network Security Configuration (NSC) or iOS's App Transport Security (ATS) to enforce pinning.
 - **Use Trusted Pinning Libraries**: Refrain from writing custom pinning logic; instead, rely on established and well-maintained libraries and frameworks (e.g., TrustKit, OkHttp's `CertificatePinner`) and ensure they are correctly configured according to best practices.
 - **Secure Dynamic Pinning**: If dynamic pinning is necessary, retrieve pins over secure channels and validate them thoroughly before use.
-- **Pin to Public Keys Instead of Certificates**: Pin to the server's public keys rather than certificates to avoid issues with certificate expiration and renewals.
+- **Pin to Public Keys Instead of Certificates**: Pin to the certificate's public key rather than the whole certificate to avoid issues regarding expiration and renewals.
 - **Consistent Enforcement**: Apply pinning uniformly for all connections to servers that you control.
 - **Regularly Update Pins**: Keep the pinned certificates or public keys up to date with the server's current configuration and have a process for updating the app when changes occur.
 - **Implement Backup Pins**: Include backup pins (hashes of additional trusted public keys) to prevent connectivity issues if the primary key changes.
