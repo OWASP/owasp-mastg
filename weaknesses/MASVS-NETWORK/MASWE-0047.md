@@ -37,7 +37,6 @@ Certificate pinning is a security technique used to ensure that an app only trus
 - **Improper Configuration of Pinning Libraries**: Misconfiguring libraries like TrustKit, OkHttp's `CertificatePinner`, Volley, or AFNetworking's `SSLPinningMode`, leading to ineffective pinning.
 - **Dynamic Pinning without Security**: Retrieving pins dynamically over insecure channels without proper validation, making it easy for attackers to supply malicious pins.
 - **Pinning to Insecure Certificates**: Pinning to self-signed, expired, or untrusted certificates that can be exploited.
-- **Partial or Inconsistent Pinning**: Only applying pinning to certain network requests or failing to enforce it consistently across the app.
 - **Weak Validation Logic**: Custom pinning implementations that do not correctly validate the certificate chain or public key. For example, accepting any certificate that chains to a trusted root CA instead of a specific certificate or public key.
 - **Lack of Backup Pins**: Not including backup pins to prevent connectivity issues if the primary pin is no longer valid.
 
