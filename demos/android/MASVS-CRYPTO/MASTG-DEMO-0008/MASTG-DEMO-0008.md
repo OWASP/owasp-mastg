@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Common Uses of Insecure Random APIs
+title: Uses of Non-random Sources
 id: MASTG-DEMO-0008
 code: [java]
 test: MASTG-TEST-0205
@@ -12,9 +12,9 @@ test: MASTG-TEST-0205
 
 ### Steps
 
-Let's run our semgrep rule against the sample code.
+Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-non-random-use.yaml }}
+{{ ../../../../rules/mastg-android-non-random-use.yml }}
 
 {{ run.sh }}
 
