@@ -25,7 +25,3 @@ The output should contain a list of locations where insecure random APIs are use
 ## Evaluation
 
 The test case fails if you can find random numbers generated using those APIs that are used in security-relevant contexts.
-
-## Remediation
-
-- @MASTG-MITIG-0001
