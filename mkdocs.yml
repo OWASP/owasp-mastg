@@ -149,6 +149,9 @@ nav:
         #     - ... | flat | MASTG/demos/ios/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
         #   - MASVS-PRIVACY:
         #     - ... | flat | MASTG/demos/ios/MASVS-PRIVACY/**/MASTG-DEMO-*.md
+      - Mitigations:
+        - MASTG/mitigations/index.md
+        - ... | flat | MASTG/mitigations/*.md
       - Techniques:
         - MASTG/techniques/index.md
         - Generic:
@@ -249,6 +252,7 @@ theme:
       app: octicons/code-square-24
       demo: material/flask-outline
       tech: material/magic-staff # fontawesome/solid/wand-magic-sparkles
+      mitig: material/bandage
       maswe: octicons/shield-24
       masvs: simple/owasp
   features:
@@ -374,6 +378,7 @@ extra:
     tech: tech
     maswe: maswe
     masvs: masvs
+    mitig: mitig
   status:
     draft: This page is in draft.
     new: New in this beta!
