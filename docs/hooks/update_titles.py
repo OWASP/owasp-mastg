@@ -13,7 +13,7 @@ def set_page_icon(page, config, component_type=None):
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
     
-    if any(keyword in path for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-"]):
+    if any(keyword in path for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-", "MASTG-MITIG-"]):
         # TODO the component ID is the file basename without the extension; ensure that all components have id in the future
         page.meta['id'] = path.split('/')[-1].split('.')[0]
         component_type = page.meta['id'].split('-')[1].lower()
