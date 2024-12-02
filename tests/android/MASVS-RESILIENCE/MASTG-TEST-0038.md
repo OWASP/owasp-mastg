@@ -7,6 +7,9 @@ platform: android
 title: Making Sure that the App is Properly Signed
 masvs_v1_levels:
 - R
+status: deprecated
+covered_by: [MASTG-TEST-0224, MASTG-TEST-0225]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview

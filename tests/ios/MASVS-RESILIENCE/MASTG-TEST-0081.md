@@ -7,6 +7,8 @@ platform: ios
 title: Making Sure that the App Is Properly Signed
 masvs_v1_levels:
 - R
+covered_by: [MASTG-TEST-0220]
+status: deprecated
 ---
 
 ## Overview

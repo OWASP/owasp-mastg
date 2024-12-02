@@ -4,7 +4,7 @@ set -euo pipefail
 mkdir -p docs/MASTG
 mkdir -p docs/MASWE
 
-directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules")
+directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules" "mitigations")
 
 for dir in "${directories[@]}"; do
     rm -rf "docs/MASTG/$dir"
