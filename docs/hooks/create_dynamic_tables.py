@@ -259,6 +259,25 @@ def get_all_demos_beta():
             demos.append(frontmatter)
     return demos
 
+def get_all_mitigations_beta():
+    
+        mitigations = []
+    
+        for file in glob.glob("docs/MASTG/mitigations/**/MASTG-MITIG-*.md", recursive=True):
+            with open(file, 'r') as f:
+                content = f.read()
+        
+                frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+    
+                frontmatter['path'] = f"/MASTG/mitigations/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/mitigations'))[0]}"
+                mitigation_id = frontmatter['id']
+                frontmatter['id'] = mitigation_id
+                frontmatter['title'] = f"@{mitigation_id}"
+                frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+                
+                mitigations.append(frontmatter)
+        return mitigations
+
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
 
@@ -302,6 +321,16 @@ def on_page_markdown(markdown, page, **kwargs):
         demos_beta_columns_reordered = [reorder_dict_keys(demo, column_titles.keys()) for demo in demos_beta]
 
         return append_to_page(markdown, list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles))
+
+    elif path.endswith("mitigations/index.md"):
+        # mitigations-beta/index.md
+
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"} 
+
+        mitigations_beta = get_all_mitigations_beta()
+        mitigations_beta_columns_reordered = [reorder_dict_keys(mitigation, column_titles.keys()) for mitigation in mitigations_beta]
+
+        return append_to_page(markdown, list_of_dicts_to_md_table(mitigations_beta_columns_reordered, column_titles))
 
     elif path.endswith("tools/index.md"):
 

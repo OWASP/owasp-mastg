@@ -3,8 +3,7 @@ platform: android
 title: Non-random Sources Usage
 id: MASTG-TEST-0205
 type: [static]
-mitigations:
-- android-use-secure-random
+mitigations: [MASTG-MITIG-0001]
 prerequisites:
 - identify-sensitive-data
 - identify-security-relevant-contexts
