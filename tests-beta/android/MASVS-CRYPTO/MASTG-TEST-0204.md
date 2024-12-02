@@ -3,8 +3,7 @@ platform: android
 title: Insecure Random API Usage
 id: MASTG-TEST-0204
 type: [static]
-mitigations:
-- android-use-secure-random
+mitigations: [MASTG-MITIG-0001]
 prerequisites:
 - identify-sensitive-data
 - identify-security-relevant-contexts
@@ -26,3 +25,7 @@ The output should contain a list of locations where insecure random APIs are use
 ## Evaluation
 
 The test case fails if you can find random numbers generated using those APIs that are used in security-relevant contexts.
+
+## Remediation
+
+- @MASTG-MITIG-0001
