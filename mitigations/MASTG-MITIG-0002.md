@@ -1,7 +1,13 @@
 ---
-title: Use ProGuard to Remove Logging Code
+title: Remove Logging Code
+alias: remove-logging-code
+id: MASTG-MITIG-0002
 platform: android
 ---
+
+Ideally, a release build shouldn't use any logging functions, making it easier to assess sensitive data exposure.
+
+## Using ProGuard
 
 While preparing the production release, you can use tools like @MASTG-TOOL-0022 (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
@@ -57,3 +63,7 @@ SecureLog.v("Private key [byte format]: ", key);
 ```
 
 Then configure ProGuard to strip its calls.
+
+## Custom Logging
+
+You can implement a custom logging facility and disable it at once only for the release builds.
