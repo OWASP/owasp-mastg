@@ -3,8 +3,7 @@ platform: android
 title: Insecure Random API Usage
 id: MASTG-TEST-0204
 type: [static]
-mitigations:
-- android-use-secure-random
+mitigations: [MASTG-MITIG-0001]
 prerequisites:
 - identify-sensitive-data
 - identify-security-relevant-contexts

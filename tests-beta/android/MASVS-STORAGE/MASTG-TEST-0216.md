@@ -4,6 +4,7 @@ title: Sensitive Data Not Excluded From Backup
 id: MASTG-TEST-0216
 type: [dynamic, filesystem]
 weakness: MASWE-0004
+mitigations: [MASTG-MITIG-0004]
 ---
 
 ## Overview
@@ -32,8 +33,3 @@ The output should contain a list of files that are restored from the backup.
 ## Evaluation
 
 The test fails if any of the files are considered sensitive.
-
-For the sensitive files found, instruct the system to exclude them from the backup:
-
-- If you are using Auto Backup, mark them with the `exclude` tag in `backup_rules.xml` (for Android 11 or lower using `android:fullBackupContent`) or `data_extraction_rules.xml` (for Android 12 and higher using `android:dataExtractionRules`), depending on the target API. Make sure to use both the `cloud-backup` and `device-transfer` parameters.
-- If you are using the key-value approach, set up your [BackupAgent](https://developer.android.com/identity/data/keyvaluebackup#BackupAgent) accordingly.
