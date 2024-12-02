@@ -53,11 +53,3 @@ $ fastlane resignipa
 After having this set up once, you only need to change the path in the `Fastfile` for the IPA you want to resign and execute the command again.
 
 More information can be found in the official documentation: ["Codesign an existing ipa file with fastlane resign"](https://docs.fastlane.tools/actions/resign/)
-
-## Install and Launch
-
-Now you can install (@MASTG-TECH-0056) and launch the app by clicking on the app icon:
-
-```bash
-ios-deploy -b <name>.ipa
-```

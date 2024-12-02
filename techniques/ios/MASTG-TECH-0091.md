@@ -54,11 +54,3 @@ After injecting the `load` command, you need to repackage the IPA:
 ```bash
 zip -r patched.ipa Payload
 ```
-
-## Install and Launch
-
-Now you can re-sign (@MASTG-TECH-0092) install (@MASTG-TECH-0056) and launch the app by clicking on the app icon:
-
-```bash
-ios-deploy -b <name>.ipa
-```
