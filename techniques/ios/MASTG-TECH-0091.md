@@ -1,37 +1,64 @@
 ---
-title: Injecting Frida Gadget into IPA Automatically
+title: Injecting Libraries into an IPA Manually
 platform: ios
 ---
 
-The easiest way to inject Frida into an installed application is by using frida-server. However, if this is not possible, the Frida Gadget can be injected into a decrypted IPA file (see @MASTG-TECH-0054).
+This technique allows you to inject arbitrary libraries into an IPA file.
 
-As an alternative to this automated approach, see @MASTG-TECH-0090.
+This is useful when you want to add additional functionality or testing capabilities to an application. For example, you can inject the Frida Gadget into an IPA file to enable dynamic instrumentation of the application.
 
-## Patching with Sideloadly
+We'll use the Frida Gadget (`FridaGadget.dylib`) as an example but you can use this technique to inject any `.dylib` library you want.
 
-@MASTG-TOOL-0118 can be used to automatically inject libraries while repackaging and signing the app. To do so, click the `Advanced Options`, followed by `Inject dylibs/frameworks` and `+dylib/deb/bundle`:
+## Obtaining the Library
 
-<img src="Images/Techniques/0091-SideloadlyFrida.png" width="400px" />
+In our example, the library is Frida Gadget, which can be downloaded from the [GitHub release page](https://github.com/frida/frida/releases) of the Frida project. Look for the latest release that matches your target platform and download the `frida-gadget-XX.YY.ZZ-ios-universal.dylib.xz` file.
 
-## Patching with Objection
-
-@MASTG-TOOL-0038 can inject the Frida Gadget into a given IPA file. The `objection explore` command expects an IPA file and a valid code signature. How this signature can be obtained is explained on [Objection's wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications).
-
-## Launching the Repackaged App in Debug Mode
-
-After the app has been installed on the device, it needs to be launched in debug mode. This is not the case when launching the app via springboard (the application will crash), but it is possible with various tools as explained in @MASTG-TECH-0056. When the application is running in debug mode, Frida can be injected into the process with name `Gadget`:
+Decompress the file using the `xz` tool and save it as `FridaGadget.dylib`:
 
 ```bash
-idevicedebug -d run sg.vp.UnCrackable1
-
-# In a new terminal
-frida -U -n Gadget
-...
-[iPhone::Gadget ]-> 
+xz -d <frida-gadget-XX.YY.ZZ-ios-universal.dylib.xz> -c > FridaGadget.dylib
 ```
 
-## Starting with iOS 17 and Xcode 15
+## Adding the Library to the IPA
 
-Since Xcode 15 and iOS 17 the tool @MASTG-TOOL-0054 will [not work anymore to start an app in debug mode](https://github.com/ios-control/ios-deploy/issues/588).
+IPA files are ZIP archives, so you can use any ZIP tool to unpack the archive:
 
-A workaround to start the re-packaged app with the `FridaGadget.dylib` in debug mode (without using @MASTG-TOOL-0054) can be found [here](https://github.com/ios-control/ios-deploy/issues/588#issuecomment-1907913430).
+```bash
+unzip UnCrackable-Level1.ipa
+```
+
+Next, copy the target library, in this case `FridaGadget.dylib`, into the `.app/Frameworks` directory (create the directory if it doesn't exist):
+
+```bash
+mkdir -p Payload/UnCrackable\ Level\ 1.app/Frameworks
+cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/Frameworks/
+```
+
+Use @MASTG-TOOL-0059 to add a `load` command to the binary (`LC_LOAD_DYLIB`). The code below shows how this is done for the @MASTG-APP-0025:
+
+```bash
+optool install -c load -p "@executable_path/Frameworks/FridaGadget.dylib"  -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
+
+Found FAT Header
+Found thin header...
+Found thin header...
+Inserting a LC_LOAD_DYLIB command for architecture: arm
+Successfully inserted a LC_LOAD_DYLIB command for arm
+Inserting a LC_LOAD_DYLIB command for architecture: arm64
+Successfully inserted a LC_LOAD_DYLIB command for arm64
+Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
+```
+
+After injecting the `load` command, you need to repackage the IPA:
+
+```bash
+zip -r patched.ipa Payload
+```
+
+## Install and Launch
+
+Now you can re-sign (@MASTG-TECH-0092) install (@MASTG-TECH-0056) and launch the app by clicking on the app icon:
+
+```bash
+ios-deploy -b <name>.ipa
+```
