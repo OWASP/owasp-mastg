@@ -17,7 +17,7 @@ The following samples contain:
 ### Steps
 
 1. Install the target app on your device.
-2. Exercise it to trigger storing some information into the memory
+2. Run the application to trigger storing some information into the memory
 3. Run `run.sh`
 4. Close the app once you finish testing.
 
