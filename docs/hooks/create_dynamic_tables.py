@@ -263,13 +263,13 @@ def get_all_mitigations_beta():
     
         mitigations = []
     
-        for file in glob.glob("docs/MASTG/mitigations/**/MASTG-MITIG-*.md", recursive=True):
+        for file in glob.glob("docs/MASTG/best-practices/**/MASTG-BEST-*.md", recursive=True):
             with open(file, 'r') as f:
                 content = f.read()
         
                 frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
     
-                frontmatter['path'] = f"/MASTG/mitigations/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/mitigations'))[0]}"
+                frontmatter['path'] = f"/MASTG/best-practices/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/best-practices'))[0]}"
                 mitigation_id = frontmatter['id']
                 frontmatter['id'] = mitigation_id
                 frontmatter['title'] = f"@{mitigation_id}"
@@ -322,7 +322,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         return append_to_page(markdown, list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles))
 
-    elif path.endswith("mitigations/index.md"):
+    elif path.endswith("best-practices/index.md"):
         # mitigations-beta/index.md
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"} 

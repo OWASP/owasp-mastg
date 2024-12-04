@@ -1,7 +1,7 @@
 ---
 title: Use Secure Encryption Modes
 alias: use-secure-encryption-modes
-id: MASTG-MITIG-0005
+id: MASTG-BEST-0005
 platform: android
 ---
 

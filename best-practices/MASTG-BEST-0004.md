@@ -1,7 +1,7 @@
 ---
 title: Exclude Sensitive Data from Backups
 alias: exclude-sensitive-data-from-backups
-id: MASTG-MITIG-0004
+id: MASTG-BEST-0004
 platform: android
 ---
 
