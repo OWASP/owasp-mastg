@@ -41,6 +41,9 @@ nav:
         - ... | flat | MASTG/0x05*.md
       - iOS Security Testing: 
         - ... | flat | MASTG/0x06*.md
+      - Best Practices (v2 Beta):
+        - MASTG/best-practices/index.md
+        - ... | flat | MASTG/best-practices/*.md
       - Tests:
         - MASTG/tests/index.md
         - Android:
@@ -86,31 +89,31 @@ nav:
             - ... | flat | MASTG/tests-beta/android/MASVS-CRYPTO/MASTG-TEST-*.md
           # - MASVS-AUTH:
           #   - ... | flat | MASTG/tests-beta/android/MASVS-AUTH/MASTG-TEST-*.md
-          # - MASVS-NETWORK:
-          #   - ... | flat | MASTG/tests-beta/android/MASVS-NETWORK/MASTG-TEST-*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/tests-beta/android/MASVS-NETWORK/MASTG-TEST-*.md
           # - MASVS-PLATFORM:
           #   - ... | flat | MASTG/tests-beta/android/MASVS-PLATFORM/MASTG-TEST-*.md
-          # - MASVS-CODE:
-          #   - ... | flat | MASTG/tests-beta/android/MASVS-CODE/MASTG-TEST-*.md
-          # - MASVS-RESILIENCE:
-          #   - ... | flat | MASTG/tests-beta/android/MASVS-RESILIENCE/MASTG-TEST-*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests-beta/android/MASVS-CODE/MASTG-TEST-*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests-beta/android/MASVS-RESILIENCE/MASTG-TEST-*.md
           - MASVS-PRIVACY:
             - ... | flat | MASTG/tests-beta/android/MASVS-PRIVACY/MASTG-TEST-*.md
-        # - iOS:
-          # - MASVS-STORAGE:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-STORAGE/MASTG-TEST-*.md
-          # - MASVS-CRYPTO:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-CRYPTO/MASTG-TEST-*.md
+        - iOS:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/tests-beta/ios/MASVS-STORAGE/MASTG-TEST-*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/tests-beta/ios/MASVS-CRYPTO/MASTG-TEST-*.md
           # - MASVS-AUTH:
           #   - ... | flat | MASTG/tests-beta/ios/MASVS-AUTH/MASTG-TEST-*.md
           # - MASVS-NETWORK:
           #   - ... | flat | MASTG/tests-beta/ios/MASVS-NETWORK/MASTG-TEST-*.md
           # - MASVS-PLATFORM:
           #   - ... | flat | MASTG/tests-beta/ios/MASVS-PLATFORM/MASTG-TEST-*.md
-          # - MASVS-CODE:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-CODE/MASTG-TEST-*.md
-          # - MASVS-RESILIENCE:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-RESILIENCE/MASTG-TEST-*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/tests-beta/ios/MASVS-CODE/MASTG-TEST-*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/tests-beta/ios/MASVS-RESILIENCE/MASTG-TEST-*.md
           # - MASVS-PRIVACY:
           #   - ... | flat | MASTG/tests-beta/ios/MASVS-PRIVACY/MASTG-TEST-*.md 
       - Demos (v2 Beta):
@@ -132,26 +135,23 @@ nav:
           #   - ... | flat | MASTG/demos/android/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
           - MASVS-PRIVACY:
             - ... | flat | MASTG/demos/android/MASVS-PRIVACY/**/MASTG-DEMO-*.md
-        # - iOS:
-        #   - MASVS-STORAGE:
-        #     - ... | flat | MASTG/demos/ios/MASVS-STORAGE/**/MASTG-DEMO-*.md
-        #   - MASVS-CRYPTO:
-        #     - ... | flat | MASTG/demos/ios/MASVS-CRYPTO/**/MASTG-DEMO-*.md
-        #   - MASVS-AUTH:
-        #     - ... | flat | MASTG/demos/ios/MASVS-AUTH/**/MASTG-DEMO-*.md
-        #   - MASVS-NETWORK:
-        #     - ... | flat | MASTG/demos/ios/MASVS-NETWORK/**/MASTG-DEMO-*.md
-        #   - MASVS-PLATFORM:
-        #     - ... | flat | MASTG/demos/ios/MASVS-PLATFORM/**/MASTG-DEMO-*.md
-        #   - MASVS-CODE:
-        #     - ... | flat | MASTG/demos/ios/MASVS-CODE/**/MASTG-DEMO-*.md
-        #   - MASVS-RESILIENCE:
-        #     - ... | flat | MASTG/demos/ios/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
-        #   - MASVS-PRIVACY:
-        #     - ... | flat | MASTG/demos/ios/MASVS-PRIVACY/**/MASTG-DEMO-*.md
-      - Mitigations:
-        - MASTG/mitigations/index.md
-        - ... | flat | MASTG/mitigations/*.md
+        - iOS:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/demos/ios/MASVS-STORAGE/**/MASTG-DEMO-*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/demos/ios/MASVS-CRYPTO/**/MASTG-DEMO-*.md
+          # - MASVS-AUTH:
+          #   - ... | flat | MASTG/demos/ios/MASVS-AUTH/**/MASTG-DEMO-*.md
+          # - MASVS-NETWORK:
+          #   - ... | flat | MASTG/demos/ios/MASVS-NETWORK/**/MASTG-DEMO-*.md
+          # - MASVS-PLATFORM:
+          #   - ... | flat | MASTG/demos/ios/MASVS-PLATFORM/**/MASTG-DEMO-*.md
+          # - MASVS-CODE:
+          #   - ... | flat | MASTG/demos/ios/MASVS-CODE/**/MASTG-DEMO-*.md
+          # - MASVS-RESILIENCE:
+          #   - ... | flat | MASTG/demos/ios/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
+          # - MASVS-PRIVACY:
+          #   - ... | flat | MASTG/demos/ios/MASVS-PRIVACY/**/MASTG-DEMO-*.md
       - Techniques:
         - MASTG/techniques/index.md
         - Generic:
@@ -252,7 +252,7 @@ theme:
       app: octicons/code-square-24
       demo: material/flask-outline
       tech: material/magic-staff # fontawesome/solid/wand-magic-sparkles
-      mitig: material/bandage
+      best: material/shield-check
       maswe: octicons/shield-24
       masvs: simple/owasp
   features:
@@ -378,7 +378,7 @@ extra:
     tech: tech
     maswe: maswe
     masvs: masvs
-    mitig: mitig
+    best: best
   status:
     draft: This page is in draft.
     new: New in this beta!

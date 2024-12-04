@@ -4,7 +4,7 @@ platform: android
 id: MASTG-TEST-0232
 type: [static, dynamic]
 weakness: MASWE-0020
-mitigations: [MASTG-MITIG-0005]
+best-practices: [MASTG-BEST-0005]
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 title: Use Up-to-Date APK Signing Schemes
 alias: use-up-to-date-apk-signing-schemes
-id: MASTG-MITIG-0006
+id: MASTG-BEST-0006
 platform: android
 ---
 

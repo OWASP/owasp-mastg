@@ -5,7 +5,7 @@ id: MASTG-TEST-0203
 apis: [Log, Logger, System.out.print, System.err.print, java.lang.Throwable#printStackTrace]
 type: [dynamic]
 weakness: MASWE-0001
-mitigations: [MASTG-MITIG-0002]
+best-practices: [MASTG-BEST-0002]
 ---
 
 ## Overview
