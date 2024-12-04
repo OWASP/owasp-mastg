@@ -117,7 +117,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
     banners = []
 
-    if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/"]):
+    if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/", "MASTG/best-practices/"]):
         banners.append(beta_banner)
     
     if "MASWE/" in path and page.meta.get('status') == 'draft':

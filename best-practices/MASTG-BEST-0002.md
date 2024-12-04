@@ -1,7 +1,7 @@
 ---
 title: Remove Logging Code
 alias: remove-logging-code
-id: MASTG-MITIG-0002
+id: MASTG-BEST-0002
 platform: android
 ---
 
