@@ -1,6 +1,6 @@
 ---
 hide: toc
-title: Best Practices (v2 - Beta)
+title: Best Practices (v2 Beta)
 status: new
 ---
 
