@@ -24,7 +24,16 @@ status: draft
 
 ## Overview
 
-Certificate pinning is a security technique used to ensure that an app only trusts specific certificates or public keys when establishing secure connections. Insecure identity pinning occurs when the implementation of certificate or public key pinning is flawed or improperly configured. This weakness can leave the app vulnerable to Man-in-the-Middle (MITM) attacks and other security threats. Common issues include outdated pins, improper validation, accepting all certificates, or using insecure methods for dynamic pinning.
+[Identity pinning (aka. certificate pinning, public key pinning or TLS pinning)](../../Document/0x04f-Testing-Network-Communication/#restricting-trust-identity-pinning) refers to associating a mobile app with a specific cryptographic identity, such as a certificate or public key to ensure that the app only communicates with trusted servers. 
+
+When a mobile app does not implement certificate pinning, or if it is implemented incorrectly, the app remains vulnerable to Machine-in-the-Middle (MITM) attacks which enable attackers to intercept and modify the communication between the app and the intended server. This occurs because when the app is presented a fraudulent certificate that the app may unknowingly trust, thereby gaining access to sensitive data or injecting malicious content into the data stream.
+
+**Limitations**: Certificate pinning adds a layer of trust verification by ensuring that the app only accepts connections to servers with specific, pre-determined certificates or public keys. This reduces the risk of unauthorized interception, even if a trusted Certificate Authority (CA) is compromised. However, it is not foolproof:
+
+- Attackers who can reverse-engineer the app may analyze and remove or modify the pre-defined pins or the certificate pinning logic to permanently bypass the checks.
+- Attackers who can perform @MASTG-TECH-0051 techniques to manipulate the app and bypass pinning checks.
+
+This highlights the importance of implementing certificate pinning **alongside other security measures** to enhance the app's resistance to advanced threats.
 
 ## Impact
 
