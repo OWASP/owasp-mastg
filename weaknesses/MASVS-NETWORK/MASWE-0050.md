@@ -26,7 +26,6 @@ refs:
 - https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection
 - https://github.com/MicrosoftDocs/xamarin-docs/blob/live/docs/android/app-fundamentals/http-stack.md
 - https://github.com/MicrosoftDocs/xamarin-docs/blob/live/docs/ios/app-fundamentals/ats.md
-
 status: new
 ---
 
@@ -49,19 +48,19 @@ If the connections were secured using encryption and proper authentication mecha
 
 ## Modes of Introduction
 
-- **Cleartext Traffic Allowed Globally in Configurations:** Global configuration settings allow cleartext traffic, making all network communication insecure.
-- **Per-Domain Exceptions for Cleartext Traffic:** Specific domains are allowed to use cleartext traffic, bypassing the secure communication requirements.
-- **Usage of Insecure Protocols:** Using insecure protocols such as HTTP or FTP which do not encrypt data in transit.
-- **Low-Level API Usage:** Use of low-level networking APIs that do not enforce encryption can inadvertently lead to the transmission of unprotected data.
+- **Cleartext Traffic Allowed in Platform-provided Settings:** Configuring platform-provided settings (e.g. Network Security Configuration on Android or App Transport Security on iOS) to explicitly allow cleartext traffic (globally or per-domain), making it the default behavior for all network connections managed by those settings.
+- **Usage of HTTP:** Using HTTP instead of HTTPS for communication, which does not encrypt data in transit.
+- **Usage of Non-HTTP Insecure Protocols:** Using insecure protocols such as FTP, SMTP without TLS, TCP sockets or custom protocols which do not encrypt data in transit.
+- **Usage of Low-Level Network APIs:** Use of low-level network APIs that do not enforce encryption and do not honor the platform's network security settings, such as `Socket` on Android or `NSURLConnection` on iOS.
 - **Cross-Platform Framework Misconfiguration:** Improper settings in cross-platform frameworks may allow cleartext traffic for both Android and iOS versions of an app.
+- **Third-Party Libraries**: Using third-party libraries or SDKs that default to insecure communication methods.
 
 ## Mitigations
 
-- **Use Secure Protocols:** Always use secure protocols like HTTPS, which employs TLS for encryption, for all communication channels. Ensure these protocols are used consistently throughout the app.
+- **Use Secure Protocols:** Always use secure protocols like HTTPS (which employs TLS for encryption), FTPS, SFTP or SMTPS for all communication channels. Ensure these protocols are used consistently throughout the app.
 - **Explicitly Disable Cleartext Traffic:** Never allow cleartext traffic globally in the app configuration. Ensure that cleartext traffic is explicitly disabled using security settings like the Network Security Configuration on Android and App Transport Security (ATS) on iOS. Prefer per-domain exceptions over global settings but use them carefully and only when there is no other option.
 - **Use Per-Domain Exceptions Sparingly:** If cleartext traffic is absolutely necessary for specific domains, ensure these domains are trusted and essential for the app's functionality, and conduct a thorough risk assessment before including them.
 - **Prefer Server Fixes**: Whenever possible, work with the server team to enable secure communication. Instead of adding network security exceptions to the mobile app, such as allowing cleartext traffic or lowering the minimum TLS version, update server configurations to support HTTPS with valid certificates and modern TLS protocols.
-- **High-Level Network APIs:** Use high-level networking APIs that automatically handle encryption, certificate validation, and errors, such as [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection) on Android or [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession) on iOS. Avoid using low-level networking APIs or custom network stacks that bypass the platform-provided network security features.
+- **Use High-Level Network APIs:** Use high-level network APIs that automatically handle encryption, certificate validation, and errors, such as [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection) on Android or [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession) on iOS. Avoid using low-level network APIs or custom network stacks that bypass the platform-provided network security features.
 - **Use Secure Cross-Platform Frameworks:** Ensure that cross-platform frameworks—such as React Native, Flutter, or Xamarin—are configured to enforce secure communication by default and do not allow cleartext traffic. Review the framework's documentation and adjust network security settings to align with best practices.
 - **Use Secure Third-Party Components**: Verify that any third-party libraries and SDKs used in the app enforce secure communication protocols, especially if they handle sensitive data or use low-level networking APIs. Ensure that these components are regularly updated to address any vulnerabilities.
-- **Implement Certificate Pinning**: Use certificate pinning with servers you control as an additional layer of security to prevent MITM attacks. Ensure proper implementation to handle certificate updates smoothly, and be cautious to avoid connectivity issues if certificates change. Avoid pinning certificates for third-party services unless you have control over their certificate management.
