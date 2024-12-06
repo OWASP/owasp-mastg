@@ -7,24 +7,12 @@ profiles: [L2]
 mappings:
   masvs-v1: [MSTG-NETWORK-4]
   masvs-v2: [MASVS-NETWORK-2]
-
-draft:
-  description: e.g. via NSC/ATS, okhttp CertificatePinner, volley, trustkit, Cordova,
-    AFNetworking SSLPinningMode
-  topics:
-  - NSC/ATS
-  - net-frameworks e.g. okhttp CertificatePinner, volley, trustkit, Cordova, AFNetworking
-    SSLPinningMode
-  - Dynamic Pinning e.g. via the ssl-pinning-android library
-  - Check for MITM resiliency, e.g. with trusted interceptor cert. consider "proxy
-    unaware apps"
-status: draft
-
+status: new
 ---
 
 ## Overview
 
-[Identity pinning (aka. certificate pinning, public key pinning or TLS pinning)](../../Document/0x04f-Testing-Network-Communication/#restricting-trust-identity-pinning) refers to associating a mobile app with a specific cryptographic identity, such as a certificate or public key to ensure that the app only communicates with trusted servers. 
+[Identity pinning (aka. certificate pinning, public key pinning or TLS pinning)](../../Document/0x04f-Testing-Network-Communication/#restricting-trust-identity-pinning) refers to associating a mobile app with a specific cryptographic identity, such as a certificate or public key to ensure that the app only communicates with trusted servers.
 
 When a mobile app does not implement certificate pinning, or if it is implemented incorrectly, the app remains vulnerable to Machine-in-the-Middle (MITM) attacks which enable attackers to intercept and modify the communication between the app and the intended server. This occurs because when the app is presented a fraudulent certificate that the app may unknowingly trust, thereby gaining access to sensitive data or injecting malicious content into the data stream.
 
