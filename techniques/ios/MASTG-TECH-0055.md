@@ -1,22 +1,21 @@
 ---
-title: Repackaging Apps
+title: Launching a Repackaged App in Debug Mode
 platform: ios
 ---
 
-If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.
-
-Use a computer with macOS to perform all the steps indicated in the article ["Patching iOS Applications"](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications) from the objection Wiki. Once you're done you'll be able to patch an IPA by calling the objection command:
+After the app has been installed on the device, it needs to be launched in debug mode. This is not the case when launching the app via springboard (the application will crash), but it is possible with various tools as explained in @MASTG-TECH-0056. When the application is running in debug mode, Frida can be injected into the process with name `Gadget`:
 
 ```bash
-objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+idevicedebug -d run sg.vp.UnCrackable1
+
+# In a new terminal
+frida -U -n Gadget
+...
+[iPhone::Gadget ]-> 
 ```
 
-Finally, the app needs to be installed (sideloaded) and run with debugging communication enabled. Perform the steps from the article ["Running Patched iOS Applications"](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications) from the objection Wiki (using ios-deploy).
+## Starting with iOS 17 and Xcode 15
 
-```bash
-ios-deploy --bundle Payload/my-app.app -W -d
-```
+Since Xcode 15 and iOS 17 the tool @MASTG-TOOL-0054 will [not work anymore to start an app in debug mode](https://github.com/ios-control/ios-deploy/issues/588).
 
-Refer to @MASTG-TECH-0056 to learn about other installation methods. Some of them doesn't require you to have a macOS.
-
-> This repackaging method is enough for most use cases. For more advanced repackaging, refer to @MASTG-TECH-0092.
+A workaround to start the re-packaged app with the `FridaGadget.dylib` in debug mode (without using @MASTG-TOOL-0054) can be found [here](https://github.com/ios-control/ios-deploy/issues/588#issuecomment-1907913430).
