@@ -1,7 +1,7 @@
 ---
 title: Cleartext Traffic Observed on the Network
 platform: network
-id: MASTG-TEST-0x19-5
+id: MASTG-TEST-0237
 type: [dynamic]
 weakness: MASWE-0050
 ---
@@ -23,7 +23,7 @@ You can use one of the following approaches:
 - Set up @MASTG-TECH-0010 (for Android) or @MASTG-TECH-0062 (for iOS) to capture all traffic.
 - Set up @MASTG-TECH-0011 (for Android) or @MASTG-TECH-0063 (for iOS) to capture all traffic.
 
-**Notes**: 
+**Notes**:
 
 - Interception proxies will show HTTP(S) traffic only. You can, however, use some tool-specific plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) or other tools like @MASTG-TOOL-0078 to decode and visualize communication via XMPP and other protocols.
 - Some apps may not function correctly with proxies like Burp and OWASP ZAP because of certificate pinning. In such a scenario, you can still use basic network sniffing to detect cleartext traffic. Otherwise, you can try to disable pinning (see @MASTG-TECH-0012 for Android and @MASTG-TECH-0064 for iOS)

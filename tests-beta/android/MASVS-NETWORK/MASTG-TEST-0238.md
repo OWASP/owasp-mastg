@@ -1,7 +1,7 @@
 ---
 title: Runtime Use of Network APIs Transmitting Cleartext Traffic
 platform: android
-id: MASTG-TEST-0x19-7
+id: MASTG-TEST-0238
 type: [dynamic]
 weakness: MASWE-0050
 status: draft

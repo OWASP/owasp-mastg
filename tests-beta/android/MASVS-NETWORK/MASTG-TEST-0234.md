@@ -1,7 +1,7 @@
 ---
 title: SSLSockets not Properly Verifying Hostnames
 platform: android
-id: MASTG-TEST-0x19-2
+id: MASTG-TEST-0234
 type: [static]
 weakness: MASWE-0052
 ---

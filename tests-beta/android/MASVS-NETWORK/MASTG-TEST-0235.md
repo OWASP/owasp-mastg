@@ -1,7 +1,7 @@
 ---
 title: Android App Configurations Allowing Cleartext Traffic
 platform: android
-id: MASTG-TEST-0x19-3
+id: MASTG-TEST-0235
 type: [static]
 weakness: MASWE-0050
 ---
@@ -31,8 +31,8 @@ The output contains a list of configurations potentially allowing for cleartext 
 The test case fails if cleartext traffic is permitted. This can happen if any of the following is true:
 
 1. The AndroidManifest sets `usesCleartextTraffic` to `true` and there's no NSC.
-3. The NSC sets `cleartextTrafficPermitted ` to `true` in the `<base-config>`.
-4. The NSC sets `cleartextTrafficPermitted ` to `true` in any `<domain-config>`.
+2. The NSC sets `cleartextTrafficPermitted` to `true` in the `<base-config>`.
+3. The NSC sets `cleartextTrafficPermitted` to `true` in any `<domain-config>`.
 
 **Note:** The test doesn't fail if the AndroidManifest sets `usesCleartextTraffic` to `true` and there's a NSC, even if it only has an empty `<network-security-config>` element. For example:
 

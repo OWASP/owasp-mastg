@@ -1,7 +1,7 @@
 ---
 title: Cross-Platform Framework Configurations Allowing Cleartext Traffic
 platform: android
-id: MASTG-TEST-0x19-4
+id: MASTG-TEST-0236
 type: [static]
 weakness: MASWE-0050
 status: draft

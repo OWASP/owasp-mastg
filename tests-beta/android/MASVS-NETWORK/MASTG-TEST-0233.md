@@ -1,7 +1,7 @@
 ---
 title: HTTP URLs
 platform: android
-id: MASTG-TEST-0x19-1
+id: MASTG-TEST-0233
 type: [static]
 weakness: MASWE-0050
 ---
