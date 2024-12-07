@@ -53,7 +53,7 @@ If the connections were secured using encryption and proper authentication mecha
 - **Usage of Non-HTTP Insecure Protocols:** Using insecure protocols such as FTP, SMTP without TLS, TCP sockets or custom protocols which do not encrypt data in transit.
 - **Usage of Low-Level Network APIs:** Use of low-level network APIs that do not enforce encryption and do not honor the platform's network security settings, such as `Socket` on Android or `NSURLConnection` on iOS.
 - **Cross-Platform Framework Misconfiguration:** Improper settings in cross-platform frameworks may allow cleartext traffic for both Android and iOS versions of an app.
-- **Third-Party Libraries**: Using third-party libraries or SDKs that default to insecure communication methods.
+- **Third-Party Libraries**: Using third-party libraries or SDKs that default to insecure communication methods or are improperly configured.
 
 ## Mitigations
 
