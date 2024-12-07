@@ -6,3 +6,4 @@ type: [static]
 weakness: MASWE-0050
 status: draft
 note: This test could also be for https://mas.owasp.org/MASWE/MASVS-NETWORK/MASWE-0049/ but we'd need to support multiple weaknesses.
+---
