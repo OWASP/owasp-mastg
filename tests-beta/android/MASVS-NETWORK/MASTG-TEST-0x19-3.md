@@ -1,5 +1,5 @@
 ---
-title: Cleartext traffic permitted
+title: Android App Configurations Allowing Cleartext Traffic
 platform: android
 id: MASTG-TEST-0x19-3
 type: [static]
@@ -10,19 +10,34 @@ weakness: MASWE-0050
 
 Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default (thanks to the [default Network Security Configuration](../../../Document/0x05g-Testing-Network-Communication.md#default-configurations)) but there are multiple ways in which an application can still send it:
 
-- Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case the Network Security Configuration is configured.
-- Configuring the [Network Security Configuration to enable cleartext traffic](https://developer.android.com/privacy-and-security/security-config#CleartextTrafficPermitted) by setting the `cleartextTrafficPermitted` attribute to true on `<domain-config>` elements.
+- **AndroidManifest.xml**: Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic) attribute of the `<application>` tag. Note that this flag is ignored in case the Network Security Configuration is configured.
+- **Network Security Configuration**: Setting the [`cleartextTrafficPermitted`](https://developer.android.com/privacy-and-security/security-config#CleartextTrafficPermitted) attribute to `true` on `<base-config>` or `<domain-config>` elements.
 
 ## Steps
 
 1. Reverse engineer the app (@MASTG-TECH-0017).
-2. Verify `usesCleartextTraffic` is not set to `true` in the AndroidManifest.xml
-3. Inspect the AndroidManifest.xml, and check if a `networkSecurityConfig` is set in the `<application>` tag. If yes, inspect the referenced file, and make sure that `cleartextTrafficPermitted` is not set to `true` globally in the `<base-config>` element, or for specific domains in their `<domain-config>` elements.
+2. Obtain the AndroidManifest.xml.
+3. Obtain the Network Security Configuration.
+4. Read the value of `usesCleartextTraffic` from the AndroidManifest.xml.
+5. Read the value of `cleartextTrafficPermitted` from the NSC `<base-config>` element.
+6. Read the value of `cleartextTrafficPermitted` from the NSC `<domain-config>` elements.
 
 ## Observation
 
-The output contains a list of configurations allowing for cleartext traffic.
+The output contains a list of configurations potentially allowing for cleartext traffic.
 
 ## Evaluation
 
-The test case fails if any cleartext traffic is permitted.
+The test case fails if cleartext traffic is permitted. This can happen if any of the following is true:
+
+1. The AndroidManifest sets `usesCleartextTraffic` to `true` and there's no NSC.
+3. The NSC sets `cleartextTrafficPermitted ` to `true` in the `<base-config>`.
+4. The NSC sets `cleartextTrafficPermitted ` to `true` in any `<domain-config>`.
+
+**Note:** The test doesn't fail if the AndroidManifest sets `usesCleartextTraffic` to `true` and there's a NSC, even if it only has an empty `<network-security-config>` element. For example:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+</network-security-config>
+```

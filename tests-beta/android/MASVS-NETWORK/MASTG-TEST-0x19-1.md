@@ -23,7 +23,7 @@ Those URLs are not necessarily used for communication, but can indicate location
 
 ## Observation
 
-The output contains a list of URLs which are used for communication.
+The output contains a list of URLs potentially used for communication.
 
 ## Evaluation
 

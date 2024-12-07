@@ -8,22 +8,17 @@ weakness: MASWE-0052
 
 ## Overview
 
-`SSLSocket` does not perform hostname verification (see ["Android documentation"](https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket)) by default. This needs to be implemented securely by the app itself.
-
-A secure way isto implement an own `HostnameVerifier` which forwards the hostname verification to the `verify()` method of the `DefaultHostnameVerifier()`Be aware that `HostnameVerifier.verify()` does not throw an exception on error. Instead, it returns a boolean result that must explicitly check by the app.
-
-See ["Unsafe HostnameVerifier"](https://developer.android.com/privacy-and-security/risks/unsafe-hostname) for more information about insecure `HostnameVerifiers`.
+`SSLSocket` does not perform hostname verification by default unless the app explicitly uses [`HostnameVerifier.verify()`](https://developer.android.com/reference/javax/net/ssl/HostnameVerifier#verify(java.lang.String,%20javax.net.SSL.SSLSession)). See the ["Android documentation"](https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket) and ["Unsafe HostnameVerifier"](https://developer.android.com/privacy-and-security/risks/unsafe-hostname) for more details.
 
 ## Steps
 
 1. Reverse engineer the app (@MASTG-TECH-0017).
-2. Run a static analysis (@MASTG-TECH-0014) tool and look for all usages of `SSLSocket`.
-3. Verify each `SSLSocket` attaches a `HostnameVerifier` and verify the implementation of the HostnameVerifier is secure.
+2. Run a static analysis (@MASTG-TECH-0014) tool and look for all usages of `SSLSocket` and `HostnameVerifier`.
 
 ## Observation
 
-The output contains a list of locations where `SSLSocket` is used and does not perform hostname verification or does so incorrectly.
+The output contains a list of locations where `SSLSocket` and `HostnameVerifier` are used.
 
 ## Evaluation
 
-The test case fails if any hostname verification is missing, or implemented insecurely.
+The test case fails if hostname verification is missing or implemented incorrectly.

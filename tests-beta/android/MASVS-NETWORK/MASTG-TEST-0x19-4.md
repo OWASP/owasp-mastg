@@ -1,5 +1,5 @@
 ---
-title: Cleartext traffic is allowed for cross-platform frameworks
+title: Cross-Platform Framework Configurations Allowing Cleartext Traffic
 platform: android
 id: MASTG-TEST-0x19-4
 type: [static]

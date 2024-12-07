@@ -20,15 +20,20 @@ Whilst the static checks can only show _potential_ cleartext traffic, this dynam
 
 You can use one of the following approaches:
 
-- Set up @MASTG-TECH-0010 (for Android) or @MASTG-TECH-0062 (for iOS) to capture all traffic and make sure no communication is done in cleartext.
-- Capture all traffic with an interception proxy like @MASTG-TOOL-0077, @MASTG-TOOL-0079, or @MASTG-TOOL-0097 and make sure no request is done in cleartext. Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay) to decode and visualize communication via XMPP and other protocols.
+- Set up @MASTG-TECH-0010 (for Android) or @MASTG-TECH-0062 (for iOS) to capture all traffic.
+- Set up @MASTG-TECH-0011 (for Android) or @MASTG-TECH-0063 (for iOS) to capture all traffic.
 
-Note: Some applications may not function correctly with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, you can still use the other technique.
+**Notes**: 
+
+- Interception proxies will show HTTP(S) traffic only. You can, however, use some tool-specific plugins such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) or other tools like @MASTG-TOOL-0078 to decode and visualize communication via XMPP and other protocols.
+- Some apps may not function correctly with proxies like Burp and OWASP ZAP because of certificate pinning. In such a scenario, you can still use basic network sniffing to detect cleartext traffic. Otherwise, you can try to disable pinning (see @MASTG-TECH-0012 for Android and @MASTG-TECH-0064 for iOS)
 
 ## Observation
 
-The output contains a list of cleartext network requests.
+The output contains the captured network traffic.
 
 ## Evaluation
 
-The test case fails if any cleartext requests are logged.
+The test case fails if any clear text traffic originates from the target app.
+
+**Note**: This can be challenging to determine because traffic can potentially come from any app on the device. See the [Overview](#overview) section.
