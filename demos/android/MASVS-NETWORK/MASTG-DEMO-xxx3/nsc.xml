@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">self-signed.badssl.com</domain>
+        <trust-anchors>
+            <certificates src="@raw/selfsigned"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
