@@ -1,16 +1,14 @@
 package org.owasp.mastestapp
 
-import android.util.Log
 import android.content.Context
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
 
-import android.webkit.WebView
 import android.webkit.WebViewClient
 
-class MastgTest (private val context: Context){
+class MastgTestWebView (private val context: Context){
 
-    fun mastgTest(webView: WebView? = null): String {
+    fun mastgTest(webView: WebView) {
         webView?.apply {
             webViewClient = object : WebViewClient() {
                 override fun onReceivedSslError(
@@ -27,7 +25,6 @@ class MastgTest (private val context: Context){
             loadUrl("https://self-signed.badssl.com/")
 
         }
-        return "MastgTest"
     }
 
 }

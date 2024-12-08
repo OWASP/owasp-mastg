@@ -1,20 +1,19 @@
 package org.owasp.mastestapp
 
-import android.util.Log
 import android.content.Context
 import android.net.http.SslCertificate
 import android.net.http.SslError
+import android.util.Log
 import android.webkit.SslErrorHandler
 
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 
-class MastgTest (private val context: Context){
+class MastgTestWebView (private val context: Context){
 
-    fun mastgTest(webView: WebView? = null): String {
+    fun mastgTest(webView: WebView) {
         webView?.apply {
             webViewClient = object : WebViewClient() {
                 override fun onReceivedSslError(
@@ -48,7 +47,6 @@ class MastgTest (private val context: Context){
             // loadUrl("https://expired.badssl.com/")      // Certificates don't match, cancel
             loadUrl("https://self-signed.badssl.com/")  // Certificates match, proceed
         }
-        return "MastgTest"
     }
 
     /**
