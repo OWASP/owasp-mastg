@@ -1,7 +1,6 @@
 package org.owasp.mastestapp
 
 import android.content.Context
-import android.webkit.WebView
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -10,7 +9,7 @@ import javax.net.ssl.SSLSocketFactory
 
 class MastgTest(private val context: Context) {
 
-    fun mastgTest(webView: WebView? = null): String {
+    fun mastgTest(): String {
         var sensitiveString = "Hello from the OWASP MASTG Test app."
 
         runBlocking {

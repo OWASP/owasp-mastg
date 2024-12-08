@@ -2,7 +2,6 @@ package org.owasp.mastestapp
 
 import android.util.Log
 import android.content.Context
-import android.webkit.WebView
 
 import kotlinx.coroutines.*
 import java.io.BufferedReader
@@ -12,7 +11,7 @@ import javax.net.ssl.*
 
 class MastgTest (private val context: Context){
 
-    fun mastgTest(webView: WebView? = null): String {
+    fun mastgTest(): String {
         var sensitiveString = "Hello from the OWASP MASTG Test app."
 
         // Launch the network operation in a coroutine
