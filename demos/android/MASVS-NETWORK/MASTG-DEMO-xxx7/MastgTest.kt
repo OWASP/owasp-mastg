@@ -12,7 +12,7 @@ import javax.net.ssl.*
 class MastgTest (private val context: Context){
 
     fun mastgTest(): String {
-        var sensitiveString = "Hello from the OWASP MASTG Test app."
+        var result = ""
 
         // Launch the network operation in a coroutine
         runBlocking {
@@ -61,19 +61,19 @@ class MastgTest (private val context: Context){
                     val response = reader.readText()
 
                     // Update the sensitive string with the response
-                    sensitiveString = "Connection Successful: ${response.substring(0, minOf(200, response.length))}" // Limit response length
+                    result = "Connection Successful: ${response.substring(0, minOf(200, response.length))}" // Limit response length
                 } catch (e: Exception) {
                     // Log the detailed stack trace for debugging
                     e.printStackTrace()
 
                     // Update sensitive string with exception details
-                    sensitiveString = "Connection Failed: ${e::class.simpleName} - ${e.message}"
+                    result = "Connection Failed: ${e::class.simpleName} - ${e.message}"
                 }
             }
         }
 
-        Log.d("MASTG-TEST", sensitiveString)
-        return sensitiveString
+        Log.d("MASTG-TEST", result)
+        return result
     }
 
 }

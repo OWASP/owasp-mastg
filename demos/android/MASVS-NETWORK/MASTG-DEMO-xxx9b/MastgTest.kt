@@ -12,7 +12,7 @@ import javax.net.ssl.SSLSocketFactory
 class MastgTest(private val context: Context) {
 
     fun mastgTest(): String {
-        var sensitiveString = "Hello from the OWASP MASTG Test app."
+        var result = ""
 
         runBlocking {
             withContext(Dispatchers.IO) {
@@ -47,15 +47,15 @@ class MastgTest(private val context: Context) {
                     val response = reader.readText()
 
                     // Update the sensitive string with the response
-                    sensitiveString = "Connection Successful: ${response.substring(0, minOf(200, response.length))}"
+                    result = "Connection Successful: ${response.substring(0, minOf(200, response.length))}"
                 } catch (e: Exception) {
                     // Log the error and update sensitive string
                     e.printStackTrace()
-                    sensitiveString = "Connection Failed: ${e::class.simpleName} - ${e.message}"
+                    result = "Connection Failed: ${e::class.simpleName} - ${e.message}"
                 }
             }
         }
 
-        return sensitiveString
+        return result
     }
 }
