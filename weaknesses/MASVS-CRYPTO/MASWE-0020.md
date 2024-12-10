@@ -42,5 +42,8 @@ Similarly, hash functions such as MD5 and SHA-1, which were previously popular f
 
 ## Mitigations
 
-- Always use modern, well-established cryptographic libraries in mobile apps that follow best practices and offer cryptographic algorithms that are aligned with the recommendations by NIST.
-- For example it is recommended to use secure modes of operations like GCM (Galois/Counter Mode) mode for AES with 256-bit keys, providing both encryption and authentication.
+- **Adopt Secure Algorithms**: Replace deprecated algorithms such as DES, 3DES, MD5, and SHA-1 with AES (minimum 256-bit key) and SHA-256 or higher.  
+- **Use Secure Encryption Modes**: Choose secure modes such as AES-GCM or AES-CCM and avoid insecure modes such as ECB.  
+- **Ensure Proper Initialization Vector Management**: Generate IVs using cryptographically secure random number generators and ensure they are unique for every operation.  
+- **Use Strong Key Sizes**: Enforce key lengths of at least 256 bits for AES and avoid using small or weak keys such as 56-bit DES keys.  
+- **Rely on Proper Cryptographic Libraries**: Avoid using XOR, Base64 encoding, or obfuscation as substitutes for encryption and rely on well-vetted cryptographic libraries.  
