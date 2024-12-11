@@ -185,6 +185,9 @@ def get_mastg_components_dict(name):
                         frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     else:
                         frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+                    if "tests" in component_path:
+                        frontmatter['status'] = frontmatter.get('status', 'current')
+                    
                     components.append(frontmatter)
         return components
 
@@ -236,6 +239,14 @@ def get_all_tests_beta():
             frontmatter['id'] = test_id
             frontmatter['title'] = f"@{frontmatter['id']}"            
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+            frontmatter['status'] = frontmatter.get('status', 'new')
+            status = frontmatter['status']
+            if status == 'new':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+            elif status == 'draft':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{test_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            elif status == 'deprecated':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             
             tests.append(frontmatter)
     return tests
@@ -291,7 +302,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         # tests/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'last_updated': 'Last Updated'} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'status': 'Status'}
         tests = get_mastg_components_dict("docs/MASTG/tests")
         tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests]
         for test in tests_of_type:
@@ -305,7 +316,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         # tests-beta/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type"}
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type", 'status': "Status"}
 
         tests_beta = get_all_tests_beta()
         tests_beta_columns_reordered = [reorder_dict_keys(test, column_titles.keys()) for test in tests_beta]
