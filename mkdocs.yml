@@ -246,6 +246,7 @@ theme:
       l2: material/circle-multiple-outline
       r: material/circle-double
       draft: material/information-outline
+      deprecated: material/trash-can
       new: material/alert-decagram
       tool: octicons/tools-24
       test: octicons/codescan-checkmark-24
@@ -370,6 +371,7 @@ extra:
     L2: l2
     R: r
     draft: draft
+    deprecated: deprecated
     new: new
     tool: tool
     test: test
@@ -381,4 +383,5 @@ extra:
     best: best
   status:
     draft: This page is in draft.
+    deprecated: This page is deprecated.
     new: New in this beta!
