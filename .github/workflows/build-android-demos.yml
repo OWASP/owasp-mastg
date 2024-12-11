@@ -63,8 +63,21 @@ jobs:
           demo="${{ matrix.demo }}"
           if [ -d "$demo" ]; then
             echo "Processing $demo"
+            # Copy MastgTest.kt if exists
             [ -f "$demo/MastgTest.kt" ] && cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt && echo "Copied MastgTest.kt for $demo" || echo "No MastgTest.kt found for $demo"
+            # Copy MastgTestWebView.kt if exists
+            [ -f "$demo/MastgTestWebView.kt" ] && cp -f "$demo/MastgTestWebView.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTestWebView.kt && echo "Copied MastgTestWebView.kt for $demo" || echo "No MastgTestWebView.kt found for $demo"
+            # Copy AndroidManifest.xml if exists
             [ -f "$demo/AndroidManifest.xml" ] && cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml && echo "Copied AndroidManifest.xml for $demo" || echo "No AndroidManifest.xml found for $demo"
+            # Copy raw folder if exists
+            if [ -d "$demo/raw" ]; then
+              mkdir -p MASTestApp-Android/app/src/main/res/raw/
+              cp -r "$demo/raw/." MASTestApp-Android/app/src/main/res/raw/ && echo "Copied raw folder for $demo" || echo "Failed to copy raw folder for $demo"
+            else
+              echo "No raw folder found for $demo"
+            fi
+            # Copy network_security_config.xml if exists
+            [ -f "$demo/network_security_config.xml" ] && mkdir -p MASTestApp-Android/app/src/main/res/xml/ && cp -f "$demo/network_security_config.xml" MASTestApp-Android/app/src/main/res/xml/network_security_config.xml && echo "Copied network_security_config.xml for $demo" || echo "No network_security_config.xml found for $demo"
             cd MASTestApp-Android
             echo "Building APK for $demo"
             ./gradlew assembleDebug --stacktrace
