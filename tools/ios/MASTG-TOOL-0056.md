@@ -1,7 +1,7 @@
 ---
 title: Keychain-Dumper
 platform: ios
-source: https://github.com/ptoomey3/Keychain-Dumper/releases
+source: https://github.com/ptoomey3/Keychain-Dumper
 ---
 
 [Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/releases "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. In order to use the tool on modern versions of iOS, you need to follow a few steps. First, download the latest release from [the Keychain-Dumper releases page](https://github.com/ptoomey3/Keychain-Dumper/releases), and unzip the package. Next, download the [updateEntitlements.sh](https://raw.githubusercontent.com/ptoomey3/Keychain-Dumper/refs/heads/master/updateEntitlements.sh) script to the same directory. Modify the first line (`KEYCHAIN_DUMPER_FOLDER=/usr/bin`) to say `KEYCHAIN_DUMPER_FOLDER=/var/jb/usr/bin` to be compatible with rootless jailbreaks. If your device has a rooted jailbreak (e.g. palera1n) you can skip this step.
