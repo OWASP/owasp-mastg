@@ -63,7 +63,7 @@ def get_mastg_v1_coverage(meta):
             mastg_v1_tests = "    No MASTG v1 tests are related to this weakness."
     return mastg_v1_tests
 
-def get_info_banner(meta):
+def get_maswe_draft_banner(meta):
 
     id = meta.get('id')
 
@@ -88,7 +88,7 @@ def get_info_banner(meta):
     
     mastg_v1_tests = get_mastg_v1_coverage(meta)
 
-    info_banner = f"""
+    banner = f"""
 !!! warning "Draft Weakness"
 
     This weakness hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
@@ -108,7 +108,54 @@ def get_info_banner(meta):
 
 {mastg_v1_tests}
 """
-    return info_banner
+    return banner
+
+def get_tests_draft_banner(meta):
+    id = meta.get('id')
+    note = meta.get('note', None)
+    weakness = meta.get('weakness', None)
+
+    if note:
+        note = f"    > Note: {note}\n"
+
+    if weakness:
+        weakness = f"\nFor more details, check the associated weakness: @{weakness}\n"
+    
+    banner = f"""
+!!! warning "Draft Test"
+
+    This test hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that test by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
+
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+
+    If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
+
+{note}
+{weakness}
+"""
+    return banner
+
+def get_v1_deprecated_tests_banner(meta):
+    id = meta.get('id')
+    covered_by = meta.get('covered_by', [])
+    deprecation_note = meta.get('deprecation_note', "")
+    
+    if covered_by:
+        covered_by = "\n".join([f"    - @{test}" for test in covered_by])
+    else:
+        covered_by = "    No tests are covering this weakness."
+
+    banner = f"""
+!!! danger "Deprecated Test"
+
+    This test is **deprecated** and should not be used anymore. **Reason**: {deprecation_note}
+
+    Please check the following MASTG v2 tests that cover this v1 test:
+
+{covered_by}
+"""
+    return banner
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-50)
@@ -121,7 +168,13 @@ def on_page_markdown(markdown, page, **kwargs):
         banners.append(beta_banner)
     
     if "MASWE/" in path and page.meta.get('status') == 'draft':
-        banners.append(get_info_banner(page.meta))
+        banners.append(get_maswe_draft_banner(page.meta))
+
+    if "MASTG/tests-beta/" in path and page.meta.get('status') == 'draft':
+        banners.append(get_tests_draft_banner(page.meta))
+
+    if "MASTG/tests/" in path and page.meta.get('status') == 'deprecated':
+        banners.append(get_v1_deprecated_tests_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
