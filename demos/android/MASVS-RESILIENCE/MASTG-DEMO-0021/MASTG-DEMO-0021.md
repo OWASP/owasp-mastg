@@ -13,7 +13,9 @@ The following code snippet demonstrates the implementation of the freeRASP secur
 {{ MastgTest.kt }}
 
 ### Steps
+
 Start the device, in this case, the Android emulator:
+
 ```bash
 emulator -avd Pixel_3a_API_33_arm64-v8a -writable-system
 ```
@@ -22,10 +24,10 @@ emulator -avd Pixel_3a_API_33_arm64-v8a -writable-system
 
 Launch the app from Android Studio and check the log. The snippet will log the “freeRASP Threat: onRootDetected”.
 
-
 ### Observation
+
 The RASP policy is only configured for root detection, other threats are not evaluated. The threat was detected immediately after app start. Sample includes commented-out code to forcefully terminate the app.
 
-
 ### Evaluation
+
 The app didn’t utilise all the available security checks. It would be possible to bypass freeRASP API with Frida script or disable the termination method.
