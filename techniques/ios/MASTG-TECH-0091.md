@@ -54,3 +54,5 @@ After injecting the `load` command, you need to repackage the IPA:
 ```bash
 zip -r patched.ipa Payload
 ```
+
+To debug an iOS application obtained from the App Store, it needs to be re-signed with a development provisioning profile with the `get-task-allow` entitlement. How to re-sign an application is discussed in @MASTG-TECH-0079.

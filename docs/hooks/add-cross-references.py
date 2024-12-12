@@ -33,7 +33,7 @@ def generate_cross_references():
     cross_references = {
         "weaknesses": {},
         "tests": {},
-        "mitigations": {}
+        "best-practices": {}
     }
 
     for test_id, test_meta in tests.items():
@@ -41,7 +41,7 @@ def generate_cross_references():
         test_path = test_meta.get("path")
         test_title = test_meta.get("title")
         test_platform = test_meta.get("platform")
-        mitigations_ids = test_meta.get("mitigations")
+        best_practices_ids = test_meta.get("best-practices")
         
         # Create cross-references for weaknesses listing all tests that reference each weakness ID
         if weakness_id:
@@ -49,12 +49,12 @@ def generate_cross_references():
                 cross_references["weaknesses"][weakness_id] = []
             cross_references["weaknesses"][weakness_id].append({"id": test_id, "path": test_path, "title": test_title, "platform": test_platform})
         
-        # Create cross-references for mitigations listing all tests that reference each mitigation ID
-        if mitigations_ids:
-            for mitigation_id in mitigations_ids:
-                if mitigation_id not in cross_references["mitigations"]:
-                    cross_references["mitigations"][mitigation_id] = []
-                cross_references["mitigations"][mitigation_id].append({"id": test_id, "path": test_path, "title": test_title, "platform": test_platform})
+        # Create cross-references for best_practices listing all tests that reference each best_practice ID
+        if best_practices_ids:
+            for best_practice_id in best_practices_ids:
+                if best_practice_id not in cross_references["best-practices"]:
+                    cross_references["best-practices"][best_practice_id] = []
+                cross_references["best-practices"][best_practice_id].append({"id": test_id, "path": test_path, "title": test_title, "platform": test_platform})
     
     for demo_id, demo_meta in demos.items():
         test_id = demo_meta.get("test")
@@ -108,6 +108,20 @@ def on_page_markdown(markdown, page, config, **kwargs):
                 markdown += f"\n\n{tests_section}"
 
     if "MASTG-TEST-" in path:
+
+        # Add best_practices section to tests as a bullet point list with IDs, links are resolved in a separate hook
+        # ORIGIN: Test metadata
+        
+        best_practices = meta.get('best-practices')
+        if best_practices:
+            best_practices_section = "## Mitigations\n\n"
+            for best_practice_id in best_practices:
+                best_practice_path = f"MASTG/best-practices/{best_practice_id}.md"
+                relPath = os.path.relpath(best_practice_path, os.path.dirname(path))
+                best_practices_section += f"- @{best_practice_id}\n"
+
+            markdown += f"\n\n{best_practices_section}"
+
         test_id = meta.get('id')
 
         # Add Demos section to tests as buttons
@@ -123,35 +137,22 @@ def on_page_markdown(markdown, page, config, **kwargs):
                     demos_section += f"[{get_platform_icon(demo['platform'])} {demo['id']}: {demo['title']}]({relPath}){{: .mas-demo-button}} "
 
                 markdown += f"\n\n{demos_section}"
-
-        # Add Mitigations section to tests as a bullet point list with IDs, links are resolved in a separate hook
-        # ORIGIN: Test metadata
-        
-        mitigations = meta.get('mitigations')
-        if mitigations:
-            mitigations_section = "## Mitigations\n\n"
-            for mitigation_id in mitigations:
-                mitigation_path = f"MASTG/mitigations/{mitigation_id}.md"
-                relPath = os.path.relpath(mitigation_path, os.path.dirname(path))
-                mitigations_section += f"- @{mitigation_id}\n"
-
-            markdown += f"\n\n{mitigations_section}"
     
-    if "MASTG-MITIG" in path:
-        mitig_id = meta.get('id')
+    if "MASTG-BEST" in path:
+        best_practice_id = meta.get('id')
 
-        # Add Tests section to mitigations as buttons
+        # Add Tests section to best_practices as buttons
         # ORIGIN: Cross-references from this script
 
-        if mitig_id in cross_references["mitigations"]:
-            mitigations = cross_references["mitigations"].get(mitig_id)
-            meta['mitigations'] = mitigations
-            if mitigations:
-                mitigations_section = "## Tests\n\n"
-                for mitigation in mitigations:
-                    relPath = os.path.relpath(mitigation['path'], os.path.dirname(path))
-                    mitigations_section += f"[{get_platform_icon(mitigation['platform'])} {mitigation['id']}: {mitigation['title']}]({relPath}){{: .mas-test-button}} "
+        if best_practice_id in cross_references["best-practices"]:
+            best_practices = cross_references["best-practices"].get(best_practice_id)
+            meta['best-practices'] = best_practices
+            if best_practices:
+                best_practices_section = "## Tests\n\n"
+                for best_practice in best_practices:
+                    relPath = os.path.relpath(best_practice['path'], os.path.dirname(path))
+                    best_practices_section += f"[{get_platform_icon(best_practice['platform'])} {best_practice['id']}: {best_practice['title']}]({relPath}){{: .mas-test-button}} "
 
-                markdown += f"\n\n{mitigations_section}"
+                markdown += f"\n\n{best_practices_section}"
 
     return markdown

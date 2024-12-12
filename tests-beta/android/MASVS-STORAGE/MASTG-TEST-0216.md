@@ -4,7 +4,7 @@ title: Sensitive Data Not Excluded From Backup
 id: MASTG-TEST-0216
 type: [dynamic, filesystem]
 weakness: MASWE-0004
-mitigations: [MASTG-MITIG-0004]
+best-practices: [MASTG-BEST-0004]
 ---
 
 ## Overview

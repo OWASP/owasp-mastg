@@ -9,6 +9,7 @@ masvs_v1_levels:
 - R
 covered_by: [MASTG-TEST-0219]
 status: deprecated
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
