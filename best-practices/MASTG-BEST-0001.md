@@ -1,5 +1,7 @@
 ---
-title: Use Secure Random Number Generators APIs
+title: Use Secure Random Number Generator APIs
+alias: android-use-secure-random
+id: MASTG-BEST-0001
 platform: android
 ---
 
