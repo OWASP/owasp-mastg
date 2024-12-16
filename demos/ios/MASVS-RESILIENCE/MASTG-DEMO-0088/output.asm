@@ -1,4 +1,3 @@
-
 search for jailbreak path:
 0x10015af10 hit4_0 "_proto/Applications/Cydia.app/Applic"
 0x10015af30 hit5_0 "dia.app/Applications/Sileo.app/Applic"
