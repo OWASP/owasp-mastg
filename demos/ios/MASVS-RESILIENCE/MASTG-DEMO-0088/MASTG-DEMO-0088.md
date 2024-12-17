@@ -8,7 +8,7 @@ test: MASTG-TEST-0088
 
 ### Sample
 
-The code snippet below shows sample code that performs jalibreak detection checks on the device.
+The code snippet below shows sample code that performs jailbreak detection checks on the device.
 
 {{ MastgTest.swift }}
 
