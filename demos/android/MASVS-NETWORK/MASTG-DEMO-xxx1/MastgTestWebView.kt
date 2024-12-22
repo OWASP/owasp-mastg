@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
 
+import android.webkit.WebView
 import android.webkit.WebViewClient
 
 class MastgTestWebView (private val context: Context){
