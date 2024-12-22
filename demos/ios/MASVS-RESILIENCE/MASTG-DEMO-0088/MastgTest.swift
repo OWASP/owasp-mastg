@@ -2,14 +2,31 @@ import SwiftUI
 
 class MastgTest {
     static func mastgTest(completion: @escaping (String) -> Void) {
-        let isJailbroken = JailbreakDetector.isDeviceJailbroken()
-        let status = isJailbroken ? "Device is jailbroken!" : "Device is not jailbroken"
-        completion(status)
+        let jailbreakDetails = JailbreakDetector.isDeviceJailbroken()
+        completion(jailbreakDetails)
     }
 }
 
 class JailbreakDetector {
-    static func isDeviceJailbroken() -> Bool {
+    static func isDeviceJailbroken() -> String {
+        // Check if running on a simulator
+        if DeviceUtils.isSimulator() {
+            let simulatorName = ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] ?? "Unknown Simulator"
+            return "Warning: Running on a simulator (\(simulatorName)).\n\nProof:\n\n" + collectJailbreakProof()
+        }
+        
+        // Collect jailbreak proofs
+        let proof = collectJailbreakProof()
+        if proof.isEmpty {
+            return "Jailbreak: False\n\nNo signs of a jailbreak detected."
+        } else {
+            return "Jailbreak: True\n\nProof:\n\n" + proof
+        }
+    }
+    
+    private static func collectJailbreakProof() -> String {
+        var reasons = [String]()
+        
         // Check 1: Common jailbreak files and directories
         let jailbreakPaths = [
             "/Applications/Cydia.app",
@@ -27,16 +44,19 @@ class JailbreakDetector {
             "/var/log/syslog",
             "/bin/bash",
             "/bin/sh",
-            "/etc/apt"
+            "/etc/apt",
+            "/private/var/lib/undecimus",
+            "/private/var/root/Library/PreferenceLoader/Preferences",
+            "/private/etc/apt"
         ]
         
         for path in jailbreakPaths {
             if FileManager.default.fileExists(atPath: path) {
-                return true
+                reasons.append("Detected jailbreak file or directory at \(path)")
             }
         }
         
-        // Check 2: Check if app can open custom URL schemes
+        // Check 2: Custom URL schemes
         let urlSchemes = [
             "cydia://",
             "sileo://",
@@ -45,14 +65,12 @@ class JailbreakDetector {
         ]
         
         for scheme in urlSchemes {
-            if let url = URL(string: scheme) {
-                if UIApplication.shared.canOpenURL(url) {
-                    return true
-                }
+            if let url = URL(string: scheme), UIApplication.shared.canOpenURL(url) {
+                reasons.append("Able to open suspicious URL scheme: \(scheme)")
             }
         }
         
-        // Check 3: Check for suspicious environment variables
+        // Check 3: Suspicious environment variables
         let suspiciousEnvVars = [
             "DYLD_INSERT_LIBRARIES",
             "DYLD_FRAMEWORK_PATH",
@@ -61,11 +79,11 @@ class JailbreakDetector {
         
         for envVar in suspiciousEnvVars {
             if ProcessInfo.processInfo.environment[envVar] != nil {
-                return true
+                reasons.append("Suspicious environment variable detected: \(envVar)")
             }
         }
         
-        // Check 4: Try writing to system paths
+        // Check 4: Write access to system paths
         let paths = [
             "/private/jailbreak.txt",
             "/private/var/mobile/Library/jailbreak.txt"
@@ -75,12 +93,18 @@ class JailbreakDetector {
             do {
                 try "test".write(toFile: path, atomically: true, encoding: .utf8)
                 try FileManager.default.removeItem(atPath: path)
-                return true
+                reasons.append("Write access detected at \(path)")
             } catch {
                 continue
             }
         }
         
-        return false
+        return reasons.joined(separator: "\n")
+    }
+}
+
+class DeviceUtils {
+    static func isSimulator() -> Bool {
+        return ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil
     }
 }
