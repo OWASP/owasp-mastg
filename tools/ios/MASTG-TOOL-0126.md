@@ -12,7 +12,7 @@ The libimobiledevice suite is cross-platform protocol library for interacting wi
 
 !!! warning
 
-    While many package repositories (apt, brew, cargo, ...) have versions of libimobiledevice tools, they are often outdated. We recommend compiling the different tools from source for the best results.
+    While many package repositories (apt, brew, cargo, ...) have versions of libimobiledevice tools, they are often outdated. We recommend compiling the different tools from source for the best results. Note that even if your package manager has the latest version based on `-v`, the source code will still be more up-to-date.
 
 The following tools are part of the libimobiledevice suite:
 
