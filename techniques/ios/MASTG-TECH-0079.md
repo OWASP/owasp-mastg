@@ -9,10 +9,17 @@ A valid provisioning profile can only be obtained from Apple. This means that yo
 
 !!! info
 
-    You can obtain a valid provisioning profile for both normal Apple accounts, and for Apple Developer accounts. The only difference is that the obtained certificates have a different lifetime:
+    You can obtain a valid provisioning profile for both normal Apple accounts, and for Apple Developer accounts. There are two important differences between the two types:
+
+    **Certificate expiration**
 
     - Apple account: Certificates expire 7 days after creation
     - Developer account: Certificates expire 1 year after creation
+
+    **Wildcard certificates**
+
+    - Apple account: Certificates are only valid for one Bundle Identifier. This Bundle Identifier has to be unique.
+    - Developer account: Certificates can be wildcards, allowing you to keep the original Bundle Identifier
 
     An Apple Developer account costs $99 per year and is a nice-to-have due to the longer expiration, but not a requirement.
 
