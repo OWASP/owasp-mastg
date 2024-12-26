@@ -46,6 +46,29 @@ unzip Name.ipa
 ios-deploy --bundle 'Payload/UnCrackable Level 1.app' -W -v
 ```
 
+## xcrun
+
+After installing @MASTG-TOOL-0071, you can execute the following command to install a signed IPA:
+
+```bash
+# Get the correct device id
+$ idevice_id
+00008101-00FF28803FF9001E (USB)
+
+$ xcrun devicectl device install app --device 00008101-00FF28803FF9001E ~/signed.ipa
+11:59:04  Acquired tunnel connection to device.
+11:59:04  Enabling developer disk image services.
+11:59:04  Acquired usage assertion.
+4%... 12%... 28%... 30%... 31%... 32%... 33%... 35%... 36%... 37%... 39%... 40%... 42%... 43%... 45%... 49%... 51%... 52%... 54%... 55%... 57%... 59%... 60%... 62%... 66%... 68%... 72%... 76%... 80%... 84%... 88%... 92%... 96%... Complete!
+App installed:
+• bundleID: org.mas.myapp
+• installationURL: file:///private/var/containers/Bundle/Application/DFC99D25-FC36-462E-91D2-18CDE717ED21/UnCrackable%20Level%201.app/
+• launchServicesIdentifier: unknown
+• databaseUUID: DA52A5EB-5D39-4628-810E-8F42A5561CDF
+• databaseSequenceNumber: 1516
+• options:
+```
+
 ## Xcode
 
 It is also possible to use the Xcode IDE to install iOS apps by executing the following steps:
