@@ -3,9 +3,9 @@ title: Injecting Libraries into an IPA Manually
 platform: ios
 ---
 
-This technique allows you to inject arbitrary libraries into an IPA file.
+This technique allows you to inject arbitrary libraries into an IPA file. After injecting the library, you'll have to install the modified IPA onto your device using @MASTG-TECH-0056.
 
-This is useful when you want to add additional functionality or testing capabilities to an application. For example, you can inject the Frida Gadget into an IPA file to enable dynamic instrumentation of the application.
+This technique is useful when you want to add additional functionality or testing capabilities to an application. For example, you can inject the Frida Gadget into an IPA file to enable dynamic instrumentation of the application.
 
 We'll use the Frida Gadget (`FridaGadget.dylib`) as an example but you can use this technique to inject any `.dylib` library you want.
 
