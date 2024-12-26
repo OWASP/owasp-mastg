@@ -60,7 +60,7 @@ More information can be found in the official documentation: ["Codesign an exist
 
 !!! warning
 
-    By default, fastlane will always use the Bundle identifier from the given provisioning profile, both for normal Apple accounts and Developer accounts. If you have a Developer account, you can specify the desired Bundle identifyer by directly using the `resign.sh` script bundled with Fastlane and specifying the `--bundle-id` property:
+    By default, fastlane will always use the Bundle identifier from the given provisioning profile, both for normal Apple accounts and Developer accounts. If you have a Developer account, you can specify the desired Bundle identifier by directly using the `resign.sh` script bundled with Fastlane and specifying the `--bundle-id` property:
 
     ```bash
     $ /opt/homebrew/Cellar/fastlane/2.226.0/libexec/gems/fastlane-2.226.0/sigh/lib/assets/resign.sh /Users/MAS/uncrackable1.ipa <CERTIFICATE> -p /Users/MAS/embedded.mobileprovision /Users/MAS/signed.ipa -v --bundle-id "org.mas.myapp"

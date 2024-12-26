@@ -3,7 +3,7 @@ title: Launching a Repackaged App in Debug Mode
 platform: ios
 ---
 
-If you've repackaged an application with a Frida Gadget, or if you want to attach lldb to the application, you have to launch the application in debug mode. When you launch the application via SpringBoard, it will not launch in debug mode and the application will crash.
+If you've repackaged an application with a Frida Gadget, or if you want to attach @MASTG-TOOL-0057 to the application, you have to launch the application in debug mode. When you launch the application via SpringBoard, it will not launch in debug mode and the application will crash.
 
 After the application has been installed using @MASTG-TECH-TOOL-0056, you can launch it in debug mode using the following commands:
 
@@ -21,7 +21,7 @@ com.apple.TestFlight, "3.5.2", "TestFlight"
 
 In this example, @MASTG-TOOL-0118 appended the team identifier (`QH868V5764`) to the original Bundle Identifier.
 
-Next, we need to get the corect device identifier, which we can get using `idevice_id` (see @MASTG-TOOL-0126):
+Next, we need to get the correct device identifier, which we can get using `idevice_id` (see @MASTG-TOOL-0126):
 
 ```bash
 $ idevice_id
@@ -104,7 +104,7 @@ After attaching, the application will continue executing as normal.
 
 ## iOS16 and older
 
-On older verions of iOS, you can use either `idevicedebug` (see @MASTG-TOOL-0126) or @MASTG-TOOL-0054 to launch the app in debug mode.
+On older versions of iOS, you can use either `idevicedebug` (see @MASTG-TOOL-0126) or @MASTG-TOOL-0054 to launch the app in debug mode.
 
 ### Using idevicedebug
 
