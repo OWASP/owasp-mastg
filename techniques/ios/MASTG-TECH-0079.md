@@ -37,7 +37,7 @@ $ security find-identity -v -p codesigning
      1 valid identities found
 ```
 
-Additionally, the provisioning profile is stored on your host in the ` ~/Library/Developer/Xcode/DerivedData` folder:
+Additionally, the provisioning profile is stored on your host in the `~/Library/Developer/Xcode/DerivedData` folder:
 
 ```bash
 $ find  ~/Library/Developer/Xcode/DerivedData | grep embedded
@@ -62,64 +62,64 @@ $ security cms -D -i embedded.mobileprovision
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>AppIDName</key>
-		<string>XC org mas testapp</string>
-		<key>ApplicationIdentifierPrefix</key>
-		<array>
-			<string>QH868V5764</string>
-		</array>
-		<key>CreationDate</key>
-		<date>2024-12-26T07:22:22Z</date>
-		<key>Platform</key>
-		<array>
-			<string>iOS</string>
-			<string>xrOS</string>
-			<string>visionOS</string>
-		</array>
-		<key>IsXcodeManaged</key>
-		<true/>
-		<key>DeveloperCertificates</key>
-		<array>
-			<data>...SNIP...</data>
-		</array>
-		<key>DER-Encoded-Profile</key>
-		<data>...SNIP...</data>
-		<key>Entitlements</key>
-		<dict>
-			<key>application-identifier</key>
-			<string>QH868V5764.org.mas.apptest</string>
-			<key>keychain-access-groups</key>
-			<array>
-				<string>QH868V5764.*</string>
-			</array>
-			<key>get-task-allow</key>
-			<true/>
-			<key>com.apple.developer.team-identifier</key>
-			<string>QH868V5764</string>
-		</dict>
-		<key>ExpirationDate</key>
-		<date>2025-01-02T07:22:22Z</date>
-		<key>Name</key>
-		<string>iOS Team Provisioning Profile: org.mas.testapp</string>
-		<key>ProvisionedDevices</key>
-		<array>
-			<string>...SNIP...</string>
-		</array>
-		<key>LocalProvision</key>
-		<true/>
-		<key>TeamIdentifier</key>
-		<array>
-			<string>QH868V5764</string>
-		</array>
-		<key>TeamName</key>
-		<string>OWASP MAS</string>
-		<key>TimeToLive</key>
-		<integer>7</integer>
-		<key>UUID</key>
-		<string>...SNIP...</string>
-		<key>Version</key>
-		<integer>1</integer>
-	</dict>
+    <dict>
+        <key>AppIDName</key>
+        <string>XC org mas testapp</string>
+        <key>ApplicationIdentifierPrefix</key>
+        <array>
+            <string>QH868V5764</string>
+        </array>
+        <key>CreationDate</key>
+        <date>2024-12-26T07:22:22Z</date>
+        <key>Platform</key>
+        <array>
+            <string>iOS</string>
+            <string>xrOS</string>
+            <string>visionOS</string>
+        </array>
+        <key>IsXcodeManaged</key>
+        <true/>
+        <key>DeveloperCertificates</key>
+        <array>
+            <data>...SNIP...</data>
+        </array>
+        <key>DER-Encoded-Profile</key>
+        <data>...SNIP...</data>
+        <key>Entitlements</key>
+        <dict>
+            <key>application-identifier</key>
+            <string>QH868V5764.org.mas.apptest</string>
+            <key>keychain-access-groups</key>
+            <array>
+                <string>QH868V5764.*</string>
+            </array>
+            <key>get-task-allow</key>
+            <true/>
+            <key>com.apple.developer.team-identifier</key>
+            <string>QH868V5764</string>
+        </dict>
+        <key>ExpirationDate</key>
+        <date>2025-01-02T07:22:22Z</date>
+        <key>Name</key>
+        <string>iOS Team Provisioning Profile: org.mas.testapp</string>
+        <key>ProvisionedDevices</key>
+        <array>
+            <string>...SNIP...</string>
+        </array>
+        <key>LocalProvision</key>
+        <true/>
+        <key>TeamIdentifier</key>
+        <array>
+            <string>QH868V5764</string>
+        </array>
+        <key>TeamName</key>
+        <string>OWASP MAS</string>
+        <key>TimeToLive</key>
+        <integer>7</integer>
+        <key>UUID</key>
+        <string>...SNIP...</string>
+        <key>Version</key>
+        <integer>1</integer>
+    </dict>
 </plist>
 ```

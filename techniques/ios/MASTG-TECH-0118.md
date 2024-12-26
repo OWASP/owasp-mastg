@@ -12,7 +12,7 @@ In radare2, the presence of these compiler-provided security features can be che
 **Check for PIC and Canaries:** Using the `i` command, you can check if the binary has Position Independent Code (PIC) enabled (`pic`) and if it has stack canaries (`canary`).
 
 ```sh
-r2 MASTestApp                              
+r2 MASTestApp
 [0x100007408]> i~canary,pic
 canary   true
 pic      true
