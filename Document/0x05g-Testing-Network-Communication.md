@@ -119,6 +119,36 @@ If at least one of the pinned digests matches, the certificate chain will be con
 </network-security-config>
 ```
 
+!!! note "Expiration dates"
+    If you [set an expiration date](https://developer.android.com/privacy-and-security/security-config#CertificatePinning), make sure to update your application in time. Otherwise pinning will **not** be performed at all after the configured date.
+
+!!! warning "Technologies not using Network Security Configuration"
+    If your application uses low level networking APIs or SDKs like Flutter, the Network Security Configuration might not be used by default. In those cases you need to enable certificate pinning specifically for the used technology.
+
+### Certificate pinning without Android Network Security Configuration
+
+If your application targets an Android version lower than Android 7.0 Nougat (SDK version 24), the Android Security Configuration is not available, and you need to implement certificate pinning manually.
+
+!!! warning "Implementing Certificate Pinning Manually"
+    Implementing certificate pinning manually has a high risk of adding functionality to your application that makes the app even less secure. If you are adding this manually take extreme care of implementing this correctly.
+
+Applications that use third-party networking libraries may utilize the libraries' certificate pinning functionality. For example, [okhttp](https://square.github.io/okhttp/features/https/#certificate-pinning-kt-java) can be set up with the `CertificatePinner` as follows:
+
+```java
+val client = OkHttpClient.Builder()
+      .certificatePinner(
+          CertificatePinner.Builder()
+              .add("publicobject.com", "sha256/afwiKY3RxoMmLkuRW1l7QsPZTJPwDS2pdDROQjXw8ig=")
+              .build())
+      .build()
+```
+
+#### Hybrid Applications
+
+Hybrid applications might support certificate pinning through plugins.
+
+For example, applications based on Cordova do not support Certificate Pinning natively, so the plugin [PhoneGap SSL Certificate Checker](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin) can be used.
+
 ### Security Provider
 
 Android relies on a [security provider](https://developer.android.com/training/articles/security-gms-provider.html "Update your security provider to protect against SSL exploits") to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
