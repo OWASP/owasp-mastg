@@ -8,6 +8,8 @@ title: Testing iOS WebViews
 masvs_v1_levels:
 - L1
 - L2
+covered_by: [MASTG-TEST-0x76-1,MASTG-TEST-0x76-2,MASTG-TEST-0x76-3]
+status: deprecated
 ---
 
 ## Overview
