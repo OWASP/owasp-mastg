@@ -1,5 +1,5 @@
 ---
-title: iProxy
+title: iproxy
 platform: ios
 source: https://github.com/libimobiledevice/libusbmuxd
 ---
