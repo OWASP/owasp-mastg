@@ -8,7 +8,7 @@ host:
 source: https://libimobiledevice.org/
 ---
 
-The libimobiledevice suite is cross-platform protocol library for interacting with iOS devices. The different libraries can be compiled into binaries for direct interaction with iOS devices from the commandline.
+The libimobiledevice suite is cross-platform protocol library for interacting with iOS devices. The different libraries can be compiled into binaries for direct interaction with iOS devices from the command line.
 
 !!! warning
 
