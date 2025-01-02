@@ -1,0 +1,2 @@
+1   0x00008a80 0x100008a80 10  11   8.__TEXT.__objc_methname ascii isCaptured
+6   0x00008abe 0x100008abe 17  18   8.__TEXT.__objc_methname ascii sceneCaptureState
