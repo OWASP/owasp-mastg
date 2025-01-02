@@ -10,6 +10,8 @@ mappings:
 
 refs:
 - https://developer.android.com/about/versions/14/features/screenshot-detection
+- https://developer.apple.com/documentation/uikit/uiscreen/2921651-iscaptured
+- https://developer.apple.com/documentation/uikit/uitraitcollection/scenecapturestate
 status: draft
 
 ---
