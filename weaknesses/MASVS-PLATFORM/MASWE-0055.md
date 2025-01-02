@@ -1,5 +1,5 @@
 ---
-title: Sensitive Data Leaked via Screenshots
+title: Sensitive Data Leaked via Screenshots or Screen Recording
 id: MASWE-0055
 alias: data-leak-screenshots
 platform: [android, ios]
