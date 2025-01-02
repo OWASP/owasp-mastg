@@ -1,7 +1,7 @@
 ---
 title: References to Screen Capturing API
 platform: ios
-id: MASTG-TEST-0217
+id: MASTG-TEST-0240
 type: [static]
 weakness: MASWE-0055
 ---
