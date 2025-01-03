@@ -4,6 +4,7 @@ title: Jailbreak Detection in Code
 id: MASTG-TEST-0x88
 type: [dynamic]
 weakness: MASWE-0097
+false_negative_prone: true
 ---
 
 ## Overview

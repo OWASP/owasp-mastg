@@ -4,6 +4,7 @@ title: Runtime Use of Jailbreak Detection Techniques
 id: MASTG-TEST-0x89
 type: [dynamic]
 weakness: MASWE-0097
+false_negative_prone: true
 ---
 
 ## Overview
