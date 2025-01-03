@@ -9,7 +9,7 @@ false_negative_prone: true
 
 ## Overview
 
-The test verifies that a mobile application can identify if the iOS device it is running on is jailbroken. It does so by dynamically analyzing the app binary for [common jailbreak detection checks](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#common-jailbreak-detection-checks) and trying to bypass them. For example, it may detect a check for the presence of certain files or directories that are indicative of a jailbroken device and use dynamic instrumentation to bypass them by modifying the list of files or directories that are checked.
+The test verifies that a mobile application can identify if the iOS device it is running on is jailbroken. It does so by dynamically analyzing the app binary for [common jailbreak detection checks](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#common-jailbreak-detection-checks) and trying to bypass them. For example, it may detect a check for the presence of certain files or directories that are indicative of a jailbroken device.
 
 The limitations of using jailbreak detection bypass tools should be considered. It is possible that the app uses more sophisticated jailbreak detection techniques that are not detected by the tool used. In such cases, careful manual reverse engineering and deobfuscation are required to identify the jailbreak detection checks. Also, additional dynamic analysis work may be required to bypass the jailbreak detection checks.
 
