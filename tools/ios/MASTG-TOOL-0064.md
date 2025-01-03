@@ -1,7 +1,11 @@
 ---
 title: Sileo
 platform: ios
-source: https://cydia-app.com/sileo/
+source: https://getsileo.app/
 ---
 
-Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
+Sileo is a third party app-store available for both rooted and rootless jailbreaks on iOS 12+.
+
+??? Warning
+
+  Installing applications via Sileo or any other third party app-store entails risks, as the applications are not validated by Apple. Be carefull with installing unknown applications.
