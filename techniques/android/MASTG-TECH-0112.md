@@ -63,4 +63,3 @@ The assembly files in `asm/*` contain reconstructed functions with names, making
 ```
 
 While this code is not as easy to understand as typical decompiled Java code, a lot of information is still available. At the top, we can see the name of the function (`main`), as well as the location of the function in the original `libapp.so` binary. The different jump instructions (`bl`) are accompanied by symbol information, making it easier to understand what the code is doing. For example, we can see that the app first makes sure that the Flutter bindings are correctly initialized (`WidgetsFlutterBinding::ensureInitialized`), followed by the initialization of the `get_secure_storage` plugin (`GetSecureStorage::init`).
-
