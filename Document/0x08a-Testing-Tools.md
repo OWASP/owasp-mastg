@@ -1,4 +1,9 @@
-# Testing Tools : About the MASTG Tools
+---
+masvs_category: MASTG-TOOL
+platform: android/ios
+---
+
+# Testing Tools
 
 The OWASP MASTG includes many tools to assist you in executing test cases, allowing you to perform static analysis, dynamic analysis, network interception, etc. These tools are intended to help you perform your own assessments, rather than provide a conclusive result on the security status of an app. It's important to review the output of these tools carefully, as it can contain both false positives and false negatives.
 
