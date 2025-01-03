@@ -20,8 +20,8 @@ Because of these challenges, analyzing Flutter applications effectively requires
 
 To use @MASTG-TOOL-0116, you need to:
 
-1. **Extract the APK**: Unpack the APK file and locate the libflutter.so file.
-2. **Execute Blutter**: Run Blutter with the path to the libflutter.so file and specify an output directory.
+1. **Extract the APK**: Unpack the APK file and locate the libapp.so file.
+2. **Execute Blutter**: Run Blutter with the path to the libapp.so file and specify an output directory.
 
 ```bash
 python3 blutter.py path/to/app/lib/arm64-v8a out_dir
@@ -61,3 +61,5 @@ The assembly files in `asm/*` contain reconstructed functions with names, making
     // 0x596210: stur            x1, [fp, #-0x10]
     // 0x596214: r0 = Await()
 ```
+
+While this code is not as easy to understand as typical decompiled Java code, a lot of information is still available. At the top, we can see the name of the function (`main`), as well as the location of the function in the original `libapp.so` binary. The different jump instructions (`bl`) are accompanied by symbol information, making it easier to understand what the code is doing. For example, we can see that the applications first makes sure that the Flutter bindings are correctly initialized (`WidgetsFlutterBinding::ensureInitialized`), followed by the initialization of the get_secure_storage plugin (`GetSecureStorage::init`)
