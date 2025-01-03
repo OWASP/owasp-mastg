@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Runtime Use of Jailbreak Detection Techniques
+title: Jailbreak Detection in Code
 id: MASTG-TEST-0x88
 type: [dynamic]
 weakness: MASWE-0097
@@ -8,17 +8,20 @@ weakness: MASWE-0097
 
 ## Overview
 
-The test verifies that a mobile application can identify if the iOS device it is running on a jailbroken device. Jailbreaking removes built-in security restrictions on the device, potentially exposing sensitive information and increasing the risk of unauthorized access.
+The test verifies that a mobile app can detect if the iOS device it is running on is jailbroken. It does so by statically analyzing the app binary for [common jailbreak detection checks](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#common-jailbreak-detection-checks). For example, the app may check for the presence of Cydia, the most common package manager for jailbroken devices, or for the presence of certain files or directories that are indicative of a jailbroken device.
+
+The limitations of static analysis should be considered. It is possible that the app uses more sophisticated jailbreak detection techniques that are not detected by the tool used. In such cases, careful manual reverse engineering and deobfuscation are required to identify the jailbreak detection checks.
 
 ## Steps
 
-1. Run a dynamic analysis using [automated jailbreak detection bypass tool](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#automated-jailbreak-detection-bypass) such as @MASTG-TOOL-0038 on the binary.
-2. Use @MASTG-TOOL-0073 on the binary for [manual jailbreak detection bypass](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#manual-jailbreak-detection-bypass) to check for common jailbreak detection such as [file permissions, protocol handlers and file directories](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#common-jailbreak-detection-checks).
+1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary looking for common jailbreak detection checks.
 
 ## Observation
 
-The output shows that the list of jailbreak detection checks has been successfully bypassed.
+The output should include any instances of common jailbreak detection checks in the app binary.
 
 ## Evaluation
 
-The test fails if jailbreak detection is disabled.
+The test fails if jailbreak detection is not implemented.
+
+**Note:** This test is not exhaustive and may not detect all jailbreak detection checks. Manual reverse engineering and deobfuscation may be required to identify more sophisticated jailbreak detection checks.
