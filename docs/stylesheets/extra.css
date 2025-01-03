@@ -331,12 +331,33 @@ table.dataTable th {
   color: white;
 }
 
+.md-typeset details.info, .md-typeset .admonition.info,
+.md-typeset details.info:focus-within, .md-typeset .admonition.info:focus-within {
 
-
-.md-typeset details {
-  border: 0px;
+  border: .2rem solid #00b8d41a;
+  box-shadow: none;
 }
 
-.md-typeset .admonition {
-  border: 0px;
+.md-typeset details.warning ,.md-typeset .admonition.warning,
+.md-typeset details.warning:focus-within, .md-typeset .admonition.warning:focus-within {
+  border: .2rem solid #ff91001a;
+  box-shadow: none;
+}
+
+.md-typeset details.tip ,.md-typeset .admonition.tip,
+.md-typeset details.tip:focus-within, .md-typeset .admonition.tip:focus-within {
+  border: .2rem solid #00bfa51a;
+  box-shadow: none;
+}
+
+.md-typeset details.danger ,.md-typeset .admonition.danger,
+.md-typeset details.danger:focus-within, .md-typeset .admonition.danger:focus-within {
+  border: .2rem solid #ff17441a;
+  box-shadow: none;
+}
+
+.md-typeset details ,.md-typeset .admonition,
+.md-typeset details:focus-within, .md-typeset .admonition:focus-within {
+  border: .2rem solid #448aff1a;
+  box-shadow: none;
 }
