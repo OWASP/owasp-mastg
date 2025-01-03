@@ -27,5 +27,4 @@ The test passes if jailbreak detection is implemented and the automated jailbrea
 
 The test fails if jailbreak detection is not implemented. However, note that this test is not exhaustive and may not detect all jailbreak detection checks as it relies on predefined bypass code that may not cover all possible jailbreak detection checks or may not be up-to-date. The checks may also be more sophisticated than what the tool can detect so manual reverse engineering and deobfuscation may be required to identify them.
 
-
 Even if the automated jailbreak detection bypass commands are not successful, they may provide useful information to help you narrow down the jailbreak detection checks implemented in the app.
