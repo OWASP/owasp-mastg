@@ -1,5 +1,5 @@
 ---
-masvs_category: MASTG-TOOL
+mastg_category: MASTG-TOOL
 platform: android/ios
 ---
 
