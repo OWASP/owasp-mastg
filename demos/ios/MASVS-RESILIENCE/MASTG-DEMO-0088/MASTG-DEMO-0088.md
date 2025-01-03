@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Testing Jailbreak Detection
+title: Uses of Jailbreak Detection Techniques with r2
 code: [swift]
 id: MASTG-DEMO-0x88
 test: MASTG-TEST-0x88
@@ -15,7 +15,9 @@ The code snippet below shows sample code that performs jailbreak detection check
 ### Steps
 
 1. Unzip the app package and locate the main binary file (@MASTG-TECH-0058), which in this case is `./Payload/MASTestApp.app/MASTestApp`.
-2. Run `run.sh`.
+2. Open the app binary with @MASTG-TOOL-0073 with the `-i` option to run this script.
+
+{{ jailbreak_detection.r2 }}
 
 {{ run.sh }}
 
