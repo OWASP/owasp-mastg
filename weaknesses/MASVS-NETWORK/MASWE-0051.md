@@ -35,6 +35,4 @@ Applications that open network ports without proper protection are vulnerable to
 - **Restrict Network Bindings**: Configure the application to bind only to specific, necessary network interfaces, avoiding the use of wildcard addresses like `INADDR_ANY`.
 - **Implement Strong Access Controls**: Enforce authentication and authorization for any services exposed through open ports to ensure only authorized entities can connect.
 - **Disable Debugging Services in Production**: Ensure that all development and debugging network services are disabled or removed in production builds.
-- **Validate and Sanitize Inputs**: Properly validate all incoming data from network connections to prevent injection attacks and buffer overflows.
-- **Use Secure Communication Protocols**: Employ encryption and secure protocols (e.g., TLS/SSL) for any network communication to protect data in transit.
 - **Configure Firewalls Appropriately**: Set up firewall rules to restrict access to open ports, allowing connections only from trusted sources.
