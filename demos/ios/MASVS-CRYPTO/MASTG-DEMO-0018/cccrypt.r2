@@ -1,18 +1,18 @@
-e asm.bytes = false
+e asm.bytes=false
 e scr.color=false
 e asm.var=false
 
-!printf "Uses of the CCCrypt function:\n"
+?e Uses of the CCCrypt function:
 afl~CCCrypt
 
-!printf "\n"
+?e
 
-!printf "xrefs to CCCrypt:\n"
+?e xrefs to CCCrypt:
 axt @ 0x1000076c4
 
-!printf "\n"
+?e
 
-!printf "Use of CCCrypt:\n"
+?e Use of CCCrypt:
 
 # Seek to the function where CCCrypt is called (Replace with the address found from axt output)
 pd-- 9 @ 0x1000040e0

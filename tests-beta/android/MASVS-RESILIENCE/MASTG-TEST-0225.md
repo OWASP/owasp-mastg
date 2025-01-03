@@ -1,7 +1,7 @@
 ---
 title: Usage of Insecure Signature Key Size
 platform: android
-id: MASTG-TEST-0x39-2
+id: MASTG-TEST-0225
 type: [static]
 weakness: MASWE-0104
 ---

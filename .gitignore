@@ -30,3 +30,4 @@ OWASP_MASVS.yaml
 cross_references.yaml
 drafts/
 Payload/
+.vscode/settings.json
