@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Testing Jailbreak Detection
+title: Runtime Use of Jailbreak Detection Techniques
 id: MASTG-TEST-0x88
 type: [dynamic]
 weakness: MASWE-0097
@@ -8,7 +8,7 @@ weakness: MASWE-0097
 
 ## Overview
 
-The test verifies that a mobile application can identify whether if the iOS device it is running on a jailbroken device. Jailbreaking removes built-in security restrictions on the device, potentially exposing sensitive information and increasing the risk of unauthorised access.
+The test verifies that a mobile application can identify if the iOS device it is running on a jailbroken device. Jailbreaking removes built-in security restrictions on the device, potentially exposing sensitive information and increasing the risk of unauthorized access.
 
 ## Steps
 

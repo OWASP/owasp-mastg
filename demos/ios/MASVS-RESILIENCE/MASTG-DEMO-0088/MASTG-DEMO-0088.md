@@ -3,7 +3,7 @@ platform: ios
 title: Testing Jailbreak Detection
 code: [swift]
 id: MASTG-DEMO-0x88
-test: MASTG-TEST-0088
+test: MASTG-TEST-0x88
 ---
 
 ### Sample
@@ -27,4 +27,4 @@ The output reveals the use of file permissions, protocol handlers and file direc
 
 ### Evaluation
 
-The test fails because jailbreak detection checks implemented in the app.
+The test passes because jailbreak detection checks are implemented in the app.
