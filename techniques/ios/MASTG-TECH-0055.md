@@ -91,7 +91,7 @@ PID  Name           Identifier
 The `783` process has launched a new thread called Gadget to which you can attach:
 
 ```bash
-frida -U -n Gadget
+$ frida -U -n Gadget
      ____
     / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
    | (_| |
