@@ -42,7 +42,9 @@ Finally, you can attach `lldb` using the following commands:
 
 ```bash
 $ lldb
+# Select the iOS device you want to interact with
 (lldb) device select 00008101-1234567890123456
+
 (lldb) device process list
 PID    PARENT USER       TRIPLE                         NAME
 ====== ====== ========== ============================== ============================
