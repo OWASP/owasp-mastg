@@ -55,6 +55,7 @@ PID    PARENT USER       TRIPLE                         NAME
 774    0                                                <anonymous>
 781    0                                                ReportCrash
 783    0                                                UnCrackable Level 1
+# Attach to a specific process by their process ID
 (lldb) device process attach --pid 783
 Process 783 stopped
 * thread #1, stop reason = signal SIGSTOP
