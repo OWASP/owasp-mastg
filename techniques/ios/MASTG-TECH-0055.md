@@ -67,6 +67,7 @@ dyld`_dyld_start:
     0x104312928 <+8>:  mov    x29, #0x0 ; =0
     0x10431292c <+12>: mov    x30, #0x0 ; =0
 Target 0: (UnCrackable Level 1) stopped.
+# Continue execution of all threads in the current process.
 (lldb) c
 Process 783 resuming
 (lldb)
