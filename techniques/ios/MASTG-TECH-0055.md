@@ -46,6 +46,7 @@ $ lldb
 # Select the iOS device you want to interact with
 (lldb) device select 00008101-1234567890123456
 
+# Query the processes on a device.
 (lldb) device process list
 PID    PARENT USER       TRIPLE                         NAME
 ====== ====== ========== ============================== ============================
