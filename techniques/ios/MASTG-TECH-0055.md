@@ -122,7 +122,6 @@ On older versions of iOS, you can use either `idevicedebug` (see @MASTG-TOOL-012
 # Get the package name
 $ ideviceinstaller list
 CFBundleIdentifier, CFBundleShortVersionString, CFBundleDisplayName
-org.sec575.CoinGame, "1.0", "CoinGame"
 sg.vp.UnCrackable1.QH868V5764, "1.0", "UnCrackable1"
 com.apple.TestFlight, "3.7.0", "TestFlight"
 com.google.Maps, "24.50.0", "Google Maps"
