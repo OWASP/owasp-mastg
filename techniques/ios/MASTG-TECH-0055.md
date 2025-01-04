@@ -41,6 +41,7 @@ Launched application with sg.vp.UnCrackable1.QH868V5764 bundle identifier.
 Finally, you can attach `lldb` using the following commands:
 
 ```bash
+# Execute the lldb debugger
 $ lldb
 # Select the iOS device you want to interact with
 (lldb) device select 00008101-1234567890123456
