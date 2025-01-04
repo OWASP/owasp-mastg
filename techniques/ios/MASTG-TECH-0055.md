@@ -70,7 +70,7 @@ Process 783 resuming
 If you manually injected a Frida Gadget, Frida will now be waiting for you to attach to it. Until you do so, the application will appear frozen.
 
 ```bash
-rida-ps -Ua
+$ frida-ps -Ua
 PID  Name           Identifier
 ---  -------------  -------------------------------
 389  Calendar       com.apple.mobilecal
