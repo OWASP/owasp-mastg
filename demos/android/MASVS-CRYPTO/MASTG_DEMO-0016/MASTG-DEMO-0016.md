@@ -3,7 +3,7 @@ platform: android
 title: Uses of Insecure Encryption Algorithms in Cipher with semgrep
 id: MASTG-DEMO-0016
 code: [java]
-test: MASTG-TEST-0211
+test: MASTG-TEST-0221
 ---
 
 ### Sample
@@ -20,7 +20,7 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified five instances in the code file where an insecure encryption is used. The specified line numbers can be located in the original code for further investigation and remediation.
+The rule has identified five instances in the code file where insecure encryption algorithms are used.
 
 {{ output.txt }}
 
