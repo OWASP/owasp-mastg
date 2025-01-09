@@ -48,10 +48,10 @@ iz~+jail
 ?e
 
 ?e xrefs to Jailbreak strings:
-axt 0x10015b150
+axt 0x10011db00
 
 ?e
 
 ?e Disassembled Jailbreak function:
 
-pdf @ 0x1000058a0
+pdf @ 0x100008c14
