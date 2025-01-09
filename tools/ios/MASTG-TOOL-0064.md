@@ -4,7 +4,7 @@ platform: ios
 source: https://github.com/Sileo/Sileo
 ---
 
-[Sileo](https://getsileo.app/) is a third party app-store available for both rooted and rootless jailbreaks on iOS 12+.
+[Sileo](https://getsileo.app) is a third-party app store available for both rooted and rootless jailbreaks on iOS 12+.
 
 !!! Warning "Installing apps"
 
