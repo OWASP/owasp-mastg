@@ -34,16 +34,17 @@ By conducting this test, we ensure that the app is capable of defending against 
    - Warning the user about the detected threat.
    - Logging information about potential risks to a database or SIEM.
 
-***
+---
 
 ## Observation
 
-The output depends on the specific reactions set up for the mobile application. The results should demonstrate the app’s behaviour when a threat is detected or triggered, for example:
+The output depends on the specific reactions set up for the mobile application. The results should demonstrate the app’s behavior when a threat is detected or triggered, for example:
+
 - Application is terminated.
 - Application displays a warning message.
 - Application sends information to a database or SIEM. Testers should ensure that the collected threat intelligence data are rich enough.
 
-***
+---
 
 ## Evaluation
 
