@@ -25,7 +25,7 @@ The code snippet below shows sample code that performs jailbreak detection check
 
 The output reveals the use of file permissions, protocol handlers and file directories in the app.
 
-{{ output.txt }}
+{{ output.asm }}
 
 ### Evaluation
 
