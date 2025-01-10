@@ -15,6 +15,7 @@ observed_examples:
 - https://nvd.nist.gov/vuln/detail/CVE-2013-6386
 - https://nvd.nist.gov/vuln/detail/CVE-2006-3419
 - https://nvd.nist.gov/vuln/detail/CVE-2008-4102
+- https://www.zellic.io/blog/proton-dart-flutter-csprng-prng/
 status: new
 ---
 
@@ -33,7 +34,7 @@ A [pseudorandom number generator (PRNG)](https://en.wikipedia.org/wiki/Pseudoran
 
 ## Mitigations
 
-For security relevant contexts, use cryptographically secure random numbers.
+For security-relevant contexts, use cryptographically secure random numbers.
 
 In general, it is strongly recommended not to use any random function in a deterministic way, even if it's a secure one, especially those involving hardcoded seed values (which are vulnerable to exposure by decompilation).
 
