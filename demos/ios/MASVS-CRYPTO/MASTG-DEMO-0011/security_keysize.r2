@@ -1,23 +1,22 @@
-!printf "\n\n"
+?e;?e
 
-!printf "Uses of SecKeyCreateRandomKey:\n"
+?e Uses of SecKeyCreateRandomKey:
 afl~SecKeyCreateRandomKey
 
-!printf "\n"
+?e
 
-!printf "xrefs to SecKeyCreateRandomKey:\n"
+?e xrefs to SecKeyCreateRandomKey:
 axt @ 0x1000078ac
 
-!printf "\n"
+?e
 
-!printf "Use of reloc.kSecAttrKeySizeInBits as input for SecKeyCreateRandomKey:\n"
+?e Use of reloc.kSecAttrKeySizeInBits as input for SecKeyCreateRandomKey:
 pd 1 @ sym.func.1000046f8
 
-!printf "...\n"
+?e ...
 
 pd 9 @ 0x10000484c
 
-!printf "...\n"
+?e ...
 
 pd-- 2 @ 0x1000049a0
-

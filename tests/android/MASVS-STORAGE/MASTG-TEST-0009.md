@@ -74,13 +74,13 @@ Approve the backup from your device by selecting the _Back up my data_ option. A
 Run the following command to convert the .ab file to tar.
 
 ```bash
-dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
+tail -c +25 backup.ab |openssl zlib -d > backup.tar
 ```
 
 In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can try to use Python instead.
 
 ```bash
-dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
+tail -c +25 backup.ab | python -c "import zlib,sys;sys.stdout.buffer.write(zlib.decompress(sys.stdin.buffer.read()))" > backup.tar
 ```
 
 The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
@@ -104,5 +104,5 @@ java -jar abe.jar unpack backup.ab backup.tar 123
 Extract the tar file to your working directory.
 
 ```bash
-tar xvf mybackup.tar
+tar xvf backup.tar
 ```

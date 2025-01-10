@@ -25,6 +25,7 @@ Start exploring the MASTG:
 <a href="/MASTG/demos/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:material-flask-outline:  Demos</a>
 <a href="/MASTG/tools/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:octicons-tools-24:  Tools</a>
 <a href="/MASTG/apps/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:octicons-code-square-24:  Apps</a>
+<a href="/MASTG/best-practices/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:material-shield-check:  Best Practices (v2 Beta)</a>
 
 <span style="color: darkgray; font-size: small"> :blue_heart:{ .pump } Support the project by purchasing the [OWASP MASTG on leanpub.com](https://leanpub.com/owasp-mastg). All funds raised through sales of this book go directly into the project budget and will be used to for technical editing and designing the book and fund production of future releases.</span>
 

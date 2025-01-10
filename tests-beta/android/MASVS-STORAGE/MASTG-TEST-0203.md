@@ -1,10 +1,11 @@
 ---
 platform: android
-title: Leakage of Sensitive Data via Logging APIs
+title: Runtime Use of Logging APIs
 id: MASTG-TEST-0203
 apis: [Log, Logger, System.out.print, System.err.print, java.lang.Throwable#printStackTrace]
 type: [dynamic]
 weakness: MASWE-0001
+best-practices: [MASTG-BEST-0002]
 ---
 
 ## Overview

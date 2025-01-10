@@ -17,6 +17,8 @@ The code snippet below shows sample code that creates a file and marks it with `
 1. Unzip the app package and locate the main binary file (@MASTG-TECH-0058), which in this case is `./Payload/MASTestApp.app/MASTestApp`.
 2. Run `run.sh`.
 
+{{ isExcludedFromBackup.r2 }}
+
 {{ run.sh }}
 
 ### Observation
