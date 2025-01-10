@@ -17,4 +17,4 @@ Although [the documentation](https://developer.android.com/reference/java/securi
 
 ## Other Languages
 
-Consult the standard library or framework documentation to find the API that exposes the operating system's cryptographically secure pseudorandom number generator (kernel-based CSPRNG). This is usually the safest approach, provided there are no known vulnerabilities in that library's random number generation. For example, see the [Flutter/Dart issue](https://www.zellic.io/blog/proton-dart-flutter-csprng-prng/) as a reminder that some frameworks may have known weaknesses in their PRNG implementations.
+Consult the standard library or framework documentation to find the API that exposes the operating system's cryptographically secure pseudorandom number generator. This is usually the safest approach, provided there are no known vulnerabilities in that library's random number generation. For example, see the [Flutter/Dart issue](https://www.zellic.io/blog/proton-dart-flutter-csprng-prng/) as a reminder that some frameworks may have known weaknesses in their PRNG implementations.
