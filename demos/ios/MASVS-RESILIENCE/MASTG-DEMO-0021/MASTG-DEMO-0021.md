@@ -2,8 +2,8 @@
 platform: ios
 title: Uses of Jailbreak Detection Techniques with r2
 code: [swift]
-id: MASTG-DEMO-0x88
-test: MASTG-TEST-0x88
+id: MASTG-DEMO-0021
+test: MASTG-TEST-0240
 ---
 
 ### Sample
