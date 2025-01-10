@@ -14,20 +14,19 @@ refs:
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
 - https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-38a.pdf
 - https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile
+- https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf
 status: new
 ---
 
 ## Overview
 
-Outdated or weak padding schemes, such as PKCS1v1.5 or other padding schemes that fail to comply with secure standards, such as NIST SP 800-56B are not recommended for use. These padding schemes include vulnerabilities that may allow attackers to undermine security mechanisms, such as padding oracle attacks.
+Outdated or weak padding schemes, such as PKCS1v1.5 or other padding schemes that fail to comply with secure standards, as outlined in [NIST SP 800-131A Rev.2](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) are not recommended for use. These padding schemes include vulnerabilities that may allow attackers to undermine security mechanisms, such as [padding oracle attacks](https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf).
 
 ## Impact
 
-Weak padding schemes can completely undermine the security of the cryptographic algorithms, exposing sensitive data to attackers, and making systems vulnerable to various attacks. This can lead to:
-
-- **Data breaches**: Weak padding can lead to unauthorized access to sensitive data, resulting in data breaches.
-- **Loss of data integrity**: Padding attacks may aid attackers in manipulating ciphertext, leading to unauthorized data modifications.
-- **Compromised confidentiality**: Weak padding may aid attackers in recovering plaintext from encrypted data.
+- **Data breaches**: Weak padding can allow unauthorized access to sensitive data, resulting in data breaches. When incorrectly padded ciphertext is processed, the system may produce distinguishable error messages. Attackers can exploit these responses to decrypt sensitive data without needing the encryption key.
+- **Loss of data integrity**: Padding attacks can help attackers manipulate ciphertext, leading to unauthorized data modifications. By modifying the ciphertext and observing how the system responds, attackers can alter encrypted data in a way that the system decrypts it without detecting any issues. This allows the system to accept the altered data as valid, compromising its integrity.
+- **Compromised confidentiality**: Weak padding can enable attackers to recover plaintext from encrypted data. Vulnerable implementations may leak information about the correctness of padding through error messages, which attackers can use to gradually decrypt sensitive information such as passwords or session tokens, compromising the confidentiality of the data.
 
 ## Modes of Introduction
 
