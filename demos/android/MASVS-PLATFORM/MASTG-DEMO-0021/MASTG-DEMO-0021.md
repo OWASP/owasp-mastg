@@ -16,7 +16,7 @@ The snippet below shows sample code that sets `FLAG_SECURE` on an activity that 
 
 Let's run our @MASTG-TOOL-0110 rule against the reversed java code.
 
-{{ ../../../../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-apis.yml }}
+{{ ../../../../rules/mastg-android-sensitive-data-in-screenshot.yml }}
 
 ### Observation
 
