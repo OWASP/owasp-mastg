@@ -356,6 +356,12 @@ table.dataTable th {
   box-shadow: none;
 }
 
+.md-typeset details.example ,.md-typeset .admonition.example,
+.md-typeset details.example:focus-within, .md-typeset .admonition.example:focus-within {
+  border: .2rem solid #7c4dff1a;
+  box-shadow: none;
+}
+
 .md-typeset details ,.md-typeset .admonition,
 .md-typeset details:focus-within, .md-typeset .admonition:focus-within {
   border: .2rem solid #448aff1a;
