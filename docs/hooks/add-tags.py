@@ -45,6 +45,10 @@ def on_page_markdown(markdown, page, **kwargs):
     if page.meta.get('status'):
         if page.meta.get('status') == 'draft':
             tags.append('draft')
+
+    if page.meta.get('status'):
+        if page.meta.get('status') == 'deprecated':
+            tags.append('deprecated')
     
     page.meta['tags'] = tags
 

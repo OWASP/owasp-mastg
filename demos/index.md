@@ -1,6 +1,6 @@
 ---
 hide: toc
-title: MASTG Demos
+title: MASTG Demos (v2 Beta)
 status: new
 ---
 

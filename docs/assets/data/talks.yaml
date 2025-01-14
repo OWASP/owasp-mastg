@@ -1,3 +1,8 @@
+- date: "November 9, 2024"
+  event: "r2con Barcelona"
+  title: "[Hack-Proof Your Mobile Apps](https://rada.re/con/2024/#r2owasp)"
+  video: "https://youtu.be/l_Q_1WZuyjo"
+  slides: "https://github.com/radareorg/r2con2024/blob/main/day2-talks/1400-r2con2024-Hack-Proof-Your-Mobile-Apps-grepharder.pdf"
 - date: "August 22, 2024"
   event: "OWASP Atlanta Chapter"
   title: "[Hack-Proof Your Code: Exploring Mobile App Weaknesses with OWASP MAS](https://www.meetup.com/owasp-atlanta/events/302022462/)"
