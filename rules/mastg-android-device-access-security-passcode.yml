@@ -1,0 +1,13 @@
+rules:
+  - id: device-access-security-passcode
+    languages:
+      - java
+    severity: ERROR
+    metadata:
+      summary: This rule scans for Device-Access-Security to make sure the app runs on a secure environment protected with passcode
+    message: "[MASVS-STORAGE] Make sure to verify that your app runs on a device with a passcode set"
+    patterns:
+      - pattern: $X.getSystemService("keyguard");
+      - pattern: |
+          ...
+          $Y.isDeviceSecure();
