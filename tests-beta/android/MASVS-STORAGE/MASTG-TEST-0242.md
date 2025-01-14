@@ -16,6 +16,8 @@ This test checks whether an application is running on a device with secure polic
 - running on a recent version of Android OS
 - running on a secure system build intended for the end users
 
+Testing for USB Debugging and Root detection is now part of MASVS-RESILIENCE.
+
 ## Steps
 
 1. Use either @MASTG-TECH-0014 with a tool such as @MASTG-TOOL-0110 to identify all Device-Access-Security Policy APIs.
