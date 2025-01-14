@@ -20,7 +20,7 @@ status: new
 
 ## Overview
 
-Outdated or weak padding schemes, such as PKCS1v1.5 or other padding schemes that fail to comply with secure standards, as outlined in [NIST SP 800-131A Rev.2](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) are not recommended for use. These padding schemes include vulnerabilities that may allow attackers to undermine security mechanisms, such as [padding oracle attacks](https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf).
+Outdated or weak padding schemes, such as PKCS1v1.5 or other padding schemes that fail to comply with secure standards, as outlined in [NIST SP 800-131A Rev.2, Section 6 Key Agreement and Key Transport Using RSA](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) are not recommended for use. These padding schemes include vulnerabilities that may allow attackers to undermine security mechanisms, such as [padding oracle attacks](https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf).
 
 ## Impact
 
