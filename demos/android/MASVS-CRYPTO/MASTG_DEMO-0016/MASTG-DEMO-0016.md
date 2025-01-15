@@ -14,7 +14,7 @@ test: MASTG-TEST-0221
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-weak-encryption.yaml }}
+{{ ../../../../rules/weak-encryption-modes.yaml }}
 
 {{ run.sh }}
 
@@ -26,8 +26,10 @@ The rule has identified five instances in the code file where insecure encryptio
 
 ### Evaluation
 
-Review each of the reported instances.
+Review each of the reported instances. The following configuration modes will implies the usage of insecure AES/ECB:
 
-- Line 37 seems the code utilize insecure DES algorithm.
-- Line 56 seems to utilize Cipher.getInstance("AES") defaults to ECB, which  is insecure.
-- Line 79 seems the code utilize insecure 3DES algorithm.
+- Line 35 using Cipher.getInstance("AES") defaults to ECB.
+- Line 54 using Cipher.getInstance("AES/ECB/PKCS5Padding");.
+- Line 73 using Cipher.getInstance("AES/ECB/ISO10126Padding");.
+- Line 96 using Cipher.getInstance("DES/ECB/PKCS5Padding");.
+- Line 119 using Cipher.getInstance("DESede/ECB/PKCS5Padding");.

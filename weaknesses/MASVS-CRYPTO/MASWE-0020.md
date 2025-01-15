@@ -20,11 +20,7 @@ status: new
 
 ## Overview
 
-Weak encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorised individuals to decrypt secured data. This weakness can be due to a number of reasons, including the use of outdated algorithms, deprecated encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialisation Vector (IV).
-
-For example the use of TDEA (Triple Data Encryption Algorithm), which is often referred to as "Triple DES" or "3DES" is disallowed by NIST since end of 2023, due to known attacks like, "meet-in-the-middle", collision attacks and [Sweet32](https://nvd.nist.gov/vuln/detail/CVE-2016-2183).
-
-Similarly, hash functions such as MD5 and SHA-1, which were previously popular for ensuring data integrity, are now considered deprecated as attackers can generate hash collisions, potentially leading to data tampering.
+The `Cipher` class in the Java Cryptography Architecture (JCA) is the core API. It is used to define encryption modes for cryptographic operations. The `Cipher.getInstance` method allows you to specify a transformation string that specifies the encryption algorithm, mode of operation and padding scheme in the format `"Algorithm/Mode/Padding"`.
 
 ## Impact
 
@@ -42,8 +38,6 @@ Similarly, hash functions such as MD5 and SHA-1, which were previously popular f
 
 ## Mitigations
 
-- **Adopt Secure Algorithms**: Replace deprecated algorithms such as DES, 3DES, MD5, and SHA-1 with AES (minimum 256-bit key) and SHA-256 or higher.  
-- **Use Secure Encryption Modes**: Choose secure modes such as AES-GCM or AES-CCM and avoid insecure modes such as ECB.  
-- **Ensure Proper Initialization Vector Management**: Generate IVs using cryptographically secure random number generators and ensure they are unique for every operation.  
-- **Use Strong Key Sizes**: Enforce key lengths of at least 256 bits for AES and avoid using small or weak keys such as 56-bit DES keys.  
+- **Use Secure Encryption Modes**: Choose secure modes such as `AES/GCM/NoPadding` and avoid insecure modes such as ECB.  
+- **Ensure Proper Initialization Vector Management**: Generate IVs using cryptographically secure random number generators and ensure they are unique for every operation.
 - **Rely on Proper Cryptographic Libraries**: Avoid using XOR, Base64 encoding, or obfuscation as substitutes for encryption and rely on well-vetted cryptographic libraries.

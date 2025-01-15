@@ -1,0 +1,19 @@
+rules:
+  - id: weak-encryption-modes
+    languages:
+      - java
+    severity: WARNING
+    metadata:
+      summary: This rule looks for weak encryption mode like AES/ECB/NoPadding, AES/ECB/PKCS5Padding, and default AES defaults to ECB.
+    message: Weak encryption modes.
+    pattern-either:
+      - pattern: |-
+          Cipher.getInstance("AES")
+      - pattern: |-
+          Cipher.getInstance("AES/ECB/PKCS5Padding")
+      - pattern: |-
+          Cipher.getInstance("AES/ECB/ISO10126Padding")
+      - pattern: |-
+          Cipher.getInstance("DES/ECB/PKCS5Padding")
+      - pattern: |-
+          Cipher.getInstance("DESede/ECB/PKCS5Padding")

@@ -11,33 +11,13 @@ import android.util.Base64
 
 class MastgTest(private val context: Context) {
 
-    // Vulnerable encryption using DES (weak algorithm)
-    fun vulnerableDesEncryption(data: String): String {
+    // Vulnerable AES encryption
+    fun vulnerableAesEncryption(data: String): String {
         try {
-            // Weak key for DES
-            val keySpec = DESKeySpec("12345678".toByteArray())
-            val keyFactory = SecretKeyFactory.getInstance("DES")
-            val secretKey: Key = keyFactory.generateSecret(keySpec)
-
-            // Weak encryption algorithm (DES) and weak mode (ECB)
-            val cipher = Cipher.getInstance("DES")
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-
-            val encryptedData = cipher.doFinal(data.toByteArray())
-            return Base64.encodeToString(encryptedData, Base64.DEFAULT)
-        } catch (e: Exception) {
-            return "Encryption error: ${e.message}"
-        }
-    }
-
-    // Vulnerable AES with ECB mode
-    fun vulnerableAesEcbEncryption(data: String): String {
-        try {
-            // Weak AES key (only for demonstration)
             val key = "1234567890123456".toByteArray() // 16 bytes key for AES
-
-            // Using AES with ECB (default mode)
             val secretKeySpec = SecretKeySpec(key, "AES")
+
+            // Default mode for AES (ECB)
             val cipher = Cipher.getInstance("AES")
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
 
@@ -48,16 +28,47 @@ class MastgTest(private val context: Context) {
         }
     }
 
-    // Vulnerable encryption using 3DES (Triple DES)
-    fun vulnerable3DesEncryption(data: String): String {
+
+    // Vulnerable AES with ECB and PKCS5Padding
+    fun vulnerableAesEcbPkcs5Padding(data: String): String {
         try {
-            // Weak key for 3DES (24-byte key)
-            val keySpec = DESedeKeySpec("123456789012345678901234".toByteArray()) // 24 bytes key
-            val keyFactory = SecretKeyFactory.getInstance("DESede")
+            val key = "1234567890123456".toByteArray()
+            val secretKeySpec = SecretKeySpec(key, "AES")
+
+            val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
+
+            val encryptedData = cipher.doFinal(data.toByteArray())
+            return Base64.encodeToString(encryptedData, Base64.DEFAULT)
+        } catch (e: Exception) {
+            return "Encryption error: ${e.message}"
+        }
+    }
+
+    // Vulnerable AES with ECB and ISO10126Padding
+    fun vulnerableAesEcbIso10126Padding(data: String): String {
+        try {
+            val key = "1234567890123456".toByteArray()
+            val secretKeySpec = SecretKeySpec(key, "AES")
+
+            val cipher = Cipher.getInstance("AES/ECB/ISO10126Padding")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
+
+            val encryptedData = cipher.doFinal(data.toByteArray())
+            return Base64.encodeToString(encryptedData, Base64.DEFAULT)
+        } catch (e: Exception) {
+            return "Encryption error: ${e.message}"
+        }
+    }
+
+    // Vulnerable DES with ECB and PKCS5Padding
+    fun vulnerableDesEcbPkcs5Padding(data: String): String {
+        try {
+            val keySpec = DESKeySpec("12345678".toByteArray())
+            val keyFactory = SecretKeyFactory.getInstance("DES")
             val secretKey: Key = keyFactory.generateSecret(keySpec)
 
-            // Weak encryption algorithm (3DES)
-            val cipher = Cipher.getInstance("DESede")
+            val cipher = Cipher.getInstance("DES/ECB/PKCS5Padding")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
             val encryptedData = cipher.doFinal(data.toByteArray())
@@ -67,19 +78,35 @@ class MastgTest(private val context: Context) {
         }
     }
 
+    // Vulnerable 3DES with ECB and PKCS5Padding
+    fun vulnerable3DesEcbPkcs5Padding(data: String): String {
+        try {
+            val keySpec = DESedeKeySpec("123456789012345678901234".toByteArray())
+            val keyFactory = SecretKeyFactory.getInstance("DESede")
+            val secretKey: Key = keyFactory.generateSecret(keySpec)
+
+            val cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+
+            val encryptedData = cipher.doFinal(data.toByteArray())
+            return Base64.encodeToString(encryptedData, Base64.DEFAULT)
+        } catch (e: Exception) {
+            return "Encryption error: ${e.message}"
+        }
+    }
+
+    // Test and return results
     fun mastgTest(): String {
-        val sensitiveString = "Hello from the OWASP MASTG Test app."
+        val sensitiveString = "Hello from OWASP MASTG!"
 
-        // Encrypt with weak DES
-        val desEncryptedString = vulnerableDesEncryption(sensitiveString)
+        val results = listOf(
+            "AES Default: ${vulnerableAesEncryption(sensitiveString)}",
+            "AES ECB PKCS5Padding: ${vulnerableAesEcbPkcs5Padding(sensitiveString)}",
+            "AES ECB ISO10126Padding: ${vulnerableAesEcbIso10126Padding(sensitiveString)}",
+            "DES ECB PKCS5Padding: ${vulnerableDesEcbPkcs5Padding(sensitiveString)}",
+            "3DES ECB PKCS5Padding: ${vulnerable3DesEcbPkcs5Padding(sensitiveString)}"
+        )
 
-        // Encrypt with weak AES in ECB mode
-        val aesEcbEncryptedString = vulnerableAesEcbEncryption(sensitiveString)
-
-        // Encrypt with weak 3DES
-        val tripleDesEncryptedString = vulnerable3DesEncryption(sensitiveString)
-
-        // Returning the encrypted results
-        return "DES Encrypted: $desEncryptedString\nAES ECB Encrypted: $aesEcbEncryptedString\n3DES Encrypted: $tripleDesEncryptedString"
+        return results.joinToString("\n")
     }
 }

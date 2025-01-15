@@ -1,15 +1,19 @@
                    
                    
 ┌─────────────────┐
-│ 3 Code Findings │
+│ 5 Code Findings │
 └─────────────────┘
                                           
   MastgTest_reversed.java
-    ❯❱weak-encryption
-          Weak encryption which defaults to ECB in use.
-                                                       
-           37┆ Cipher cipher = Cipher.getInstance("DES");
+    ❯❱weak-encryption-modes
+          Weak encryption modes.
+                                
+           35┆ Cipher cipher = Cipher.getInstance("AES");
             ⋮┆----------------------------------------
-           56┆ Cipher cipher = Cipher.getInstance("AES");
+           54┆ Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             ⋮┆----------------------------------------
-           79┆ Cipher cipher = Cipher.getInstance("DESede");
+           73┆ Cipher cipher = Cipher.getInstance("AES/ECB/ISO10126Padding");
+            ⋮┆----------------------------------------
+           96┆ Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            ⋮┆----------------------------------------
+          119┆ Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
