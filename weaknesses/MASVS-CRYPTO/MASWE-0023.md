@@ -12,27 +12,39 @@ mappings:
 refs:
 - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
-- https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-38a.pdf
 - https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile
 - https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf
+- https://capec.mitre.org/data/definitions/463.html
+- https://robertheaton.com/2013/07/29/padding-oracle-attack/
 status: new
 ---
 
 ## Overview
 
-Outdated or weak padding schemes, such as PKCS1v1.5 or other padding schemes that fail to comply with secure standards, as outlined in [NIST SP 800-131A Rev.2, Section 6 Key Agreement and Key Transport Using RSA](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf) are not recommended for use. These padding schemes include vulnerabilities that may allow attackers to undermine security mechanisms, such as [padding oracle attacks](https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf).
+Outdated or weak padding schemes are discouraged due to vulnerabilities that enable [padding oracle attacks](https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf).
+
+- **Symmetric Cryptography**: PKCS#7 padding is vulnerable to padding oracle attacks unless mitigations like AES-GCM or HMAC are used. PKCS#7 padding is used for symmetric encryption algorithms like AES in block cipher modes (e.g., CBC). PKCS#7 has been superseded by CMS (Cryptographic Message Syntax), defined in RFC 5652.
+- **Asymmetric Cryptography**: PKCS#1 v1.5 specifies padding schemes for RSA operations and is vulnerable to attacks like Bleichenbacher's. Its use is disallowed by NIST starting December 31, 2023, see [NIST SP 800-131A Rev.2, Section 6 Key Agreement and Key Transport Using RSA](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf).
+
+A padding oracle attack is a side-channel attack, where an adversary can decrypt and encrypt data without knowing the decryption key.
+
+The mere use of weak padding schemes does not necessarily imply the presence of a padding oracle vulnerability. However, weak padding schemes create the conditions for such attacks. Success depends on whether exploitable system behaviors, such as detailed error messages or timing differences, exist.
+
+- **Lack of Message Authentication**: The decryption routine does not properly authenticate the message or verify its integrity before performing the decryption operation (e.g., AES-CBC with PKCS#7 padding).
+- **Padding Oracle**: The target app leaks data (e.g., logs, error messages, timing differences) indicating whether a padding error occurred during decryption. This feedback becomes the "padding oracle," allowing attackers to infer the correctness of padding through iterative observations.
 
 ## Impact
 
-- **Loss of data integrity**: Padding attacks can help attackers manipulate ciphertext, leading to unauthorized data modifications. By modifying the ciphertext and observing how the system responds, attackers can alter encrypted data in a way that the system decrypts it without detecting any issues. This allows the system to accept the altered data as valid, compromising its integrity.
-- **Compromised confidentiality**: Weak padding can enable attackers to recover plaintext from encrypted data. Vulnerable implementations may leak information about the correctness of padding through error messages, which attackers can use to gradually decrypt sensitive information such as passwords or session tokens, compromising the confidentiality of the data.
+- **Loss of Integrity**: Attackers can modify ciphertext, exploiting the padding oracle to trick the system into accepting maliciously altered data, leading to unauthorized data modifications.
+- **Loss of Confidentiality**: Attackers can use the padding oracle to iteratively decrypt sensitive information, such as passwords or session tokens, leading to exposure of confidential data.
 
 ## Modes of Introduction
 
-- **Insecure padding scheme**: Using padding schemes that are vulnerable to attacks, such as PKCS1V1.5 or PKCS#7 when used with CBC mode of operation.
-- **Custom padding solutions**: Implementing custom or non-standard padding schemes that have not been sufficiently tested or that lack certification.
-- **Improper padding validation**: Failure to correctly validate and handle padding errors, potentially leaking information to attackers via error messages or timing discrepancies.
+- **Insecure Padding for Asymmetric Encryption**: Using weak padding schemes like PKCS#1 v1.5 for RSA asymmetric encryption.
+- **Insecure Padding for Symmetric Encryption**: Using padding schemes like PKCS#7 without additional message authentication (e.g., HMAC) for symmetric encryption algorithms like AES in block cipher modes (e.g., CBC).
 
 ## Mitigations
 
-- **Implement proper and secure padding validation**: Use established and secure padding schemes, ensuring that padding is properly validated when necessary for the encryption mode. When possible, use authenticated encryption modes like GCM, which eliminate the need for padding and include built-in integrity verification.
+- **Use Secure Padding Schemes for Asymmetric Encryption**: Replace weak schemes like PKCS#1 v1.5 with secure ones such as OAEP (Optimal Asymmetric Encryption Padding).
+- **Use Authenticated Symmetric Encryption Modes**: Prefer authenticated encryption modes like AES-GCM, which eliminate the need for separate padding validation and incorporate integrity checks. If AES-CBC must be used, adopt the Encrypt-then-MAC paradigm (e.g., append HMAC).
+- **Don't Expose Cryptographic Errors**: Do not expose cryptographic error messages, such as padding errors, to users. This prevents attackers from gaining clues about the padding's correctness.
