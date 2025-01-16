@@ -25,7 +25,7 @@ Attackers can decompile or reverse-engineer the app to extract hardcoded keys.
 ## Impact
 
 - **Unauthorized Access**: If cryptographic keys are not properly protected, attackers may gain unauthorized access to sensitive data and potential identity theft.
-- **Data Tampering**: Compromised keys can allow attackers to tamper with encrypted data, leading to data integrity issues.
+- **Loss of Integrity**: Compromised keys can allow attackers to tamper with encrypted data.
 - **Loss of Confidentiality**: Sensitive information can be exposed, resulting in a loss of confidentiality. Once keys are exposed, all data encrypted with those keys is at risk.
 
 ## Modes of Introduction
