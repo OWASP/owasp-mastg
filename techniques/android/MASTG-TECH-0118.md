@@ -77,6 +77,6 @@ frida -U -l hookpermissions.js -f org.owasp.mastestapp
 
 Additional Notes:
 
-* Permission Scope: Pay attention to runtime permissions (introduced in Android 6.0) versus manifest-declared permissions. Some permissions require explicit user approval at runtime.
+- Permission Scope: Pay attention to runtime permissions (introduced in Android 6.0) versus manifest-declared permissions. Some permissions require explicit user approval at runtime.
 
-* Refer to this [listed permissions](https://stackoverflow.com/questions/36936914/list-of-android-permissions-normal-permissions-and-dangerous-permissions-in-api) that are considered dangerous.
+- Refer to this [listed permissions](https://stackoverflow.com/questions/36936914/list-of-android-permissions-normal-permissions-and-dangerous-permissions-in-api) that are considered dangerous.
