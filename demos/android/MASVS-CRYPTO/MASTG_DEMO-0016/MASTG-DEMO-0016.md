@@ -20,7 +20,7 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified five instances in the code file where insecure encryption algorithms are used.
+The rule has identified five instances in the code file where insecure encryption modes are used.
 
 {{ output.txt }}
 
