@@ -7,7 +7,7 @@ profiles: ["P"]
 mappings:
   masvs-v1: []
   masvs-v2: [MASVS-PRIVACY-1]
-  cwe: [359]
+  cwe: [250]
 refs:
 - https://developer.apple.com/design/human-interface-guidelines/privacy#Requesting-permission
 - https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources
