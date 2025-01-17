@@ -30,7 +30,7 @@ Weak encryption refers to cryptographic systems or implementations that are vuln
 
 ## Mode of Introduction
 
-- **Use of Deprecated Algorithms** : Relying on outdated or weak cryptographic algorithms can allow threat actors to attack the cipher text, key or exploit known vulnerabilities in the algorithm, for example through brute force attacks.
+- **Use of Deprecated Algorithms** : Relying on outdated or weak encryption algorithms can allow threat actors to attack the cipher text, key or exploit known vulnerabilities in the algorithm, for example through brute force attacks.
 - **Insecure Modes of Operation**:  Using modes that are considered deprecated increase the attack surface of encrypted information. For example the use of AES/ECB is deprecated as it divides the plaintext into blocks and encrypts each block separately using the same key. This makes the cipher text vulnerable to "known plaintext attacks" and leaks information about the structure of the original plaintext.
 - **Predictable Initialization Vectors (IVs)**: If IVs are not random or unique, they can be exploited in attacks like ciphertext injection or pattern recognition. This compromises the confidentiality of encrypted data, especially in modes like CBC (Cipher Block Chaining).
 - **Weak Keys**: Short or easily guessable keys compromise encryption strength. The use of small key sizes (e.g., 56-bit keys in DES) can make the encryption susceptible to brute-force attacks. Best practices recommend keys of at least 256 bits for strong encryption.
