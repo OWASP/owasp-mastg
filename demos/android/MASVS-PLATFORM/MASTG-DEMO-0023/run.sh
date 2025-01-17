@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-unsafe-app-permissons.yaml ./AndroidManifest.xml --text -o output.txt
