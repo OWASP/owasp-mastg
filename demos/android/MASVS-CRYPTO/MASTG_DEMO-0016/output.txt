@@ -1,19 +1,21 @@
                    
                    
 ┌─────────────────┐
-│ 5 Code Findings │
+│ 6 Code Findings │
 └─────────────────┘
                                           
-  MastgTest_reversed.java
-    ❯❱weak-encryption-modes
+   MastgTest_reversed.java
+    mweak-encryption-modes
           Weak encryption modes.
                                 
-           35┆ Cipher cipher = Cipher.getInstance("AES");
+           36┆ Cipher cipher = Cipher.getInstance("AES");
             ⋮┆----------------------------------------
-           54┆ Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+           55┆ Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
             ⋮┆----------------------------------------
-           73┆ Cipher cipher = Cipher.getInstance("AES/ECB/ISO10126Padding");
+           76┆ Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             ⋮┆----------------------------------------
-           96┆ Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+           95┆ Cipher cipher = Cipher.getInstance("AES/ECB/ISO10126Padding");
             ⋮┆----------------------------------------
-          119┆ Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+          118┆ Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            ⋮┆----------------------------------------
+          141┆ Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");

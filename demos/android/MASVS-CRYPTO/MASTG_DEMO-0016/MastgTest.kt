@@ -28,6 +28,26 @@ class MastgTest(private val context: Context) {
         }
     }
 
+    // Vulnerable AES with ECB and NoPadding (manual padding applied)
+    fun vulnerableAesEcbNoPadding(data: String): String {
+        try {
+            val key = "1234567890123456".toByteArray()
+            val secretKeySpec = SecretKeySpec(key, "AES")
+
+            val cipher = Cipher.getInstance("AES/ECB/NoPadding")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
+
+            // Ensure the data is padded to match the block size
+            val blockSize = 16
+            val paddingLength = blockSize - (data.length % blockSize)
+            val paddedData = data + "\u0000".repeat(paddingLength) // Null padding
+
+            val encryptedData = cipher.doFinal(paddedData.toByteArray())
+            return Base64.encodeToString(encryptedData, Base64.DEFAULT).trim()
+        } catch (e: Exception) {
+            return "Encryption error: ${e.message}"
+        }
+    }
 
     // Vulnerable AES with ECB and PKCS5Padding
     fun vulnerableAesEcbPkcs5Padding(data: String): String {
@@ -101,6 +121,7 @@ class MastgTest(private val context: Context) {
 
         val results = listOf(
             "AES Default: ${vulnerableAesEncryption(sensitiveString)}",
+            "AES ECB NoPadding: ${vulnerableAesEcbNoPadding(sensitiveString)}",
             "AES ECB PKCS5Padding: ${vulnerableAesEcbPkcs5Padding(sensitiveString)}",
             "AES ECB ISO10126Padding: ${vulnerableAesEcbIso10126Padding(sensitiveString)}",
             "DES ECB PKCS5Padding: ${vulnerableDesEcbPkcs5Padding(sensitiveString)}",

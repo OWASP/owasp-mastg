@@ -1,0 +1,13 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                                          
+  MastgTest_reversed.java
+    ❯❱ weak-encryption
+          Weak encryption like DES,3DES are in use.
+                                                   
+           36┆ Cipher cipher = Cipher.getInstance("DES");
+            ⋮┆----------------------------------------
+           59┆ Cipher cipher = Cipher.getInstance("DESede");

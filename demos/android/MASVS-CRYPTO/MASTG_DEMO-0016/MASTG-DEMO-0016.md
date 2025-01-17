@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Uses of Insecure Encryption Algorithms in Cipher with semgrep
+title: Uses of Insecure Encryption Modes in Cipher with semgrep
 id: MASTG-DEMO-0016
 code: [java]
 test: MASTG-TEST-0221
@@ -28,8 +28,9 @@ The rule has identified five instances in the code file where insecure encryptio
 
 Review each of the reported instances. The following configuration modes will implies the usage of insecure AES/ECB:
 
-- Line 35 using Cipher.getInstance("AES") defaults to ECB.
-- Line 54 using Cipher.getInstance("AES/ECB/PKCS5Padding");.
-- Line 73 using Cipher.getInstance("AES/ECB/ISO10126Padding");.
-- Line 96 using Cipher.getInstance("DES/ECB/PKCS5Padding");.
-- Line 119 using Cipher.getInstance("DESede/ECB/PKCS5Padding");.
+- Line 36 using Cipher.getInstance("AES") defaults to ECB.
+- Line 55 using Cipher.getInstance("AES/ECB/NoPadding");.
+- Line 76 using Cipher.getInstance("AES/ECB/PKCS5Padding");.
+- Line 95 using Cipher.getInstance("AES/ECB/ISO10126Padding");.
+- Line 118 using Cipher.getInstance("DES/ECB/PKCS5Padding");.
+- Line 141 using Cipher.getInstance("DESede/ECB/PKCS5Padding");.
