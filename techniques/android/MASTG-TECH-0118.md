@@ -5,7 +5,7 @@ platform: android
 
 Obtaining App Permissions from Android Applications. There are several ways to obtain permissions from an Android application. Below are the tools and techniques commonly used:
 
-## Using @MASTG-TOOL-0018 
+## Using @MASTG-TOOL-0018
 
 You can use Jadx or Jadx-GUI to decompile APK files and access the AndroidManifest.xml file. This allows you to view the permissions declared in the application and inspect their usage in the code. Jadx is particularly useful for static analysis as it can also decompile application code, helping identify how permissions are utilized within the app logic.
 
@@ -14,7 +14,7 @@ Steps:
 1. Open the APK file in Jadx or Jadx-GUI.
 2. Navigate to the AndroidManifest.xml file to view the declared permissions.
 
-## Using @MASTG-TOOL-0011 
+## Using @MASTG-TOOL-0011
 
 You can also decompile an APK using APKTool to extract the AndroidManifest.xml file.
 
@@ -43,7 +43,7 @@ uses-permission: name='org.owasp.mastestapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMIS
 This command lists all the permissions requested by the app in a concise format, saving time compared to manual inspection.
 ```
 
-## Using @MASTG-TOOL-0004 
+## Using @MASTG-TOOL-0004
 
 Android's built-in debugging tool, ADB (Android Debug Bridge), provides a way to view permissions directly from a device or emulator.
 
@@ -72,7 +72,7 @@ This command retrieves the permissions declared in the app, as well as runtime-g
 Apart from enforcing custom permissions via the application manifest file, you can also check permissions using dynamic instrumentation. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the ContextCompat.checkSelfPermission method is called to check if an activity has a specified permission. You can use this frida script from the [frida codeshare](https://codeshare.frida.re/@ScreaMy7/hookpermissions/) to check for runtime permissions.
 
 ```bash
-$ frida -U -l hookpermissions.js -f org.owasp.mastestapp
+frida -U -l hookpermissions.js -f org.owasp.mastestapp
 ```
 
 Additional Notes:
