@@ -1,0 +1,10 @@
+rules:
+  - id: device-access-security-sdk-version
+    languages:
+      - java
+    severity: WARNING
+    metadata:
+      summary: This rule scans for Device-Access-Security to make sure the app runs on an OS version satisfying your security requirements
+    message: "[MASVS-STORAGE] Make sure to verify that your app runs on a device with an up-to-date OS"
+    patterns:
+      - pattern: Build.VERSION.SDK_INT
