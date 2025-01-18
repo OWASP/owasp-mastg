@@ -1,8 +1,9 @@
 import logging
 import yaml
 import mkdocs.plugins
-import glob, os
+import glob
 from collections import defaultdict
+import github_api
 
 log = logging.getLogger('mkdocs')
 
@@ -157,6 +158,18 @@ def get_v1_deprecated_tests_banner(meta):
 """
     return banner
 
+def get_android_demo_banner(meta):
+    id = meta.get('id')
+
+    artifacts_url = github_api.get_latest_successful_run()
+    
+    banner = f"""
+!!! tip "Demo"
+
+    The APK file for this demo is available [here]({artifacts_url}) as "{id}.apk".
+"""
+    return banner
+
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, **kwargs):
@@ -175,6 +188,9 @@ def on_page_markdown(markdown, page, **kwargs):
 
     if "MASTG/tests/" in path and page.meta.get('status') == 'deprecated':
         banners.append(get_v1_deprecated_tests_banner(page.meta))
+
+    if "MASTG/demos/android/" in path:
+        banners.append(get_android_demo_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
