@@ -158,7 +158,7 @@ def get_v1_deprecated_tests_banner(meta):
 """
     return banner
 
-def get_android_demo_banner(page):
+def get_android_demo_buttons(page):
     id = page.meta.get('id')
 
     page_uri = page.file.src_uri
@@ -175,7 +175,7 @@ def get_android_demo_banner(page):
 """
     return banner
 
-def get_ios_demo_banner(page):
+def get_ios_demo_buttons(page):
     id = page.meta.get('id')
 
     page_uri = page.file.src_uri
@@ -212,10 +212,10 @@ def on_page_markdown(markdown, page, **kwargs):
         banners.append(get_v1_deprecated_tests_banner(page.meta))
 
     if "MASTG/demos/android/" in path:
-        banners.append(get_android_demo_banner(page))
+        banners.append(get_android_demo_buttons(page))
     
     if "MASTG/demos/ios/" in path:
-        banners.append(get_ios_demo_banner(page))
+        banners.append(get_ios_demo_buttons(page))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
