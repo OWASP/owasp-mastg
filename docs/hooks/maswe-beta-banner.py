@@ -166,15 +166,12 @@ def get_android_demo_banner(page):
     artifacts_url = github_api.get_latest_successful_run()
 
     demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
-
-    demo_folder_link = f"<a href='{demo_folder}' target='_blank'>demo folder</a>"
     
     banner = f"""
-!!! tip "Demo"
+<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
+<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
 
-    The APK file for this demo is available [here]({artifacts_url}) as "{id}.apk".
-    Open the {demo_folder_link}.
-    You can build the APK file yourself by following the instructions in the [MASTestApp-Android GitHub repository](https://github.com/cpholguera/MASTestApp-Android).
+**Tip**: You can build the APK file yourself by following the instructions in the [MASTestApp-Android GitHub repository](https://github.com/cpholguera/MASTestApp-Android).
 """
     return banner
 
@@ -186,8 +183,6 @@ def get_ios_demo_banner(page):
     mastestapp_binary_url = page_uri.replace("MASTG/demos/ios/", "https://raw.githubusercontent.com/OWASP/owasp-mastg/master/demos/ios/").replace(f"/{id}.md", "/MASTestApp")
 
     demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
-
-    demo_folder_link = f"<a href='{demo_folder}' target='_blank'>demo folder</a>"
 
     banner = f"""
 <a href="{mastestapp_binary_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} Binary</a>
