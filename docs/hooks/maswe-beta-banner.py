@@ -170,8 +170,7 @@ def get_android_demo_buttons(page):
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
-
-**Tip**: You can build the APK file yourself by following the instructions in the [MASTestApp-Android GitHub repository](https://github.com/cpholguera/MASTestApp-Android).
+<a href="https://github.com/cpholguera/MASTestApp-Android" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} APK</a>
 """
     return banner
 
@@ -187,8 +186,7 @@ def get_ios_demo_buttons(page):
     banner = f"""
 <a href="{mastestapp_binary_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} Binary</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
-
-**Tip**: You can build the IPA file yourself by following the instructions in the [MASTestApp-iOS GitHub repository](https://github.com/cpholguera/MASTestApp-iOS).
+<a href="https://github.com/cpholguera/MASTestApp-iOS" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} IPA</a>
 """
     return banner
 
