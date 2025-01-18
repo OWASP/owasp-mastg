@@ -13,8 +13,8 @@ document$.subscribe(function () {
         continue; // Skip this link
       }
 
-      // Exclude links that include github.com/OWASP
-      if (link.href.includes('github.com/OWASP')) {
+      // Exclude links that include github.com/OWASP and raw.githubusercontent.com/OWASP and github.com/cpholguera
+      if (link.href.includes('github.com/OWASP') || link.href.includes('raw.githubusercontent.com/OWASP') || link.href.includes('github.com/cpholguera')) {
         continue; // Skip this link
       }
 
