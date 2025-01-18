@@ -158,15 +158,42 @@ def get_v1_deprecated_tests_banner(meta):
 """
     return banner
 
-def get_android_demo_banner(meta):
-    id = meta.get('id')
+def get_android_demo_banner(page):
+    id = page.meta.get('id')
+
+    page_uri = page.file.src_uri
 
     artifacts_url = github_api.get_latest_successful_run()
+
+    demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
+
+    demo_folder_link = f"<a href='{demo_folder}' target='_blank'>demo folder</a>"
     
     banner = f"""
 !!! tip "Demo"
 
     The APK file for this demo is available [here]({artifacts_url}) as "{id}.apk".
+    Open the {demo_folder_link}.
+    You can build the APK file yourself by following the instructions in the [MASTestApp-Android GitHub repository](https://github.com/cpholguera/MASTestApp-Android).
+"""
+    return banner
+
+def get_ios_demo_banner(page):
+    id = page.meta.get('id')
+
+    page_uri = page.file.src_uri
+
+    mastestapp_binary_url = page_uri.replace("MASTG/demos/ios/", "https://raw.githubusercontent.com/OWASP/owasp-mastg/master/demos/ios/").replace(f"/{id}.md", "/MASTestApp")
+
+    demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
+
+    demo_folder_link = f"<a href='{demo_folder}' target='_blank'>demo folder</a>"
+
+    banner = f"""
+<a href="{mastestapp_binary_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} Binary</a>
+<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
+
+**Tip**: You can build the IPA file yourself by following the instructions in the [MASTestApp-iOS GitHub repository](https://github.com/cpholguera/MASTestApp-iOS).
 """
     return banner
 
@@ -190,7 +217,10 @@ def on_page_markdown(markdown, page, **kwargs):
         banners.append(get_v1_deprecated_tests_banner(page.meta))
 
     if "MASTG/demos/android/" in path:
-        banners.append(get_android_demo_banner(page.meta))
+        banners.append(get_android_demo_banner(page))
+    
+    if "MASTG/demos/ios/" in path:
+        banners.append(get_ios_demo_banner(page))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
