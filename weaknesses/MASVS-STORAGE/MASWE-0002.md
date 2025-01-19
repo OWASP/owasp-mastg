@@ -22,6 +22,7 @@ draft:
   - improperly configured FileProvider (Android)
   - Avoid the deprecated MODE_WORLD_WRITEABLE and MODE_WORLD_READABLE modes for IPC files, see https://developer.android.com/privacy-and-security/security-tips#internal-storage. They don't provide the ability to limit data access to particular applications, and they don't provide any control of data format. If you want to share your data with other app processes, consider using a content provider instead, which offers read and write permissions to other apps and can make dynamic permission grants on a case-by-case basis.
 status: draft
+  - Keychain items protected with weak protections such as kSecAttrAccessibleAlways, kSecAttrAccessibleAfterFirstUnlock, kSecAttrAccessibleWhenUnlocked
 
 ---
 
