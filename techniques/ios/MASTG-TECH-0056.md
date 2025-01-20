@@ -52,7 +52,7 @@ After installing @MASTG-TOOL-0071, you can execute the following command to inst
 
 ```bash
 # Get the correct device id
-$ idevice_id
+$ xcrun devicectl list devices
 00008101-00FF28803FF9001E (USB)
 
 $ xcrun devicectl device install app --device 00008101-00FF28803FF9001E ~/signed.ipa
