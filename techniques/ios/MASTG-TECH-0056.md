@@ -42,7 +42,7 @@ ipainstaller Uncrackable.ipa
 On macOS you can also use the @MASTG-TOOL-0054 tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
-unzip Name.ipa
+unzip UnCrackable.ipa
 ios-deploy --bundle 'Payload/UnCrackable Level 1.app' -W -v
 ```
 
