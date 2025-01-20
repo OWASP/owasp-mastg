@@ -19,7 +19,7 @@ Simply connect your device via USB, enter your Apple ID and drag-and-drop the IP
 
 ## libimobiledevice
 
-On Linux and also macOS, you can alternatively use @MASTG-TOOL-0126. This allows you to install apps over a USB connection by executing ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+On Linux and also macOS, you can alternatively use @MASTG-TOOL-0126. This allows you to install apps over a USB connection by executing `ideviceinstaller`. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
 Let's install and debug the @MASTG-APP-0028 app with the following commands:
 
