@@ -18,7 +18,7 @@ You can inject Frida into an application using @MASTG-TOOL-0039, @MASTG-TOOL-011
 
 After following any of the techniques of @MASTG-TECH-0057, your application will be running with the `get-task-allow` entitlement, which means it can be debugged. This means that the `frida` CLI tool can spawn the application and inject the Frida Gadget automatically, even on non-jailbroken devices.
 
-First, download the latest version of the Frida Gadget and move it to `/Users/<USER>/.cache/frida/gadget-ios.dylib`:
+First, download the latest version of the Frida Gadget and move it to `/Users/<USER>/.cache/frida/gadget-ios.dylib`. Frida is released frequently, so find the latest version available on the [Github releases page](https://github.com/frida/frida/releases) or download via the command line after obtaining the latest URL:
 
 ```bash
 wget https://github.com/frida/frida/releases/download/16.5.9/frida-gadget-16.5.9-ios-universal.dylib.gz
