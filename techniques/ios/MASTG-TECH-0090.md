@@ -12,7 +12,7 @@ On a jailbroken device, you can run `frida-server` which will take care of the i
 
 As an alternative to this automated approach, see @MASTG-TECH-0091.
 
-You can inject Frida into an application using @MASTG-TOOL-0039, @MASTG-TOOL-0118 or @MASTG-TOOL-0038
+You can inject Frida into an application using @MASTG-TOOL-0118 or @MASTG-TOOL-0038
 
 ## Frida
 
