@@ -53,7 +53,10 @@ After installing @MASTG-TOOL-0071, you can execute the following command to inst
 ```bash
 # Get the correct device id
 $ xcrun devicectl list devices
-00008101-00FF28803FF9001E (USB)
+Devices:
+Name                 Hostname                                     Identifier                             State                Model
+------------------   ------------------------------------------   ------------------------------------   ------------------   ------------------------------
+Foobar               00008101-00FF28803FF9001E.coredevice.local   ABD1F3D8-7BC1-52CD-8DB6-9BFD794CE862   available (paired)   iPhone 14 Pro Max (iPhone15,3)
 
 $ xcrun devicectl device install app --device 00008101-00FF28803FF9001E ~/signed.ipa
 11:59:04  Acquired tunnel connection to device.
