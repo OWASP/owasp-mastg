@@ -23,7 +23,7 @@ First, download the latest version of the Frida Gadget and move it to `/Users/<U
 ```bash
 wget https://github.com/frida/frida/releases/download/16.5.9/frida-gadget-16.5.9-ios-universal.dylib.gz
 gzip -d frida-gadget-16.5.9-ios-universal.dylib.gz
-mv frida-gadget-16.5.9-ios-universal.dylib /Users/MAS/.cache/frida/gadget-ios.dylib
+mv frida-gadget-X.Y.Z-ios-universal.dylib /Users/MAS/.cache/frida/gadget-ios.dylib
 ```
 
 Next, simply run `frida` as you would normally:
