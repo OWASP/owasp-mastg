@@ -54,7 +54,7 @@ $ fastlane resignipa
 [15:22:03]: fastlane.tools finished successfully 🎉
 ```
 
-After setting this set up, you only need to change the path in the `Fastfile` for the IPA you want to resign and execute the command again.
+Once this is set up, all you need to do is change the path in the `Fastfile` for the IPA you want to resign and run the command again.
 
 More information can be found in the official documentation: ["Codesign an existing ipa file with fastlane resign"](https://docs.fastlane.tools/actions/resign/)
 
