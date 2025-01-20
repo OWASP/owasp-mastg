@@ -52,7 +52,7 @@ cp /Users/MAS/Library/Developer/Xcode/DerivedData/apptest-aijwmhfiximgzkhcmnluxr
 
 ## Inspecting the Provisioning Profile
 
-Once you've obtained the provisioning profile, you can inspect its contents with the @MASTG-TOOL-0063 command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. 
+Once you've obtained the provisioning profile, you can inspect its contents with the @MASTG-TOOL-0063 command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices.
 
 ```bash
 $ security cms -D -i embedded.mobileprovision
