@@ -21,7 +21,7 @@ After following any of the techniques of @MASTG-TECH-0057, your application will
 First, download the latest version of the Frida Gadget and move it to `/Users/<USER>/.cache/frida/gadget-ios.dylib`. Frida is released frequently, so find the latest version available on the [Github releases page](https://github.com/frida/frida/releases) or download via the command line after obtaining the latest URL:
 
 ```bash
-wget https://github.com/frida/frida/releases/download/16.5.9/frida-gadget-16.5.9-ios-universal.dylib.gz
+wget https://github.com/frida/frida/releases/download/X.Y.Z/frida-gadget-X.Y.Z-ios-universal.dylib.gz
 gzip -d frida-gadget-16.5.9-ios-universal.dylib.gz
 mv frida-gadget-X.Y.Z-ios-universal.dylib /Users/MAS/.cache/frida/gadget-ios.dylib
 ```
