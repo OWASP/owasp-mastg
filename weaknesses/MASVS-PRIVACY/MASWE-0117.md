@@ -11,15 +11,12 @@ mappings:
 refs:
 - https://developer.apple.com/design/human-interface-guidelines/privacy#Requesting-permission
 - https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources
-- https://developer.android.com/training/permissions/requesting#explain
+- https://developer.android.com/training/permissions/requesting
 - https://support.google.com/googleplay/android-developer/answer/9888170?hl=en
 - https://developer.android.com/privacy-and-security/minimize-permission-requests
-- https://developer.android.com/training/permissions/requesting
-- https://developer.android.com/training/permissions/requesting#remove-access
 - https://developer.android.com/training/permissions/usage-notes
 - https://arxiv.org/pdf/1905.02713
 - https://arxiv.org/pdf/2203.10583
-- 
 
 status: new
 ---
