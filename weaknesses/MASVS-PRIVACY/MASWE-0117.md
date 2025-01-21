@@ -17,31 +17,44 @@ refs:
 - https://developer.android.com/training/permissions/usage-notes
 - https://arxiv.org/pdf/1905.02713
 - https://arxiv.org/pdf/2203.10583
+- https://ieeexplore.ieee.org/document/9001128
+- https://www.enisa.europa.eu/sites/default/files/publications/WP2017%20O-2-2-4%20GDPR%20Mobile.pdf
 
 status: new
 ---
 
 ## Overview
 
-Inadequate permission management poses significant risks to user privacy and security in mobile apps. Permissions control access to sensitive device features, such as the camera, microphone, location, and storage, which are essential for app functionality. However, improper management, such as requesting excessive or unnecessary permissions, can lead to privacy violations, unauthorized data access, and erosion of user trust. For example, some apps retain access to sensitive resources long after they are no longer needed (even when platforms like Android 13 offer mechanisms to revoke unused permissions). Developers face the challenge of balancing functionality with privacy, as revoking permissions can disrupt app usability, forcing users to choose between privacy and functionality.
+Permissions control access to sensitive device features such as the camera, microphone, location, and storage, making them a crucial aspect of mobile app privacy. Proper permission management is essential to protect user privacy and comply with regulations, as permissions serve as the gateway for data collection and processing.
 
-Some apps, especially those that come pre-installed on devices, are often granted excessive privileges without needing explicit consent. Also, some regular apps may request permissions that are not necessary for their core functionality or request broader access than needed. For example, granting access to the camera may also grant access to the photo gallery, reducing user control. Privacy-friendly alternatives (e.g., coarse location or image picker) are often ignored.
+### First-party Apps
 
-Third-party libraries (SDKs) further complicate permission management by inheriting app permissions. The third-party services behind those libraries may continue to access data collected over the network even after permissions are revoked or the app is deleted. Users typically lack visibility and control over this data retention, which can then be used for marketing, profiling, or other purposes without the user's explicit consent or control.
+First-party apps may request more permissions than necessary, sometimes overlooking privacy-friendly alternatives due to a lack of awareness, technical constraints, or business needs. Developers face the challenge of balancing functionality with privacy: while some permissions are essential for core features (e.g., a camera app requiring camera access), excessive permissions can lead to unnecessary data collection and potential privacy violations.
+
+From the user's perspective, privacy concerns may lead to reluctance in granting permissions, forcing them to choose between privacy and app functionality as in some cases, refusing to grant permissions could render the app unusable. Conversely, users may grant permissions without fully understanding the implications, resulting in unintended data exposure.
+
+### Pre-installed Apps
+
+Pre-installed apps frequently come with excessive permissions that users cannot control or revoke, as they are often granted by default without explicit consent. This lack of control can result in continuous data collection and persistent privacy risks.
+
+### Third-party Libraries (SDKs)
+
+**Third-party libraries (SDKs)** further complicate permission management by inheriting app permissions and introducing privacy and security risks that are difficult to audit and control. Mobile permission models often fail to distinguish between permissions granted to an app and those assigned to third-party components, a challenge highlighted in the [IEEE research paper "Engineering Privacy in Smartphone Apps"](https://ieeexplore.ieee.org/document/9001128) (Section IV, _"Third-party content"_). Furthermore, third-party services behind these SDKs may continue accessing data collected over the network even after permissions are revoked or the app is deleted, creating long-term risks for user privacy.
 
 ## Modes of Introduction
 
-- **Lack of Proactive Permission Revocation**: Not automatically revoking app permissions that are no longer necessary, resulting in unnecessary data access over time.  
-- **Requesting Excessive Permissions**: Apps requesting more permissions than necessary for core functionality, often resulting in excessive data collection beyond what is required for the app to operate.
+- **Requesting Excessive Permissions**: Apps requesting more permissions than necessary for their core functionality.
 - **Lack of Use of Privacy-Friendly Alternatives**: Failing to use privacy-friendly alternatives to permissions that are less intrusive and provide users with more control over their data. For example, using coarse location instead of fine location, or using an image picker instead of requesting access to the camera and photo gallery.
+- **Lack of Proactive Permission Revocation**: Not automatically revoking app permissions that are no longer necessary, resulting in unnecessary data access over time.
+- **Inadequate Permission Explanations**: Failing to provide clear explanations for why each permission is required.
 
 ## Impact
 
-- **Violation of User Privacy**: Users may have their personal data accessed unnecessarily leading to potential misuse of personal data, identity theft or surveillance.  
+- **Violation of User Privacy**: Users may have their personal data unnecessarily accessed by mobile apps, leading to potential misuse, identity theft, or surveillance.
 - **Loss of User Trust**: Users may lose trust in an app if it requests unnecessary permissions or does not allow them to revoke permissions that are no longer relevant. This can lead to negative reviews, lower user engagement, and reduced retention.
 - **Legal and Compliance Issues**: Apps that improperly manage permissions may face non-compliance with privacy regulations like GDPR or CCPA, which require data minimization and appropriate user control over data access, resulting in potential fines, legal action, or removal from app stores.
 - **Malicious Abuse:** Harmful apps can misuse permissions from privileged apps to record, track, or steal data without user consent.
-- **Security Breaches:** Once the collected sensitive data otherwise protected by permissions leaves the app, if it's poorly protected on the remote endpoints, it can be vulnerable to cyberattacks.
+- **Data Breaches:** Once sensitive data leaves the app, it can be vulnerable to cyberattacks if it's not properlyprotected on remote endpoints, potentially leading to large-scale data leaks and reputational damage.
 
 ## Mitigations
 
