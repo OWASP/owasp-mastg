@@ -8,7 +8,10 @@ on:
     paths:
       - 'demos/**'
   pull_request:
-
+    branches:
+      - master
+    paths:
+      - 'demos/**'
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
