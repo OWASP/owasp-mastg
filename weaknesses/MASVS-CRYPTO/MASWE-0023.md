@@ -23,7 +23,7 @@ status: new
 
 Outdated or weak padding schemes are discouraged due to vulnerabilities that enable [padding oracle attacks](https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf).
 
-- **Symmetric Cryptography**: PKCS#7 padding is vulnerable to padding oracle attacks unless mitigations like AES-GCM or HMAC are used. PKCS#7 padding is used for symmetric encryption algorithms like AES in block cipher modes (e.g., CBC). PKCS#7 has been superseded by CMS (Cryptographic Message Syntax), defined in RFC 5652.
+- **Symmetric Cryptography**: PKCS#7 padding is used for symmetric encryption algorithms such as AES in block cipher modes (e.g., AES-CBC) and is vulnerable to padding oracle attacks unless mitigations such as AES-GCM or HMAC are used.
 - **Asymmetric Cryptography**: PKCS#1 v1.5 specifies padding schemes for RSA operations and is vulnerable to attacks like Bleichenbacher's. Its use is disallowed by NIST starting December 31, 2023, see [NIST SP 800-131A Rev.2, Section 6 Key Agreement and Key Transport Using RSA](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf).
 
 A padding oracle attack is a side-channel attack, where an adversary can decrypt and encrypt data without knowing the decryption key.
