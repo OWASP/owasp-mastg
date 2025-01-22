@@ -108,11 +108,11 @@ jobs:
           zip -r9q MASTestApp.zip Payload
           mv MASTestApp.zip MASTestApp.ipa
           mkdir -p "$GITHUB_WORKSPACE/output"
-          mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/${{ matrix.demo }}.ipa"
+          mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/$(basename '${{ matrix.demo }}').ipa"
 
       - name: Set IPA name variable
         id: set_ipa_name
-        run: echo "IPA_NAME=$(basename ${{ matrix.demo }}).ipa" >> $GITHUB_ENV
+        run: echo "IPA_NAME=$(basename '${{ matrix.demo }}').ipa" >> $GITHUB_ENV
 
       - name: List generated IPA
         run: |
