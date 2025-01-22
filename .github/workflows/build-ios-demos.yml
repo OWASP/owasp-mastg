@@ -117,10 +117,19 @@ jobs:
       - name: List generated IPA
         run: |
           echo "Listing generated IPA in output directory:"
-          ls -l "$GITHUB_WORKSPACE/output" || echo "No IPA found."
+          ls -l output/
+
+      - name: Debug IPA Path Before Upload
+        run: |
+          if [ -f "output/${{ env.IPA_NAME }}" ]; then
+            echo "IPA file exists and ready for upload: output/${{ env.IPA_NAME }}"
+          else
+            echo "ERROR: IPA file not found at output/${{ env.IPA_NAME }}"
+            exit 1
+          fi
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.IPA_NAME }}"
-          path: "$GITHUB_WORKSPACE/output/${{ env.IPA_NAME }}"
+          path: "output/${{ env.IPA_NAME }}"
