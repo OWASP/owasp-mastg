@@ -163,7 +163,7 @@ def get_android_demo_buttons(page):
 
     page_uri = page.file.src_uri
 
-    artifacts_url = github_api.get_latest_successful_run()
+    artifacts_url = github_api.get_latest_successful_run("build-android-demos.yml")
 
     demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
     
@@ -179,12 +179,15 @@ def get_ios_demo_buttons(page):
 
     page_uri = page.file.src_uri
 
-    mastestapp_binary_url = page_uri.replace("MASTG/demos/ios/", "https://raw.githubusercontent.com/OWASP/owasp-mastg/master/demos/ios/").replace(f"/{id}.md", "/MASTestApp")
+    artifacts_url = github_api.get_latest_successful_run("build-ios-demos.yml")
 
+    # mastestapp_binary_url = page_uri.replace("MASTG/demos/ios/", "https://raw.githubusercontent.com/OWASP/owasp-mastg/master/demos/ios/").replace(f"/{id}.md", "/MASTestApp")
+    # <a href="{mastestapp_binary_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} Binary</a>
+    
     demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
 
     banner = f"""
-<a href="{mastestapp_binary_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} Binary</a>
+<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
 <a href="https://github.com/cpholguera/MASTestApp-iOS" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} IPA</a>
 """
