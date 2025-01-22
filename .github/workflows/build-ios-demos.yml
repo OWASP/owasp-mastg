@@ -52,9 +52,13 @@ jobs:
       - name: Clone MASTestApp-iOS repository
         run: git clone https://github.com/cpholguera/MASTestApp-iOS.git
 
+      - name: Debug repository contents
+        run: ls -R
+
       - name: Install dependencies
         run: |
           brew install ldid cocoapods
+          cd MASTestApp-iOS || exit
           pod install --repo-update || true
 
       - name: Replace files and prepare build
@@ -79,15 +83,17 @@ jobs:
 
       - name: Set Default Scheme
         run: |
+          cd MASTestApp-iOS || exit
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo "DEFAULT_SCHEME=$default" >> $GITHUB_ENV
+          echo "DEFAULT_SCHEME=$default" >> "$GITHUB_ENV"
           echo "Using default scheme: $default"
 
       - name: Build the app (unsigned)
         run: |
+          cd MASTestApp-iOS || exit
           xcodebuild archive \
-            -project "MASTestApp-iOS/MASTestApp.xcodeproj" \
+            -project "MASTestApp.xcodeproj" \
             -scheme "$DEFAULT_SCHEME" \
             -archivePath "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive" \
             -configuration Release \
