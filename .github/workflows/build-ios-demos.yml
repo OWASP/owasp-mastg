@@ -12,7 +12,6 @@ on:
       - master
     paths:
       - 'demos/**'
-
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
@@ -52,9 +51,13 @@ jobs:
       - name: Clone MASTestApp-iOS repository
         run: git clone https://github.com/cpholguera/MASTestApp-iOS.git
 
+      - name: Debug repository contents
+        run: ls -R
+
       - name: Install dependencies
         run: |
           brew install ldid cocoapods
+          cd MASTestApp-iOS || exit
           pod install --repo-update || true
 
       - name: Replace files and prepare build
@@ -79,15 +82,17 @@ jobs:
 
       - name: Set Default Scheme
         run: |
+          cd MASTestApp-iOS || exit
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo "DEFAULT_SCHEME=$default" >> $GITHUB_ENV
+          echo "DEFAULT_SCHEME=$default" >> "$GITHUB_ENV"
           echo "Using default scheme: $default"
 
       - name: Build the app (unsigned)
         run: |
+          cd MASTestApp-iOS || exit
           xcodebuild archive \
-            -project "MASTestApp-iOS/MASTestApp.xcodeproj" \
+            -project "MASTestApp.xcodeproj" \
             -scheme "$DEFAULT_SCHEME" \
             -archivePath "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive" \
             -configuration Release \
@@ -97,7 +102,7 @@ jobs:
 
       - name: Add Entitlements
         run: |
-          ldid -Sentitlements.plist "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products/Applications/MASTestApp.app/MASTestApp"
+          ldid -SMASTestApp-iOS/entitlements.plist "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products/Applications/MASTestApp.app/MASTestApp"
 
       - name: Create IPA manually
         run: |
@@ -106,19 +111,28 @@ jobs:
           zip -r9q MASTestApp.zip Payload
           mv MASTestApp.zip MASTestApp.ipa
           mkdir -p "$GITHUB_WORKSPACE/output"
-          mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/MASTestApp-unsigned.ipa"
+          mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/$(basename "${{ matrix.demo }}").ipa"
 
       - name: Set IPA name variable
         id: set_ipa_name
-        run: echo "IPA_NAME=$(basename ${{ matrix.demo }}).ipa" >> $GITHUB_ENV
+        run: echo "IPA_NAME=$(basename "${{ matrix.demo }}").ipa" >> $GITHUB_ENV
 
       - name: List generated IPA
         run: |
           echo "Listing generated IPA in output directory:"
-          ls -l "$GITHUB_WORKSPACE/output/${{ env.IPA_NAME }}" || echo "No IPA found."
+          ls -l output/
+
+      - name: Debug IPA Path Before Upload
+        run: |
+          if [ -f "output/${{ env.IPA_NAME }}" ]; then
+            echo "IPA file exists and ready for upload: output/${{ env.IPA_NAME }}"
+          else
+            echo "ERROR: IPA file not found at output/${{ env.IPA_NAME }}"
+            exit 1
+          fi
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.IPA_NAME }}
-          path: "$GITHUB_WORKSPACE/output/${{ env.IPA_NAME }}"
+          name: "${{ env.IPA_NAME }}"
+          path: "output/${{ env.IPA_NAME }}"
