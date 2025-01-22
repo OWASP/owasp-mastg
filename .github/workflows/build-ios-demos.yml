@@ -108,7 +108,7 @@ jobs:
           zip -r9q MASTestApp.zip Payload
           mv MASTestApp.zip MASTestApp.ipa
           mkdir -p "$GITHUB_WORKSPACE/output"
-          mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/$(basename '${{ matrix.demo }}').ipa"
+          mv MASTestApp.ipa "output/$(basename '${{ matrix.demo }}').ipa"
 
       - name: Set IPA name variable
         id: set_ipa_name
@@ -117,10 +117,10 @@ jobs:
       - name: List generated IPA
         run: |
           echo "Listing generated IPA in output directory:"
-          ls -l "$GITHUB_WORKSPACE/output/${{ env.IPA_NAME }}" || echo "No IPA found."
+          ls -l output/
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.IPA_NAME }}
-          path: "$GITHUB_WORKSPACE/output/${{ env.IPA_NAME }}"
+          name: "${{ env.IPA_NAME }}"
+          path: "output/${{ env.IPA_NAME }}"
