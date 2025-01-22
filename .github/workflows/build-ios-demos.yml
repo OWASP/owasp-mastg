@@ -99,7 +99,7 @@ jobs:
 
       - name: Add Entitlements
         run: |
-          ldid -Sentitlements.plist "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products/Applications/MASTestApp.app/MASTestApp"
+          ldid -SMASTestApp-iOS/entitlements.plist "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products/Applications/MASTestApp.app/MASTestApp"
 
       - name: Create IPA manually
         run: |
