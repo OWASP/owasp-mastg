@@ -13,7 +13,7 @@ code: [kotlin]
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-weak-encryption.yaml }}
+{{ ../../../../rules/mastg-android-weak-encryption-algorithms.yaml }}
 
 {{ run.sh }}
 

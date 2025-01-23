@@ -14,7 +14,7 @@ test: MASTG-TEST-0221
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/weak-encryption-modes.yaml }}
+{{ ../../../../rules/mastg-android-weak-encryption-modes }}
 
 {{ run.sh }}
 

@@ -4,10 +4,10 @@
 │ 6 Code Findings │
 └─────────────────┘
                                           
-   MastgTest_reversed.java
-    mweak-encryption-modes
-          Weak encryption modes.
-                                
+  MastgTest_reversed.java
+    ❯❱rules.weak-encryption-modes
+          Weak encryption modes
+                               
            36┆ Cipher cipher = Cipher.getInstance("AES");
             ⋮┆----------------------------------------
            55┆ Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
