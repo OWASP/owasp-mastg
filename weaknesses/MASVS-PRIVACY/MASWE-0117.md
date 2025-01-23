@@ -54,7 +54,7 @@ Pre-installed apps frequently come with excessive permissions that users cannot 
 - **Loss of User Trust**: Users may lose trust in an app if it requests unnecessary permissions or does not allow them to revoke permissions that are no longer relevant. This can lead to negative reviews, lower user engagement, and reduced retention.
 - **Legal and Compliance Issues**: Apps that improperly manage permissions may face non-compliance with privacy regulations like GDPR or CCPA, which require data minimization and appropriate user control over data access, resulting in potential fines, legal action, or removal from app stores.
 - **Malicious Abuse:** Harmful apps can misuse permissions from privileged apps to record, track, or steal data without user consent.
-- **Data Breaches:** Once sensitive data leaves the app, it can be vulnerable to cyberattacks if it's not properlyprotected on remote endpoints, potentially leading to large-scale data leaks and reputational damage.
+- **Data Breaches:** Once sensitive data leaves the app, it can be vulnerable to cyberattacks if it's not properly protected on remote endpoints, potentially leading to large-scale data leaks and reputational damage.
 
 ## Mitigations
 
