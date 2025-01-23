@@ -2,7 +2,7 @@
 platform: android
 title: Uses of Insecure Encryption Algorithms in Cipher with semgrep
 id: MASTG-DEMO-0022
-code: [java]
+code: [kotlin]
 ---
 
 ### Sample
@@ -25,7 +25,7 @@ The rule has identified five instances in the code file where an insecure encryp
 
 ### Evaluation
 
-The reported instances include:
+The test fails since several instances of weak encryption algorithms were found:
 
 - Line 36 utilize insecure DES algorithm.
 - Line 59 utilize insecure 3DES algorithm.

@@ -2,7 +2,7 @@
 platform: android
 title: Uses of Insecure Encryption Modes in Cipher with semgrep
 id: MASTG-DEMO-0016
-code: [java]
+code: [kotlin]
 test: MASTG-TEST-0221
 ---
 
@@ -26,7 +26,7 @@ The rule has identified five instances in the code file where insecure encryptio
 
 ### Evaluation
 
-Review each of the reported instances. The following configuration modes will implies the usage of insecure AES/ECB:
+The test fails since the output contains several instances of the ECB mode of AES:
 
 - Line 36 using Cipher.getInstance("AES") defaults to ECB.
 - Line 55 using Cipher.getInstance("AES/ECB/NoPadding");.
