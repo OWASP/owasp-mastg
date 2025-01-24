@@ -18,7 +18,7 @@ For the static analysis we will focus mostly on the following points having `UIW
 
 - [Identifying WebView usage](#identifying-webview-usage)
 - [Testing JavaScript configuration](#testing-javascript-configuration)
-- [Testing for mixed content](#testing-for-mixed-content)
+- [Testing for Mixed Content](#testing-for-mixed-content)
 - [Testing for WebView URI manipulation](#testing-for-webview-uri-manipulation)
 
 ### Identifying WebView Usage
@@ -112,7 +112,7 @@ For the dynamic analysis we will address the same points from the static analysi
 
 - [Enumerating WebView instances](#enumerating-webview-instances)
 - [Checking if JavaScript is enabled](#checking-if-javascript-is-enabled)
-- [Verifying that only secure content is allowed](#verifying-that-only-secure-content-is-allowed)
+- [Testing for Mixed Content](#testing-for-mixed-content-1)
 
 It is possible to identify WebViews and obtain all their properties on runtime by performing dynamic instrumentation. This is very useful when you don't have the original source code.
 
@@ -231,9 +231,9 @@ javaScriptEnabled:  true
 
 ```
 
-### Verifying that Only Secure Content is Allowed
+### Testing for Mixed Content
 
-`UIWebView`'s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "[Enumerating WebView Instances](#enumerating-webview-instances "Enumerating WebView Instances")".
+The `UIWebView` class does not provide a method for verifying that only secure content is allowed. However, [starting on iOS 10](https://developer.apple.com/documentation/safari-technology-preview-release-notes/stp-release-7), the [`Upgrade-Insecure-Requests`](https://w3c.github.io/webappsec-upgrade-insecure-requests/#upgrade-insecure-requests) CSP (Content Security Policy) directive was introduced to WebKit, the browser engine powering the iOS WebViews. This directive can be used to instruct the browser to upgrade insecure requests to secure requests. This is a good practice to prevent mixed content issues.
 
 For `WKWebView`'s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
 
