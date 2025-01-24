@@ -23,7 +23,7 @@ waiting for connection
 The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
 
 ```bash
-ssh -R 8080:localhost:8080 root@localhost -p 2222
+ssh -R 8080:localhost:8080 mobile@localhost -p 2222
 ```
 
 You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device") of Burp on your iOS device.
