@@ -16,10 +16,10 @@ masvs_v1_levels:
 
 For the static analysis we will focus mostly on the following points having `UIWebView` and `WKWebView` under scope.
 
-- [Identifying WebView usage](#identifying-webview-usage)
-- [Testing if JavaScript is Enabled](#testing-if-javascript-is-enabled)
-- [Testing for Mixed Content](#testing-for-mixed-content)
-- [Testing for WebView URI Manipulation](#testing-for-webview-uri-manipulation)
+- Identifying WebView usage
+- Testing if JavaScript is Enabled
+- Testing for Mixed Content
+- Testing for WebView URI Manipulation
 
 ### Identifying WebView Usage
 
@@ -110,9 +110,9 @@ Make sure that the WebView's URI cannot be manipulated by the user in order to l
 
 For the dynamic analysis we will address the same points from the static analysis.
 
-- [Enumerating WebView Instances](#enumerating-webview-instances)
-- [Testing if JavaScript is Enabled](#testing-if-javascript-is-enabled_1)
-- [Testing for Mixed Content](#testing-for-mixed-content_1)
+- Enumerating WebView Instances
+- Testing if JavaScript is Enabled
+- Testing for Mixed Content
 
 It is possible to identify WebViews and obtain all their properties on runtime by performing dynamic instrumentation. This is very useful when you don't have the original source code.
 
