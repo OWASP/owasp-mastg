@@ -16,10 +16,10 @@ masvs_v1_levels:
 
 For the static analysis we will focus mostly on the following points having `UIWebView` and `WKWebView` under scope.
 
-- [Identifying WebView usage](#identifying-webview-usage)
-- [Testing JavaScript configuration](#testing-javascript-configuration)
-- [Testing for Mixed Content](#testing-for-mixed-content)
-- [Testing for WebView URI manipulation](#testing-for-webview-uri-manipulation)
+- Identifying WebView usage
+- Testing if JavaScript is Enabled
+- Testing for Mixed Content
+- Testing for WebView URI Manipulation
 
 ### Identifying WebView Usage
 
@@ -65,9 +65,9 @@ $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC
                                 configuration: __C.WKWebViewConfiguration) -> __C.WKWebView
 ```
 
-### Testing JavaScript Configuration
+### Testing if JavaScript is Enabled
 
-First of all, remember that JavaScript cannot be disabled for `UIWebVIews`.
+First of all, remember that JavaScript cannot be disabled for `UIWebView`s.
 
 For `WKWebView`s, as a best practice, JavaScript should be disabled unless it is explicitly required. To verify that JavaScript was properly disabled search the project for usages of `WKPreferences` and ensure that the [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled "WKPreferences javaScriptEnabled") property is set to `false`:
 
@@ -84,7 +84,7 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
 ```
 
-If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [WKUserContentController](https://developer.apple.com/documentation/webkit/wkusercontentcontroller "WKUserContentController") and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript "WKUserScript") for more information on injecting user scripts to WKWebViews.
+If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [`WKUserContentController`](https://developer.apple.com/documentation/webkit/wkusercontentcontroller "WKUserContentController") and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript "WKUserScript") for more information on injecting user scripts to WKWebViews.
 
 ### Testing for Mixed Content
 
@@ -110,9 +110,9 @@ Make sure that the WebView's URI cannot be manipulated by the user in order to l
 
 For the dynamic analysis we will address the same points from the static analysis.
 
-- [Enumerating WebView instances](#enumerating-webview-instances)
-- [Checking if JavaScript is enabled](#checking-if-javascript-is-enabled)
-- [Testing for Mixed Content](#testing-for-mixed-content-1)
+- Enumerating WebView Instances
+- Testing if JavaScript is Enabled
+- Testing for Mixed Content
 
 It is possible to identify WebViews and obtain all their properties on runtime by performing dynamic instrumentation. This is very useful when you don't have the original source code.
 
