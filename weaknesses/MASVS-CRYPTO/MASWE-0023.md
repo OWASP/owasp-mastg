@@ -16,6 +16,8 @@ refs:
 - https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf
 - https://capec.mitre.org/data/definitions/463.html
 - https://robertheaton.com/2013/07/29/padding-oracle-attack/
+- https://cryptopals.com/sets/3/challenges/17
+- https://medium.com/@masjadaan/oracle-padding-attack-a61369993c86
 status: new
 ---
 
