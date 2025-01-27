@@ -50,7 +50,6 @@ During a real black box test, a reliable Wi-Fi connection may not be available. 
 Connect macOS to an iOS device by installing and starting @MASTG-TOOL-0055:
 
 ```bash
-$ brew install libimobiledevice
 $ iproxy 2222 22
 waiting for connection
 ```
@@ -60,12 +59,10 @@ The above command maps port `22` on the iOS device to port `2222` on localhost. 
 With the following command in a new terminal window, you can connect to the device:
 
 ```bash
-$ ssh -p 2222 root@localhost
-root@localhost's password:
-iPhone:~ root#
+$ ssh -p 2222 mobile@localhost
+mobile@localhost's password:
+iPhone:~ mobile%
 ```
-
-> Small note on USB of an iDevice: on an iOS device you cannot make data connections anymore after 1 hour of being in a locked state, unless you unlock it again due to the USB Restricted Mode, which was introduced with iOS 11.4.1
 
 ## On-device Shell App
 
