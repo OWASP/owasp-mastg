@@ -15,7 +15,7 @@ draft:
     used for only one purpose (e.g., encryption, integrity, authentication, key wrapping,
     random bit generation, or digital signatures)
   topics:
-  - authorized key algorithm
+  - key used together with an authorized algorithm
   - key reuse for different purposes or operations (encrypt, decrypt, sign,...)
 status: draft
 
