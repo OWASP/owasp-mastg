@@ -8,17 +8,16 @@ weakness: MASWE-0101
 
 ## Overview
 
-The test evaluates whether an iOS application is configured to allow debugging. If an app is debuggable, attackers can leverage debugging tools to reverse-engineer the application, analyse its runtime behaviour, and potentially compromise sensitive data or functionality.
+The test evaluates whether an iOS application is configured to allow debugging. If an app is debuggable, attackers can leverage debugging tools (see @MASTG-TECH-0084) to analyse the runtime behaviour of the app, and potentially compromise sensitive data or functionality.
 
 ## Steps
 
-1. Run a static analysis using @MASTG-TOOL-0111 to extract entitlements from the binary to check the value of the `get-task-allow` key and is set to `true`.
-2. Run a [dynamic analysis](../../../techniques/ios/MASTG-TECH-0084.md) using @MASTG-TOOL-0057.
+1. Use @MASTG-TECH-0111 to extract entitlements from the binary and obtain the value of the `get-task-allow` key.
 
 ## Observation
 
-The entitlement get-task-allow is false, and anti-reverse engineering measures prevent debugger attachment attempts.
+The output contains the value of the `get-task-allow` entitlement.
 
 ## Evaluation
 
-The test fails as the entitlement get-task-allow is true, allowing debugger attachment.
+The test fails if the `get-task-allow` entitlement is `true`.
