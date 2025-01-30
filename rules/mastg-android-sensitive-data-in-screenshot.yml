@@ -1,0 +1,10 @@
+rules:
+  - id: flag_secure
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for a use of FLAG_SECURE.
+    message: "[MASVS-PLATFORM] Make sure you use this flag for all screens with sensitive data"
+    pattern: |
+            $X.setFlags(8192, 8192)
