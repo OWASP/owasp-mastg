@@ -5,7 +5,7 @@ rules:
     severity: WARNING
     metadata:
       summary: This rule looks for weak encryption modes such as AES-ECB.
-    message: Weak encryption modes
+    message: "[MASVS-CRYPTO-1] Weak encryption modes found in use."
     pattern-either:
       - pattern: Cipher.getInstance("AES/ECB/NoPadding")
       - pattern: Cipher.getInstance("AES")

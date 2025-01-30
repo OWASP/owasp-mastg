@@ -3,8 +3,8 @@
 ┌─────────────────┐
 │ 2 Code Findings │
 └─────────────────┘
-                                          
-  MastgTest_reversed.java
+                           
+    MastgTest_reversed.java
     ❯❱rules.weak-encryption-algorithms
           [MASVS-CRYPTO-1] Weak encryption algorithms found in use.
                                                                    

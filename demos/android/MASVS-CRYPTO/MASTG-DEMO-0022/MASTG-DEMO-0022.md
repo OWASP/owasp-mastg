@@ -7,6 +7,8 @@ code: [kotlin]
 
 ### Sample
 
+The code snippet below shows sample code contains use of insecure encryption algorithms.
+
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
@@ -19,7 +21,7 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified five instances in the code file where an insecure encryption is used. The specified line numbers can be located in the original code for further investigation and remediation.
+The rule has identified two instances in the code file where an insecure encryption is used. The specified line numbers are from the reversed code for further investigation and remediation.
 
 {{ output.txt }}
 

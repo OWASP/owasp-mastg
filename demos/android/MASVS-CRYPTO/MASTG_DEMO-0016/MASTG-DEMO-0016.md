@@ -8,6 +8,8 @@ test: MASTG-TEST-0221
 
 ### Sample
 
+The code snippet below shows sample code contains use of insecure encryption modes.
+
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
@@ -20,7 +22,7 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified five instances in the code file where insecure encryption modes are used.
+The rule has identified six instances in the code where insecure encryption modes are used.
 
 {{ output.txt }}
 
