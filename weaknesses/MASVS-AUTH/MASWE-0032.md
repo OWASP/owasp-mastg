@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1, MASVS-CODE-3]
+  cwe: [287]
 
 refs:
 - https://developer.android.com/privacy-and-security/security-tips#Credentials

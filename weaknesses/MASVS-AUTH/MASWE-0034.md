@@ -6,6 +6,7 @@ platform: [android]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1]
+  cwe: [287, 319]
 
 draft:
   description: https://mas.owasp.org/MASTG/tests/android/MASVS-AUTH/MASTG-TEST-0017/

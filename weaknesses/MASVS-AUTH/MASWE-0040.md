@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1, MASVS-PLATFORM-2]
+  cwe: [287]
 
 refs:
   - https://developer.android.com/reference/android/webkit/WebView#getHttpAuthUsernamePassword(java.lang.String,%20java.lang.String)

@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1]
+  cwe: [285, 287]
 
 refs:
 - https://mobidev.biz/blog/single-sign-on-sso-implementation-benefits-enterprise
