@@ -28,4 +28,6 @@ The rule has identified two instances in the code file where insecure encryption
 
 ### Evaluation
 
-The test fails due to the use of weak encryption algorithms, specifically DES, 3DES, RC4 and Blowfish. See @MASTG-TEST-0221 for more information.
+The test fails due to the use of weak encryption algorithms, specifically DES, 3DES, RC4 and Blowfish.
+
+See @MASTG-TEST-0221 for more information.
