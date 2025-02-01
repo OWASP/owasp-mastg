@@ -3,6 +3,7 @@ platform: android
 title: Uses of Insecure Encryption Algorithms in Cipher with semgrep
 id: MASTG-DEMO-0022
 code: [kotlin]
+test: MASTG-TEST-0221
 ---
 
 ### Sample

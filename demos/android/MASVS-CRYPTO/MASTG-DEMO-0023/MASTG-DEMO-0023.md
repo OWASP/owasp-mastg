@@ -3,7 +3,7 @@ platform: android
 title: Uses of Insecure Encryption Modes in Cipher with semgrep
 id: MASTG-DEMO-0023
 code: [kotlin]
-test: MASTG-TEST-0221
+test: MASTG-TEST-0232
 ---
 
 ### Sample
