@@ -8,6 +8,8 @@ import javax.crypto.spec.DESKeySpec
 import javax.crypto.spec.DESedeKeySpec
 import javax.crypto.spec.SecretKeySpec
 import android.util.Base64
+import java.security.SecureRandom
+import javax.crypto.SecretKey
 
 class MastgTest(private val context: Context) {
 
@@ -15,11 +17,13 @@ class MastgTest(private val context: Context) {
     fun vulnerableDesEncryption(data: String): String {
         try {
             // Weak key for DES
-            val keySpec = DESKeySpec("12345678".toByteArray())
+            val keyBytes = ByteArray(8)
+            SecureRandom().nextBytes(keyBytes)
+            val keySpec = DESKeySpec(keyBytes)
             val keyFactory = SecretKeyFactory.getInstance("DES")
             val secretKey: Key = keyFactory.generateSecret(keySpec)
 
-            // Weak encryption algorithm (DES) and weak mode (ECB)
+            // Weak encryption algorithm (DES)
             val cipher = Cipher.getInstance("DES")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
@@ -34,8 +38,9 @@ class MastgTest(private val context: Context) {
     // Vulnerable encryption using 3DES (Triple DES)
     fun vulnerable3DesEncryption(data: String): String {
         try {
-            // Weak key for 3DES (24-byte key)
-            val keySpec = DESedeKeySpec("123456789012345678901234".toByteArray()) // 24 bytes key
+            val keyBytes = ByteArray(24)
+            SecureRandom().nextBytes(keyBytes)
+            val keySpec = DESedeKeySpec(keyBytes)
             val keyFactory = SecretKeyFactory.getInstance("DESede")
             val secretKey: Key = keyFactory.generateSecret(keySpec)
 
@@ -50,6 +55,43 @@ class MastgTest(private val context: Context) {
         }
     }
 
+    // Insecure encryption using RC4 (ARCFOUR) (Deprecated)
+    fun vulnerableRc4Encryption(data: String): String {
+        return try {
+            val keyBytes = ByteArray(16)
+            SecureRandom().nextBytes(keyBytes)
+            val secretKey = SecretKeySpec(keyBytes, "RC4")
+
+            val cipher = Cipher.getInstance("RC4")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+
+            val encryptedData = cipher.doFinal(data.toByteArray())
+            Base64.encodeToString(encryptedData, Base64.DEFAULT)
+        } catch (e: Exception) {
+            "Encryption error: ${e.message}"
+        }
+    }
+
+    // Insecure encryption using Blowfish (weak algorithm)
+    fun vulnerableBlowfishEncryption(data: String): String {
+        return try {
+            // Weak key for Blowfish (insecure, small key size)
+            val keyBytes = ByteArray(8) // Only 8 bytes (64-bit key) - not secure
+            SecureRandom().nextBytes(keyBytes)
+            val secretKey: SecretKey = SecretKeySpec(keyBytes, "Blowfish")
+
+            // Weak encryption algorithm (Blowfish)
+            val cipher = Cipher.getInstance("Blowfish")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+
+            val encryptedData = cipher.doFinal(data.toByteArray())
+            Base64.encodeToString(encryptedData, Base64.DEFAULT)
+        } catch (e: Exception) {
+            "Encryption error: ${e.message}"
+        }
+    }
+
+
     fun mastgTest(): String {
         val sensitiveString = "Hello from the OWASP MASTG Test app."
 
@@ -59,7 +101,13 @@ class MastgTest(private val context: Context) {
         // Encrypt with weak 3DES
         val tripleDesEncryptedString = vulnerable3DesEncryption(sensitiveString)
 
+        // Encrypt with deprecated RC4
+        val rc4EncryptedString = vulnerableRc4Encryption(sensitiveString)
+
+        // Encrypt with weak Blowfish
+        val blowfishEncryptedString = vulnerableBlowfishEncryption(sensitiveString)
+
         // Returning the encrypted results
-        return "DES Encrypted: $desEncryptedString\n3DES Encrypted: $tripleDesEncryptedString"
+        return "DES Encrypted: $desEncryptedString\n3DES Encrypted: $tripleDesEncryptedString\nRC4 Encrypted: $rc4EncryptedString\nBlowfish Encrypted: $blowfishEncryptedString"
     }
 }

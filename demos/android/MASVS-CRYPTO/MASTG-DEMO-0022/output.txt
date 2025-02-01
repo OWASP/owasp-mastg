@@ -1,13 +1,18 @@
                    
                    
 ┌─────────────────┐
-│ 2 Code Findings │
+│ 4 Code Findings │
 └─────────────────┘
                            
     MastgTest_reversed.java
-    ❯❱rules.weak-encryption-algorithms
+    ❯❱ rules.weak-encryption-algorithms
           [MASVS-CRYPTO-1] Weak encryption algorithms found in use.
                                                                    
-           36┆ Cipher cipher = Cipher.getInstance("DES");
+           39┆ Cipher cipher = Cipher.getInstance("DES");
             ⋮┆----------------------------------------
-           59┆ Cipher cipher = Cipher.getInstance("DESede");
+           62┆ Cipher cipher = Cipher.getInstance("DESede");
+            ⋮┆----------------------------------------
+           81┆ Cipher cipher = Cipher.getInstance("RC4");
+            ⋮┆----------------------------------------
+          100┆ Cipher cipher = Cipher.getInstance("Blowfish");
+

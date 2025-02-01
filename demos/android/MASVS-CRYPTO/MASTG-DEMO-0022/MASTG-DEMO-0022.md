@@ -1,8 +1,9 @@
 ---
 platform: android
-title: Uses of Insecure Encryption Algorithms in Cipher with semgrep
+title: Uses of Insecure Symmetric Encryption Algorithms in Cipher with semgrep
 id: MASTG-DEMO-0022
 code: [kotlin]
+test: MASTG-TEST-0221
 ---
 
 ### Sample
@@ -21,13 +22,12 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified two instances in the code file where an insecure encryption is used. The specified line numbers are from the reversed code for further investigation and remediation.
+The rule has identified two instances in the code file where insecure encryption algorithms are used. The specified line numbers can be located in the reverse-engineered code for further investigation and remediation.
 
 {{ output.txt }}
 
 ### Evaluation
 
-The test fails since several instances of weak encryption algorithms were found:
+The test fails due to the use of weak encryption algorithms, specifically DES, 3DES, RC4 and Blowfish.
 
-- Line 36 utilize insecure DES algorithm.
-- Line 59 utilize insecure 3DES algorithm.
+See @MASTG-TEST-0221 for more information.
