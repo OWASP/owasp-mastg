@@ -21,13 +21,14 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified two instances in the code file where an insecure encryption is used. The specified line numbers are from the reversed code for further investigation and remediation.
+The rule has identified two instances in the code file where insecure encryption algorithms are used. The specified line numbers can be located in the reverse-engineered code for further investigation and remediation.
 
 {{ output.txt }}
 
 ### Evaluation
 
-The test fails since several instances of weak encryption algorithms were found:
+The test fails due to the use of weak encryption algorithms, specifically:
 
-- Line 36 utilize insecure DES algorithm.
-- Line 59 utilize insecure 3DES algorithm.
+- DES (56-bit key, breakable, [withdrawn by NIST in 2005](https://csrc.nist.gov/pubs/fips/46-3/final))
+- 3DES (Weak 64-bit blocks, vulnerable to the [Sweet32 Attack](https://sweet32.info/), [withdrawn by NIST on January 1, 2024](https://csrc.nist.gov/pubs/sp/800/67/r2/final))
+- RC4 (Biased key stream, allows plaintext recovery [RC4 Weakness](https://www.rc4nomore.com/), disapproved by [NIST](https://nvlpubs.nist.gov/nistpubs/specialpublications/nist.sp.800-52r1.pdf) in 2014 and prohibited by [IETF](https://datatracker.ietf.org/doc/html/rfc7465) in 2015)

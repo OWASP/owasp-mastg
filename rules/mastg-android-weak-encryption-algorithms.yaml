@@ -4,9 +4,9 @@ rules:
       - java
     severity: WARNING
     metadata:
-      summary: This rule looks for weak encryption algorithms such as DES, 3DES.
+      summary: This rule looks for weak encryption algorithms such as DES, 3DES or RC4.
     message: "[MASVS-CRYPTO-1] Weak encryption algorithms found in use."
     pattern-either:
-      - pattern:  Cipher.getInstance("DES")
-      - pattern: |-
-          Cipher.getInstance("DESede")
+      - pattern: Cipher.getInstance("DES")
+      - pattern: Cipher.getInstance("DESede")
+      - pattern: Cipher.getInstance("RC4")
