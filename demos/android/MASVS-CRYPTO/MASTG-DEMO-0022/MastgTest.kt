@@ -9,6 +9,7 @@ import javax.crypto.spec.DESedeKeySpec
 import javax.crypto.spec.SecretKeySpec
 import android.util.Base64
 import java.security.SecureRandom
+import javax.crypto.SecretKey
 
 class MastgTest(private val context: Context) {
 
@@ -71,6 +72,26 @@ class MastgTest(private val context: Context) {
         }
     }
 
+    // Insecure encryption using Blowfish (weak algorithm)
+    fun vulnerableBlowfishEncryption(data: String): String {
+        return try {
+            // Weak key for Blowfish (insecure, small key size)
+            val keyBytes = ByteArray(8) // Only 8 bytes (64-bit key) - not secure
+            SecureRandom().nextBytes(keyBytes)
+            val secretKey: SecretKey = SecretKeySpec(keyBytes, "Blowfish")
+
+            // Weak encryption algorithm (Blowfish)
+            val cipher = Cipher.getInstance("Blowfish")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+
+            val encryptedData = cipher.doFinal(data.toByteArray())
+            Base64.encodeToString(encryptedData, Base64.DEFAULT)
+        } catch (e: Exception) {
+            "Encryption error: ${e.message}"
+        }
+    }
+
+
     fun mastgTest(): String {
         val sensitiveString = "Hello from the OWASP MASTG Test app."
 
@@ -83,7 +104,10 @@ class MastgTest(private val context: Context) {
         // Encrypt with deprecated RC4
         val rc4EncryptedString = vulnerableRc4Encryption(sensitiveString)
 
+        // Encrypt with weak Blowfish
+        val blowfishEncryptedString = vulnerableBlowfishEncryption(sensitiveString)
+
         // Returning the encrypted results
-        return "DES Encrypted: $desEncryptedString\n3DES Encrypted: $tripleDesEncryptedString\nRC4 Encrypted: $rc4EncryptedString"
+        return "DES Encrypted: $desEncryptedString\n3DES Encrypted: $tripleDesEncryptedString\nRC4 Encrypted: $rc4EncryptedString\nBlowfish Encrypted: $blowfishEncryptedString"
     }
 }
