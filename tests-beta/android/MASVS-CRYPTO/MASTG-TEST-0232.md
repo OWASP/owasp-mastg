@@ -23,10 +23,10 @@ ECB (defined in [NIST SP 800-38A](https://csrc.nist.gov/pubs/sp/800/38/a/final))
 
 For example, the following transformations are all [considered vulnerable](https://support.google.com/faqs/answer/10046138?hl=en):
 
-- "AES" (uses AES/ECB mode by [default](https://docs.oracle.com/javase/6/docs/technotes/guides/security/crypto/CryptoSpec.html#Cipher))
-- "AES/ECB/NoPadding"
-- "AES/ECB/PKCS5Padding"
-- "AES/ECB/ISO10126Padding"
+- `"AES"` (uses AES/ECB mode by [default](https://docs.oracle.com/javase/6/docs/technotes/guides/security/crypto/CryptoSpec.html#Cipher))
+- `"AES/ECB/NoPadding"`
+- `"AES/ECB/PKCS5Padding"`
+- `"AES/ECB/ISO10126Padding"`
 
 You can learn more about ECB and other modes in [NIST SP 800-38A - Recommendation for Block Cipher Modes of Operation: Methods and Techniques](https://csrc.nist.gov/pubs/sp/800/38/a/final). Also check the [Decision to Revise NIST SP 800-38A, Recommendation for Block Cipher Modes of Operation: Methods and Techniques](https://csrc.nist.gov/news/2023/decision-to-revise-nist-sp-800-38a) and [NIST IR 8459 Report on the Block Cipher Modes of Operation in the NIST SP 800-38 Series](https://nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8459.pdf) for the latest information.
 
