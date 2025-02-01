@@ -588,19 +588,19 @@ Most third-party services are implemented in two ways:
 
 ### User Interface
 
-### UI Components
+#### UI Components
 
 At certain points in time, the user will have to enter sensitive information into the application. This data may be financial information such as credit card data or user account passwords, or maybe healthcare data. The data may be exposed if the app doesn't properly mask it while it is being typed.
 
 In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
 
-### Screenshots
+#### Screenshots
 
 Manufacturers want to provide device users with an aesthetically pleasing experience at application startup and exit, so they introduced the screenshot-saving feature for use when the application is backgrounded. This feature may pose a security risk. Sensitive data may be exposed if the user deliberately screenshots the application while sensitive data is displayed. A malicious application that is running on the device and able to continuously capture the screen may also expose data. Screenshots are written to local storage, from which they may be recovered by a rogue application (if the device is rooted) or someone who has stolen the device.
 
 For example, capturing a screenshot of a banking application may reveal information about the user's account, credit, transactions, and so on.
 
-### App Notifications
+#### App Notifications
 
 It is important to understand that [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview") should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
 
@@ -610,6 +610,6 @@ Furthermore there are a number of apps on the Google Play Store that provide not
 
 For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
 
-### Keyboard Cache
+#### Keyboard Cache
 
 When users enter information in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
