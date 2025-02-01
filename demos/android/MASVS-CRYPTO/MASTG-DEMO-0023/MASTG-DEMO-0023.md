@@ -16,7 +16,7 @@ The code snippet below shows sample code contains use of insecure encryption mod
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-weak-encryption-modes }}
+{{ ../../../../rules/mastg-android-weak-encryption-modes.yaml }}
 
 {{ run.sh }}
 
