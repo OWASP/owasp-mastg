@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - 'demos/**'
+      - 'demos/ios/**'
   pull_request:
     branches:
       - master
