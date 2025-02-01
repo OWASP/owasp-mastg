@@ -1,5 +1,5 @@
 ---
-title: Weak Encryption Modes
+title: Weak Symmetric Encryption Modes
 platform: android
 id: MASTG-TEST-0232
 type: [static, dynamic]
@@ -17,7 +17,9 @@ In Android development, the `Cipher` class from the Java Cryptography Architectu
 Cipher.getInstance("AES/ECB/PKCS5Padding")
 ```
 
-In this test we're going to focus on symmetric encryption modes such as [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_codebook_(ECB)) operate deterministically, dividing plaintext into blocks and encrypting them separately, which reveals patterns in the ciphertext. This makes it vulnerable to attacks like [known-plaintext attacks](https://en.wikipedia.org/wiki/Known-plaintext_attack) and [chosen-plaintext attacks](https://en.wikipedia.org/wiki/Chosen-plaintext_attack).
+In this test we're going to focus on symmetric encryption modes such as [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_codebook_(ECB)).
+
+ECB (defined in [NIST SP 800-38A](https://csrc.nist.gov/pubs/sp/800/38/a/final))  is generally discouraged [see NIST announcement in 2023](https://csrc.nist.gov/news/2023/decision-to-revise-nist-sp-800-38a) due to its inherent security weaknesses. While not explicitly prohibited, its use is limited and advised against in most scenarios. ECB is a block cipher mode that operate deterministically, dividing plaintext into blocks and encrypting them separately, which reveals patterns in the ciphertext. This makes it vulnerable to attacks like [known-plaintext attacks](https://en.wikipedia.org/wiki/Known-plaintext_attack) and [chosen-plaintext attacks](https://en.wikipedia.org/wiki/Chosen-plaintext_attack).
 
 For example, the following transformations are all [considered vulnerable](https://support.google.com/faqs/answer/10046138?hl=en):
 
