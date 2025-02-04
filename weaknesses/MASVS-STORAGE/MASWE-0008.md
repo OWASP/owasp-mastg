@@ -7,6 +7,7 @@ profiles: [L2]
 mappings:
   masvs-v1: [MSTG-STORAGE-11]
   masvs-v2: [MASVS-STORAGE-1, MASVS-AUTH-2]
+  cwe: [287, 312]
 
 refs:
 - https://developer.apple.com/documentation/localauthentication/logging_a_user_into_your_app_with_face_id_or_touch_id

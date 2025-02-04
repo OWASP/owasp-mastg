@@ -8,7 +8,7 @@ mappings:
   masvs-v1: [MSTG-STORAGE-2]
   masvs-v2: [MASVS-STORAGE-1, MASVS-CRYPTO-2]
   mastg-v1: [MASTG-TEST-0052, MASTG-TEST-0001]
-  cwe: [311]
+  cwe: [312, 313, 922]
 refs:
   - https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/encrypting_your_app_s_files
 status: new
