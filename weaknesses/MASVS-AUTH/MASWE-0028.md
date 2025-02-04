@@ -7,6 +7,7 @@ profiles: [L2]
 mappings:
   masvs-v1: [MSTG-AUTH-9]
   masvs-v2: [MASVS-AUTH-3]
+  cwe: [287]
 
 draft:
   description: e.g. not using auto-fill

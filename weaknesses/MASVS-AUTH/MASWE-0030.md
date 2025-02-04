@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-3]
+  cwe: [285, 287]
 
 refs:
 - https://developers.google.com/identity/sign-in/android/disconnect
