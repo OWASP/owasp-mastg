@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - 'demos/**'
+      - 'demos/android/**'
   pull_request:
     branches:
       - master
