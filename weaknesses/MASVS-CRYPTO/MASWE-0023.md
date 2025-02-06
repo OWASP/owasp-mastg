@@ -8,6 +8,7 @@ mappings:
   masvs-v1: [MSTG-CRYPTO-4]
   masvs-v2: [MASVS-CRYPTO-1]
   mastg-v1: [MASTG-TEST-0014]
+  cwe: [208, 325, 327, 780]
 
 refs:
 - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
