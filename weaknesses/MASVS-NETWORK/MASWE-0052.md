@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-NETWORK-3]
   masvs-v2: [MASVS-NETWORK-1]
-  cwe: [295]
+  cwe: [295. 297]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/unsafe-trustmanager
   - https://developer.android.com/privacy-and-security/risks/unsafe-hostname
