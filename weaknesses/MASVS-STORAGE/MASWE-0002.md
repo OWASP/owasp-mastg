@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-STORAGE-2]
   masvs-v2: [MASVS-STORAGE-2]
+  cwe: [200, 284, 732, 922]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/file-providers
 

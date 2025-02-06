@@ -7,7 +7,7 @@ profiles: ["L1", "L2", "P"]
 mappings:
   masvs-v1: [MSTG-STORAGE-7]
   masvs-v2: [MASVS-STORAGE-2, MASVS-PRIVACY-1]
-  cwe: [200, 359, 497, 532]
+  cwe: [209, 359, 497, 532]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/log-info-disclosure
 refs:
