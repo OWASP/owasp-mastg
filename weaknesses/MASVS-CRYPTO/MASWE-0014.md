@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-STORAGE-1]
   masvs-v2: [MASVS-CRYPTO-2, MASVS-STORAGE-1]
-  cwe: [321]
+  cwe: [312, 318, 321]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
 refs:
