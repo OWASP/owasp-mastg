@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-2, MASVS-CRYPTO-2]
+  cwe: [287, 522]
 
 draft:
   description: Biometric related crypto keys should be is invalidated by default whenever

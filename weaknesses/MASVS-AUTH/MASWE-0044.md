@@ -7,6 +7,7 @@ profiles: [L2]
 mappings:
   masvs-v1: [MSTG-AUTH-8]
   masvs-v2: [MASVS-AUTH-2]
+  cwe: [287]
 
 refs:
 - https://developer.android.com/training/sign-in/biometric-auth#crypto
