@@ -1,0 +1,11 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ [1mrules.device-access-security-sdk-version[0m
+          [MASVS-STORAGE] Make sure to verify that your app runs on a device with an up-to-date OS
+                                                                                                  
+           37┆ return Build.VERSION.SDK_INT;
