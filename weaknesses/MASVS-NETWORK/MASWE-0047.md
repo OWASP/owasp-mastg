@@ -7,6 +7,7 @@ profiles: [L2]
 mappings:
   masvs-v1: [MSTG-NETWORK-4]
   masvs-v2: [MASVS-NETWORK-2]
+  cwe: [295]
 status: new
 ---
 
