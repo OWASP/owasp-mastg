@@ -7,6 +7,7 @@ profiles: [L1, L2, P]
 mappings:
   masvs-v1: [MSTG-STORAGE-8]
   masvs-v2: [MASVS-STORAGE-2, MASVS-PRIVACY-1]
+  cwe: [212]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/backup-best-practices
 
