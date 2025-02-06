@@ -10,4 +10,4 @@ AppSync Unified disables various IPA signature verifications on jailbroken iOS d
 
 !!! warning
 
-    You can normally install AppSync Unified from the `https://cydia.akemi.ai/` repository by adding it to the package manager on your iOS device. However, as this repository is not always available, we recommend building it from source and installing the created .deb file using `dpkg -i` on your device.
+    You can normally install AppSync Unified from the `https://cydia.akemi.ai/` repository by adding it to the package manager on your iOS device. However, as this repository is not always available, you can alternatively download the .deb file from the [releases page](https://github.com/akemin-dayo/AppSync/releases/) and install it using `dpkg -i` on the device.

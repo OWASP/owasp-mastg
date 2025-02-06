@@ -29,6 +29,10 @@ $ ideviceinstaller -i Uncrackable.ipa
 Install: Complete
 ```
 
+## Filza
+
+@MASTG-TOOL-0128 allows you to install an IPA file which is already located on your device. You can use either `scp` or airdrop to copy the IPA file to your device, after which you can simply navigate to the IPA file on your file system and click the `Install` button in the top right corner.
+
 ## ipainstaller
 
 The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). Naturally, this requires a jailbroken device, as otherwise you cannot SSH into the device. After copying the file over to the device, for example via scp, you can execute ipainstaller with the IPA's filename:
