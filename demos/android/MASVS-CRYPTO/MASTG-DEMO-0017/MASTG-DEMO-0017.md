@@ -9,7 +9,7 @@ code: [java]
 
 ### Sample
 
-{{ MastgTest.kt }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
