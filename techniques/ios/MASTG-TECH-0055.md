@@ -77,6 +77,8 @@ Process 783 resuming
 (lldb)
 ```
 
+More information about debugging iOS apps can be found in @MASTG-TECH-0084.
+
 If you manually injected a Frida Gadget, Frida will now be waiting for you to attach to it. Until you do so, the application will appear frozen.
 
 ```bash
