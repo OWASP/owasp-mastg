@@ -2,7 +2,7 @@
 platform: android
 title: Uses of Root Detection Techniques with r2
 code: [kotlin]
-id: MASTG-DEMO-0022
+id: MASTG-DEMO-0023
 test: MASTG-TEST-0245
 ---
 

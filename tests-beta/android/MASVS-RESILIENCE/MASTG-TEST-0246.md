@@ -30,7 +30,7 @@ The testing process involves running the app on a non-rooted and a rooted device
 
 ## Observation
 
-The main purpose of this test is to evaluate the accuracy of implemented root detection mechanisms. This means we want to see if the root detection mechanisms are effective at identifying devices that have been modified while minimizing instances where non-rooted devices are mistakenly flagged as rooted. The outcome should provide a comprehensive understanding of how effectively the application’s root detection mechanisms function. 
+The main purpose of this test is to evaluate the accuracy of implemented root detection mechanisms. This means we want to see if the root detection mechanisms are effective at identifying devices that have been modified while minimizing instances where non-rooted devices are mistakenly flagged as rooted. The outcome should provide a comprehensive understanding of how effectively the application’s root detection mechanisms function.
 
 ## Evaluation
 

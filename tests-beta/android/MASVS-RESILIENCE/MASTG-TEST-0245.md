@@ -11,7 +11,7 @@ best-practices: []
 
 This test is specifically designed to evaluate the effectiveness of root detection mechanisms. Its goal is to ensure that rooted devices are accurately identified so that any associated security risks can be addressed, ultimately safeguarding the integrity of the device and protecting user data.
 
-The testing process involves analyzing the device environment to identify common indicators of root access. This includes checking for the presence of root management tools, suspicious files or directories, and modified system properties on the device itself. It does so by statically analyzing the device for [common root detection checks](../../../Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#root-etection-and-common-root-detection-methods). 
+The testing process involves analyzing the device environment to identify common indicators of root access. This includes checking for the presence of root management tools, suspicious files or directories, and modified system properties on the device itself. It does so by statically analyzing the device for [common root detection checks](../../../Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#root-etection-and-common-root-detection-methods).
 
 ## Steps
 
