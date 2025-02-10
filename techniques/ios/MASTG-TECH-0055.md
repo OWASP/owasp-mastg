@@ -114,7 +114,7 @@ true
 
 After attaching, the application will continue executing as normal.
 
-## iOS16 and older
+## iOS 16 and older
 
 On older versions of iOS, you can use either `idevicedebug` (see @MASTG-TOOL-0126) or @MASTG-TOOL-0054 to launch the app in debug mode.
 
