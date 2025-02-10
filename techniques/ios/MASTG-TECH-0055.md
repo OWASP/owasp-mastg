@@ -178,7 +178,7 @@ Build Version: 20G81
 
 If your application was repackaged with a Frida Gadget, the application will wait for you to attach to it before it continues launching.
 
-In a new terminal window, connect to the Frida gadget, just like in the iOS17 scenario:
+In a new terminal window, connect to the Frida gadget, just like in the iOS 17 scenario:
 
 ```bash
 $ frida-ps -Ua
