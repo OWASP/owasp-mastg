@@ -5,7 +5,7 @@ platform: ios
 
 When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification, which is explained in @MASTG-TECH-0092.
 
-On a jailbroken device, you can circumvent this requirement using @MASTG-TOOL-0127, allowing you to install IPA files without obtaining a valid signature.
+**Disabling Signature Verification (optional)**: On a jailbroken device, you can bypass the signature verification requirement using @MASTG-TOOL-0127, which hooks the appropriate system daemon and disables signature verification for any installations you do with the tools listed below while it's enabled.
 
 Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
 
