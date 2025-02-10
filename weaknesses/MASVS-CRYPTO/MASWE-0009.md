@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-CRYPTO-2]
   masvs-v2: [MASVS-CRYPTO-2]
-  cwe: [326, 327, 337, 338]
+  cwe: [331, 337, 338]
   android-risks: 
     - https://developer.android.com/privacy-and-security/risks/weak-prng
 refs:
