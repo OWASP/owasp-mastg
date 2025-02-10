@@ -31,7 +31,7 @@ $ idevice_id
 00008101-1234567890123456 (Network)
 ```
 
-Now that we have the correct Bundle Identifier and device ID, we can launch the app using `xrun` (see @MASTG-TOOL-0071):
+Now that we have the correct Bundle Identifier and device ID, we can launch the app using `xcrun` (see @MASTG-TOOL-0072):
 
 ```bash
 xcrun devicectl device process launch --device 00008101-1234567890123456  --start-stopped sg.vp.UnCrackable1.QH868V5764
