@@ -103,7 +103,7 @@ Sometimes an application can require to be used on an iPad device. If you only h
 </plist>
 ```
 
-It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
+Note that changing this value will break the original signature, so you must re-sign the IPA (@MASTG-TECH-0092) to install it on a device that does not have signature validation disabled.
 
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
 
