@@ -9,7 +9,7 @@ After the application has been installed using @MASTG-TECH-0056, you can launch 
 
 > Note that the commands that are part of @MASTG-TOOL-0126 refer to the latest version available from Github. If you installed them via brew or other package managers, you may have an older version with different command line flags.
 
-## iOS17 and newer
+## iOS 17 and newer
 
 First, make sure you know the correct Bundle Identifier. Depending on how you signed the application, the actual Bundle Identifier might be different from the original Bundle Identifier. To get an overview of the installed applications, use the `ideviceinstaller` tool (see @MASTG-TOOL-0126):
 
