@@ -31,7 +31,7 @@ Install: Complete
 
 ## Filza
 
-@MASTG-TOOL-0128 allows you to install an IPA file which is already located on your device. You can use either `scp` or airdrop to copy the IPA file to your device, after which you can simply navigate to the IPA file on your file system and click the `Install` button in the top right corner.
+@MASTG-TOOL-0128 allows you to install an IPA file which is already located on your device. You can use either `scp` (@MASTG-TECH-0053) or [AirDrop](https://support.apple.com/en-us/119857) to copy the IPA file to your device, after which you can simply navigate to the IPA file on your file system and click the `Install` button in the top right corner.
 
 ## ipainstaller
 
