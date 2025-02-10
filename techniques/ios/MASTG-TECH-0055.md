@@ -40,7 +40,7 @@ xcrun devicectl device process launch --device 00008101-1234567890123456  --star
 Launched application with sg.vp.UnCrackable1.QH868V5764 bundle identifier.
 ```
 
-Finally, you can attach `lldb` using the following commands:
+Finally, you can attach @MASTG-TOOL-0057 using the following commands:
 
 ```bash
 # Execute the lldb debugger
