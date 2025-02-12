@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-2, MASVS-CRYPTO-2]
+  cwe: [922, 326, 312]
 
 draft:
   description: It's better to use the OS Local Auth / bind to a key stored in the

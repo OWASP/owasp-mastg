@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1, MASVS-STORAGE-1]
+  cwe: [312]
 
 refs:
 - https://developers.google.com/identity/blockstore/android?hl=en

@@ -1,8 +1,9 @@
 import logging
 import yaml
 import mkdocs.plugins
-import glob, os
+import glob
 from collections import defaultdict
+import github_api
 
 log = logging.getLogger('mkdocs')
 
@@ -157,6 +158,38 @@ def get_v1_deprecated_tests_banner(meta):
 """
     return banner
 
+def get_android_demo_buttons(page):
+    id = page.meta.get('id')
+
+    page_uri = page.file.src_uri
+
+    artifacts_url = github_api.get_latest_successful_run("build-android-demos.yml")
+
+    demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
+    
+    banner = f"""
+<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
+<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
+<a href="https://github.com/cpholguera/MASTestApp-Android" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} APK</a>
+"""
+    return banner
+
+def get_ios_demo_buttons(page):
+    id = page.meta.get('id')
+
+    page_uri = page.file.src_uri
+
+    artifacts_url = github_api.get_latest_successful_run("build-ios-demos.yml")
+
+    demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
+
+    banner = f"""
+<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
+<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
+<a href="https://github.com/cpholguera/MASTestApp-iOS" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} IPA</a>
+"""
+    return banner
+
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, **kwargs):
@@ -175,6 +208,12 @@ def on_page_markdown(markdown, page, **kwargs):
 
     if "MASTG/tests/" in path and page.meta.get('status') == 'deprecated':
         banners.append(get_v1_deprecated_tests_banner(page.meta))
+
+    if "MASTG/demos/android/" in path:
+        banners.append(get_android_demo_buttons(page))
+    
+    if "MASTG/demos/ios/" in path:
+        banners.append(get_ios_demo_buttons(page))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown

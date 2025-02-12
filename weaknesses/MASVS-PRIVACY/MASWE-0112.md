@@ -23,6 +23,8 @@ When a mobile app's stated data collection practices, such as those documented i
 
 These declarations must clearly outline what data is collected, how it is used, whether it is linked to the user's identity, and whether it is shared with third parties in accordance with the platform's policies.
 
+**Note about third-party libraries (SDKs)**: Developers, as data controllers, are legally responsible for ensuring that third-party components process sensitive data lawfully, fairly, and transparently, as highlighted in the [ENISA study on GDPR compliance](https://www.enisa.europa.eu/sites/default/files/publications/WP2017%20O-2-2-4%20GDPR%20Mobile.pdf) (Section 2.2.7, _"Data transfers and processing by third parties"_). However, in some cases, it may be challenging for mobile app developers to be fully aware of what data these third-party SDKs actually collect.
+
 ## Modes of Introduction
 
 - **Undeclared Data Collection and Purpose**: Failing to declare what data is being collected (e.g., location, contacts, identifiers) and for what purposes (e.g., analytics, personalization), leaving users unaware of how their information is used.  
