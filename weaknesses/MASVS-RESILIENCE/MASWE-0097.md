@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-1]
   masvs-v2: [MASVS-RESILIENCE-1]
+  cwe: [250, 358]
 
 draft:
   description: no root/jailbreak detection implemented e.g. check for Cydia, SuperSU,

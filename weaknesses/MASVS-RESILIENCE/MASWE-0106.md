@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [R]
 mappings:
   masvs-v2: [MASVS-RESILIENCE-2]
+  cwe: [353]
 
 draft:
   description: Google PlayStore or Apple AppStore

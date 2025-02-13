@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-13]
   masvs-v2: [MASVS-RESILIENCE-3, MASVS-NETWORK-1]
+  cwe: [319]
 
 draft:
   description: Use payload/End-2-End Encryption. Even if the connection is encrypted
