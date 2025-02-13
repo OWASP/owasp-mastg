@@ -21,7 +21,7 @@ To achieve this status, you'll need to demonstrate that you **make consistent hi
     - Presenting your work, asking questions, and discussing new ideas/changes.
     - Proactive follow-up on tasks and initiatives.
 
-**Important Note**: Contributions should align with OWASP quality guidelines and project priorities. 
+**Important Note**: Contributions should align with OWASP quality guidelines and project priorities.
 
 **Initial evaluation period**: Consistency over a sustained period of time (min. 6 months) is fundamental. Note that the 6-month timeframe is a minimum and may extend depending on the nature and impact of your contributions.
 
