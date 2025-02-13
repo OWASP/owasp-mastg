@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-CODE-4]
+  cwe: [349]
 
 refs:
 - https://developer.android.com/guide/topics/data/keyvaluebackup#RestoreVersion

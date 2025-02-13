@@ -7,6 +7,7 @@ profiles: [L2]
 mappings:
   masvs-v1: [MSTG-ARCH-9]
   masvs-v2: [MASVS-CODE-2]
+  cwe: [357]
 
 refs:
 - https://developer.android.com/guide/playcore/in-app-updates

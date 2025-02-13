@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CODE-4]
+  cwe: [116, 347, 611]
 
 draft:
   description: e.g. XML External Entity (XXE) attacks, X509 certificate parsing, character

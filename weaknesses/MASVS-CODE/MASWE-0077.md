@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CODE-1]
+  cwe: [693]
 
 draft:
   description: e.g. via minSdkVersion on Android and MinimumOSVersion on iOS. with
