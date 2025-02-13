@@ -13,13 +13,13 @@ Being a "MAS Advocate" is the highest status that companies can achieve in the O
 To achieve this status, you'll need to demonstrate that you **make consistent high-impact contributions** to the project. The baseline or **the minimum meaningful monthly contribution** the following:
 
 - **1 substantial PR**, which includes a full set of Weakness+Tests+Demos
-  - Alternatively, as this is currently a priority, several PRs focused on porting v1->v2 tests (equivalent effort to the above).
+    - Alternatively, as this is currently a priority, several PRs focused on porting v1->v2 tests (equivalent effort to the above).
 - **2-3 in-depth PR reviews or issue support**
-  - Involving a thorough analysis, constructive feedback, and actionable suggestions that demonstrate a clear understanding of the topic.
-  - Reviews should go beyond surface-level comments and, where necessary, include research to provide well-informed insights.
+    - Involving a thorough analysis, constructive feedback, and actionable suggestions that demonstrate a clear understanding of the topic.
+    - Reviews should go beyond surface-level comments and, where necessary, include research to provide well-informed insights.
 - **Active participation** in the MAS Task Force, which includes:
-  - Presenting your work, asking questions, and discussing new ideas/changes.
-  - Proactive follow-up on tasks and initiatives.
+    - Presenting your work, asking questions, and discussing new ideas/changes.
+    - Proactive follow-up on tasks and initiatives.
 
 **Important Note**: Contributions should align with OWASP quality guidelines and project priorities. 
 
