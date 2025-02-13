@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-2]
   masvs-v2: [MASVS-PLATFORM-1, MASVS-RESILIENCE-4]
+  cwe: [489]
 
 refs:
 - https://developer.android.com/topic/security/risks/android-debuggable

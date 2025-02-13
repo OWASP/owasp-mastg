@@ -6,6 +6,7 @@ platform: [ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-PLATFORM-1, MASVS-STORAGE-2]
+  cwe: [285, 358]
 
 draft:
   description: e.g. data (items) being shared, custom activities, excluded activity
