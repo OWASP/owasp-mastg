@@ -7,7 +7,7 @@ profiles: ["P"]
 mappings:
   masvs-v1: []
   masvs-v2: [MASVS-PRIVACY-4]
-  cwe: [359]
+  cwe: [213, 359]
 refs:
 - https://developer.apple.com/app-store/app-privacy-details/#privacy-links
 status: new

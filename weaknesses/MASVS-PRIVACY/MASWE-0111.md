@@ -7,7 +7,7 @@ profiles: ["P"]
 mappings:
   masvs-v1: [MASVS-STORAGE-12]
   masvs-v2: [MASVS-PRIVACY-3]
-  cwe: [359]
+  cwe: [213, 359]
 refs:
 - https://support.google.com/googleplay/android-developer/answer/9859455#privacy_policy
 - https://developer.apple.com/app-store/app-privacy-details/#privacy-links
