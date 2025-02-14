@@ -103,7 +103,7 @@ From the note above we can highlight that:
 - The mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above.
 - The scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this.
 
-If you don't have the original source code you can use radare2 or rabin2 to search the binary strings for the link receiver method:
+If you don't have the original source code you can use @MASTG-TOOL-0073 or @MASTG-TOOL-0129 to search the binary strings for the link receiver method:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep restorationHan
