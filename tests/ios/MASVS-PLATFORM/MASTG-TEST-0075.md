@@ -246,7 +246,7 @@ Search for deprecated methods like:
 - [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc "UIApplication openURL:")
 - [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application "UIApplicationDelegate application:openURL:sourceApplication:annotation:")
 
-For example, here we find those three:
+For example, using @MASTG-TOOL-0129 we find those three:
 
 ```bash
 $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"
