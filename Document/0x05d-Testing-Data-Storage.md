@@ -69,28 +69,6 @@ Once the activity has been called, the file key.xml will be created with the pro
 
 > Other insecure modes exist, such as `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE`, but they have been deprecated since Android 4.2 (API level 17) and [removed in Android 7.0 (API Level 24)](https://developer.android.com/reference/android/os/Build.VERSION_CODES#N). Therefore, only apps running on an older OS version (`android:minSdkVersion` less than 17) will be affected. Otherwise, Android will throw a [SecurityException](https://developer.android.com/reference/java/lang/SecurityException). If an app needs to share private files with other apps, it is best to use a [FileProvider](https://developer.android.com/reference/androidx/core/content/FileProvider) with the [FLAG_GRANT_READ_URI_PERMISSION](https://developer.android.com/reference/android/content/Intent#FLAG_GRANT_READ_URI_PERMISSION). See [Sharing Files](https://developer.android.com/training/secure-file-sharing) for more details.
 
-You might also use [`EncryptedSharedPreferences`](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences), which is wrapper of `SharedPreferences` that automatically encrypts all data stored to the shared preferences.
-
-```kotlin
-var masterKey: MasterKey? = null
-masterKey = Builder(this)
-    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-    .build()
-
-val sharedPreferences: SharedPreferences = EncryptedSharedPreferences.create(
-    this,
-    "secret_shared_prefs",
-    masterKey,
-    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-)
-
-val editor = sharedPreferences.edit()
-editor.putString("username", "administrator")
-editor.putString("password", "supersecret")
-editor.commit()
-```
-
 ### Databases
 
 The Android platform provides a number of database options as aforementioned in the previous list. Each database option has its own quirks and methods that need to be understood.
@@ -482,8 +460,6 @@ A more user-friendly and recommended way is to use the [Android KeyStore API](ht
 In order to securely store symmetric keys on devices running on Android 5.1 (API level 22) or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the `AndroidKeyStore`. The encrypted symmetric key can be encoded using base64 and stored in the `SharedPreferences`. Whenever we need the symmetric key, the application retrieves the private key from the `AndroidKeyStore` and decrypts the symmetric key.
 
 Envelope encryption, or key wrapping, is a similar approach that uses symmetric encryption to encapsulate key material. Data encryption keys (DEKs) can be encrypted with key encryption keys (KEKs) which are securely stored. Encrypted DEKs can be stored in `SharedPreferences` or written to files. When required, the application reads the KEK, then decrypts the DEK. Refer to [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#encrypting-stored-keys "OWASP Cryptographic Storage Cheat Sheet: Encrypting Stored Keys") to learn more about encrypting cryptographic keys.
-
-Also, as the illustration of this approach, refer to the [EncryptedSharedPreferences from androidx.security.crypto package](https://developer.android.com/jetpack/androidx/releases/security "androidx.security.crypto API reference").
 
 #### Insecure options to store keys
 
