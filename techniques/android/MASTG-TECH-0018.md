@@ -70,7 +70,7 @@ $ greadelf -W -s libnative-lib.so | grep Java
      3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
 ```
 
-You can also see this using radare2's rabin2:
+You can also see this using radare2's @MASTG-TOOL-0129:
 
 ```bash
 $ rabin2 -s HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so | grep -i Java
