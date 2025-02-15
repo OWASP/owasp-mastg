@@ -37,7 +37,7 @@ jobs:
   build:
     needs: generate-matrix
     runs-on: ubuntu-latest
-    timeout-minutes: 60  # Increase this value as needed
+    timeout-minutes: 30  # Increase this value as needed
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
       max-parallel: 3  # Limit the number of parallel jobs
@@ -48,17 +48,36 @@ jobs:
         with:
           sparse-checkout: demos/android
 
-      - name: Clone MASTestApp-Android repository
-        uses: actions/checkout@v4
-        with:
-          repository: cpholguera/MASTestApp-Android
-          path: MASTestApp-Android
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+
+      - name: Get last commit hash of MASTestApp-Android
+        id: get-mastestapp-hash
+        run: echo "mastestapp_hash=$(git ls-remote https://github.com/cpholguera/MASTestApp-Android.git HEAD | awk '{print $1}')" >> $GITHUB_ENV 
+
+      - name: Restore cache
+        id: cache-base-app
+        uses: actions/cache/restore@v4
+        with:
+          path: MASTestApp-Android/
+          key: build-${{ env.mastestapp_hash }}
+
+      - name: Clone MASTestApp-Android repository
+        if: steps.cache-base-app.outputs.cache-hit != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: cpholguera/MASTestApp-Android
+          path: MASTestApp-Android
+          ref: ${{ env.mastestapp_hash }}
 
       - name: Replace files and build APK
         run: |
@@ -93,6 +112,13 @@ jobs:
           )
           echo "APK for $demo moved to $apk_filename"
           echo "APK_NAME=$apk_filename" >> $GITHUB_ENV
+
+      - name: Saving cache
+        uses: actions/cache/save@v4
+        if: steps.cache-base-app.outputs.cache-hit != 'true'
+        with:
+          path: MASTestApp-Android/
+          key: ${{ steps.cache-base-app.outputs.cache-primary-key }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
