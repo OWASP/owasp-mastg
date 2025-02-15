@@ -12,6 +12,7 @@ on:
       - master
     paths:
       - 'demos/**'
+      - '.github/workflows/build-android-demos.yml'
 
 jobs:
   generate-matrix:
@@ -21,6 +22,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: demos/android
 
       - name: Generate matrix
         id: set-matrix
@@ -48,6 +51,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: demos/android
 
       - name: Clone MASTestApp-Android repository
         run: git clone https://github.com/cpholguera/MASTestApp-Android.git
