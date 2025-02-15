@@ -60,30 +60,34 @@ jobs:
       - name: Replace files and build APK
         run: |
           demo="${{ matrix.demo }}"
-          if [ -d "$demo" ]; then
-            echo "Processing $demo"
-            [ -f "$demo/MastgTest.kt" ] && cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt && echo "Copied MastgTest.kt for $demo" || echo "No MastgTest.kt found for $demo"
-            [ -f "$demo/AndroidManifest.xml" ] && cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml && echo "Copied AndroidManifest.xml for $demo" || echo "No AndroidManifest.xml found for $demo"
-            cd MASTestApp-Android
-            echo "Building APK for $demo"
-            ./gradlew assembleDebug --stacktrace
-            build_status=$?
-            cd ..
-            if [ $build_status -eq 0 ]; then
-              echo "Build succeeded for $demo"
-              apk_name="$(basename "$demo").apk"
-              if [ -f "MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk" ]; then
-                mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$apk_name"
-                echo "APK for $demo moved to $apk_name"
-              else
-                echo "APK not found for $demo"
-              fi
-            else
-              echo "Build failed for $demo"
-            fi
-          else
+          [ -d "$demo" ] || (
             echo "Demo directory not found: $demo"
-          fi
+            exit 1
+          )
+
+          echo "Processing $demo"
+          cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt 2>/dev/null \
+            && echo "Copied MastgTest.kt for $demo" \
+            || echo "No MastgTest.kt found for $demo"
+          cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml 2>/dev/null \
+            && echo "Copied AndroidManifest.xml for $demo" \
+            || echo "No AndroidManifest.xml found for $demo"
+          
+          echo "Building APK for $demo"
+          cd MASTestApp-Android
+          grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
+          ./gradlew assembleDebug --stacktrace || (
+            echo "Build failed for $demo"
+            exit 1
+          )
+          cd ..
+          echo "Build succeeded for $demo"          
+
+          apk_filename="$(basename "$demo").apk"
+          mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$apk_filename" || (
+            echo "APK not found for $demo"
+            exit 1
+          )
 
       - name: Set APK name variable
         id: set_apk_name
