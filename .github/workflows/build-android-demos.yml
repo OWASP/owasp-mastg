@@ -28,14 +28,8 @@ jobs:
       - name: Generate matrix
         id: set-matrix
         run: |
-          demos=$(find demos/android -type d -name "MASTG-DEMO-*")
-          matrix="{\"demo\":["
-          for demo in $demos; do
-            matrix="${matrix}\"$demo\","
-          done
-          matrix="${matrix%,}]}"
-          echo "matrix=$matrix" >> $GITHUB_ENV
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          matrix="$(echo demos/android/*/MASTG-DEMO-* | sed 's/ /","/g')"
+          echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
 
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"
