@@ -52,7 +52,7 @@ jobs:
         run: git clone https://github.com/cpholguera/MASTestApp-Android.git
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -88,15 +88,8 @@ jobs:
             echo "APK not found for $demo"
             exit 1
           )
-
-      - name: Set APK name variable
-        id: set_apk_name
-        run: echo "APK_NAME=$(basename ${{ matrix.demo }}).apk" >> $GITHUB_ENV
-
-      - name: List generated APK
-        run: |
-          echo "Listing generated APK in demos/android directory:"
-          ls -l "${{ env.APK_NAME }}" || echo "No APK found."
+          echo "APK for $demo moved to $apk_filename"
+          echo "APK_NAME=$apk_filename" >> $GITHUB_ENV
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
