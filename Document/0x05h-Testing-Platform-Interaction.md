@@ -283,11 +283,11 @@ JavaScript can be injected into web applications via reflected, stored, or DOM-b
 
 These APIs control how a WebView accesses files on the local device. They determine whether the WebView can load files (such as HTML, images, or scripts) from the file system and whether JavaScript running in a local context can request additional resources. Note that accessing assets and resources (via file:///android_asset or file:///android_res) is always allowed regardless of these settings.
 
-| API | Purpose | Default Behavior True (API Levels)   | Default Behavior False (API Levels) | Deprecated |
+| API | Purpose | Defaults to `True` (API Level)   | Defaults to `False` (API Level) | Deprecated |
 |-----|---------|-------------------------------------|-------------------------------------|------------|
-| `setAllowFileAccess`  | Permits the WebView to load files from the local file system (using `file://` URLs)    | API levels **below 30** | API level **30 and above**          | No                                   |
-| `setAllowFileAccessFromFileURLs`  | Allows JavaScript in a `file://` context to access other local `file://` URLs | API levels **below 16** | API level **16 and above**          | Yes (Deprecated in Android 11)       |
-| `setAllowUniversalAccessFromFileURLs`    | Permits JavaScript in a `file://` context to access resources from any origin, bypassing the same-origin policy | API levels **below 16** | API level **16 and above** | Yes (Deprecated in Android 11)       |
+| `setAllowFileAccess`  | Permits the WebView to load files from the local file system (using `file://` URLs)    | <= 29 (Android 10) | >= 30 (Android 11)          | No                                   |
+| `setAllowFileAccessFromFileURLs`  | Allows JavaScript in a `file://` context to access other local `file://` URLs | <= 15 (Android 4.0.3) | >= 16 (Android 4.1)          | Yes (since API level 30, Android 11)       |
+| `setAllowUniversalAccessFromFileURLs`    | Permits JavaScript in a `file://` context to access resources from any origin, bypassing the same-origin policy | <= 15 (Android 4.0.3) | >= 16 (Android 4.1) | Yes (since API level 30, Android 11)       |
 
 ##### `setAllowFileAccess`
 
