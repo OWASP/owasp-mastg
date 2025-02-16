@@ -11,19 +11,17 @@ best-practices: []
 
 ## Overview
 
-Many apps let users view web content using a WebView. WebViews can load content from various sources, including local files using several methods from the [`WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings.html) class, such as `setAllowFileAccess`, `setAllowFileAccessFromFileURLs`, and `setAllowUniversalAccessFromFileURLs`. The location from which the HTML file is loaded must be verified. If the file is loaded from external storage, for example, the file is readable and writable by everyone. This is considered a bad practice. Instead, the file should be placed in the app's assets directory.
+This test checks for references to methods from the [`WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings.html) class used by Android WebViews which enable loading content from various sources, including local files. These methods are:
 
-For attacks related to these APIs to be successful, JavaScript must be enabled in the WebView.
-
-This test checks for references to the aforementioned methods in the `WebSettings` class. These methods control file access within a WebView and can be used to access local files.
-
-- **setAllowFileAccess(true)** opens the door for the WebView to load local files.
-- **setAllowFileAccessFromFileURLs(true)** lets JavaScript within those local files access other local files.
-- **setAllowUniversalAccessFromFileURLs(true)** removes any cross-origin restrictions, allowing that JavaScript to both read files and transmit data across origins.
+- `setAllowFileAccess(true)` opens the door for the WebView to load local files.
+- `setAllowFileAccessFromFileURLs(true)` lets JavaScript within those local files access other local files.
+- `setAllowUniversalAccessFromFileURLs(true)` removes any cross-origin restrictions, allowing that JavaScript to both read files and transmit data across origins.
 
 By combining these settings, an attack can become possible because if a malicious HTML file gains full privilege and it's able to access local resources and then exfiltrate them over the network, effectively bypassing the usual security barriers enforced by the same-origin policy.
 
-**Attack Scenario:**
+Even though these methods have secure defaults and are deprecated in Android 10 (API level 29) and later, they can still be explicitly set to `true` or use their insecure defaults in apps that can run in older versions of Android (due to their `minSdkVersion`).
+
+**Example Attack Scenario:**
 
 Suppose a banking app uses a WebView to display dynamic content, and the developers enabled all three insecure settings.
 
@@ -37,8 +35,9 @@ This combination effectively turns the WebView into a powerful tool for data exf
 
 ## Steps
 
-1. Use a tool like semgrep to search for references to the `setAllowFileAccess`, `setAllowFileAccessFromFileURLs`, and `setAllowUniversalAccessFromFileURLs` methods in the `WebSettings` class.
-2. Determine if JavaScript is enabled in the WebView by checking the value of `setJavaScriptEnabled`.
+1. Determine the `minSdkVersion` of the app.
+2. Use a tool like semgrep to search for references to the `setAllowFileAccess`, `setAllowFileAccessFromFileURLs`, and `setAllowUniversalAccessFromFileURLs` methods in the `WebSettings` class.
+3. Determine if JavaScript is enabled in the WebView by checking the value of `setJavaScriptEnabled`.
 
 ## Observation
 
@@ -56,18 +55,28 @@ The test fails if any of the methods are used and explicitly set to `true` or if
 
 The test passes if all relevant methods are used and explicitly set to `false`.
 
-Mitigations include:
+## Mitigations
 
-In general, for modern Android versions (API level 30 and above), the default values for these methods are secure and some of these methods are deprecated. However, the app must be configured with a `minSdkVersion` that has secure defaults for these methods.
+**Update the app's `minSdkVersion`:**
 
-- For apps with a `minSdkVersion` that has secure defaults for these methods, ensure that the methods are **not used** and the default values are assumed.
+In general, for modern Android versions (API level 30 and above), the default values for these methods are secure and some of these methods are deprecated (`setAllowFileAccessFromFileURLs` and `setAllowUniversalAccessFromFileURLs`). However, the app must be configured with a `minSdkVersion` that has secure defaults for these methods. In some cases, `minSdkVersion` cannot be increased due to compatibility reasons to support older devices.
+
+**Securely configure the WebView:**
+
+- For apps with a `minSdkVersion` that has secure defaults for these methods, ensure that the methods are **not used** and the default values are assumed. Alternatively, explicitly set the methods to `false` to ensure that the WebView does not load local files in any case.
 - For apps with a `minSdkVersion` that **does not have secure defaults** for these methods, ensure that the methods are used and **explicitly** set to `false`.
 
-To load file content to a WebView securely, use [`WebViewClient`](https://developer.android.com/reference/android/webkit/WebViewClient) with [`WebViewAssetLoader`](https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader) to load assets from the app's assets directory using `https://` instead of `file://` URLs.
+**Securely load file content to a WebView:**
+
+The recommended approach to **load file content to a WebView securely** is to use [`WebViewClient`](https://developer.android.com/reference/android/webkit/WebViewClient) with [`WebViewAssetLoader`](https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader) to load assets from the app's assets directory using `https://` instead of `file://` URLs.
+
+**Disable JavaScript in the WebView:**
+
+If not required, disable JavaScript in the WebView by setting [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled%28boolean%29) to `false`.
+
+### Be Careful
 
 Note that some apps may require these methods to be set to `true` for legitimate reasons. In such cases, ensure that the app follows best practices to prevent misuse. For example:
 
 - the WebView does not load files from external storage and should instead place them in the app's assets directory.
 - the WebView validates and sanitizes all input to prevent script injection.
-
-If not required, disable JavaScript in the WebView by setting [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled%28boolean%29) to `false`.
