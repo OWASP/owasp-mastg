@@ -61,7 +61,7 @@ The test passes if all relevant methods are used and explicitly set to `false`.
 
 In general, for modern Android versions (API level 30 and above), the default values for these methods are secure and some of these methods are deprecated (`setAllowFileAccessFromFileURLs` and `setAllowUniversalAccessFromFileURLs`). However, the app must be configured with a `minSdkVersion` that has secure defaults for these methods. In some cases, `minSdkVersion` cannot be increased due to compatibility reasons to support older devices.
 
-**Securely configure the WebView:**
+**Use secure defaults and explicit disablement:**
 
 - For apps with a `minSdkVersion` that has secure defaults for these methods, ensure that the methods are **not used** and the default values are assumed. Alternatively, explicitly set the methods to `false` to ensure that the WebView does not load local files in any case.
 - For apps with a `minSdkVersion` that **does not have secure defaults** for these methods, ensure that the methods are used and **explicitly** set to `false`.
@@ -73,10 +73,3 @@ The recommended approach to **load file content to a WebView securely** is to us
 **Disable JavaScript in the WebView:**
 
 If not required, disable JavaScript in the WebView by setting [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled%28boolean%29) to `false`.
-
-### Be Careful
-
-Note that some apps may require these methods to be set to `true` for legitimate reasons. In such cases, ensure that the app follows best practices to prevent misuse. For example:
-
-- the WebView does not load files from external storage and should instead place them in the app's assets directory.
-- the WebView validates and sanitizes all input to prevent script injection.
