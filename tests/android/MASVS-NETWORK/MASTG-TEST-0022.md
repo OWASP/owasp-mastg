@@ -7,6 +7,9 @@ platform: android
 title: Testing Custom Certificate Stores and Certificate Pinning
 masvs_v1_levels:
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0x22-1,MASTG-TEST-0x22-2,MASTG-TEST-0x22-3]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview

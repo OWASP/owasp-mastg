@@ -88,9 +88,17 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 </base-config>
 ```
 
-#### Certificate Pinning
+### Certificate Pinning
 
-The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
+Certificate pinning is a critical security mechanism employed in Android applications to safeguard against man-in-the-middle (MITM) attacks by ensuring that the app communicates exclusively with servers possessing predefined cryptographic credentials.
+
+While effective when implemented correctly, insecure implementations potentially enable attackers to read and modify all communication. See @MASWE-0047 for details on impact, modes of introduction and mitigations.
+
+Various approaches exist, depending on the API level of your app, and on the used libraries. In the following, the most common ones are briefly highlighted.
+
+#### Pinning via Network Security Configuration (API 24+)
+
+The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning) to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
 
 When attempting to establish a connection to a remote endpoint, the system will:
 
@@ -105,7 +113,7 @@ If at least one of the pinned digests matches, the certificate chain will be con
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config>
-        Use certificate pinning for OWASP website access including sub domains
+        <!-- Use certificate pinning for OWASP website access including sub domains -->
         <domain includeSubdomains="true">owasp.org</domain>
         <pin-set expiration="2018/8/10">
             <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
@@ -118,6 +126,48 @@ If at least one of the pinned digests matches, the certificate chain will be con
     </domain-config>
 </network-security-config>
 ```
+
+!!! note "Backup Pin"
+    When implementing Certificate Pinning you should always include a backup pin to ensure that the app's connectivity is unaffected, in case you need update the certificate. A backup pin could be the intermediate certificate of the CA.
+
+!!! note "Expiration dates"
+    If you [set an expiration date](https://developer.android.com/privacy-and-security/security-config#CertificatePinning), make sure to update your application in time. Otherwise pinning will **not** be performed at all after the configured date.
+
+!!! warning "Technologies not using Network Security Configuration"
+    If your application uses low level networking APIs or SDKs like Flutter, the Network Security Configuration might not be used by default. In these cases, you will need to enable certificate pinning specifically for the technology used.
+    For example, applications based on Cordova do not support Certificate Pinning natively, so the plugin [PhoneGap SSL Certificate Checker](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin) can be used.
+
+### Certificate Pinning using the OkHttp Library
+
+The OkHttp library is widely used for certificate pinning in Android due to its built-in `CertificatePinner` class, which enables developers to pin public key hashes or certificate signatures. This provides robust protection against MITM attacks.
+
+For example, [CertificatePinner](https://square.github.io/okhttp/features/https/#certificate-pinning-kt-java) can be set up as follows:
+
+```java
+val client = OkHttpClient.Builder()
+      .certificatePinner(
+          CertificatePinner.Builder()
+              .add("publicobject.com", "sha256/afwiKY3RxoMmLkuRW1l7QsPZTJPwDS2pdDROQjXw8ig=")
+              .build())
+      .build()
+```
+
+### Certificate Pinning using TrustKit
+
+For Android versions prior to API 24, the [TrustKit library](https://github.com/datatheorem/TrustKit-Android) offers a backward-compatible solution. TrustKit validates pins against the cleaned certificate chain. However, improper configuration — such as enabling non-default options like CA pinning — can reintroduce [vulnerabilities akin to custom implementations](https://www.blackduck.com/blog/ineffective-certificate-pinning-implementations.html).
+
+### Custom Certificate Pinning
+
+Certificate pinning can be implemented manually by overriding `TrustManager` or `HostnameVerifier` in [`HttpsURLConnection`](https://developer.android.com/reference/java/net/HttpURLConnection). This approach is highly error-prone, as it often involves directly inspecting server-sent certificates via `getPeerCertificates()`, which returns unvalidated chains that [be manipulated by attackers](https://www.blackduck.com/blog/ineffective-certificate-pinning-implementations.html).
+
+!!! warning "Implementing Certificate Pinning Manually"
+    Implementing certificate pinning manually has a high risk of adding functionality to your application that makes the app even less secure. If you are adding this manually, take extreme care of implementing this correctly.
+
+### Vulnerable Third-Party Libraries
+
+Third-party libraries like older versions of the Secure-HTTP Cordova plugin or misconfigured PhoneGap plugins historically introduced vulnerabilities by [mishandling certificate chains](https://www.blackduck.com/blog/ineffective-certificate-pinning-implementations.html). These libraries often exposed non-default configuration options that, when enabled, allowed attackers to bypass pinning by injecting untrusted certificates into the chain.
+
+Developers must audit third-party libraries for adherence to chain-validation best practices and prefer those leveraging the Android Keystore system for pinning.
 
 ### Security Provider
 
