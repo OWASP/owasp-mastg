@@ -12,6 +12,7 @@ on:
       - master
     paths:
       - 'demos/**'
+      - '.github/workflows/build-ios-demos.yml'
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
@@ -24,17 +25,8 @@ jobs:
       - name: Generate matrix
         id: set-matrix
         run: |
-          demos=$(find demos/ios -type d -name "MASTG-DEMO-*")
-          matrix="{\"demo\":["
-          for demo in $demos; do
-            matrix="${matrix}\"$demo\","
-          done
-          matrix="${matrix%,}]}"
-          echo "matrix=$matrix" >> $GITHUB_ENV
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
-
-      - name: Print matrix
-        run: echo "${{ steps.set-matrix.outputs.matrix }}"
+          matrix="$(echo demos/ios/*/MASTG-DEMO-* | sed 's/ /","/g')"
+          echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
 
   build:
     needs: generate-matrix
@@ -50,9 +42,6 @@ jobs:
 
       - name: Clone MASTestApp-iOS repository
         run: git clone https://github.com/cpholguera/MASTestApp-iOS.git
-
-      - name: Debug repository contents
-        run: ls -R
 
       - name: Install dependencies
         run: |
