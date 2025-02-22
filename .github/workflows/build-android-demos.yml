@@ -34,8 +34,66 @@ jobs:
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"
 
+  build-base-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Get last commit hash of MASTestApp-Android
+        id: get-mastestapp-hash
+        run: |
+          echo "MASTESTAPP_HASH=$(git ls-remote https://github.com/cpholguera/MASTestApp-Android.git HEAD | awk '{print $1}')" >> $GITHUB_ENV 
+          echo "MASTESTAPP_HASH=$MASTESTAPP_HASH" >> $GITHUB_OUTPUT
+
+      - name: Check if already cached
+        id: cache-check
+        uses: actions/cache/restore@v4
+        with:
+          key: base-app-${{ env.MASTESTAPP_HASH }}
+          lookup-only: true
+
+      - name: Set up JDK 17
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+
+      - name: Clone MASTestApp-Android repository
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: cpholguera/MASTestApp-Android
+          path: MASTestApp-Android
+          ref: ${{ env.MASTESTAPP_HASH }}
+
+      - name: Replace files and build APK
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        run: |
+          echo "Building base APK"
+          cd MASTestApp-Android
+          grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
+          ./gradlew assembleDebug --stacktrace || (
+            echo "Build failed"
+            exit 1
+          )
+          echo "Build succeeded"
+
+      - name: Saving cache
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: MASTestApp-Android/
+          key: ${{ steps.cache-check.outputs.cache-primary-key }}
+  
   build:
-    needs: generate-matrix
+    needs: [generate-matrix, build-base-app]
     runs-on: ubuntu-latest
     timeout-minutes: 30  # Increase this value as needed
     strategy:
@@ -60,24 +118,12 @@ jobs:
           gradle-version: wrapper
           cache-read-only: false
 
-      - name: Get last commit hash of MASTestApp-Android
-        id: get-mastestapp-hash
-        run: echo "mastestapp_hash=$(git ls-remote https://github.com/cpholguera/MASTestApp-Android.git HEAD | awk '{print $1}')" >> $GITHUB_ENV 
-
       - name: Restore cache
         id: cache-base-app
         uses: actions/cache/restore@v4
         with:
           path: MASTestApp-Android/
-          key: build-${{ env.mastestapp_hash }}
-
-      - name: Clone MASTestApp-Android repository
-        if: steps.cache-base-app.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
-        with:
-          repository: cpholguera/MASTestApp-Android
-          path: MASTestApp-Android
-          ref: ${{ env.mastestapp_hash }}
+          key: base-app-${{ env.MASTESTAPP_HASH }}
 
       - name: Replace files and build APK
         run: |
@@ -112,13 +158,6 @@ jobs:
           )
           echo "APK for $demo moved to $apk_filename"
           echo "APK_NAME=$apk_filename" >> $GITHUB_ENV
-
-      - name: Saving cache
-        uses: actions/cache/save@v4
-        if: steps.cache-base-app.outputs.cache-hit != 'true'
-        with:
-          path: MASTestApp-Android/
-          key: ${{ steps.cache-base-app.outputs.cache-primary-key }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
