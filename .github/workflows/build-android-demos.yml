@@ -48,8 +48,9 @@ jobs:
         id: cache-check
         uses: actions/cache/restore@v4
         with:
-          key: base-app-${{ env.MASTESTAPP_HASH }}
           lookup-only: true
+          path: MASTestApp-Android/ # we're forced to write a path even if we don't need it
+          key: base-app-${{ env.MASTESTAPP_HASH }}
 
       - name: Set up JDK 17
         if: steps.cache-check.outputs.cache-hit != 'true'
@@ -91,7 +92,7 @@ jobs:
         with:
           path: MASTestApp-Android/
           key: ${{ steps.cache-check.outputs.cache-primary-key }}
-  
+   
   build:
     needs: [generate-matrix, build-base-app]
     runs-on: ubuntu-latest
