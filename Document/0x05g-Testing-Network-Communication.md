@@ -92,13 +92,13 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 Certificate pinning is a critical security mechanism employed in Android applications to safeguard against man-in-the-middle (MITM) attacks by ensuring that the app communicates exclusively with servers possessing predefined cryptographic credentials.
 
-While effective when implemented correctly, insecure implementations potentially enable attackers to read and modify all communication. See @MASWE-0047 for details on impact, modes of introduction and mitigations.
+While effective when implemented correctly, insecure implementations potentially enable attackers to read and modify all communication. See @MASWE-0047 for more details.
 
-Various approaches exist, depending on the API level of your app, and on the used libraries. In the following, the most common ones are briefly highlighted.
+Various approaches exist, depending on the API level of the app, and on the used libraries. In the following, the most common ones are briefly highlighted.
 
 #### Pinning via Network Security Configuration (API 24+)
 
-The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning) to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
+The Network Security Configuration can be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning) to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
 
 When attempting to establish a connection to a remote endpoint, the system will:
 
