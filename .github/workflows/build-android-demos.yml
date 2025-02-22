@@ -63,7 +63,6 @@ jobs:
         if: steps.cache-check.outputs.cache-hit != 'true'
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: wrapper
           cache-read-only: false
 
       - name: Clone MASTestApp-Android repository
@@ -74,10 +73,9 @@ jobs:
           path: MASTestApp-Android
           ref: ${{ env.MASTESTAPP_HASH }}
 
-      - name: Replace files and build APK
+      - name: Build base app
         if: steps.cache-check.outputs.cache-hit != 'true'
         run: |
-          echo "Building base APK"
           cd MASTestApp-Android
           grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
           ./gradlew assembleDebug --stacktrace || (
@@ -116,8 +114,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: wrapper
-          cache-read-only: false
+          cache-read-only: true
 
       - name: Restore cache
         id: cache-base-app
