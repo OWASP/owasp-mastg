@@ -18,6 +18,8 @@ If you'd like to contribute, take a look at our [Contributions page](contributin
 
 [:material-github:](https://github.com/OWASP/owasp-mastg/discussions)
 [:material-twitter:](https://twitter.com/OWASP_MAS)
+[:simple-bluesky:](https://bsky.app/profile/owasp-mas.bsky.social)
+[:simple-mastodon:](https://infosec.exchange/@OWASP_MAS)
 [:material-slack:](https://owasp.slack.com/archives/C1M6ZVC6S)
 
 > [Request an invitation](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#) to join our Slack channel `#project-mobile-app-security`
@@ -33,10 +35,12 @@ If you'd like to contribute, take a look at our [Contributions page](contributin
 Carlos is a mobile security research engineer who has gained many years of hands-on experience in the field of security testing for mobile apps and embedded systems such as automotive control units and IoT devices. He is passionate about reverse engineering and dynamic instrumentation of mobile apps and is continuously learning and sharing his knowledge.
 
 [:material-github:](https://github.com/cpholguera)
+[:material-linkedin:](https://linkedin.com/in/carlos-holguera)
 [:material-twitter:](https://twitter.com/grepharder)
+[:simple-bluesky:](https://bsky.app/profile/grepharder.bsky.social)
+[:simple-mastodon:](https://infosec.exchange/@grepharder)
 [:material-slack:](https://owasp.slack.com/team/U5LRFEGR5)
 [:material-email:](mailto:Carlos.Holguera@owasp.org)
-[:material-linkedin:](https://linkedin.com/in/carlos-holguera)
 
 <br>
 
