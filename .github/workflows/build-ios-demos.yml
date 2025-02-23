@@ -104,11 +104,6 @@ jobs:
           mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/$(basename "${{ matrix.demo }}").ipa"
           echo "IPA_NAME=$(basename "${{ matrix.demo }}").ipa" >> $GITHUB_ENV
 
-      - name: List generated IPA
-        run: |
-          echo "Listing generated IPA in output directory:"
-          ls -l output/
-
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
