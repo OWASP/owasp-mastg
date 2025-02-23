@@ -136,9 +136,7 @@ When in doubt, you can verify proper capitalization on [https://titlecaseconvert
 
 ### Standardization
 
-This is a list of words/abbreviations that are used inconsistently at the moment in the MASTG and need standardization:
-
-- man-in-the-middle attack (MITM)
+The MAS project (MASVS, MASTG, MASWE) strives for consistent wording that is clear and unambiguous in context. However, due to the size of the project, there may be words or abbreviations that are used inconsistently and need to be standardised. If this is the case, please submit a pull request so that we can discuss them and suggest what should be used instead.
 
 ### Contractions
 
