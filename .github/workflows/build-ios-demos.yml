@@ -109,6 +109,12 @@ jobs:
           echo "Listing generated IPA in output directory:"
           ls -l output/
 
+      - name: List all files in repository
+        run: |
+          find . -type f
+          echo exists jq?
+          jq --version || echo "jq not found"
+
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
