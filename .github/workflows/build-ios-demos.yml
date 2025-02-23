@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: demos/ios
 
       - name: Generate matrix
         id: set-matrix
@@ -39,15 +41,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: demos/ios
 
       - name: Clone MASTestApp-iOS repository
-        run: git clone https://github.com/cpholguera/MASTestApp-iOS.git
+        uses: actions/checkout@v4
+        with:
+          repository: cpholguera/MASTestApp-iOS
+          path: MASTestApp-iOS
 
       - name: Install dependencies
         run: |
           brew install ldid cocoapods
-          cd MASTestApp-iOS || exit
-          pod install --repo-update || true
+          cd MASTestApp-iOS
+          pod install --repo-update
 
       - name: Replace files and prepare build
         run: |
