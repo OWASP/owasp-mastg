@@ -49,9 +49,11 @@ jobs:
         with:
           repository: cpholguera/MASTestApp-iOS
           path: MASTestApp-iOS
-
+        
       - name: Install dependencies
-        run: brew install ldid
+        uses: tecolicom/actions-use-homebrew-tools@v1
+        with:
+          tools: ldid
 
       - name: Set default scheme and iOS deployment target
         run: |
@@ -62,13 +64,7 @@ jobs:
 
           DEPLOYMENT_TARGET=14.4
           echo "Setting iOS Deployment Target to $DEPLOYMENT_TARGET"
-          sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = .*;/IPHONEOS_DEPLOYMENT_TARGET = $DEPLOYMENT_TARGET;/g" "MASTestApp-iOS/MASTestApp.xcodeproj/project.pbxproj"
-
-      - name: Cache build directory
-        uses: actions/cache@v4
-        with:
-          path: build/
-          key: ios-demos-${{ hashFiles('MASTestApp-iOS/MASTestApp.xcodeproj/project.pbxproj') }}
+          sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = .*;/IPHONEOS_DEPLOYMENT_TARGET = $DEPLOYMENT_TARGET;/g" "MASTestApp.xcodeproj/project.pbxproj"
 
       - name: Replace files with demo and prepare build
         run: |
