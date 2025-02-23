@@ -51,34 +51,28 @@ jobs:
           path: MASTestApp-iOS
 
       - name: Install dependencies
-        run: |
-          brew install ldid cocoapods
-          cd MASTestApp-iOS
-          pod install --repo-update
+        run: brew install ldid
 
       - name: Replace files and prepare build
         run: |
           demo="${{ matrix.demo }}"
-          if [ -d "$demo" ]; then
-            echo "Processing $demo"
-            [ -f "$demo/MastgTest.swift" ] && cp -f "$demo/MastgTest.swift" MASTestApp-iOS/MASTestApp/MastgTest.swift && echo "Copied MastgTest.swift for $demo" || echo "No MastgTest.swift found for $demo"
-            [ -f "$demo/Info.plist" ] && cp -f "$demo/Info.plist" MASTestApp-iOS/MASTestApp/Info.plist && echo "Copied Info.plist for $demo" || echo "No Info.plist found for $demo"
-          else
+          if [ ! -d "$demo" ]; then
             echo "Demo directory not found: $demo"
             exit 1
           fi
 
-      - name: Set iOS Deployment Target to 14.4
-        run: |
-          /usr/libexec/PlistBuddy -c "Set :objects:CBFA8C102BDE94720047F3A3:buildSettings:IPHONEOS_DEPLOYMENT_TARGET 14.4" "MASTestApp-iOS/MASTestApp.xcodeproj/project.pbxproj"
-          /usr/libexec/PlistBuddy -c "Set :objects:CBFA8C112BDE94720047F3A3:buildSettings:IPHONEOS_DEPLOYMENT_TARGET 14.4" "MASTestApp-iOS/MASTestApp.xcodeproj/project.pbxproj"
-          /usr/libexec/PlistBuddy -c "Set :objects:CBFA8C132BDE94720047F3A3:buildSettings:IPHONEOS_DEPLOYMENT_TARGET 14.4" "MASTestApp-iOS/MASTestApp.xcodeproj/project.pbxproj"
-          /usr/libexec/PlistBuddy -c "Set :objects:CBFA8C142BDE94720047F3A3:buildSettings:IPHONEOS_DEPLOYMENT_TARGET 14.4" "MASTestApp-iOS/MASTestApp.xcodeproj/project.pbxproj"
-          echo "iOS Deployment Target successfully updated to 14.4"
+          echo "Processing $demo"
+          [ -f "$demo/MastgTest.swift" ] && cp -f "$demo/MastgTest.swift" MASTestApp-iOS/MASTestApp/MastgTest.swift && echo "Copied MastgTest.swift for $demo" || echo "No MastgTest.swift found for $demo"
+          [ -f "$demo/Info.plist" ] && cp -f "$demo/Info.plist" MASTestApp-iOS/MASTestApp/Info.plist && echo "Copied Info.plist for $demo" || echo "No Info.plist found for $demo"
+
+          DEPLOYMENT_TARGET=14.4
+          echo "Setting iOS Deployment Target to $DEPLOYMENT_TARGET"
+          sed -i "s/IPHONEOS_DEPLOYMENT_TARGET = .*;/IPHONEOS_DEPLOYMENT_TARGET = $DEPLOYMENT_TARGET;/g" "MASTestApp-iOS/MASTestApp.xcodeproj/project.pbxproj"
+
 
       - name: Set Default Scheme
         run: |
-          cd MASTestApp-iOS || exit
+          cd MASTestApp-iOS
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo "DEFAULT_SCHEME=$default" >> "$GITHUB_ENV"
@@ -86,7 +80,7 @@ jobs:
 
       - name: Build the app (unsigned)
         run: |
-          cd MASTestApp-iOS || exit
+          cd MASTestApp-iOS
           xcodebuild archive \
             -project "MASTestApp.xcodeproj" \
             -scheme "$DEFAULT_SCHEME" \
@@ -102,30 +96,18 @@ jobs:
 
       - name: Create IPA manually
         run: |
-          cd "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products" || exit
+          cd "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products" || exit 1
           mv Applications Payload
           zip -r9q MASTestApp.zip Payload
           mv MASTestApp.zip MASTestApp.ipa
           mkdir -p "$GITHUB_WORKSPACE/output"
           mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/$(basename "${{ matrix.demo }}").ipa"
-
-      - name: Set IPA name variable
-        id: set_ipa_name
-        run: echo "IPA_NAME=$(basename "${{ matrix.demo }}").ipa" >> $GITHUB_ENV
+          echo "IPA_NAME=$(basename "${{ matrix.demo }}").ipa" >> $GITHUB_ENV
 
       - name: List generated IPA
         run: |
           echo "Listing generated IPA in output directory:"
           ls -l output/
-
-      - name: Debug IPA Path Before Upload
-        run: |
-          if [ -f "output/${{ env.IPA_NAME }}" ]; then
-            echo "IPA file exists and ready for upload: output/${{ env.IPA_NAME }}"
-          else
-            echo "ERROR: IPA file not found at output/${{ env.IPA_NAME }}"
-            exit 1
-          fi
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
