@@ -42,8 +42,6 @@ Or any other constructions like "he/she", "s/he", "his or her". Instead, use the
 - Use the second person: "If the attacker runs this code, he can bypass ..." -> "If you run this code, you can bypass ..."
 - Use the imperative: "A developer should never use ... in his code" -> "Never use ... in your code!"
 
-There is one exception: We are still using "man in the middle", as it is simply a common term in the industry and there is no common replacement for it.
-
 ### Timeliness of Content
 
 Keeping accurate and timely content establishes the OWASP MAS deliverables as a credible and trustworthy source of information.
