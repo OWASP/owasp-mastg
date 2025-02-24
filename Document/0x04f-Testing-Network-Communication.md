@@ -5,7 +5,7 @@ platform: all
 
 # Mobile App Network Communication
 
-Practically every network-connected mobile app uses the Hypertext Transfer Protocol (HTTP) or HTTP over Transport Layer Security (TLS), HTTPS, to send and receive data to and from remote endpoints. Consequently, network-based attacks (such as packet sniffing and machine-in-the-middle-attacks) are a problem. In this chapter we discuss potential vulnerabilities, testing techniques, and best practices concerning the network communication between mobile apps and their endpoints.
+Almost every network-connected mobile app relies on the Hypertext Transfer Protocol (HTTP) or its secure version, HTTPS (which uses Transport Layer Security, TLS) to exchange data with remote endpoints. If not implemented securely, this communication can be vulnerable to network-based attacks such as packet sniffing and Machine-in-the-Middle (MITM) attacks. In this chapter, we explore potential vulnerabilities, testing techniques, and best practices for securing mobile app network communication.
 
 ## Secure Connections
 
