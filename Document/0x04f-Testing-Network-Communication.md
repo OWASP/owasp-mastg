@@ -297,7 +297,7 @@ If that's the case, you are now able to see the complete network traffic that is
 
 #### Network Setup
 
-A simple way to simulate a machine-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your host computer are connected to. Your host computer is then becoming a router and an access point.
+A simple way to simulate a Machine-in-the-Middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your host computer are connected to. Your host computer is then becoming a router and an access point.
 
 Following scenarios are possible:
 
@@ -305,7 +305,7 @@ Following scenarios are possible:
 - Use an external USB WiFi card as an access point and use your host computer's built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate access point and redirect the traffic to your host computer.
 
-The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a machine-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
+The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a Machine-in-the-Middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
 ```bash
 iw list | grep AP
@@ -324,7 +324,7 @@ In both cases the AP needs to be configured to point to your host computer's IP.
 
 #### Installation
 
-The following procedure is setting up a machine-in-the-middle position using an access point and an additional network interface:
+The following procedure is setting up a Machine-in-the-Middle position using an access point and an additional network interface:
 
 Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your host computer.
 
@@ -407,7 +407,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 #### MITM Attack
 
-To be able to get a machine-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
+To be able to get a Machine-in-the-Middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
 ```bash
 # check if other process is not using WiFi interfaces
@@ -458,7 +458,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
     WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
     ```
 
-- 2nd way: Use bettercap in order to get a machine-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+- 2nd way: Use bettercap in order to get a Machine-in-the-Middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
     ```bash
     $ echo "
