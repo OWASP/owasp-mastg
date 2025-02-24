@@ -166,7 +166,19 @@ If you need additional customization beyond what NSC offers, you could implement
 
 It's also possible to implement pinning in [native code](https://developer.android.com/ndk) (C/C++/Rust). By embedding or dynamically verifying certificates within compiled native libraries (`.so` files), you can increase the difficulty of bypassing or modifying the pinning checks via typical APK reverse engineering.
 
-That said, this approach requires significant security expertise and a careful design to manage certificates or public key hashes in native space. Maintenance and debugging also become more complex, so it's generally reserved for high-security apps with specialized needs.
+That said, this approach requires significant security expertise and a careful design to manage certificates or public key hashes in native space. Maintenance and debugging also typically become more complex.
+
+#### Pinning in Cross-Platform Frameworks
+
+Cross-platform frameworks like Flutter, React Native, Cordova and Xamarin might require special considerations. Depending on the framework one of the following can apply:
+
+- The framework might support NSC. This is the case for Flutter apps on Android, but the NSC needs to be enabled specifically for Flutter. See the [Flutter documentation](https://docs.flutter.dev/release/breaking-changes/network-policy-ios-android#migration-guide) on how to enable the network policy.
+
+- The framework might use other networking libraries under the hood, which need to be configured appropriately. E.g., React Native uses OkHttp on Android, which can be configured with a custom `CertificatePinner`.
+
+- The framework might offer plugins to perform certificate pinning. This is the case for example for Cordova.
+
+- The framework might not offer any built-in mechanisms to perform certificate pinning (as it the case for Xamarin). In this case, pinning needs to be implemented manually.
 
 ### Security Provider
 
