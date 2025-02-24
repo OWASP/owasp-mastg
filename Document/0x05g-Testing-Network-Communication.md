@@ -98,7 +98,7 @@ Several approaches to certificate pinning exist, depending on the app's API leve
 
 #### Pinning via Network Security Configuration (API 24+)
 
-The Network Security Configuration can be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning) to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
+The **Network Security Configuration (NSC)** is the preferred and recommended way to implement certificate pinning in Android, as it provides a declarative, maintainable, and secure approach without requiring code changes. It applies to all network traffic managed by the Android framework within the app, including `HttpsURLConnection`-based connections and `WebView` requests (unless a custom `TrustManager` is used). For communication from native code, NSC does not apply, and other mechanisms need to be considered.
 
 When attempting to establish a connection to a remote endpoint, the system will:
 
@@ -172,7 +172,7 @@ That said, this approach requires significant security expertise and a careful d
 
 Cross-platform frameworks like Flutter, React Native, Cordova and Xamarin might require special considerations. Depending on the framework one of the following can apply:
 
-- The framework might support NSC. This is the case for Flutter apps on Android, but the NSC needs to be enabled specifically for Flutter. See the [Flutter documentation](https://docs.flutter.dev/release/breaking-changes/network-policy-ios-android#migration-guide) on how to enable the network policy.
+- The framework might support NSC. This is the case for Flutter apps on Android, but the NSC needs to be enabled in the `AndroidManifest`. See the [Flutter documentation](https://docs.flutter.dev/release/breaking-changes/network-policy-ios-android#migration-guide) on how to enable the network policy.
 
 - The framework might use other networking libraries under the hood, which need to be configured appropriately. E.g., React Native uses OkHttp on Android, which can be configured with a custom `CertificatePinner`.
 
