@@ -272,7 +272,7 @@ Android devices support [shared external storage](https://developer.android.com/
 
 The files stored in these directories are [removed when your app is uninstalled](https://developer.android.com/training/data-storage/app-specific#external).
 
-External storage must be used carefully as there are many risks assotiated with it. For example an attacker may be able to retrieve sensitive data or [obtain arbitrary control of the application](https://blog.checkpoint.com/2018/08/12/man-in-the-disk-a-new-attack-surface-for-android-apps/ "Man in the disk").
+External storage must be used carefully as there are many risks associated with it. For example an attacker may be able to retrieve sensitive data or [obtain arbitrary control of the application](https://blog.checkpoint.com/2018/08/12/man-in-the-disk-a-new-attack-surface-for-android-apps/ "Man in the disk").
 
 **Android Security Guidelines**: Android recommends not storing sensitive data on external storage and to perform input validation on all data stored on external storage. See the [Android Security Guidelines](https://developer.android.com/privacy-and-security/security-tips#external-storage "Android Security Guidelines"). Android also provides a [guide](https://developer.android.com/privacy-and-security/security-best-practices#external-storage "Store data in external storage based on use case") on how to use external storage securely.
 
