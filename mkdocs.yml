@@ -353,8 +353,6 @@ extra:
   social:
     - icon: fontawesome/brands/slack
       link: https://owasp.slack.com/archives/C1M6ZVC6S
-    - icon: fontawesome/brands/twitter 
-      link: https://twitter.com/OWASP_MAS
     - icon: fontawesome/brands/bluesky 
       link: https://bsky.app/profile/owasp-mas.bsky.social
     - icon: fontawesome/brands/mastodon 
