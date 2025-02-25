@@ -2,17 +2,17 @@
 title: Missing Certificate Pinning in Network Traffic
 platform: network
 id: MASTG-TEST-0x242
-type: [static]
+type: [network]
 weakness: MASWE-0047
 ---
 
 ## Overview
 
-There are various ways how certificate pinning can be done for an application.
+There are multiple ways an application can implement certificate pinning, including via the Android Network Security Config, custom TrustManager implementations, third-party libraries, and native code. Since some implementations might be difficult to identify through static analysis, especially when obfuscation or dynamic code loading is involved, this test uses network interception techniques to determine if certificate pinning is enforced at runtime.
 
-Since statically finding all of the locations where certificate pinning is performed might not be feasible, this test case uses dynamic analysis to observe all connections the app makes.
+The goal of this test case is to observe whether a [MITM attack]("../../../Document/0x04f-Testing-Network-Communication.md#mitm-attack) can intercept HTTPS traffic from the app. A successful MITM interception indicates that the app is either not using certificate pinning or implementing it incorrectly.
 
-The goal of this test case is to dynamically check if the connection to a server can be intercepted using a [Man-in-the-Middle attack]("../../../Document/0x04f-Testing-Network-Communication.md#mitm-attack). If this is possible, it means that the certificate is not pinned correctly or not pinned at all.
+If the app is properly implementing certificate pinning, MITM should fail because the app would reject certificates issued by an unauthorized CA, even if the CA is trusted by the system.
 
 ## Steps
 
@@ -22,7 +22,7 @@ The goal of this test case is to dynamically check if the connection to a server
 
 ## Observation
 
-The output should contain a list domains, for which the interception was successful.
+The output should contain a list of domains for which the interception was successful.
 
 ## Evaluation
 

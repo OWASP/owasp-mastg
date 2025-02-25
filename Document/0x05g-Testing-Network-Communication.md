@@ -90,7 +90,7 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 ### Certificate Pinning
 
-Certificate pinning is a critical security mechanism employed in Android applications to safeguard against man-in-the-middle (MITM) attacks by ensuring that the app communicates exclusively with servers possessing predefined cryptographic credentials.
+[Certificate pinning](0x04f-Testing-Network-Communication.md/#restricting-trust-identity-pinning) can be employed in Android apps to safeguard against Machine-in-the-Middle (MITM) attacks by ensuring that the app communicates exclusively with remote endpoints possessing specific identities.
 
 While effective when implemented correctly, insecure implementations potentially enable attackers to read and modify all communication. For more general details on pinning, refer to @MASWE-0047.
 

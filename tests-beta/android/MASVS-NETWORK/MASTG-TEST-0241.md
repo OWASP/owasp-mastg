@@ -1,5 +1,5 @@
 ---
-title: Expired Certificate Pins
+title: Expired Certificate Pins in the Network Security Configuration 
 platform: android
 id: MASTG-TEST-0241
 type: [static]
@@ -8,7 +8,11 @@ weakness: MASWE-0047
 
 ## Overview
 
-Apps can configure expiration dates for pinned certificates in the [Network Security Configuration]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning"). After the expiration date, the pin is no longer used and all installed CAs for that domain are trusted.
+Apps can configure expiration dates for pinned certificates in the [Network Security Configuration (NSC)]("../../../Document/0x05g-Testing-Network-Communication.md#certificate-pinning") by using the `expiration` attribute. When a pin expires, the app no longer enforces certificate pinning and instead relies on its configured trust anchors. This means the connection will still succeed if the server presents a valid certificate from a trusted CA (such as a system CA or a custom CA defined in the app's configuration). However, if no trusted certificate is available, the connection will fail.
+
+If developers assume pinning is still in effect but don't realize it has expired, the app may start trusting CAs it was never intended to.
+
+> Example: A financial app previously pinned to its own private CA but, after expiration, starts trusting publicly trusted CAs, increasing the risk of compromise if a CA is breached.
 
 The goal of this test is to check if any expiration date is in the past.
 
