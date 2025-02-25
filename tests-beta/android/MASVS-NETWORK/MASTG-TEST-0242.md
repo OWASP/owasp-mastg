@@ -1,7 +1,7 @@
 ---
 title: Missing Certificate Pinning in Network Traffic
 platform: network
-id: MASTG-TEST-0x242
+id: MASTG-TEST-0242
 type: [network]
 weakness: MASWE-0047
 ---
@@ -12,7 +12,7 @@ There are multiple ways an application can implement certificate pinning, includ
 
 The goal of this test case is to observe whether a [MITM attack]("../../../Document/0x04f-Testing-Network-Communication.md#mitm-attack) can intercept HTTPS traffic from the app. A successful MITM interception indicates that the app is either not using certificate pinning or implementing it incorrectly.
 
-If the app is properly implementing certificate pinning, MITM should fail because the app would reject certificates issued by an unauthorized CA, even if the CA is trusted by the system.
+If the app is properly implementing certificate pinning, the MITM attack should fail because the app rejects certificates issued by an unauthorized CA, even if the CA is trusted by the system.
 
 ## Steps
 
