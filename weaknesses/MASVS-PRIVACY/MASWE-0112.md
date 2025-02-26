@@ -7,7 +7,7 @@ profiles: ["P"]
 mappings:
   masvs-v1: [MSTG-STORAGE-12]
   masvs-v2: [MASVS-PRIVACY-3]
-  cwe: [359]
+  cwe: [213, 359]
 refs:
 - https://support.apple.com/en-us/102188
 - https://support.apple.com/kb/HT211970
