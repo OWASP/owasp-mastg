@@ -7,6 +7,8 @@ platform: ios
 title: Testing Memory for Sensitive Data
 masvs_v1_levels:
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0x60]
 ---
 
 ## Overview
