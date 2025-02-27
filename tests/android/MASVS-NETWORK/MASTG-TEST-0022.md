@@ -162,7 +162,7 @@ Hybrid applications based on Cordova do not support Certificate Pinning natively
    function errorCallback(message) {
      alert(message);
      if (message === "CONNECTION_NOT_SECURE") {
-       // There is likely a man in the middle attack going on, be careful!
+       // There is likely a MITM attack going on, be careful!
      } else if (message.indexOf("CONNECTION_FAILED") >- 1) {
        // There was no connection (yet). Internet may be down. Try again (a few times) after a little timeout.
      }
