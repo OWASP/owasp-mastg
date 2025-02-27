@@ -15,7 +15,7 @@ This test checks for references to Content Provider access in WebViews which is 
 
 The JavaScript code would have access to any content provider on the device, **including those declared by the app as not exported** and **others that are exported by other apps** and may or may not be following the recommended [best practices](https://developer.android.com/privacy-and-security/security-tips#content-providers).
 
-Refer to [Android WebView Local File Access Settings](../../../Document/0x05h-Testing-Platform-Interaction/#webview-content-provider-access) for more information on the `setAllowContentAccess` method, the specific files that can be accessed and the conditions under which they can be accessed.
+Refer to [Android WebView Local File Access Settings](../../../Document/0x05h-Testing-Platform-Interaction.md/#webview-content-provider-access) for more information on the `setAllowContentAccess` method, the specific files that can be accessed and the conditions under which they can be accessed.
 
 The `setAllowContentAccess` method being set to `true` is not a security issue by itself, but it can be used in combination with other vulnerabilities to escalate the impact of an attack. Therefore, it is recommended to explicitly set it to `false` if the app does not need to access content providers.
 
