@@ -10,7 +10,7 @@ best-practices: [MASTG-BEST-0002]
 
 ## Overview
 
-This test verifies if an app uses logging APIs like `android.util.Log`, `Log`, `Logger`, `System.out.print`, `System.err.print`, and `java.lang.Throwable#printStackTrace`.
+This test verifies if an app uses [logging APIs](../../../0x05d-Testing-Data-Storage.md/#logs) like `android.util.Log`, `Log`, `Logger`, `System.out.print`, `System.err.print`, and `java.lang.Throwable#printStackTrace`.
 
 ## Steps
 
