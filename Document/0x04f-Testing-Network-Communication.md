@@ -441,7 +441,7 @@ Xamarin is a mobile app development platform that allows developers to create [n
 
 When testing a Xamarin app, setting the system proxy in the Device Wi-Fi settings will not capture any HTTP requests in your interception proxy. This is because Xamarin apps do not use the local proxy settings of your device. There are three ways to bypass this limitation:
 
-## Option 1: Manipulating Xamarin's Network Stack Default Proxy
+### Option 1: Manipulating Xamarin's Network Stack Default Proxy
 
 Patch the app to use a [default proxy](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class") by adding the following code in the `OnCreate` or `Main` method:
 
@@ -453,7 +453,7 @@ Finally, recompile and sign the patched app.
 
 Alternatively, use Frida to hook into the `WebRequest.DefaultWebProxy` property and dynamically set the proxy to your interception proxy.
 
-## Option 2: Achieving a MITM Position via ARP Spoofing
+### Option 2: Achieving a MITM Position via ARP Spoofing
 
 Use @MASTG-TOOL-0076 to achieve a MITM position and redirect port 443 to your interception proxy running on localhost.
 
@@ -473,7 +473,7 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 1
 
 Lastly, enable **"Support invisible proxy"** in the listener settings of **@MASTG-TOOL-0007**.
 
-## Option 3: DNS Spoofing
+### Option 3: DNS Spoofing
 
 If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can reroute the app's traffic to your proxy. For example, on a rooted Android device, you can add an entry in `/etc/hosts` mapping the app's server domain to your proxy machine’s IP. This makes the app believe that your machine is the legitimate server.
 
