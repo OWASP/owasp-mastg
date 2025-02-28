@@ -34,4 +34,4 @@ The output should contain a list of locations where insecure symmetric encryptio
 
 ## Evaluation
 
-The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) encryption algorithms being used.
+The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#identifying-insecure-andor-deprecated-cryptographic-algorithms) encryption algorithms being used.

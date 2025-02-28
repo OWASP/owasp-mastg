@@ -9,7 +9,7 @@ weakness: MASWE-0116
 
 ## Overview
 
-This test case checks if the [native libraries](../../../Document/0x05i-Testing-Code-Quality-and-Build-Settings/#binary-protection-mechanisms) of the app are compiled without enabling [Position Independent Code (PIC)](../../../Document/0x04h-Testing-Code-Quality/#position-independent-code), a common mitigation technique against memory corruption attacks.
+This test case checks if the [native libraries](../../../Document/0x05i-Testing-Code-Quality-and-Build-Settings.md/#binary-protection-mechanisms) of the app are compiled without enabling [Position Independent Code (PIC)](../../../Document/0x04h-Testing-Code-Quality/#position-independent-code), a common mitigation technique against memory corruption attacks.
 
 Since Android 5.0 (API level 21), Android requires [all dynamically linked executables to support PIE](https://source.android.com/docs/security/enhancements/#android-5).
 
