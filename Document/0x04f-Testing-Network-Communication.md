@@ -439,21 +439,23 @@ Now you can connect your mobile devices to the access point.
 
 On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") or code injection frameworks like [Frida](https://www.frida.re "Frida") and [cycript](http://www.cycript.org "cycript"). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
 
-### Example - Dealing with Xamarin
+## MASTG-TECH: Intercepting Xamarin Traffic
 
-As an example, we will now redirect all requests from a Xamarin app to an interception proxy.
-
-Xamarin is a mobile application development platform that is capable of producing [native Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/ "Getting Started with Android") and [iOS apps](https://docs.microsoft.com/en-us/xamarin/ios/get-started/ "Getting Started with iOS") by using Visual Studio and C# as programming language.
+Xamarin is a mobile app development platform that is capable of producing [native Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/ "Getting Started with Android") and [iOS apps](https://docs.microsoft.com/en-us/xamarin/ios/get-started/ "Getting Started with iOS") by using Visual Studio and C# as programming language.
 
 When testing a Xamarin app and when you are trying to set the system proxy in the Wi-Fi settings you won't be able to see any HTTP requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your phone. There are three ways to resolve this:
 
-- 1st way: Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
+## Option 1: Using @MASTG-TOOL-0031
+
+Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
 
     ```cs
     WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
     ```
 
-- 2nd way: Use bettercap in order to get a MITM position, see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+## Option 2: Using @MASTG-TOOL-0076
+
+Use @MASTG-TOOL-0076 in order to get a MITM position, see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
     ```bash
     $ echo "
@@ -469,13 +471,15 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
     As last step, you need to set the option 'Support invisible proxy' in the listener settings of @MASTG-TOOL-0007.
 
-- 3rd way: Instead of bettercap an alternative is tweaking the `/etc/hosts` on the mobile phone. Add an entry into `/etc/hosts` for the target domain and point it to the IP address of your intercepting proxy. This creates a similar situation of being MITM as with bettercap and you need to redirect port 443 to the port which is used by your interception proxy. The redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to the original location and port.
+## Option 3: DNS Spoofing
 
-> When redirecting traffic you should create narrow rules to the domains and IPs in scope, to minimize noise and out-of-scope traffic.
+If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can direct the app's traffic to your proxy. For instance, on a rooted Android device you might add an entry to `/etc/hosts` mapping the app's server domain to your proxy machine's IP​. This way, the app thinks your machine is the server. You would still combine this with a port redirect (so that when your machine receives that connection, it hands it to the proxy). The proxy then needs to forward the traffic to the real server, essentially acting as a true MITM as with @MASTG-TOOL-0076.
 
-The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
+**Tip:** When redirecting traffic, you should create narrow rules to the domains and IPs in scope, to minimize noise and out-of-scope traffic.
 
-When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`) you need to specify where traffic should go next, after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in @MASTG-TOOL-0077 to the original location:
+The interception proxy needs to listen to the port specified in the port forwarding rule above, which is `8080`.
+
+When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`), you need to specify where traffic should go next after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in @MASTG-TOOL-0077 to the original location:
 
 1. Go to **Proxy** tab and click on **Options**
 2. Select and edit your listener from the list of proxy listeners.
@@ -487,15 +491,14 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
 
-#### CA Certificates
+## Install CA Certificates for the Interception Proxy
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
 
 - [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device")
-    > Note that starting with Android 7.0 (API level 24) the OS no longer trusts a user supplied CA certificate unless specified in the app. Bypassing this security measure will be addressed in the "Basic Security Testing" chapters.
 - [Install the CA certificate of your interception proxy into your iOS phone](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp")
 
-#### Intercepting Traffic
+## Start Intercepting Traffic
 
 Start using the app and trigger its functions. You should see HTTP messages showing up in your interception proxy.
 
