@@ -88,9 +88,17 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 </base-config>
 ```
 
-#### Certificate Pinning
+### Certificate Pinning
 
-The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
+[Certificate pinning](0x04f-Testing-Network-Communication.md/#restricting-trust-identity-pinning) can be employed in Android apps to safeguard against Machine-in-the-Middle (MITM) attacks by ensuring that the app communicates exclusively with remote endpoints possessing specific identities.
+
+While effective when implemented correctly, insecure implementations potentially enable attackers to read and modify all communication. For more general details on pinning, refer to @MASWE-0047.
+
+Several approaches to certificate pinning exist, depending on the app's API level and the libraries used. Below, we highlight the most common methods. For a deeper dive into the specific implementations, see ["Deep Dive into Certificate Pinning on Android"](https://securevale.blog/articles/deep-dive-into-certificate-pinning-on-android/).
+
+#### Pinning via Network Security Configuration (API 24+)
+
+The **Network Security Configuration (NSC)** is the preferred and recommended way to implement certificate pinning in Android, as it provides a declarative, maintainable, and secure approach without requiring code changes. It applies to all network traffic managed by the Android framework within the app, including `HttpsURLConnection`-based connections and `WebView` requests (unless a custom `TrustManager` is used). For communication from native code, NSC does not apply, and other mechanisms need to be considered.
 
 When attempting to establish a connection to a remote endpoint, the system will:
 
@@ -105,9 +113,9 @@ If at least one of the pinned digests matches, the certificate chain will be con
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config>
-        Use certificate pinning for OWASP website access including sub domains
+        <!-- Use certificate pinning for OWASP website access including sub domains -->
         <domain includeSubdomains="true">owasp.org</domain>
-        <pin-set expiration="2018/8/10">
+        <pin-set expiration="2028-12-31">
             <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
             the Intermediate CA of the OWASP website server certificate -->
             <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
@@ -118,6 +126,59 @@ If at least one of the pinned digests matches, the certificate chain will be con
     </domain-config>
 </network-security-config>
 ```
+
+**Important Considerations:**
+
+- **Backup Pins:** Always include a backup pin to maintain connectivity if the primary certificate changes unexpectedly.
+- **Expiration Dates:** Set an appropriate [expiration date](https://developer.android.com/privacy-and-security/security-config#CertificatePinning) and ensure timely updates to prevent the app from bypassing pinning after the date has passed.
+- **Scope of Application:** Be aware that this configuration applies only to connections made using `HttpsURLConnection` or libraries that rely on it. Other networking libraries or frameworks may require separate pinning implementations.
+
+#### Pinning using Custom TrustManagers
+
+Before Network Security Configuration became available, the recommended way to implement certificate pinning was to create a custom `TrustManager` (using `javax.net.ssl` APIs) and override the default certificate validation. You can still use this approach on modern Android versions for flexibility or when you need more direct control.
+
+This approach involves:
+
+1. Loading the server's certificate(s) into a `KeyStore`.
+2. Creating a custom `TrustManager` that only trusts the certificate(s) in the `KeyStore`.
+3. Initializing an `SSLContext` with the custom `TrustManager`.
+4. Applying the custom `SSLContext` as the socket factory for the network connections (e.g., `HttpsURLConnection`).
+
+**Important Note:** This is a **low-level approach and is prone to errors** if not done carefully. Some key considerations include:
+
+- [`SSLSocket` does not automatically verify hostnames](https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket), so you must handle this manually using a `HostnameVerifier` with a safe implementation (this includes explicitly checking the return value of `HostnameVerifier.verify()`). More information can be found in the [Android documentation](https://developer.android.com/privacy-and-security/risks/unsafe-hostname).
+- [Do **not** include a "trust-all" `TrustManager`](https://developer.android.com/privacy-and-security/security-ssl#UnknownCa) that silently accepts all certificates. This opens the door for attackers to intercept and modify user data with minimal effort.
+- Certificates loaded from raw resources can be extracted if someone repackages the APK. As with NSC, that risk is mitigated by Android's APK signing model, though for highly sensitive apps, additional protections (obfuscation, integrity checks) may be warranted.
+
+#### Pinning using Third-party Libraries
+
+Several third-party libraries offer built-in support for certificate pinning, simplifying the implementation process in some cases. These libraries typically utilize the custom `TrustManager` method, providing higher-level abstractions and additional features. Notable examples include:
+
+For example, [OkHttp](https://github.com/square/okhttp)'s offers pinning in its `CertificatePinner`. Under the hood, it uses a custom `TrustManager` to enforce pinning rules.
+
+#### Pinning in WebViews
+
+For in-app `WebView` traffic on Android, the easiest approach is to rely on the **Network Security Configuration**. Since Android automatically applies NSC rules to WebView traffic within the same application, any pinning rules you set up in `network_security_config.xml` will also apply to resources loaded in that WebView.
+
+If you need additional customization beyond what NSC offers, you could implement pinning by intercepting requests at the WebView level (e.g., using `shouldInterceptRequest`), but in most cases the built-in support is sufficient and simpler.
+
+#### Pinning in Native Code
+
+It's also possible to implement pinning in [native code](https://developer.android.com/ndk) (C/C++/Rust). By embedding or dynamically verifying certificates within compiled native libraries (`.so` files), you can increase the difficulty of bypassing or modifying the pinning checks via typical APK reverse engineering.
+
+That said, this approach requires significant security expertise and a careful design to manage certificates or public key hashes in native space. Maintenance and debugging also typically become more complex.
+
+#### Pinning in Cross-Platform Frameworks
+
+Cross-platform frameworks like Flutter, React Native, Cordova and Xamarin might require special considerations. Depending on the framework one of the following can apply:
+
+- The framework might support NSC. This is the case for Flutter apps on Android, but the NSC needs to be enabled in the `AndroidManifest`. See the [Flutter documentation](https://docs.flutter.dev/release/breaking-changes/network-policy-ios-android#migration-guide) on how to enable the network policy.
+
+- The framework might use other networking libraries under the hood, which need to be configured appropriately. E.g., React Native uses OkHttp on Android, which can be configured with a custom `CertificatePinner`.
+
+- The framework might offer plugins to perform certificate pinning. This is the case for example for Cordova.
+
+- The framework might not offer any built-in mechanisms to perform certificate pinning (as it the case for Xamarin). In this case, pinning needs to be implemented manually.
 
 ### Security Provider
 
