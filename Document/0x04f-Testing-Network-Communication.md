@@ -435,15 +435,6 @@ $ iptables -t nat -A POSTROUTING -j MASQUERADE
 
 Now you can connect your mobile devices to the access point.
 
-### Network Analyzer Tool
-
-Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your host computer. The two most common network monitoring (or capturing) tools are:
-
-- [Wireshark](https://www.wireshark.org "Wireshark") (CLI pendant: [TShark](https://www.wireshark.org/docs/man-pages/tshark.html "TShark"))
-- [tcpdump](https://www.tcpdump.org/tcpdump_man.html "tcpdump")
-
-Wireshark offers a GUI and is more straightforward if you are not used to the command line. If you are looking for a command line tool you should either use TShark or tcpdump. All of these tools are available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms.
-
 ### Setting a Proxy Through Runtime Instrumentation
 
 On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") or code injection frameworks like [Frida](https://www.frida.re "Frida") and [cycript](http://www.cycript.org "cycript"). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
