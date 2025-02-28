@@ -205,7 +205,9 @@ If you want to verify whether your server supports the right cipher suites, ther
 
 Finally, verify that the server or termination proxy at which the HTTPS connection terminates is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.md "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices "Qualys SSL/TLS Deployment Best Practices").
 
-## Intercepting HTTP(S) Traffic
+## Intercepting Network Traffic
+
+### MASTG-TECH: Intercepting HTTP Traffic Using an Interception Proxy
 
 In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an _interception proxy_ running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
 
@@ -220,50 +222,52 @@ To use the interception proxy, you'll need to run it on your host computer and c
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
-## Intercepting Non-HTTP Traffic
+## MASTG-TECH: Intercepting Non-HTTP Traffic Using an Interception Proxy
 
 Interception proxies such as @MASTG-TOOL-0077 and @MASTG-TOOL-0079 won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") and
 - [Mitm-relay](https://github.com/jrmdev/mitm_relay "Mitm-relay").
 
-These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
+These plugins can visualize non-HTTP protocols, allowing you to intercept and manipulate the traffic.
 
 Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
 
-## Intercepting Traffic from the App Process
+## Intercepting HTTP Traffic by Hooking Network APIs (Application Layer)
 
 Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or when the responses are received in the app.
 
-You don't need to deploy a fully fledged MITM attack if you simply want to know if a certain piece of sensitive data is being transmitted to the network. In this case you wouldn't even have to bypass pinning, if implemented. You just have to hook the right functions, e.g. `SSL_write` and `SSL_read` from openssl.
+You don't need to deploy a fully fledged MITM attack if you simply want to know if a certain piece of sensitive data is being transmitted to the network. In this case, you wouldn't even have to bypass pinning, if implemented. You just have to hook the right functions, e.g., `SSL_write` and `SSL_read` from OpenSSL.
 
-This would work pretty well for apps using standard API libraries functions and classes, however there might be some downsides:
+This would work pretty well for apps using standard API library functions and classes; however, there might be some downsides:
 
-- the app might implement a custom network stack and you'll have to spend time analyzing the app to find out the APIs that you can use. See section "Searching for OpenSSL traces with signature analysis" in [this blog post](https://hackmag.com/security/ssl-sniffing/ "Searching for OpenSSL traces with signature analysis").
-- it might be very time consuming to craft the right hooking scripts to re-assemble HTTP response pairs (across many method calls and execution threads). You might find [ready-made scripts](https://github.com/fanxs-t/Android-SSL_read-write-Hook/blob/master/frida-hook.py) and even for [alternative network stacks](https://codeshare.frida.re/@owen800q/okhttp3-interceptor/) but depending on the app and the platform these scripts might need a lot of maintenance and might not _always work_.
+- The app might implement a custom network stack and you'll have to spend time analyzing the app to find out the APIs that you can use. See section "Searching for OpenSSL traces with signature analysis" in [this blog post](https://hackmag.com/security/ssl-sniffing/ "Searching for OpenSSL traces with signature analysis").
+- It might be very time consuming to craft the right hooking scripts to re-assemble HTTP response pairs (across many method calls and execution threads). You might find [ready-made scripts](https://github.com/fanxs-t/Android-SSL_read-write-Hook/blob/master/frida-hook.py) and even for [alternative network stacks](https://codeshare.frida.re/@owen800q/okhttp3-interceptor/), but depending on the app and the platform, these scripts might need a lot of maintenance and might not _always work_.
 
 See some examples:
 
 - ["Universal interception. How to bypass SSL Pinning and monitor traffic of any application"](https://hackmag.com/security/ssl-sniffing/), sections "Grabbing payload prior to transmission" and "Grabbing payload prior to encryption"
 - ["Frida as an Alternative to Network Tracing"](https://gaiaslastlaugh.medium.com/frida-as-an-alternative-to-network-tracing-5173cfbd7a0b)
 
-> This technique is also useful for other types of traffic such as BLE, NFC, etc. where deploying a MITM attack might be very costly and or complex.
+> This technique is also useful for other types of traffic such as BLE, NFC, etc., where deploying a MITM attack might be very costly and complex.
 
-## Intercepting Traffic on the Network Layer
+## MASTG-TECH: Passive Eavesdropping
 
-Dynamic analysis by using an interception proxy can be straight forward if standard libraries are used in the app and all communication is done via HTTP. But there are several cases where this is not working:
+This method involves capturing network traffic passively using tools like Wireshark or tcpdump (@MASTG-TOOL-0081, @MASTG-TOOL-0080, or @MASTG-TOOL-0075). It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how the app communicates with the server. However, it cannot decrypt TLS-encrypted communication.
 
-- If mobile application development platforms like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used that ignore the system proxy settings;
-- If mobile applications verify if the system proxy is used and refuse to send requests through a proxy;
-- If you want to intercept push notifications, like for example GCM/FCM on Android;
+The following cases are examples where passive eavesdropping is useful:
+
+- If mobile app cross-platform frameworks like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used that ignore the system proxy settings.
+- If mobile apps verify if the system proxy is used and refuse to send requests through a proxy.
+- If you want to intercept push notifications, like for example GCM/FCM on Android.
 - If XMPP or other non-HTTP protocols are used.
 
-In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
+In these cases, you need to monitor and analyze the network traffic first to decide the best approach. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use @MASTG-TOOL-0081 to sniff any traffic from the mobile device.
-- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider @MASTG-TOOL-0076 or use your own access point to redirect network traffic from the mobile device to your host computer (see below).
-- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
-- On macOS, you can create a "Remote Virtual Interface" for sniffing all traffic on an iOS device. We'll describe this method in the chapter "Basic Security Testing on iOS".
+- **Route the traffic through the host computer**: You can configure your host computer as a network gateway using built-in internet sharing options.
+    - Android (see @MASTG-TECH-0010): You can use the [Android Debug Bridge (adb)](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") to forward the traffic to your host computer.
+    - iOS (see @MASTG-TECH-0062): You can create a "Remote Virtual Interface" on macOS to sniff all traffic on an iOS device.
+- Once the traffic is routed, you can use Wireshark or tcpdump to capture and analyze it.
 
 ### Simulating a Machine-in-the-Middle Attack with bettercap
 
