@@ -150,7 +150,7 @@ jobs:
           echo "Build succeeded for $demo"          
 
           apk_filename="$(basename "$demo").apk"
-          mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$apk_filename" || (
+          mv MASTestApp-Android/app/build/outputs/apk/release/*.apk "$apk_filename" || (
             echo "APK not found for $demo"
             exit 1
           )
