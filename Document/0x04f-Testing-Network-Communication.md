@@ -234,11 +234,25 @@ These plugins can visualize non-HTTP protocols, allowing you to intercept and ma
 
 Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
 
-## MASTG-TECH: Intercepting HTTP Traffic by Hooking Network APIs (Application Layer)
+## MASTG-TECH: Intercepting HTTP Traffic by Hooking Network APIs at the Application Layer
 
 Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or when the responses are received in the app.
 
-You don't need to deploy a fully fledged MITM attack if you simply want to know if a certain piece of sensitive data is being transmitted to the network. In this case, you wouldn't even have to bypass pinning, if implemented. You just have to hook the right functions, e.g., `SSL_write` and `SSL_read` from OpenSSL.
+This means that you don't need to deploy a fully fledged MITM attack (including ARP Spoofing attacks, etc.) if you simply want to know if a certain piece of sensitive data is being transmitted to the network. In this case, you wouldn't even have to bypass pinning, if implemented.
+
+You can use [Frida as an alternative](https://gaiaslastlaugh.medium.com/frida-as-an-alternative-to-network-tracing-5173cfbd7a0b)
+
+This technique is also useful for:
+
+- Intercepting traffic in apps that use custom network stacks.
+- Intercepting traffic in apps built with specific cross-platform frameworks such as Flutter.
+    - Android: @MASTG-TECH-0109
+    - iOS: @MASTG-TECH-0110
+- Intercepting other types of traffic such as BLE, NFC, etc., where deploying a MITM attack might be very costly and complex.
+- Analyzing protocols like MQTT and CoAP, which may require more specialized interception techniques.
+- Monitoring WebSocket traffic, which can also necessitate unique interception strategies.
+
+You just have to hook the right functions, e.g., `SSL_write` and `SSL_read` from OpenSSL.
 
 This would work pretty well for apps using standard API library functions and classes; however, there might be some downsides:
 
