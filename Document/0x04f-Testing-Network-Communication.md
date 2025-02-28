@@ -287,11 +287,9 @@ See some examples:
 - ["Universal interception. How to bypass SSL Pinning and monitor traffic of any application"](https://hackmag.com/security/ssl-sniffing/), sections "Grabbing payload prior to transmission" and "Grabbing payload prior to encryption"
 - ["Frida as an Alternative to Network Tracing"](https://gaiaslastlaugh.medium.com/frida-as-an-alternative-to-network-tracing-5173cfbd7a0b)
 
-> This technique is also useful for other types of traffic such as BLE, NFC, etc., where deploying a MITM attack might be very costly and complex.
-
 ## MASTG-TECH: Passive Eavesdropping
 
-This method involves capturing network traffic passively using tools like Wireshark or tcpdump (@MASTG-TOOL-0081, @MASTG-TOOL-0080, or @MASTG-TOOL-0075). It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how the app communicates with the server. However, it cannot decrypt TLS-encrypted communication.
+This method involves capturing network traffic passively using tools like Wireshark or tcpdump (@MASTG-TOOL-0081, @MASTG-TOOL-0080, or @MASTG-TOOL-0075). It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how the app communicates with the server. However, it cannot automatically decrypt TLS-encrypted communication (but [this is possible](https://wiki.wireshark.org/TLS#tls-decryption) if you are able to [obtain the so-called pre-master secret](https://wiki.wireshark.org/TLS#using-the-pre-master-secret), see an example for Android [here](https://nibarius.github.io/learning-frida/2022/05/21/sniffing-tls-traffic)).
 
 The following cases are examples where passive eavesdropping is useful:
 
