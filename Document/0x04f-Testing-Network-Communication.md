@@ -289,21 +289,27 @@ See some examples:
 
 ## MASTG-TECH: Passive Eavesdropping
 
-This method involves capturing network traffic passively using tools like Wireshark or tcpdump (@MASTG-TOOL-0081, @MASTG-TOOL-0080, or @MASTG-TOOL-0075). It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how the app communicates with the server. However, it cannot automatically decrypt TLS-encrypted communication (but [this is possible](https://wiki.wireshark.org/TLS#tls-decryption) if you are able to [obtain the so-called pre-master secret](https://wiki.wireshark.org/TLS#using-the-pre-master-secret), see an example for Android [here](https://nibarius.github.io/learning-frida/2022/05/21/sniffing-tls-traffic)).
+This method involves passively capturing network traffic using tools such as Wireshark or tcpdump (@MASTG-TOOL-0081, @MASTG-TOOL-0080, or @MASTG-TOOL-0075). It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how an app communicates with its server. However, it cannot automatically decrypt TLS-encrypted communication. That said, [TLS decryption is possible](https://wiki.wireshark.org/TLS#tls-decryption) if you can [obtain the pre-master secret](https://wiki.wireshark.org/TLS#using-the-pre-master-secret). For an example specific to Android, see [this article](https://nibarius.github.io/learning-frida/2022/05/21/sniffing-tls-traffic).
 
-The following cases are examples where passive eavesdropping is useful:
+### When Is it Useful?
 
-- If mobile app cross-platform frameworks like [Xamarin](https://www.xamarin.com/platform "Xamarin") are used that ignore the system proxy settings.
-- If mobile apps verify if the system proxy is used and refuse to send requests through a proxy.
-- If you want to intercept push notifications, like for example GCM/FCM on Android.
-- If XMPP or other non-HTTP protocols are used.
+Passive eavesdropping is particularly useful in the following scenarios:
 
-In these cases, you need to monitor and analyze the network traffic first to decide the best approach. Luckily, there are several options for redirecting and intercepting network communication:
+- When mobile apps use cross-platform frameworks such as [Xamarin](https://www.xamarin.com/platform "Xamarin") that ignore system proxy settings.
+- When mobile apps detect and prevent the use of system proxies.
+- When intercepting push notifications, such as Google Cloud Messaging (GCM)/Firebase Cloud Messaging (FCM) on Android.
+- When monitoring XMPP or other non-HTTP-based communication protocols.
 
-- **Route the traffic through the host computer**: You can configure your host computer as a network gateway using built-in internet sharing options.
-    - Android (see @MASTG-TECH-0010): You can use the [Android Debug Bridge (adb)](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") to forward the traffic to your host computer.
-    - iOS (see @MASTG-TECH-0062): You can create a "Remote Virtual Interface" on macOS to sniff all traffic on an iOS device.
-- Once the traffic is routed, you can use Wireshark or tcpdump to capture and analyze it.
+### How Does It Work?
+
+Route the traffic from the mobile device to the host computer:
+
+1. Configuring the host computer as a network gateway using built-in internet sharing options on Windows, macOS, and Linux.
+2. Configure the mobile device to route HTTP(S) requests to your proxy.
+     - **Android (see @MASTG-TECH-0010)**: Use adb to forward traffic to your host computer.  
+     - **iOS (see @MASTG-TECH-0062)**: On macOS, create a "Remote Virtual Interface" to capture all traffic from an iOS device.
+
+Once traffic is routed through your host, use tools like Wireshark or tcpdump to inspect and analyze it.
 
 ## MASTG-TECH: Achieving a MITM Position via ARP Spoofing
 
