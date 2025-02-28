@@ -50,7 +50,7 @@ jobs:
         with:
           lookup-only: true
           path: MASTestApp-Android/ # we're forced to write a path even if we don't need it
-          key: base-app-${{ env.MASTESTAPP_HASH }}
+          key: base-app-${{ env.MASTESTAPP_HASH }}-${{ hashFiles('.github/workflows/build-android-demos.yml') }}
 
       - name: Set up JDK 17
         if: steps.cache-check.outputs.cache-hit != 'true'
@@ -78,7 +78,7 @@ jobs:
         run: |
           cd MASTestApp-Android
           grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
-          ./gradlew assembleDebug --stacktrace || (
+          ./gradlew assembleRelease --stacktrace || (
             echo "Build failed"
             exit 1
           )
@@ -142,7 +142,7 @@ jobs:
           echo "Building APK for $demo"
           cd MASTestApp-Android
           grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
-          ./gradlew assembleDebug --stacktrace || (
+          ./gradlew assembleRelease --stacktrace || (
             echo "Build failed for $demo"
             exit 1
           )
