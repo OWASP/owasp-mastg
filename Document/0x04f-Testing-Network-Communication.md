@@ -435,10 +435,6 @@ $ iptables -t nat -A POSTROUTING -j MASQUERADE
 
 Now you can connect your mobile devices to the access point.
 
-### Setting a Proxy Through Runtime Instrumentation
-
-On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") or code injection frameworks like [Frida](https://www.frida.re "Frida") and [cycript](http://www.cycript.org "cycript"). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
-
 ## MASTG-TECH: Intercepting Xamarin Traffic
 
 Xamarin is a mobile app development platform that allows developers to create [native Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/ "Getting Started with Android") and [iOS apps](https://docs.microsoft.com/en-us/xamarin/ios/get-started/ "Getting Started with iOS") using Visual Studio and C#.
