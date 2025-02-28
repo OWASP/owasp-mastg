@@ -274,13 +274,13 @@ In these cases, you need to monitor and analyze the network traffic first to dec
     - iOS (see @MASTG-TECH-0062): You can create a "Remote Virtual Interface" on macOS to sniff all traffic on an iOS device.
 - Once the traffic is routed, you can use Wireshark or tcpdump to capture and analyze it.
 
-### Simulating a Machine-in-the-Middle Attack with bettercap
+## MASTG-TECH: Achieving a MITM Position via ARP Spoofing with Bettercap
 
-#### Network Setup
+### Network Setup
 
 To achieve a Machine-in-the-Middle (MITM) position, your host computer must be on the same wireless network as the mobile device and the gateway it communicates with. Once this is set up, you need to obtain the IP address of the mobile device. For a complete dynamic analysis of a mobile app, all network traffic should be intercepted and analyzed.
 
-#### MITM Attack
+### MITM Attack
 
 Start your preferred network analyzer tool first, then start @MASTG-TOOL-0076 with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
@@ -302,11 +302,11 @@ If that's the case, you are now able to see the complete network traffic that is
 
 > MITM attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
 
-### Simulating a Machine-in-the-Middle Attack with an access point
+## MASTG-TECH: Achieving a MITM Position via ARP Spoofing and an Access Point
 
-#### Network Setup
+### Network Setup
 
-A simple way to simulate a Machine-in-the-Middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your host computer are connected to. Your host computer is then becoming a router and an access point.
+A simple way to simulate a Machine-in-the-Middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point that the mobile devices and your host computer are connected to. Your host computer is then configured as a router and an access point.
 
 Following scenarios are possible:
 
@@ -314,7 +314,7 @@ Following scenarios are possible:
 - Use an external USB WiFi card as an access point and use your host computer's built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate access point and redirect the traffic to your host computer.
 
-The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a MITM position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
+The scenario with an external USB WiFi card requires that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a MITM position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
 ```bash
 iw list | grep AP
@@ -331,7 +331,7 @@ In both cases the AP needs to be configured to point to your host computer's IP.
 
 <img src="Images/Chapters/0x04f/architecture_MITM_AP.png" width="100%" />
 
-#### Installation
+### Installation
 
 The following procedure is setting up a MITM position using an access point and an additional network interface:
 
@@ -360,7 +360,7 @@ In case of a separate access point, route the traffic to your host computer. In 
 
 Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
-#### Configuration
+### Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
 
@@ -414,7 +414,7 @@ The following configuration files need to be changed and adjusted accordingly:
     listen-address=127.0.0.1
     ```
 
-#### MITM Attack
+### MITM Attack
 
 To be able to get a MITM position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
