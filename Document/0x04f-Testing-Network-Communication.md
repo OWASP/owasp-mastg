@@ -207,7 +207,25 @@ Finally, verify that the server or termination proxy at which the HTTPS connecti
 
 ## Intercepting Network Traffic
 
-### MASTG-TECH: Intercepting HTTP Traffic Using an Interception Proxy
+Intercepting mobile app traffic is essential for security testing, allowing testers to analyze and manipulate network communications. The appropriate method depends on the app’s security mechanisms and the data being transmitted.
+
+General Guidelines:
+
+- Start with an interception proxy (Burp Suite, mitmproxy) for HTTP/HTTPS traffic.
+- Use passive sniffing (Wireshark, tcpdump) for network metadata analysis.
+- Apply ARP spoofing only when necessary for non-HTTP protocols.
+- Bypass security mechanisms like certificate pinning using instrumentation techniques (Frida) or binary patching.
+
+| **Layer**   | **Interception Technique** | **Example Tools** | **Clarification** |
+|------------|---------------------------|-------------------|-------------------|
+| **Layer 7 (Application)** | API hooking (`HttpUrlConnection`, `NSURLSession`, `WebRequest`) | Frida | Modifies how apps handle network requests. |
+| **Layer 6 (Presentation)** | Hooking TLS functions (`SSL_read`, `SSL_write`) | Frida, SSL Kill Switch | Intercepts encrypted data before it reaches the app. |
+| **Layer 5 (Session)** | Proxy interception | Burp Suite, ZAP, mitmproxy | Requires app to respect proxy settings. |
+| **Layer 4 (Transport)** | Packet sniffing | `tcpdump`, Wireshark | Captures **all** TCP/UDP traffic but does **not** decrypt HTTPS. |
+| **Layer 3 (Network)** | MITM via ARP spoofing | bettercap | ARP (Layer 2) is used to manipulate **Layer 3** (IP traffic). |
+| **Layer 2 (Data Link)** | Rogue Wi-Fi AP | `hostapd`, `dnsmasq`, `iptables`, `wpa_supplicant`, `airmon-ng` | Captures **all** traffic from a connected device. |
+
+## MASTG-TECH: Intercepting HTTP Traffic Using an Interception Proxy
 
 Interception proxies are the most common method for intercepting mobile app traffic. They work by setting up a proxy server that intercepts and logs all HTTP/HTTPS traffic between the mobile app and the server. This allows you to view and modify the requests and responses in real-time.
 
