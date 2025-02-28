@@ -270,13 +270,23 @@ In these cases, you need to monitor and analyze the network traffic first to dec
     - iOS (see @MASTG-TECH-0062): You can create a "Remote Virtual Interface" on macOS to sniff all traffic on an iOS device.
 - Once the traffic is routed, you can use Wireshark or tcpdump to capture and analyze it.
 
-## MASTG-TECH: Achieving a MITM Position via ARP Spoofing with Bettercap
+## MASTG-TECH: Achieving a MITM Position via ARP Spoofing
 
-### Network Setup
+When proxy-based interception fails due to non-HTTP protocols or proxy-aware apps, **ARP Spoofing** can be used to redirect network traffic. ARP Spoofing is a **Layer 2 attack** that allows an attacker to impersonate the network gateway, forcing the mobile device to send its traffic through the attacker's machine.
+
+This technique works against any device and operating system as the attack is executed on OSI Layer 2. When you are MITM, you might not be able to see clear text data, as the data in transit might be encrypted by TLS, but it will give you valuable information about the hosts involved, the protocols used, and the ports the app is communicating with.
+
+To execute an ARP Spoofing attack, you can use @MASTG-TOOL-0076 (bettercap) or set up a rogue access point that routes traffic through your host computer.
+
+> **Important:** Modern operating systems implement defenses such as encrypted DNS (DoH, DoT), MAC address randomization, and ARP spoofing detection, making this technique less effective on newer devices.
+
+### Using bettercap
+
+#### Network Setup
 
 To achieve a Machine-in-the-Middle (MITM) position, your host computer must be on the same wireless network as the mobile device and the gateway it communicates with. Once this is set up, you need to obtain the IP address of the mobile device. For a complete dynamic analysis of a mobile app, all network traffic should be intercepted and analyzed.
 
-### MITM Attack
+#### MITM Attack
 
 Start your preferred network analyzer tool first, then start @MASTG-TOOL-0076 with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
@@ -296,11 +306,9 @@ On the mobile phone start the browser and navigate to `http://example.com`, you 
 
 If that's the case, you are now able to see the complete network traffic that is sent and received by the mobile phone. This includes also DNS, DHCP and any other form of communication and can therefore be quite "noisy". You should therefore know how to use [DisplayFilters in Wireshark](https://wiki.wireshark.org/DisplayFilters "DisplayFilters") or know [how to filter in tcpdump](https://danielmiessler.com/study/tcpdump/#gs.OVQjKbk "A tcpdump Tutorial and Primer with Examples") to focus only on the relevant traffic for you.
 
-> MITM attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
+### Using a Rogue Access Point
 
-## MASTG-TECH: Achieving a MITM Position via ARP Spoofing and an Access Point
-
-### Network Setup
+#### Network Setup
 
 A simple way to simulate a Machine-in-the-Middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point that the mobile devices and your host computer are connected to. Your host computer is then configured as a router and an access point.
 
@@ -327,7 +335,7 @@ In both cases the AP needs to be configured to point to your host computer's IP.
 
 <img src="Images/Chapters/0x04f/architecture_MITM_AP.png" width="100%" />
 
-### Installation
+#### Installation
 
 The following procedure is setting up a MITM position using an access point and an additional network interface:
 
@@ -356,7 +364,7 @@ In case of a separate access point, route the traffic to your host computer. In 
 
 Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
-### Configuration
+#### Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
 
@@ -410,7 +418,7 @@ The following configuration files need to be changed and adjusted accordingly:
     listen-address=127.0.0.1
     ```
 
-### MITM Attack
+#### MITM Attack
 
 To be able to get a MITM position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
