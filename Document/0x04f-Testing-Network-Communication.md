@@ -445,7 +445,7 @@ Xamarin is a mobile app development platform that is capable of producing [nativ
 
 When testing a Xamarin app and when you are trying to set the system proxy in the Wi-Fi settings you won't be able to see any HTTP requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your phone. There are three ways to resolve this:
 
-## Option 1: Using @MASTG-TOOL-0031
+### Option 1: Using @MASTG-TOOL-0031
 
 Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
 
@@ -453,7 +453,7 @@ Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.N
     WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
     ```
 
-## Option 2: Using @MASTG-TOOL-0076
+### Option 2: Using @MASTG-TOOL-0076
 
 Use @MASTG-TOOL-0076 in order to get a MITM position, see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
@@ -471,7 +471,7 @@ Use @MASTG-TOOL-0076 in order to get a MITM position, see the section above abou
 
     As last step, you need to set the option 'Support invisible proxy' in the listener settings of @MASTG-TOOL-0007.
 
-## Option 3: DNS Spoofing
+### Option 3: DNS Spoofing
 
 If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can direct the app's traffic to your proxy. For instance, on a rooted Android device you might add an entry to `/etc/hosts` mapping the app's server domain to your proxy machine's IP​. This way, the app thinks your machine is the server. You would still combine this with a port redirect (so that when your machine receives that connection, it hands it to the proxy). The proxy then needs to forward the traffic to the real server, essentially acting as a true MITM as with @MASTG-TOOL-0076.
 
@@ -491,14 +491,14 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
 
-## Install CA Certificates for the Interception Proxy
+### Install CA Certificates for the Interception Proxy
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
 
 - [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device")
 - [Install the CA certificate of your interception proxy into your iOS phone](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp")
 
-## Start Intercepting Traffic
+### Start Intercepting Traffic
 
 Start using the app and trigger its functions. You should see HTTP messages showing up in your interception proxy.
 
