@@ -441,65 +441,71 @@ On a rooted or jailbroken device, you can also use runtime hooking to set a new 
 
 ## MASTG-TECH: Intercepting Xamarin Traffic
 
-Xamarin is a mobile app development platform that is capable of producing [native Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/ "Getting Started with Android") and [iOS apps](https://docs.microsoft.com/en-us/xamarin/ios/get-started/ "Getting Started with iOS") by using Visual Studio and C# as programming language.
+Xamarin is a mobile app development platform that allows developers to create [native Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/ "Getting Started with Android") and [iOS apps](https://docs.microsoft.com/en-us/xamarin/ios/get-started/ "Getting Started with iOS") using Visual Studio and C#.
 
-When testing a Xamarin app and when you are trying to set the system proxy in the Wi-Fi settings you won't be able to see any HTTP requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your phone. There are three ways to resolve this:
+When testing a Xamarin app, setting the system proxy in the Device Wi-Fi settings will not capture any HTTP requests in your interception proxy. This is because Xamarin apps do not use the local proxy settings of your device. There are three ways to bypass this limitation:
 
-### Option 1: Manipulate Xamarin's Network Stack Default Proxy
+## Option 1: Manipulating Xamarin's Network Stack Default Proxy
 
-Patch the app to add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
+Patch the app to use a [default proxy](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class") by adding the following code in the `OnCreate` or `Main` method:
 
-    ```cs
-    WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
-    ```
+```cs
+WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
+```
 
-Or use Frida to hook the `WebRequest.DefaultWebProxy` property and set the proxy to your interception proxy.
+Finally, recompile and sign the patched app.
 
-### Option 2: Achieving a MITM Position via ARP Spoofing
+Alternatively, use Frida to hook into the `WebRequest.DefaultWebProxy` property and dynamically set the proxy to your interception proxy.
 
-Use @MASTG-TOOL-0076 in order to achieve a MITM position, see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+## Option 2: Achieving a MITM Position via ARP Spoofing
 
-    ```bash
-    $ echo "
-    rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
-    " | sudo pfctl -ef -
-    ```
+Use @MASTG-TOOL-0076 to achieve a MITM position and redirect port 443 to your interception proxy running on localhost.
 
-    For Linux systems you can use `iptables`:
+On macOS:
 
-    ```bash
-    sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
-    ```
+```bash
+echo "
+rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
 
-    As last step, you need to set the option 'Support invisible proxy' in the listener settings of @MASTG-TOOL-0007.
+On Linux:
 
-### Option 3: DNS Spoofing
+```bash
+sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
+```
 
-If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can direct the app's traffic to your proxy. For instance, on a rooted Android device you might add an entry to `/etc/hosts` mapping the app's server domain to your proxy machine's IP​. This way, the app thinks your machine is the server. You would still combine this with a port redirect (so that when your machine receives that connection, it hands it to the proxy). The proxy then needs to forward the traffic to the real server, essentially acting as a true MITM as with @MASTG-TOOL-0076.
+Lastly, enable **"Support invisible proxy"** in the listener settings of **@MASTG-TOOL-0007**.
 
-### Setup Traffic Redirection and the Interception Proxy
+## Option 3: DNS Spoofing
 
-If not already done, [setup your interception proxy](#mastg-tech-intercepting-http-traffic-using-an-interception-proxy): install the CA certificates in your mobile device and configure the interception proxy to listen on the port you have set in the redirection rule.
+If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can reroute the app's traffic to your proxy. For example, on a rooted Android device, you can add an entry in `/etc/hosts` mapping the app's server domain to your proxy machine’s IP. This makes the app believe that your machine is the legitimate server.
 
-**Tip:** When redirecting traffic, you should create narrow rules to the domains and IPs in scope, to minimize noise and out-of-scope traffic.
+To ensure proper interception, combine DNS spoofing with port redirection. When your machine receives the redirected connection, it will forward the traffic to the proxy. The proxy will then relay the traffic to the real server, effectively acting as a MITM (as done with @MASTG-TOOL-0076).
 
-The interception proxy needs to listen to the port specified in the port forwarding rule above, which is `8080`.
+### Setting Up Traffic Redirection and the Interception Proxy
 
-You need to specify where traffic should go next after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in @MASTG-TOOL-0077 to the original location:
+If you haven't already, [set up your interception proxy](#mastg-tech-intercepting-http-traffic-using-an-interception-proxy).
 
-1. Go to **Proxy** tab and click on **Options**
+**Tip:** When redirecting traffic, create specific rules for only the domains and IPs in scope to reduce noise from out-of-scope traffic.
+
+Ensure that your interception proxy listens on the port defined in your redirection rule (`8080` in this case).
+
+After redirecting traffic to your interception proxy, you need to forward it back to its original destination. The following steps set up redirection in @MASTG-TOOL-0077:
+
+1. Open the **Proxy** tab and click on **Options**.
 2. Select and edit your listener from the list of proxy listeners.
-3. Go to **Request handling** tab and set:
-
-    - Redirect to host: provide original traffic location.
-    - Redirect to port: provide original port location.
-    - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
+3. Navigate to the **Request Handling** tab and configure:
+    - **Redirect to host**: Set this to the original server destination.
+    - **Redirect to port**: Specify the original port.
+    - Enable **"Force use of SSL"** (if HTTPS is used) and **"Support invisible proxy"**.
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
 
 ### Start Intercepting Traffic
 
-Start using the app and trigger its functions. You should see HTTP messages showing up in your interception proxy.
+Now, start using the app and trigger its functions. If configured correctly, HTTP messages should appear in your interception proxy.
 
-> When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface.
-> Ensure that the proxy's settings are correctly configured to handle both HTTP and HTTPS traffic for complete visibility.
+> **Note:**  
+> When using Bettercap, enable **"Support invisible proxying"** under **Proxy Tab → Options → Edit Interface**.  
+> Ensure the proxy settings are properly configured to handle both HTTP and HTTPS traffic for full visibility.
