@@ -209,23 +209,19 @@ Finally, verify that the server or termination proxy at which the HTTPS connecti
 
 ### MASTG-TECH: Intercepting HTTP Traffic Using an Interception Proxy
 
-In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an _interception proxy_ running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
+Interception proxies are the most common method for intercepting mobile app traffic. They work by setting up a proxy server that intercepts and logs all HTTP/HTTPS traffic between the mobile app and the server. This allows you to view and modify the requests and responses in real-time.
 
-Several free and commercial proxy tools are available. Here are some of the most popular:
+Several free and commercial proxy tools are available. For example: @MASTG-TOOL-0077 and @MASTG-TOOL-0079.
 
-- @MASTG-TOOL-0077
-- @MASTG-TOOL-0079
+#### Rerouting Traffic to the Proxy
 
 To use the interception proxy, you'll need to run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
 <img src="Images/Chapters/0x04f/BURP.png" width="100%" />
 
-Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device.
+#### Installing the Proxy Certificate
 
-For example, to use Burp Suite:
-
-- [Install the CA certificate of your interception proxy into your Android phone](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device")
-- [Install the CA certificate of your interception proxy into your iOS phone](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp")
+Using an interception proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. So, interception proxies require you to install a custom CA certificate on the mobile device, which allows the proxy to decrypt and inspect the encrypted HTTPS traffic. However, some apps implement certificate pinning to prevent this, which requires additional steps to bypass.
 
 ## MASTG-TECH: Intercepting Non-HTTP Traffic Using an Interception Proxy
 
@@ -238,7 +234,7 @@ These plugins can visualize non-HTTP protocols, allowing you to intercept and ma
 
 Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
 
-## Intercepting HTTP Traffic by Hooking Network APIs (Application Layer)
+## MASTG-TECH: Intercepting HTTP Traffic by Hooking Network APIs (Application Layer)
 
 Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or when the responses are received in the app.
 
