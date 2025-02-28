@@ -213,15 +213,20 @@ Interception proxies are the most common method for intercepting mobile app traf
 
 Several free and commercial proxy tools are available. For example: @MASTG-TOOL-0077 and @MASTG-TOOL-0079.
 
-#### Rerouting Traffic to the Proxy
+### Rerouting Traffic to the Proxy
 
 To use the interception proxy, you'll need to run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
 <img src="Images/Chapters/0x04f/BURP.png" width="100%" />
 
-#### Installing the Proxy Certificate
+### Installing the Proxy Certificate
 
 Using an interception proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. So, interception proxies require you to install a custom CA certificate on the mobile device, which allows the proxy to decrypt and inspect the encrypted HTTPS traffic. However, some apps implement certificate pinning to prevent this, which requires additional steps to bypass.
+
+### Per-Platform Instructions
+
+- Android: see @MASTG-TECH-0011
+- iOS: see @MASTG-TECH-0063
 
 ## MASTG-TECH: Intercepting Non-HTTP Traffic Using an Interception Proxy
 
