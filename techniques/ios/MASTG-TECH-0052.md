@@ -83,3 +83,94 @@ On your host computer run the following command and, when asked, enter the passw
 ```bash
 ssh -p 2222 root@localhost
 ```
+
+## Simulator Shell
+
+You can access the simulator shell by running:
+
+```bash
+xcrun simctl spawn booted /bin/sh
+```
+
+However, it isn't very useful. The iOS Simulator is a stripped-down environment, meaning it doesn’t include many standard UNIX utilities like `ls`, `bash`, `sudo`, or `su`.
+
+While ls is missing, you can still navigate manually:
+
+```bash
+cd /
+echo *
+```
+
+### Running Command's in the Simulator
+
+You can run commands inside the simulator directly from your Mac's terminal using `xcrun`. For example, this lists simulator's environment variables:
+
+```bash
+xcrun simctl spawn booted /usr/bin/env
+```
+
+### Interacting with the Simulator's File System
+
+The following command opens an app's **data container (sandbox)** in Finder for the indicated app bundle ID (in this case, `org.owasp.mastestapp.MASTestApp-iOS`). This contains the app's **Documents, Library, and tmp directories**, where user data is stored:
+
+```bash
+open $(xcrun simctl get_app_container booted org.owasp.mastestapp.MASTestApp-iOS data)
+```
+
+To open the **app's binary container**, which contains the installed `.app` bundle and its system files, you can run:
+
+```bash
+open $(xcrun simctl get_app_container booted org.owasp.mastestapp.MASTestApp-iOS)
+```
+
+### Install App
+
+To install an app (`.app` bundle) onto the currently booted simulator, use:
+
+```bash
+xcrun simctl install booted "./MASTestApp-iOS.app"
+```
+
+### Uninstall, Launch, and Terminate Apps
+
+Once the app is installed, you can perform other actions using the app's bundle ID.
+
+```bash
+xcrun simctl uninstall booted org.owasp.mastestapp.MASTestApp-iOS
+xcrun simctl launch booted org.owasp.mastestapp.MASTestApp-iOS
+xcrun simctl terminate booted org.owasp.mastestapp-MASTestApp-iOS
+```
+
+### Open URLs
+
+To open a web URL in Safari on the simulator:
+
+```bash
+xcrun simctl openurl booted https://mas.owasp.org
+```
+
+To open a deep link inside the installed app (assuming it supports `masapp://`):
+
+```bash
+xcrun simctl openurl booted masapp://
+```
+
+This is useful for testing universal links or custom URL schemes.
+
+### Take Screen Recordings
+
+To record the simulator screen and save the output as a `.mov` file:
+
+```bash
+xcrun simctl io booted recordVideo ./recording.mov
+```
+
+Press **Control + C** to stop the recording.
+
+### Take Screenshots
+
+To capture a screenshot of the simulator and save it as a `.png` file:
+
+```bash
+xcrun simctl io booted screenshot ./screenshot.png
+```
