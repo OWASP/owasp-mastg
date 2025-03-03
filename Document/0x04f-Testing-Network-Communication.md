@@ -293,10 +293,10 @@ This method involves passively capturing network traffic using tools such as @MA
 
 Passive eavesdropping is particularly useful in the following scenarios:
 
-- When mobile apps use cross-platform frameworks such as [Xamarin](https://www.xamarin.com/platform "Xamarin") that ignore system proxy settings.
-- When mobile apps detect and prevent the use of system proxies.
-- When intercepting push notifications, such as Google Cloud Messaging (GCM)/Firebase Cloud Messaging (FCM) on Android.
-- When monitoring XMPP or other non-HTTP-based communication protocols.
+- **Troubleshooting active MITM issues**: Identifying TLS handshake errors, certificate validation failures, and routing anomalies that may cause active interception techniques to fail.
+- **Analyzing plaintext non-HTTP traffic**: Monitoring protocols such as XMPP, MQTT, DNS, SMB, and custom UDP/TCP protocols used by the app. Also useful for analyzing push notification traffic from services like Google Cloud Messaging (GCM) / Firebase Cloud Messaging (FCM) on Android or Apple Push Notification Service (APNS) on iOS.
+- **Analyzing traffic from non-proxy-aware apps**: Some mobile apps ignore system proxy settings (e.g., those built with [Xamarin](https://www.xamarin.com/platform "Xamarin")) or actively detect and block MITM proxies. Passive eavesdropping allows monitoring without triggering detection mechanisms.
+- **Investigating network anomalies and unintended data leaks**: Passive monitoring can help detect unexpected third-party communication, data leakage via DNS requests, or unusual outbound connections. Additionally, even if TLS encryption prevents direct payload inspection, metadata leaks (e.g., request size, timing patterns, domain names, or packet sequences) can still provide valuable insights and may be useful for side-channel attacks.
 
 ### How Does It Work?
 
