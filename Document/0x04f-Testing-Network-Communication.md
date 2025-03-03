@@ -239,7 +239,7 @@ To use the interception proxy, you'll need to run it on your host computer and c
 
 ### Installing the Proxy Certificate
 
-Using an interception proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. So, interception proxies require you to install a custom CA certificate on the mobile device, which allows the proxy to decrypt and inspect the encrypted HTTPS traffic. However, some apps implement certificate pinning to prevent this, which requires additional steps to bypass.
+Using an interception proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. Because of this, interception proxies require you to install a custom CA certificate on the mobile device, which allows the proxy to decrypt and inspect the encrypted HTTPS traffic. Depending on the platform, the installed certificate may or may not be automatically trusted by the application. Additionally,  some apps implement certificate pinning, which requires additional effort to bypass.
 
 ### Per-Platform Instructions
 
@@ -248,12 +248,11 @@ Using an interception proxy breaks SSL certificate verification and the app will
 
 ## MASTG-TECH: Intercepting Non-HTTP Traffic Using an Interception Proxy
 
-Interception proxies such as @MASTG-TOOL-0077 and @MASTG-TOOL-0079 won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
+Interception proxies such as @MASTG-TOOL-0077 and @MASTG-TOOL-0079 won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. They can, however, be extended using the following tools, allowing you to intercept and manipulate non-HTTP traffic:
 
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") and
 - [Mitm-relay](https://github.com/jrmdev/mitm_relay "Mitm-relay").
 
-These plugins can visualize non-HTTP protocols, allowing you to intercept and manipulate the traffic.
 
 Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
 
@@ -261,7 +260,7 @@ Note that this setup can sometimes become very tedious and is not as straightfor
 
 Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or when the responses are received in the app.
 
-This means that you don't need to deploy a fully fledged MITM attack (including ARP Spoofing attacks, etc.) if you simply want to know if a certain piece of sensitive data is being transmitted to the network. In this case, you wouldn't even have to bypass pinning, if implemented.
+This means that you don't need to deploy a fully fledged MITM attack (including ARP Spoofing attacks, etc.) if you simply want to determine if certain sensitive data is being transmitted to the network. With this approach, you will not interfere with any TLS verification or pinning.
 
 You can use [Frida as an alternative](https://gaiaslastlaugh.medium.com/frida-as-an-alternative-to-network-tracing-5173cfbd7a0b)
 
@@ -289,7 +288,7 @@ See some examples:
 
 ## MASTG-TECH: Passive Eavesdropping
 
-This method involves passively capturing network traffic using tools such as Wireshark or tcpdump (@MASTG-TOOL-0081, @MASTG-TOOL-0080, or @MASTG-TOOL-0075). It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how an app communicates with its server. However, it cannot automatically decrypt TLS-encrypted communication. That said, [TLS decryption is possible](https://wiki.wireshark.org/TLS#tls-decryption) if you can [obtain the pre-master secret](https://wiki.wireshark.org/TLS#using-the-pre-master-secret). For an example specific to Android, see [this article](https://nibarius.github.io/learning-frida/2022/05/21/sniffing-tls-traffic).
+This method involves passively capturing network traffic using tools such as @MASTG-TOOL-0081,  @MASTG-TOOL-0080, or @MASTG-TOOL-0075. It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how an app communicates with its server. However, it cannot automatically decrypt TLS-encrypted communication. That said, [TLS decryption is possible](https://wiki.wireshark.org/TLS#tls-decryption) if you can [obtain the pre-master secret](https://wiki.wireshark.org/TLS#using-the-pre-master-secret). For an example specific to Android, see [this article](https://nibarius.github.io/learning-frida/2022/05/21/sniffing-tls-traffic).
 
 ### When Is it Useful?
 
@@ -309,11 +308,11 @@ Route the traffic from the mobile device to the host computer:
      - **Android (see @MASTG-TECH-0010)**: Use adb to forward traffic to your host computer.  
      - **iOS (see @MASTG-TECH-0062)**: On macOS, create a "Remote Virtual Interface" to capture all traffic from an iOS device.
 
-Once traffic is routed through your host, use tools like Wireshark or tcpdump to inspect and analyze it.
+Once traffic is routed through your host, use tools like @MASTG-TOOL-0081 or @MASTG-TOOL-0081 to inspect and analyze it.
 
 ## MASTG-TECH: Achieving a MITM Position via ARP Spoofing
 
-When proxy-based interception fails due to non-HTTP protocols or proxy-aware apps, **ARP Spoofing** can be used to redirect network traffic. ARP Spoofing is a **Layer 2 attack** that allows an attacker to impersonate the network gateway, forcing the mobile device to send its traffic through the attacker's machine.
+When proxy-based interception fails due to non-HTTP protocols or non-proxy-aware apps, **ARP Spoofing** can be used to redirect network traffic. ARP Spoofing is a **Layer 2 attack** that allows an attacker to impersonate the network gateway, forcing the mobile device to send its traffic through the attacker's machine.
 
 This technique works against any device and operating system as the attack is executed on OSI Layer 2. When you are MITM, you might not be able to see clear text data, as the data in transit might be encrypted by TLS, but it will give you valuable information about the hosts involved, the protocols used, and the ports the app is communicating with.
 
@@ -353,7 +352,7 @@ If that's the case, you are now able to see the complete network traffic that is
 
 A simple way to simulate a Machine-in-the-Middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point that the mobile devices and your host computer are connected to. Your host computer is then configured as a router and an access point.
 
-Following scenarios are possible:
+The following scenarios are possible:
 
 - Use your host computer's built-in WiFi card as an access point and use your wired connection to connect to the target network.
 - Use an external USB WiFi card as an access point and use your host computer's built-in WiFi to connect to the target network (can be vice-versa).
