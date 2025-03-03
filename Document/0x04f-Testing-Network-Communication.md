@@ -312,6 +312,7 @@ Passive eavesdropping can be performed in two ways:
    - **Performing ARP spoofing or setting up a transparent network tap** on a Wi-Fi network.
 
 For detailed setup instructions, refer to:
+
 - **Android:** @MASTG-TECH-0010  
 - **iOS:** @MASTG-TECH-0062  
 
