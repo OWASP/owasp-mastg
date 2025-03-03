@@ -140,7 +140,7 @@ In the example above the cipher suites uses:
 
 Note that in TLSv1.3 the Key Exchange Algorithm is not part of the cipher suite, instead it is determined during the TLS handshake.
 
-In the following listing, we’ll present the different algorithms of each part of the cipher suite.
+In the following listing, we'll present the different algorithms of each part of the cipher suite.
 
 **Protocols:**
 
@@ -207,7 +207,7 @@ Finally, verify that the server or termination proxy at which the HTTPS connecti
 
 ## Intercepting Network Traffic
 
-Intercepting mobile app traffic is essential for security testing, allowing testers to analyze and manipulate network communications. The appropriate method depends on the app’s security mechanisms and the data being transmitted.
+Intercepting mobile app traffic is essential for security testing, allowing testers to analyze and manipulate network communications. The appropriate method depends on the app's security mechanisms and the data being transmitted.
 
 General Guidelines:
 
@@ -317,17 +317,15 @@ When proxy-based interception fails due to non-HTTP protocols or proxy-aware app
 
 This technique works against any device and operating system as the attack is executed on OSI Layer 2. When you are MITM, you might not be able to see clear text data, as the data in transit might be encrypted by TLS, but it will give you valuable information about the hosts involved, the protocols used, and the ports the app is communicating with.
 
-To execute an ARP Spoofing attack, you can use @MASTG-TOOL-0076 (bettercap) or set up a rogue access point that routes traffic through your host computer.
+To execute an ARP Spoofing attack, you can use @MASTG-TOOL-0076.
 
 > **Important:** Modern operating systems implement defenses such as encrypted DNS (DoH, DoT), MAC address randomization, and ARP spoofing detection, making this technique less effective on newer devices.
 
-### Using bettercap
-
-#### Network Setup
+### Network Setup
 
 To achieve a Machine-in-the-Middle (MITM) position, your host computer must be on the same wireless network as the mobile device and the gateway it communicates with. Once this is set up, you need to obtain the IP address of the mobile device. For a complete dynamic analysis of a mobile app, all network traffic should be intercepted and analyzed.
 
-#### MITM Attack
+### MITM Attack
 
 Start your preferred network analyzer tool first, then start @MASTG-TOOL-0076 with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
@@ -347,36 +345,32 @@ On the mobile phone start the browser and navigate to `http://example.com`, you 
 
 If that's the case, you are now able to see the complete network traffic that is sent and received by the mobile phone. This includes also DNS, DHCP and any other form of communication and can therefore be quite "noisy". You should therefore know how to use [DisplayFilters in Wireshark](https://wiki.wireshark.org/DisplayFilters "DisplayFilters") or know [how to filter in tcpdump](https://danielmiessler.com/study/tcpdump/#gs.OVQjKbk "A tcpdump Tutorial and Primer with Examples") to focus only on the relevant traffic for you.
 
-### Using a Rogue Access Point
+## MASTG-TECH: Achieving a MITM Position Using a Rogue Access Point
 
-#### Network Setup
+To achieve a **Machine-in-the-Middle (MITM) position**, you can set up a network where all traffic between the target mobile device and the external network is routed through your host computer. This can be done in one of two ways:  
 
-A simple way to simulate a Machine-in-the-Middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point that the mobile devices and your host computer are connected to. Your host computer is then configured as a router and an access point.
-
-Following scenarios are possible:
-
-- Use your host computer's built-in WiFi card as an access point and use your wired connection to connect to the target network.
-- Use an external USB WiFi card as an access point and use your host computer's built-in WiFi to connect to the target network (can be vice-versa).
-- Use a separate access point and redirect the traffic to your host computer.
-
-The scenario with an external USB WiFi card requires that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a MITM position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
-
-```bash
-iw list | grep AP
-```
+**Option 1: Using an external access point**: Both the mobile device and your host computer connect to a separate access point. This setup is useful for bypassing host isolation mechanisms in public or enterprise networks. Traffic from the mobile device is then redirected through your host for interception.
 
 The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
 
 - port forwarding or
 - has a span or mirror port.
 
-In both cases the AP needs to be configured to point to your host computer's IP. Your host computer must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be the same connection as to the AP). Some additional configuration may be required on your host computer to route traffic to the target network.
+**Option 2: Your host as the access point**: Your host computer itself acts as the access point, directly controlling network traffic. This can be configured in different ways:
+     - Using **your host's built-in WiFi card** as the access point while connecting to the target network via a wired connection.
+     - Using an **external USB WiFi adapter** as the access point while your built-in WiFi connects to the target network (or vice versa).
 
-> If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
+First, if you're going to use an external USB WiFi card, ensure that the card has the capability to create an access point. You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
+
+```bash
+iw list | grep AP
+```
+
+In both cases the AP needs to be configured to point to your host computer's IP. Your host computer must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be the same connection as to the AP). Some additional configuration may be required on your host computer to route traffic to the target network.
 
 <img src="Images/Chapters/0x04f/architecture_MITM_AP.png" width="100%" />
 
-#### Installation
+### Installation
 
 The following procedure is setting up a MITM position using an access point and an additional network interface:
 
@@ -405,7 +399,7 @@ In case of a separate access point, route the traffic to your host computer. In 
 
 Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
-#### Configuration
+### Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
 
@@ -459,7 +453,7 @@ The following configuration files need to be changed and adjusted accordingly:
     listen-address=127.0.0.1
     ```
 
-#### MITM Attack
+### MITM Attack
 
 To be able to get a MITM position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
@@ -525,7 +519,7 @@ Lastly, enable **"Support invisible proxy"** in the listener settings of **@MAST
 
 ### Option 3: DNS Spoofing
 
-If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can reroute the app's traffic to your proxy. For example, on a rooted Android device, you can add an entry in `/etc/hosts` mapping the app's server domain to your proxy machine’s IP. This makes the app believe that your machine is the legitimate server.
+If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can reroute the app's traffic to your proxy. For example, on a rooted Android device, you can add an entry in `/etc/hosts` mapping the app's server domain to your proxy machine's IP. This makes the app believe that your machine is the legitimate server.
 
 To ensure proper interception, combine DNS spoofing with port redirection. When your machine receives the redirected connection, it will forward the traffic to the proxy. The proxy will then relay the traffic to the real server, effectively acting as a MITM (as done with @MASTG-TOOL-0076).
 
