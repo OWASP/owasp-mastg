@@ -5,7 +5,7 @@ platform: generic
 
 This method involves passively capturing network traffic using tools such as @MASTG-TOOL-0081,  @MASTG-TOOL-0080, or @MASTG-TOOL-0075. It is useful for identifying network endpoints, analyzing protocol metadata, and understanding how an app communicates with its server. However, it cannot automatically decrypt TLS-encrypted communication. That said, [TLS decryption is possible](https://wiki.wireshark.org/TLS#tls-decryption) if you can [obtain the pre-master secret](https://wiki.wireshark.org/TLS#using-the-pre-master-secret). For an example specific to Android, see [this article](https://nibarius.github.io/learning-frida/2022/05/21/sniffing-tls-traffic).
 
-### When Is it Useful?
+## When Is it Useful?
 
 Passive eavesdropping is particularly useful in the following scenarios:
 
@@ -14,7 +14,7 @@ Passive eavesdropping is particularly useful in the following scenarios:
 - **Analyzing traffic from non-proxy-aware apps**: Some mobile apps ignore system proxy settings (e.g., those built with [Xamarin](https://www.xamarin.com/platform "Xamarin")) or actively detect and block MITM proxies. Passive eavesdropping allows monitoring without triggering detection mechanisms.
 - **Investigating network anomalies and unintended data leaks**: Passive monitoring can help detect unexpected third-party communication, data leakage via DNS requests, or unusual outbound connections. Additionally, even if TLS encryption prevents direct payload inspection, metadata leaks (e.g., request size, timing patterns, domain names, or packet sequences) can still provide valuable insights and may be useful for side-channel attacks.
 
-### How Does It Work?
+## How Does It Work?
 
 Passive eavesdropping can be performed in two ways:
 
@@ -27,7 +27,7 @@ Passive eavesdropping can be performed in two ways:
    - **Setting up a VPN-based capture** to redirect traffic through a controlled network tunnel.
    - **Performing ARP spoofing or setting up a transparent network tap** on a Wi-Fi network.
 
-### Per-Platform Instructions
+## Per-Platform Instructions
 
 - **Android:** @MASTG-TECH-0010  
 - **iOS:** @MASTG-TECH-0062  

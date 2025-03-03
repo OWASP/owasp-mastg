@@ -11,11 +11,11 @@ To execute an ARP Spoofing attack, you can use @MASTG-TOOL-0076.
 
 > **Important:** Modern operating systems implement defenses such as encrypted DNS (DoH, DoT), MAC address randomization, and ARP spoofing detection, making this technique less effective on newer devices.
 
-### Network Setup
+## Network Setup
 
 To achieve a Machine-in-the-Middle (MITM) position, your host computer must be on the same wireless network as the mobile device and the gateway it communicates with. Once this is set up, you need to obtain the IP address of the mobile device. For a complete dynamic analysis of a mobile app, all network traffic should be intercepted and analyzed.
 
-### MITM Attack
+## MITM Attack
 
 Start your preferred network analyzer tool first, then start @MASTG-TOOL-0076 with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 

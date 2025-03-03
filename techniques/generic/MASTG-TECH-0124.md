@@ -26,7 +26,7 @@ In both cases the AP needs to be configured to point to your host computer's IP.
 
 <img src="Images/Chapters/0x04f/architecture_MITM_AP.png" width="100%" />
 
-### Installation
+## Installation
 
 The following procedure is setting up a MITM position using an access point and an additional network interface:
 
@@ -55,7 +55,7 @@ In case of a separate access point, route the traffic to your host computer. In 
 
 Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
-### Configuration
+## Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
 
@@ -109,7 +109,7 @@ The following configuration files need to be changed and adjusted accordingly:
     listen-address=127.0.0.1
     ```
 
-### MITM Attack
+## MITM Attack
 
 To be able to get a MITM position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
