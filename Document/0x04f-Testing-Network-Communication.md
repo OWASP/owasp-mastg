@@ -253,7 +253,6 @@ Interception proxies such as @MASTG-TOOL-0077 and @MASTG-TOOL-0079 won't show no
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") and
 - [Mitm-relay](https://github.com/jrmdev/mitm_relay "Mitm-relay").
 
-
 Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
 
 ## MASTG-TECH: Intercepting HTTP Traffic by Hooking Network APIs at the Application Layer
