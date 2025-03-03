@@ -300,14 +300,20 @@ Passive eavesdropping is particularly useful in the following scenarios:
 
 ### How Does It Work?
 
-Route the traffic from the mobile device to the host computer:
+Passive eavesdropping can be performed in two ways:
 
-1. Configuring the host computer as a network gateway using built-in internet sharing options on Windows, macOS, and Linux.
-2. Configure the mobile device to route HTTP(S) requests to your proxy.
-     - **Android (see @MASTG-TECH-0010)**: Use adb to forward traffic to your host computer.  
-     - **iOS (see @MASTG-TECH-0062)**: On macOS, create a "Remote Virtual Interface" to capture all traffic from an iOS device.
+1. **Directly on a rooted Android or jailbroken iOS device**  
+   If the device is rooted (Android) or jailbroken (iOS), you can capture network traffic directly using `tcpdump` or similar tools, without needing a host computer. This allows you to monitor all outgoing and incoming packets in real time.
 
-Once traffic is routed through your host, use tools like @MASTG-TOOL-0081 or @MASTG-TOOL-0081 to inspect and analyze it.
+2. **By routing traffic through a host computer (works on both rooted/jailbroken and non-rooted/non-jailbroken devices)**  
+   If direct packet capture on the device is not possible or preferred, you can route its network traffic to a host computer and analyze it using tools like @MASTG-TOOL-0081 or @MASTG-TOOL-0075. This method applies to **both rooted/jailbroken and non-rooted/non-jailbroken devices** and is typically achieved through:
+   - **Using an interception proxy** to intercept and analyze HTTP/S traffic.
+   - **Setting up a VPN-based capture** to redirect traffic through a controlled network tunnel.
+   - **Performing ARP spoofing or setting up a transparent network tap** on a Wi-Fi network.
+
+For detailed setup instructions, refer to:
+- **Android:** @MASTG-TECH-0010  
+- **iOS:** @MASTG-TECH-0062  
 
 ## MASTG-TECH: Achieving a MITM Position via ARP Spoofing
 
