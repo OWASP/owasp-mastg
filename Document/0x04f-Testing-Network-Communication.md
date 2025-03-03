@@ -526,7 +526,9 @@ Lastly, enable **"Support invisible proxy"** in the listener settings of **@MAST
 
 If you can modify the device's DNS resolution ([DNS Spoofing](https://en.wikipedia.org/wiki/DNS_spoofing)), you can reroute the app's traffic to your proxy. For example, on a rooted Android device, you can add an entry in `/etc/hosts` mapping the app's server domain to your proxy machine's IP. This makes the app believe that your machine is the legitimate server.
 
-To ensure proper interception, combine DNS spoofing with port redirection. When your machine receives the redirected connection, it will forward the traffic to the proxy. The proxy will then relay the traffic to the real server, effectively acting as a MITM (as done with @MASTG-TOOL-0076).
+Since DNS spoofing redirects traffic at the domain level, incoming connections will still use the original destination port (e.g., 443 for HTTPS). To properly intercept the traffic with your proxy (which may be running on a different port, like 8080), you need port redirection. This ensures that traffic arriving at 443 is forwarded to the proxy's listening port.
+
+Once redirected, the proxy can inspect, modify, or relay the traffic to the actual server, effectively acting as a MITM (as done with @MASTG-TOOL-0076).
 
 ### Setting Up Traffic Redirection and the Interception Proxy
 
