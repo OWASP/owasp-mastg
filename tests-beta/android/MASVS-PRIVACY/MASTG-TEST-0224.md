@@ -30,6 +30,8 @@ For more information you can consult the MASTG section about ["Keyboard Cache"](
 
 2. Statically search for above code attributes with @MASTG-TOOL-0018
 
+Make sure that none of the input types are being overwritten with `setInputType` API. For example, `findViewById(R.id.textbox).setInputType(InputType.TYPE_CLASS_TEXT)` can change the type of the input at the runtime reenabling the keyboard cache for `textbox`.
+
 ## Observation
 
 The output should indicate whether the app uses no-caching attributes.
