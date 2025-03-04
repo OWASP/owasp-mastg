@@ -96,6 +96,16 @@ While effective when implemented correctly, insecure implementations potentially
 
 Several approaches to certificate pinning exist, depending on the app's API level and the libraries used. Below, we highlight the most common methods. For a deeper dive into the specific implementations, see ["Deep Dive into Certificate Pinning on Android"](https://securevale.blog/articles/deep-dive-into-certificate-pinning-on-android/).
 
+**Important Considerations:**
+
+Certificate pinning is a **hardening practice**, but it is not foolproof. There are multiple ways an attacker can bypass it, such as:  
+
+- **Modifying the certificate validation logic** in the app's `TrustManager`.  
+- **Replacing pinned certificates** stored in resource directories (`res/raw/`, `assets/`).  
+- **Altering or removing pins** in the Network Security Configuration.  
+
+Any such modification **invalidates the APK signature**, requiring the attacker to **repackage and re-sign the APK**. To mitigate these risks, additional protections such as integrity checks, runtime verification, and obfuscation may be required. For more information on the specific techniques, see @MASTG-TECH-0012.
+
 #### Pinning via Network Security Configuration (API 24+)
 
 The **Network Security Configuration (NSC)** is the preferred and recommended way to implement certificate pinning in Android, as it provides a declarative, maintainable, and secure approach without requiring code changes. It applies to all network traffic managed by the Android framework within the app, including `HttpsURLConnection`-based connections and `WebView` requests (unless a custom `TrustManager` is used). For communication from native code, NSC does not apply, and other mechanisms need to be considered.
