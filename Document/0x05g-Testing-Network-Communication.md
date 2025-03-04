@@ -158,7 +158,6 @@ This approach involves:
 
 - [`SSLSocket` does not automatically verify hostnames](https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket), so you must handle this manually using a `HostnameVerifier` with a safe implementation (this includes explicitly checking the return value of `HostnameVerifier.verify()`). More information can be found in the [Android documentation](https://developer.android.com/privacy-and-security/risks/unsafe-hostname).
 - [Do **not** include a "trust-all" `TrustManager`](https://developer.android.com/privacy-and-security/security-ssl#UnknownCa) that silently accepts all certificates. This opens the door for attackers to intercept and modify user data with minimal effort.
-- Certificates loaded from raw resources can be extracted if someone repackages the APK. As with NSC, that risk is mitigated by Android's APK signing model, though for highly sensitive apps, additional protections (obfuscation, integrity checks) may be warranted.
 
 #### Pinning using Third-party Libraries
 
