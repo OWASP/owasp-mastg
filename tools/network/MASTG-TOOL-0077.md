@@ -6,7 +6,7 @@ source: https://portswigger.net/burp/communitydownload
 
 Burp Suite is an integrated platform for performing security testing mobile and web applications.
 
-Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a Machine-in-the-Middle (MITM) between the browser and web servers. Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a [Machine-in-the-Middle (MITM)](../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) between the browser and web servers. Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your device and host computer are connected to a Wi-Fi network that permits client-to-client traffic.
 

@@ -23,11 +23,12 @@ status: new
 
 ## Overview
 
-Apps that do not properly validate TLS certificates during secure communication are susceptible to Machine-in-the-Middle (MITM) attacks and other security threats. This weakness occurs when an app accepts invalid, expired, self-signed, or untrusted certificates without appropriate verification, compromising the integrity and confidentiality of data in transit.
+Apps that do not properly validate TLS certificates during secure communication are susceptible to [Machine-in-the-Middle (MITM)](../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks and other security threats. This weakness occurs when an app accepts invalid, expired, self-signed, or untrusted certificates without appropriate verification, compromising the integrity and confidentiality of data in transit.
 
 ## Impact
 
-- **Machine-in-the-Middle (MITM) Attacks**: Attackers can intercept and manipulate data exchanged between the client and server.
+- **Data Interception**: Attackers can capture and read sensitive information transmitted over the network.
+- **Data Manipulation**: Attackers might alter data in transit, causing corruption or injecting malicious content.
 - **Data Exposure**: Sensitive information can be compromised.
 - **Unauthorized Access**: Attackers may gain unauthorized access to user accounts or systems by intercepting authentication tokens or credentials.
 - **Impersonation of Services**: Users may be deceived into interacting with malicious servers impersonating legitimate services.
