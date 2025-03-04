@@ -14,6 +14,10 @@ The goal of this test case is to observe whether a [MITM attack]("../../../Docum
 
 If the app is properly implementing certificate pinning, the MITM attack should fail because the app rejects certificates issued by an unauthorized CA, even if the CA is trusted by the system.
 
+_Testing Tip:_ While performing the MITM attack, it can be useful to monitor the system logs (see @MASTG-TECH-0009). If a certificate pinning/validation check fails, an event similar to the following log entry might be visible, indicating that the app detected the MITM attack and did not establish a connection.
+
+`I/X509Util: Failed to validate the certificate chain, error: Pin verification failed`
+
 ## Steps
 
 1. Set up an intercepting proxy, for example @MASTG-TOOL-0077 or @MASTG-TOOL-0097.
