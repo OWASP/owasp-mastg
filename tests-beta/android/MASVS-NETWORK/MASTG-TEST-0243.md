@@ -1,7 +1,7 @@
 ---
 title: Expired Certificate Pins in the Network Security Configuration 
 platform: android
-id: MASTG-TEST-0241
+id: MASTG-TEST-0243
 type: [static]
 weakness: MASWE-0047
 ---

@@ -8,7 +8,7 @@ title: Testing Custom Certificate Stores and Certificate Pinning
 masvs_v1_levels:
 - L2
 status: deprecated
-covered_by: [MASTG-TEST-0x22-1,MASTG-TEST-0x22-2,MASTG-TEST-0x22-3]
+covered_by: [MASTG-TEST-0242,MASTG-TEST-0243,MASTG-TEST-0244]
 deprecation_note: New version available in MASTG V2
 ---
 
