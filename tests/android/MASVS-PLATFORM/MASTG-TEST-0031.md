@@ -45,7 +45,7 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 Dynamic Analysis depends on operating conditions. There are several ways to inject JavaScript into an app's WebView:
 
 - Stored Cross-Site Scripting vulnerabilities in an endpoint; the exploit will be sent to the mobile app's WebView when the user navigates to the vulnerable function.
-- Attacker takes a Machine-in-the-Middle (MITM) position and tampers with the response by injecting JavaScript.
+- Attacker takes a [Machine-in-the-Middle (MITM)](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) position and tampers with the response by injecting JavaScript.
 - Malware tampering with local files that are loaded by the WebView.
 
 To address these attack vectors, check the following:
