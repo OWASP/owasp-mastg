@@ -160,7 +160,7 @@ For example, [OkHttp](https://github.com/square/okhttp)'s offers pinning in its 
 
 For in-app `WebView` traffic on Android, the easiest approach is to rely on the **Network Security Configuration**. Since Android automatically applies NSC rules to WebView traffic within the same application, any pinning rules you set up in `network_security_config.xml` will also apply to resources loaded in that WebView.
 
-If you need additional customization beyond what NSC offers, you could implement pinning by intercepting requests at the WebView level (e.g., using `shouldInterceptRequest`), but in most cases the built-in support is sufficient and simpler.
+If you need additional customization beyond what NSC offers, you could implement pinning by intercepting requests at the WebView level (e.g., using `shouldInterceptRequest` and [a custom `TrustManager`](#pinning-using-custom-trustmanagers)), but in most cases the built-in support is sufficient and simpler.
 
 #### Pinning in Native Code
 
@@ -170,16 +170,7 @@ That said, this approach requires significant security expertise and a careful d
 
 #### Pinning in Cross-Platform Frameworks
 
-Cross-platform frameworks like Flutter, React Native, Cordova and Xamarin might require special considerations. Depending on the framework one of the following can apply:
-
-- The framework might support NSC. This is the case for Flutter apps on Android, but the NSC needs to be enabled in the `AndroidManifest`. See the [Flutter documentation](https://docs.flutter.dev/release/breaking-changes/network-policy-ios-android#migration-guide) on how to enable the network policy.
-
-- The framework might use other networking libraries under the hood, which need to be configured appropriately. E.g., React Native uses OkHttp on Android, which can be configured with a custom `CertificatePinner`.
-
-- The framework might offer plugins to perform certificate pinning. This is the case for example for Cordova.
-
-- The framework might not offer any built-in mechanisms to perform certificate pinning (as it the case for Xamarin). In this case, pinning needs to be implemented manually.
-
+Cross-platform frameworks like Flutter, React Native, Cordova, and Xamarin often require special considerations for certificate pinning, as they may not use the same network stack as native apps. For example, Flutter relies on its own Dart `HttpClient` (with BoringSSL) instead of the platform's networking stack, while Cordova makes network requests through JavaScript in a WebView. As a result, pinning behavior varies—some frameworks provide built-in configuration options, others rely on third-party plugins, and some offer no direct support but allow manual implementation via APIs. Understanding how a framework handles networking is crucial for ensuring proper pinning enforcement.
 ### Security Provider
 
 Android relies on a [security provider](https://developer.android.com/training/articles/security-gms-provider.html "Update your security provider to protect against SSL exploits") to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
