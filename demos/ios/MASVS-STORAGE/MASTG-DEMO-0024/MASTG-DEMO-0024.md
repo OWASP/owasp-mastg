@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Uses of Device-Access-Security APIs
+title: Uses of LAContext.canEvaluatePolicy with r2
 id: MASTG-DEMO-0024
 code: [swift]
 test: MASTG-TEST-0243
@@ -32,4 +32,4 @@ The third argument of `objc_msgSend(...)` is `LAPolicyDeviceOwnerAuthentication`
 
 ### Evaluation
 
-The test succeeds because the output files show references to Device-Access-Security API, which indicates that a developer checks whether a passcode is set.
+The test succeeds because the output file shows references to API that checks for passcode presence.
