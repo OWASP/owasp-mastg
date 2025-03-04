@@ -1,0 +1,31 @@
+---
+platform: android
+title: Uses of Build.VERSION.SDK_INT with semgrep
+id: MASTG-DEMO-0025
+code: [kotlin]
+test: MASTG-TEST-0245
+---
+
+### Sample
+
+The following example checks the version of the operating system.
+
+{{ MastgTest.kt }}
+
+### Steps
+
+Let's run @MASTG-TOOL-0110 rules against the sample code.
+
+{{ ../../../../rules/mastg-android-device-access-security-sdk-version.yml }}
+
+{{ run.sh }}
+
+### Observation
+
+The output file shows usages of the API that verifies the operating system version.
+
+{{ output_version.txt }}
+
+### Evaluation
+
+The test succeeds because the output file shows references to API that verifies the OS version.
