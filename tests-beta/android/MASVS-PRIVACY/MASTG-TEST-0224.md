@@ -22,6 +22,8 @@ The following attributes, if present, will prevent the caching mechanism for tex
 
 Android apps can use XML or code to create the UI. Many apps use both techniques simultaneously. So you should test both. After unpacking the APK with @MASTG-TOOL-0011, the XML files are in `/res/layout` directory. You can search for the code attributes with @MASTG-TOOL-0018.
 
+For more information you can consult the MASTG section about ["Keyboard Cache"](../../../Document/0x05d-Testing-Data-Storage.md#keyboard-cache).
+
 ## Steps
 
 1. Statically search for the above XML attributes with @MASTG-TOOL-0011
