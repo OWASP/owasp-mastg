@@ -49,7 +49,7 @@ Once redirected, the proxy can inspect, modify, or relay the traffic to the actu
 
 ## Setting Up Traffic Redirection and the Interception Proxy
 
-If you haven't already, [set up your interception proxy](#mastg-tech-intercepting-http-traffic-using-an-interception-proxy).
+If you haven't already, set up your interception proxy. See @MASTG-TECH-0120.
 
 **Tip:** When redirecting traffic, create specific rules for only the domains and IPs in scope to reduce noise from out-of-scope traffic.
 
