@@ -8,7 +8,7 @@ weakness: MASWE-0116
 
 ## Overview
 
-This test case checks if the [native libraries](../../../Document/0x05i-Testing-Code-Quality-and-Build-Settings/#binary-protection-mechanisms) of the app are compiled without stack canaries and therefore lacking [stack smashing protection](../../../Document/0x04h-Testing-Code-Quality/#stack-smashing-protection), a common mitigation technique against buffer overflow attacks.
+This test case checks if the [native libraries](../../../Document/0x05i-Testing-Code-Quality-and-Build-Settings.md/#binary-protection-mechanisms) of the app are compiled without stack canaries and therefore lacking [stack smashing protection](../../../Document/0x04h-Testing-Code-Quality/#stack-smashing-protection), a common mitigation technique against buffer overflow attacks.
 
 - NDK libraries should have stack canaries enabled since [the compiler does it by default](https://android.googlesource.com/platform/ndk/%2B/master/docs/BuildSystemMaintainers.md#additional-required-arguments).
 - Other custom C/C++ libraries might not have stack canaries enabled because they lack the necessary compiler flags (`-fstack-protector-strong`, or `-fstack-protector-all`) or the canaries were optimized out by the compiler. See the [Evaluation](#evaluation) section for more details.
