@@ -20,7 +20,7 @@ _Testing Tip:_ While performing the MITM attack, it can be useful to monitor the
 
 ## Steps
 
-1. Set up an intercepting proxy, for example @MASTG-TOOL-0077 or @MASTG-TOOL-0097.
+1. Set up an interception proxy, see @MASTG-TECH-0011.
 2. Install the application on a device connected to that proxy, and intercept the communication.
 3. Extract all domains which were intercepted.
 
