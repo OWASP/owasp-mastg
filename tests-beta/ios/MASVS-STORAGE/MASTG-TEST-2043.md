@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: References to Device-Access-Security Policy APIs
+title: References to APIs that reveal if a device secure lock is in place
 id: MASTG-TEST-0243
 apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly]
 type: [static]
@@ -22,4 +22,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app doesn't use API that verifies Device-Access-Security Policy.
+The test fails if an app doesn't use API that verifies passcode presence.
