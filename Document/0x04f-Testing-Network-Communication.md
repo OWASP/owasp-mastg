@@ -205,9 +205,16 @@ If you want to verify whether your server supports the right cipher suites, ther
 
 Finally, verify that the server or termination proxy at which the HTTPS connection terminates is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.md "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices "Qualys SSL/TLS Deployment Best Practices").
 
-## Intercepting Network Traffic
+## Intercepting Network Traffic Through MITM
 
-Intercepting mobile app traffic is essential for security testing, allowing testers to analyze and manipulate network communications. The appropriate method depends on the app's security mechanisms and the data being transmitted.
+Intercepting mobile app traffic is a critical aspect of security testing, enabling testers, analysts, or penetration testers to analyze and manipulate network communications to identify vulnerabilities. A key technique in this process is the **Machine-in-the-Middle (MITM)** attack (also known as ["Man-in-the-Middle"](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) (traditionally), "Adversary-in-the-Middle" (e.g. by [MITRE](https://attack.mitre.org/techniques/T1638/) and [CAPEC](https://capec.mitre.org/data/definitions/94.html)), etc.), where the _attacker_ positions their machine between two communicating entities, typically the mobile app (client) and the servers it is communicating with. By doing so, the attacker's machine intercepts and monitors the data being transmitted between the different parties.
+
+This technique is twofold:
+
+- Typically **used by malicious attackers** to intercept, monitor, and potentially alter the communication without either party (app or server) being aware. This allows for malicious activities such as eavesdropping, injecting malicious content, or manipulating the data being exchanged.
+- However, **in the context of the OWASP MASTG** and mobile app security testing, we use it as part of our techniques to allow the app tester to review, analyze, or modify the traffic to identify vulnerabilities such as unencrypted communication or weak security controls.
+
+The specific interception method used depends on the app's security mechanisms and the nature of the data being transmitted. Each approach varies in complexity and effectiveness, depending on factors such as encryption and the app's ability to resist interference.
 
 Here's an overview of interception techniques at different network layers:
 

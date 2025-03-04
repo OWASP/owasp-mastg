@@ -5,7 +5,7 @@ platform: generic
 
 Interception proxies are the most common method for intercepting mobile app traffic. They work by setting up a proxy server that intercepts and logs all HTTP/HTTPS traffic between the mobile app and the server. This allows you to view and modify the requests and responses in real-time.
 
-Several free and commercial proxy tools are available. For example: @MASTG-TOOL-0077 and @MASTG-TOOL-0079.
+Several free and commercial proxy tools are available. For example: @MASTG-TOOL-0097, @MASTG-TOOL-0077 and @MASTG-TOOL-0079.
 
 ## Rerouting Traffic to the Proxy
 
