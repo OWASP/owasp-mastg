@@ -227,7 +227,8 @@ You can find more information on these techniques in their corresponding techniq
 - @MASTG-TECH-0121
 - @MASTG-TECH-0122
 - @MASTG-TECH-0123
-- @MASTG-TECH-0124
+- @MASTG-TECH-0124 
+- @MASTG-TECH-0125
 
 **Note about certificate pinning:** If the app uses certificate pinning, the techniques above may seem to fail once you start intercepting the traffic, but you can bypass it using different methods. See the following techniques for more information:
 
