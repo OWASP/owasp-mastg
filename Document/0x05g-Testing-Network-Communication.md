@@ -180,6 +180,7 @@ That said, this approach requires significant security expertise and a careful d
 #### Pinning in Cross-Platform Frameworks
 
 Cross-platform frameworks like Flutter, React Native, Cordova, and Xamarin often require special considerations for certificate pinning, as they may not use the same network stack as native apps. For example, Flutter relies on its own Dart `HttpClient` (with BoringSSL) instead of the platform's networking stack, while Cordova makes network requests through JavaScript in a WebView. As a result, pinning behavior varies—some frameworks provide built-in configuration options, others rely on third-party plugins, and some offer no direct support but allow manual implementation via APIs. Understanding how a framework handles networking is crucial for ensuring proper pinning enforcement.
+
 ### Security Provider
 
 Android relies on a [security provider](https://developer.android.com/training/articles/security-gms-provider.html "Update your security provider to protect against SSL exploits") to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
