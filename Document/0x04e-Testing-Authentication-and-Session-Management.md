@@ -221,7 +221,7 @@ Some of the best practices include but are not limited to:
 
 - **User agent:**
     - The user should have a way to visually verify trust (e.g., Transport Layer Security (TLS) confirmation, website mechanisms).
-    - To prevent Machine-in-the-Middle (MITM) attacks, the client should validate the server's fully qualified domain name with the public key the server presented when the connection was established.
+    - To prevent [Machine-in-the-Middle (MITM)](0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks, the client should validate the server's fully qualified domain name with the public key the server presented when the connection was established.
 - **Type of grant:**
     - On native apps, code grant should be used instead of implicit grant.
     - When using code grant, PKCE (Proof Key for Code Exchange) should be implemented to protect the code grant. Make sure that the server also implements it.

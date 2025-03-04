@@ -3,7 +3,7 @@ title: Achieving a MITM Position Using a Rogue Access Point
 platform: generic
 ---
 
-To achieve a **Machine-in-the-Middle (MITM) position**, you can set up a network where all traffic between the target mobile device and the external network is routed through your host computer. This can be done in one of two ways:
+To achieve a [Machine-in-the-Middle (MITM)](../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) position, you can set up a network where all traffic between the target mobile device and the external network is routed through your host computer. This can be done in one of two ways:
 
 **Option 1: Using an external access point**: Both the mobile device and your host computer connect to a separate access point. This setup is useful for bypassing host isolation mechanisms in public or enterprise networks. Traffic from the mobile device is then redirected through your host for interception.
 
