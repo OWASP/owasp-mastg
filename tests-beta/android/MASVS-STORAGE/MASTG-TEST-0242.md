@@ -1,8 +1,8 @@
 ---
 platform: android
-title: References to Device-Access-Security Policy APIs
+title: References to APIs that reveal if a device secure lock is in place
 id: MASTG-TEST-0242
-apis: [Build, KeyguardManager]
+apis: [KeyguardManager]
 type: [static]
 weakness: MASWE-0008
 best-practices: []
@@ -10,17 +10,13 @@ best-practices: []
 
 ## Overview
 
-This test checks whether an application is running on a device with secure policies such as
-
-- device passcode is set
-- running on a recent version of Android OS
-- running on a secure system build intended for the end users
+This test verifies whether an application is running on a device with a passcode set.
 
 Testing for USB Debugging and Root detection is now part of MASVS-RESILIENCE.
 
 ## Steps
 
-1. Use either @MASTG-TECH-0014 with a tool such as @MASTG-TOOL-0110 to identify all Device-Access-Security Policy APIs.
+1. Use @MASTG-TOOL-0110 to identify the API that checks whether a device has a passcode set
 
 ## Observation
 
@@ -28,4 +24,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app doesn't use API that verifies Device-Access-Security Policy.
+The test fails if an app doesn't use any API to verify passcode presence.
