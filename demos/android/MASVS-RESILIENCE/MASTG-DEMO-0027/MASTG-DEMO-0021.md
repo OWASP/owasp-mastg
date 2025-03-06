@@ -3,7 +3,7 @@ platform: android
 title: Runtime Use of KeyguardManager.isDeviceSecure API with Frida
 id: MASTG-DEMO-0021
 code: [kotlin]
-test: MASTG-TEST-0244
+test: MASTG-TEST-0249
 ---
 
 ### Sample

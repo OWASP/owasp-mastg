@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Runtime Use of Secure Lock Verification APIs
-id: MASTG-TEST-0244
+id: MASTG-TEST-0249
 apis: [KeyguardManager]
 type: [dynamic]
 weakness: MASWE-0008
