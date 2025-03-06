@@ -1,0 +1,1 @@
+LAcontext.canEvaluatePolicy(0x2)
