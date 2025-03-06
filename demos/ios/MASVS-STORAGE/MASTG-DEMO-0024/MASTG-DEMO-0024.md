@@ -31,4 +31,4 @@ The third argument of `objc_msgSend(...)` is `LAPolicyDeviceOwnerAuthentication`
 
 ### Evaluation
 
-The test succeeds because the output file shows references to API that checks for passcode presence.
+The test passes because the output shows references to passcode verification APIs.

@@ -28,4 +28,4 @@ The output files show usages of API that verifies the presence of passcode.
 
 ### Evaluation
 
-The test succeeds because the output file shows references to API that verifies the presence of passcode.
+The test passes because the output shows references to passcode verification API.

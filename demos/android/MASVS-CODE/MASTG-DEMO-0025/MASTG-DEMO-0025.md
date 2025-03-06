@@ -28,4 +28,4 @@ The output file shows usages of the API that verifies the operating system versi
 
 ### Evaluation
 
-The test succeeds because the output file shows references to API that verifies the OS version.
+The test passes because the output shows references to SDK version check API.
