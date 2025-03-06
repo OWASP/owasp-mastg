@@ -10,7 +10,7 @@ test: MASTG-TEST-0245
 
 The following example checks the version of the operating system.
 
-{{ MastgTest.kt }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
@@ -24,7 +24,7 @@ Let's run @MASTG-TOOL-0110 rules against the sample code.
 
 The output file shows usages of the API that verifies the operating system version.
 
-{{ output_version.txt }}
+{{ output.txt }}
 
 ### Evaluation
 

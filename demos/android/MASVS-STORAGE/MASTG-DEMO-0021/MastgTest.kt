@@ -9,9 +9,12 @@ class MastgTest (private val context: Context){
 
     fun mastgTest(): String {
         val isLocked = isDeviceSecure(context)
-        val androidSdkVersion = getSystemSdkVersion()
-        val isSystemDebuggable = isSystemDebuggable()
-        return "Device has a passcode: $isLocked\nandroidSdkVersion:$androidSdkVersion\nisSystemDebuggable:$isSystemDebuggable"
+        if(isLocked){
+            return "Device has a passcode"    
+        }
+        else{
+            return "Device doesn't have a passcode"
+        }
     }
 
     fun isDeviceSecure(context: Context): Boolean {
@@ -21,9 +24,5 @@ class MastgTest (private val context: Context){
 
     fun getSystemSdkVersion(): Int {
         return android.os.Build.VERSION.SDK_INT
-    }
-
-    fun isSystemDebuggable(): Boolean {
-        return Build.TYPE == "eng" || Build.TYPE == "userdebug"
     }
 }

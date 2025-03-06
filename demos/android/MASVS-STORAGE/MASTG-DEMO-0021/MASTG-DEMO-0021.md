@@ -24,7 +24,7 @@ Let's run @MASTG-TOOL-0110 rules against the sample code.
 
 The output files show usages of API that verifies the presence of passcode.
 
-{{ output_passcode.txt }}
+{{ output.txt }}
 
 ### Evaluation
 
