@@ -1,5 +1,5 @@
 ---
-title: Secured Device Detection Not Implemented
+title: Missing Device Secure Lock Verification Implementation
 id: MASWE-0008
 alias: secured-device-detection-not-implemented
 platform: [android, ios]
