@@ -220,7 +220,7 @@ Attached; pid = 12690
 Listening on port 1234
 ```
 
-The process is now suspended, and `gdbserver` is listening for debugging clients on port `1234`. With the device connected via USB, you can forward this port to a local port on the host with the `abd forward` command:
+The process is now suspended, and `gdbserver` is listening for debugging clients on port `1234`. With the device connected via USB, you can forward this port to a local port on the host with the `adb forward` command:
 
 ```bash
 adb forward tcp:1234 tcp:1234

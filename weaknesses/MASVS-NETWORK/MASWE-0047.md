@@ -15,7 +15,7 @@ status: new
 
 [Identity pinning (aka. certificate pinning, public key pinning or TLS pinning)](../../Document/0x04f-Testing-Network-Communication/#restricting-trust-identity-pinning) refers to associating a mobile app with a specific cryptographic identity, such as a certificate or public key to ensure that the app only communicates with trusted servers.
 
-When a mobile app does not implement certificate pinning, or if it is implemented incorrectly, the app remains vulnerable to Machine-in-the-Middle (MITM) attacks which enable attackers to intercept and modify the communication between the app and the intended server. This occurs because when the app is presented a fraudulent certificate that the app may unknowingly trust, thereby gaining access to sensitive data or injecting malicious content into the data stream.
+When a mobile app does not implement certificate pinning, or if it is implemented incorrectly, the app remains vulnerable to [Machine-in-the-Middle (MITM)](../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks which enable attackers to intercept and modify the communication between the app and the intended server. This occurs because when the app is presented a fraudulent certificate that the app may unknowingly trust, thereby gaining access to sensitive data or injecting malicious content into the data stream.
 
 **Limitations**: Certificate pinning adds a layer of trust verification by ensuring that the app only accepts connections to servers with specific, pre-determined certificates or public keys. This reduces the risk of unauthorized interception, even if a trusted Certificate Authority (CA) is compromised. However, it is not foolproof:
 
@@ -26,8 +26,9 @@ This highlights the importance of implementing certificate pinning **alongside o
 
 ## Impact
 
-- **Data Interception**: Sensitive data such as credentials, personal information, or financial details can be captured by unauthorized parties.
-- **Data Manipulation**: Attackers can not only intercept but also manipulate data if pinning is not properly enforced.
+- **Data Interception**: Attackers can capture and read sensitive information transmitted over the network.
+- **Data Manipulation**: Attackers might alter data in transit, causing corruption or injecting malicious content.
+- **Data Exposure**: Sensitive information can be compromised.
 - **Denial of Service**: Incorrect pinning may cause legitimate connections to fail, leading to service disruptions for users. For example, if a pinned certificate expires and is not updated, the app may be unable to establish secure connections.
 
 ## Modes of Introduction
