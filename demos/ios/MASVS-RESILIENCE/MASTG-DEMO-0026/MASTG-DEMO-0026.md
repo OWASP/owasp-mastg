@@ -26,8 +26,8 @@ The following sample checks whether the device has a set passcode.
 
 {{ output.txt }}
 
-The output reveals the use of `LAcontext.canEvaluatePolicy(0x2)` in the app. Policy `0x2` is [.deviceOwnerAuthentication](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthentication).
+The output reveals the use of `LAcontext.canEvaluatePolicy(0x2)` in the app. Policy `0x2` is [`.deviceOwnerAuthentication`](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthentication).
 
 ### Evaluation
 
-The test passes because the output shows the runtime use of LAcontext.canEvaluatePolicy(.deviceOwnerAuthentication) which verifies whether the device has passcode set.
+The test passes because the output shows the runtime use of `LAcontext.canEvaluatePolicy(.deviceOwnerAuthentication)` which verifies whether the device has passcode set.
