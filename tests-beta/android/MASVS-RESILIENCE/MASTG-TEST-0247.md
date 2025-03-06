@@ -1,7 +1,7 @@
 ---
 platform: android
 title: References to APIs for Detecting Secure Lock Screen
-id: MASTG-TEST-0242
+id: MASTG-TEST-0247
 apis: [KeyguardManager, BiometricManager#canAuthenticate]
 type: [static]
 weakness: MASWE-0008
