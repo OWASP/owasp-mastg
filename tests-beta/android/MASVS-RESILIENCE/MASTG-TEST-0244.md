@@ -10,7 +10,7 @@ best-practices: []
 
 ## Overview
 
-This test verifies that an application is running on a device with a set passcode. A set passcode ensures that data on the device is encrypted and access to the device is restricted.
+This test verifies that an app is running on a device with a secure lock screen (e.g. a passcode).
 
 ## Steps
 

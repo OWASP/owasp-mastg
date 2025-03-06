@@ -10,7 +10,11 @@ best-practices: []
 
 ## Overview
 
-This test verifies that an application is running on a device with a set passcode. A set passcode ensures that data on the device is encrypted and access to the device is restricted.
+This test verifies that an app is running on a device with a secure lock screen (e.g. a passcode).
+
+On iOS, apps can determine whether a secure lock screen is set using the **LocalAuthentication** framework. Specifically, the [LAContext.canEvaluatePolicy(_:error:)](https://developer.apple.com/documentation/localauthentication/lacontext/canevaluatepolicy(_:error:)) method with the [.deviceOwnerAuthentication](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthentication) or [.deviceOwnerAuthenticationWithBiometrics](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthenticationwithbiometrics) policy can be used to check if authentication mechanisms, including a passcode, are available.  
+
+Apps leveraging the **Keychain Services API** can require passcode authentication before accessing sensitive data using the [kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly](https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly) attribute.
 
 ## Steps
 
