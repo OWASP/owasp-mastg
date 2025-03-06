@@ -16,7 +16,7 @@ The following example checks the version of the operating system.
 
 Let's run @MASTG-TOOL-0110 rules against the sample code.
 
-{{ ../../../../rules/mastg-android-device-access-security-sdk-version.yml }}
+{{ ../../../../rules/mastg-android-sdk-version.yml }}
 
 {{ run.sh }}
 

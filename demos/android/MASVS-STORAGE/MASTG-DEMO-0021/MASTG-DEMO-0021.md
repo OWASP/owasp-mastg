@@ -3,7 +3,7 @@ platform: android
 title: Uses of KeyguardManager.isDeviceSecure with semgrep
 id: MASTG-DEMO-0021
 code: [kotlin]
-test: MASTG-TEST-0216
+test: MASTG-TEST-0242
 ---
 
 ### Sample
@@ -16,7 +16,7 @@ The following example checks if the device has a passcode set.
 
 Let's run @MASTG-TOOL-0110 rules against the sample code.
 
-{{ ../../../../rules/mastg-android-device-access-security-passcode.yml }}
+{{ ../../../../rules/mastg-android-device-passcode-present.yml }}
 
 {{ run.sh }}
 
@@ -28,4 +28,4 @@ The output files show usages of API that verifies the presence of passcode.
 
 ### Evaluation
 
-The test succeeds because the output file shows references to Device-Access-Security APIs
+The test succeeds because the output file shows references to API that verifies the presence of passcode.

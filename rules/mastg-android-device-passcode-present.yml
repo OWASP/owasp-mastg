@@ -1,10 +1,10 @@
 rules:
-  - id: device-access-security-passcode
+  - id: mastg-android-device-passcode-present
     languages:
       - java
     severity: ERROR
     metadata:
-      summary: This rule scans for Device-Access-Security to make sure the app runs on a secure environment protected with passcode
+      summary: This rule searches for API that checks whether the device passcode is set.
     message: "[MASVS-STORAGE] Make sure to verify that your app runs on a device with a passcode set"
     patterns:
       - pattern: $X.getSystemService("keyguard");
