@@ -437,6 +437,8 @@ The attacker can access any data accessible via content providers (if the app ha
         - entire media folders (including data from other apps) if the app has the `READ_MEDIA_IMAGES` or similar permissions.
         - the entire external storage if the app has the `MANAGE_EXTERNAL_STORAGE` permission.
 
+Data from other apps accessible via content providers (if the app has any and they are exported) can also be accessed.
+
 #### Java Objects Exposed Through WebViews
 
 Android offers a way for JavaScript execution in a WebView to call and use native functions of an Android app (annotated with `@JavascriptInterface`) by using the [`addJavascriptInterface`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29 "Method addJavascriptInterface()") method. This is known as a _WebView JavaScript bridge_ or _native bridge_.
