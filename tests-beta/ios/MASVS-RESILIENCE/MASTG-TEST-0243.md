@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: References to Secure Lock Verification APIs
+title: References to APIs for Detecting Secure Lock Screen
 id: MASTG-TEST-0243
 apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly]
 type: [static]
@@ -14,7 +14,7 @@ This test verifies that an application is running on a device with a set passcod
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary, or use a dynamic analysis tool like @MASTG-TOOL-0039, and look for uses of `LAContext.canEvaluatePolicy` API.
+1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary, or use a dynamic analysis tool like @MASTG-TOOL-0039, and look for uses of `LAContext.canEvaluatePolicy` API and the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute.
 
 ## Observation
 
@@ -22,4 +22,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app doesn't use API that verifies passcode presence.
+The test fails if an app doesn't use any API to verify the secure lock screen presence.
