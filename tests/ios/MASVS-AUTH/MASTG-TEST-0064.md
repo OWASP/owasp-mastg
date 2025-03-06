@@ -9,7 +9,7 @@ title: Testing Local Authentication
 masvs_v1_levels:
 - L2
 status: deprecated
-covered_by: [MASTG-TEST-0248, MASTG-TEST-0246]
+covered_by: [MASTG-TEST-0246, MASTG-TEST-0248]
 deprecation_note: New version available in MASTG V2
 ---
 
