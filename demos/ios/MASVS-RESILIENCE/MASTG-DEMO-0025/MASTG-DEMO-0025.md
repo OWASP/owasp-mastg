@@ -27,4 +27,4 @@ The output reveals the value of the `get-task-allow` entitlement.
 
 ### Evaluation
 
-The test case fails if the `get-allow-task` flag is explicitly set to `true`. This indicates that the app is configured to allow debugging, which is inappropriate for production environments.
+The test fails because the app is debuggable due to the `get-task-allow` entitlement being present.
