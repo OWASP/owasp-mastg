@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-10]
   masvs-v2: [MASVS-RESILIENCE-1]
+  cwe: [353]
 
 refs:
 - https://developer.android.com/google/play/integrity

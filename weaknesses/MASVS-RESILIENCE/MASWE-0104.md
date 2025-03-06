@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-CODE-1]
   masvs-v2: [MASVS-RESILIENCE-2]
+  cwe: [353]
 
 refs:
 - https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format

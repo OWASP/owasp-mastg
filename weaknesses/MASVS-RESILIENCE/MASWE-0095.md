@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-CODE-4]
   masvs-v2: [MASVS-RESILIENCE-3]
+  cwe: [489, 912]
 
 draft:
   description: backdoors, hidden settings to e.g. disable TLS verification

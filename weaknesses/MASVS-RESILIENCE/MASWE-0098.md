@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [R]
 mappings:
   masvs-v2: [MASVS-RESILIENCE-1]
+  cwe: [358]
 
 draft:
   description: runs as a so-called "clone app"
