@@ -10,7 +10,7 @@ test: MASTG-TEST-0216
 
 The following example checks if the device has a passcode set.
 
-{{ MastgTest.kt }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 

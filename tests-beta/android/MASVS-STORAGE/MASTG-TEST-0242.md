@@ -12,8 +12,6 @@ best-practices: []
 
 This test verifies whether an application is running on a device with a passcode set.
 
-Testing for USB Debugging and Root detection is now part of MASVS-RESILIENCE.
-
 ## Steps
 
 1. Use @MASTG-TOOL-0110 to identify the API that checks whether a device has a passcode set
