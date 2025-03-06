@@ -3,7 +3,7 @@ platform: ios
 title: Uses of LAContext.canEvaluatePolicy with r2
 id: MASTG-DEMO-0024
 code: [swift]
-test: MASTG-TEST-0243
+test: MASTG-TEST-0248
 ---
 
 ### Sample

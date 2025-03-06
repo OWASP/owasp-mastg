@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: References to APIs for Detecting Secure Lock Screen
-id: MASTG-TEST-0243
+id: MASTG-TEST-0248
 apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly]
 type: [static]
 weakness: MASWE-0008
