@@ -1,1 +1,19 @@
-LAcontext.canEvaluatePolicy(0x2)
+Intercepted: LAContext.canEvaluatePolicy(0x2) #0x2 = .deviceOwnerAuthentication
+
+Backtrace:
+0x105226574 MASTestApp.debug.dylib!static MastgTest.devicePasscodeSet()
+0x105226490 MASTestApp.debug.dylib!static MastgTest.mastgTest(completion:)
+0x105227c48 MASTestApp.debug.dylib!closure #1 in closure #1 in closure #1 in ContentView.body.getter
+0x106bc7948 SwiftUI!closure #1 in ButtonAction.callAsFunction()
+0x105e5d850 SwiftUI!partial apply for closure #1 in ButtonAction.callAsFunction()
+0x106007e94 SwiftUI!closure #1 in ButtonAction.callAsFunction()partial apply
+0x106340810 SwiftUI!specialized static MainActor.assumeIsolated<A>(_:file:line:)
+0x10600604c SwiftUI!implicit closure #2 in implicit closure #1 in WrappedButtonStyleBody.body.getter
+0x106006e7c SwiftUI!partial apply for implicit closure #2 in implicit closure #1 in WrappedButtonStyleBody.body.getter
+0x1064cbdfc SwiftUI!ButtonBehavior.ended()
+0x1064d10b4 SwiftUI!partial apply for implicit closure #2 in implicit closure #1 in ButtonBehavior.body.getter
+0x106b68094 SwiftUI!partial apply for closure #1 in closure #2 in closure #1 in _ButtonGesture.internalBody.getter
+0x106340810 SwiftUI!specialized static MainActor.assumeIsolated<A>(_:file:line:)
+0x106b6309c SwiftUI!closure #2 in closure #1 in _ButtonGesture.internalBody.getter
+0x106b691f8 SwiftUI!partial apply for closure #3 in PrimitiveButtonGestureCallbacks.dispatch(phase:state:)
+0x12cd38638 SwiftUICore!thunk for @escaping @callee_guaranteed () -> ()
