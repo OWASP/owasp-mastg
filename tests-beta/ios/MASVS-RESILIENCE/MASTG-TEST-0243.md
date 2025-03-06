@@ -14,7 +14,7 @@ This test verifies that an application is running on a device with a set passcod
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary, or use a dynamic analysis tool like @MASTG-TOOL-0039, and look for uses of `LAContext.canEvaluatePolicy` API and the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute.
+1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary and look for uses of [LAContext.canEvaluatePolicy(.deviceOwnerAuthentication)](https://developer.apple.com/documentation/localauthentication/lacontext/canevaluatepolicy(_:error:)) API, or data stored with [kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly](https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly) attribute.
 
 ## Observation
 
