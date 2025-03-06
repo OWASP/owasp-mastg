@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Uses of KeyguardManager.isDeviceSecure with semgrep
-id: MASTG-DEMO-0021
+id: MASTG-DEMO-0028
 code: [kotlin]
 test: MASTG-TEST-0247
 ---
