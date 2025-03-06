@@ -1,7 +1,7 @@
 ---
 platform: android
 title: References to Platform Version APIs
-id: MASTG-TEST-0242
+id: MASTG-TEST-0245
 apis: [Build]
 type: [static]
 weakness: MASWE-0077
