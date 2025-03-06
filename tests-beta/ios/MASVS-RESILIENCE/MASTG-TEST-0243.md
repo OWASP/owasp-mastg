@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: References to APIs that reveal if a device secure lock is in place
+title: References to Secure Lock Verification APIs
 id: MASTG-TEST-0243
 apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly]
 type: [static]
