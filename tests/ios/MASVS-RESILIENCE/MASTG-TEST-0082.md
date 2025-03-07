@@ -7,6 +7,9 @@ platform: ios
 title: Testing whether the App is Debuggable
 masvs_v1_levels:
 - R
+status: deprecated
+covered_by: [MASTG-TEST-0x82]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
