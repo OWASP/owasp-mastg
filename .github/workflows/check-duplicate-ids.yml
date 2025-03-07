@@ -29,12 +29,21 @@ jobs:
       - name: Get new files in PR
         id: get-new-files
         run: |
-          # Get the base branch ref (usually main or master)
-          BASE_REF=${{ github.event.pull_request.base.ref }}
+          # Get the base branch ref from the PR event
+          BASE_REF="${{ github.event.pull_request.base.ref }}"
+          echo "Base branch is: $BASE_REF"
+          
+          # Fetch the base branch to ensure it's available locally
+          git fetch origin $BASE_REF
+          
           # Create a file with the list of new files in this PR
-          git diff --name-status --diff-filter=A $BASE_REF..HEAD | grep -E "^A\s+(apps/|best-practices/|demos/|tests-beta/|tools/|techniques/|weaknesses/)" | cut -f2 > new_files_in_pr.txt
+          git diff --name-status --diff-filter=A origin/$BASE_REF..HEAD | grep -E "^A\s+(apps/|best-practices/|demos/|tests-beta/|tools/|techniques/|weaknesses/)" | cut -f2 > new_files_in_pr.txt || echo "No new files matching the pattern"
+          
           echo "New files in PR:"
           cat new_files_in_pr.txt
+          
+          # Ensure the file exists even if empty
+          touch new_files_in_pr.txt
           
       - name: Check for duplicate file IDs
         id: check-duplicates
@@ -48,6 +57,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
+            
+            // Check if the duplicates file exists before trying to read it
+            if (!fs.existsSync('duplicate_files.json')) {
+              console.log('No duplicate_files.json found.');
+              return;
+            }
+            
             const duplicatesData = JSON.parse(fs.readFileSync('duplicate_files.json', 'utf8'));
             
             for (const duplicate of duplicatesData) {
