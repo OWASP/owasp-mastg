@@ -67,8 +67,16 @@ jobs:
             const duplicatesData = JSON.parse(fs.readFileSync('duplicate_files.json', 'utf8'));
             
             for (const duplicate of duplicatesData) {
+              // Extract the ID prefix for a more specific message
+              let idType = duplicate.file_id.split('-').slice(0, 2).join('-');
+              
+              // Special case for MASWE which only has one segment
+              if (duplicate.file_id.startsWith('MASWE')) {
+                idType = 'MASWE';
+              }
+              
               const message = `
-              ### ⚠️ Duplicate File ID Detected
+              ### ⚠️ Duplicate \`${idType}\` ID Detected
               
               This file has the ID \`${duplicate.file_id}\` which already exists in \`${duplicate.existing_path}\`.
               
