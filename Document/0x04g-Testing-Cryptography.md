@@ -80,7 +80,7 @@ NIST has approved CRYSTALS-Kyber as a post-quantum key encapsulation mechanism (
 
 ## Signatures
 
-NIST has approved [SLH-DSA](https://csrc.nist.gov/pubs/fips/205/final "NIST: Stateless Hash-Based Digital Signature Standard") (NIST, 2024) and [ML-DSA](https://csrc.nist.gov/pubs/fips/204/final "NIST: Module-Lattice-Based Digital Signature Standard") (NIST, 2024) as recommended digital signature algorithm to be used in for post-quatum signatures generation and verification.
+NIST has approved [SLH-DSA](https://csrc.nist.gov/pubs/fips/205/final "NIST: Stateless Hash-Based Digital Signature Standard") (NIST, 2024) and [ML-DSA](https://csrc.nist.gov/pubs/fips/204/final "NIST: Module-Lattice-Based Digital Signature Standard") (NIST, 2024) as recommended digital signature algorithm to be used for post-quatum signature generation and verification.
 
 ## Common Configuration Issues
 
