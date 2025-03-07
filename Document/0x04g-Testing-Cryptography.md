@@ -50,12 +50,14 @@ Please make sure that:
 - Cryptographic means are not mixed with each other: e.g. you do not sign with a public key, or try to reuse a key pair used for a signature to do encryption.
 - Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
-The following algorithms are recommended:
+We recommend the following algorithms:
 
 - Confidentiality algorithms: AES-GCM-256 or ChaCha20-Poly1305
 - Integrity algorithms: SHA-256, SHA-384, SHA-512, BLAKE3, the SHA-3 family
 - Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384 or EdDSA with Edwards448. 
 - Key establishment algorithms: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
+
+Please note: The Recommendations are based on current industry perception regarding what is considered to be appropriate and are in line with NIST recommendations beyond 2030, but does not necessarily take into account quantum computing advancements. For advice on post-quantum, please see **Post-Quantum** below.
 
 Additionally, you should always rely on secure hardware (if available) for storing encryption keys, performing cryptographic operations, etc.
 
