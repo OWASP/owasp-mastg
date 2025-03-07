@@ -13,7 +13,7 @@ The goal of cryptography is to provide constant confidentiality, data integrity,
 
 Encryption algorithms converts plaintext data into cipher text that conceals the original content. Plaintext data can be restored from the cipher text through decryption. Encryption can be **symmetric** (encryption/decryption with same secret-key) or **asymmetric** (encryption/decryption using a public and private key pair). Symmetric encryption operations do not protect integrity unless used together with a recommended and approved cipher mode that supports an authenticated encryption function with an appropriatly random **IV** (Initialization vector) fulfilling the “uniqueness” requirement from "NIST 800-38D" ([NIST, 2007](https://csrc.nist.gov/pubs/sp/800/38/d/final)).
 
-**Symmetric-key encryption algorithms** use the same key for both encryption and decryption. This type of encryption is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, this method requires careful key management and centralized control over key distribution. Currently AES is the only approved symmetric algorithm according to "NIST 800-131A" ([NIST, 2019](https://csrc.nist.gov/pubs/sp/800/131/a/r2/final)).
+**Symmetric-key encryption algorithms** use the same key for both encryption and decryption. This type of encryption is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, this method requires careful key management and centralized control over key distribution.
 
 **Public-key encryption algorithms** operate with two separate keys: the public key and the private key. The public key can be distributed freely while the private key shouldn't be shared with anyone. A message encrypted with the public key can only be decrypted with the private key and vice-versa. Since asymmetric encryption is several times slower than symmetric operations, it's typically only used to encrypt small amounts of data, such as symmetric keys for bulk encryption.
 
@@ -21,7 +21,7 @@ Encryption algorithms converts plaintext data into cipher text that conceals the
 
 **Message Authentication Codes** (MACs) combine other cryptographic mechanisms (such as symmetric encryption or hashes) with secret keys to provide both integrity and authenticity protection. However, in order to verify a MAC, multiple entities have to share the same secret key and any of those entities can generate a valid MAC. HMACs, the most commonly used type of MAC, rely on hashing as the underlying cryptographic primitive. The full name of an HMAC algorithm usually includes the underlying hash function's type (for example, HMAC-SHA256 uses the SHA-256 hash function).
 
-**Signatures** combine asymmetric cryptography (that is, using a public/private key pair) with hashing to provide integrity and authenticity by encrypting the hash of the message with the private key. However, unlike MACs, signatures also provide non-repudiation property as the private key should remain unique to the data signer. Currently, RSA, ECDSA and EdDSA are the only approved techniques for digital signature generation according to "FIPS 186-4" ((NIST, 2023)[https://csrc.nist.gov/pubs/fips/186-5/final]), but please keep in mind that DSA only shall be used to verify previously genererated digital signatures.
+**Signatures** combine asymmetric cryptography (that is, using a public/private key pair) with hashing to provide integrity and authenticity by encrypting the hash of the message with the private key. However, unlike MACs, signatures also provide non-repudiation property as the private key should remain unique to the data signer.
 
 **Key Derivation Functions** (KDFs) derive secret keys from a secret value (such as a password) and are used to turn keys into other formats or to increase their length. KDFs are similar to hashing functions but have other uses as well (for example, they are used as components of multi-party key-agreement protocols). While both hashing functions and KDFs must be difficult to reverse, KDFs have the added requirement that the keys they produce must have a level of randomness.
 
@@ -46,7 +46,7 @@ The names of cryptographic APIs depend on the particular mobile platform.
 Please make sure that:
 
 - Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the application and server.
-- Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and protection they provide taking into account Moore's law is available [online](https://www.keylength.com/ "Keylength comparison").
+- Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and protection they provide taking into account Moore's law is available [online](https://www.keylength.com/ "Keylength comparison"). Also key an eye on NIST SP 800-131A on "Transitioning the Use of Cryptographic Algorithms and Key Lengths" [(NIST, 2024)](https://csrc.nist.gov/pubs/sp/800/131/a/r3/ipd) to align with future guidence on transitioning to the use of stronger cryptographic keys and more robust algorithms.
 - Cryptographic means are not mixed with each other: e.g. you do not sign with a public key, or try to reuse a key pair used for a signature to do encryption.
 - Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
@@ -54,7 +54,7 @@ The following algorithms are recommended:
 
 - Confidentiality algorithms: AES-GCM-256 or ChaCha20-Poly1305
 - Integrity algorithms: SHA-256, SHA-384, SHA-512, BLAKE3, the SHA-3 family
-- Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384
+- Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384 or EdDSA with Edwards448. 
 - Key establishment algorithms: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 
 Additionally, you should always rely on secure hardware (if available) for storing encryption keys, performing cryptographic operations, etc.
@@ -64,6 +64,21 @@ For more information on algorithm choice and best practices, see the following r
 - ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
 - [NIST recommendations (2019)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
+- NIST advises using RSA-based key-transport schemes with a minimum modulus length of at least 2048 bits according to 800-56B Rev. 2 ([NIST, 2019](https://csrc.nist.gov/pubs/sp/800/56/b/r2/final))
+- NIST advises using ECC-based key-agreement schemes, such as Elliptic Curve Diffie-Hellman (ECDH), utilizing curves between P-224 to P-521 according to 800-56A Rev. 3 ([NIST, 2018](https://csrc.nist.gov/pubs/sp/800/56/a/r3/final)).
+- RSA, ECDSA and EdDSA are approved techniques by NIST for digital signature generation according to "FIPS 186-4" ([NIST, 2023](https://csrc.nist.gov/pubs/fips/186-5/final)). Keep in mind that DSA only shall be used to verify previously genererated digital signatures.
+- NIST Digital Signature Standard, FIPS 186-5 (DSS) [(NIST, 2023)](https://csrc.nist.gov/pubs/fips/186-5/final)
+- Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters, NIST SP 800-186 [(NIST, 2023)(https://csrc.nist.gov/pubs/sp/800/186/final)]
+
+## Post-Quantum
+
+### Public-key encryption algorithms
+
+NIST has approved CRYSTALS-Kyber as a post-quantum key encapsulation mechanism (KEM) to establish a shared secret key over a public channel. The secret can then be used with symmetric-key cryptographic algorithms to perform encryption and decryption. This according to FIPS 203 ([NIST, 2024](https://csrc.nist.gov/pubs/fips/203/final)).
+
+## Signatures
+
+NIST has approved [SLH-DSA](https://csrc.nist.gov/pubs/fips/205/final) (NIST, 2024) and [ML-DSA](https://csrc.nist.gov/pubs/fips/204/final) (NIST, 2024) as recommended digital signature algorithm to be used in for post-quatum signatures generation and verification.
 
 ## Common Configuration Issues
 
