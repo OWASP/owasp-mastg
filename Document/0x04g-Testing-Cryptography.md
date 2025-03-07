@@ -55,7 +55,7 @@ We recommend the following algorithms:
 
 - Confidentiality algorithms: AES-GCM-256 or ChaCha20-Poly1305
 - Integrity algorithms: SHA-256, SHA-384, SHA-512, BLAKE3, the SHA-3 family
-- Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384 or EdDSA with Edwards448. 
+- Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384 or EdDSA with Edwards448.
 - Key establishment algorithms: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 
 **Please note:** The Recommendations are based on current industry perception regarding what is considered to be appropriate and are in line with NIST recommendations beyond 2030, but does not necessarily take into account quantum computing advancements. For advice on post-quantum, please see **Post-Quantum** below.
@@ -155,7 +155,7 @@ Block-based encryption is performed upon discrete input blocks (for example, AES
 
 <img src="Images/Chapters/0x07c/EncryptionMode.png" width="550px" />
 
-Verify that Cipher Block Chaining (CBC) mode is used instead of ECB. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block is unique and randomized even if blocks contain the same information. Please note that it is best to combine CBC with an HMAC and/or ensure that no errors are given such as "Padding error", "MAC error", "decryption failed" in order to be more resistant to a padding oracle attack. 
+Verify that Cipher Block Chaining (CBC) mode is used instead of ECB. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block is unique and randomized even if blocks contain the same information. Please note that it is best to combine CBC with an HMAC and/or ensure that no errors are given such as "Padding error", "MAC error", "decryption failed" in order to be more resistant to a padding oracle attack.
 
 When storing encrypted data, we recommend using a block mode that also protects the integrity of the stored data, such as Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation, and thus is available on all modern platforms. To protect the integrity and authenticity of the data using CBC mode, it is recommended to combine the techniques of the Counter (CTR) mode and the Cipher Block Chaining-Message Authentication Code (CBC-MAC) into what is called CCM Mode ([NIST, 2004](https://csrc.nist.gov/pubs/sp/800/38/c/upd1/final "NIST: Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality")).
 
