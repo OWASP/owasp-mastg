@@ -1,8 +1,10 @@
 package org.owasp.mastestapp
+
 import android.app.KeyguardManager
 import android.content.Context
 import android.hardware.biometrics.BiometricManager
 import android.os.Build
+
 class MastgTest(private val context: Context) {
     fun mastgTest(): String {
         val isLocked = isDeviceSecure(context)
@@ -10,10 +12,18 @@ class MastgTest(private val context: Context) {
         return "Device has a passcode: $isLocked\n\n" +
                 "Biometric status: $biometricStatus"
     }
+
+    /**
+     * Checks if the device has a secure lock screen (e.g., PIN, pattern, password).
+     *
+     * @return `true` if the device has a secure lock screen, `false` otherwise.
+     */
+
     fun isDeviceSecure(context: Context): Boolean {
         val keyguardManager = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         return keyguardManager.isDeviceSecure
     }
+
     /**
      * Checks if the device supports strong biometric authentication (e.g., fingerprint, face, iris)
      * and if the user has enrolled biometric credentials.
