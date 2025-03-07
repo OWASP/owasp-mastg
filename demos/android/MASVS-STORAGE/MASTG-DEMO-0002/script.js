@@ -10,6 +10,20 @@ function printBacktrace(maxLines = 8) {
     });
 }
 
+// Intercept libc's open to make sure we cover all Java I/O APIs
+Interceptor.attach(Module.getExportByName(null, 'open'), {
+    onEnter: function(args) {
+        const external_paths = ['/sdcard', '/storage/emulated'];
+        const path = Memory.readCString(ptr(args[0]));
+        external_paths.forEach(external_path => {
+            if (path.indexOf(external_path) === 0) {
+                console.log(`\n[*] open called to open a file from external storage at: ${path}`);
+                printBacktrace(15);
+            }
+        });
+    }
+});
+
 // Hook ContentResolver.insert to log ContentValues (including keys like _display_name, mime_type, and relative_path) and returned URI
 Java.perform(() => {
     let ContentResolver = Java.use("android.content.ContentResolver");
@@ -32,18 +46,4 @@ Java.perform(() => {
         printBacktrace();
         return result;
     };
-});
-
-// Hook native open to log external file opens
-Interceptor.attach(Module.getExportByName(null, 'open'), {
-    onEnter: function(args) {
-        const external_paths = ['/sdcard', '/storage/emulated'];
-        const path = Memory.readCString(ptr(args[0]));
-        external_paths.forEach(external_path => {
-            if (path.indexOf(external_path) === 0) {
-                console.log(`\n[*] open called to open a file from external storage at: ${path}`);
-                printBacktrace(15);
-            }
-        });
-    }
 });
