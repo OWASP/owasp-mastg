@@ -170,7 +170,7 @@ Pay attention to cryptographic libraries used in the code: many open source libr
 
 #### Using the same key for encryption and authentication
 
-One common mistake is to reuse the same key k for CBC encryption and CBC-MAC. Reuse of keys for different purposes is genarally not recommended, but in the case of CBC-MAC the mistake can lead to a MitM attack (["CBC-MAC", 2024.10.11](https://en.wikipedia.org/wiki/CBC-MAC "Wikipedia")).
+One common mistake is to reuse the same key for CBC encryption and CBC-MAC. Reuse of keys for different purposes is genarally not recommended, but in the case of CBC-MAC the mistake can lead to a MitM attack (["CBC-MAC", 2024.10.11](https://en.wikipedia.org/wiki/CBC-MAC "Wikipedia")).
 
 #### Initialization Vectors in stateful operation modes
 
