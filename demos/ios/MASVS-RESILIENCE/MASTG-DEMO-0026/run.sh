@@ -1,2 +1,2 @@
 #!/bin/bash
-frida -U -f org.owasp.mastestapp -l ./script.js -o output.txt
+frida -U -f org.owasp.mastestapp.MASTestApp-iOS -l ./script.js -o output.txt
