@@ -36,7 +36,7 @@ def find_next_available_id(prefix, existing_ids):
     # Convert to integers and find the highest
     highest = max(int(id_str) for id_str in existing_ids)
     next_id = highest + 1
-    return f"{prefix}-{next_id:04d}"
+    return f"{prefix}-{next_id:04d}", next_id
 
 def main():
     # Dictionary to store all existing IDs by prefix
@@ -46,6 +46,8 @@ def main():
     # List to store duplicate files info
     duplicates = []
     has_duplicates = False
+    # Dictionary to keep track of next ID to use for each prefix
+    next_id_numbers = {}
 
     # Load list of new files in PR
     new_files_in_pr = []
@@ -96,6 +98,13 @@ def main():
                 existing_ids_by_prefix[file_id.split("-")[0] + "-" + file_id.split("-")[1]].append(id_number)
                 id_to_path[file_id] = filepath
 
+    # Initialize next ID numbers for each prefix based on existing highest values
+    for prefix, ids in existing_ids_by_prefix.items():
+        if ids:
+            next_id_numbers[prefix] = max(int(id_str) for id_str in ids) + 1
+        else:
+            next_id_numbers[prefix] = 1
+
     # Second pass: check new files against existing IDs
     for filepath in new_files_in_pr:
         # Skip non-markdown files
@@ -133,11 +142,12 @@ def main():
             # Determine which prefix pattern this file uses
             id_prefix = file_id.split("-")[0] + "-" + file_id.split("-")[1]
             
-            # Add this ID to the list for calculating next available ID
-            existing_ids_by_prefix[id_prefix].append(id_number)
+            # Get the next available ID based on our tracking
+            next_id_num = next_id_numbers.get(id_prefix, 1)
+            suggested_id = f"{id_prefix}-{next_id_num:04d}"
             
-            # Get the next available ID
-            suggested_id = find_next_available_id(id_prefix, existing_ids_by_prefix[id_prefix])
+            # Increment the next ID number for this prefix
+            next_id_numbers[id_prefix] = next_id_num + 1
             
             duplicates.append({
                 "file_path": filepath,
