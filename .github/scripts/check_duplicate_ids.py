@@ -23,9 +23,14 @@ ID_PATTERNS = {
     "demos": r"MASTG-DEMO-(\d{4})",
     "techniques": r"MASTG-TECH-(\d{4})",
     "tools": r"MASTG-TOOL-(\d{4})",
-    "weaknesses": r"MASTG-WEAK-(\d{4})",
+    "weaknesses": r"MASWE-(\d{4})",
     "apps": r"MASTG-APP-(\d{4})",
     "tests-beta": r"MASTG-TEST-(\d{4})"
+}
+
+# Special handling for patterns that don't match folder names
+FOLDER_TO_PATTERN = {
+    "weaknesses": ["weaknesses"] 
 }
 
 def find_next_available_id(prefix, existing_ids):
@@ -65,19 +70,32 @@ def main():
                 f.write("has_duplicates=false\n")
         return
 
+    # Debug: Print the files we're checking
+    print("Files to check in PR:")
+    for file in new_files_in_pr:
+        print(f"- {file}")
+
     # First pass: collect all existing IDs (excluding the new files in PR)
     for folder in FOLDERS_TO_CHECK:
         # Get the prefix for this folder
         prefix_match = None
         for key in ID_PATTERNS:
-            if key in folder or folder in key:
+            # Check if key is in folder name or folder is in key
+            if key in folder:
                 prefix_match = key
                 break
+            # Check special mappings
+            for pattern_folder, patterns in FOLDER_TO_PATTERN.items():
+                if folder in patterns and key == pattern_folder:
+                    prefix_match = key
+                    break
         
         if not prefix_match:
+            print(f"Warning: No pattern match found for folder: {folder}")
             continue  # Skip folders without a defined pattern
 
         pattern = ID_PATTERNS[prefix_match]
+        print(f"Scanning folder: {folder} with pattern: {pattern}")
         
         # Search for all markdown files in the folder and subfolders
         for filepath in glob.glob(f"{folder}/**/*.md", recursive=True):
@@ -94,9 +112,17 @@ def main():
                 file_id = match.group(0)  # Full match like MASTG-BEST-0001
                 id_number = match.group(1)  # Just the number part (0001)
                 
+                # For MASWE files, the prefix is just "MASWE"
+                if "MASWE" in file_id:
+                    id_prefix = "MASWE"
+                else:
+                    # For other files, split by dash and take first two parts
+                    id_prefix = "-".join(file_id.split("-")[:2])
+                
                 # Record the ID and its associated path
-                existing_ids_by_prefix[file_id.split("-")[0] + "-" + file_id.split("-")[1]].append(id_number)
+                existing_ids_by_prefix[id_prefix].append(id_number)
                 id_to_path[file_id] = filepath
+                print(f"Found existing ID: {file_id} in {filepath}")
 
     # Initialize next ID numbers for each prefix based on existing highest values
     for prefix, ids in existing_ids_by_prefix.items():
@@ -121,26 +147,41 @@ def main():
             if key in filepath:
                 prefix_match = key
                 break
+        
+        # Special case for MASWE files in weaknesses folder
+        if "weaknesses" in filepath and not prefix_match:
+            prefix_match = "weaknesses"
                 
         if not prefix_match:
+            print(f"Warning: No pattern match found for file: {filepath}")
             continue  # Skip files without a matching pattern
             
         pattern = ID_PATTERNS[prefix_match]
         filename = os.path.basename(filepath)
         
+        print(f"Checking file: {filepath} with pattern: {pattern}")
+        
         # Try to find the ID in the filename
         match = re.search(pattern, filename)
         if not match:
+            print(f"No ID pattern match in filename: {filename}")
             continue  # Skip files without an ID in the filename
             
         file_id = match.group(0)  # Full match like MASTG-BEST-0001
         id_number = match.group(1)  # Just the number part (0001)
         
+        # For MASWE files, the prefix is just "MASWE"
+        if "MASWE" in file_id:
+            id_prefix = "MASWE"
+        else:
+            # For other files, split by dash and take first two parts
+            id_prefix = "-".join(file_id.split("-")[:2])
+        
+        print(f"Found ID: {file_id} with prefix: {id_prefix} in new file: {filepath}")
+        
         # Check if this ID already exists
         if file_id in id_to_path:
             has_duplicates = True
-            # Determine which prefix pattern this file uses
-            id_prefix = file_id.split("-")[0] + "-" + file_id.split("-")[1]
             
             # Get the next available ID based on our tracking
             next_id_num = next_id_numbers.get(id_prefix, 1)
@@ -155,12 +196,13 @@ def main():
                 "existing_path": id_to_path[file_id],
                 "suggested_id": suggested_id
             })
+            print(f"Duplicate found: {file_id} already exists in {id_to_path[file_id]}")
         else:
             # Record this ID so if there are multiple new files with the same ID,
             # we'll catch those duplicates too
             id_to_path[file_id] = filepath
-            id_prefix = file_id.split("-")[0] + "-" + file_id.split("-")[1]
             existing_ids_by_prefix[id_prefix].append(id_number)
+            print(f"New unique ID: {file_id} in {filepath}")
 
     # Set output for GitHub Actions using the new environment file approach
     github_output = os.environ.get('GITHUB_OUTPUT')
