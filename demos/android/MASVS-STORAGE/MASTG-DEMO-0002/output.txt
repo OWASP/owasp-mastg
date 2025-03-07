@@ -18,7 +18,12 @@ androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke-k-4l
 androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke(Clickable.kt:981)
 androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)
 
-[*] ContentResolver.insert called to open a file via MediaStore at: content://media/external/downloads/1000000099
+[*] ContentResolver.insert called with ContentValues:
+	_display_name: secretFile55.txt
+	mime_type: text/plain
+	relative_path: Download
+
+[*] ContentResolver.insert returned URI: content://media/external/downloads/1000000108
 
 Backtrace:
 android.content.ContentResolver.insert(Native Method)
