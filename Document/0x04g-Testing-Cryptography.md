@@ -11,7 +11,7 @@ Cryptography plays an especially important role in securing the user's data - ev
 
 The goal of cryptography is to provide constant confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality involves ensuring data privacy through the use of encryption. Data integrity deals with data consistency and detection of tampering and modification of data through the use of hashing. Authenticity ensures that the data comes from a trusted source.
 
-Encryption algorithms converts plaintext data into cipher text that conceals the original content. Plaintext data can be restored from the cipher text through decryption. Encryption can be **symmetric** (encryption/decryption with same secret-key) or **asymmetric** (encryption/decryption using a public and private key pair). Symmetric encryption operations do not protect integrity unless used together with a recommended and approved cipher mode that supports an authenticated encryption function with an appropriatly random **IV** (Initialization vector) fulfilling the “uniqueness” requirement from "NIST 800-38D" ([NIST, 2007](https://csrc.nist.gov/pubs/sp/800/38/d/final "NIST: Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC")).
+Encryption algorithms converts plaintext data into cipher text that conceals the original content. Plaintext data can be restored from the cipher text through decryption. Encryption can be **symmetric** (encryption/decryption with same secret-key) or **asymmetric** (encryption/decryption using a public and private key pair). Symmetric encryption operations do not protect integrity unless used together with a recommended and approved cipher mode that supports an authenticated encryption function with an appropriately random **IV** (Initialization vector) fulfilling the “uniqueness” requirement from "NIST 800-38D" ([NIST, 2007](https://csrc.nist.gov/pubs/sp/800/38/d/final "NIST: Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC")).
 
 **Symmetric-key encryption algorithms** use the same key for both encryption and decryption. This type of encryption is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, this method requires careful key management and centralized control over key distribution.
 
@@ -69,7 +69,7 @@ For more information on algorithm choice and best practices, see the following r
 - [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
 - NIST advises using RSA-based key-transport schemes with a minimum modulus length of at least 2048 bits according to 800-56B Rev. 2 ([NIST, 2019](https://csrc.nist.gov/pubs/sp/800/56/b/r2/final "NIST: Recommendation for Pair-Wise Key-Establishment Using Integer Factorization Cryptography"))
 - NIST advises using ECC-based key-agreement schemes, such as Elliptic Curve Diffie-Hellman (ECDH), utilizing curves between P-224 to P-521 according to 800-56A Rev. 3 ([NIST, 2018](https://csrc.nist.gov/pubs/sp/800/56/a/r3/final "NIST: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography")).
-- RSA, ECDSA and EdDSA are approved techniques by NIST for digital signature generation according to "FIPS 186-5" ([NIST, 2023](https://csrc.nist.gov/pubs/fips/186-5/final "NIST: Digital Signature Standard (DSS)")). Keep in mind that DSA only shall be used to verify previously genererated digital signatures.
+- RSA, ECDSA and EdDSA are approved techniques by NIST for digital signature generation according to "FIPS 186-5" ([NIST, 2023](https://csrc.nist.gov/pubs/fips/186-5/final "NIST: Digital Signature Standard (DSS)")). Keep in mind that DSA only shall be used to verify previously generated digital signatures.
 - Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters, NIST SP 800-186 [(NIST, 2023)(https://csrc.nist.gov/pubs/sp/800/186/final "NIST: Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters")]
 
 ## Post-Quantum
@@ -169,7 +169,7 @@ Pay attention to cryptographic libraries used in the code: many open source libr
 
 #### Using the same key for encryption and authentication
 
-One common mistake is to reuse the same key for CBC encryption and CBC-MAC. Reuse of keys for different purposes is genarally not recommended, but in the case of CBC-MAC the mistake can lead to a MitM attack (["CBC-MAC", 2024.10.11](https://en.wikipedia.org/wiki/CBC-MAC "Wikipedia: CBC-MAC")).
+One common mistake is to reuse the same key for CBC encryption and CBC-MAC. Reuse of keys for different purposes is generally not recommended, but in the case of CBC-MAC the mistake can lead to a MitM attack (["CBC-MAC", 2024.10.11](https://en.wikipedia.org/wiki/CBC-MAC "Wikipedia: CBC-MAC")).
 
 #### Initialization Vectors in stateful operation modes
 
