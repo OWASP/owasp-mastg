@@ -68,11 +68,11 @@ jobs:
             
             for (const duplicate of duplicatesData) {
               const message = `
-              ## ⚠️ Duplicate File ID Detected
+              ### ⚠️ Duplicate File ID Detected
               
-              The file \`${duplicate.file_path}\` has the ID \`${duplicate.file_id}\` which already exists in \`${duplicate.existing_path}\`.
+              This file has the ID \`${duplicate.file_id}\` which already exists in \`${duplicate.existing_path}\`.
               
-              **Suggestion:** Consider using the next available ID: \`${duplicate.suggested_id}\`
+              **IMPORTANT:** Please use the next available ID: \`${duplicate.suggested_id}\`
               `;
               
               await github.rest.pulls.createReviewComment({
