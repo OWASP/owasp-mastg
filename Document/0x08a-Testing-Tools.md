@@ -22,3 +22,12 @@ title: Testing Tools
 !!! warning "Important Disclaimer"
 
     These tools have been tested to work when added, but compatibility may vary depending on your OS version, the device you're testing, or whether you're using a rooted or jailbroken device. Tool functionality may also be affected by specific versions of the rooting/jailbreaking method or the tool itself. OWASP MASTG does not guarantee the functionality of the tools. If you encounter problems, try to search for solutions online or contact the tool owner (e.g. via GitHub Issues).
+
+??? warning "Important Disclaimer"
+
+    These tools have been tested to work when added, but compatibility may vary depending on your OS version, the device you're testing, or whether you're using a rooted or jailbroken device. Tool functionality may also be affected by specific versions of the rooting/jailbreaking method or the tool itself. OWASP MASTG does not guarantee the functionality of the tools. If you encounter problems, try to search for solutions online or contact the tool owner (e.g. via GitHub Issues).
+
+
+!!! info "Important Disclaimer"
+
+    These tools have been tested to work when added, but compatibility may vfffary depending on your OS version, the device you're testing, or whether you're using a rooted or jailbroken device. Tool functionality may also be affected by specific versions of the rooting/jailbreaking method or the tool itself. OWASP MASTG does not guarantee the functionality of the tools. If you encounter problems, try to search for solutions online or contact the tool owner (e.g. via GitHub Issues).
