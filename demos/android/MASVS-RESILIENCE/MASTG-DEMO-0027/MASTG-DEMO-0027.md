@@ -30,4 +30,4 @@ The output reveals the use of `KeyguardManager.isDeviceSecure`.
 
 ### Evaluation
 
-The test passes because the output shows the runtime use of `KeyguardManager.isDeviceSecure` which verifies whether the device has a passcode set.
+The test passes because the output shows the use of `KeyguardManager.isDeviceSecure` at runtime, which checks if the device has a passcode set.

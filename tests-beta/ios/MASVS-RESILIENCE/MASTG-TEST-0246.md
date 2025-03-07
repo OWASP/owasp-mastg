@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Runtime Use of Secure Lock Verification APIs
+title: Runtime Use of Secure Screen Lock Detection APIs
 id: MASTG-TEST-0246
 apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly]
 type: [dynamic]
@@ -10,7 +10,7 @@ best-practices: []
 
 ## Overview
 
-This test verifies that an app is running on a device with a secure lock screen (e.g. a passcode).
+This test is the dynamic counterpart to @MASTG-TEST-0248.
 
 ## Steps
 
@@ -22,4 +22,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app doesn't use API that verifies passcode presence.
+The test fails if an app doesn't use any API to verify the secure screen lock presence.

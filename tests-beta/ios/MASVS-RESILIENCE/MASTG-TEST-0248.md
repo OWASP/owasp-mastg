@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: References to APIs for Detecting Secure Lock Screen
+title: References to APIs for Detecting Secure Screen Lock
 id: MASTG-TEST-0248
 apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly]
 type: [static]
@@ -10,9 +10,9 @@ best-practices: []
 
 ## Overview
 
-This test verifies that an app is running on a device with a secure lock screen (e.g. a passcode).
+This test verifies that an app is running on a device with a secure screen lock (e.g. a passcode).
 
-On iOS, apps can determine whether a secure lock screen is set using the **LocalAuthentication** framework. Specifically, the [LAContext.canEvaluatePolicy(_:error:)](https://developer.apple.com/documentation/localauthentication/lacontext/canevaluatepolicy(_:error:)) method with the [.deviceOwnerAuthentication](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthentication) or [.deviceOwnerAuthenticationWithBiometrics](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthenticationwithbiometrics) policy can be used to check if authentication mechanisms, including a passcode, are available.  
+On iOS, apps can determine whether a secure screen lock is set using the **LocalAuthentication** framework. Specifically, the [LAContext.canEvaluatePolicy(_:error:)](https://developer.apple.com/documentation/localauthentication/lacontext/canevaluatepolicy(_:error:)) method with the [.deviceOwnerAuthentication](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthentication) or [.deviceOwnerAuthenticationWithBiometrics](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthenticationwithbiometrics) policy can be used to check if authentication mechanisms, including a passcode, are available.  
 
 Apps leveraging the **Keychain Services API** can require passcode authentication before accessing sensitive data using the [kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly](https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly) attribute.
 
@@ -26,4 +26,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app doesn't use any API to verify the secure lock screen presence.
+The test fails if an app doesn't use any API to verify the secure screen lock presence.
