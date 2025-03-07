@@ -49,16 +49,49 @@ jobs:
         id: check-duplicates
         run: |
           python .github/scripts/check_duplicate_ids.py
-        
-      - name: Comment on PR if duplicates found
-        if: steps.check-duplicates.outputs.has_duplicates == 'true'
+          
+      - name: Delete previous comments and comment on PR if duplicates found
+        if: always() # Run this step regardless of previous step success/failure
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
+            // Get all review comments on the PR
+            const comments = await github.rest.pulls.listReviewComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            // Filter for comments that are likely from this action
+            // The identifier is the header "### ⚠️ Duplicate" which is unique to our action
+            const ourComments = comments.data.filter(comment => 
+              comment.body.includes('### ⚠️ Duplicate') && 
+              comment.body.includes('ID Detected')
+            );
+            
+            console.log(`Found ${ourComments.length} previous comments from this action.`);
+            
+            // Delete the comments
+            for (const comment of ourComments) {
+              console.log(`Deleting comment ID ${comment.id}`);
+              await github.rest.pulls.deleteReviewComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: comment.id
+              });
+            }
+            
+            // Check if we have new duplicates to report
+            const hasDuplicatesOutput = '${{ steps.check-duplicates.outputs.has_duplicates }}';
+            
+            if (hasDuplicatesOutput !== 'true') {
+              console.log('No duplicates found, no new comments to post.');
+              return;
+            }
             
             // Check if the duplicates file exists before trying to read it
+            const fs = require('fs');
             if (!fs.existsSync('duplicate_files.json')) {
               console.log('No duplicate_files.json found.');
               return;
@@ -66,6 +99,7 @@ jobs:
             
             const duplicatesData = JSON.parse(fs.readFileSync('duplicate_files.json', 'utf8'));
             
+            // Add new comments for any duplicates
             for (const duplicate of duplicatesData) {
               // Extract the ID prefix for a more specific message
               let idType = duplicate.file_id.split('-').slice(0, 2).join('-');
