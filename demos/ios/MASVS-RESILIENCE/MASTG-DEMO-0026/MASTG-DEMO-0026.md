@@ -20,7 +20,7 @@ The following sample checks whether the device has a set passcode.
 4. Click the **Start** button
 5. Stop the script by pressing `Ctrl+C`
 
-{{ run.sh }}
+{{ run.sh # script.js }}
 
 ### Observation
 

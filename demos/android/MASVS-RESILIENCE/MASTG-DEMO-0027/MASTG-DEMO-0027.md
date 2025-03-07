@@ -20,7 +20,7 @@ This sample checks if the device has a secure lock screen via `KeyguardManager.i
 4. Click the **Start** button
 5. Stop the script by pressing `Ctrl+C`
 
-{{ run.sh }}
+{{ run.sh # script.js }}
 
 ### Observation
 
