@@ -51,7 +51,7 @@ jobs:
           python .github/scripts/check_duplicate_ids.py
           
       - name: Delete previous comments and comment on PR if duplicates found
-        if: always() # Run this step regardless of previous step success/failure
+        if: always()
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
