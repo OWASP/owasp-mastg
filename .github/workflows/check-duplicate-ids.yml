@@ -1,0 +1,72 @@
+name: Check Duplicate File IDs
+
+on:
+  pull_request:
+    paths:
+      - 'apps/**'
+      - 'best-practices/**'
+      - 'demos/**'
+      - 'tests-beta/**'
+      - 'tools/**'
+      - 'techniques/**'
+      - 'weaknesses/**'
+
+jobs:
+  check-duplicates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Get new files in PR
+        id: get-new-files
+        run: |
+          # Get the base branch ref (usually main or master)
+          BASE_REF=${{ github.event.pull_request.base.ref }}
+          # Create a file with the list of new files in this PR
+          git diff --name-status --diff-filter=A $BASE_REF..HEAD | grep -E "^A\s+(apps/|best-practices/|demos/|tests-beta/|tools/|techniques/|weaknesses/)" | cut -f2 > new_files_in_pr.txt
+          echo "New files in PR:"
+          cat new_files_in_pr.txt
+          
+      - name: Check for duplicate file IDs
+        id: check-duplicates
+        run: |
+          python .github/scripts/check_duplicate_ids.py
+        
+      - name: Comment on PR if duplicates found
+        if: steps.check-duplicates.outputs.has_duplicates == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const duplicatesData = JSON.parse(fs.readFileSync('duplicate_files.json', 'utf8'));
+            
+            for (const duplicate of duplicatesData) {
+              const message = `
+              ## ⚠️ Duplicate File ID Detected
+              
+              The file \`${duplicate.file_path}\` has the ID \`${duplicate.file_id}\` which already exists in \`${duplicate.existing_path}\`.
+              
+              **Suggestion:** Consider using the next available ID: \`${duplicate.suggested_id}\`
+              `;
+              
+              await github.rest.pulls.createReviewComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                commit_id: context.payload.pull_request.head.sha,
+                path: duplicate.file_path,
+                body: message,
+                line: 1,
+                side: 'RIGHT'
+              });
+            }
