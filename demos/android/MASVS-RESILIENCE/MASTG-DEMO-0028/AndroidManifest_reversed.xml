@@ -11,9 +11,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <provider android:authorities="org.owasp.mastestapp.fileprovider" android:exported="false" android:grantUriPermissions="true" android:name="androidx.core.content.FileProvider">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths"/>
-        </provider>
         <activity android:exported="true" android:name="androidx.compose.ui.tooling.PreviewActivity"/>
         <activity android:exported="true" android:name="androidx.activity.ComponentActivity"/>
         <service android:directBootAware="true" android:exported="false" android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService">
