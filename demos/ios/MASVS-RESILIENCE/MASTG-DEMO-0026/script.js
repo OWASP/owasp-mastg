@@ -9,10 +9,10 @@ Interceptor.attach(ObjC.classes.LAContext["- canEvaluatePolicy:error:"].implemen
       const policy = args[2].toInt32();
       const policyDescription = LAPolicy[policy] || "Unknown Policy";
 
-      console.log("Intercepted: LAContext.canEvaluatePolicy(" + args[2] + ") # " + args[2] + " = " + policyDescription);
+      console.log(`\nLAContext.canEvaluatePolicy(${args[2]}) called with ${policyDescription} (${args[2]})\n`);
 
-      // Function to print backtrace with a configurable number of lines (default: 5)
-      function printBacktrace(maxLines = 8) {
+      // Use an arrow function so that `this` remains the same as in onEnter
+      const printBacktrace = (maxLines = 8) => {
           console.log("\nBacktrace:");
           let backtrace = Thread.backtrace(this.context, Backtracer.ACCURATE)
               .map(DebugSymbol.fromAddress);
