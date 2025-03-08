@@ -33,6 +33,9 @@ jobs:
             # Get list of changed files in demos/android/ directory
             changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD -- 'demos/android/*')
 
+            echo "Changed files:"
+            echo "$changed_files"
+
             # Extract unique demo directories
             matrix=$(echo "$changed_files" | grep -oE 'demos/android/[^/]+' | sort -u | sed 's/ /","/g')
 
