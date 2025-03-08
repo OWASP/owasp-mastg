@@ -51,7 +51,7 @@ Please make sure that:
 - Cryptographic means are not mixed with each other: e.g. you do not sign with a public key, or try to reuse a key pair used for a signature to do encryption.
 - Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
-We recommend the following algorithms:
+Recommend algorithms:
 
 - Confidentiality algorithms: AES-GCM-256 or ChaCha20-Poly1305
 - Integrity algorithms: SHA-256, SHA-384, SHA-512, BLAKE3, the SHA-3 family
