@@ -36,7 +36,7 @@ jobs:
             echo "$changed_files"
 
             # Extract unique demo directories
-            matrix=$(echo "$changed_files" | grep -oE 'demos/ios/[^/]+' | sort -u | sed 's/ /","/g')
+            matrix=$(echo "$changed_files" | grep -oE 'demos/ios/[^/]*/MASTG-DEMO-[^/]+' | sort -u | sed 's/ /","/g')
 
             # If no changes, set empty matrix
             if [ -z "$matrix" ]; then
