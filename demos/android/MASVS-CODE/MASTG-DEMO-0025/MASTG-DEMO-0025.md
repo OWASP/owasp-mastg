@@ -8,7 +8,7 @@ test: MASTG-TEST-0245
 
 ### Sample
 
-The following example checks the version of the operating system.
+The following sample uses the `Build.VERSION.SDK_INT` API to check the operating system version.
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
