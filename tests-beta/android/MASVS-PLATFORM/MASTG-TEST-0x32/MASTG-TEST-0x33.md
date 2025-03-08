@@ -15,7 +15,7 @@ This test checks for references to methods from the [`WebSettings`](https://deve
 
 - `setAllowFileAccess`: allows the WebView to load local files from the app's internal storage or external storage.
 - `setAllowFileAccessFromFileURLs`: lets JavaScript within those local files access other local files.
-- `setAllowUniversalAccessFromFileURLs`: removes any cross-origin restrictions, allowing that JavaScript to both read data across origins. The JavaScript can always send data to any origin, regardless of this setting; this setting only affects reading data.
+- `setAllowUniversalAccessFromFileURLs`: removes any cross-origin restrictions, allowing that JavaScript to read data across origins. The JavaScript **can always send data to any origin** (e.g. via `POST`), regardless of this setting; this setting only affects reading data (e.g. the code wouldn't get a response to a `POST` request but the data would still be sent).
 
 By combining these settings, an attack can become possible because if a malicious HTML file gains full privilege and it's able to access local resources and then exfiltrate them over the network, effectively bypassing the usual security barriers enforced by the same-origin policy.
 
@@ -27,9 +27,9 @@ Refer to [Android WebView Local File Access Settings](../../../Document/0x05h-Te
 
 Suppose a banking app uses a WebView to display dynamic content, and the developers enabled all three insecure settings. Additionally, JavaScript is enabled in the WebView.
 
-1. An attacker injects a malicious HTML file into the device (via phishing or another exploit) into a location that the attacker _knows_ (e.g. thanks to reverse engineering) the WebView will access.
-2. The WebView loads the malicious file because `setAllowFileAccess(true)` is enabled.
-3. The JavaScript in the malicious file (running in a `file://` context) is able to access other local files using `file://` URLs, enabled by `setAllowFileAccessFromFileURLs(true)`.
+1. An attacker injects a malicious HTML file into the device (via phishing or another exploit) into a location that the attacker _knows_ the WebView will access it from (e.g. thanks to reverse engineering). For example, an HTML file used to display the app's terms and conditions.
+2. The WebView can load the malicious file because of `setAllowFileAccess(true)`.
+3. Thanks to `setJavaScriptEnabled(true)` and `setAllowFileAccessFromFileURLs(true)`, the JavaScript in the malicious file (running in a `file://` context) is able to access other local files using `file://` URLs.
 4. The attacker-controlled script exfiltrates sensitive data from the device to an external server.
 
 ## Steps
