@@ -11,7 +11,7 @@ Cryptography plays an especially important role in securing the user's data - ev
 
 The goal of cryptography is to provide constant confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality involves ensuring data privacy through the use of encryption. Data integrity deals with data consistency and detection of tampering and modification of data through the use of hashing. Authenticity ensures that the data comes from a trusted source.
 
-Encryption algorithms converts plaintext data into cipher text that conceals the original content. Plaintext data can be restored from the cipher text through decryption. Encryption can be **symmetric** (encryption/decryption with same secret-key) or **asymmetric** (encryption/decryption using a public and private key pair). In general, encryption operations do not protect integrity, but some symmetric encryption modes also feature that protection.
+Encryption algorithms converts plaintext data into cipher text that conceals the original content. Plaintext data can be restored from the cipher text through decryption. Encryption can be **symmetric** (encryption/decryption with same secret-key) or **asymmetric** (encryption/decryption using a public and private key pair). Symmetric encryption operations do not protect integrity unless used together with a recommended and approved cipher mode that supports an authenticated encryption function with an appropriately random **IV** (Initialization vector) fulfilling the “uniqueness” requirement from "NIST 800-38D" ([NIST, 2007](https://csrc.nist.gov/pubs/sp/800/38/d/final "NIST: Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC")).
 
 **Symmetric-key encryption algorithms** use the same key for both encryption and decryption. This type of encryption is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, this method requires careful key management and centralized control over key distribution.
 
@@ -46,16 +46,19 @@ The names of cryptographic APIs depend on the particular mobile platform.
 Please make sure that:
 
 - Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the application and server.
-- Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and protection they provide taking into account Moore's law is available [online](https://www.keylength.com/ "Keylength comparison").
+- Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and the protection they provide, taking into account Moore's law, is available [online](https://www.keylength.com/ "Keylength comparison").
+- Through NIST SP 800-131A on "Transitioning the Use of Cryptographic Algorithms and Key Lengths" [(NIST, 2024)](https://csrc.nist.gov/pubs/sp/800/131/a/r3/ipd "NIST: Transitioning the Use of Cryptographic Algorithms and Key Lengths"), NIST provides recommendations and guidance on how to align with future recommendations and how to transition to stronger cryptographic keys and more robust algorithms.
 - Cryptographic means are not mixed with each other: e.g. you do not sign with a public key, or try to reuse a key pair used for a signature to do encryption.
 - Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
-The following algorithms are recommended:
+Recommend algorithms:
 
 - Confidentiality algorithms: AES-GCM-256 or ChaCha20-Poly1305
 - Integrity algorithms: SHA-256, SHA-384, SHA-512, BLAKE3, the SHA-3 family
-- Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384
+- Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384 or EdDSA with Edwards448.
 - Key establishment algorithms: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
+
+**Please note:** The Recommendations are based on current industry perception regarding what is considered to be appropriate and are in line with NIST recommendations beyond 2030, but does not necessarily take into account quantum computing advancements. For advice on post-quantum, please see **Post-Quantum** below.
 
 Additionally, you should always rely on secure hardware (if available) for storing encryption keys, performing cryptographic operations, etc.
 
@@ -64,6 +67,20 @@ For more information on algorithm choice and best practices, see the following r
 - ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
 - [NIST recommendations (2019)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
+- NIST advises using RSA-based key-transport schemes with a minimum modulus length of at least 2048 bits according to 800-56B Rev. 2 ([NIST, 2019](https://csrc.nist.gov/pubs/sp/800/56/b/r2/final "NIST: Recommendation for Pair-Wise Key-Establishment Using Integer Factorization Cryptography"))
+- NIST advises using ECC-based key-agreement schemes, such as Elliptic Curve Diffie-Hellman (ECDH), utilizing curves between P-224 to P-521 according to 800-56A Rev. 3 ([NIST, 2018](https://csrc.nist.gov/pubs/sp/800/56/a/r3/final "NIST: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography")).
+- RSA, ECDSA and EdDSA are approved techniques by NIST for digital signature generation according to "FIPS 186-5" ([NIST, 2023](https://csrc.nist.gov/pubs/fips/186-5/final "NIST: Digital Signature Standard (DSS)")). Keep in mind that DSA only shall be used to verify previously generated digital signatures.
+- Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters, NIST SP 800-186 [(NIST, 2023)(https://csrc.nist.gov/pubs/sp/800/186/final "NIST: Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters")]
+
+## Post-Quantum
+
+### Public-key encryption algorithms
+
+NIST has approved CRYSTALS-Kyber as a post-quantum key encapsulation mechanism (KEM) to establish a shared secret key over a public channel. The secret can then be used with symmetric-key cryptographic algorithms to perform encryption and decryption. This according to FIPS 203 ([NIST, 2024](https://csrc.nist.gov/pubs/fips/203/final "NIST: Module-Lattice-Based Key-Encapsulation Mechanism Standard")).
+
+## Signatures
+
+NIST has approved [SLH-DSA](https://csrc.nist.gov/pubs/fips/205/final "NIST: Stateless Hash-Based Digital Signature Standard") (NIST, 2024) and [ML-DSA](https://csrc.nist.gov/pubs/fips/204/final "NIST: Module-Lattice-Based Digital Signature Standard") (NIST, 2024) as recommended digital signature algorithm to be used for post-quatum signature generation and verification.
 
 ## Common Configuration Issues
 
@@ -94,20 +111,24 @@ If the app relies on an additional encrypted container stored in app data, check
 
 Secret keys must be stored in secure device storage whenever symmetric cryptography is used in mobile apps. For more information on the platform-specific APIs, see the "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" chapters.
 
-### Weak Key Generation Functions
+### Key Generation Functions
 
 Cryptographic algorithms (such as symmetric encryption or some MACs) expect a secret input of a given size. For example, AES uses a key of exactly 16 bytes. A native implementation might use the user-supplied password directly as an input key. Using a user-supplied password as an input key has the following problems:
 
 - If the password is smaller than the key, the full key space isn't used. The remaining space is padded (spaces are sometimes used for padding).
 - A user-supplied password will realistically consist mostly of displayable and pronounceable characters. Therefore, only some of the possible 256 ASCII characters are used and entropy is decreased by approximately a factor of four.
+- In cases where the user-supplied password is based on a pin, the key can easily be reconstructed by using the key generation function implemented on the mobile phone as an "oracle".
 
-Ensure that passwords aren't directly passed into an encryption function. Instead, the user-supplied password should be passed into a KDF to create a cryptographic key. Choose an appropriate iteration count when using password derivation functions. For example, [NIST recommends an iteration count of at least 10,000 for PBKDF2](https://pages.nist.gov/800-63-3/sp800-63b.html#sec5 "NIST Special Publication 800-63B") and [for critical keys where user-perceived performance is not critical at least 10,000,000](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf "NIST Special Publication 800-132"). For critical keys, it is recommended to consider implementation of algorithms recognized by [Password Hashing Competition (PHC)](https://password-hashing.net/ "PHC") like [Argon2](https://github.com/p-h-c/phc-winner-argon2 "Argon2").
+Ensure that passwords aren't directly passed into an encryption function. The key that is input to a key-derivation function is called a key-derivation key (KDK). A KDK **shall** be a cryptographic key, but the KDK used as an input to a recommended key-derivation functions can, for example, be generated by an approved cryptographic random bit generator, e.g. by a deterministic random bit generator (see: [NIST 800-108, rev 1](https://csrc.nist.gov/pubs/sp/800/108/r1/upd1/final "NIST: Recommendation for Key Derivation Using Pseudorandom Functions")) ([NIST, 2022](https://csrc.nist.gov/pubs/sp/800/108/r1/upd1/final "NIST: Recommendation for Key Derivation Using Pseudorandom Functions")).
+Choose an appropriate iteration count when using password derivation functions. For example, [NIST recommends an iteration count of at least 10,000 for PBKDF2](https://pages.nist.gov/800-63-3/sp800-63b.html#sec5 "NIST Special Publication 800-63B") and [for critical keys where user-perceived performance is not critical at least 10,000,000](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf "NIST Special Publication 800-132"). For critical keys, it is recommended to consider implementation of algorithms recognized by [Password Hashing Competition (PHC)](https://password-hashing.net/ "PHC") like [Argon2](https://github.com/p-h-c/phc-winner-argon2 "Argon2"). Also see ["OWASP Password Storage Cheat Sheet"](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#introduction "OWASP Cheat Sheet Series: Password Storage Cheat Sheet") for recommendation on iteration count when using key derivation functions using Argon2, scrypt, bcrypt or PBKDF2.
 
-### Weak Random Number Generators
+### Random Number Generators
 
-It is fundamentally impossible to produce truly random numbers on any deterministic device. Pseudo-random number generators (RNG) compensate for this by producing a stream of pseudo-random numbers - a stream of numbers that appear as if they were randomly generated. The quality of the generated numbers varies with the type of algorithm used. Cryptographically secure RNGs generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks (e.g. it is statistically infeasible to predict the next number produced).
+It is fundamentally impossible to produce truly random numbers on any deterministic device. Pseudo-random number generators (PRNG) compensate for this by producing a stream of pseudo-random numbers - a stream of numbers that appear as if they were randomly generated. The quality of the generated numbers varies with the type of algorithm used. Cryptographically secure PRNGs (CSPRNG) generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks (e.g. it is statistically infeasible to predict the next number produced).
 
-Mobile SDKs offer standard implementations of RNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS specific sections.
+PRNG can be vulnerable when developers use a regular PRNG for cryptographic purposes, instead of a cryptographically-secure PRNG (["Cryptographically secure pseudorandom number generator", 2025.01.31](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator "WIkipedia: Cryptographically secure pseudorandom number generator")). All random numbers and strings which are intended to be non-guessable must be generated using a cryptographically-secure pseudo-random number generator (CSPRNG) and have at least 128 bits of entropy. Note that UUIDs do not respect this condition.
+
+Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS specific sections.
 
 ### Custom Implementations of Cryptography
 
@@ -126,7 +147,7 @@ Advanced Encryption Standard (AES) is the widely accepted standard for symmetric
 
 As of this writing, no efficient cryptanalytic attacks against AES have been discovered. However, implementation details and configurable parameters such as the block cipher mode leave some margin for error.
 
-#### Weak Block Cipher Mode
+#### Recommendations for Block Cipher Mode
 
 Block-based encryption is performed upon discrete input blocks (for example, AES has 128-bit blocks). If the plaintext is larger than the block size, the plaintext is internally split up into blocks of the given input size and encryption is performed on each block. A block cipher mode of operation (or block mode) determines if the result of encrypting the previous block impacts subsequent blocks.
 
@@ -136,7 +157,7 @@ Block-based encryption is performed upon discrete input blocks (for example, AES
 
 Verify that Cipher Block Chaining (CBC) mode is used instead of ECB. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block is unique and randomized even if blocks contain the same information. Please note that it is best to combine CBC with an HMAC and/or ensure that no errors are given such as "Padding error", "MAC error", "decryption failed" in order to be more resistant to a padding oracle attack.
 
-When storing encrypted data, we recommend using a block mode that also protects the integrity of the stored data, such as Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation, and thus is available on all modern platforms.
+When storing encrypted data, we recommend using a block mode that also protects the integrity of the stored data, such as Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation, and thus is available on all modern platforms. To protect the integrity and authenticity of the data using CBC mode, it is recommended to combine the techniques of the Counter (CTR) mode and the Cipher Block Chaining-Message Authentication Code (CBC-MAC) into what is called CCM Mode ([NIST, 2004](https://csrc.nist.gov/pubs/sp/800/38/c/upd1/final "NIST: Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality")).
 
 For more information on effective block modes, see the [NIST guidelines on block mode selection](https://csrc.nist.gov/groups/ST/toolkit/BCM/modes_development.html "NIST Modes Development, Proposed Modes").
 
@@ -145,6 +166,10 @@ For more information on effective block modes, see the [NIST guidelines on block
 CBC, OFB, CFB, PCBC, GCM mode require an initialization vector (IV) as an initial input to the cipher. The IV doesn't have to be kept secret, but it shouldn't be predictable: it should be random and unique/non-repeatable for each encrypted message. Make sure that IVs are generated using a cryptographically secure random number generator. For more information on IVs, see [Crypto Fail's initialization vectors article](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors "Crypto Noobs #1: Initialization Vectors").
 
 Pay attention to cryptographic libraries used in the code: many open source libraries provide examples in their documentations that might follow bad practices (e.g. using a hardcoded IV). A popular mistake is copy-pasting example code without changing the IV value.
+
+#### Using the same key for encryption and authentication
+
+One common mistake is to reuse the same key for CBC encryption and CBC-MAC. Reuse of keys for different purposes is generally not recommended, but in the case of CBC-MAC the mistake can lead to a MitM attack (["CBC-MAC", 2024.10.11](https://en.wikipedia.org/wiki/CBC-MAC "Wikipedia: CBC-MAC")).
 
 #### Initialization Vectors in stateful operation modes
 
