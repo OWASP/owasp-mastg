@@ -24,12 +24,32 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: demos/android
+          fetch-depth: 2 # Required for git diff in PRs
 
       - name: Generate matrix
         id: set-matrix
         run: |
-          matrix="$(echo demos/android/*/MASTG-DEMO-* | sed 's/ /","/g')"
-          echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Get list of changed files in demos/android/ directory
+            changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD -- 'demos/android/*')
+
+            echo "Changed files:"
+            echo "$changed_files"
+
+            # Extract unique demo directories
+            matrix=$(echo "$changed_files" | grep -oE 'demos/android/[^/]*/MASTG-DEMO-[^/]+' | sort -u | sed 's/ /","/g')
+
+            # If no changes, set empty matrix
+            if [ -z "$matrix" ]; then
+              echo "matrix={\"demo\":[]}" >> $GITHUB_OUTPUT
+            else
+              echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+            fi
+          else
+            # Default behavior: include all demos for master branch
+            matrix=$(echo demos/android/*/MASTG-DEMO-* | sed 's/ /","/g')
+            echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"

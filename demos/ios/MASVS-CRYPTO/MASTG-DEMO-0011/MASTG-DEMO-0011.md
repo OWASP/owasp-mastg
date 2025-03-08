@@ -8,6 +8,8 @@ test: MASTG-TEST-0209
 
 ### Sample
 
+The following sample demonstrates the use of `SecKeyCreateRandomKey` to generate an RSA key pair with a 1024-bit key size. The key pair is then used to sign and verify a message.
+
 {{ MastgTest.swift }}
 
 ### Steps
