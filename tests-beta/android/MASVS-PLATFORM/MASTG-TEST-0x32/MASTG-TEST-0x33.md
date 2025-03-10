@@ -51,6 +51,8 @@ The output should contain a list of WebView instances where the abovementioned m
 
 The evaluation of this test is based on the [API behavior across different Android versions](../../../Document/0x05h-Testing-Platform-Interaction.md/#webview-local-file-access-settings).
 
+**Fail:**
+
 The test fails if:
 
 - The `setJavaScriptEnabled` method is explicitly set to `true`.
@@ -58,6 +60,8 @@ The test fails if:
 - The default value is assumed (the methods aren't explicitly used) and:
     - `minSdkVersion` < 30 for `setAllowFileAccess`.
     - `minSdkVersion` < 16 for `setAllowFileAccessFromFileURLs` and `setAllowUniversalAccessFromFileURLs`.
+
+**Pass:**
 
 The test passes if:
 
