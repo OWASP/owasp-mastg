@@ -29,7 +29,7 @@ Let's run @MASTG-TOOL-0110 rules against the sample code.
 
 The output shows **4 results** related to WebView configuration calls. However, it is important to note that the method `setAllowContentAccess` is not explicitly called in the code.
 
-{{ output.txt # output.json }}
+{{ output.txt }}
 
 ## Evaluation
 
