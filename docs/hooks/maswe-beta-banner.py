@@ -190,6 +190,29 @@ def get_ios_demo_buttons(page):
 """
     return banner
 
+def get_demos_draft_banner(meta):
+    id = meta.get('id')
+    note = meta.get('note', None)
+    status = meta.get('status', None)
+
+    if note:
+        note = f"    > Note: {note}\n"
+
+    banner = f"""
+!!! warning "Draft Demo"
+
+    This demo hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that demo by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
+
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+
+    If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
+
+{note}
+    Status: {status}
+"""
+    return banner
+
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, **kwargs):
@@ -214,6 +237,9 @@ def on_page_markdown(markdown, page, **kwargs):
     
     if "MASTG/demos/ios/" in path:
         banners.append(get_ios_demo_buttons(page))
+
+    if "MASTG/demos/" in path and page.meta.get('status') == 'draft':
+        banners.append(get_demos_draft_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
