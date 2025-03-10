@@ -53,23 +53,35 @@ A simple Python server that listens for incoming requests on port 5001 and logs 
 2. Make sure you have @MASTG-TOOL-0001 installed on your machine and the frida-server running on the device
 3. Run `run.sh` to spawn the app with Frida
 4. Click the **Start** button
-5. Stop the script by pressing `Ctrl+C`
+5. Stop the script by pressing `Ctrl+C` and/or `q` to quit the Frida CLI
 
 {{ run.sh # script.js }}
 
+The Frida script is designed to enumerate instances of `WebView` in the application and list their configuration values. The script does not explicitly hook the setters of the `WebView` settings but instead calls the `getSettings()` method to retrieve the current configuration.
+
+The script performs the following steps:
+
+1. Enumerates all instances of `WebView` in the application.
+2. For each `WebView` instance, it calls the `getSettings()` method to retrieve the current settings.
+3. Prints the configuration values of the `WebView` settings.
+4. Prints a backtrace when the `getSettings()` method is called to help identify where in the code the settings are being accessed.
+
 ## Observation
 
-The output shows **4 results** related to WebView configuration calls. However, it is important to note that the method `setAllowContentAccess` is not explicitly called in the code.
+The output shows that Frida found one WebView instance and lists many of the WebView settings. A backtrace is also provided to help identify where in the code the settings are being accessed.
 
-{{ output.txt # output.json }}
+{{ output.txt }}
+
+We can also see how the sensitive data was exfiltrated to the attacker's server by inspecting the server logs.
+
+{{ output_server.txt }}
 
 ## Evaluation
 
 The test **fails** due to the following WebView settings being configured:
 
-- `setJavaScriptEnabled(true)`
-- `setAllowUniversalAccessFromFileURLs(true)`
-
-The method `setAllowContentAccess` is not explicitly called in the code, which means it remains at its default value (`true`).
-
 {{ evaluation.txt }}
+
+Note that the method `setAllowContentAccess` is not explicitly called in the code. However, using this method we can't really tell since we're inspecting the WebView settings after they have been configured.
+
+As indicated by the backtrace in the output, the settings were called in the `mastgTest` method of the `MastgTestWebView` class. Since this app is a demo and symbols aren't stripped, we can even see the exact file and line number where the settings were configured: `MastgTestWebView.kt:25`.
