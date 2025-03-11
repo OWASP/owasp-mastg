@@ -3,7 +3,7 @@ platform: android
 title: References to Content Provider Access in WebViews
 alias: references-to-content-provider-access-in-webviews
 id: MASTG-TEST-0250
-apis: [WebView, ContentProvider, allowContentAccess]
+apis: [WebView, WebSettings, getSettings, ContentProvider, setAllowContentAccess, setAllowUniversalAccessFromFileURLs, setJavaScriptEnabled]
 type: [static]
 weakness: MASWE-0069
 best-practices: [MASTG-BEST-0011, MASTG-BEST-0012, MASTG-BEST-0013]
