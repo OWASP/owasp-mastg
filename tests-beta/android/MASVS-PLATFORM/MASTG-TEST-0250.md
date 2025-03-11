@@ -33,7 +33,6 @@ Suppose a banking app uses a WebView to display dynamic content. The developers 
 
 **Note 2:** The provider's `android:grantUriPermissions` attribute is irrelevant in this scenario as it does not affect the app itself accessing its own content providers. It allows **other apps** to temporary access URIs from the provider even though restrictions such as `permission` attributes, or `android:exported="false"` are set. Also, if the app uses a `FileProvider`, the `android:grantUriPermissions` attribute must be set to `true` by [definition](https://developer.android.com/reference/androidx/core/content/FileProvider#:~:text=Set%20the%20android:grantUriPermissions%20attribute%20to%20true%2C%20to%20allow%20you%20to%20grant%20temporary%20access%20to%20files.%20) (otherwise you'll get a `SecurityException: Provider must grant uri permissions"`).
 
-
 **Note 3:** `allowUniversalAccessFromFileURLs` is critical in the attack since it relaxes the default restrictions, allowing pages loaded from `file://` to access content from any origin, including `content://` URIs.
 
 If this setting is not enabled, the following error will appear in `logcat`:

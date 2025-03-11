@@ -24,7 +24,7 @@ The code includes a script that demonstrates how an attacker could exploit the W
 This sample:
 
 - writes a sensitive file (`api-key.txt`) into internal storage using `File.writeText()`.
-- configures a WebView to 
+- configures a WebView to
     - allow JavaScript execution (`javaScriptEnabled = true`).
     - allow file access (`allowFileAccess = true`).
     - allow file access from file URLs (`allowFileAccessFromFileURLs = true`).
