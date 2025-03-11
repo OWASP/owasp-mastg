@@ -64,7 +64,7 @@ Additionally, you should always rely on secure hardware (if available) for stori
 
 For more information on algorithm choice and best practices, see the following resources:
 
-- ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
+- ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://web.archive.org/web/20250305234320/https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
 - [NIST recommendations (2019)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
 - NIST advises using RSA-based key-transport schemes with a minimum modulus length of at least 2048 bits according to 800-56B Rev. 2 ([NIST, 2019](https://csrc.nist.gov/pubs/sp/800/56/b/r2/final "NIST: Recommendation for Pair-Wise Key-Establishment Using Integer Factorization Cryptography"))

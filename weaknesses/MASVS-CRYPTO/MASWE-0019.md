@@ -12,7 +12,7 @@ mappings:
 
 refs: 
  - https://book.hacktricks.xyz/crypto-and-stego/cryptographic-algorithms
- - https://www.researchgate.net/publication/290181523_Evaluation_of_Cryptography_Usage_in_Android_Applications
+ - https://dl.acm.org/doi/10.4108/eai.3-12-2015.2262471
  - https://www.scitepress.org/papers/2014/50563/50563.pdf
  - https://pure.tugraz.at/ws/portalfiles/portal/23858147/main.pdf
  - https://github.com/Wind-River/crypto-detector
