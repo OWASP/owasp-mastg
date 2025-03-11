@@ -1,5 +1,5 @@
 ---
-title: Symmetric Encryption Algorithms with insufficient strength
+title: Symmetric Encryption Algorithms with Insufficient Strength
 platform: android
 id: MASTG-TEST-0221
 type: [static, dynamic]
