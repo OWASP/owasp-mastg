@@ -57,10 +57,10 @@ class MastgTestWebView(private val context: Context) {
             <html>
               <head>
                 <meta charset="utf-8">
-                <title>MASTG-DEMO-0xxx</title>
+                <title>MASTG-DEMO-0029</title>
               </head>
               <body>
-                <h1>MASTG-DEMO-0xxx</h1>
+                <h1>MASTG-DEMO-0029</h1>
                 <p>This HTML page is vulnerable to XSS. An attacker was able to inject JavaScript to exfiltrate data from the app internal storage using content:// URIs.</p>
                 <p>The file is located in /data/data/org.owasp.mastestapp/files/</p>
                 <p>NOTE: For demo purposes we display the exfiltrated data on screen. However, the user wouldn't even notice as the data is exfiltrated silently.</p>
