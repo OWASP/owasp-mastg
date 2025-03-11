@@ -51,7 +51,6 @@ jobs:
             echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
           fi
           echo "Print matrix: $matrix"
-
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"
 
@@ -153,12 +152,11 @@ jobs:
           )
 
           echo "Processing $demo"
-          cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt 2>/dev/null \
-            && echo "Copied MastgTest.kt for $demo" \
-            || echo "No MastgTest.kt found for $demo"
-          cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml 2>/dev/null \
-            && echo "Copied AndroidManifest.xml for $demo" \
-            || echo "No AndroidManifest.xml found for $demo"
+          for file in MastgTest.kt AndroidManifest.xml filepaths.xml network_security_config.xml backup_rules.xml data_extraction_rules.xml; do
+          cp -f "$demo/$file" "MASTestApp-Android/app/src/main/${file%/*}/$file" 2>/dev/null \
+            && echo "Copied $file for $demo" \
+            || echo "No $file found for $demo"
+          done
           
           echo "Building APK for $demo"
           cd MASTestApp-Android
