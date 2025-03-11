@@ -1,0 +1,5 @@
+[FAIL] All necessary insecure settings are enabled.
+  setJavaScriptEnabled: True
+  setAllowFileAccess: True
+  setAllowFileAccessFromFileURLs: True
+  setAllowUniversalAccessFromFileURLs: False
