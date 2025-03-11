@@ -328,8 +328,7 @@ webView.loadUrl("file:///android_asset/index.html");
 
 Note that the value of [**this setting is ignored**](https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)) if the value of `allowUniversalAccessFromFileURLs` is `true`.
 
-> [Chromium WebView Docs](https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/cors-and-webview-api.md#setallowfileaccessfromfileurls)
-> With this relaxed origin rule, URLs starting with `content://` and file:// can access resources that have the same relaxed origin over XMLHttpRequest. For instance, `file://foo` can make an `XMLHttpRequest` to `file://bar`. Developers need to be careful so that a user provided data do not run in `content://` as it will allow the user's code to access arbitrary `content://` URLs those are provided by other applications. It will cause a serious security issue.
+> [Chromium WebView Docs](https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/cors-and-webview-api.md#setallowfileaccessfromfileurls): With this relaxed origin rule, URLs starting with `content://` and `file://` can access resources that have the same relaxed origin over `XMLHttpRequest`. For instance, `file://foo` can make an `XMLHttpRequest` to `file://bar`. Developers need to be careful so that a user provided data do not run in `content://` as it will allow the user's code to access arbitrary `content://` URLs those are provided by other applications. It will cause a serious security issue.
 >
 > Regardless of this API call, [Fetch API](https://fetch.spec.whatwg.org/#fetch-api) does not allow to access `content://` and `file://` URLs.
 
@@ -364,10 +363,9 @@ The loaded HTML file contains an image that is loaded via a `file://` URL:
 
 [`setAllowUniversalAccessFromFileURLs`](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowUniversalAccessFromFileURLs%28boolean%29 "Method setAllowUniversalAccessFromFileURLs()") allows JavaScript running in a local file (loaded via `file://`) to bypass the same-origin policy and access resources from any origin.
 
-> [Chromium WebView Docs](https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/cors-and-webview-api.md#setallowuniversalaccessfromfileurls)
-> When this API is called with true, URLs starting with `file://` will have a scheme based origin, and can access other scheme based URLs over XMLHttpRequest. For instance, `file://foo` can make an XMLHttpRequest to `content://bar`, `http://example.com/`, and `https://www.google.com/`. So developers need to manage data running under the `file://` scheme as it allows powerful permissions beyond the public web's CORS policy.
-
-Regardless of this API call, [Fetch API](https://fetch.spec.whatwg.org/#fetch-api) does not allow to access `content://` and `file://` URLs.
+> [Chromium WebView Docs](https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/cors-and-webview-api.md#setallowuniversalaccessfromfileurls): When this API is called with true, URLs starting with `file://` will have a scheme based origin, and can access other scheme based URLs over `XMLHttpRequest`. For instance, `file://foo` can make an `XMLHttpRequest` to `content://bar`, `http://example.com/`, and `https://www.google.com/`. So developers need to manage data running under the `file://` scheme as it allows powerful permissions beyond the public web's CORS policy.
+>
+> Regardless of this API call, [Fetch API](https://fetch.spec.whatwg.org/#fetch-api) does not allow to access `content://` and `file://` URLs.
 
 **Example:** In this example, the local HTML file successfully makes a cross-origin request to fetch data from an HTTPS endpoint. This can be potentially abused by an attacker to exfiltrate sensitive data from the app.
 
