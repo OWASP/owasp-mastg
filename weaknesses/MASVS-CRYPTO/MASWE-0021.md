@@ -45,9 +45,8 @@ Another common issue is using HKDF for key derivation with any type of integrity
 - **Using a insufficiently collision resistant hash**: Choosing a a hashing algorithm of insufficient length may result in loss of integrity or confidentiality.
 - **Using non-resource intensive algorithms on low-entropy input**: Using a integrity based hashing algorithm to hash low-entry input like pin numbers would make brute-force or dictionary attacks trivial.
 
-
 ## Mitigations
 
 - **Choose collision resistant algorithm**: Choose an algorithm that is sufficiently collision resistant like the integrity algorithms SHA-256, SHA-384, SHA-512, BLAKE3 and the SHA-3 family
-- **Choose an algorithm with sufficient bit-lengths**: As our computers gets stronger, the hashes gets weaker, therefor, make sure that you can adjust the bit-length length of the algorithm of your choosing. When hashes are stored at rest, make sure to follow the software industry's long term recommendations (e.g: ["NIST: Transition to Post-Quantum Cryptography Standards](https://csrc.nist.gov/pubs/ir/8547/ipd)").
+- **Choose an algorithm with sufficient bit-lengths**: As our computers gets stronger, the hashes gets weaker, therefore, make sure that you can adjust the bit-length length of the algorithm of your choosing. When hashes are stored at rest, make sure to follow the software industry's long term recommendations (e.g: ["NIST: Transition to Post-Quantum Cryptography Standards](https://csrc.nist.gov/pubs/ir/8547/ipd)").
 - **Choose an algorithm fit for it's purpose**: When you want to ensure the data's integrity choose a integrity based algorithm. When you want to hash low-entropy input choose a password hash algorithm. Don't try to be clever. Follow recommendations and guidelines.
