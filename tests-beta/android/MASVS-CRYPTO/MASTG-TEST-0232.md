@@ -1,5 +1,5 @@
 ---
-title: Risky or broken Symmetric Encryption Modes
+title: Risky or Broken Symmetric Encryption Modes
 platform: android
 id: MASTG-TEST-0232
 type: [static, dynamic]
