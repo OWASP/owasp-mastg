@@ -152,10 +152,10 @@ PRNG can be vulnerable when developers use a regular PRNG for cryptographic purp
 
 Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS specific sections.
 
-### Weak hashing
+### Weak, Risky or Broken Hashing
 
 Make sure to choose a hash function that is built for the purpose you intend it for.
-When hashes are needed for integrity checks, choose an algorithm that is sufficiently collision resistant like the integrity algorithms SHA-256, SHA-384, SHA-512, BLAKE3 and the SHA-3 family. Choosing a weak algorithm may compromise the integrity and authenticity of data at rest and in transit. Also keep in mind that hash functions used for integrity checks, like the SHA series, should not be used for key derivation together with predictable input or in password hashing.
+When hashes are needed for integrity checks, choose an algorithm that is sufficiently collision resistant like the integrity algorithms SHA-256, SHA-384, SHA-512, BLAKE3 and the SHA-3 family. Choosing a risky or broken algorithm may compromise the integrity and authenticity of data at rest and in transit. Also keep in mind that hash functions used for integrity checks, like the SHA series, should not be used for key derivation together with predictable input or in password hashing.
 
 ### Custom Implementations of Cryptography
 

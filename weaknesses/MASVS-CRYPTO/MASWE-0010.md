@@ -14,7 +14,7 @@ refs:
 draft:
   description: e.g. PBKDF2 with insufficient iterations, lack of salt, etc.
   topics:
-  - weak sources
+  - improper cryptography
   - lack of salt encryption when doing PBKDF2
 status: draft
 

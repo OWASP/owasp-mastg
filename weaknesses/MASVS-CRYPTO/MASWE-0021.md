@@ -16,10 +16,10 @@ refs:
 - https://en.wikipedia.org/wiki/Collision_attack
 - https://csrc.nist.gov/pubs/ir/8547/ipd
 draft:
-  description: Utilizing weak hashing algorithms such as MD5 and SHA1 in a security
+  description: Utilizing broken hashing algorithms such as MD5 and SHA1 in a security
     sensitive context may compromise data integrity and authenticity.
   topics:
-  - Weak hashing algorithms (e.g. MD5, SHA1, etc.)
+  - Broken hashing algorithms (e.g. MD5, SHA1, etc.)
 status: draft
 ---
 
@@ -29,7 +29,7 @@ when performing key derivation together with predictable input or in password ha
 
 What is regarded as "reasonable" varies by context and threat model, but in general, "reasonable" could cover any attack that is more efficient than brute force (i.e., on average, attempting half of all possible combinations). Note that some attacks might be more efficient than brute force but are still not regarded as achievable in the real world.
 
-Any algorithm that does not meet the above conditions will generally be considered weak for general use in hashing. When a collision attack is discovered and is found to be faster than a birthday attack, a hash function is often denounced as "broken". This is the case for MD5 and SHA-1.
+Any algorithm that does not meet the above conditions will generally be considered risky or "weak" for general use in hashing. When a collision attack is discovered and is found to be faster than a birthday attack, a hash function is often denounced as "broken". This is the case for MD5 and SHA-1.
 
 Another common issue is using HKDF for key derivation with any type of integrity based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HKDF aren't design for low-entropy inputs. Doing so will result in producing "weak" hashes that easily can be broken.
 

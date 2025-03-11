@@ -139,7 +139,7 @@ When developing a mobile application, it's crucial to accurately identify and ha
 
 Properly distinguishing security-relevant contexts helps in minimizing false positives during security testing. False positives can divert attention from real issues and waste valuable resources. Here are some common scenarios:
 
-- **Random Number Generation**: Using weak random number generators can be a serious security flaw in contexts like authentication or encryption key generation. However, not all uses of random numbers are security-sensitive. For instance, using a less robust random number generator for non-security purposes like shuffling a list of items in a game is generally acceptable.
+- **Random Number Generation**: Using predictable random number generators can be a serious security flaw in contexts like authentication or encryption key generation. However, not all uses of random numbers are security-sensitive. For instance, using a less robust random number generator for non-security purposes like shuffling a list of items in a game is generally acceptable.
 
 - **Hashing**: Hashing is often used in security for storing passwords or ensuring data integrity. However, hashing a non-sensitive value, like a device's screen resolution for analytics, isn't a security concern.
 

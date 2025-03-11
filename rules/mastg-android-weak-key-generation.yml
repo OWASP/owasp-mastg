@@ -4,7 +4,7 @@ rules:
     languages:
       - java
     metadata:
-      summary: This rule looks for methods that create a weak key size in encryption algorithms.
+      summary: This rule looks for methods that create a short key size in encryption algorithms.
     message: "[MASVS-CRYPTO] Make sure that the key size is according to security best practices"
     pattern-either:
       - pattern: |

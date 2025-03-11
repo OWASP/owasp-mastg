@@ -1,5 +1,5 @@
 ---
-title: Deprecated, risky, or Noncompliant Cryptography Implementations
+title: Deprecated, risky, or Broken Cryptography Implementations
 id: MASWE-0019
 alias: potentially-weak-crypto-impl
 platform: [android, ios]
@@ -12,7 +12,7 @@ mappings:
 
 refs: 
  - https://book.hacktricks.xyz/crypto-and-stego/cryptographic-algorithms
- - https://dl.acm.org/doi/10.4108/eai.3-12-2015.2262471
+ - https://eudl.eu/pdf/10.4108/eai.3-12-2015.2262471
  - https://www.scitepress.org/papers/2014/50563/50563.pdf
  - https://pure.tugraz.at/ws/portalfiles/portal/23858147/main.pdf
  - https://github.com/Wind-River/crypto-detector
@@ -37,7 +37,7 @@ Custom cryptographic implementations created without following established stand
 
 The impact associated with such defects can be very broad and difficult to predict or measure:
 
-- **Data breaches**: Weak encryption can lead to unauthorized access to sensitive data, resulting in data breaches.
+- **Data breaches**: Deprecated, risky, or broken encryption can lead to unauthorized access to sensitive data, resulting in data breaches.
 - **Compromised confidentiality, integrity, and authenticity**: The core principles of cryptography (confidentiality, integrity, and authenticity) are compromised. Attackers can decrypt, manipulate, or impersonate legitimate users or systems.
 
 ## Modes of Introduction

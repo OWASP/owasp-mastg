@@ -1,5 +1,5 @@
 ---
-title: Weak Symmetric Encryption Modes
+title: Predictable Symmetric Encryption Modes
 platform: android
 id: MASTG-TEST-0232
 type: [static, dynamic]
@@ -9,7 +9,7 @@ best-practices: [MASTG-BEST-0005]
 
 ## Overview
 
-To test for the [use of weak encryption modes](../../../Document/0x04g-Testing-Cryptography.md#weak-block-cipher-mode) in Android apps, we need to focus on methods from cryptographic frameworks and libraries that are used to configure and apply encryption modes.
+To test for the [use of predictable encryption modes](../../../Document/0x04g-Testing-Cryptography.md#weak-block-cipher-mode) in Android apps, we need to focus on methods from cryptographic frameworks and libraries that are used to configure and apply encryption modes.
 
 In Android development, the `Cipher` class from the Java Cryptography Architecture (JCA) is the primary API that allows you to specify the encryption mode for cryptographic operations. [`Cipher.getInstance`](https://developer.android.com/reference/javax/crypto/Cipher#getInstance(java.lang.String)) defines the transformation string, which includes the encryption algorithm, mode of operation, and padding scheme. The general format is `"Algorithm/Mode/Padding"`. For example:
 

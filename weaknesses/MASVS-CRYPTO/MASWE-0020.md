@@ -34,12 +34,12 @@ Deprecated, Risky, or Broken encryption refers to cryptographic systems or imple
 - **Use of Deprecated Algorithms** : Relying on deprecated, risky or vulnerable encryption algorithms can allow threat actors to attack the cipher text, key or exploit known vulnerabilities in the algorithm, for example through brute force attacks.
 - **Insecure Modes of Operation**:  Using modes that are considered deprecated or risky increase the attack surface of encrypted information. For example the use of AES/ECB is deprecated as it divides the plaintext into blocks and encrypts each block separately using the same key. This makes the cipher text vulnerable to "known plaintext attacks" and leaks information about the structure of the original plaintext.
 - **Predictable Initialization Vectors (IVs)**: If IVs are not random or unique, they can be exploited in attacks like ciphertext injection or pattern recognition. This compromises the confidentiality of encrypted data, especially in modes like CBC (Cipher Block Chaining).
-- **Weak Keys**: Short or easily guessable keys compromise encryption strength. The use of small key sizes (e.g., 56-bit keys in DES) can make the encryption susceptible to brute-force attacks. Best practices recommend keys of at least 256 bits for strong encryption.
+- **Short Keys**: Short or easily guessable keys compromise encryption strength. The use of small key sizes (e.g., 56-bit keys in DES) can make the encryption susceptible to brute-force attacks. Best practices recommend keys of at least 256 bits for strong encryption.
 - **Misuse of Non-Cryptographic Operations**: Relying on techniques such as XOR, Base64 encoding, or simple obfuscation methods for security purposes. These methods provide no actual encryption and can be easily reversed or decoded, exposing sensitive data.
 
 ## Mitigations
 
 - **Use Secure Encryption Modes**: Choose secure modes such as `AES/GCM/NoPadding` and avoid insecure modes such as ECB.  
 - **Ensure Proper Initialization Vector Management**: Generate IVs using cryptographically secure random number generators and ensure they are unique for every operation.
-- **Use Strong Key Sizes**: Enforce key lengths of at least 256 bits for AES and avoid using small or weak keys such as 56-bit DES keys.  
+- **Use Strong Key Sizes**: Enforce key lengths of at least 256 bits for AES and avoid using small or short keys such as 56-bit DES keys.  
 - **Rely on Proper Cryptographic Libraries**: Avoid using XOR, Base64 encoding, or obfuscation as substitutes for encryption and rely on well-vetted cryptographic libraries.
