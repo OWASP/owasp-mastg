@@ -33,6 +33,23 @@ Suppose a banking app uses a WebView to display dynamic content, and the develop
 3. Thanks to `setJavaScriptEnabled(true)` and `setAllowFileAccessFromFileURLs(true)`, the JavaScript in the malicious file (running in a `file://` context) is able to access other local files using `file://` URLs.
 4. The attacker-controlled script exfiltrates sensitive data from the device to an external server.
 
+**Note 1**: Either `setAllowFileAccessFromFileURLs` or `setAllowUniversalAccessFromFileURLs` must be set to `true` for the attack to work. If both settings are set to `false`, the following error will appear in `logcat`:
+
+```bash
+[INFO:CONSOLE(0)] "Access to XMLHttpRequest at 'file:///data/data/org.owasp.mastestapp/files/api-key.txt' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, https, chrome-untrusted.", source: file:/// (0)
+[INFO:CONSOLE(31)] "File content sent successfully.", source: file:/// (31)
+```
+
+And the server would not receive the file content:
+
+```bash
+[*] Received POST data from 127.0.0.1:
+
+Error reading file: 0
+```
+
+**Note 2**: As indicated in the Android docs, the value of [**`setAllowFileAccessFromFileURLs` is ignored**](https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)) if `allowUniversalAccessFromFileURLs=true`.
+
 ## Steps
 
 1. Determine the `minSdkVersion` of the app.
@@ -56,18 +73,14 @@ The evaluation of this test is based on the [API behavior across different Andro
 
 The test fails if:
 
-- The `setJavaScriptEnabled` method is explicitly set to `true`.
-- Any of the methods are explicitly set to `true`.
-- The default value is assumed (the methods aren't explicitly used) and:
-    - `minSdkVersion` < 30 for `setAllowFileAccess`.
-    - `minSdkVersion` < 16 for `setAllowFileAccessFromFileURLs` and `setAllowUniversalAccessFromFileURLs`.
+- `setJavaScriptEnabled` is explicitly set to `true`.
+- `setAllowFileAccess` is explicitly set to `true` (or not used at all when `minSdkVersion` < 30, inheriting the default value, `true`).
+- Either `setAllowFileAccessFromFileURLs` or `setAllowUniversalAccessFromFileURLs` is explicitly set to `true` (or not used at all when `minSdkVersion` < 16, inheriting the default value, `true`).
 
 **Pass:**
 
 The test passes if:
 
-- The `setJavaScriptEnabled` method is explicitly set to `false` or not used at all (inheriting the default value, `false`).
-- All relevant methods are explicitly set to `false`.
-- The default value is assumed (the methods aren't explicitly used) and:
-    - `minSdkVersion` >= 30 for `setAllowFileAccess`.
-    - `minSdkVersion` >= 16 for `setAllowFileAccessFromFileURLs` and `setAllowUniversalAccessFromFileURLs`.
+- `setJavaScriptEnabled` is explicitly set to `false`.
+- `setAllowFileAccess` is explicitly set to `false` (or not used at all when `minSdkVersion` >= 30, inheriting the default value, `false`).
+- Both `setAllowFileAccessFromFileURLs` and `setAllowUniversalAccessFromFileURLs` are explicitly set to `false` (or not used at all when `minSdkVersion` >= 16, inheriting the default value, `false`).
