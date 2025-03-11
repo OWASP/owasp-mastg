@@ -158,6 +158,18 @@ jobs:
           cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml 2>/dev/null \
             && echo "Copied AndroidManifest.xml for $demo" \
             || echo "No AndroidManifest.xml found for $demo"
+          cp -f "$demo/filepaths.xml" MASTestApp-Android/app/src/main/res/xml/filepaths.xml 2>/dev/null \
+            && echo "Copied filepaths.xml for $demo" \
+            || echo "No filepaths.xml found for $demo"
+          cp -f "$demo/network_security_config.xml" MASTestApp-Android/app/src/main/res/xml/network_security_config.xml 2>/dev/null \
+            && echo "Copied network_security_config.xml for $demo" \
+            || echo "No network_security_config.xml found for $demo"
+          cp -f "$demo/backup_rules.xml" MASTestApp-Android/app/src/main/res/xml/backup_rules.xml 2>/dev/null \
+            && echo "Copied backup_rules.xml for $demo" \
+            || echo "No backup_rules.xml found for $demo"
+          cp -f "$demo/data_extraction_rules.xml" MASTestApp-Android/app/src/main/res/xml/data_extraction_rules.xml 2>/dev/null \
+            && echo "Copied data_extraction_rules.xml for $demo" \
+            || echo "No data_extraction_rules.xml found for $demo"
           
           echo "Building APK for $demo"
           cd MASTestApp-Android
