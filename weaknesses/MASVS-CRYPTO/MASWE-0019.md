@@ -1,5 +1,5 @@
 ---
-title: Potentially Weak Cryptography Implementations
+title: Deprecated, risky, or Noncompliant Cryptography Implementations
 id: MASWE-0019
 alias: potentially-weak-crypto-impl
 platform: [android, ios]
@@ -29,7 +29,7 @@ refs:
 
 ## Overview
 
-Outdated, weak, or noncompliant cryptographic implementations, such as those that do not meet established security standards such as FIPS 140-2/3 (Federal Information Processing Standards), may use algorithms that have not been sufficiently tested or that lack certification, may not follow best practices for secure key management, or may include custom cryptographic solutions that haven't undergone rigorous peer review or formal validation.
+Deprecated, risky, or noncompliant cryptographic implementations, such as those that do not meet established security standards such as FIPS 140-2/3 (Federal Information Processing Standards), may use algorithms that have not been sufficiently tested or that lack certification, may not follow best practices for secure key management, or may include custom cryptographic solutions that haven't undergone rigorous peer review or formal validation.
 
 ## Impact
 

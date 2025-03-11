@@ -1,5 +1,5 @@
 ---
-title: Weak Encryption
+title: Deprecated, Risky, or Broken Encryption
 id: MASWE-0020
 alias: weak-encryption
 platform: [android, ios]
@@ -21,18 +21,18 @@ status: new
 
 ## Overview
 
-Weak encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorised individuals to decrypt secured data. This weakness can be due to a number of reasons, including the use of outdated algorithms, deprecated encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialisation Vector (IV).
+Deprecated, Risky, or Broken encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorized individuals to decrypt secured data. This  can be due to a number of reasons, including the use of deprecated, risky or broken algorithms, deprecated or risky encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialization Vector (IV).
 
 ## Impact
 
-- **Loss of Confidentiality**: Weak encryption may enable attackers to decipher and obtain sensitive information, resulting in unauthorized exposure and possible data breaches.
+- **Loss of Confidentiality**: Deprecated, risky, or broken encryption may enable attackers to decipher and obtain sensitive information, resulting in unauthorized exposure and possible data breaches.
 
-- **Loss of Integrity**: Weak encryption can compromise the integrity of data, allowing adversaries to alter or manipulate the information without detection.
+- **Loss of Integrity**: Deprecated, risky, or broken encryption can compromise the integrity of data, allowing adversaries to alter or manipulate the information without detection.
 
 ## Mode of Introduction
 
-- **Use of Deprecated Algorithms** : Relying on outdated or weak encryption algorithms can allow threat actors to attack the cipher text, key or exploit known vulnerabilities in the algorithm, for example through brute force attacks.
-- **Insecure Modes of Operation**:  Using modes that are considered deprecated increase the attack surface of encrypted information. For example the use of AES/ECB is deprecated as it divides the plaintext into blocks and encrypts each block separately using the same key. This makes the cipher text vulnerable to "known plaintext attacks" and leaks information about the structure of the original plaintext.
+- **Use of Deprecated Algorithms** : Relying on deprecated, risky or vulnerable encryption algorithms can allow threat actors to attack the cipher text, key or exploit known vulnerabilities in the algorithm, for example through brute force attacks.
+- **Insecure Modes of Operation**:  Using modes that are considered deprecated or risky increase the attack surface of encrypted information. For example the use of AES/ECB is deprecated as it divides the plaintext into blocks and encrypts each block separately using the same key. This makes the cipher text vulnerable to "known plaintext attacks" and leaks information about the structure of the original plaintext.
 - **Predictable Initialization Vectors (IVs)**: If IVs are not random or unique, they can be exploited in attacks like ciphertext injection or pattern recognition. This compromises the confidentiality of encrypted data, especially in modes like CBC (Cipher Block Chaining).
 - **Weak Keys**: Short or easily guessable keys compromise encryption strength. The use of small key sizes (e.g., 56-bit keys in DES) can make the encryption susceptible to brute-force attacks. Best practices recommend keys of at least 256 bits for strong encryption.
 - **Misuse of Non-Cryptographic Operations**: Relying on techniques such as XOR, Base64 encoding, or simple obfuscation methods for security purposes. These methods provide no actual encryption and can be easily reversed or decoded, exposing sensitive data.
