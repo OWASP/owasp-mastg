@@ -15,6 +15,7 @@ status: new
 This test checks for references to Content Provider access in WebViews which is enabled by default and can be disabled using the `setAllowContentAccess` method in the `WebSettings` class. If improperly configured, this can introduce security risks such as unauthorized file access and data exfiltration.
 
 The JavaScript code would have access to any content providers on the device such as:
+
 - declared by the app, **even if they are not exported**.
 - declared by other apps, **only if they are exported** and if they are not following recommended [best practices](https://developer.android.com/privacy-and-security/security-tips#content-providers) to restrict access.
 
@@ -26,7 +27,7 @@ Suppose a banking app uses a WebView to display dynamic content. The developers 
 
 1. An attacker exploits a vulnerability (such as an XSS flaw) to inject malicious JavaScript into the WebView. This could occur through a compromised or malicious link that the WebView loads without proper validation.
 2. Thanks to `setAllowUniversalAccessFromFileURLs(true)`, the malicious JavaScript can issue requests to `content://` URIs to read locally stored files or data exposed by content providers. Even those content providers from the app that are not exported can be accessed because the malicious code is running in the same process and same origin as the trusted code.
-4. The attacker-controlled script exfiltrates sensitive data from the device to an external server.
+3. The attacker-controlled script exfiltrates sensitive data from the device to an external server.
 
 **Note 1:** We do not consider `minSdkVersion` since `setAllowContentAccess` defaults to `true` regardless of the Android version.
 
@@ -37,7 +38,7 @@ Suppose a banking app uses a WebView to display dynamic content. The developers 
 
 If this setting is not enabled, the following error will appear in `logcat`:
 
-```
+```text
 [INFO:CONSOLE(0)] "Access to XMLHttpRequest at 'content://org.owasp.mastestapp.provider/sensitive.txt'
 from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported
 for protocol schemes: http, data, chrome, https, chrome-untrusted.", source: file:/// (0)

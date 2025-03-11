@@ -26,7 +26,7 @@ The code includes a script that demonstrates how an attacker could exploit the W
 This sample:
 
 - writes a sensitive file (`api-key.txt`) into internal storage using `File.writeText()`.
-- configures a WebView to 
+- configures a WebView to
     - allow JavaScript execution (`javaScriptEnabled = true`).
     - allow universal access from file URLs (`allowUniversalAccessFromFileURLs = true`). Otherwise, the `XMLHttpRequest` to a `content://` URI from a `file://` base URL would be blocked due to CORS policy.
     - content access is allowed by default (not explicitly called).
