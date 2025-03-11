@@ -51,6 +51,7 @@ jobs:
             matrix=$(echo demos/android/*/MASTG-DEMO-* | sed 's/ /","/g')
             echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
           fi
+          echo "Print matrix: $matrix"
 
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"
