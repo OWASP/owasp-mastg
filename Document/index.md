@@ -19,6 +19,7 @@ The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensi
 
 Start exploring the MASTG:
 
+<!-- markdownlint-disable search-replace -->
 <a href="/MASTG/tests/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:octicons-codescan-checkmark-24:  Tests (v1)</a>
 <a href="/MASTG/tests-beta/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:octicons-codescan-checkmark-24:  Tests (v2 Beta)</a>
 <a href="/MASTG/techniques/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:material-magic-staff:  Techniques</a>
@@ -26,6 +27,7 @@ Start exploring the MASTG:
 <a href="/MASTG/tools/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:octicons-tools-24:  Tools</a>
 <a href="/MASTG/apps/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:octicons-code-square-24:  Apps</a>
 <a href="/MASTG/best-practices/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:material-shield-check:  Best Practices (v2 Beta)</a>
+<!-- markdownlint-disable search-replace -->
 
 <span style="color: darkgray; font-size: small"> :blue_heart:{ .pump } Support the project by purchasing the [OWASP MASTG on leanpub.com](https://leanpub.com/owasp-mastg). All funds raised through sales of this book go directly into the project budget and will be used to for technical editing and designing the book and fund production of future releases.</span>
 
