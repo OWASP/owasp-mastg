@@ -1,5 +1,5 @@
 rules:
-  - id: weak-encryption-algorithms
+  - id: risky-encryption-algorithms
     languages:
       - java
     severity: WARNING

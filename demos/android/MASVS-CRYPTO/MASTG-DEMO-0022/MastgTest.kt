@@ -13,7 +13,7 @@ import javax.crypto.SecretKey
 
 class MastgTest(private val context: Context) {
 
-    // Vulnerable encryption using DES (weak algorithm)
+    // Vulnerable encryption using DES (broken algorithm)
     fun vulnerableDesEncryption(data: String): String {
         try {
             // Weak key for DES
@@ -23,7 +23,7 @@ class MastgTest(private val context: Context) {
             val keyFactory = SecretKeyFactory.getInstance("DES")
             val secretKey: Key = keyFactory.generateSecret(keySpec)
 
-            // Weak encryption algorithm (DES)
+            // Risky encryption algorithm (DES)
             val cipher = Cipher.getInstance("DES")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
@@ -44,7 +44,7 @@ class MastgTest(private val context: Context) {
             val keyFactory = SecretKeyFactory.getInstance("DESede")
             val secretKey: Key = keyFactory.generateSecret(keySpec)
 
-            // Weak encryption algorithm (3DES)
+            // Risky encryption algorithm (3DES)
             val cipher = Cipher.getInstance("DESede")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
@@ -72,15 +72,15 @@ class MastgTest(private val context: Context) {
         }
     }
 
-    // Insecure encryption using Blowfish (weak algorithm)
+    // Risky encryption using Blowfish (weak algorithm)
     fun vulnerableBlowfishEncryption(data: String): String {
         return try {
-            // Weak key for Blowfish (insecure, small key size)
+            // Weak key for Blowfish (risky, small key size)
             val keyBytes = ByteArray(8) // Only 8 bytes (64-bit key) - not secure
             SecureRandom().nextBytes(keyBytes)
             val secretKey: SecretKey = SecretKeySpec(keyBytes, "Blowfish")
 
-            // Weak encryption algorithm (Blowfish)
+            // Risky encryption algorithm (Blowfish)
             val cipher = Cipher.getInstance("Blowfish")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
@@ -95,16 +95,16 @@ class MastgTest(private val context: Context) {
     fun mastgTest(): String {
         val sensitiveString = "Hello from the OWASP MASTG Test app."
 
-        // Encrypt with weak DES
+        // Encrypt with broken DES
         val desEncryptedString = vulnerableDesEncryption(sensitiveString)
 
-        // Encrypt with weak 3DES
+        // Encrypt with risky 3DES
         val tripleDesEncryptedString = vulnerable3DesEncryption(sensitiveString)
 
         // Encrypt with deprecated RC4
         val rc4EncryptedString = vulnerableRc4Encryption(sensitiveString)
 
-        // Encrypt with weak Blowfish
+        // Encrypt with risky Blowfish
         val blowfishEncryptedString = vulnerableBlowfishEncryption(sensitiveString)
 
         // Returning the encrypted results

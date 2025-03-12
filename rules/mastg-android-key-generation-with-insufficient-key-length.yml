@@ -1,5 +1,5 @@
 rules:
-  - id: weak_key_size
+  - id: insufficient_key_size
     severity: WARNING
     languages:
       - java
