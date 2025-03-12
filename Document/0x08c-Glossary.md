@@ -7,7 +7,7 @@ title: Glossary
 
 ### Broken
 
-The meaning depends on the context. 
+The meaning depends on the context.
 
 A "broken" cryptographic hash algorithm is a function that is denounced as "broken" because a collision attack exist that is faster to execute then a birthday attack ([Wikipedia, "2025.02.19"](https://en.wikipedia.org/wiki/Collision_attack "Collision attack")).
 
@@ -27,7 +27,7 @@ According to MITRE. A general term used to describe when a security property or 
 
 ### Risky
 
-A "risky" cryptographic hash algorithm is an algorithm without any known attacks, but that is insufficient when used under certain circumstances and therefor cary with it the risk of being compromised by an attack when used in the wrong context or for wrong purposes. The same can be considered for a "risky" encryption mode of operation.
+A "risky" cryptographic hash algorithm is an algorithm without any known attacks, but that is insufficient when used under certain circumstances and because of that cary with it the risk of being compromised by an attack when used in the wrong context or for wrong purposes. The same can be considered for a "risky" encryption mode of operation.
 
 ### Strength
 
