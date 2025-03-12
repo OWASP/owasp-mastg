@@ -21,7 +21,7 @@ status: new
 
 ## Overview
 
-Deprecated, Risky, or Broken encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorized individuals to decrypt secured data. This  can be due to a number of reasons, including the use of deprecated, risky or broken algorithms, deprecated or risky encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialization Vector (IV).
+Deprecated, risky, or broken encryption refers to cryptographic systems or implementations that are vulnerable to attack, allowing unauthorized individuals to decrypt secured data. This can be due to a number of reasons, including the use of deprecated, risky or broken algorithms, deprecated or risky encryption modes such as ECB and improper implementation practices such as the use of a non-random or empty Initialization Vector (IV).
 
 ## Impact
 
