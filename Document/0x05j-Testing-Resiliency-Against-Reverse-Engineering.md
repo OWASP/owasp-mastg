@@ -71,28 +71,28 @@ The default daily limit for Google Play Services Integrity Verification API requ
 
 ```json
 {
-   "requestDetails": {
-     "requestPackageName": "com.example.your.package",
-     "timestampMillis": "1666025823025",
-     "nonce": "kx7QEkGebwQfBalJ4...Xwjhak7o3uHDDQTTqI"
-   },
-   "appIntegrity": {
-     "appRecognitionVerdict": "UNRECOGNIZED_VERSION",
-     "packageName": "com.example.your.package",
-     "certificateSha256Digest": [
-       "vNsB0...ww1U"
-     ],
-     "versionCode": "1"
-   },
-   "deviceIntegrity": {
-     "deviceRecognitionVerdict": [
-       "MEETS_DEVICE_INTEGRITY"
-     ]
-   },
-   "accountDetails": {
-     "appLicensingVerdict": "UNEVALUATED"
-   }
- }
+   "requestDetails": {
+     "requestPackageName": "com.example.your.package",
+     "timestampMillis": "1666025823025",
+     "nonce": "kx7QEkGebwQfBalJ4...Xwjhak7o3uHDDQTTqI"
+   },
+   "appIntegrity": {
+     "appRecognitionVerdict": "UNRECOGNIZED_VERSION",
+     "packageName": "com.example.your.package",
+     "certificateSha256Digest": [
+       "vNsB0...ww1U"
+     ],
+     "versionCode": "1"
+   },
+   "deviceIntegrity": {
+     "deviceRecognitionVerdict": [
+       "MEETS_DEVICE_INTEGRITY"
+     ]
+   },
+   "accountDetails": {
+     "appLicensingVerdict": "UNEVALUATED"
+   }
+ }
 ```
 
 #### Programmatic Detection
