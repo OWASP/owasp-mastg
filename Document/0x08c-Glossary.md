@@ -3,7 +3,7 @@ hide: toc
 title: Glossary
 ---
 
-## Terms
+## Cryptographic Terms
 
 ### Broken
 
@@ -29,6 +29,6 @@ According to MITRE. A general term used to describe when a security property or 
 
 A "risky" cryptographic hash algorithm is an algorithm without any known attacks, but that is insufficient when used under certain circumstances and therefor cary with it the risk of being compromised by an attack when used in the wrong context or for wrong purposes. The same can be considered for a "risky" encryption mode of operation.
 
-### Cryptographic strength
+### Strength
 
 According to NIST. A number associated with the amount of work (that is, the number of operations) that is required to break a cryptographic algorithm or system. If 2N execution operations of the algorithm (or system) are required to break the cryptographic algorithm, then the security strength is N bits ([NIST, security strength](https://csrc.nist.gov/glossary/term/security_strength "security strength")).
