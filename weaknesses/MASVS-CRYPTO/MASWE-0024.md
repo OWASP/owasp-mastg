@@ -41,5 +41,5 @@ A deprecated HMAC implementation may contain bugs that could compromise the auth
 ## Mitigations
 
 - **Use MAC with a timestamp**: Generate the MAC over a message with the timestamp included. This should protect the application against replay attacks within a reasonable amount of time. Reasonable, meaning a time frame that is short enough to prevent an attacker from sending an identical message and long enough to allow the message to be sent and digested.
-- **Do not use HMAC together with a low-entropy key**: Ensure the keys used are generated using Ccyptographically secure PRNGs (CSPRNG) generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks.
+- **Do not use HMAC together with a low-entropy key**: Ensure the keys used are generated using cyptographically secure PRNGs (CSPRNG) generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks.
 - **Do not use deprecated HMCA implementations**: Deprecated HMCA implementations could contain errors that allow for collision attacks. Therefore, only use recommended libraries and functions.
