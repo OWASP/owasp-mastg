@@ -60,7 +60,7 @@ If you're only interested into the modules (binaries and libraries) that the app
 
 As you might expect you can correlate the addresses of the libraries with the memory maps: e.g. the main app from @MASTG-APP-0028 is called "iGoat-Swift" and is located at `0x0000000100b7c000` and the Realm Framework at `0x0000000100f60000`.
 
-You can also use objection to display the same information.
+You can also use @MASTG-TOOL-0074 to display the same information.
 
 ```bash
 $ objection --gadget OWASP.iGoat-Swift explore

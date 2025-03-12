@@ -31,7 +31,7 @@ status: new
 
 ## Overview
 
-When data is sent in cleartext (i.e. without encryption) it becomes accessible to attackers who can monitor network channels. Attackers can perform passive eavesdropping to intercept data or employ active Machine-in-the-Middle (MITM) attacks to manipulate data, potentially altering app behavior or injecting malicious content.
+When data is sent in cleartext (i.e. without encryption) it becomes accessible to attackers who can monitor network channels. Attackers can perform passive eavesdropping to intercept data or employ active [Machine-in-the-Middle (MITM)](../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks to manipulate data, potentially altering app behavior or injecting malicious content.
 
 This weakness is especially concerning when sensitive information is transmitted without encryption, putting user privacy and security at direct risk. Even when sensitive data isn't being transmitted, using cleartext communication remains a vulnerability. Network attacks like ARP poisoning and DNS spoofing can allow attackers to intercept or redirect traffic, potentially disrupting app functionality or deceiving users by redirecting them to malicious sites that impersonate legitimate services.
 

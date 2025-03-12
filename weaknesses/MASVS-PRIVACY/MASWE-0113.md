@@ -25,12 +25,12 @@ These mechanisms typically include the ability for users to delete, export, modi
 
 ## Impact
 
-- **Violation of User Rights**: Users may be unable to exercise their rights to manage their personal data, such as deleting or exporting their information, leading to a lack of control and increased privacy risks.  
-- **Non-Compliance with Privacy Regulations**: Non-compliance with regulations like GDPR and CCPA, which require providing users with data management capabilities, can result in fines, legal action, and other consequences.  
+- **Violation of User Rights**: Users may be unable to exercise their rights to manage their personal data, such as deleting or exporting their information, leading to a lack of control and increased privacy risks.
+- **Non-Compliance with Privacy Regulations**: Non-compliance with regulations like GDPR and CCPA, which require providing users with data management capabilities, can result in fines, legal action, and other consequences.
 - **Loss of User Trust**: Users may lose trust in an app that does not allow them to manage their personal data, which can lead to negative reviews, decreased user engagement, and reduced retention.
 
 ## Mitigations
 
-- **Implement Data Management Mechanisms**: Ensure that mechanisms are in place for users to delete, export, or modify their data. Provide granular controls for specific aspects of data collection and sharing (e.g., location services, contacts, media access).  
-- **Regularly Update Data Management Features**: Regularly review and update data management features to ensure compliance with evolving regulations and user expectations. This helps maintain transparency and user trust.  
+- **Implement Data Management Mechanisms**: Ensure that mechanisms are in place for users to delete, export, or modify their data. Provide granular controls for specific aspects of data collection and sharing (e.g., location services, contacts, media access).
+- **Regularly Update Data Management Features**: Regularly review and update data management features to ensure compliance with evolving regulations and user expectations. This helps maintain transparency and user trust.
 - **User-Friendly Data Management Interface**: Create a user-friendly interface for data management controls, ensuring that users can easily navigate and exercise their rights over their personal data without friction.

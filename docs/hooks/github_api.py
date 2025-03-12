@@ -14,13 +14,14 @@ HEADERS = {
     "Accept": "application/vnd.github+json",
 }
 
-def get_latest_successful_run(workflow_file):
+def get_latest_successful_run(workflow_file, branch="master"):
     url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
-    params = {"status": "success", "per_page": 1}
+    params = {"status": "success", "branch": branch, "per_page": 1}
     response = requests.get(url, headers=HEADERS, params=params)
     response.raise_for_status()
-    runs = response.json()["workflow_runs"]
+    runs = response.json().get("workflow_runs", [])
+    
     if runs:
-        return f"{runs[0]["html_url"]}#artifacts"
+        return f"{runs[0]['html_url']}#artifacts"
     else:
         return None
