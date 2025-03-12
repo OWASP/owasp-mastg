@@ -15,22 +15,29 @@
     "MD046": false,                               // code-block-style (unsupported admonitions)
     "MD049": {"style": "underscore"},             // emphasis-style
     "MD050": {"style": "asterisk"},               // strong-style
-    "MD055": {"style": "leading_and_trailing"}    // table-pipe-style
+    "MD055": {"style": "leading_and_trailing"},   // table-pipe-style
     "search-replace": {
       "rules": [
-        // {
-        //   "name": "ellipsis",
-        //   "message": "Do not use three dots '...' for ellipsis.",
-        //   "information": "https://example.com/rules/ellipsis",
-        //   "search": "...",
-        //   "replace": "…",
-        //   "searchScope": "text"
-        // },
         {
           "name": "curly-double-quotes",
           "message": "Do not use curly double quotes.",
           "searchPattern": "/“|”/g",
-          "replace": "\""
+          "replace": "\"",
+          "searchScope": "text"
+        },
+        {
+          "name": "nbsp",
+          "message": "Don't use no-break spaces",
+          "searchPattern": "/ /g",
+          "replace": " ",
+          "searchScope": "all"
+        },
+        {
+          "name": "curly-single-quotes",
+          "message": "Don't use curly single quotes",
+          "searchPattern": "/‘|’/g",
+          "replace": "'",
+          "searchScope": "text"
         },
         {
           "name": "gender-neutrality",
@@ -39,12 +46,19 @@
           "replace": ""
         },
         {
-          "name": "bad-spellings",
-          "message": "Incorrect spelling",
-          "search": ["e-mail", "wtf", "web site"],
-          "replace": ["email", null, "website"],
-          "searchScope": "all"
-        }
+          "name": "trailing-spaces",
+          "message": "Avoid trailing spaces",
+          "searchPattern": "/  +$/gm",
+          "replace": "",
+          "searchScope": "all",
+        },
+        {
+          "name": "double-spaces",
+          "message": "Avoid double spaces",
+          "searchPattern": "/([^\\s>])  ([^\\s|])/g",
+          "replace": "$1 $2",
+          "searchScope": "text"
+        },
         // {
         //   "name": "correct-noun-forms",
         //   "message": "Use the correct form for specific terms.",
@@ -105,7 +119,7 @@
         //     "white box"
         //   ],
         //   "searchScope": "text"
-        // }        
+        // },   
         // {
         //   "name": "contractions",
         //   "message": "Use contractions where appropriate",
@@ -155,21 +169,6 @@
         //   ],
         //   "searchScope": "text"
         // },
-        // {
-        //   "name": "file-format-extensions",
-        //   "message": "File formats for APK, IPA, or ZIP must not be written as '.apk', '.ipa' or '.zip' unless referring to the file extension.",
-        //   "searchPattern": "/\\.(apk|ipa|zip)/g",
-        //   "replace": null,
-        //   "searchScope": "text"
-        // },
-        // {
-        //   "name": "android-version-format",
-        //   "message": "Use the format 'Android X (API level YY)' when referring to Android versions. Usage of the descriptive name or just the version number is not allowed.",
-        //   "searchPattern": "/\\bAndroid\\s+((1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20)(?!\\s*\\(API\\s*level\\s*\\d+\\))|Cupcake|Donut|Eclair|Froyo|Gingerbread|Honeycomb|Ice Cream Sandwich|Jelly Bean|KitKat|Lollipop|Marshmallow|Nougat|Oreo|Pie|Q|R|S|Tiramisu)/g",
-        //   "replace": null,
-        //   "searchScope": "text"
-        // }              
-        
       ]
     }
   }
