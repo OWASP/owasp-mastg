@@ -118,8 +118,7 @@ Key derivation functions derive bytes suitable for cryptographic operations from
 
 Different KDFs are suitable for different tasks such as:
 
-- Cryptographic key derivation
-
+- Cryptographic key derivation:
     - Together with a non-secret parameter to derive one or more keys from a common secret value. Also known as known as "key diversification"
     - As components of multiparty key-agreement protocols (e.g: [KDF1](https://en.wikipedia.org/wiki/IEEE_P1363)).
     - To derive keys from secret passwords or passphrases.
