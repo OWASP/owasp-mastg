@@ -26,7 +26,7 @@ Improper use of MAC by e.g by generating a MAC over a message without the timest
 
 Another common issue is using HMAC with on low-entropy input with any type of general based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HMAC aren't designed for low-entropy inputs or low-entropy keys. Doing so will result in producing "weak" message digest that easily can be exploited.
 
-There could also be issues with a specific and deprecated HMAC implementation.
+A deprecated HMAC implementation may contain bugs that could compromise authenticity of the data.
 
 ## Impact
 
