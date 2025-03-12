@@ -143,9 +143,9 @@ Usage: aa[0*?]   # see also 'af' and 'afna'
 
 There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from this [article](https://radareorg.github.io/blog/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<https://radareorg.github.io/blog/>) offers a good summary.
 
-> Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it’s done by default.
+> Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it's done by default.
 >
-> People that are used to IDA Pro or Hopper just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
+> People that are used to IDA Pro or Hopper just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It's true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
 This said, please see @MASTG-TECH-0024 to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
 

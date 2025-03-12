@@ -95,7 +95,7 @@ The latest version of the MASTG v1 is available here: <https://github.com/OWASP/
 | ---- | ---- | ----- | --- | --- | --- |
 | Bernhard Mueller, Sven Schleier, Jeroen Willemsen, Carlos Holguera | Jeroen Beckers, Sjoerd Langkemper, Anant Shrivastava | Pawel Rzepa, Francesco Stillavato, Henry Hoggard, Andreas Happe, Kyle Benac, Paulino Calderon, Alexander Anthuk, Caleb Kinney, Abderrahmane Aftahi, Koki Takeyama, Wen Bin Kong, Abdessamad Temmar, Cláudio André, Slawomir Kosowski, Bolot Kerimbaev, Lukasz Wierzbicki | kryptoknight13, DarioI, luander, oguzhantopgul, Osipion, mpishu, pmilosev, isher-ux, thec00n, ssecteam, jay0301, magicansk, jinkunong, nick-epson, caitlinandrews, dharshin, raulsiles, righettod, karolpiateknet, mkaraoz, Sjord, bugwrangler, jasondoyle, joscandreu, yog3shsharma, ryantzj, rylyade1, shivsahni, diamonddocumentation, 51j0, AnnaSzk, hlhodges, legik, abjurato, serek8, mhelwig, locpv-ibl and ThunderSon. | jonasw234, zehuanli, jadeboer, Isopach, prabhant, jhscheer, meetinthemiddle-be, bet4it, aslamanver, juan-dambra, OWASP-Seoul, hduarte, TommyJ1994, forced-request, D00gs, vasconcedu, mehradn7, whoot, LucasParsy, DotDotSlashRepo, enovella, ionis111, vishalsodani, chame1eon, allRiceOnMe, crazykid95, Ralireza, Chan9390, tamariz-boop, abhaynayar, camgaertner, EhsanMashhadi, fujiokayu, decidedlygray, Ali-Yazdani, Fi5t, MatthiasGabriel, colman-mbuya and anyashka | Heaven Hodges, Caitlin Andrews, Nick Epson, Anita Diamond, Anna Szkudlarek |
 
-### OWASP MASTG Beta  
+### OWASP MASTG Beta
 
 #### OWASP MSTG "Beta 2" (Google Doc)
 
