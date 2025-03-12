@@ -128,7 +128,7 @@ Different KDFs are suitable for different tasks such as:
 - Password storage:
     - In order to ensure attacker's can't use a stolen password even in the event of a data breach, passwords are stored as hashes computed through a computationally intensive KDF. The ideal password storage's KDF should be demanding on both computational and memory resources.
 
-source: ([Wikipedia, 2025.02.21"](https://en.wikipedia.org/wiki/Key_derivation_function "Key derivation function"))
+Source: ([Wikipedia, 2025.02.21"](https://en.wikipedia.org/wiki/Key_derivation_function "Key derivation function"))
 
 When using a KDF for cryptographic operations always ensure to use a recommended and approved KDF properly according to the latest recommendations and the software provider's documentation. E.g Only using a key derivation functions that is constructed from hashes against which no non-trivial pre-image or length-extension attacks are known and where attacking the key derivation function directly is infeasible. Using user-supplied input together with HKDF will make it easy for password crackers to execute a preimage attack.
 
