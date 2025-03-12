@@ -15,7 +15,7 @@ To use the interception proxy, you'll need to run it on your host computer and c
 
 ## Installing the Proxy Certificate
 
-Using an interception proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. Because of this, interception proxies require you to install a custom CA certificate on the mobile device, which allows the proxy to decrypt and inspect the encrypted HTTPS traffic. Depending on the platform, the installed certificate may or may not be automatically trusted by the application. Additionally,  some apps implement certificate pinning, which requires additional effort to bypass.
+Using an interception proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. Because of this, interception proxies require you to install a custom CA certificate on the mobile device, which allows the proxy to decrypt and inspect the encrypted HTTPS traffic. Depending on the platform, the installed certificate may or may not be automatically trusted by the application. Additionally, some apps implement certificate pinning, which requires additional effort to bypass.
 
 ## Per-Platform Instructions
 

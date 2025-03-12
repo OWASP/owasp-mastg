@@ -70,6 +70,6 @@ After redirecting traffic to your interception proxy, you need to forward it bac
 
 Now, start using the app and trigger its functions. If configured correctly, HTTP messages should appear in your interception proxy.
 
-> **Note:**  
-> When using Bettercap or DNS Spoofing, enable **"Support invisible proxying"** under **Proxy Tab → Options → Edit Interface**.  
+> **Note:**
+> When using Bettercap or DNS Spoofing, enable **"Support invisible proxying"** under **Proxy Tab → Options → Edit Interface**.
 > Ensure the proxy settings are properly configured to handle both HTTP and HTTPS traffic for full visibility.

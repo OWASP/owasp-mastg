@@ -60,7 +60,7 @@ A popular variant of this attack is [XML eXternal Entity (XXE)](https://owasp.or
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
- <!DOCTYPE foo [  
+ <!DOCTYPE foo [
   <!ELEMENT foo ANY >
   <!ENTITY xxe SYSTEM "file:///dev/random" >]><foo>&xxe;</foo>
 ```
@@ -236,10 +236,10 @@ Similarly, iOS apps can wrap C/C++ calls in Obj-C or Swift, making them suscepti
 The following code snippet shows a simple example for a condition resulting in a buffer overflow vulnerability.
 
 ```c
- void copyData(char *userId) {  
-    char  smallBuffer[10]; // size of 10  
+ void copyData(char *userId) {
+    char  smallBuffer[10]; // size of 10
     strcpy(smallBuffer, userId);
- }  
+ }
 ```
 
 To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the "str" prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:

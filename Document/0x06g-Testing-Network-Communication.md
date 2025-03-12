@@ -92,7 +92,7 @@ Source: [Apple Developer Documentation](https://developer.apple.com/library/cont
 
 The following table summarizes the global ATS exceptions. For more information about these exceptions, please refer to [table 2 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW34 "App Transport Security dictionary primary keys").
 
-|  Key | Description |
+| Key | Description |
 | --------------| ------------|
 | `NSAllowsArbitraryLoads` | Disable ATS restrictions globally excepts for individual domains specified under `NSExceptionDomains` |
 | `NSAllowsArbitraryLoadsInWebContent` | Disable ATS restrictions for all the connections made from web views |
@@ -101,7 +101,7 @@ The following table summarizes the global ATS exceptions. For more information a
 
 The following table summarizes the per-domain ATS exceptions. For more information about these exceptions, please refer to [table 3 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW44 "App Transport Security dictionary primary keys").
 
-|  Key | Description |
+| Key | Description |
 | --------------| ------------|
 | `NSIncludesSubdomains` | Indicates whether ATS exceptions should apply to subdomains of the named domain |
 | `NSExceptionAllowsInsecureHTTPLoads` | Allows HTTP connections to the named domain, but does not affect TLS requirements |

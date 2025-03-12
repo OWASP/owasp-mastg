@@ -132,7 +132,7 @@ Further information is available in the [Android documentation](https://develope
 
 #### DNS over TLS
 
-System-wide DNS over TLS support has been introduced since Android 9 (API level 28). It allows you to perform queries to DNS servers using the TLS protocol.  A secure channel is established with the DNS server through which the DNS query is sent. This assures that no sensitive data is exposed during a DNS lookup.
+System-wide DNS over TLS support has been introduced since Android 9 (API level 28). It allows you to perform queries to DNS servers using the TLS protocol. A secure channel is established with the DNS server through which the DNS query is sent. This assures that no sensitive data is exposed during a DNS lookup.
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html).
 
@@ -435,7 +435,7 @@ Content providers are implemented through a URI addressing scheme: they all use 
 
 #### Services
 
-Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. This makes services a great candidate for running  background tasks. Please note that Services, like Activities, are executed in the main app thread. A service does not create its own thread and does not run in a separate process unless you specify otherwise.
+Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. This makes services a great candidate for running background tasks. Please note that Services, like Activities, are executed in the main app thread. A service does not create its own thread and does not run in a separate process unless you specify otherwise.
 
 ### Inter-Process Communication
 
@@ -653,7 +653,7 @@ Android supports multiple application signing schemes:
 - **Android 9 (API level 28) and above**: It's recommended to use both the **v2 and v3 signature schemes**. The v3 scheme supports **key rotation**, enabling developers to replace keys in the event of a compromise without invalidating old signatures.
 - **Android 11 (API level 30) and above**: applications can optionally include the **v4 signature scheme** to enable faster incremental updates.
 
-For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions.  For example, [older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/).
+For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions. For example, [older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/).
 
 #### JAR Signing (v1 Scheme)
 

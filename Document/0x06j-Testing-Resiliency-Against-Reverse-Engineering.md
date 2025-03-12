@@ -152,7 +152,7 @@ Open `./__handlers__/__JailbreakDetectionVC_isJailbroken_.js` with your favourit
 ```javascript
 onLeave: function (log, retval, state) {
     console.log("Function [JailbreakDetectionVC isJailbroken] originally returned:"+ retval);
-    retval.replace(0);  
+    retval.replace(0);
     console.log("Changing the return value to:"+retval);
 }
 ```
@@ -483,7 +483,7 @@ The purpose of device binding is to impede an attacker who tries to copy an app 
 
 [Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits but there are other methods for implementing device binding in iOS:
 
-- **`identifierForVendor`**: You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C),  `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). The value of `identifierForVendor` may not be the same if you reinstall the app after other apps from the same vendor are installed and it may change when you update your app bundle's name. Therefore it is best to combine it with something in the Keychain.
+- **`identifierForVendor`**: You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C), `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). The value of `identifierForVendor` may not be the same if you reinstall the app after other apps from the same vendor are installed and it may change when you update your app bundle's name. Therefore it is best to combine it with something in the Keychain.
 - **Using the Keychain**: You can store something in the Keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or Touch ID requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
 - **Using Google Instance ID**: see the [implementation for iOS here](https://developers.google.com/instance-id/guides/ios-implementation "iOS implementation Google Instance ID").
 
