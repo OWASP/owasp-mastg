@@ -51,7 +51,7 @@ For example, the following configuration uses the `base-config` to prevent clear
 
 Learn more:
 
-- ["A Security Analyst’s Guide to Network Security Configuration in Android P"](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/)
+- ["A Security Analyst's Guide to Network Security Configuration in Android P"](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/)
 - [Android Developers - Network Security Configuration](https://developer.android.com/training/articles/security-config)
 - [Android Codelab - Network Security Configuration](https://developer.android.com/codelabs/android-network-security-config)
 

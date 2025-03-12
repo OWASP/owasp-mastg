@@ -23,8 +23,8 @@ ATS performs default server trust evaluation and requires a minimum set of secur
 
 When an app connects to a remote server, the server provides its identity using an X.509 digital certificate. The ATS default server trust evaluation includes validating that the certificate:
 
-- Isn’t expired.
-- Has a name that matches the server’s DNS name.
+- Isn't expired.
+- Has a name that matches the server's DNS name.
 - Has a digital signature that is valid (hasn't been tampered with) and can be traced back to a trusted Certificate Authority (CA) included in the [operating system Trust Store](https://support.apple.com/en-us/HT209143), or be installed on the client by the user or a system administrator.
 
 **Minimum Security Requirements for Connections:**
@@ -39,7 +39,7 @@ ATS will block connections that further fail to meet a set of [minimum security 
 
 **Certificate validity checking:**
 
-[According to Apple](https://support.apple.com/en-gb/guide/security/sec100a75d12/web#sec8b087b1f7), "evaluating the trusted status of a TLS certificate is performed in accordance with established industry standards, as set out in RFC 5280, and incorporates emerging standards such as RFC 6962 (Certificate Transparency). In iOS 11 or later, Apple devices are periodically updated with a current list of revoked and constrained certificates. The list is aggregated from certificate revocation lists (CRLs), which are published by each of the built-in root certificate authorities trusted by Apple, as well as by their subordinate CA issuers. The list may also include other constraints at Apple’s discretion. This information is consulted whenever a network API function is used to make a secure connection. If there are too many revoked certificates from a CA to list individually, a trust evaluation may instead require that an online certificate status response (OCSP) is needed, and if the response isn’t available, the trust evaluation will fail."
+[According to Apple](https://support.apple.com/en-gb/guide/security/sec100a75d12/web#sec8b087b1f7), "evaluating the trusted status of a TLS certificate is performed in accordance with established industry standards, as set out in RFC 5280, and incorporates emerging standards such as RFC 6962 (Certificate Transparency). In iOS 11 or later, Apple devices are periodically updated with a current list of revoked and constrained certificates. The list is aggregated from certificate revocation lists (CRLs), which are published by each of the built-in root certificate authorities trusted by Apple, as well as by their subordinate CA issuers. The list may also include other constraints at Apple's discretion. This information is consulted whenever a network API function is used to make a secure connection. If there are too many revoked certificates from a CA to list individually, a trust evaluation may instead require that an online certificate status response (OCSP) is needed, and if the response isn't available, the trust evaluation will fail."
 
 #### When does ATS not apply?
 

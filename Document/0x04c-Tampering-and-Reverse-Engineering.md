@@ -103,7 +103,7 @@ stp        x22, x21, [sp, #-0x30]!
 mov        rbp, rsp
 ```
 
-After the obfuscation we can observe that the symbol’s name is no longer meaningful as shown on the listing below.
+After the obfuscation we can observe that the symbol's name is no longer meaningful as shown on the listing below.
 
 ```assembly
 __T07DVIA_v232zNNtWKQptikYUBNBgfFVMjSkvRdhhnbyyFySbyypF:
@@ -127,11 +127,11 @@ The image shows how control flow flattening alters code. See ["Obfuscating C++ p
 
 #### Dead Code Injection
 
-This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behavior but increases the overhead of the reverse engineering process.
+This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn't affect the original program's behavior but increases the overhead of the reverse engineering process.
 
 #### String Encryption
 
-Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application’s binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
+Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application's binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
 
 #### Packing
 

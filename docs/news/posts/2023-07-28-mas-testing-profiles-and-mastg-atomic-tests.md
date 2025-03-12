@@ -38,7 +38,7 @@ But before we can start writing the new atomic tests, we need to finalize the pr
 
 We are now in the process of transforming the MASTG, according to the changes highlighted above. We've already released the MASVS v2.0.0, and the rest of the year will be dedicated to the MASTG refactoring, which will involve creating hundreds of new tests. We believe these changes will significantly improve the usability and relevance of the MASTG. We're excited to keep you updated on our progress and look forward to your continued support and feedback.
 
-> We would like to extend a special thanks to [our MAS Advocate NowSecure](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/#our-mas-advocates). Their commitment to the OWASP project is not merely financial; it’s an investment of their most valuable resource – their people and their time. NowSecure has dedicated hours of expertise, extensive knowledge, and hard work towards making these changes a reality.
+> We would like to extend a special thanks to [our MAS Advocate NowSecure](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/#our-mas-advocates). Their commitment to the OWASP project is not merely financial; it's an investment of their most valuable resource – their people and their time. NowSecure has dedicated hours of expertise, extensive knowledge, and hard work towards making these changes a reality.
 >
 > Would you like to become a [MAS Advocate](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/)? [Contact us](https://mas.owasp.org/contact/) to learn more.
 

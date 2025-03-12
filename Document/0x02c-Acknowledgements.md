@@ -34,7 +34,7 @@ To achieve this status, you'll need to demonstrate that you **make consistent hi
 
 If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application and provide you with a _contribution report_.
 
-After the initial evaluation period (see above), you’ll need to send back the contribution report including sufficient evidence (e.g links to PRs) showing what you've done in that period that goes inline with “**the minimum meaningful monthly contributions**”.
+After the initial evaluation period (see above), you'll need to send back the contribution report including sufficient evidence (e.g links to PRs) showing what you've done in that period that goes inline with "**the minimum meaningful monthly contributions**".
 
 ### Important Disclaimers
 
