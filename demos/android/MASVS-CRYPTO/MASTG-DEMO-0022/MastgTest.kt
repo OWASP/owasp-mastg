@@ -16,7 +16,7 @@ class MastgTest(private val context: Context) {
     // Vulnerable encryption using DES (broken algorithm)
     fun vulnerableDesEncryption(data: String): String {
         try {
-            // Weak key for DES
+            // insufficient key for DES
             val keyBytes = ByteArray(8)
             SecureRandom().nextBytes(keyBytes)
             val keySpec = DESKeySpec(keyBytes)
@@ -75,7 +75,7 @@ class MastgTest(private val context: Context) {
     // Risky encryption using Blowfish (weak algorithm)
     fun vulnerableBlowfishEncryption(data: String): String {
         return try {
-            // Weak key for Blowfish (risky, small key size)
+            // insufficient key for Blowfish (risky, small key size)
             val keyBytes = ByteArray(8) // Only 8 bytes (64-bit key) - not secure
             SecureRandom().nextBytes(keyBytes)
             val secretKey: SecretKey = SecretKeySpec(keyBytes, "Blowfish")
