@@ -28,7 +28,7 @@ Using deprecated, risky or broken algorithms for the purpose of ensuring account
 
 ## Modes of Introduction
 
-- **using a weak, risky or broken hashing algorithm**: E.g: MD5 and SHA-1 has been identified to be vulnerable for collision attacks that are faster than a birthday attack. Meaning that they are denounced as "broken".
+- **Using a weak, risky or broken hashing algorithm**: e.g. MD5 and SHA-1 has been identified to be vulnerable for collision attacks that are faster than a birthday attack. Meaning that they are denounced as "broken".
 - **Using a insufficiently collision resistant hash**: Choosing a a hashing algorithm of insufficient length may result in loss of integrity or confidentiality.
 
 ## Mitigations
