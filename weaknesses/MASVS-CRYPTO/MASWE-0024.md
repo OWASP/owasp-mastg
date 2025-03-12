@@ -35,7 +35,7 @@ A deprecated HMAC implementation may contain bugs that could compromise the auth
 
 ## Modes of Introduction
 
-- **Not including a timestamp**: Creating a MAC for message authentication without using and a proper timestamp that can be validated for the possibility of replay-attacks.
+- **Not including a timestamp**: Creating a MAC for message authentication without using a proper timestamp that can be validated for the possibility of replay-attacks.
 - **Using a MAC with low-entropy keys**: Using low-entropy inputs or low-entropy keys as input to a HMAC.
 
 ## Mitigations
