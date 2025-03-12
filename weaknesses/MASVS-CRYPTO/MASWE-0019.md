@@ -1,5 +1,6 @@
 ---
-title: Deprecated, risky, or Broken Cryptography Implementations
+title: Deprecated, Risky, or Broken Cryptography Implementations
+
 id: MASWE-0019
 alias: potentially-weak-crypto-impl
 platform: [android, ios]
