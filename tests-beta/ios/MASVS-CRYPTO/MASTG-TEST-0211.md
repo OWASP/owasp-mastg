@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Weak, Risky or Broken Hashing Algorithms
+title: Risky or Broken Hashing Algorithms
 id: MASTG-TEST-0211
 type: [static, dynamic]
 weakness: MASWE-0021
