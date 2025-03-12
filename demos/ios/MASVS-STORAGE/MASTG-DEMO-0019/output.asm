@@ -16,6 +16,7 @@ Use of isExcludedFromBackup:
 │           0x1000045a0      sub x8, x29, 0x88
 │           0x1000045a4      ldur x8, [x8, -0x100]
 
+Search for secret.txt:
 0x10000dbe6 hit4_0 "lueFatal errorsecret.txt"
 
 Use of the string secret.txt:

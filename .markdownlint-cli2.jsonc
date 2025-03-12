@@ -1,15 +1,11 @@
 {
-    "globs": [
-        "**/*.md"
-      ],
-    
-    "ignores": [
-      "src",
-      "node_modules",
-      "Crackmes",
-      "Samples",
-      ".github",
-      "docs/contributing/5_Style_Guide.md"
-    ],
-      "gitignore": true
+  "config": {
+    "extends": "./.markdownlint.jsonc"
+  },
+  "globs": [
+    "**/*.md"
+  ],
+  "customRules": ["markdownlint-rule-search-replace"],
+  "ignores": ["node_modules", ".git", ".github", "src", "Crackmes", "Samples", "docs/contributing/5_Style_Guide.md", "venv", "playground"],
+  "gitignore": true
 }

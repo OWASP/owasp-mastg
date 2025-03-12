@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1, MASVS-PLATFORM-1]
+  cwe: [287]
 
 refs:
 - https://developer.apple.com/documentation/security/shared_web_credentials

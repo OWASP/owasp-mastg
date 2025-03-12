@@ -17,6 +17,8 @@ draft:
   - Universal Links
   - URL validation
   - Check for OS version. e.g. deep link are more secure after Android XX
+refs:
+- https://developer.apple.com/documentation/technotes/tn3155-debugging-universal-links
 status: draft
 
 ---

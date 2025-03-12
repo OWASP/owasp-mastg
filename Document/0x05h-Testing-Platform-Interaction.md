@@ -30,7 +30,7 @@ Android permissions can be classified into distinct categories depending on the 
 - [**Custom permissions**](https://developer.android.com/guide/topics/permissions/defining "Define a custom app permission") in order to share their own resources and capabilities with other apps.
     - Protection Level: `normal`, `signature` or `dangerous`.
 
-Independently from the assigned Protection Level, it is important to consider the risk that a permission might be posing considering the additional guarded capabilities, this is especially important for preloaded apps. The following table presents a representative set of Android permissions categorized by associated risk as defined in this [paper](https://www.android-device-security.org/publications/2020-lau-uraniborg/Lau_2020_Uraniborg_Scoring_Whitepaper_20200827.pdf "Uraniborg’s Device Preloaded App Risks Scoring Metrics") which leverages the set of (privileged) permissions and entrance points to an app to estimate its attack surface.
+Independently from the assigned Protection Level, it is important to consider the risk that a permission might be posing considering the additional guarded capabilities, this is especially important for preloaded apps. The following table presents a representative set of Android permissions categorized by associated risk as defined in this [paper](https://www.android-device-security.org/publications/2020-lau-uraniborg/Lau_2020_Uraniborg_Scoring_Whitepaper_20200827.pdf "Uraniborg's Device Preloaded App Risks Scoring Metrics") which leverages the set of (privileged) permissions and entrance points to an app to estimate its attack surface.
 
 | Risk Category    | Permissions                                                     | Protection Level  |
 |------------------|-----------------------------------------------------------------|-------------------|
@@ -48,6 +48,9 @@ Independently from the assigned Protection Level, it is important to consider th
 | **CRITICAL**     | `android.permission.MOUNT_UNMOUNT_FILESYSTEMS`                  | signature         |
 | **CRITICAL**     | `android.permission.PROVIDE_DEFAULT_ENABLED_CREDENTIAL_SERVICE` | signature         |
 | **CRITICAL**     | `android.permission.PROVIDE_REMOTE_CREDENTIALS`                 | signature         |
+| **CRITICAL**     | `android.permission.THREAD_NETWORK_PRIVILEGED`                  | signature         |
+| **CRITICAL**     | `android.permission.RECORD_SENSITIVE_CONTENT`                   | signature         |
+| **CRITICAL**     | `android.permission.RECEIVE_SENSITIVE_NOTIFICATIONS`            | signature         |
 | **HIGH**         | `android.permission.INSTALL_GRANT_RUNTIME_PERMISSIONS`          | signature         |
 | **HIGH**         | `android.permission.READ_SMS`                                   | dangerous         |
 | **HIGH**         | `android.permission.WRITE_SMS`                                  | normal            |
@@ -72,6 +75,9 @@ Independently from the assigned Protection Level, it is important to consider th
 | **HIGH**         | `android.permission.MANAGE_ONGOING_CALLS`                       | signature         |
 | **HIGH**         | `android.permission.READ_RESTRICTED_STATS`                      | internal          |
 | **HIGH**         | `android.permission.BIND_AUTOFILL_SERVICE`                      | signature         |
+| **HIGH**         | `android.permission.WRITE_VERIFICATION_STATE_E2EE_CONTACT_KEYS` | signature         |
+| **HIGH**         | `android.permission.READ_DROPBOX_DATA`                          | signature         |
+| **HIGH**         | `android.permission.WRITE_FLAGS`                                | signature         |
 | **MEDIUM**       | `android.permission.ACCESS_COARSE_LOCATION`                     | dangerous         |
 | **MEDIUM**       | `android.permission.CHANGE_COMPONENT_ENABLED_STATE`             | signature         |
 | **MEDIUM**       | `android.permission.READ_CONTACTS`                              | dangerous         |
@@ -94,6 +100,9 @@ Independently from the assigned Protection Level, it is important to consider th
 | **MEDIUM**       | `android.permission.READ_MEDIA_AUDIO`                           | dangerous         |
 | **MEDIUM**       | `android.permission.READ_MEDIA_IMAGES`                          | dangerous         |
 | **MEDIUM**       | `android.permission.READ_MEDIA_VIDEO`                           | dangerous         |
+| **MEDIUM**       | `android.permission.REGISTER_NSD_OFFLOAD_ENGINE`                | signature         |
+| **MEDIUM**       | `android.permission.ACCESS_LAST_KNOWN_CELL_ID`                  | signature         |
+| **MEDIUM**       | `android.permission.USE_COMPANION_TRANSPORTS`                   | signature         |
 | **LOW**          | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION`              | normal            |
 | **LOW**          | `android.permission.PACKAGE_USAGE_STATS`                        | signature         |
 | **LOW**          | `android.permission.MASTER_CLEAR`                               | signature         |
@@ -105,6 +114,11 @@ Independently from the assigned Protection Level, it is important to consider th
 | **LOW**          | `android.permission.LOG_FOREGROUND_RESOURCE_USE`                | signature         |
 | **LOW**          | `android.permission.MANAGE_DEFAULT_APPLICATIONS`                | signature         |
 | **LOW**          | `android.permission.MANAGE_FACE`                                | signature         |
+| **LOW**          | `android.permission.REPORT_USAGE_STATS`                         | signature         |
+| **LOW**          | `android.permission.MANAGE_DISPLAYS`                            | signature         |
+| **LOW**          | `android.permission.RESTRICT_DISPLAY_MODES`                     | signature         |
+| **LOW**          | `android.permission.ACCESS_HIDDEN_PROFILES_FULL`                | signature         |
+| **LOW**          | `android.permission.GET_BACKGROUND_INSTALLED_PACKAGES`          | signature         |
 | **NONE**         | `android.permission.ACCESS_NETWORK_STATE`                       | normal            |
 | **NONE**         | `android.permission.RECEIVE_BOOT_COMPLETED`                     | normal            |
 | **NONE**         | `android.permission.WAKE_LOCK`                                  | normal            |
