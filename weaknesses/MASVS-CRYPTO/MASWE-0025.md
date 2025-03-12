@@ -1,5 +1,5 @@
 ---
-title: Signatures created by Deprecated, Risky or Broken algorithms.
+title: Signatures Created by Deprecated, Risky or Broken Algorithms
 id: MASWE-0025
 alias: weak-signatures
 platform: [android, ios]
