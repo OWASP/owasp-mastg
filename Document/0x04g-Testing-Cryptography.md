@@ -125,8 +125,7 @@ Different KDFs are suitable for different tasks such as:
     - To derive keys of different length from the ones provided (e.g: [PBKDF2HMAC](https://en.wikipedia.org/wiki/PBKDF2) or [HKDF](https://en.wikipedia.org/wiki/HKDF)).
     - [Key stretching](https://en.wikipedia.org/wiki/Key_stretching) and [key strengthening](https://en.wikipedia.org/wiki/Key_derivation_function#Key_stretching_and_key_strengthening).
 
-- Password storage
-
+- Password storage:
     - In order to ensure attacker's can't use a stolen password even in the event of a data breach, passwords are stored as hashes computed through a computationally intensive KDF. The ideal password storage's KDF should be demanding on both computational and memory resources.
 
 source: ([Wikipedia, 2025.02.21"](https://en.wikipedia.org/wiki/Key_derivation_function "Key derivation function"))
