@@ -2,7 +2,6 @@
 platform: android
 title: App Writing to External Storage without Scoped Storage Restrictions
 id: MASTG-DEMO-0003
-tools: [semgrep]
 code: [kotlin, xml]
 test: MASTG-TEST-0202
 ---
@@ -17,7 +16,7 @@ This requires special app access called ["All files access"](https://developer.a
 
 ### Steps
 
-Let's run our semgrep rule against the reversed java code.
+Let's run our @MASTG-TOOL-0110 rule against the reversed java code.
 
 {{ ../../../../rules/mastg-android-data-unencrypted-shared-storage-no-user-interaction-apis.yml }}
 

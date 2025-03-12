@@ -6,9 +6,8 @@ Our workflow is like this:
 
 1. **Open a [Discussion](https://docs.github.com/en/discussions)** (for ideas and proposals)
 If your proposal qualifies for the MASTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
-
-- MASVS Example: "Add a MASVS-CRYPTO requirement on Key rotation"
-- MASTG Example: "Add a Test case for key rotation"
+   - MASVS Example: "Add a MASVS-CRYPTO requirement on Key rotation"
+   - MASTG Example: "Add a Test case for key rotation"
 
 2. **Open an Issue** (for concrete actionable things that have to / could be done)
 For instance, there's a typo, or it's clear that a certain Test case doesn't have e.g. "Dynamic Analysis" and it should be added.
@@ -19,8 +18,8 @@ Normally, contributors should follow the whole flow. But sometimes it's clear wh
 
 If you just have an **specific question** you can post it to (you need a [GitHub Account](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account)):
 
-- https://github.com/OWASP/owasp-masvs/discussions/categories/q-a
-- https://github.com/OWASP/owasp-mastg/discussions/categories/q-a
+- <https://github.com/OWASP/owasp-masvs/discussions/categories/q-a>
+- <https://github.com/OWASP/owasp-mastg/discussions/categories/q-a>
 
 "GitHub Discussions" are re-posted to [our Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/).
 
@@ -53,15 +52,19 @@ For this you need an IDE or text editor and git on your machine. We recommend us
 
 1. [Fork the repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository). Forking the repo allows you to make your changes without affecting the original project until you're ready to merge them.
 2. [Clone your fork repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#about-cloning-a-repository) and [add the remote upstream repo](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#remotes-and-forks), e.g. for owasp-masvs:
+
     ```bash
     $ git clone https://github.com/<your_github_user>/owasp-masvs.git
     $ cd owasp-masvs/
     $ git remote add upstream git@github.com:OWASP/owasp-masvs.git
     ```
+
 3. Create a branch.
+
     ```bash
     $ git checkout -b fix-issue-1456
     ```
+
 4. Make your changes.
 5. Commit and push your changes. This can be done by executing the command `git add MYFILE` for every file you have modified, followed by `git commit -m 'Your Commit Message'` to commit the modifications and `git push` to push your modifications to GitHub.
-6. [Open a PR](#how-to-open-a-pr).
+6. [Open a PR](3_PRs_and_Reviews.md#how-to-open-a-pr).

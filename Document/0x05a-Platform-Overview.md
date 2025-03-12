@@ -91,7 +91,7 @@ Further information is available in the [Android documentation](https://source.a
 
 Even though the Android operating system is based on Linux, it doesn't implement user accounts in the same way other Unix-like systems do. In Android, the multi-user support of the Linux kernel is used to sandbox apps: with a few exceptions, each app runs as though under a separate Linux user, effectively isolated from other apps and the rest of the operating system.
 
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/9.0.0_r3/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out the [blog post "An Overview Of Application Sandbox" by Bin Chen](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html) on Android sandboxing.
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/9.0.0_r3/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed.
 
 For example, Android 9.0 (API level 28) defines the following system users:
 
@@ -646,11 +646,20 @@ When an application is installed on the Android device, the Package Manager ensu
 
 ### APK Signing Schemes
 
-Android supports three application signing schemes. Starting with Android 9 (API level 28), APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 (API level 24) and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing").
+Android supports multiple application signing schemes:
+
+- **Below Android 7.0 (API level 24)**: applications can only use the JAR signing (v1) scheme which does not protect all parts of the APK. This scheme is considered insecure.
+- **Android 7.0 (API level 24) and above**: applications can use the **v2 signature scheme**, which signs the APK as a whole, providing stronger protection compared to the older v1 (JAR) signing method.
+- **Android 9 (API level 28) and above**: It's recommended to use both the **v2 and v3 signature schemes**. The v3 scheme supports **key rotation**, enabling developers to replace keys in the event of a compromise without invalidating old signatures.
+- **Android 11 (API level 30) and above**: applications can optionally include the **v4 signature scheme** to enable faster incremental updates.
+
+For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions.  For example, [older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/).
 
 #### JAR Signing (v1 Scheme)
 
 The original version of app signing implements the signed APK as a standard signed JAR, which must contain all the entries in `META-INF/MANIFEST.MF`. All files must be signed with a common certificate. This scheme does not protect some parts of the APK, such as ZIP metadata. The drawback of this scheme is that the APK verifier needs to process untrusted data structures before applying the signature, and the verifier discards data the data structures don't cover. Also, the APK verifier must decompress all compressed files, which takes considerable time and memory.
+
+This signature scheme is considered insecure, it is for example affected by the **Janus vulnerability (CVE-2017-13156)**, which can allow malicious actors to modify APK files without invalidating the v1 signature. As such, **v1 should never be relied on for devices running Android 7.0 and above**.
 
 #### APK Signature Scheme (v2 Scheme)
 

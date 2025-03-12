@@ -16,4 +16,3 @@ draft:
 status: draft
 
 ---
-

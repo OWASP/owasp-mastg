@@ -7,7 +7,7 @@ One of the most common things you do when testing an app is accessing the device
 
 ## Remote Shell
 
-In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08a-Testing-Tools.md#cydia) (see screenshot below) or [Sileo](0x08a-Testing-Tools.md#sileo) installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either @MASTG-TOOL-0047 (see screenshot below) or @MASTG-TOOL-0064 installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 <img src="Images/Chapters/0x06b/cydia.png" width="300px" />
 
@@ -45,27 +45,24 @@ If you forget your password and want to reset it to the default `alpine`:
 
 ## Connect to a Device via SSH over USB
 
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](0x08a-Testing-Tools.md#usbmuxd) to connect to your device's SSH server via USB.
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use @MASTG-TOOL-0069 to connect to your device's SSH server via USB.
 
-Connect macOS to an iOS device by installing and starting [iproxy](0x08a-Testing-Tools.md#iproxy):
+Connect macOS to an iOS device by installing and starting @MASTG-TOOL-0055:
 
 ```bash
-$ brew install libimobiledevice
 $ iproxy 2222 22
 waiting for connection
 ```
 
-The above command maps port `22` on the iOS device to port `2222` on localhost. You can also [make iproxy run automatically in the background](https://iphonedevwiki.net/index.php/SSH_Over_USB "Making iproxy run automatically in the background on OS X") if you don't want to run the binary every time you want to SSH over USB.
+The above command maps port `22` on the iOS device to port `2222` on localhost. You can also [make iproxy run automatically in the background](https://web.archive.org/web/20230828205901/https://iphonedevwiki.net/index.php/SSH_Over_USB) if you don't want to run the binary every time you want to SSH over USB.
 
 With the following command in a new terminal window, you can connect to the device:
 
 ```bash
-$ ssh -p 2222 root@localhost
-root@localhost's password:
-iPhone:~ root#
+$ ssh -p 2222 mobile@localhost
+mobile@localhost's password:
+iPhone:~ mobile%
 ```
-
-> Small note on USB of an iDevice: on an iOS device you cannot make data connections anymore after 1 hour of being in a locked state, unless you unlock it again due to the USB Restricted Mode, which was introduced with iOS 11.4.1
 
 ## On-device Shell App
 

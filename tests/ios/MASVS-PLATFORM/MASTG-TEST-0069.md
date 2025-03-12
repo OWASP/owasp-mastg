@@ -20,9 +20,9 @@ Since iOS 10, these are the main areas which you need to inspect for permissions
 - Code Signing Entitlements File
 - Embedded Provisioning Profile File
 - Entitlements Embedded in the Compiled App Binary
-- Source Code Inspection
+- Usage of Permissions in Source Code
 
-### Review application source code
+### Purpose Strings in the Info.plist File
 
 If having the original source code, you can verify the permissions included in the `Info.plist` file:
 
@@ -32,8 +32,6 @@ If having the original source code, you can verify the permissions included in t
 You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
 
 <img src="Images/Chapters/0x06h/purpose_strings_xcode.png" width="100%" />
-
-### Review Info.plist
 
 If only having the IPA:
 
@@ -64,7 +62,7 @@ It should be suspicious that a regular solitaire game requests this kind of reso
 
 Apart from simply checking if the permissions make sense, further analysis steps might be derived from analyzing purpose strings e.g. if they are related to storage sensitive data. For example, `NSPhotoLibraryUsageDescription` can be considered as a storage permission giving access to files that are outside of the app's sandbox and might also be accessible by other apps. In this case, it should be tested that no sensitive data is being stored there (photos in this case). For other purpose strings like `NSLocationAlwaysUsageDescription`, it must be also considered if the app is storing this data securely. Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
-### Review Embedded Provisioning Profile File
+### Embedded Provisioning Profile File
 
 When you do not have the original source code, you should analyze the IPA and search inside for the _embedded provisioning profile_ that is usually located in the root app bundle folder (`Payload/<appname>.app/`) under the name `embedded.mobileprovision`.
 
@@ -76,63 +74,11 @@ security cms -D -i embedded.mobileprovision
 
 and then search for the Entitlements key region (`<key>Entitlements</key>`).
 
-### Review Entitlements Embedded in the Compiled App Binary
+### Entitlements Embedded in the Compiled App Binary
 
-If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself (which you've previously obtained as explained in the "iOS Basic Security Testing" chapter, section ["Acquiring the App Binary"](../../../Document/0x06b-iOS-Security-Testing.md#acquiring-the-app-binary)).
+If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could also be the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself (see @MASTG-TECH-0111).
 
-The following steps should work even when targeting an encrypted binary. If for some reason they don't, you'll have to decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar.
-
-#### Extracting the Entitlements Plist from the App Binary
-
-If you have the app binary on your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
-
-```bash
-$ binwalk -e -y=xml ./Telegram\ X
-
-DECIMAL       HEXADECIMAL     DESCRIPTION
---------------------------------------------------------------------------------
-1430180       0x15D2A4        XML document, version: "1.0"
-1458814       0x16427E        XML document, version: "1.0"
-```
-
-Or you can use radare2 (`-qc` to _quietly_ run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
-
-```bash
-$ r2 -qc 'izz~PropertyList' ./Telegram\ X
-
-0x0015d2a4 ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC
-"-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">
-...<key>com.apple.security.application-groups</key>\n\t\t<array>
-\n\t\t\t<string>group.ph.telegra.Telegraph</string>...
-
-0x0016427d ascii H<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC
-"-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n
-<dict>\n\t<key>cdhashes</key>...
-```
-
-In both cases (binwalk or radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements "Telegram-iOS-AppStoreLLC.entitlements original file").
-
-> Note: the `strings` command will not help here as it will not be able to find this information. Better use grep with the `-a` flag directly on the binary or use radare2 (`izz`)/rabin2 (`-zz`).
-
-If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
-
-```bash
-$ grep -a -A 5 'PropertyList' /var/containers/Bundle/Application/
-    15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/Telegram\ X
-
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-    <dict>
-        <key>com.apple.security.application-groups</key>
-        <array>
-        ...
-```
-
-Play with the `-A num, --after-context=num` flag to display more or less lines. You may use tools like the ones we presented above as well, if you have them also installed on your jailbroken iOS device.
-
-> This method should work even if the app binary is still encrypted (it was tested against several App Store apps).
-
-#### Source Code Inspection
+### Usage of Permissions in Source Code
 
 After having checked the `<appname>.entitlements` file and the `Info.plist` file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code review should be enough. However, if you don't have the original source code, verifying the use of permissions might be specially challenging as you might need to reverse engineer the app, refer to the "Dynamic Analysis" for more details on how to proceed.
 
@@ -162,7 +108,7 @@ You can use the [Apple Developer Documentation](https://developer.apple.com/docu
 
 Go through the application searching for usages of these APIs and check what happens to sensitive data that might be obtained from them. For example, it might be stored or transmitted over the network, if this is the case, proper data protection and transport security should be additionally verified.
 
-### Dynamic Analysis
+## Dynamic Analysis
 
 With help of the static analysis you should already have a list of the included permissions and app capabilities in use. However, as mentioned in "Source Code Inspection", spotting the sensitive data and APIs related to those permissions and app capabilities might be a challenging task when you don't have the original source code. Dynamic analysis can help here getting inputs to iterate onto the static analysis.
 

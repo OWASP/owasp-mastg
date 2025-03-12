@@ -26,8 +26,6 @@ In the context of anti-reversing, the goal of root detection is to make running 
 
 For Android, we define "root detection" a bit more broadly, including custom ROMs detection, i.e., determining whether the device is a stock Android build or a custom build.
 
-In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [OWASP UnCrackable Apps for Android](0x08b-Reference-Apps.md#android-crackmes) that accompany the OWASP Mobile Testing Guide.
-
 Root detection can also be implemented through libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer").
 
 #### Google Play Integrity
@@ -191,8 +189,7 @@ Supersu-by far the most popular rooting tool-runs an authentication daemon named
 
 You can use the Android package manager to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
-```default
-com.thirdparty.superuser
+```txt
 eu.chainfire.supersu
 com.noshufou.android.su
 com.koushikdutta.superuser
@@ -836,14 +833,14 @@ _Inline hooks_ work by overwriting a few instructions at the beginning or end of
 
 The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
-Android apps can implement some of those obfuscation techniques using different tooling. For example, [ProGuard](0x08a-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
+Android apps can implement some of those obfuscation techniques using different tooling. For example, @MASTG-TOOL-0022 offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
 
 > Decompiling Java classes is trivial, therefore it is recommended to always applying some basic obfuscation to the production bytecode.
 
 Learn more about Android obfuscation techniques:
 
 - ["Security Hardening of Android Native Code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind
-- ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) by Eduardo Novella
+- ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) by Eduardo Novella (@MASTG-TOOL-0009)
 - ["Challenges of Native Android Applications: Obfuscation and Vulnerabilities"](https://www.theses.fr/2020REN1S047.pdf) by Pierre Graux
 
 #### Using ProGuard

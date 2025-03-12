@@ -39,23 +39,14 @@ Understanding each relevant data storage function is crucial for performing the 
 
 ### Shared Preferences
 
-The [SharedPreferences](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
-Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
+The [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs.
 
-Example for Java:
+Since Android 4.2 (API level 17) the `SharedPreferences` object can only be declared to be private (and not world-readable, i.e. accessible to all apps). However, since data stored in a `SharedPreferences` object is written to a plain-text XML file so its misuse can often lead to exposure of sensitive data.
 
-```java
-SharedPreferences sharedPref = getSharedPreferences("key", MODE_WORLD_READABLE);
-SharedPreferences.Editor editor = sharedPref.edit();
-editor.putString("username", "administrator");
-editor.putString("password", "supersecret");
-editor.commit();
-```
-
-Example for Kotlin:
+Consider the following example:
 
 ```kotlin
-var sharedPref = getSharedPreferences("key", Context.MODE_WORLD_READABLE)
+var sharedPref = getSharedPreferences("key", Context.MODE_PRIVATE)
 var editor = sharedPref.edit()
 editor.putString("username", "administrator")
 editor.putString("password", "supersecret")
@@ -74,14 +65,31 @@ Once the activity has been called, the file key.xml will be created with the pro
 </map>
 ```
 
-- `MODE_WORLD_READABLE` allows all applications to access and read the contents of `key.xml`.
+`MODE_PRIVATE` makes the file only accessible by the calling app. See ["Use SharedPreferences in private mode"](https://developer.android.com/privacy-and-security/security-best-practices#sharedpreferences).
 
-```bash
-root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
--rw-rw-r-- u0_a118    170 2016-04-23 16:51 key.xml
+> Other insecure modes exist, such as `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE`, but they have been deprecated since Android 4.2 (API level 17) and [removed in Android 7.0 (API Level 24)](https://developer.android.com/reference/android/os/Build.VERSION_CODES#N). Therefore, only apps running on an older OS version (`android:minSdkVersion` less than 17) will be affected. Otherwise, Android will throw a [SecurityException](https://developer.android.com/reference/java/lang/SecurityException). If an app needs to share private files with other apps, it is best to use a [FileProvider](https://developer.android.com/reference/androidx/core/content/FileProvider) with the [FLAG_GRANT_READ_URI_PERMISSION](https://developer.android.com/reference/android/content/Intent#FLAG_GRANT_READ_URI_PERMISSION). See [Sharing Files](https://developer.android.com/training/secure-file-sharing) for more details.
+
+You might also use [`EncryptedSharedPreferences`](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences), which is wrapper of `SharedPreferences` that automatically encrypts all data stored to the shared preferences.
+
+```kotlin
+var masterKey: MasterKey? = null
+masterKey = Builder(this)
+    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+    .build()
+
+val sharedPreferences: SharedPreferences = EncryptedSharedPreferences.create(
+    this,
+    "secret_shared_prefs",
+    masterKey,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+)
+
+val editor = sharedPreferences.edit()
+editor.putString("username", "administrator")
+editor.putString("password", "supersecret")
+editor.commit()
 ```
-
-> Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated starting on API level 17. Although newer devices may not be affected by this, applications compiled with an `android:targetSdkVersion` value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (API level 17).
 
 ### Databases
 
@@ -243,54 +251,81 @@ if(Java.available){
 ### Internal Storage
 
 You can save files to the device's [internal storage](https://developer.android.com/training/data-storage#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
-The following code snippets would persistently store sensitive data to internal storage.
 
-Example for Java:
-
-```java
-FileOutputStream fos = null;
-try {
-   fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-   fos.write(test.getBytes());
-   fos.close();
-} catch (FileNotFoundException e) {
-   e.printStackTrace();
-} catch (IOException e) {
-   e.printStackTrace();
-}
-```
-
-Example for Kotlin:
+For example, the following Kotlin snippet stores sensitive information in clear text to a file `password.txt` residing on internal storage.
 
 ```kotlin
-var fos: FileOutputStream? = null
-fos = openFileOutput("FILENAME", Context.MODE_PRIVATE)
-fos.write(test.toByteArray(Charsets.UTF_8))
-fos.close()
+val fileName = "sensitive_info.txt"
+val fileContents = "This is some top-secret information!"
+File(filesDir, fileName).bufferedWriter().use { writer ->
+    writer.write(fileContents)
+}
 ```
 
 You should check the file mode to make sure that only the app can access the file. You can set this access with `MODE_PRIVATE`. Modes such as `MODE_WORLD_READABLE` (deprecated) and `MODE_WORLD_WRITEABLE` (deprecated) may pose a security risk.
 
-Search for the class `FileInputStream` to find out which files are opened and read within the app.
+**Android Security Guidelines**: Android highlights that the data in the internal storage is private to the app and other apps cannot access it. It also recommends avoiding the use of `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` modes for IPC files and use a [content provider](https://developer.android.com/privacy-and-security/security-tips#content-providers) instead. See the [Android Security Guidelines](https://developer.android.com/privacy-and-security/security-tips#internal-storage "Android Security Guidelines"). Android also provides a [guide](https://developer.android.com/privacy-and-security/security-best-practices#internal-storage "Store data in internal storage based on use case") on how to use internal storage securely.
 
 ### External Storage
 
-Every Android-compatible device supports [shared external storage](https://developer.android.com/training/data-storage#filesExternal "Using External Storage"). This storage may be removable (such as an SD card) or internal (non-removable).
-Files saved to external storage are world-readable. The user can modify them when USB mass storage is enabled.
-You can use the following code snippets to persistently store sensitive information to external storage as the contents of the file `password.txt`.
+Android devices support [shared external storage](https://developer.android.com/training/data-storage#filesExternal "Using External Storage"). This storage may be removable (such as an SD card) or emulated (non-removable). A malicious app with proper permissions running on Android 10 or below can access data that you write to "external" [app-specific-directories](https://developer.android.com/training/data-storage/app-specific). The user can also modify these files when USB mass storage is enabled.
 
-Example for Java:
+The files stored in these directories are [removed when your app is uninstalled](https://developer.android.com/training/data-storage/app-specific#external).
 
-```java
-File file = new File (Environment.getExternalFilesDir(), "password.txt");
-String password = "SecretPassword";
-FileOutputStream fos;
-    fos = new FileOutputStream(file);
-    fos.write(password.getBytes());
-    fos.close();
+External storage must be used carefully as there are many risks associated with it. For example an attacker may be able to retrieve sensitive data or [obtain arbitrary control of the application](https://blog.checkpoint.com/2018/08/12/man-in-the-disk-a-new-attack-surface-for-android-apps/ "Man in the disk").
+
+**Android Security Guidelines**: Android recommends not storing sensitive data on external storage and to perform input validation on all data stored on external storage. See the [Android Security Guidelines](https://developer.android.com/privacy-and-security/security-tips#external-storage "Android Security Guidelines"). Android also provides a [guide](https://developer.android.com/privacy-and-security/security-best-practices#external-storage "Store data in external storage based on use case") on how to use external storage securely.
+
+#### Scoped Storage
+
+To give users more control over their files and to limit file clutter, apps that target Android 10 (API level 29) and higher are given scoped access into external storage, or [scoped storage](https://developer.android.com/training/data-storage#scoped-storage), by default. When scoped storage is enabled, apps cannot access the app-specific directories that belong to other apps.
+
+The Android developers documentation provides a detailed guide highlighting common [storage use cases and best practices](https://developer.android.com/training/data-storage/use-cases) differentiating between handling media and non-media files and considering scoped storage.
+
+**Opting out**: Apps targeting Android 10 (API level 29) or lower can [temporarily opt out of scoped storage](https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app) using `android:requestLegacyExternalStorage="true"` in their app manifest. Once the app targets Android 11 (API level 30), the system ignores the `requestLegacyExternalStorage` attribute when running on Android 11 devices.
+
+> [App attribution for media files (Android Developers)](https://developer.android.com/training/data-storage/shared/media#app-attribution):
+> When [scoped storage](https://developer.android.com/training/data-storage#scoped-storage) is enabled for an app that targets Android 10 or higher, the system attributes an app to each media file, which determines the files that your app can access when it hasn't requested any storage permissions. Each file can be attributed to only one app. Therefore, if your app creates a media file that's stored in the photos, videos, or audio files media collection, your app has access to the file.
+>
+> If the user uninstalls and reinstalls your app, however, you must request [READ_EXTERNAL_STORAGE](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE) to access the files that your app originally created. This permission request is required because the system considers the file to be attributed to the previously installed version of the app, rather than the newly installed one.
+
+For example, trying to access a file stored using the `MediaStore` API with a `content://` URI like `content://media/external_primary` would only work as long as the image _belongs_ to the invoking app (due to `owner_package_name` attribute in the `MediaStore`). If the app calls a `content://` URI that does not belong to the app, it will fail with a `SecurityException`:
+
+```sh
+Cannot open content uri: content://media/external_primary/images/media/1000000041
+java.lang.SecurityException: org.owasp.mastestapp has no access to content://media/external_primary/images/media/1000000041
 ```
 
-Example for Kotlin:
+You can validate this by querying the MediaStore via adb, for example:
+
+- `adb shell content query --uri content://media/external_primary/images/media`
+- `adb shell content query --uri content://media/external_primary/file`
+
+To be able to access the content, the app must have the necessary permissions e.g., `READ_EXTERNAL_STORAGE` before Android 10 API level 29, `READ_MEDIA_IMAGES` or `MANAGE_EXTERNAL_STORAGE` from Android 10 API level 29 onwards.
+
+> `READ_EXTERNAL_STORAGE` is deprecated (and is not granted) when targeting Android 13 (API level 33) and above. If you need to query or interact with MediaStore or media files on the shared storage, you should instead use one or more new storage permissions: `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO` or `READ_MEDIA_AUDIO`.
+>
+> Scoped storage is enforced starting on Android 10 (API level 29) (or Android 11 if using `requestLegacyExternalStorage`). In particular, `WRITE_EXTERNAL_STORAGE` will no longer provide write access to all files; it will provide the equivalent of `READ_EXTERNAL_STORAGE` instead.
+>
+> As of Android 13 (API level 33), if you need to query or interact with MediaStore or media files on the shared storage, you should be using instead one or more new storage permissions: `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO` or `READ_MEDIA_AUDIO`.
+
+After declaring the permission in the manifest you can grant it with adb:
+
+```sh
+adb shell pm grant org.owasp.mastestapp android.permission.READ_MEDIA_IMAGES
+```
+
+You can revoke the permission with:
+
+```sh
+adb shell pm revoke org.owasp.mastestapp android.permission.READ_MEDIA_IMAGES
+```
+
+#### External Storage APIs
+
+There are APIs such as [`getExternalStoragePublicDirectory`](https://developer.android.com/reference/kotlin/android/os/Environment#getExternalStoragePublicDirectory(kotlin.String)) that return paths to a shared location that other apps can access. An app may obtain a path to an "external" location and write sensitive data to it. This location is considered "Shared Storage Requiring No User Interaction", which means that a third-party app with proper permissions can read this sensitive data.
+
+For example, the following Kotlin snippet stores sensitive information in clear text to a file `password.txt` residing on external storage.
 
 ```kotlin
 val password = "SecretPassword"
@@ -299,10 +334,60 @@ val file = File(path, "password.txt")
 file.appendText(password)
 ```
 
-The file will be created and the data will be stored in a clear text file in external storage once the activity has been called.
+#### MediaStore API
 
-It's also worth knowing that files stored outside the application folder (`data/data/<package-name>/`) will not be deleted when the user uninstalls the application.
-Finally, it's worth noting that the external storage can be used by an attacker to allow for arbitrary control of the application in some cases. For more information: [see the blog post from Checkpoint](https://blog.checkpoint.com/2018/08/12/man-in-the-disk-a-new-attack-surface-for-android-apps/ "Man in the disk").
+The [`MediaStore` API](https://developer.android.com/training/data-storage/shared/media) provides a way for apps to interact with two types of files stored on the device:
+
+- media files including images (`MediaStore.Images`), videos (`MediaStore.Video`), audio (`MediaStore.Audio`) and downloads (`MediaStore.Downloads`), and
+- non-media files (e.g. text, HTML, PDF, etc.) stored in the `MediaStore.Files` collection.
+
+Using this API requires a `ContentResolver` object retrieved from the app's Context. See an example in the [Android Developers documentation](https://developer.android.com/training/data-storage/shared/media#media_store).
+
+**Apps running on Android 9 (API level 28) or lower:**
+
+- They can access the app-specific files that belong to other apps if they have opted out of scoped storage and requested the `READ_EXTERNAL_STORAGE` permission.
+- To modify the files, the app must also request the `WRITE_EXTERNAL_STORAGE` permission.
+
+**Apps running on Android 10 (API level 29) or higher:**
+
+- **Accessing own media files:**
+    - Apps can always [access their own media files](https://developer.android.com/training/data-storage/shared/media#storage-permission-not-always-needed) stored using the `MediaStore` API without needing any storage-related permissions. This includes files in the app-specific directories within external storage (scoped storage) and files in the MediaStore that the app created.
+
+- **Accessing other apps' media files:**
+    - Apps require certain permissions and APIs to [access media files that belong to other apps](https://developer.android.com/training/data-storage/shared/media#access-other-apps-files).
+    - If scoped storage is enabled, apps can't access the app-specific media files that belong to other apps. However, if scoped storage is disabled, apps can access the app-specific media files that belong to other apps using the `MediaStore.Files` query.
+
+- **Accessing downloads (`MediaStore.Downloads` collection):**
+    - To access downloads from other apps, the app must use the [Storage Access Framework](https://developer.android.com/training/data-storage/shared/documents-files).
+
+#### Manifest Permissions
+
+Android defines the following [permissions for accessing external storage](https://developer.android.com/training/data-storage#permissions): [`READ_EXTERNAL_STORAGE`](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE), [`WRITE_EXTERNAL_STORAGE`](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE) and [`MANAGE_EXTERNAL_STORAGE`](https://developer.android.com/reference/android/Manifest.permission#MANAGE_EXTERNAL_STORAGE).
+
+An app must declare in the Android Manifest file an intention to write to shared locations. Below you can find a list of such manifest permissions:
+
+- [`READ_EXTERNAL_STORAGE`](https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE): allows an app to read from external storage.
+    - **Before Android 4.4 (API level 19)**, this permission is not enforced and all apps have access to read the entire external storage (including files from other apps).
+    - **Starting on Android 4.4 (API level 19)**, apps don't need to request this permission to access their own app-specific directories within external storage.
+    - **Starting on Android 10 (API level 29)**, [scoped storage](https://developer.android.com/training/data-storage#scoped-storage) applies by default:
+        - Apps **cannot read the app-specific directories that belong to other apps** (which was possible before when having `READ_EXTERNAL_STORAGE` granted).
+        - Apps don't need to have this permission to read files from their own app-specific directories within external storage (scoped storage), or their own files in the MediaStore.
+    - **Starting on Android 13 (API level 33)**, this permission **has no effect**. If needing to access media files from other apps, apps must request one or more of these permissions: `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO`, or `READ_MEDIA_AUDIO`.
+
+- [`WRITE_EXTERNAL_STORAGE`](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE): allows an app to write a file to the "external storage", regardless of the actual storage origin (external disk or internally emulated by the system).  
+    - **Starting on Android 4.4 (API level 19)**, apps don't need to request this permission to access their own app-specific directories within external storage.
+    - **Starting on Android 10 (API level 29)**, [scoped storage](https://developer.android.com/training/data-storage#scoped-storage) applies by default:
+        - Apps **cannot write to the app-specific directories that belong to other apps** (which was possible before when having `WRITE_EXTERNAL_STORAGE` granted).
+        - Apps don't need this permission to write files in their own app-specific directories within external storage.
+    - **Starting on Android 11 (API level 30)**, this permission is **deprecated and has no effect**, but can be preserved with [requestLegacyExternalStorage](https://developer.android.com/reference/android/R.attr#requestLegacyExternalStorage) and [preserveLegacyExternalStorage](https://developer.android.com/reference/android/R.attr#preserveLegacyExternalStorage).
+
+- [`MANAGE_EXTERNAL_STORAGE`](https://developer.android.com/reference/android/Manifest.permission#MANAGE_EXTERNAL_STORAGE): Some apps require [broad access to all files](https://developer.android.com/training/data-storage/manage-all-files).
+    - This permission only applies to apps targeting Android 11.0 (API level 30) or higher.
+    - Usage of this permission is **restricted by Google Play** unless the app satisfies [certain requirements](https://support.google.com/googleplay/android-developer/answer/10467955) and requires **special app access** called ["All files access"](https://developer.android.com/preview/privacy/storage#all-files-access).
+    - Scoped storage doesn't affect the app's ability to access app-specific directories when having this permission.
+
+- [`READ_MEDIA_IMAGES`](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_IMAGES), [`READ_MEDIA_VIDEO`](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_VIDEO) and [`READ_MEDIA_AUDIO`](https://developer.android.com/reference/android/Manifest.permission#READ_MEDIA_AUDIO): allow an app to read media files from the `MediaStore` collection.
+    - **Starting on Android 13 (API level 33)**, since `READ_EXTERNAL_STORAGE` **has no effect**, these permissions are required to access media files from the `MediaStore.Images`, `MediaStore.Video`, and `MediaStore.Audio` collections respectively.
 
 ### KeyStore
 
@@ -316,7 +401,7 @@ You can use stored keys in one of two modes:
 
 2. Users are authorized to use a specific cryptographic operation that is associated with one key. In this mode, users must request a separate authorization for each operation that involves the key. Currently, fingerprint authentication is the only way to request such authorization.
 
-The level of security afforded by the Android KeyStore depends on its implementation, which depends on the device. Most modern devices offer a [hardware-backed KeyStore implementation](0x05d-Testing-Data-Storage.md#hardware-backed-android-keyStore): keys are generated and used in a Trusted Execution Environment (TEE) or a Secure Element (SE), and the operating system can't access them directly. This means that the encryption keys themselves can't be easily retrieved, even from a rooted device. You can verify hardware-backed keys with [Key Attestation](0x05d-Testing-Data-Storage.md#key-attestation). You can determine whether the keys are inside the secure hardware by checking the return value of the `isInsideSecureHardware` method, which is part of the [`KeyInfo` class](https://developer.android.com/reference/android/security/keystore/KeyInfo.html "Class KeyInfo").
+The level of security afforded by the Android KeyStore depends on its implementation, which depends on the device. Most modern devices offer a [hardware-backed KeyStore implementation](#hardware-backed-android-keystore): keys are generated and used in a Trusted Execution Environment (TEE) or a Secure Element (SE), and the operating system can't access them directly. This means that the encryption keys themselves can't be easily retrieved, even from a rooted device. You can verify hardware-backed keys with [Key Attestation](#key-attestation). You can determine whether the keys are inside the secure hardware by checking the return value of the `isInsideSecureHardware` method, which is part of the [`KeyInfo` class](https://developer.android.com/reference/android/security/keystore/KeyInfo.html "Class KeyInfo").
 
 >Note that the relevant KeyInfo indicates that secret keys and HMAC keys are insecurely stored on several devices despite private keys being correctly stored on the secure hardware.
 
@@ -378,7 +463,7 @@ In the above JSON snippet, the keys have the following meaning:
 
 > Note: The `sig` is generated by concatenating `authData` and `clientDataHash` (challenge sent by the server) and signing through the credential private key using the `alg` signing algorithm. The same is verified at the server-side by using the public key in the first certificate.
 
-For more understanding on the implementation guidelines, you can refer to [Google Sample Code](https://github.com/googlesamples/android-key-attestation/blob/master/server/src/main/java/com/android/example/KeyAttestationExample.java "Google Sample Code For Android Key Attestation").
+For more understanding on the implementation guidelines, you can refer to [Google Sample Code](https://github.com/google/android-key-attestation/blob/master/src/main/java/com/android/example/KeyAttestationExample.java "Google Sample Code For Android Key Attestation").
 
 For the security analysis perspective, the analysts may perform the following checks for the secure implementation of Key Attestation:
 
@@ -445,7 +530,7 @@ Storing a Key - from most secure to least secure:
 
 #### Storing Keys Using Hardware-backed Android KeyStore
 
-You can use the [hardware-backed Android KeyStore](0x05d-Testing-Data-Storage.md#hardware-backed-android-keystore) if the device is running Android 7.0 (API level 24) and above with available hardware component (Trusted Execution Environment (TEE) or a Secure Element (SE)). You can even verify that the keys are hardware-backed by using the guidelines provided for [the secure implementation of Key Attestation](0x05d-Testing-Data-Storage.md#key-attestation). If a hardware component is not available and/or support for Android 6.0 (API level 23) and below is required, then you might want to store your keys on a remote server and make them available after authentication.
+You can use the [hardware-backed Android KeyStore](#hardware-backed-android-keystore) if the device is running Android 7.0 (API level 24) and above with available hardware component (Trusted Execution Environment (TEE) or a Secure Element (SE)). You can even verify that the keys are hardware-backed by using the guidelines provided for [the secure implementation of Key Attestation](#key-attestation). If a hardware component is not available and/or support for Android 6.0 (API level 23) and below is required, then you might want to store your keys on a remote server and make them available after authentication.
 
 #### Storing Keys on the Server
 

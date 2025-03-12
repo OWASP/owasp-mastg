@@ -48,15 +48,15 @@ In Objective-C, developers can use preprocessor macros to filter out debug code:
 
 In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D". So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
 
-```default
-#if MSTG-DEBUG
+```objectivec
+#if MSTG_DEBUG
     // Debug-only code
 #endif
 ```
 
 In Swift 3 (with Xcode 8), you can set Active Compilation Conditions in Build settings/Swift compiler - Custom flags. Instead of a preprocessor, Swift 3 uses [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the defined conditions:
 
-```default
+```objectivec
 #if DEBUG_LOGGING
     // Debug-only code
 #endif

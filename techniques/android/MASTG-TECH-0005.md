@@ -23,8 +23,8 @@ adb -e install ./myApp.apk
 # List all devices
 adb devices
 List of devices attached
-37081JEHN05882	device
-emulator-5554	device
+37081JEHN05882  device
+emulator-5554   device
 
 # Connect to a specific device
 adb -s 37081JEHN05882 install ./myApp.apk
@@ -63,8 +63,8 @@ To install an APK into a specific profile, the APK first has to be pushed to the
 # Get an overview of available profiles
 adb shell pm list users
 Users:
-	UserInfo{0:Owner:c13} running
-	UserInfo{11:Sample Managed Profile:1030} running
+    UserInfo{0:Owner:c13} running
+    UserInfo{11:Sample Managed Profile:1030} running
 
 # Push to /data/local/tmp/
 adb push ./myApp.apk /data/local/tmp/

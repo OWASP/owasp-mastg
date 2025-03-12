@@ -56,20 +56,9 @@ body:
       description: Which Donator Package would you like to request?
       options:
         - Standard Donation / No package (Donation < USD 500)
-        - Good Samaritan (USD 500; 1 year;  1 paperback MASTG)
-        - Honourable Benefactor (USD 2000 / 8 Available; 2 years; 3 paperback MASTGs)
-        - God Mode Donator (USD 4000 / 5 Available; 3 years; 5 paperback MASTGs)
-    validations:
-      required: true
-
-  - type: dropdown
-    id: paperback
-    attributes:
-      label: 📘 MASTG Paperback Copies
-      description: Would you like to receive the paperback copies of the MASTG as indicated in your Donation Package?
-      options:
-        - 🌱 No, please save the money for the project and help the environment and climate.
-        - 📮 Yes, please send them to me.
+        - Good Samaritan (USD 500; 1 year)
+        - Honourable Benefactor (USD 2000 / 8 Available; 2 years)
+        - God Mode Donator (USD 4000 / 5 Available; 3 years)
     validations:
       required: true
       

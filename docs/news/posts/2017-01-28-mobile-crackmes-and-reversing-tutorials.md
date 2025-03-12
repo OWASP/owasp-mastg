@@ -6,7 +6,7 @@ authors: [sven]
 
 A key goal of the OWASP Mobile Testing Project is to build the ultimate learning resource and reference guide for mobile app reversers. As hands-on hacking is by far the best way to learn, we'd like to link most of the content to practical examples.
 
-Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes) to the [GitHub repo](https://github.com/OWASP/owasp-mastg) that will then be used as examples throughout the guide. The goal is to collect enough resources for demonstrating the most important tools and techniques in our guide, plus additional crackmes for practicing. 
+Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes) to the [GitHub repo](https://github.com/OWASP/owasp-mastg) that will then be used as examples throughout the guide. The goal is to collect enough resources for demonstrating the most important tools and techniques in our guide, plus additional crackmes for practicing.
 
 <!-- more -->
 

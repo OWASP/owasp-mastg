@@ -14,7 +14,7 @@ masvs_v1_levels:
 
 ## Static Analysis
 
-Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://saschafahl.de/static/paper/androidssl2012.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
+Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://saschafahl.de/static/paper/androidssl2012.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [Machine-in-the-Middle (MITM)](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks. See ["CWE-295: Improper Certificate Validation"](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
 
 Two key issues should be addressed:
 
@@ -29,7 +29,7 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 Applications targeting Android 7.0 (API level 24) or higher will use a **default Network Security Configuration that doesn't trust any user supplied CAs**, reducing the possibility of MITM attacks by luring users to install malicious CAs.
 
-[Decode the app using apktool](../../../Document/0x05b-Android-Security-Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal to or higher than `24`.
+Decode the app using apktool (@MASTG-TECH-0007) and verify that the `targetSdkVersion` in apktool.yml is equal to or higher than `24`.
 
 ```txt
 grep targetSdkVersion UnCrackable-Level3/apktool.yml

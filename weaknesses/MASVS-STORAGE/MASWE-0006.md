@@ -8,8 +8,7 @@ mappings:
   masvs-v1: [MSTG-STORAGE-2]
   masvs-v2: [MASVS-STORAGE-1, MASVS-CRYPTO-2]
   mastg-v1: [MASTG-TEST-0052, MASTG-TEST-0001]
-  cwe: [311]
-  android: https://developer.android.com/privacy-and-security/risks/backup-leaks#risk:-storing-sensitive-data-unencrypted
+  cwe: [312, 313, 922]
 refs:
   - https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/encrypting_your_app_s_files
 status: new
@@ -19,7 +18,7 @@ status: new
 
 Mobile apps may need to store sensitive data locally within private storage locations such as the application sandbox and this data is at risk of exposure via, for example, incorrect file permissions, an app vulnerability, device vulnerability or data backup mechanisms.
 
-[Sensitive data](/MASTG/General/0x04b-Mobile-App-Security-Testing#identifying-sensitive-data "Sensitive Data") may include personally identifiable information (PII), passwords, cryptographic keys or session tokens.
+[Sensitive data](../../Document/0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Sensitive Data") may include personally identifiable information (PII), passwords, cryptographic keys or session tokens.
 
 ## Impact
 

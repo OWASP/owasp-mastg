@@ -7,13 +7,16 @@ platform: ios
 title: Making Sure that the App Is Properly Signed
 masvs_v1_levels:
 - R
+covered_by: [MASTG-TEST-0220]
+status: deprecated
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
 
 ## Static Analysis
 
-You have to ensure that the app is [using the latest code signature format](https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format). You can retrieve the signing certificate information from the application's .app file with [codesign](../../../tools/ios/MASTG-TOOL-0101.md "codesign"). Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
+You have to ensure that the app is [using the latest code signature format](https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format). You can retrieve the signing certificate information from the application's .app file with @MASTG-TOOL-0114. Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
 
 After you get the application's IPA file, re-save it as a ZIP file and decompress the ZIP file. Navigate to the Payload directory, where the application's .app file will be.
 

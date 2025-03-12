@@ -28,7 +28,7 @@ There are two categories of libraries:
 
 These libraries can lead to unwanted side-effects:
 
-- A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to execute man-in-the-middle attacks against apps that are using the library to connect to their APIs.
+- A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to execute [Machine-in-the-Middle (MITM)](0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks against apps that are using the library to connect to their APIs.
 - A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
 
@@ -51,7 +51,7 @@ Detecting the presence of [binary protection mechanisms](0x04h-Testing-Code-Qual
 Although Xcode enables all binary security features by default, it may be relevant to verify this for old applications or to check for compiler flag misconfigurations. The following features are applicable:
 
 - [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
-    - PIE applies to executable binaries (Mach-O type `MH_EXECUTE`).
+    - PIE applies to executable binaries (Mach-O type `MH_EXECUTE`) [source](https://web.archive.org/web/20230328221404/https://opensource.apple.com/source/cctools/cctools-921/include/mach-o/loader.h.auto.html).
     - However it's not applicable for libraries (Mach-O type `MH_DYLIB`).
 - [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
     - Both pure Objective-C, Swift and hybrid binaries should have ARC (Automatic Reference Counting) enabled.
@@ -97,7 +97,7 @@ See the [Technical Q&A QA1788 Building a Position Independent Executable](https:
 
 ### Debuggable Apps
 
-Apps can be made [debuggable](../techniques/android/MASTG-TECH-0031.md) by adding the [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key to the app entitlements file and setting it to `true`.
+Apps can be made debuggable (@MASTG-TECH-0031) by adding the [`get-task-allow`](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues "Resolving common notarization issues") key to the app entitlements file and setting it to `true`.
 
 While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program. To do that you need to determine the mode in which your app is to be generated to check the flags in the environment:
 

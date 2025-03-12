@@ -8,11 +8,14 @@ platform: ios
 title: Testing Local Authentication
 masvs_v1_levels:
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0246, MASTG-TEST-0248]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
 
-The usage of frameworks in an app can be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using [otool](../../../Document/0x08a-Testing-Tools.md#otool):
+The usage of frameworks in an app can be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using @MASTG-TOOL-0060:
 
 ```bash
 otool -L <AppName>.app/<AppName>

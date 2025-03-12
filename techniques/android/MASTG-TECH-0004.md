@@ -13,4 +13,4 @@ objection patchapk --source app-release.apk
 
 The patched application then needs to be installed using adb.
 
-> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["Repackaging & Re-Signing"](../../techniques/android/MASTG-TECH-0039.md "Repackaging & Re-Signing").
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to @MASTG-TECH-0039.

@@ -40,7 +40,7 @@ Here's an example from Telegram's `.entitlements` file:
 
 More detailed information can be found in the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12-SW2 "Preparing Your App to Handle Universal Links").
 
-If you don't have the original source code you can still search for them, as explained in "Entitlements Embedded in the Compiled App Binary".
+If you don't have the original source code you can extract them from the MachO file as explained in @MASTG-TECH-0111.
 
 ### Retrieving the Apple App Site Association File
 
@@ -103,7 +103,7 @@ From the note above we can highlight that:
 - The mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above.
 - The scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this.
 
-If you don't have the original source code you can use radare2 or rabin2 to search the binary strings for the link receiver method:
+If you don't have the original source code you can use @MASTG-TOOL-0073 or @MASTG-TOOL-0129 to search the binary strings for the link receiver method:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep restorationHan
@@ -203,7 +203,7 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep openURL
 0x1000df772 35 34 openURL:options:completionHandler:
 ```
 
-As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to "[Identifying and Hooking the URL Handler Method](../MASVS-PLATFORM/MASTG-TEST-0075.md#identifying-and-hooking-the-url-handler-method "Identifying and Hooking the URL Handler Method")" for some examples on hooking and tracing this method.
+As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to @MASTG-TEST-0075 for some examples on hooking and tracing this method.
 
 ## Dynamic Analysis
 
@@ -232,7 +232,7 @@ Unlike custom URL schemes, unfortunately you cannot test universal links from Sa
 
 > To do it from Safari you will have to find an existing link on a website that once clicked, it will be recognized as a Universal Link. This can be a bit time consuming.
 
-Alternatively you can also use Frida for this, see the section "[Performing URL Requests](../MASVS-PLATFORM/MASTG-TEST-0075.md#performing-url-requests)" for more details.
+Alternatively you can also use Frida for this, see @MASTG-TEST-0075 for more details.
 
 ### Identifying Valid Universal Links
 
@@ -473,7 +473,7 @@ You can now keep going and try to trace and verify how the data is being validat
 
 In some cases, you might find data in `userInfo` of the `NSUserActivity` object. In the previous case there was no data being transferred but it might be the case for other scenarios. To see this, be sure to hook the `userInfo` property or access it directly from the `continueUserActivity` object in your hook (e.g. by adding a line like this `log("userInfo:" + ObjC.Object(args[3]).userInfo().toString());`).
 
-##### Final Notes about Universal Links and Handoff
+### Final Notes about Universal Links and Handoff
 
 Universal links and Apple's [Handoff feature](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html#//apple_ref/doc/uid/TP40014338 "Handoff Fundamentals: About Handoff") are related:
 

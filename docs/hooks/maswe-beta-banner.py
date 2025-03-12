@@ -3,27 +3,31 @@ import yaml
 import mkdocs.plugins
 import glob
 from collections import defaultdict
+import github_api
 
 log = logging.getLogger('mkdocs')
 
 def get_v1_tests_data():
 
     masvs_v1_tests_metadata = {}
-
     # Each test has an ID which is the filename
-    for file in glob.glob("tests/**/*.md", recursive=True):
-        with open(file, 'r') as f:
-            content = f.read()
-            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-            # masvs category is frontmatter['masvs_v2_id'][0] without the final number. Example: MASVS-STORAGE-2 -> MASVS-STORAGE
-            masvs_category = frontmatter['masvs_v2_id'][0][:-2]
-            platform = frontmatter['platform']
-            # get id from filename without extension
-            id = file.split('/')[-1].split('.')[0]
-            link = f"https://mas.owasp.org/MASTG/tests/{platform}/{masvs_category}/{id}/"
-            frontmatter['link'] = link
-            
-            masvs_v1_tests_metadata[id] = frontmatter
+    for file in glob.glob("./tests/**/*.md", recursive=True):
+        if "index.md" not in file:
+            try:
+                with open(file, 'r') as f:
+                    content = f.read()
+                    frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+                    # masvs category is frontmatter['masvs_v2_id'][0] without the final number. Example: MASVS-STORAGE-2 -> MASVS-STORAGE
+                    masvs_category = frontmatter['masvs_v2_id'][0][:-2]
+                    platform = frontmatter['platform']
+                    # get id from filename without extension
+                    id = file.split('/')[-1].split('.')[0]
+                    link = f"https://mas.owasp.org/MASTG/tests/{platform}/{masvs_category}/{id}/"
+                    frontmatter['link'] = link
+                    
+                    masvs_v1_tests_metadata[id] = frontmatter
+            except:
+                log.warn("No frontmatter in " + file)
 
     # Populate the defaultdict with MASVS v1 IDs and corresponding MASTG-TEST IDs
     masvs_v1_mapping = defaultdict(list)
@@ -60,7 +64,7 @@ def get_mastg_v1_coverage(meta):
             mastg_v1_tests = "    No MASTG v1 tests are related to this weakness."
     return mastg_v1_tests
 
-def get_info_banner(meta):
+def get_maswe_draft_banner(meta):
 
     id = meta.get('id')
 
@@ -85,13 +89,13 @@ def get_info_banner(meta):
     
     mastg_v1_tests = get_mastg_v1_coverage(meta)
 
-    info_banner = f"""
+    banner = f"""
 !!! warning "Draft Weakness"
 
     This weakness hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that weakness by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?usp=sharing).
 
-    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
     
     ## Initial Description or Hints
 
@@ -105,7 +109,108 @@ def get_info_banner(meta):
 
 {mastg_v1_tests}
 """
-    return info_banner
+    return banner
+
+def get_tests_draft_banner(meta):
+    id = meta.get('id')
+    note = meta.get('note', None)
+    weakness = meta.get('weakness', None)
+
+    banner = f"""
+!!! warning "Draft MASTG-TEST"
+
+    This test hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that test by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
+
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+
+    If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
+
+## Draft Description
+
+{note}
+
+For more details, check the associated weakness: @{weakness}
+
+"""
+    return banner
+
+def get_v1_deprecated_tests_banner(meta):
+    id = meta.get('id')
+    covered_by = meta.get('covered_by', [])
+    deprecation_note = meta.get('deprecation_note', "")
+    
+    if covered_by:
+        covered_by = "\n".join([f"    - @{test}" for test in covered_by])
+    else:
+        covered_by = "    No tests are covering this weakness."
+
+    banner = f"""
+!!! danger "Deprecated Test"
+
+    This test is **deprecated** and should not be used anymore. **Reason**: {deprecation_note}
+
+    Please check the following MASTG v2 tests that cover this v1 test:
+
+{covered_by}
+"""
+    return banner
+
+def get_android_demo_buttons(page):
+    id = page.meta.get('id')
+
+    page_uri = page.file.src_uri
+
+    artifacts_url = github_api.get_latest_successful_run("build-android-demos.yml")
+
+    demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
+    
+    banner = f"""
+<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
+<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
+<a href="https://github.com/cpholguera/MASTestApp-Android" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} APK</a>
+"""
+    return banner
+
+def get_ios_demo_buttons(page):
+    id = page.meta.get('id')
+
+    page_uri = page.file.src_uri
+
+    artifacts_url = github_api.get_latest_successful_run("build-ios-demos.yml")
+
+    demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
+
+    banner = f"""
+<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
+<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
+<a href="https://github.com/cpholguera/MASTestApp-iOS" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} IPA</a>
+"""
+    return banner
+
+def get_demos_draft_banner(meta):
+    id = meta.get('id')
+    note = meta.get('note', None)
+    test = meta.get('test', None)
+
+    banner = f"""
+!!! warning "Draft MASTG-DEMO"
+
+    This demo hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that demo by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
+
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+
+    If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
+
+## Draft Description
+
+{note}
+
+For more details, check the associated test: @{test}
+
+"""
+    return banner
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-50)
@@ -114,11 +219,26 @@ def on_page_markdown(markdown, page, **kwargs):
 
     banners = []
 
-    if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/"]):
+    if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/", "MASTG/best-practices/"]):
         banners.append(beta_banner)
     
     if "MASWE/" in path and page.meta.get('status') == 'draft':
-        banners.append(get_info_banner(page.meta))
+        banners.append(get_maswe_draft_banner(page.meta))
+
+    if "MASTG/tests-beta/" in path and page.meta.get('status') == 'draft':
+        banners.append(get_tests_draft_banner(page.meta))
+
+    if "MASTG/tests/" in path and page.meta.get('status') == 'deprecated':
+        banners.append(get_v1_deprecated_tests_banner(page.meta))
+
+    if "MASTG/demos/android/" in path and not page.meta.get('status') == 'draft':
+        banners.append(get_android_demo_buttons(page))
+    
+    if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'draft':
+        banners.append(get_ios_demo_buttons(page))
+
+    if "MASTG/demos/" in path and page.meta.get('status') == 'draft':
+        banners.append(get_demos_draft_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown

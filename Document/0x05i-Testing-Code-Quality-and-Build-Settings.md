@@ -24,7 +24,7 @@ Three APK signing schemes are available:
 - APK Signature Scheme v3 (v3 scheme).
 
 The v2 signature, which is supported by Android 7.0 (API level 24) and above, offers improved security and performance compared to v1 scheme.
-The V3 signature, which is supported by Android 9 (API level 28) and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used. Note that it is only available via apksigner at the time of writing.
+The V3 signature, which is supported by Android 9 (API level 28) and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used. Note that it is only available via @MASTG-TOOL-0123 at the time of writing.
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
@@ -55,9 +55,9 @@ Detecting the presence of [binary protection mechanisms](0x04h-Testing-Code-Qual
 
 In general all binaries should be tested, which includes both the main app executable as well as all libraries/dependencies. However, on Android we will focus on native libraries since the main executables are considered safe as we will see next.
 
-Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Android-Security-Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
+Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This Android compiled binary (see "Compiled App Binary" in @MASTG-TECH-0007) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
 
-The app's [NDK native libraries](0x05b-Android-Security-Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
+The app's NDK native libraries (see "Native Libraries" in @MASTG-TECH-0007) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
 
 - [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
     - Since Android 7.0 (API level 24), PIC compilation is [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.

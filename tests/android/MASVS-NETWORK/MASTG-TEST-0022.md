@@ -7,6 +7,9 @@ platform: android
 title: Testing Custom Certificate Stores and Certificate Pinning
 masvs_v1_levels:
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0242, MASTG-TEST-0243, MASTG-TEST-0244]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
@@ -17,7 +20,7 @@ masvs_v1_levels:
 
 Inspect the Network Security Configuration looking for any `<pin-set>` elements. Check their `expiration` date, if any. If expired, certificate pinning will be disabled for the affected domains.
 
-> **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](../../../Document/0x05b-Android-Security-Testing.md#monitoring-system-logs):
+> **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the system logs (see @MASTG-TECH-0009):
 
 ```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
@@ -162,7 +165,7 @@ Hybrid applications based on Cordova do not support Certificate Pinning natively
    function errorCallback(message) {
      alert(message);
      if (message === "CONNECTION_NOT_SECURE") {
-       // There is likely a man in the middle attack going on, be careful!
+       // There is likely a MITM attack going on, be careful!
      } else if (message.indexOf("CONNECTION_FAILED") >- 1) {
        // There was no connection (yet). Internet may be down. Try again (a few times) after a little timeout.
      }
@@ -173,9 +176,9 @@ After decompressing the APK file, Cordova/Phonegap files will be located in the 
 
 ## Dynamic Analysis
 
-Follow the instructions from ["Testing Endpoint Identify Verification > Dynamic Analysis"](../MASVS-NETWORK/MASTG-TEST-0021.md). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
+Follow the instructions from @MASTG-TEST-0021. If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
 
-As a quick smoke test, you can try to bypass certificate pinning using [objection](../../../Document/0x08a-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](../../../Document/0x05b-Android-Security-Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
+As a quick smoke test, you can try to bypass certificate pinning using @MASTG-TOOL-0038 as described in @MASTG-TECH-0012. Pinning related APIs being hooked by objection should appear in objection's output.
 
 <img src="Images/Chapters/0x05b/android_ssl_pinning_bypass.png" width="600px"/>
 
