@@ -1,5 +1,5 @@
 ---
-title: Improper use of Message Authentication Code (MAC)
+title: Improper Use of Message Authentication Code (MAC)
 id: MASWE-0024
 alias: weak-mac
 platform: [android, ios]
