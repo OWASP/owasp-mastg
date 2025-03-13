@@ -29,7 +29,7 @@ The digest (or hash) of an improper implemented- or used hash function may allow
 ## Impact
 
 - **Risk of Brute-Force Attacks**: Improper key generation, whether due to shorter key length or predictable random number generator (PRNG) inputs, increases the risk of brute-force attacks. Attackers can more easily guess or systematically try possible keys until they find the correct one.
-- **Loss of  Confidentiality**: Encryption relies on strong keys to maintain the confidentiality of sensitive data. Weak seed values can allow attackers to decrypt and access confidential information, leading to unauthorized disclosure and potential data breaches.
+- **Loss of Confidentiality**: Encryption relies on strong keys to maintain the confidentiality of sensitive data. Weak seed values can allow attackers to decrypt and access confidential information, leading to unauthorized disclosure and potential data breaches.
 - **Loss of Integrity**: Improper key generation can compromise data integrity, allowing attackers to exploit vulnerabilities and potentially alter or tamper with the information without detection.
 
 ## Modes of Introduction
