@@ -36,8 +36,8 @@ Another common issue is using HKDF for key derivation with any type of integrity
 ## Impact
 
 - **Loss of Integrity and authenticity**: A deprecated, risky or broken hashing algorithm, may allow an attacker to compromise the integrity and authenticity of data at rest and in transit.
-- **Loss of Confidentiality**: A  deprecated, risky or broken hashing algorithm may expose the preimage (input) and in so doing break the confidentiality.
-- **Risk of Brute-Force Attacks**: A  deprecated, risky or broken hashing is susceptible to brute-force attacks.
+- **Loss of Confidentiality**: A deprecated, risky or broken hashing algorithm may expose the preimage (input) and in so doing break the confidentiality.
+- **Risk of Brute-Force Attacks**: A deprecated, risky or broken hashing is susceptible to brute-force attacks.
 
 ## Modes of Introduction
 

@@ -25,7 +25,7 @@ status: draft
 Improper Key derivation functions will generate a key using a scheme or iteration count that does not provide a sufficient level of computational effort. This can open up the possibility for brute force password/secret cracking or dictionary attacks.
 In cases where a user-supplied password or pin is used without a sufficiently random salt the resulting output will be identical or similar enough to allow an attacker to execute a brute force attack to find the original password/pin using the KDF as an "oracle".
 A similar issue happens when the salt is user-supplied. Consider a mobile app that generates user keys from a master key on demand during installation. Let's say that a key used in the mobile app is derived from this master key using the username or other user supplied value as salt. Such an implementation can make it possible for an attacker to retrieve the derived key by using the username or supplied user value as input.
-Another common issue is using HKDF or any other type of integrity based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HKDF aren't design for low-entropy inputs. Therefore password crackers can fairly efficiently crack massive amounts of passwords for KDFs that aren’t purposefully designed to be slow and memory-intensive. A similar issue happens when using deprecated, risky or broken KDF- or password hashing algorithms known to the vulnerable for various types of attacks.
+Another common issue is using HKDF or any other type of integrity based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HKDF aren't design for low-entropy inputs. Therefore password crackers can fairly efficiently crack massive amounts of passwords for KDFs that aren't purposefully designed to be slow and memory-intensive. A similar issue happens when using deprecated, risky or broken KDF- or password hashing algorithms known to the vulnerable for various types of attacks.
 Also, cryptographic algorithms (such as symmetric encryption or some MACs) expect a secret input of a given size. For example, AES uses a key of exactly 16 bytes. A native implementation might use the user-supplied password directly as an input key. Using a user-supplied password or pin as an input key has the following problems:
 
 - If the password is smaller than the key, the full key space isn't used. The remaining space is padded (spaces are sometimes used for padding).
@@ -34,7 +34,7 @@ Also, cryptographic algorithms (such as symmetric encryption or some MACs) expec
 ## Impact
 
 - **Risk of Brute-Force Attacks**: Improper Key derivation functions open up for brute force password- and secret cracking, key or dictionary attacks such as rainbow tables.
-- **Loss of  Confidentiality**: Improper Key derivation may allow an attacker to guess or find the input and therefore steal the user's password or cryptographic key.
+- **Loss of Confidentiality**: Improper Key derivation may allow an attacker to guess or find the input and therefore steal the user's password or cryptographic key.
 - **Loss of Integrity**: Given that the attacker has access to the user's password or cryptographic key, the overall security of the app and mobile phone may be compromised.
 
 ## Modes of Introduction
