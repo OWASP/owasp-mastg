@@ -1,0 +1,130 @@
+name: Check Duplicate File IDs
+
+on:
+  pull_request:
+    paths:
+      - 'apps/**'
+      - 'best-practices/**'
+      - 'demos/**'
+      - 'tests-beta/**'
+      - 'tools/**'
+      - 'techniques/**'
+      - 'weaknesses/**'
+
+jobs:
+  check-duplicates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Get new files in PR
+        id: get-new-files
+        run: |
+          # Get the base branch ref from the PR event
+          BASE_REF="${{ github.event.pull_request.base.ref }}"
+          echo "Base branch is: $BASE_REF"
+          
+          # Fetch the base branch to ensure it's available locally
+          git fetch origin $BASE_REF
+          
+          # Create a file with the list of new files in this PR
+          git diff --name-status --diff-filter=A origin/$BASE_REF..HEAD | grep -E "^A\s+(apps/|best-practices/|demos/|tests-beta/|tools/|techniques/|weaknesses/)" | cut -f2 > new_files_in_pr.txt || echo "No new files matching the pattern"
+          
+          echo "New files in PR:"
+          cat new_files_in_pr.txt
+          
+          # Ensure the file exists even if empty
+          touch new_files_in_pr.txt
+          
+      - name: Check for duplicate file IDs
+        id: check-duplicates
+        run: |
+          python .github/scripts/check_duplicate_ids.py
+          
+      - name: Delete previous comments and comment on PR if duplicates found
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Get all review comments on the PR
+            const comments = await github.rest.pulls.listReviewComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            // Filter for comments that are likely from this action
+            // The identifier is the header "### ⚠️ Duplicate" which is unique to our action
+            const ourComments = comments.data.filter(comment => 
+              comment.body.includes('### ⚠️ Duplicate') && 
+              comment.body.includes('ID Detected')
+            );
+            
+            console.log(`Found ${ourComments.length} previous comments from this action.`);
+            
+            // Delete the comments
+            for (const comment of ourComments) {
+              console.log(`Deleting comment ID ${comment.id}`);
+              await github.rest.pulls.deleteReviewComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: comment.id
+              });
+            }
+            
+            // Check if we have new duplicates to report
+            const hasDuplicatesOutput = '${{ steps.check-duplicates.outputs.has_duplicates }}';
+            
+            if (hasDuplicatesOutput !== 'true') {
+              console.log('No duplicates found, no new comments to post.');
+              return;
+            }
+            
+            // Check if the duplicates file exists before trying to read it
+            const fs = require('fs');
+            if (!fs.existsSync('duplicate_files.json')) {
+              console.log('No duplicate_files.json found.');
+              return;
+            }
+            
+            const duplicatesData = JSON.parse(fs.readFileSync('duplicate_files.json', 'utf8'));
+            
+            // Add new comments for any duplicates
+            for (const duplicate of duplicatesData) {
+              // Extract the ID prefix for a more specific message
+              let idType = duplicate.file_id.split('-').slice(0, 2).join('-');
+              
+              // Special case for MASWE which only has one segment
+              if (duplicate.file_id.startsWith('MASWE')) {
+                idType = 'MASWE';
+              }
+              
+              const message = `
+              ### ⚠️ Duplicate \`${idType}\` ID Detected
+              
+              This file has the ID \`${duplicate.file_id}\` which already exists in \`${duplicate.existing_path}\`.
+              
+              **IMPORTANT:** Please use the next available ID: \`${duplicate.suggested_id}\`
+              `;
+              
+              await github.rest.pulls.createReviewComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                commit_id: context.payload.pull_request.head.sha,
+                path: duplicate.file_path,
+                body: message,
+                line: 1,
+                side: 'RIGHT'
+              });
+            }
