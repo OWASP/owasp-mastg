@@ -5,8 +5,8 @@
 └─────────────────┘
                            
     MastgTest_reversed.java
-    ❯❱ rules.weak-encryption-algorithms
-          [MASVS-CRYPTO-1] Weak encryption algorithms found in use.
+    ❯❱ rules.risky-encryption-algorithms
+          [MASVS-CRYPTO-1] Deprecated, risky or broken encryption algorithms found in use.
                                                                    
            39┆ Cipher cipher = Cipher.getInstance("DES");
             ⋮┆----------------------------------------
@@ -15,4 +15,3 @@
            81┆ Cipher cipher = Cipher.getInstance("RC4");
             ⋮┆----------------------------------------
           100┆ Cipher cipher = Cipher.getInstance("Blowfish");
-
