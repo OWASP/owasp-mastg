@@ -18,10 +18,9 @@ You can run `adb backup` to back up the app data. Approve the backup from your d
 
 {{ ../../utils/mastg-android-backup-adb.sh }}
 
-The extracted backup directory (`apps/`) is stored in the current working directory. For instructions on how to inspect it, see @MASTG-TECH-0127. 
+The extracted backup directory (`apps/`) is stored in the current working directory. For instructions on how to inspect it, see @MASTG-TECH-0127.
 
 **Note:** The behavior might differ between an emulator and a physical device.
-
 
 ## Using Android Backup Extractor
 
