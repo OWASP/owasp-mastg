@@ -31,9 +31,9 @@ The `run.sh` script does the following:
 
 1. Takes a snapshot of the app data before the backup.
 2. Runs the backup script, which:
-  -  backs up the app data.
-  -  uninstalls the app.
-  -  restores the app data.
+    - backs up the app data.
+    - uninstalls the app.
+    - restores the app data.
 3. Takes a snapshot of the app data after the restore.
 4. Retrieves the list of restored files from the device.
 
