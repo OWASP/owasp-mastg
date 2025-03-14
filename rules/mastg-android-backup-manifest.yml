@@ -1,0 +1,15 @@
+rules:
+  - id: android_manifest_backup
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      summary: This rule inspects the AndroidManifest.xml for backup-related configurations.
+      references:
+        - https://developer.android.com/guide/topics/data/autobackup
+    message: "[MASVS-STORAGE-2] Ensure that backup-related configurations are properly set."
+    pattern-either:
+      - pattern: 'android:allowBackup="false"'
+      - pattern: 'android:allowBackup="true"'
+      - pattern: 'android:fullBackupContent="@xml/backup_rules"'
+      - pattern: 'android:dataExtractionRules="@xml/data_extraction_rules"'

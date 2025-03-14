@@ -1,0 +1,2 @@
+[PASS] At least one secure setting is in place.
+  android:allowBackup: False

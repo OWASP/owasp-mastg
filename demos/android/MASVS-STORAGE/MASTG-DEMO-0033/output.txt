@@ -1,0 +1,2 @@
+profileInstalled
+secret.txt
