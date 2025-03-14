@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Uses of AutoBackup backup_rules.xml to Exclude Data From Backups
+title: Data Exclusion using backup_rules.xml with Backup Manager
 id: MASTG-DEMO-0020
 code: [kotlin]
 test: MASTG-TEST-0216
