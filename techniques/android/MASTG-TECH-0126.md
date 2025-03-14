@@ -3,7 +3,7 @@ title: Obtaining App Permissions from Android Applications
 platform: android 
 ---
 
-In Android applications, permissions are acquired through different methods to access information and system functionalities, including the camera, location, or storage. The necessary permissions are specified in the `AndroidManifest.xml` file with `<uses-permission>` tags.
+Android permissions are declared in the `AndroidManifest.xml` file using the `<uses-permission>` tag. You can use multiple tools to view them.
 
 ## Using the AndroidManifest
 
@@ -11,7 +11,7 @@ Extract the `AndroidManifest.xml` as explained in @MASTG-TECH-0117 and retrieve 
 
 ## Using @MASTG-TOOL-0124
 
-You can check the permissions of an APK file not only by manually reviewing the `AndroidManifest.xml` file but also by utilizing the Android Asset Packaging Tool (aapt), which is included in the build-tools folder of the Android SDK.
+`aapt` can be used to view the permissions requested by an application.
 
 ```bash
 $ aapt d permissions org.owasp.mastestapp.apk
@@ -27,7 +27,7 @@ uses-permission: name='org.owasp.mastestapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMIS
 
 ## Using @MASTG-TOOL-0004
 
-Android's built-in debugging tool, ADB (Android Debug Bridge), provides a way to view permissions directly from a device or emulator.
+`adb` can be used to view the permissions requested by an application. It also shows the status of the permissions (granted or denied) at runtime.
 
 ```bash
 $ adb shell dumpsys package org.owasp.mastestapp | grep permission
@@ -46,7 +46,3 @@ $ adb shell dumpsys package org.owasp.mastestapp | grep permission
         android.permission.WRITE_EXTERNAL_STORAGE: granted=false, flags=[ RESTRICTION_INSTALLER_EXEMPT]
         android.permission.READ_CONTACTS: granted=false
 ```
-
-Reference:
-
-- To get a list of [dangerous permissions](https://android.googlesource.com/platform/frameworks/base/%2B/master/core/res/AndroidManifest.xml#886) in `AndroidManifest.xml`, look for permissions that have the attribute `android:protectionLevel="dangerous"`.
