@@ -221,7 +221,7 @@ Some of the best practices include but are not limited to:
 
 - **User agent:**
     - The user should have a way to visually verify trust (e.g., Transport Layer Security (TLS) confirmation, website mechanisms).
-    - To prevent Machine-in-the-Middle (MITM) attacks, the client should validate the server's fully qualified domain name with the public key the server presented when the connection was established.
+    - To prevent [Machine-in-the-Middle (MITM)](0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks, the client should validate the server's fully qualified domain name with the public key the server presented when the connection was established.
 - **Type of grant:**
     - On native apps, code grant should be used instead of implicit grant.
     - When using code grant, PKCE (Proof Key for Code Exchange) should be implemented to protect the code grant. Make sure that the server also implements it.
@@ -304,7 +304,7 @@ Threats:
 You can find below several suggestions to reduce the likelihood of exploitation when using SMS for OTP:
 
 - **Messaging**: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code.
-- **Dedicated Channel**: When using the OS push notification feature (APN on iOS and FCM on Android), OTPs can be sent securely to a registered application. This information is, compared to SMS, not accessible by other applications. Alternatively of a OTP the push notification could trigger a pop-up to approve the requested access.  
+- **Dedicated Channel**: When using the OS push notification feature (APN on iOS and FCM on Android), OTPs can be sent securely to a registered application. This information is, compared to SMS, not accessible by other applications. Alternatively of a OTP the push notification could trigger a pop-up to approve the requested access.
 - **Entropy**: Use authenticators with high entropy to make OTPs harder to crack or guess and use at least 6 digits. Make sure that digits are separates in smaller groups in case people have to remember them to copy them to your app.
 - **Avoid Voicemail**: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail.
 

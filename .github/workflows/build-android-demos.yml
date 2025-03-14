@@ -24,13 +24,33 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: demos/android
+          fetch-depth: 2 # Required for git diff in PRs
 
       - name: Generate matrix
         id: set-matrix
         run: |
-          matrix="$(echo demos/android/*/MASTG-DEMO-* | sed 's/ /","/g')"
-          echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Get list of changed files in demos/android/ directory
+            changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD -- 'demos/android/*')
 
+            echo "Changed files:"
+            echo "$changed_files"
+
+            # Extract unique demo directories
+            matrix=$(echo "$changed_files" | grep -oE 'demos/android/[^/]*/MASTG-DEMO-[^/]+' | sort -u | head -c -1 | tr '\n' ' ' | sed 's/ /","/g')
+
+            # If no changes, set empty matrix
+            if [ -z "$matrix" ]; then
+              echo "matrix={\"demo\":[]}" >> $GITHUB_OUTPUT
+            else
+              echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+            fi
+          else
+            # Default behavior: include all demos for master branch
+            matrix=$(echo demos/android/*/MASTG-DEMO-* | sed 's/ /","/g')
+            echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+          fi
+          echo "Print matrix: $matrix"
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"
 
@@ -135,9 +155,24 @@ jobs:
           cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt 2>/dev/null \
             && echo "Copied MastgTest.kt for $demo" \
             || echo "No MastgTest.kt found for $demo"
+          cp -f "$demo/MastgTestWebView.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTestWebView.kt 2>/dev/null \
+            && echo "Copied MastgTestWebView.kt for $demo" \
+            || echo "No MastgTestWebView.kt found for $demo"
           cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml 2>/dev/null \
             && echo "Copied AndroidManifest.xml for $demo" \
             || echo "No AndroidManifest.xml found for $demo"
+          cp -f "$demo/filepaths.xml" MASTestApp-Android/app/src/main/res/xml/filepaths.xml 2>/dev/null \
+            && echo "Copied filepaths.xml for $demo" \
+            || echo "No filepaths.xml found for $demo"
+          cp -f "$demo/network_security_config.xml" MASTestApp-Android/app/src/main/res/xml/network_security_config.xml 2>/dev/null \
+            && echo "Copied network_security_config.xml for $demo" \
+            || echo "No network_security_config.xml found for $demo"
+          cp -f "$demo/backup_rules.xml" MASTestApp-Android/app/src/main/res/xml/backup_rules.xml 2>/dev/null \
+            && echo "Copied backup_rules.xml for $demo" \
+            || echo "No backup_rules.xml found for $demo"
+          cp -f "$demo/data_extraction_rules.xml" MASTestApp-Android/app/src/main/res/xml/data_extraction_rules.xml 2>/dev/null \
+            && echo "Copied data_extraction_rules.xml for $demo" \
+            || echo "No data_extraction_rules.xml found for $demo"
           
           echo "Building APK for $demo"
           cd MASTestApp-Android

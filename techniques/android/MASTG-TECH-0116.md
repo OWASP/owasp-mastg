@@ -24,7 +24,7 @@ Number of signers: 1
 Additional information about the signature including fields from the signing certificate, digest and key information can be also examined with @MASTG-TOOL-0123:
 
 ```bash
-$ apksigner verify --print-certs --verbose example.apk      
+$ apksigner verify --print-certs --verbose example.apk
 [...]
 Signer #1 certificate DN: CN=Example Developers, OU=Android, O=Example
 Signer #1 certificate SHA-256 digest: 1fc4de52d0daa33a9c0e3d67217a77c895b46266ef020fad0d48216a6ad6cb70
