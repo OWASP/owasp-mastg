@@ -41,7 +41,7 @@ The `run.sh` script does the following:
 
 The output contains:
 
-- `ouput.txt`: the output of the `run.sh` script.
+- `output.txt`: the output of the `run.sh` script.
 - `output_before.txt`: the list of files before the backup.
 - `output_after.txt`: the list of files after the restore.
 - `restored_files/`: the directory containing the restored files.
