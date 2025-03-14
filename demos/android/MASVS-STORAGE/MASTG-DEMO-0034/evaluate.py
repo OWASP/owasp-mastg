@@ -13,7 +13,7 @@ def main():
     with open("output.txt", "r") as file:
         for line in file:
             for key in settings:
-                match = re.search(fr"{key}=(\"true\"|\"false\")", line, re.IGNORECASE)
+                match = re.search(fr"{key}=\"(true|false)\"", line, re.IGNORECASE)
                 if match:
                     settings[key] = match.group(1).lower() == "true"
 
