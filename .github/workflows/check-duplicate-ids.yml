@@ -50,7 +50,7 @@ jobs:
         run: |
           python .github/scripts/check_duplicate_ids.py
           
-      - name: Handle duplicate ID notifications
+      - name: Delete previous comments and comment on PR if duplicates found
         if: always()
         uses: actions/github-script@v6
         with:
