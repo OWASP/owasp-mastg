@@ -1,27 +1,47 @@
 --- 
-title: Performing a Backup and Restore of App Data
+title: Obtaining App Permissions
 platform: android 
 ---
 
-## Using the Backup Manager (via ADB shell)
+Android permissions are declared in the `AndroidManifest.xml` file using the `<uses-permission>` tag. You can use multiple tools to view them.
 
-Run [Backup Manager (`adb shell bmgr`)](https://developer.android.com/identity/data/testingbackup#TestingBackup)
+## Using the AndroidManifest
 
-{{ ../../utils/mastg-android-backup-bmgr.sh }}
+Extract the `AndroidManifest.xml` as explained in @MASTG-TECH-0117 and retrieve all [`<uses-permission>`](https://developer.android.com/guide/topics/manifest/uses-permission-element) elements.
 
-## Using ADB Backup
+## Using @MASTG-TOOL-0124
 
-!!! warning
-    `adb backup` is [restricted since Android 12](https://developer.android.com/about/versions/12/behavior-changes-12#adb-backup-restrictions) and requires `android:debuggable=true` in the AndroidManifest.xml.
+`aapt` can be used to view the permissions requested by an application.
 
-You can run `adb backup` to back up the app data. Approve the backup from your device by selecting the _Back up my data_ option. After the backup process is finished, the file _.ab_ will be in your working directory.
+```bash
+$ aapt d permissions org.owasp.mastestapp.apk
+package: org.owasp.mastestapp
+uses-permission: name='android.permission.INTERNET'
+uses-permission: name='android.permission.CAMERA'
+uses-permission: name='android.permission.WRITE_EXTERNAL_STORAGE'
+uses-permission: name='android.permission.READ_CONTACTS'
+uses-permission: name='android.permission.READ_EXTERNAL_STORAGE'
+uses-permission: name='org.owasp.mastestapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
+```
 
-{{ ../../utils/mastg-android-backup-adb.sh }}
+## Using @MASTG-TOOL-0004
 
-The extracted backup directory (`apps/`) is stored in the current working directory. For instructions on how to inspect it, see @MASTG-TECH-0127.
+`adb` can be used to view the permissions requested by an application. It also shows the status of the permissions (granted or denied) at runtime.
 
-**Note:** The behavior might differ between an emulator and a physical device.
-
-## Using Android Backup Extractor
-
-You can use [Android Backup Extractor](https://github.com/nelenkov/android-backup-extractor) to extract the backup data. For more information, refer to its GitHub repo.
+```bash
+$ adb shell dumpsys package org.owasp.mastestapp | grep permission
+    declared permissions:
+    requested permissions:
+      android.permission.INTERNET
+      android.permission.CAMERA
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.READ_CONTACTS
+      android.permission.READ_EXTERNAL_STORAGE
+    install permissions:
+      android.permission.INTERNET: granted=true
+      runtime permissions:
+        android.permission.READ_EXTERNAL_STORAGE: granted=false, flags=[ RESTRICTION_INSTALLER_EXEMPT]
+        android.permission.CAMERA: granted=false
+        android.permission.WRITE_EXTERNAL_STORAGE: granted=false, flags=[ RESTRICTION_INSTALLER_EXEMPT]
+        android.permission.READ_CONTACTS: granted=false
+```

@@ -29,7 +29,7 @@ Regardless of which approach the app used, Android provides a way to start the b
 1. Start the device.
 2. Install an app on your device.
 3. Launch and use the app going through the various workflows while inputting sensitive data wherever you can.
-4. Perform a backup and restore of the app data (@MASTG-TECH-0126).
+4. Perform a backup and restore of the app data (@MASTG-TECH-0128).
 5. Uninstall and reinstall the app but don't open it anymore.
 6. Restore the data from the backup and get the list of restored files.
 
