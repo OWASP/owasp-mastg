@@ -1,5 +1,5 @@
 --- 
-title: Obtaining App Permissions from Android Applications
+title: Obtaining App Permissions
 platform: android 
 ---
 
@@ -21,7 +21,6 @@ uses-permission: name='android.permission.CAMERA'
 uses-permission: name='android.permission.WRITE_EXTERNAL_STORAGE'
 uses-permission: name='android.permission.READ_CONTACTS'
 uses-permission: name='android.permission.READ_EXTERNAL_STORAGE'
-permission: org.owasp.mastestapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 uses-permission: name='org.owasp.mastestapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
 ```
 
