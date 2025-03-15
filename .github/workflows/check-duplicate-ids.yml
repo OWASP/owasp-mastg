@@ -142,7 +142,7 @@ jobs:
               } catch (error) {
                 console.log(`Error posting review comment: ${error.message}`);
                 
-                // Fallback: post a regular issue comment
+                // Fallback: post a comment on the PR thread instead of as a review comment
                 try {
                   await github.rest.issues.createComment({
                     owner: context.repo.owner,
@@ -150,9 +150,9 @@ jobs:
                     issue_number: context.issue.number,
                     body: formatDuplicateMessage(duplicate, false)
                   });
-                  console.log(`Posted fallback issue comment for ${duplicate.file_path}`);
+                  console.log(`Posted fallback PR thread comment for ${duplicate.file_path}`);
                 } catch (fallbackError) {
-                  console.log(`Error posting fallback comment: ${fallbackError.message}`);
+                  console.log(`Error posting fallback PR thread comment: ${fallbackError.message}`);
                 }
               }
             }
