@@ -211,7 +211,7 @@ nav:
       - crackmes/index.md
       - ... | flat | crackmes/*.md
   - News:
-      - news
+      - news/index.md
   - talks.md
   - "&#11088; Contribute":
       - contributing.md
