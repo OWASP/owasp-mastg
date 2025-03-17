@@ -2,8 +2,8 @@
 platform: ios
 title: Debuggable Entitlement Enabled in the entitlements.plist with rabin2
 code: [swift]
-id: MASTG-DEMO-0025
-test: MASTG-TEST-0082
+id: MASTG-DEMO-0036
+test: MASTG-TEST-0261
 ---
 
 ### Sample
