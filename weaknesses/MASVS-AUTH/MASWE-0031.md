@@ -6,6 +6,7 @@ platform: [android]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-3]
+  cwe: [287]
 
 draft:
   description: Android Protected Confirmation doesn't provide a secure information

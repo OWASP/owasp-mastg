@@ -21,7 +21,7 @@ Click the button to make your donation directly in the official OWASP website:
 
 **2. Register your Donation Package (optional):**
 
-<img src="../../assets/donations/mastg_donation_form.png" align="right"  style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="400px" />
+<img src="../../assets/donations/mastg_donation_form.png" align="right" style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="400px" />
 
 If your donation is above USD 500 you may opt-in for a [Donation Package](packages.md) by registering it. We will then, together with the OWASP Foundation, verify and process it.
 

@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-AUTH-1]
   masvs-v2: [MASVS-AUTH-2]
-  cwe: [603, 307, 287]
+  cwe: [603, 287]
 
 draft:
   description: General authentication best practice. Only for apps with connection.

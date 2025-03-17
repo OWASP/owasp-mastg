@@ -37,10 +37,9 @@ It is also possible to get the UDID via various command line tools on macOS whil
     |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
     ```
 
-- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (also available on Linux):
+- By using @MASTG-TOOL-0126:
 
     ```sh
-    $ brew install ideviceinstaller
     $ idevice_id -l
     316f01bd160932d2bf2f95f1f142bc29b1c62dbc
     ```
