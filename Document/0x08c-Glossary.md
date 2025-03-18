@@ -27,7 +27,7 @@ According to MITRE. A general term used to describe when a security property or 
 
 ### Risk
 
-Reference to risk uses the ISO 3000 defnition: Risk = "effect of uncertainty on objectives."
+Reference to risk uses the ISO 3000 definition: Risk = "effect of uncertainty on objectives."
 
 ### Risky
 
