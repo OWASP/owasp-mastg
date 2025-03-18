@@ -25,9 +25,13 @@ Used as a catch-all term to cover security behaviors that are either "Missing" o
 
 According to MITRE. A general term used to describe when a security property or behavior can vary in strength on a continuous or sliding scale, instead of a discrete scale. The continuous scale may vary depending on the context and risk tolerance. For example, the requirements for randomness may vary between a random selection for a greeting message versus the generation of a military-strength key. On the other hand, a weakness that allows a buffer overflow is always incorrect - there is not a sliding scale that varies across contexts ([MITRE, "2024.07.07"](https://cwe.mitre.org/documents/glossary/index.html#Insufficient "Glossary")).
 
+### Risk
+
+Reference to risk uses the ISO 3000 defnition: Risk = "effect of uncertainty on objectives."
+
 ### Risky
 
-A "risky" cryptographic hash algorithm is an algorithm without any known attacks, but that is insufficient when used under certain circumstances and because of that cary with it the risk of being compromised by an attack when used in the wrong context or for wrong purposes. The same can be considered for a "risky" encryption mode of operation.
+A "risky" cryptographic hash algorithm that carries with it an effect of uncertainty on the objectives that the specific algorithm must satisfy. The algorithm may therefor be "risky" when used under certain circumstances, and because of that, cary with it the risk of being compromised in an attack when used improperly. The same can be considered when referring to a "risky" encryption mode of operation.
 
 ### Strength
 
