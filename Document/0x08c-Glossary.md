@@ -31,7 +31,7 @@ Reference to risk uses the ISO 3000 defnition: Risk = "effect of uncertainty on 
 
 ### Risky
 
-A "risky" cryptographic hash algorithm carries with it an effect of uncertainty on the objectives that the specific algorithm must satisfy. The algorithm is therefore "risky" when used under certain circumstances, and because of that, cary with it the risk of being compromised in an attack when used improperly. The same can be considered when referring to a "risky" encryption mode of operation.
+A "risky" cryptographic hash algorithm carries with it an effect of uncertainty on the objectives that the specific algorithm must satisfy. The algorithm is therefore "risky" when used under certain circumstances, and because of that, carries with it the risk of being compromised in an attack when used improperly. The same can be considered when referring to a "risky" encryption mode of operation.
 
 ### Strength
 
