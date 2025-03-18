@@ -13,7 +13,8 @@ status: new
 
 ## Overview
 
-[Identity pinning (aka. certificate pinning, public key pinning or TLS pinning)](../../Document/0x04f-Testing-Network-Communication.md#restricting-trust-identity-pinning) refers to associating a mobile app with a specific cryptographic identity, such as a certificate or public key to ensure that the app only communicates with trusted servers.
+[Identity pinning (aka. certificate pinning, public key pinning or TLS pinning)](../../Document/0x04f-Testing-Network-Communication.md/#restricting-trust-identity-pinning) refers to associating a mobile app with a specific cryptographic identity, such as a certificate or public key to ensure that the app only communicates with trusted servers.
+
 
 When a mobile app does not implement certificate pinning, or if it is implemented incorrectly, the app remains vulnerable to [Machine-in-the-Middle (MITM)](../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) attacks which enable attackers to intercept and modify the communication between the app and the intended server. This occurs because when the app is presented a fraudulent certificate that the app may unknowingly trust, thereby gaining access to sensitive data or injecting malicious content into the data stream.
 

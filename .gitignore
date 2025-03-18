@@ -26,6 +26,7 @@ docs/MASVS/*-*.md
 docs/MASTG
 docs/MASWE
 docs/assets/Images
+docs/assets/MASVS/Images
 OWASP_MASVS.yaml
 cross_references.yaml
 drafts/

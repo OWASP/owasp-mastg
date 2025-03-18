@@ -77,5 +77,5 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 
 For more details refer to:
 
-- "Intercepting Traffic on the Network Layer" from chapter ["Testing Network Communication"](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer)
+- ["Intercepting Network Traffic Through MITM"](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm)
 - @MASTG-TECH-0062
