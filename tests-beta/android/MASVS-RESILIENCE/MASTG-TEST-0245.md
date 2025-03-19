@@ -23,8 +23,8 @@ The testing process involves analyzing the device environment to identify common
 
 2. **Non-standard system behavior detection:**
 
-   - Check if the app monitors processes that shouldn’t normally be running, such as su or sh, which are typically associated with root management tools.
-   - Reviewing the app’s smali or assembler code can reveal whether the app checks for or interacts with such processes.
+   - Check if the app monitors processes that shouldn't normally be running, such as su or sh, which are typically associated with root management tools.
+   - Reviewing the app's smali or assembler code can reveal whether the app checks for or interacts with such processes.
 
 3. **System properties modification detection:**
 
