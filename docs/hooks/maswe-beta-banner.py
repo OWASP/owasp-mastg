@@ -165,6 +165,10 @@ def get_android_demo_buttons(page):
 
     demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
     
+    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
+    if not artifacts_url:
+        artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
+    
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
@@ -181,6 +185,10 @@ def get_ios_demo_buttons(page):
 
     demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
 
+    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
+    if not artifacts_url:
+        artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
+    
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
