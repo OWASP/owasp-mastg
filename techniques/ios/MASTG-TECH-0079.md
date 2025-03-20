@@ -1,72 +1,125 @@
 ---
-title: Dynamic Analysis on Non-Jailbroken Devices
+title: Obtaining a Developer Provisioning Profile
 platform: ios
 ---
 
-If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup (e.g. the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") to enable dynamic testing with Frida and related tools such as objection). This way, you can instrument the app and do everything you need to do for  dynamic analysis (of course, you can't break out of the sandbox this way). However, this technique only works if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
-
-## Automated Repackaging
-
-@MASTG-TOOL-0038 automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
-
-Using objection's repackaging feature is sufficient for most of use cases. However, in some complex scenarios you might need more fine-grained control or a more customizable repackaging process. In that case, you can read a detailed explanation of the repackaging and resigning process in ["Manual Repackaging"](#manual-repackaging).
-
-## Manual Repackaging
-
-Thanks to Apple's confusing provisioning and code-signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, Bundle IDs, application IDs, team identifiers, and how Apple's build tools connect them. Getting the OS to run a binary that hasn't been built via the default method (Xcode) can be a daunting process.
-
-We'll use @MASTG-TOOL-0059, Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://research.nccgroup.com/2016/10/12/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
-
-To reproduce the steps listed below, download @MASTG-APP-0025. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
-
-> Please note that the following steps apply to macOS only, as Xcode is only available for macOS.
-
-## Getting a Developer Provisioning Profile and Certificate
-
 The _provisioning profile_ is a plist file signed by Apple, which adds your code-signing certificate to its list of accepted certificates on one or more devices. In other words, this represents Apple explicitly allowing your app to run for certain reasons, such as debugging on selected devices (development profile). The provisioning profile also includes the _entitlements_ granted to your app. The _certificate_ contains the private key you'll use to sign.
 
-Depending on whether you're registered as an iOS developer, you can obtain a certificate and provisioning profile in one of the following ways:
+A valid provisioning profile can only be obtained from Apple. This means that you need a valid Apple account.
 
-**With an iOS developer account:**
+!!! info
 
-If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the @MASTG-TOOL-0063 command (macOS only) to list your signing identities:
+    You can obtain a valid provisioning profile for both normal Apple accounts, and for Apple Developer accounts. There are two important differences between the two types:
+
+    **Certificate expiration**
+
+    - Apple account: Certificates expire 7 days after creation
+    - Developer account: Certificates expire 1 year after creation
+
+    **Wildcard certificates**
+
+    - Apple account: Certificates are only valid for one Bundle Identifier. This Bundle Identifier has to be unique.
+    - Developer account: Certificates can be wildcards, allowing you to keep the original Bundle Identifier
+
+    An Apple Developer account costs $99 per year and is a nice-to-have due to the longer expiration, but not a requirement.
+
+The steps below work for both a normal Apple account and an Apple Developer account, but do require a macOS host.
+
+## Creating a signing identity
+
+Install @MASTG-TOOL-0070 and create a new iOS application with any language and configuration. Set up the project to use automatic signing and deploy the application to your iOS device. During this flow, you will have to accept your Developer certificate on the device, as well as enable Developer mode.
+
+After these steps, you can use the @MASTG-TOOL-0063 command to list your signing identities:
 
 ```bash
-$ security find-identity -v
- 1) 61FA3547E0AF42A11E233F6A2B255E6B6AF262CE "iPhone Distribution: Company Name Ltd."
- 2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
+$ security find-identity -v -p codesigning
+ 1) 50034388646913B117AF1D6E51D9E045B77EA916 "Apple Development: MAS@owasp.org (LVGBSLUQB4)"
+     1 valid identities found
 ```
 
-Log into the Apple Developer portal to issue a new App ID, then issue and download the profile. An App ID is a two-part string: a Team ID supplied by Apple and a bundle ID search string that you can set to an arbitrary value, such as `com.example.myapp`. Note that you can use a single App ID to re-sign multiple apps. Make sure you create a _development_ profile and not a _distribution_ profile so that you can debug the app.
-
-In the examples below, I use my signing identity, which is associated with my company's development team. I created the App ID "sg.vp.repackaged" and the provisioning profile "AwesomeRepackaging" for these examples. I ended up with the file `AwesomeRepackaging.mobileprovision`-replace this with your own filename in the shell commands below.
-
-**With a Regular Apple ID:**
-
-Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://research.nccgroup.com/2016/10/12/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
-
-Once you've obtained the provisioning profile, you can check its contents with the @MASTG-TOOL-0063 command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
+Additionally, the provisioning profile is stored on your host in the `~/Library/Developer/Xcode/DerivedData` folder:
 
 ```bash
-$ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
-$ /usr/libexec/PlistBuddy -x -c 'Print :Entitlements' profile.plist > entitlements.plist
-$ cat entitlements.plist
+$ find  ~/Library/Developer/Xcode/DerivedData | grep embedded
+/Users/MAS/Library/Developer/Xcode/DerivedData/apptest-aijwmhfiximgzkhcmnluxrscflyc/Build/Products/Debug-iphoneos/apptest.app/embedded.mobileprovision
+```
+
+This file can be copied to your local directory and can be used to sign any IPA file, even those with a different identifier.
+
+```bash
+cp /Users/MAS/Library/Developer/Xcode/DerivedData/apptest-aijwmhfiximgzkhcmnluxrscflyc/Build/Products/Debug-iphoneos/apptest.app/embedded.mobileprovision ./embedded.mobileprovision
+```
+
+## Inspecting the Provisioning Profile
+
+Once you've obtained the provisioning profile, you can inspect its contents with the @MASTG-TOOL-0063 command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices.
+
+```bash
+$ security cms -D -i embedded.mobileprovision
+```
+
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
- <key>application-identifier</key>
- <string>LRUD9L355Y.sg.vantagepoint.repackage</string>
- <key>com.apple.developer.team-identifier</key>
- <string>LRUD9L355Y</string>
- <key>get-task-allow</key>
- <true/>
- <key>keychain-access-groups</key>
- <array>
-   <string>LRUD9L355Y.*</string>
- </array>
-</dict>
+    <dict>
+        <key>AppIDName</key>
+        <string>XC org mas testapp</string>
+        <key>ApplicationIdentifierPrefix</key>
+        <array>
+            <string>QH868V5764</string>
+        </array>
+        <key>CreationDate</key>
+        <date>2024-12-26T07:22:22Z</date>
+        <key>Platform</key>
+        <array>
+            <string>iOS</string>
+            <string>xrOS</string>
+            <string>visionOS</string>
+        </array>
+        <key>IsXcodeManaged</key>
+        <true/>
+        <key>DeveloperCertificates</key>
+        <array>
+            <data>...SNIP...</data>
+        </array>
+        <key>DER-Encoded-Profile</key>
+        <data>...SNIP...</data>
+        <key>Entitlements</key>
+        <dict>
+            <key>application-identifier</key>
+            <string>QH868V5764.org.mas.apptest</string>
+            <key>keychain-access-groups</key>
+            <array>
+                <string>QH868V5764.*</string>
+            </array>
+            <key>get-task-allow</key>
+            <true/>
+            <key>com.apple.developer.team-identifier</key>
+            <string>QH868V5764</string>
+        </dict>
+        <key>ExpirationDate</key>
+        <date>2025-01-02T07:22:22Z</date>
+        <key>Name</key>
+        <string>iOS Team Provisioning Profile: org.mas.testapp</string>
+        <key>ProvisionedDevices</key>
+        <array>
+            <string>...SNIP...</string>
+        </array>
+        <key>LocalProvision</key>
+        <true/>
+        <key>TeamIdentifier</key>
+        <array>
+            <string>QH868V5764</string>
+        </array>
+        <key>TeamName</key>
+        <string>OWASP MAS</string>
+        <key>TimeToLive</key>
+        <integer>7</integer>
+        <key>UUID</key>
+        <string>...SNIP...</string>
+        <key>Version</key>
+        <integer>1</integer>
+    </dict>
 </plist>
 ```
-
-Note the application identifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the app that has this App ID. The `get-task-allow` key is also important: when set to `true`, other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to `false` in a distribution profile).
