@@ -9,7 +9,7 @@ import kotlin.Metadata;
 import kotlin.jvm.internal.Intrinsics;
 
 /* compiled from: MastgTest.kt */
-@Metadata(m69d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u0002\n\u0000\b\u0007\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\u0006\u0010\u0005\u001a\u00020\u0006J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\u0002\u001a\u00020\u0003R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\t"}, m70d2 = {"Lorg/owasp/mastestapp/MastgTest;", "", "context", "Landroid/content/Context;", "(Landroid/content/Context;)V", "mastgTest", "", "showPopup", "", "app_debug"}, m71k = 1, m72mv = {1, 9, 0}, m74xi = 48)
+@Metadata(d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u0002\n\u0000\b\u0007\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\u0006\u0010\u0005\u001a\u00020\u0006J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\u0002\u001a\u00020\u0003R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\t"}, d2 = {"Lorg/owasp/mastestapp/MastgTest;", "", "context", "Landroid/content/Context;", "(Landroid/content/Context;)V", "mastgTest", "", "showPopup", "", "app_debug"}, k = 1, mv = {1, 9, 0}, xi = 48)
 /* loaded from: classes4.dex */
 public final class MastgTest {
     public static final int $stable = 8;
@@ -22,7 +22,7 @@ public final class MastgTest {
 
     public final String mastgTest() {
         showPopup(this.context);
-        return "The popup contains caching input fields";
+        return "The popup contains some caching input fields";
     }
 
     public final void showPopup(Context context) {
@@ -31,22 +31,27 @@ public final class MastgTest {
         layout.setOrientation(1);
         layout.setPadding(50, 20, 50, 20);
         EditText $this$showPopup_u24lambda_u241 = new EditText(context);
-        $this$showPopup_u24lambda_u241.setHint("Enter password");
-        $this$showPopup_u24lambda_u241.setInputType(192);
+        $this$showPopup_u24lambda_u241.setHint("Enter password (not cached)");
+        $this$showPopup_u24lambda_u241.setInputType(128);
         EditText $this$showPopup_u24lambda_u242 = new EditText(context);
-        $this$showPopup_u24lambda_u242.setHint("Enter passcode");
-        $this$showPopup_u24lambda_u242.setInputType(2);
+        $this$showPopup_u24lambda_u242.setHint("Enter passphrase (cached)");
+        $this$showPopup_u24lambda_u242.setInputType(1);
+        EditText input3 = new EditText(context);
+        input3.setHint("Enter PIN (cached)");
+        input3.setInputType(18);
+        input3.setInputType(2);
         layout.addView($this$showPopup_u24lambda_u241);
         layout.addView($this$showPopup_u24lambda_u242);
+        layout.addView(input3);
         new AlertDialog.Builder(context).setTitle("Sign Up Form").setView(layout).setPositiveButton("Sign Up", new DialogInterface.OnClickListener() { // from class: org.owasp.mastestapp.MastgTest$$ExternalSyntheticLambda0
             @Override // android.content.DialogInterface.OnClickListener
             public final void onClick(DialogInterface dialogInterface, int i) {
-                MastgTest.showPopup$lambda$3(dialogInterface, i);
+                MastgTest.showPopup$lambda$4(dialogInterface, i);
             }
         }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).show();
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public static final void showPopup$lambda$3(DialogInterface dialogInterface, int i) {
+    public static final void showPopup$lambda$4(DialogInterface dialogInterface, int i) {
     }
 }
