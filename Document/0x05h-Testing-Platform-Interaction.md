@@ -279,7 +279,7 @@ Virus Total provides an API for analyzing URLs and local files for known threats
 
 JavaScript can be injected into web applications via reflected, stored, or DOM-based Cross-Site Scripting (XSS). Mobile apps are executed in a sandboxed environment and don't have this vulnerability when implemented natively. Nevertheless, WebViews may be part of a native app to allow web page viewing. Every app has its own WebView cache, which isn't shared with the native Browser or other apps. On Android, WebViews use the WebKit rendering engine to display web pages, but the pages are stripped down to minimal functions, for example, pages don't have address bars.
 
-Android WebViews can use [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings#setJavaScriptEnabled(boolean)) to enable JavaScript execution. This method is disabled by default, but if enabled, it can be used to execute JavaScript code in the context of the loaded page. This can be dangerous if the WebView is loading untrusted content, as it can lead to XSS attacks. If you need to enable JavaScript, make sure that the content is trusted and that you have implemented proper input validation and output encoding. Otherwise, you can explicitly disable JavaScript:
+Android WebViews can use [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings#setJavaScriptEnabled(boolean)) to enable JavaScript execution. This feature is disabled by default, but if enabled, it can be used to execute JavaScript code in the context of the loaded page. This can be dangerous if the WebView is loading untrusted content, as it can lead to XSS attacks. If you need to enable JavaScript, make sure that the content is trusted and that you have implemented proper input validation and output encoding. Otherwise, you can explicitly disable JavaScript:
 
 ```kotlin
 webView.settings.apply {
@@ -289,7 +289,7 @@ webView.settings.apply {
 
 #### WebView Local File Access Settings
 
-These APIs control how a WebView accesses files on the local device. They determine whether the WebView can load files (such as HTML, images, or scripts) from the file system and whether JavaScript running in a local context can request additional resources. Note that accessing assets and resources (via file:///android_asset or file:///android_res) is always allowed regardless of these settings.
+These APIs control how a WebView accesses files on the local device. They determine whether the WebView can load files (such as HTML, images, or scripts) from the file system and whether JavaScript running in a local context can access additional local files. Note that accessing assets and resources (via file:///android_asset or file:///android_res) is always allowed regardless of these settings.
 
 | API | Purpose | Defaults to `True` (API Level)   | Defaults to `False` (API Level) | Deprecated |
 |-----|---------|-------------------------------------|-------------------------------------|------------|
@@ -299,9 +299,9 @@ These APIs control how a WebView accesses files on the local device. They determ
 
 **What files can be accessed by the WebView?:**
 
-The attacker can access any file that the app has permission to access via `file://` URLs, including:
+The WebView can access any file that the app has permission to access via `file://` URLs, including:
 
-- Internal storage: the entire internal storage.
+- Internal storage: the app's own internal storage.
 - External storage
     - Before Android 10:
         - the entire external storage (SD card), if the app has the `READ_EXTERNAL_STORAGE` permission.
@@ -313,13 +313,13 @@ The attacker can access any file that the app has permission to access via `file
 
 ##### `setAllowFileAccess`
 
-[`setAllowFileAccess`](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "Method setAllowFileAccess()") enables the WebView to load local files (using the `file://` scheme). In this example, the WebView is configured to allow file access and then loads an HTML file from the assets folder.
+[`setAllowFileAccess`](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "Method setAllowFileAccess()") enables the WebView to load local files using the `file://` scheme. In this example, the WebView is configured to allow file access and then loads an HTML file from the external storage (sdcard).
 
 ```java
 webView.settings.apply {
     allowFileAccess = true
 }
-webView.loadUrl("file:///android_asset/index.html");
+webView.loadUrl("file:///sdcard/index.html");
 ```
 
 ##### `setAllowFileAccessFromFileURLs`
@@ -330,16 +330,16 @@ Note that the value of [**this setting is ignored**](https://developer.android.c
 
 > [Chromium WebView Docs](https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/cors-and-webview-api.md#setallowfileaccessfromfileurls): With this relaxed origin rule, URLs starting with `content://` and `file://` can access resources that have the same relaxed origin over `XMLHttpRequest`. For instance, `file://foo` can make an `XMLHttpRequest` to `file://bar`. Developers need to be careful so that a user provided data do not run in `content://` as it will allow the user's code to access arbitrary `content://` URLs those are provided by other applications. It will cause a serious security issue.
 >
-> Regardless of this API call, [Fetch API](https://fetch.spec.whatwg.org/#fetch-api) does not allow to access `content://` and `file://` URLs.
+> Regardless of this API call, the [Fetch API](https://fetch.spec.whatwg.org/#fetch-api) does not allow accessing `content://` and `file://` URLs.
 
-**Example:** In this example, the WebView is configured to allow file access and then loads an HTML file from the assets folder.
+**Example:** In this example, the WebView is configured to allow file access and then loads an HTML file from the external storage (sdcard).
 
 ```java
 webView.settings.apply {
     allowFileAccess = true
     allowFileAccessFromFileURLs = true
 }
-webView.loadUrl("file:///android_asset/local_page.html");
+webView.loadUrl("file:///sdcard/local_page.html");
 ```
 
 The loaded HTML file contains an image that is loaded via a `file://` URL:
@@ -402,9 +402,9 @@ Contents of local_page.html (in the assets folder):
 
 #### WebView Content Provider Access
 
-WebViews can access [content providers](https://developer.android.com/guide/topics/providers/content-providers), which are used to share data between applications. Content providers can be accessed by other apps if they are exported and have the `android:exported` attribute set to `true`. If the content provider is exported, it should have proper permissions set to restrict access to it. If the content provider is not exported, it can only be accessed by the application that owns it and this can happen from the WebView as well.
+WebViews can access [content providers](https://developer.android.com/guide/topics/providers/content-providers), which are used to share data between applications. Content providers can be accessed by other apps only if they are exported (`android:exported` attribute set to `true`), but even if the content provider is not exported, it can be accessed by a WebView in the application itself.
 
-The setting `setAllowContentAccess` controls whether the WebView can access from content providers using `content://` URLs. This setting is enabled by default for Android 4.1 (API level 16) and above.
+The setting `setAllowContentAccess` controls whether the WebView can access content providers using `content://` URLs. This setting is enabled by default for Android 4.1 (API level 16) and above.
 
 > [Chromium WebView Docs](https://chromium.googlesource.com/chromium/src/%2B/HEAD/android_webview/docs/cors-and-webview-api.md#content_urls):
 > `content://` URLs are used to access resources provided via Android Content Providers. The access should be permitted via `setAllowContentAccess` API beforehand. `content://` pages can contain iframes that load `content://` pages, but the parent frame can not access into the iframe contents. Also only `content://` pages can specify `content://` URLs for sub-resources.
@@ -413,7 +413,7 @@ The setting `setAllowContentAccess` controls whether the WebView can access from
 >
 > Pages loaded with any scheme other than `content://` can't load `content://` page in iframes and they can not specify `content://` URLs for sub-resources.
 
-**Example:** In this example, the WebView is configured to allow content access and then loads a `content://` URL.
+**Example:** In this example, the WebView's `allowContentAccess` property is enabled and a `content://` URL is loaded.
 
 ```kotlin
 webView.settings.apply {
