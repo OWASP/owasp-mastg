@@ -1,0 +1,16 @@
+                   
+                   
+┌─────────────────┐
+│ 3 Code Findings │
+└─────────────────┘
+                                          
+    ../MASTG-DEMO-0020/AndroidManifest.xml
+    ❯❱ rules.android_manifest_backup
+          [MASVS-STORAGE-2] Ensure that backup-related configurations are properly set.
+                                                                                       
+            6┆ android:allowBackup="true"
+            ⋮┆----------------------------------------
+            7┆ android:dataExtractionRules="@xml/data_extraction_rules"
+            ⋮┆----------------------------------------
+            8┆ android:fullBackupContent="@xml/backup_rules"
+

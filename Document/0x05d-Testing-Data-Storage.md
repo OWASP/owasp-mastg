@@ -599,9 +599,9 @@ You can create log files in several ways. The following list includes two classe
 
 ### Backups
 
-Android provides users with an auto-backup feature. The backups usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
+[Android backups](https://developer.android.com/identity/data/backup) usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
 
-- Stock Android has built-in USB backup facilities. When USB debugging is enabled, use the `adb backup` command to create full data backups and backups of an app's data directory.
+- Stock Android has built-in USB backup facilities. When USB debugging is enabled, use the `adb backup` command ([restricted since Android 12](https://developer.android.com/about/versions/12/behavior-changes-12#adb-backup-restrictions), requires `android:debuggable=true` in the AndroidManifest.xml) to create full data backups and backups of an app's data directory.
 
 - Google provides a "Back Up My Data" feature that backs up all app data to Google's servers.
 
@@ -616,7 +616,7 @@ Apps must carefully ensure that sensitive user data doesn't end within these bac
 
 ### ADB Backup Support
 
-Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute") to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup`.
+Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute") to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup` ([restricted in Android 12](https://developer.android.com/about/versions/12/behavior-changes-12#adb-backup-restrictions)).
 
 To prevent the app data backup, set the `android:allowBackup` attribute to **false**. When this attribute is unavailable, the allowBackup setting is enabled by default, and backup must be manually deactivated.
 
