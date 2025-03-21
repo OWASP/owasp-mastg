@@ -2,18 +2,9 @@ rules:
   - id: mastg-android-find-non-caching-input-types
     severity: WARNING
     languages:
-      - generic
+      - java
     metadata:
       summary: This rule scans all non-caching InputTypes
-    message: "[MASVS-STORAGE] Make sure to encrypt files in external storage if necessary"
-    pattern-either:
-      - pattern: android:inputType="textNoSuggestions"
-      - pattern: setInputType(524288) # TYPE_TEXT_FLAG_NO_SUGGESTIONS
-      - pattern: android:inputType="textPassword"
-      - pattern: setInputType(128) # TYPE_TEXT_VARIATION_PASSWORD
-      - pattern: android:inputType="textVisiblePassword"
-      - pattern: setInputType(144) # TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-      - pattern: android:inputType="numberPassword"
-      - pattern: setInputType(16) # TYPE_NUMBER_VARIATION_PASSWORD
-      - pattern: android:inputType="textWebPassword"
-      - pattern: setInputType(224) # TYPE_TEXT_VARIATION_WEB_PASSWORD
+    message: "[MASVS-STORAGE] Set input type detected ($OBJ) with $ARG"
+    patterns:
+      - pattern: $OBJ.setInputType($ARG)
