@@ -1,0 +1,27 @@
+
+[*] WebView.getSettings() called on instance: android.webkit.WebView{72e86a8 VFEDHVC.. ......I. 0,0-0,0}
+
+Backtrace:
+android.webkit.WebView.getSettings(Native Method)
+org.owasp.mastestapp.MastgTestWebView.mastgTest(MastgTestWebView.kt:26)
+org.owasp.mastestapp.MainActivityWebViewKt$WebViewScreen$1$1$2$1.invoke(MainActivityWebView.kt:88)
+org.owasp.mastestapp.MainActivityWebViewKt$WebViewScreen$1$1$2$1.invoke(MainActivityWebView.kt:85)
+androidx.compose.ui.viewinterop.ViewFactoryHolder.<init>(AndroidView.android.kt:343)
+androidx.compose.ui.viewinterop.AndroidView_androidKt$createAndroidViewNodeFactory$1.invoke(AndroidView.android.kt:274)
+androidx.compose.ui.viewinterop.AndroidView_androidKt$createAndroidViewNodeFactory$1.invoke(AndroidView.android.kt:273)
+androidx.compose.ui.viewinterop.AndroidView_androidKt$AndroidView$$inlined$ComposeNode$1.invoke(Composables.kt:254)
+
+
+
+[*] Triggering enumeration after getSettings() call...
+
+[*] Finished enumerating WebView instances!
+
+[*] Found WebView instance: android.webkit.WebView{72e86a8 VFEDHVC.. ........ 0,0-904,1796}
+	[+] JavaScriptEnabled: true
+	[+] AllowFileAccess: true
+	[+] AllowFileAccessFromFileURLs: true
+	[+] AllowUniversalAccessFromFileURLs: false
+	[+] AllowContentAccess: true
+	[+] MixedContentMode: 1
+	[+] SafeBrowsingEnabled: true
