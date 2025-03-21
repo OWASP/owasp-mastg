@@ -22,22 +22,25 @@ The following attributes, if present, will prevent the caching mechanism for tex
 
 Android apps can use XML or code to create the UI. Many apps use both techniques simultaneously. So you should test both. After unpacking the APK with @MASTG-TOOL-0011, the XML files are in `/res/layout` directory. You can search for the code attributes with @MASTG-TOOL-0018.
 
-Finally, check the minimum required SDK version in the Android Manifest `minSdkVersion` since it must support the used constants. For example, Android SDK version 11 is required for `textWebPassword`. Otherwise, the compiled app would not honor the used input type constants allowing keyboard caching.
+Make sure that does not overwrite any input types using the `setInputType` method.
+
+**Note:** In this test we won't be checking the minimum required SDK version in the Android Manifest `minSdkVersion` because we are considering testing modern apps. If you are testing an older app, you should check it. For example, Android API level 11 is required for `textWebPassword`. Otherwise, the compiled app would not honor the used input type constants allowing keyboard caching.
 
 For more information you can consult the MASTG section about ["Keyboard Cache"](../../../Document/0x05d-Testing-Data-Storage.md#keyboard-cache).
 
 ## Steps
 
 1. Statically search for the above XML attributes with @MASTG-TOOL-0011
-
 2. Statically search for above code attributes with @MASTG-TOOL-0018
-
-Make sure that none of the input types are being overwritten with `setInputType` API. For example, `findViewById(R.id.textbox).setInputType(InputType.TYPE_CLASS_TEXT)` can change the type of the input at the runtime reenabling the keyboard cache for `textbox`.
+3. Check the code for any `setInputType` API calls that may override the XML attributes
 
 ## Observation
 
-The output should indicate whether the app uses no-caching attributes.
+The output should include:
+- All `android:inputType` XML attributes, if using XML for the UI.
+- All `InputType` code attributes, if using code for the UI.
+- All calls to the `setInputType` method, if any.
 
 ## Evaluation
 
-The test case fails if any of the text fields in your app accepts sensitive data but do not use no-caching attributes. If the app doesn't use the no-caching attributes at all, this may indicate that it doesn't provide any keyboard caching prevention.
+The test case fails if there are any fields handling sensitive data for which any caching attributes are used. 
