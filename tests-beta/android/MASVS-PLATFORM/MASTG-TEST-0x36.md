@@ -8,11 +8,11 @@ deprecated_since: 29
 mitigations: [MASTG-MITIG-xxxx]
 ---
 
-## Overview
+# Testing Enforced Updating (Android)
 
-Many mobile applications enforce updates to ensure users are on the latest 
-version, typically for security and feature enhancements. However, 
-if the enforcement mechanism is weak, attackers may bypass the update 
+Many mobile applications enforce updates to ensure users are on the latest
+version, typically for security and feature enhancements. However,
+if the enforcement mechanism is weak, attackers may bypass the update
 requirement and continue using outdated, vulnerable versions of the app.
 
 This test evaluates how an Android app enforces updates and  
@@ -21,14 +21,17 @@ static, dynamic, or network-based attacks.
 
 ---
 
-### **1. Static Analysis: Reverse Engineering Update Mechanism**
+## **1. Static Analysis: Reverse Engineering Update Mechanism**
+
 **Goal:** Identify how the app determines whether an update is required.
 
 1. **Decompile the APK** using JADX or Apktool:
+
    ```bash
    apktool d app.apk -o decompiled_app
    jadx -d decompiled_app app.apk
 2. Search for update-related logic in the decompiled code:
+
     ```bash
     grep -Ri "update" decompiled_app
 3. Identify how the app determines whether an update is required. Look for:
@@ -37,13 +40,16 @@ static, dynamic, or network-based attacks.
     - API calls to check for updates
     - Update prompts in MainActivity.java
 
-### **2. Dynamic Analysis: Hooking Update Logic with Frida**
+## **2. Dynamic Analysis: Hooking Update Logic with Frida**
+
 **Goal:** Determine if the update check can be bypassed.
 
 1. Attach Frida to the Running App:
+
     ```bash
     frida -U -n com.example.app -e "console.log('Frida attached!')"
 2. Hook & Modify Update Functions:
+
     ```javascript
     Java.perform(function() {
         var UpdateChecker = Java.use("com.example.app.UpdateManager");
@@ -53,27 +59,35 @@ static, dynamic, or network-based attacks.
         };
     });
 3. Check If the App Still Requires an Update
-    - If the app allows continued usage without updating, 
+
+    - If the app allows continued usage without updating,
       the update mechanism is weak and bypassable.
-    - If the app still forces the update, the check may be server-side, 
+    - If the app still forces the update, the check may be server-side,
       which is more secure.
 
-### **3. Network Analysis: Modifying Update Responses**
+## **3. Network Analysis: Modifying Update Responses**
+
 **Goal:** Determine if app relies on insecure network responses for updates.
 
 1. Intercept Update Requests Using Burp Suite or mitmproxy
     Set up Burp Suite or mitmproxy to capture app traffic.
+
     ```bash
     mitmproxy -p 8080 -m transparent
+
 2. Modify the Update Response
 If the update check is done via an API call (e.g., GET /check_update),  
 intercept and modify the response:
+
     ```json
+    
     {
       "latest_version": "2.0.0",
     "force_update": false
     }
-Change "force_update": false to "force_update": true and observe if the app still allows access.
+
+Change "force_update": false to "force_update": true and  
+observe if the app still allows access.
 
 ---
 
@@ -81,14 +95,14 @@ Change "force_update": false to "force_update": true and observe if the app stil
 
 After executing the test steps, analyze the results:
 
-### Secure Behavior (Pass):
+## Secure Behavior (Pass)
 
-- The app strictly enforces updates and cannot be bypassed through 
+- The app strictly enforces updates and cannot be bypassed through
   Frida or network attacks.
 - Update checks are performed server-side with cryptographic verification.
 - The app uses certificate pinning to prevent MITM attacks.
 
-### Insecure Behavior (Fail):
+## Insecure Behavior (Fail)
 
 - The app allows continued usage even after modifying responses.
 - Frida can disable the update requirement, indicating weak enforcement.
