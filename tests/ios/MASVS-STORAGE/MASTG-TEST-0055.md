@@ -8,6 +8,8 @@ title: Finding Sensitive Data in the Keyboard Cache
 masvs_v1_levels:
 - L1
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0x55-1, MASTG-TEST-0x55-2]
 ---
 
 ## Overview
