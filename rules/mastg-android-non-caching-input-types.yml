@@ -1,5 +1,5 @@
 rules:
-  - id: mastg-android-find-non-caching-input-types
+  - id: mastg-android-non-caching-input-types
     severity: WARNING
     languages:
       - java
