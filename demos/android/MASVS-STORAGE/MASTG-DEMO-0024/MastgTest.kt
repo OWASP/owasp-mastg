@@ -21,11 +21,11 @@ class MastgTest (private val context: Context){
 
         val input1 = EditText(context).apply {
             hint = "Enter password (not cached)"
-            inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
 
         val input2 = EditText(context).apply {
-            hint = "Enter passphrase (cached)"
+            hint = "Enter password (cached)"
             inputType = InputType.TYPE_CLASS_TEXT
         }
 
@@ -34,7 +34,7 @@ class MastgTest (private val context: Context){
             inputType =  InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         }
 
-        input3.inputType = InputType.TYPE_CLASS_NUMBER
+        // input3.inputType = InputType.TYPE_CLASS_NUMBER
 
         layout.addView(input1)
         layout.addView(input2)
