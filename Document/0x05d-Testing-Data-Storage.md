@@ -756,7 +756,7 @@ Where:
 
 Results in `1 or 128 = 129`, which is the value you will see in the decompiled code.
 
-**How to decode input type attributes after reverse engineering**
+**How to decode input type attributes after reverse engineering:**
 
 To decode the `inputType` value, you can use the following masks:
 
@@ -771,7 +771,7 @@ You can quickly decode `inputType` values using the masks and the bitwise AND op
 129 & 0x00000FF0  # 128 (TYPE_TEXT_VARIATION_PASSWORD)
 ```
 
-**How to find cached data**
+**How to find cached data:**
 
 If you write e.g. "OWASPMAS" in the passphrase field a couple of times, the app will cache it and you will be able to find it in the cache database:
 
