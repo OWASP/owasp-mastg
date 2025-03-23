@@ -3,7 +3,7 @@ platform: android
 title: Uses of Caching UI Elements with semgrep
 id: MASTG-DEMO-0024
 code: [kotlin]
-test: MASTG-TEST-0224
+test: MASTG-TEST-0258
 ---
 
 ### Sample
