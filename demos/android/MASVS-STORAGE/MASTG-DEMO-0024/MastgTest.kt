@@ -34,7 +34,7 @@ class MastgTest (private val context: Context){
             inputType =  InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         }
 
-        // input3.inputType = InputType.TYPE_CLASS_NUMBER
+        input3.inputType = InputType.TYPE_CLASS_NUMBER
 
         layout.addView(input1)
         layout.addView(input2)
