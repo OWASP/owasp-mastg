@@ -10,7 +10,7 @@ weakness: MASWE-0053
 
 This test verifies that the app appropriately configures text input fields to prevent the [keyboard from caching](../../../Document/0x05d-Testing-Data-Storage.md#keyboard-cache) sensitive information, such as passwords or personal data.
 
-Andorid apps can configure the behavior of text input fields using XML attributes in the layout files or programmatically in the code. If the app doesn't use the [non-caching input types](../../../Document/0x05d-Testing-Data-Storage.md#non-caching-input-types) for sensitive data, the keyboard may cache sensitive information.
+Android apps can configure the behavior of text input fields using XML attributes in the layout files or programmatically in the code. If the app doesn't use the [non-caching input types](../../../Document/0x05d-Testing-Data-Storage.md#non-caching-input-types) for sensitive data, the keyboard may cache sensitive information.
 
 ## Steps
 
