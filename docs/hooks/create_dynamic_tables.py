@@ -396,9 +396,9 @@ def on_page_markdown(markdown, page, **kwargs):
 
         for element in data:
             if element['video'].startswith("http"):
-                element['video'] = f"[:octicons-play-24: Video]({element['video']})"
+                element['video'] = f'<div style="text-align: center;">[:octicons-play-24: Video]({element["video"]})</div>'
             if element['slides'].startswith("http"):
-                element['slides'] = f"[:material-file-presentation-box: Slides]({element['slides']})"
+                element['slides'] = f'<div style="text-align: center;">[:material-file-presentation-box: Slides]({element["slides"]})</div>'
 
         return append_to_page(markdown, list_of_dicts_to_md_table(data))
 
