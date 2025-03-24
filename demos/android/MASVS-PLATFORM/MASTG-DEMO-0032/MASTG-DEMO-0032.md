@@ -35,11 +35,6 @@ The output shows all WebView settings found in the code.
 
 The test **fails** due to the following WebView settings being configured:
 
-- `setJavaScriptEnabled(true)`
-- `setAllowFileAccess(true)`
-- `setAllowFileAccessFromFileURLs(true)`
-- `setAllowUniversalAccessFromFileURLs(true)`
-
 {{ evaluation.txt }}
 
 All these settings are explicitly set to `true` in the code, otherwise, they would remain at their default values (`false`).

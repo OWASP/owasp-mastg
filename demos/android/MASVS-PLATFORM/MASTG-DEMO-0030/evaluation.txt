@@ -1,4 +1,3 @@
-[FAIL] All insecure settings are enabled.
-  JavaScriptEnabled: True
-  AllowContentAccess: True
-  AllowUniversalAccessFromFileURLs: True
+JavaScriptEnabled: True
+AllowContentAccess: True
+AllowUniversalAccessFromFileURLs: True

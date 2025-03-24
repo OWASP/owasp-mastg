@@ -35,9 +35,6 @@ The output shows **4 results** related to WebView configuration calls. However, 
 
 The test **fails** due to the following WebView settings being configured:
 
-- `setJavaScriptEnabled(true)`
-- `setAllowUniversalAccessFromFileURLs(true)`
+{{ evaluation.txt }}
 
 The method `setAllowContentAccess` is not explicitly called in the code, which means it remains at its default value (`true`).
-
-{{ evaluation.txt }}
