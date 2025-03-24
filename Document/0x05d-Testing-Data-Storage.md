@@ -701,7 +701,7 @@ When users enter information into input fields, the keyboard software often prov
 
 Apps can control this behavior by appropriately configuring the `inputType` attribute on text input fields. There are several ways to do this:
 
-**1. XML Layouts**
+**XML Layouts:**
 
 In the app's XML layout files (typically located in the `/res/layout` directory after unpacking the APK), you can define the input type directly in the `<EditText>` element using the `android:inputType` attribute. For example, setting the input type to `"textPassword"` automatically disables auto-suggestions and caching:
 
@@ -714,7 +714,7 @@ In the app's XML layout files (typically located in the `/res/layout` directory 
     android:inputType="textPassword" />
 ```
 
-**2. Using the Traditional Android View System**
+**Using the Traditional Android View System:**
 
 When creating input fields in code using the traditional Android view system, you can set the input type programmatically. For example, using an `EditText` in Kotlin:
 
@@ -725,7 +725,7 @@ val input = EditText(context).apply {
 }
 ```
 
-**3. Using Jetpack Compose**
+**Using Jetpack Compose:**
 
 If you are developing with [Jetpack Compose](https://developer.android.com/develop/ui/compose/text/user-input), you do not use `EditText` directly. Instead, you use composable functions such as `TextField` or `OutlinedTextField` along with parameters like `keyboardOptions` and `visualTransformation` to achieve similar behavior. For example, to create a password field without suggestions:
 
