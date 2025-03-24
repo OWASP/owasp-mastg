@@ -311,7 +311,6 @@ The WebView can access any file that the app has permission to access via `file:
         - only the app-specific directories (due to scoped storage restrictions) without any special permissions.
         - entire media folders (including data from other apps) if the app has the `READ_MEDIA_IMAGES` or similar permissions.
         - the entire external storage if the app has the `MANAGE_EXTERNAL_STORAGE` permission.
-- Any data accessible via content providers (if the app has any and the WebView has `setAllowContentAccess(true)`).
 
 ##### `setAllowFileAccess`
 
@@ -426,7 +425,7 @@ webView.loadUrl("content://com.example.myapp.provider/data");
 
 **Which files can be accessed by the WebView?:**
 
-The attacker can access any data accessible via content providers (if the app has any) using `content://` URLs. **Unless otherwise further restricted by the content provider**, this could include:
+The WebView can access any data accessible via content providers (if the app has any) using `content://` URLs. **Unless otherwise further restricted by the content provider**, this could include:
 
 - Internal storage: the entire internal storage.
 - External storage

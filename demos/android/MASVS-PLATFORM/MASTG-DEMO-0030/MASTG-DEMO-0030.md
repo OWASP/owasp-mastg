@@ -37,7 +37,7 @@ This sample:
 See `vulnerableHtml` in the MastgTestWebView.kt file.
 
 1. The attacker's script (running in the context of the vulnerable page) uses `XMLHttpRequest` to load the sensitive file from the content provider. The file is located at `/data/data/org.owasp.mastestapp/files/api-key.txt`
-2. Uses `fetch` to send the file contents to an external server running on the host machine while the app is executed in the Android emulator (`http://10.0.2.2:5001/receive`).
+2. `fetch` is used to send the file contents to an external server running on the host machine while the app is executed in the Android emulator (`http://10.0.2.2:5001/receive`).
 
 **Note:** For demonstration purposes, the exfiltrated data is displayed on screen. However, in a real attack scenario, the user would not notice as the data would be exfiltrated silently.
 

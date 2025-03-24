@@ -1,6 +1,6 @@
 ---
-title: Securely Load File Content to a WebView
-alias: securely-load-file-content-to-webview
+title: Securely Load File Content in a WebView
+alias: securely-load-file-content-in-webview
 id: MASTG-BEST-0011
 platform: android
 ---
