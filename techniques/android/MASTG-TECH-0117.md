@@ -36,7 +36,7 @@ If you are only interested in specific values of the manifest, you can use alter
 Viewing all contents of the AndroidManifest can be performed with:
 
 ```bash
-$ aapt d badging MASTG-DEMO-0001.apk                     
+$ aapt d badging MASTG-DEMO-0001.apk
 package: name='org.owasp.mastestapp' versionCode='1' versionName='1.0' platformBuildVersionName='14' platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
 sdkVersion:'29'
 targetSdkVersion:'34'

@@ -51,7 +51,7 @@ For example, the following configuration uses the `base-config` to prevent clear
 
 Learn more:
 
-- ["A Security Analyst’s Guide to Network Security Configuration in Android P"](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/)
+- ["A Security Analyst's Guide to Network Security Configuration in Android P"](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/)
 - [Android Developers - Network Security Configuration](https://developer.android.com/training/articles/security-config)
 - [Android Codelab - Network Security Configuration](https://developer.android.com/codelabs/android-network-security-config)
 
@@ -98,11 +98,11 @@ Several approaches to certificate pinning exist, depending on the app's API leve
 
 **Important Considerations:**
 
-Certificate pinning is a **hardening practice**, but it is not foolproof. There are multiple ways an attacker can bypass it, such as:  
+Certificate pinning is a **hardening practice**, but it is not foolproof. There are multiple ways an attacker can bypass it, such as:
 
-- **Modifying the certificate validation logic** in the app's `TrustManager`.  
-- **Replacing pinned certificates** stored in resource directories (`res/raw/`, `assets/`).  
-- **Altering or removing pins** in the Network Security Configuration.  
+- **Modifying the certificate validation logic** in the app's `TrustManager`.
+- **Replacing pinned certificates** stored in resource directories (`res/raw/`, `assets/`).
+- **Altering or removing pins** in the Network Security Configuration.
 
 Any such modification **invalidates the APK signature**, requiring the attacker to **repackage and re-sign the APK**. To mitigate these risks, additional protections such as integrity checks, runtime verification, and obfuscation may be required. For more information on the specific techniques, see @MASTG-TECH-0012.
 

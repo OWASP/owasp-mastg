@@ -27,6 +27,8 @@ If you'd like to contribute, take a look at our [Contributions page](contributin
 
 ## OWASP MAS Project Leaders
 
+<!-- markdownlint-disable search-replace -->
+
 ## Carlos Holguera
 
 <img src="../../assets/carlos.jpg" width="150px" style="border-radius: 50%; margin-left: 4em;" align="right">
@@ -52,5 +54,7 @@ Sven is an experienced web and mobile penetration tester and assessed everything
 [:material-slack:](https://owasp.slack.com/team/U1M6X5WCU)
 [:material-email:](mailto:Sven.Schleier@owasp.org)
 [:material-linkedin:](https://linkedin.com/in/sven-schleier)
+
+<!-- markdownlint-disable search-replace -->
 
 <br>

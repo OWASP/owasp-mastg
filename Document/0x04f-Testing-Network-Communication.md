@@ -157,15 +157,15 @@ In the following listing, we'll present the different algorithms of each part of
 - `DSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
 - `ECDSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
 - `RSA` - [RFC 8017](https://tools.ietf.org/html/rfc8017 "RFC 8017")
-- `DHE` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DHE` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631") - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
 - `ECDHE` - [RFC 4492](https://tools.ietf.org/html/rfc4492 "RFC 4492")
 - `PSK` - [RFC 4279](https://tools.ietf.org/html/rfc4279 "RFC 4279")
 - `DSS` - [FIPS186-4](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf "FIPS186-4")
-- `DH_anon` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
-- `DHE_RSA` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
-- `DHE_DSS` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DH_anon` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631") - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DHE_RSA` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631") - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DHE_DSS` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631") - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
 - `ECDHE_ECDSA` - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
-- `ECDHE_PSK`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")  - [RFC 5489](https://tools.ietf.org/html/rfc5489 "RFC 5489")
+- `ECDHE_PSK`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422") - [RFC 5489](https://tools.ietf.org/html/rfc5489 "RFC 5489")
 - `ECDHE_RSA`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
 
 **Block Ciphers:**
@@ -180,7 +180,7 @@ In the following listing, we'll present the different algorithms of each part of
 - `AES_256_GCM` - [RFC 5288](https://tools.ietf.org/html/rfc5288 "RFC 5288")
 - `RC4_40`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
 - `RC4_128`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
-- `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905 "RFC 7905")  - [RFC 7539](https://tools.ietf.org/html/rfc7539 "RFC 7539")
+- `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905 "RFC 7905") - [RFC 7539](https://tools.ietf.org/html/rfc7539 "RFC 7539")
 
 **Integrity Check Algorithms:**
 

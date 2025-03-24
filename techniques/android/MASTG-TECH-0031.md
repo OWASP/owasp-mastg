@@ -42,7 +42,7 @@ You're now attached to the suspended process and ready to go ahead with the jdb 
 - print/dump _expr_: print information about an object
 - stop in _method_: set a method breakpoint
 - clear _method_: remove a method breakpoint
-- set _lvalue_ = _expr_:  assign new value to field/variable/array element
+- set _lvalue_ = _expr_: assign new value to field/variable/array element
 
 Let's revisit the decompiled code from the @MASTG-APP-0003 and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
 
@@ -166,7 +166,7 @@ If you don't want to debug core Java and Android classes, you can step out of th
 
 <img src="Images/Chapters/0x05c/step_out.png" width="100%" />
 
-After the `a` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
+After the `a` method gets the directory names, it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
 <img src="Images/Chapters/0x05c/set_value.png" width="100%" />
 

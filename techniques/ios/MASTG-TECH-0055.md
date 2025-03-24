@@ -144,7 +144,7 @@ Continue running process...
 
 ### Using ios-deploy
 
-To use  @MASTG-TOOL-0054, you first have to unzip the IPA file:
+To use @MASTG-TOOL-0054, you first have to unzip the IPA file:
 
 ```bash
 $ unzip Uncrackable1-frida-codesigned.ipa -d unzipped

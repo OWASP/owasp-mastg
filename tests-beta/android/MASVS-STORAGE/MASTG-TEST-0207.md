@@ -24,7 +24,7 @@ The goal of this test is to retrieve the files written to the [internal storage]
 
 ## Observation
 
-The output should contain a list of files that were created in the app's private storage during  execution.
+The output should contain a list of files that were created in the app's private storage during execution.
 
 ## Evaluation
 

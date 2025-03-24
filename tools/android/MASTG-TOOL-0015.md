@@ -41,7 +41,7 @@ run app.package.attacksurface <package>
 
 This command inspects the target app's manifest and provides a report on any exported components of the application, and verifies whether the application is debuggable.
 
-Once the attack surface has been identified, you can obtain more specific information about each component class. For example, to list  Activities, you can use the following command:
+Once the attack surface has been identified, you can obtain more specific information about each component class. For example, to list Activities, you can use the following command:
 
 ```sh
 run app.activity.info -a <package>
