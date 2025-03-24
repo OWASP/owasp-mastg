@@ -9,15 +9,18 @@ import re
 import logging
 
 import requests
+from functools import lru_cache
 log = logging.getLogger('mkdocs')
 MASVS = None
 
+@lru_cache(maxsize=None)
 def get_platform(input_file: str) -> str:
     if "/android/" in input_file:
         return "android"
     elif "/ios/" in input_file:
         return "ios"
 
+@lru_cache(maxsize=None)
 def get_mastg_tests_dict():
 
     mastg_tests = {}
@@ -48,6 +51,7 @@ def get_mastg_tests_dict():
                     continue
     return mastg_tests
 
+@lru_cache(maxsize=None)
 def retrieve_masvs(version="latest"):
     global MASVS
     url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
@@ -56,6 +60,7 @@ def retrieve_masvs(version="latest"):
     MASVS = yaml.safe_load(content)
     return MASVS
 
+@lru_cache(maxsize=None)
 def get_masvs_groups():
     groups = {}
     for group in MASVS['groups']:
@@ -191,6 +196,7 @@ def get_mastg_components_dict(name):
                     components.append(frontmatter)
         return components
 
+@lru_cache(maxsize=None)
 def get_all_weaknessess():
 
     weaknesses = []
@@ -223,6 +229,7 @@ def get_all_weaknessess():
 
     return weaknesses
 
+@lru_cache(maxsize=None)
 def get_all_tests_beta():
 
     tests = []
@@ -251,6 +258,7 @@ def get_all_tests_beta():
             tests.append(frontmatter)
     return tests
 
+@lru_cache(maxsize=None)
 def get_all_demos_beta():
 
     demos = []
@@ -278,6 +286,7 @@ def get_all_demos_beta():
             demos.append(frontmatter)
     return demos
 
+@lru_cache(maxsize=None)
 def get_all_mitigations_beta():
     
         mitigations = []
