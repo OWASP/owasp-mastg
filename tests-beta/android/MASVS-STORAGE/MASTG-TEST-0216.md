@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Sensitive Data Not Excluded From Backup (Dynamic)
+title: Sensitive Data Not Excluded From Backup
 id: MASTG-TEST-0216
 type: [dynamic, filesystem]
 weakness: MASWE-0004

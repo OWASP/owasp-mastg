@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Sensitive Data Not Excluded From Backup (Static)
+title: References to Backup Configurations Not Excluding Sensitive Data
 id: MASTG-TEST-0262
 type: [static]
 weakness: MASWE-0004
