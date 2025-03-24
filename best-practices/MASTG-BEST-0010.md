@@ -62,3 +62,11 @@ The note says the guidance applies to apps **targeting API 27 or lower**. But in
     - [Summary of changes](https://developer.android.com/about/versions/14/summary "Android 14 Summary of changes")
     - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/14/behavior-changes-all#security "Android 14 Security Behavior changes (all apps)")
     - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/14/behavior-changes-14#security "Android 14 Security Behavior changes (apps targeting version)")
+- **Android 15 (API level 35)** in 2024:
+    - [Summary of changes](https://developer.android.com/about/versions/15/summary "Android 15 Summary of changes")
+    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/15/behavior-changes-all#security "Android 15 Security Behavior changes (all apps)")
+    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/15/behavior-changes-15#security "Android 15 Security Behavior changes (apps targeting version)")
+- **Android 16 (API level 36)** in 2025 (:material-flask: BETA):
+    - [Summary of changes](https://developer.android.com/about/versions/16/summary "Android 16 Summary of changes")
+    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/16/behavior-changes-all#security "Android 16 Security Behavior changes (all apps)")
+    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/16/behavior-changes-16#security "Android 16 Security Behavior changes (apps targeting version)")
