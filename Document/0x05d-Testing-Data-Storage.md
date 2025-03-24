@@ -768,7 +768,7 @@ Regardless of the method used, the app can use the following `inputType` attribu
 
 **Note:** In the MASTG tests we won't be checking the minimum required SDK version in the Android Manifest `minSdkVersion` because we are considering testing modern apps. If you are testing an older app, you should check it. For example, Android API level 11 is required for `textWebPassword`. Otherwise, the compiled app would not honor the used input type constants allowing keyboard caching.
 
-The `inputType` attribute is a bitwise combination of flags and classes. The `InputType` class contains constants for both flags and classes. The flags are defined as `TYPE_TEXT_FLAG_*` and the classes are defined as `TYPE_CLASS_*`. The values of these constants are defined in the Android source code. You can find the source code for the `InputType` class [here](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/text/InputType.java "Android InputType class").
+The `inputType` attribute is a bitwise combination of flags and classes. The `InputType` class contains constants for both flags and classes. The flags are defined as `TYPE_TEXT_FLAG_*` and the classes are defined as `TYPE_CLASS_*`. The values of these constants are defined in the Android source code. You can find the source code for the `InputType` class [here](http://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/text/InputType.java "Android InputType class").
 
 The `inputType` attribute in Android is a bitwise combination of these constants:
 
