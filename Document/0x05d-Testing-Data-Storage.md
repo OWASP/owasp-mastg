@@ -697,11 +697,13 @@ For this reason all notification usage should be inspected for confidential or h
 
 #### Keyboard Cache
 
-When users enter information in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, by default, the Android keyboard may cache input to provide suggestions and auto-completion, which can lead to unintended exposure of sensitive data.
+When users enter information into input fields, the keyboard software often provides suggestions based on previously entered data. This auto-completion feature can be very useful for messaging apps and other scenarios. However, by default, the Android keyboard may retain (or "cache") input history to offer suggestions and auto-completion. In contexts where sensitive data is entered (such as passwords or PINs), this caching behavior can inadvertently expose sensitive information.
 
-Apps can use various methods to set the `inputType` attribute for text input fields. They include:
+Apps can control this behavior by appropriately configuring the `inputType` attribute on text input fields. There are several ways to do this:
 
-**XML Layouts**: In the app's XML layout files (typically located in the `/res/layout` directory after unpacking the APK), input types can be defined directly within the `<EditText>` element using the `android:inputType` attribute. For example:
+**1. XML Layouts**
+
+In the app's XML layout files (typically located in the `/res/layout` directory after unpacking the APK), you can define the input type directly in the `<EditText>` element using the `android:inputType` attribute. For example, setting the input type to `"textPassword"` automatically disables auto-suggestions and caching:
 
 ```xml
 <EditText
@@ -712,12 +714,43 @@ Apps can use various methods to set the `inputType` attribute for text input fie
     android:inputType="textPassword" />
 ```
 
-**Programmatic Configuration**: Input types can be set programmatically using the `setInputType()` method to assign `InputType` constants. For instance, in Kotlin apps using Jetpack Compose, the input type can be set using the `inputType` parameter in the `EditText` composable:
+**2. Using the Traditional Android View System**
+
+When creating input fields in code using the traditional Android view system, you can set the input type programmatically. For example, using an `EditText` in Kotlin:
 
 ```kotlin
 val input = EditText(context).apply {
     hint = "Enter PIN"
-    inputType =  InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+    inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+}
+```
+
+**3. Using Jetpack Compose**
+
+If you are developing with [Jetpack Compose](https://developer.android.com/develop/ui/compose/text/user-input), you do not use `EditText` directly. Instead, you use composable functions such as `TextField` or `OutlinedTextField` along with parameters like `keyboardOptions` and `visualTransformation` to achieve similar behavior. For example, to create a password field without suggestions:
+
+```kotlin
+OutlinedTextField(
+    value = password,
+    onValueChange = { password = it },
+    label = { Text("Enter Password") },
+    visualTransformation = PasswordVisualTransformation(),
+    keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Password,
+        autoCorrect = false
+    ),
+    modifier = Modifier.fillMaxWidth()
+)
+```
+
+In this Compose example, the `PasswordVisualTransformation()` masks the input, and `keyboardOptions` with [`KeyboardType.Password`](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui-text/src/commonMain/kotlin/androidx/compose/ui/text/input/KeyboardType.kt) helps specify the password input type. The `autoCorrect` parameter is set to `false` to prevent suggestions.
+
+[Internally](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/src/androidMain/kotlin/androidx/compose/ui/text/input/TextInputServiceAndroid.android.kt;l=528-529), the `KeyboardType` enum in Jetpack Compose maps to the Android `inputType` values. For example, the `KeyboardType.Password` corresponds to the following `inputType`:
+
+```kotlin
+KeyboardType.Password -> {
+    this.inputType =
+        InputType.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
 }
 ```
 
