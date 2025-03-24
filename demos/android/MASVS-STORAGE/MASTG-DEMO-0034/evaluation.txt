@@ -1,2 +1,0 @@
-[FAIL] Backup is enabled
-  android:allowBackup: True
