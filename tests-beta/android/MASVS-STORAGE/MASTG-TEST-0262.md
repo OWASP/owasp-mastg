@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Sensitive Data Not Excluded From Backup (Static)
-id: MASTG-TEST-0258
+id: MASTG-TEST-0262
 type: [static]
 weakness: MASWE-0004
 best-practices: [MASTG-BEST-0004]
@@ -46,4 +46,4 @@ The test fails if the app allows sensitive data to be backed up. Specifically, i
 - `android:allowBackup="true"` in the `AndroidManifest.xml`
 - `android:fullBackupContent="@xml/backup_rules"` isn't declared in the `AndroidManifest.xml` (for Android 11 or lower)
 - `android:dataExtractionRules="@xml/data_extraction_rules"` isn't declared in the `AndroidManifest.xml` (for Android 12 and higher)
-- `backup_rules.xml` or `data_extraction_rules.xml` aren't present or don't exclude sensitive files.
+- `backup_rules.xml` or `data_extraction_rules.xml` aren't present or don't exclude all sensitive files.

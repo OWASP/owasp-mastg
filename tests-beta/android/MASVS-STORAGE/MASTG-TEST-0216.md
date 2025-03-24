@@ -11,7 +11,7 @@ best-practices: [MASTG-BEST-0004]
 
 This test verifies whether apps correctly instruct the system to exclude sensitive files from backups by performing a backup and restore of the app data and checking which files are restored.
 
-See @MASTG-TEST-0216 for a static analysis counterpart.
+See @MASTG-TEST-0262 for a static analysis counterpart.
 
 Android provides a way to start the backup daemon to back up and restore app files, which you can use to verify which files are actually restored from the backup.
 
