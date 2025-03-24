@@ -1,2 +1,1 @@
 NO_COLOR=true semgrep -c ../../../../rules/mastg-android-backup-manifest.yml ../MASTG-DEMO-0020/AndroidManifest.xml > output.txt
-python3 evaluate.py
