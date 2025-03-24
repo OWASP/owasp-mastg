@@ -7,7 +7,7 @@ platform: android
 
 Ensure that the `minSdkVersion` in the `build.gradle` file is set to the latest version of the Android platform that aligns with your app's requirements while maintaining compatibility with your user base.
 
-Developers often hesitate to increase `minSdkVersion` because they want their app to be available on as many devices as possible. Even though Google doesn't enforce a specific `minSdkVersion`, [as they do with the `targetSdkVersion`](https://support.google.com/googleplay/android-developer/answer/11926878), it's crucial to understand the implications of setting a low `minSdkVersion`, as it **directly impacts security**, **exposes users to vulnerabilities**, and **prevents the app from leveraging critical security protections**.
+Companies often hesitate to increase `minSdkVersion` because they want their app to be available on as many devices as possible. Even though Google doesn't enforce a specific `minSdkVersion`, [as they do with the `targetSdkVersion`](https://support.google.com/googleplay/android-developer/answer/11926878), it's crucial to understand the implications of setting a low `minSdkVersion`, as it **directly impacts security**, **exposes users to vulnerabilities**, and **prevents the app from leveraging critical security protections**.
 
 ## Clarifying the Difference: `targetSdkVersion` vs `minSdkVersion`
 

@@ -1,11 +1,11 @@
 ---
-title: Securely Load File Content to a WebView
-alias: securely-load-file-content-to-webview
+title: Securely Load File Content in a WebView
+alias: securely-load-file-content-in-webview
 id: MASTG-BEST-0011
 platform: android
 ---
 
-The recommended approach to **load file content to a WebView securely** is to use [`WebViewClient`](https://developer.android.com/reference/android/webkit/WebViewClient) with [`WebViewAssetLoader`](https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader) to load assets from the app's assets directory using `https://` instead of `file://` URLs.
+The recommended approach to **load file content in a WebView securely** is to use [`WebViewClient`](https://developer.android.com/reference/android/webkit/WebViewClient) with [`WebViewAssetLoader`](https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader) to load assets from the app's assets directory using `https://` instead of `file://` URLs.
 
 If you must allow the WebView to load local files using the `file://` scheme, ensure that the following methods from the [`WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings) class are **not used** or are **explicitly set to `false`**:
 

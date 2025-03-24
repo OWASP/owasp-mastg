@@ -20,7 +20,7 @@ This test checks for references to methods from the [`WebSettings`](https://deve
 
 By combining these settings, an attack can become possible because if a malicious HTML file gains full privilege and it's able to access local resources and then exfiltrate them over the network, effectively bypassing the usual security barriers enforced by the same-origin policy.
 
-Even though these methods have secure defaults and are **deprecated in Android 10 (API level 29) and later**, they can still be explicitly set to `true` or use their insecure defaults in apps that can run in older versions of Android (due to their `minSdkVersion`).
+Even though these methods have secure defaults and are **deprecated in Android 10 (API level 29) and later**, they can still be explicitly set to `true` or their insecure defaults may be used in apps that run on older versions of Android (due to their `minSdkVersion`).
 
 Refer to [Android WebView Local File Access Settings](../../../Document/0x05h-Testing-Platform-Interaction.md/#webview-local-file-access-settings) for more information on these methods (default values, deprecation status, security implications), the specific files that can be accessed, and the conditions under which they can be accessed.
 

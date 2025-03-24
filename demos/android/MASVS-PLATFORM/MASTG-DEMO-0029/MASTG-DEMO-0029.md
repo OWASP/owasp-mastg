@@ -19,7 +19,7 @@ See @MASTG-DEMO-0030 for all the details about the sample and the attack.
 
 ## Steps
 
-Let's run @MASTG-TOOL-0110 rules against the sample code.
+Run @MASTG-TOOL-0110 rules against the sample code.
 
 {{ ../../../../rules/mastg-android-webview-allow-content-access.yml }}
 
