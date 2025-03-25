@@ -29,9 +29,9 @@ The `android:debuggable` flag in the `AndroidManifest.xml` file of an Android ap
 
 ## Mode of Introduction
 
-- **Misconfigured Build Settings**: Misconfigured build settings can accidentally leave an application in a state that is debuggable, exposing it to security vulnerabilities. This can result from improper selection of build variants, errors in CI/CD configurations, or mistakenly applying debug settings to production environments.
+- **Misconfigured Build Settings**: Misconfigured build settings can accidentally leave an application in a state that is debuggable, exposing it to securitsy vulnerabilities. This can result from improper selection of build variants, errors in CI/CD configurations, or mistakenly applying debug settings to production environments.
 - **Insufficient Security Measures**: The lack of security checks within the development and deployment pipeline considerably raises the risk of misconfigurations, such as unintentionally releasing debuggable builds into the production environment.
 
 ## Mitigations
 
-- Ensure the `android:debuggable` flag in the `AndroidManifest.xml` and `get-task-allow` attribute in `entitlements.plist` is set to `false` in all release builds.  
+- Ensure the `android:debuggable` flag in the `AndroidManifest.xml` and `get-task-allow` attribute in `entitlements.plist` is set to `false` in all release builds.

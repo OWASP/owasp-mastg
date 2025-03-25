@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Debuggable Flag Not Disabled with semgrep
+title: Debuggable Flag Enabled in the AndroidManifest with semgrep
 id: MASTG-DEMO-0036
 code: [kotlin]
 test: MASTG-TEST-0226
