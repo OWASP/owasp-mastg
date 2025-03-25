@@ -3,17 +3,18 @@ platform: android
 title: Debuggable Flag Not Disabled with semgrep
 id: MASTG-DEMO-0036
 code: [kotlin]
+test: MASTG-TEST-0226
 ---
 
 ### Sample
 
-The code snippet below shows a sample code with the debuggable flag not disabled.
+The code snippet below shows a sample manifest file with the debuggable flag enabled.
 
 {{ AndroidManifest.xml # AndroidManifest_reversed.xml }}
 
 ### Steps
 
-Let's run our @MASTG-TOOL-0110 rule against the sample code.
+Let's run our @MASTG-TOOL-0110 rule against the manifest file.
 
 {{ ../../../../rules/mastg-android-debuggable-flag-not-disabled.yaml }}
 
@@ -27,4 +28,4 @@ The rule has identified an instance in the AndroidManifest file where the app de
 
 ### Evaluation
 
-The test fails because the app set the `android:debuggable` attribute to `true`.
+The test case fails if the `debuggable` flag is explicitly set to `true`.

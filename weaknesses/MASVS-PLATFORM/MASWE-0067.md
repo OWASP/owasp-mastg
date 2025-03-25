@@ -21,18 +21,17 @@ status: draft
 
 ## Overview
 
-The `android:debuggable` flag in an Android application's `AndroidManifest.xml`  and the `get-task-allow` determines whether the application is debuggable. These settings, intended for debugging during development, allow attackers to attach debuggers, inspect application memory, modify code at runtime and easily reverse engineer the application. This significantly increases the attack surface and compromises the integrity of the application by providing opportunities for data theft, malicious code injection, and exposure of sensitive information such as API keys. To ensure your application is protected from these potential threats, it's important to explicitly disable these debugging features in release builds through proper build configurations and deployment profiles.
+The `android:debuggable` flag in the `AndroidManifest.xml` file of an Android app, along with the `get-task-allow` attribute in the iOS app's `entitlements.plist`, indicates whether the application can be debugged. If these flags remain enabled in the app's production build, it opens the door for attackers to attach debuggers, examine the app's memory, alter code during execution, and effectively reverse engineer the application.
 
 ## Impact
 
-- **Allows runtime code inspection**: If the Debuggable flag is not disabled, an attacker can connect a debugger to the app, allowing them to modify its functionality and manipulate values during runtime, which can compromise or change the application's logic.
+- **Runtime Manipulation**: When an attacker connects a debugger to the application, they can manipulate variables and alter the app's behavior in real time. This also provides them with the means to extract sensitive information, such as encryption keys, API keys, user credentials, and tokens stored in the application.
 
 ## Mode of Introduction
 
-- **Incorrect Configuration in files**: Before releasing the app, developers may forget to remove or update the flag.
-- **Incorrect Build Configuration**: If debuggable true is mistakenly set in the release build type, it can lead to the production app being debuggable.
-- **Merging from Development Branches**: If debugging is enabled in a development or testing branch and merged into the production branch without review, the flag may persist in the release build.
+- **Misconfigured Build Settings**: Misconfigured build settings can accidentally leave an application in a state that is debuggable, exposing it to security vulnerabilities. This can result from improper selection of build variants, errors in CI/CD configurations, or mistakenly applying debug settings to production environments.
+- **Insufficient Security Measures**: The lack of security checks within the development and deployment pipeline considerably raises the risk of misconfigurations, such as unintentionally releasing debuggable builds into the production environment.
 
 ## Mitigations
 
-- **Set debuggable to false**: Ensure `android:debuggable` or `get-task-allow` is set to false in production builds.  
+- Ensure the `android:debuggable` flag in the `AndroidManifest.xml` and `get-task-allow` attribute in `entitlements.plist` is set to `false` in all release builds.  
