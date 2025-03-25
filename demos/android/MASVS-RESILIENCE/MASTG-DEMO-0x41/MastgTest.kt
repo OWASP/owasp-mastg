@@ -24,7 +24,7 @@ class MastgTest (private val context: Context){
     }
 
     private fun triggerSqliteCursorLeak() {
-        val db: SQLiteDatabase = openOrCreateDatabase("test.db", MODE_PRIVATE, null)
+        val db: SQLiteDatabase = context.openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null)
         db.execSQL("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
         db.execSQL("INSERT INTO users (name) VALUES ('Alice'), ('Bob')")
 
