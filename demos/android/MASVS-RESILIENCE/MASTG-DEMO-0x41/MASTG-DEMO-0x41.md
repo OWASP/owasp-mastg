@@ -18,14 +18,12 @@ The snippet then opens an SQL Cursor which remains unclosed, to trigger the poli
 
 1. Install the app on your device.
 2. Execute `run.sh` which uses @MASTG-TECH-0009 to show the system logs created by `StrictMode`.
-3. Open the app and and let it execute.
-
+3. Open the app and let it execute.
 {{ run.sh }}
 
 ### Observation
 
-The system log outputs all detectd `StrictMode` policy violations.
-
+The system log outputs all detected `StrictMode` policy violations.
 {{ output.txt }}
 
 ### Evaluation
