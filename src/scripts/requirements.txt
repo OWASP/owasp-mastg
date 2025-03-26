@@ -1,5 +1,5 @@
 mkdocs
-mkdocs-material
+mkdocs-material==9.5.27
 mkdocs-mermaid2-plugin
 mkdocs-include-dir-to-nav
 mkdocs-awesome-pages-plugin
