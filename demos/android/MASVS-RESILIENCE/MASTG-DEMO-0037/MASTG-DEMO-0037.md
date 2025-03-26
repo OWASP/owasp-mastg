@@ -1,9 +1,9 @@
 ---
 platform: android
 title: App Leaking Information about Unclosed SQL Cursor via StrictMode
-id: MASTG-DEMO-0x41
+id: MASTG-DEMO-0037
 code: [kotlin]
-test: MASTG-TEST-0x41
+test: MASTG-TEST-0263
 ---
 
 ### Sample

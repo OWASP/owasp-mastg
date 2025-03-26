@@ -7,6 +7,9 @@ platform: android
 title: Testing for Debugging Code and Verbose Error Logging
 masvs_v1_levels:
 - R
+status: deprecated
+covered_by: [MASTG-TEST-0263]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
