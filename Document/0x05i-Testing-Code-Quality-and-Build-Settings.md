@@ -94,13 +94,13 @@ To inspect native binaries, use a standard tool like `nm` or `objdump` to examin
 
 #### StrictMode
 
-StrictMode is a developer tool for detecting violations, e.g. accidental disk or network access on the application's main thread. It can also be used to check for good coding practices, such as implementing performant code.
+StrictMode is a developer tool for detecting violations, e.g. accidental disk or network access to the app's main thread. It can also be used to check for good coding practices, such as implementing performant code.
 
 Different policies can be set using the [ThreadPolicy Builder](https://developer.android.com/reference/android/os/StrictMode.ThreadPolicy.Builder) and the [VmPolicy Builder](https://developer.android.com/reference/android/os/StrictMode.VmPolicy.Builder).
 
-Reaction to detected policy violations can be set using one or more of the `penalty*` methods. For example, `penaltyLog()` can be enabled to log each policy violation to the system log.
+Reaction to detected policy violations can be set using one or more of the `penalty*` methods. For example, `penaltyLog()` can be enabled to log any policy violation to the system log.
 
-Following is [an example of `StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html "StrictMode Class") with policies enabled for disk and network access to the main thread. Once this is detected, a log message is written to the system log, and the app is forced to crash.
+Below is an example of [`StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html "StrictMode Class") with policies enabled for disk and network access to the main thread. If this is detected, a log message is written to the system log, and the app is forced to crash.
 
 ```java
 public void onCreate() {
@@ -122,7 +122,7 @@ public void onCreate() {
  }
 ```
 
-Inserting the policy in the `if` statement with the `BuildConfig.DEBUG` condition is recommended, to automatically enable the StrictMode policies only for debug builds of your app.
+It is recommended to include the policy in the `if` statement with the `BuildConfig.DEBUG` condition to automatically enable StrictMode policies only for debug builds of your app.
 
 ### Exception Handling
 

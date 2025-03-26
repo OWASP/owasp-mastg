@@ -10,6 +10,8 @@ class MastgTest (private val context: Context){
     fun mastgTest(): String {
         enableStrictMode()
         triggerSqliteCursorLeak()
+        
+        System.gc() // Force garbage collection to trigger leak detection
 
         return "SUCCESS!!\n\nSQL Cursor leaked."
     }
@@ -17,7 +19,7 @@ class MastgTest (private val context: Context){
     private fun enableStrictMode() {
         StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects() // Detect leaked/unclosed SQLite objects
+                .detectLeakedClosableObjects() // Detect leaked/unclosed SQLite objects
                 .penaltyLog()                 // Log violations
                 .build()
         )

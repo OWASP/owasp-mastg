@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Testing if StrictMode is enabled
+title: Logging of StrictMode Violations
 id: MASTG-TEST-0X41
 apis: [StrictMode]
 type: [dynamic]
