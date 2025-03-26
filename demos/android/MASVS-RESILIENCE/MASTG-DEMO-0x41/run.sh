@@ -1,1 +1,1 @@
-adb logcat -s StrictMode > output.txt
+adb logcat -s StrictMode -d > output.txt

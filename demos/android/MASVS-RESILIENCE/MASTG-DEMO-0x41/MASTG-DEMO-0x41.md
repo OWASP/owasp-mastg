@@ -17,8 +17,8 @@ The snippet then opens an SQL Cursor which remains unclosed, to trigger the poli
 ### Steps
 
 1. Install the app on your device.
-2. Execute `run.sh` which uses @MASTG-TECH-0009 to show the system logs created by `StrictMode`.
-3. Open the app and let it execute.
+2. Open the app and let it execute.
+3. Execute `run.sh` which uses @MASTG-TECH-0009 to show the system logs created by `StrictMode`.
 
 {{ run.sh }}
 
@@ -30,5 +30,5 @@ The system log outputs all detected `StrictMode` policy violations.
 
 ### Evaluation
 
-The test fails because `StrictMode' is enabled, as we can see from the system log output which shows that there is a location where an SQL cursor is not closed properly.
+The test fails because `StrictMode' is enabled, as we can see from the system log output which shows that there is a location (`MastgTest.kt:35`) where an SQL cursor is not closed properly.
 The actually reported issue of the cursor not being closed is a different issue outside the scope of this demo.
