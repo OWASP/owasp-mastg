@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-CODE-5]
   masvs-v2: [MASVS-CODE-3]
+  cwe: [1395]
 
 draft:
   description: e.g. via dependency check and SBOM (software bill of materials)
