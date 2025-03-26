@@ -9,7 +9,7 @@ weakness: MASWE-0094
 
 ## Overview
 
-This test checks whether an app enables [`StrictMode`](../../../0x05i-Testing-Code-Quality-and-Build-Settings/#strictmode) in production. While useful for developers to log policy violations such as disk I/O or network operations in production apps, leaving `StrictMode` enabled can expose sensitive implementation details in the logs that could be exploited by attackers.
+This test checks whether an app enables [`StrictMode`](../../../Document/0x05i-Testing-Code-Quality-and-Build-Settings.md#strictmode) in production. While useful for developers to log policy violations such as disk I/O or network operations in production apps, leaving `StrictMode` enabled can expose sensitive implementation details in the logs that could be exploited by attackers.
 
 ## Steps
 
