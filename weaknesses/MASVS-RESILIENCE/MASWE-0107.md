@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-6]
   masvs-v2: [MASVS-RESILIENCE-2]
+  cwe: [114]
 
 draft:
   description: e.g. memory tampering detection

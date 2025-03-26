@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-9]
   masvs-v2: [MASVS-RESILIENCE-3]
+  cwe: [657]
 
 draft:
   description: e.g. polymorphic obfuscation, method-inlining, insertion of opaque

@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-5]
   masvs-v2: [MASVS-RESILIENCE-1]
+  cwe: [358]
 
 draft:
   description: e.g. identifying features and limitations available for commonly used
