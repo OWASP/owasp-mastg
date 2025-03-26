@@ -1,7 +1,8 @@
 rules:
   - id: android-debuggable-true
-    everity: WARNING
+    severity: WARNING
     message: "debuggable flag is set to true"
-    languages: [xml]
+    languages:
+      - xml
     patterns:
       - pattern: 'android:debuggable="true"'
