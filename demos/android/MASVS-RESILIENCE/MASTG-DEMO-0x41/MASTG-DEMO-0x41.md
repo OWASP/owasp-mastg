@@ -30,4 +30,5 @@ The system log outputs all detected `StrictMode` policy violations.
 
 ### Evaluation
 
-The system log output revealed one location where a SQL Cursor is not properly closed. We can therefore conclude that the test fails because `StrictMode` is enabled.
+The test fails because `StrictMode' is enabled, as we can see from the system log output which shows that there is a location where an SQL cursor is not closed properly.
+The actually reported issue of the cursor not being closed is a different issue outside the scope of this demo.
