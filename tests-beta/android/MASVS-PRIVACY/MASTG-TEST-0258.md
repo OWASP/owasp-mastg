@@ -17,7 +17,7 @@ Android apps can configure the behavior of text input fields using XML attribute
 1. Reverse engineer the app (@MASTG-TECH-0017).
 2. Search for XML attributes in the layout files within the `res/layout` directory.
 3. Search for calls to the `setInputType` method and the input type values passed to it (@MASTG-TECH-0014).
-4. Search for calls to [`KeyboardOptions` constructors](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/KeyboardOptions#public-constructors_1) and their parameters in the reversed code (@MASTG-TECH-0014). Especially `keyboardType` and `autoCorrect`.
+4. In case the app uses Jetpack Compose, search for calls to [`KeyboardOptions` constructors](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/KeyboardOptions#public-constructors_1) and their parameters in the reversed code (@MASTG-TECH-0014). Especially `keyboardType` and `autoCorrect`.
 
 ## Observation
 
