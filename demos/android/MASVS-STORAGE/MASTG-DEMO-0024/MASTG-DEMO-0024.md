@@ -20,7 +20,7 @@ A dialog is also created using `AlertDialog.Builder`, and it includes "Sign Up" 
 
 Let's run @MASTG-TOOL-0110 rule against the sample code. The rule uses a pattern that captures every call to `setInputType` along with its argument.
 
-{{ ../../../../rules/mastg-android-non-caching-input-types.yml }}
+{{ ../../../../rules/mastg-android-keyboard-cache-input-types.yml }}
 
 {{ run.sh }}
 

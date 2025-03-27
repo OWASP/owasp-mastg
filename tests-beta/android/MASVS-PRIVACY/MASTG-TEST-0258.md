@@ -10,13 +10,14 @@ weakness: MASWE-0053
 
 This test verifies that the app appropriately configures text input fields to prevent the [keyboard from caching](../../../Document/0x05d-Testing-Data-Storage.md#keyboard-cache) sensitive information, such as passwords or personal data.
 
-Android apps can configure the behavior of text input fields using XML attributes in the layout files or programmatically in the code. If the app doesn't use the [non-caching input types](../../../Document/0x05d-Testing-Data-Storage.md#non-caching-input-types) for sensitive data, the keyboard may cache sensitive information.
+Android apps can configure the behavior of text input fields using XML attributes in the layout files or programmatically in the code. If the app doesn't use [non-caching input types](../../../Document/0x05d-Testing-Data-Storage.md#non-caching-input-types) for sensitive data, the keyboard may cache sensitive information.
 
 ## Steps
 
 1. Reverse engineer the app (@MASTG-TECH-0017).
-2. Search for the above XML attributes in the layout files within the `res/layout` directory.
-3. Search for the above code attributes and any `setInputType` API calls in the reversed code (@MASTG-TECH-0014).
+2. Search for XML attributes in the layout files within the `res/layout` directory.
+3. Search for calls to the `setInputType` method and the input type values passed to it (@MASTG-TECH-0014).
+4. In case the app uses Jetpack Compose, search for calls to [`KeyboardOptions` constructors](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/KeyboardOptions#public-constructors_1) and their parameters in the reversed code (@MASTG-TECH-0014). Especially `keyboardType` and `autoCorrect`.
 
 ## Observation
 

@@ -36,12 +36,13 @@ public final class MastgTest {
         EditText $this$showPopup_u24lambda_u242 = new EditText(context);
         $this$showPopup_u24lambda_u242.setHint("Enter password (cached)");
         $this$showPopup_u24lambda_u242.setInputType(1);
-        EditText $this$showPopup_u24lambda_u243 = new EditText(context);
-        $this$showPopup_u24lambda_u243.setHint("Enter PIN (cached)");
-        $this$showPopup_u24lambda_u243.setInputType(18);
+        EditText input3 = new EditText(context);
+        input3.setHint("Enter PIN (cached)");
+        input3.setInputType(18);
+        input3.setInputType(2);
         layout.addView($this$showPopup_u24lambda_u241);
         layout.addView($this$showPopup_u24lambda_u242);
-        layout.addView($this$showPopup_u24lambda_u243);
+        layout.addView(input3);
         new AlertDialog.Builder(context).setTitle("Sign Up Form").setView(layout).setPositiveButton("Sign Up", new DialogInterface.OnClickListener() { // from class: org.owasp.mastestapp.MastgTest$$ExternalSyntheticLambda0
             @Override // android.content.DialogInterface.OnClickListener
             public final void onClick(DialogInterface dialogInterface, int i) {
