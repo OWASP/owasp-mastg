@@ -19,7 +19,6 @@ tar xvf org.owasp.mastestapp.ab
 
 The extracted backup directory (`apps/`) is stored in the current working directory. For instructions on how to inspect it, see @MASTG-TECH-0127.
 
-
 ## Using ADB Backup
 
 !!! warning
