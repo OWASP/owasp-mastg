@@ -9,6 +9,17 @@ Run [Backup Manager (`adb shell bmgr`)](https://developer.android.com/identity/d
 
 {{ ../../utils/mastg-android-backup-bmgr.sh }}
 
+When using the cloud transport variant, each app's backup is managed and stored independently in the user's Google Drive. In our case we're interested in the local transport variant, where `bmgr` stores each app's backup data in a separate `.ab` file within the `/data/data/com.android.localtransport/files/` directory on the device. To extract the file run:
+
+```sh
+adb root
+adb pull /data/data/com.android.localtransport/files/1/_full/org.owasp.mastestapp org.owasp.mastestapp.ab
+tar xvf org.owasp.mastestapp.ab
+```
+
+The extracted backup directory (`apps/`) is stored in the current working directory. For instructions on how to inspect it, see @MASTG-TECH-0127.
+
+
 ## Using ADB Backup
 
 !!! warning

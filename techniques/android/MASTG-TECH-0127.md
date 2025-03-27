@@ -7,7 +7,7 @@ You can inspect an Android app's backup data to verify that sensitive data is no
 
 ## Backup Made via ADB Backup
 
-Android backups made via `adb backup` are stored in a `.ab` file. If you followed the steps from @MASTG-TECH-0128, you should have an `apps/` directory in your working directory. This directory contains the extracted backup data.
+Android backups are stored in `.ab` files, which are specially formatted TAR archives. If you followed the steps from @MASTG-TECH-0128, you should have an `apps/` directory in your working directory. This directory contains the extracted backup data.
 
 The files are stored within top-level directories according to their semantic origin:
 
