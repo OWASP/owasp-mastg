@@ -4,6 +4,7 @@ title: Detecting StrictMode Uses with Frida
 id: MASTG-DEMO-0038
 code: [kotlin]
 test: MASTG-TEST-0264
+status: new
 ---
 
 ### Sample

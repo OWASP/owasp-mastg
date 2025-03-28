@@ -4,6 +4,7 @@ title: Detecting StrictMode PenaltyLog Usage with Semgrep
 id: MASTG-DEMO-0039
 code: [kotlin]
 test: MASTG-TEST-0265
+status: new
 ---
 
 ### Sample
