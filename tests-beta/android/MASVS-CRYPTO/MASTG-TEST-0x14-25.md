@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Weak Signature Algorithms
-id: MASTG-TEST-0x14
+id: MASTG-TEST-0x14-25
 type: [static, dynamic]
 weakness: MASWE-0025	
 ---

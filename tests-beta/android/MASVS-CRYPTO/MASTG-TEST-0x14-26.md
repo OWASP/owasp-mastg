@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Improper Verification of Cryptographic Signature
-id: MASTG-TEST-0x14
+id: MASTG-TEST-0x14-26
 type: [static, dynamic]
 weakness: MASWE-0026
 ---
