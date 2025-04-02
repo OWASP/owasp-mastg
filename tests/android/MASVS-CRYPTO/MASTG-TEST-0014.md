@@ -10,6 +10,9 @@ title: Testing the Configuration of Cryptographic Standard Algorithms
 masvs_v1_levels:
 - L1
 - L2
+status: deprecated
+covered_by: ['MASTG-TEST-0x14-21', 'MASTG-TEST-0x14-22', 'MASTG-TEST-0x14-23', 'MASTG-TEST-0x14-24', 'MASTG-TEST-0x14-25', 'MASTG-TEST-0x14-26']
+deprecation_reason: New version available in MASTG V2
 ---
 
 ## Overview
