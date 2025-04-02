@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-CODE-4]
   masvs-v2: [MASVS-RESILIENCE-3]
+  cwe: [540]
 
 draft:
   description: e.g. non-production URLs, code flows, verbose logging
