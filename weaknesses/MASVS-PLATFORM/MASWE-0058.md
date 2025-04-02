@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-PLATFORM-3]
   masvs-v2: [MASVS-PLATFORM-1, MASVS-STORAGE-2, MASVS-CODE-4]
+  cwe: [939, 917]
 
 draft:
   description: e.g. use of URL Custom Schemes, unverified AppLinks/Universal Links,
