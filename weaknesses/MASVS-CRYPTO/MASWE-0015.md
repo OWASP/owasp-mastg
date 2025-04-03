@@ -10,14 +10,10 @@ mappings:
   cwe: [327, 477, 522]
 
 refs:
-- https://labs.withsecure.com/publications/how-secure-is-your-android-keystore-authentication
-- https://developer.android.com/reference/java/security/KeyStore
-- https://developer.android.com/about/versions/12/behavior-changes-all#bouncy-castle
-draft:
-  description: Avoid deprecated implementations such as BKS
-  topics:
-  - Bouncy Castle (BKS)
-status: draft
+  - https://labs.withsecure.com/publications/how-secure-is-your-android-keystore-authentication
+  - https://developer.android.com/reference/java/security/KeyStore
+  - https://developer.android.com/about/versions/12/behavior-changes-all#bouncy-castle
 
+status: new
 ---
 
