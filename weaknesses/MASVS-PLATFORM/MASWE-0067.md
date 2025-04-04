@@ -6,17 +6,14 @@ platform: [android, ios]
 profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-2]
-  masvs-v2: [MASVS-PLATFORM-1, MASVS-RESILIENCE-4]
+  masvs-v2: [MASVS-RESILIENCE-4]
+  cwe: []
+  android-risks:
+  - https://developer.android.com/privacy-and-security/risks/android-debuggable
 
 refs:
-- https://developer.android.com/topic/security/risks/android-debuggable
 - https://developer.android.com/guide/topics/manifest/application-element
-draft:
-  description: not setting android:debuggable="false" on Android or get-task-allow="true"
-    in the entitlements file on iOS
-  topics: null
 status: new
-
 ---
 
 ## Overview
