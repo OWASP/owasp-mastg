@@ -1,11 +1,16 @@
-Thank you for submitting a Pull Request to the OWASP MASTG. Please make sure that:
+This PR closes #issue_number
 
-- [ ] Your contribution is written in the 2nd person (e.g. you)
-- [ ] Your contribution is written in an active present form for as much as possible.
-- [ ] You have made sure that the reference section is up to date (e.g. please add sources you have used, make sure that the references to MITRE/MASVS/etc. are up to date)
-- [ ] Your contribution has proper formatted markdown and/or code
-- [ ] Any references to website have been formatted as [TEXT](URL “NAME”)
-- [ ] You verified/tested the effectiveness of your contribution (e.g.: is the code really an effective remediation? Please verify it works!)
+## Description
 
-If your PR is related to an issue. Please end your PR test with the following line:
-This PR closes #< insert number here >.
+Provide a brief description of the changes introduced by this PR.
+
+-------------------
+
+[x] I have read the contributing guidelines.
+
+## Guidelines for Pull Requests (you can delete this section after reading):
+
+- Please ensure that your content follows the [style guide](https://mas.owasp.org/contributing/).
+- If you are working on Porting MASTG v1 Tests to v2, refer to [this document](https://docs.google.com/document/d/1veyzE4cVTSnIsKB1DOPUSMhjXow_MtJOtgHeo5HVoho/edit?usp=sharing).
+- If you are working on new MASWE, tests, or demos, refer to [this document](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?usp=sharing).
+
