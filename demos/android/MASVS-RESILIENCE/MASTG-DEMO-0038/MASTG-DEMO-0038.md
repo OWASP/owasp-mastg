@@ -15,19 +15,23 @@ This sample demonstrates the detection of `StrictMode` uses at runtime using Fri
 
 ### Steps
 
-1. Install the app on a device (@MASTG-TECH-0005).
-2. Ensure you have @MASTG-TOOL-0001 installed on your machine and the frida-server running on the device.
-3. Run `run.sh` to spawn the app with Frida.
-4. Observe the Frida script output for detected `StrictMode` uses.
+1. Install the app on a device (@MASTG-TECH-0005)
+2. Make sure you have @MASTG-TOOL-0001 installed on your machine and the frida-server running on the device
+3. Run `run.sh` to spawn the app with Frida
+4. Click the **Start** button
+5. Stop the script by pressing `Ctrl+C`
 
 {{ run.sh # script.js }}
 
 ### Observation
 
-The Frida script output reveals the runtime usage of `StrictMode` policies, including the detection of leaked SQLite objects.
+The Frida script output reveals the runtime usage of `StrictMode`.
 
 {{ output.txt }}
 
 ### Evaluation
 
-The test passes if the Frida script output shows the runtime usage of `StrictMode` policies. This demonstrates the app's behavior and the effectiveness of the `StrictMode` policy.
+The test fails because the Frida script output shows the runtime usage of `StrictMode`, specifically:
+
+- `StrictMode.VmPolicy.Builder.penaltyLog`
+- `StrictMode.setVmPolicy`

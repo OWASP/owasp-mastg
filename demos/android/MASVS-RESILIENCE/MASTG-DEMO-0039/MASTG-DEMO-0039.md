@@ -9,7 +9,7 @@ status: new
 
 ### Sample
 
-This sample demonstrates the detection of `StrictMode` penalty log usage in the codebase using Semgrep. The rule identifies instances where `StrictMode.VmPolicy.Builder.penaltyLog()` is invoked.
+This sample demonstrates the detection of `StrictMode` uses at runtime using Frida. The app enables a `StrictMode` policy to detect leaked SQLite objects and intentionally leaves a cursor unclosed to trigger the policy.
 
 {{ ../MASTG-DEMO-0037/MastgTest.kt # MastgTest_reversed.java }}
 
@@ -29,4 +29,6 @@ The output shows all usages of APIs related to `StrictMode.setVmPolicy`.
 
 ### Evaluation
 
-The test fails because the output shows usages of `StrictMode` APIs, specifically: `StrictMode.setVmPolicy`.
+The test fails because the output shows usages of `StrictMode` APIs, specifically:
+
+- `StrictMode.setVmPolicy`
