@@ -10,15 +10,15 @@ MASVS v2: ['MASVS-CODE-4']
 
 ## Overview
 
-By default, navigation events inside of a WebView will redirect to the default browser application. However, it is possible to stay within the WebView and handle all new page loads. This can be dangerous, as the new page may be malicious and interact with either the JavaScript bridge, or phish the user. The application should monitor navigation events inside the WebView to make sure that only legitimate pages are loaded, while others are redirected to the browser application.
+By default, navigation events inside of a WebView will redirect to the default browser app. However, it is possible to stay within the WebView and handle all new page loads. This can be dangerous, as the new page may be malicious and interact with either the JavaScript bridge (see @MASWE-0068), or phish the user. The app should monitor navigation events inside the WebView to make sure that only legitimate pages are loaded, while others are redirected to the browser app.
 
 ## Steps
 
 1. Launch the application and make sure you can hook functions (see @MASTG-TECH-0043).
 2. Hook the following functions to see if they are executed:
-   1. WebViewClient.shouldOverrideUrlLoading
-   2. WebViewClient.shouldInterceptRequest
-   3. WebSettings.setSafeBrowsingEnabled
+   1. `WebViewClient.shouldOverrideUrlLoading`
+   2. `WebViewClient.shouldInterceptRequest`
+   3. `WebSettings.setSafeBrowsingEnabled`
 3. Use any WebView inside the app and trigger navigation events
 
 ## Observation
