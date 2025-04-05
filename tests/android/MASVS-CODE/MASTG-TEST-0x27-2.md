@@ -19,7 +19,7 @@ By default, navigation events inside of a WebView will redirect to the default b
    1. `WebViewClient.shouldOverrideUrlLoading`
    2. `WebViewClient.shouldInterceptRequest`
    3. `WebSettings.setSafeBrowsingEnabled`
-3. Use any WebView inside the app and trigger navigation events
+3. Use all WebViews inside the app and trigger navigation events
 
 ## Observation
 
