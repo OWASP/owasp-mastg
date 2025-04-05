@@ -7,7 +7,7 @@ Dynamic Analysis tests the mobile app by executing and running the app binary an
 
 - Business logic flaws
 - Vulnerabilities in the tested environments
-- Weak input validation and bad input/output encoding as they are processed through one or multiple services
+- Improper input validation and bad input/output encoding as they are processed through one or multiple services
 
 Analysis can be assisted by automated tools, such as @MASTG-TOOL-0035, while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
 
