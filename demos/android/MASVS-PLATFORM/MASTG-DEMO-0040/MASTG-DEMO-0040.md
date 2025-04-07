@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Debuggable Flag Enabled in the AndroidManifest with semgrep
-id: MASTG-DEMO-0036
+id: MASTG-DEMO-0040
 code: [kotlin]
 test: MASTG-TEST-0226
 ---
