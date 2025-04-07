@@ -1,1 +1,1 @@
-NO_COLOR=true semgrep -c ../../../../rules/mastg-android-debuggable-flag-not-disabled.yaml ./AndroidManifest_reversed.xml > output.txt
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-debuggable-flag.yml ./AndroidManifest_reversed.xml > output.txt

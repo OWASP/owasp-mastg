@@ -5,14 +5,13 @@
 └────────────────┘
                                                
     AndroidManifest_reversed.xml
-    ❯❱ android-debuggable-true
-          debuggable flag is set to true
-                                        
+    ❯❱ mastg-android-debuggable-flag
+          [MASVS-RESILIENCE-4] debuggable detected as true.
+                                                           
             5┆ <application android:allowBackup="true"                                           
                android:appComponentFactory="androidx.core.app.CoreComponentFactory"              
                android:dataExtractionRules="@xml/data_extraction_rules" android:debuggable="true"
                android:extractNativeLibs="false" android:fullBackupContent="@xml/backup_rules"   
                android:icon="@mipmap/ic_launcher" android:label="@string/app_name"               
                android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true"          
-               android:theme="@style/Theme.MASTestApp">                                        
-
+               android:theme="@style/Theme.MASTestApp">                                                                           

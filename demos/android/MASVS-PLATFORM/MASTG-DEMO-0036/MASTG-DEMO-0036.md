@@ -16,16 +16,16 @@ The code snippet below shows a sample manifest file with the debuggable flag ena
 
 Let's run our @MASTG-TOOL-0110 rule against the manifest file.
 
-{{ ../../../../rules/mastg-android-debuggable-flag-not-disabled.yaml }}
+{{ ../../../../rules/mastg-android-debuggable-flag.yml }}
 
 {{ run.sh }}
 
 ### Observation
 
-The rule has identified an instance in the AndroidManifest file where the app declares as debuggable.
+The rule has identified the `android:debuggable` attribute in the AndroidManifest.
 
 {{ output.txt }}
 
 ### Evaluation
 
-The test case fails if the `debuggable` flag is explicitly set to `true`.
+The test case fails because the `android:debuggable` attribute is explicitly set to `true`.
