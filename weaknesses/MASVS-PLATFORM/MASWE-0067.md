@@ -7,7 +7,6 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-2]
   masvs-v2: [MASVS-RESILIENCE-4]
-  cwe: []
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/android-debuggable
 
