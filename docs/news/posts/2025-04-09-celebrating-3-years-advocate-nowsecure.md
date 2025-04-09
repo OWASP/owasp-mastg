@@ -46,7 +46,7 @@ April 2023 saw the launch of **MASVS v2.0.0**, a major milestone that redefined 
 <img style="width: 40%; border-radius: 5px" src="/assets/news/masvs_colors.png"/>
 </center>
 
-_**NowSecure**’s technical expertise and continuous feedback during the development process were instrumental. Their real-world testing scenarios and rigorous review of the proposed changes helped shape a standard that truly meets the needs of modern mobile app security professionals._
+_**NowSecure**'s technical expertise and continuous feedback during the development process were instrumental. Their real-world testing scenarios and rigorous review of the proposed changes helped shape a standard that truly meets the needs of modern mobile app security professionals._
 
 ## MASTG Refactor Part 1: Testing Profiles & Atomic Tests
 
@@ -59,7 +59,7 @@ In July 2023, we announced the first phase of the MASTG refactor, including:
 <img style="width: 40%; border-radius: 5px" src="/assets/news/mas_profiles.png"/>
 </center>
 
-_Throughout this process, **NowSecure**’s in-depth technical reviews and pilot testing were invaluable. Their willingness to experiment with early versions of the refactored tests ensured that the new structure was both robust and practical for real-world application, ultimately enhancing the overall quality and consistency of the MASTG._
+_Throughout this process, **NowSecure**'s in-depth technical reviews and pilot testing were invaluable. Their willingness to experiment with early versions of the refactored tests ensured that the new structure was both robust and practical for real-world application, ultimately enhancing the overall quality and consistency of the MASTG._
 
 ## MASTG Refactor Part 2 - Modularizing the Framework
 
@@ -82,7 +82,7 @@ October 2023 marked a significant expansion in our scope with the introduction o
 <img style="width: 40%; border-radius: 5px" src="/assets/news/masvs_privacy.png"/>
 </center>
 
-_**NowSecure**’s leadership in mobile security and privacy issues was a driving force behind this addition. Their proactive stance on privacy concerns and hands-on experience with data protection challenges contributed to shaping a robust baseline that addresses modern privacy demands._
+_**NowSecure**'s leadership in mobile security and privacy issues was a driving force behind this addition. Their proactive stance on privacy concerns and hands-on experience with data protection challenges contributed to shaping a robust baseline that addresses modern privacy demands._
 
 ## MAS Task Force
 
@@ -92,7 +92,7 @@ In February 2024, we launched the MAS Task Force, a focused group of mobile secu
 <img style="width: 40%; border-radius: 5px" src="/assets/news/mas_task_force.png"/>
 </center>
 
-_**NowSecure**’s continued support plays a key role in making this initiative possible. By enabling Carlos Holguera to dedicate time and expertise to lead the effort, the task force has maintained strong momentum. With a combination of technical depth and strategic direction, Carlos has helped the group prioritize effectively and push the MAS project forward with consistency and clarity._
+_**NowSecure**'s continued support plays a key role in making this initiative possible. By enabling Carlos Holguera to dedicate time and expertise to lead the effort, the task force has maintained strong momentum. With a combination of technical depth and strategic direction, Carlos has helped the group prioritize effectively and push the MAS project forward with consistency and clarity._
 
 ## New MAS Test Apps and Standardized Demos
 
@@ -106,7 +106,7 @@ In May 2024, we launched new **MAS Test Apps** for Android and iOS, designed to 
 <img style="width: 40%; border-radius: 5px" src="/assets/news/mastestapps.png"/>
 </center>
 
-_**NowSecure**’s expertise in mobile app security testing was invaluable in the development of these test apps. Their insights into real-world vulnerabilities and hands-on experience with mobile security challenges helped shape the design and functionality of the apps, ensuring that they are both practical and effective for users._
+_**NowSecure**'s expertise in mobile app security testing was invaluable in the development of these test apps. Their insights into real-world vulnerabilities and hands-on experience with mobile security challenges helped shape the design and functionality of the apps, ensuring that they are both practical and effective for users._
 
 ## Introducing the OWASP MASWE
 
@@ -119,7 +119,7 @@ July 2024 saw the introduction of the **Mobile App Security Weakness Enumeration
 <img style="width: 40%; border-radius: 5px" src="/assets/maswe-overview.png"/>
 </center>
 
-_**NowSecure**’s comprehensive review and detailed feedback on early drafts of MASWE were critical. Their ability to pinpoint real-world vulnerabilities and suggest actionable improvements helped shape MASWE into a tool that complements both MASVS and MASTG, ensuring that our framework remains holistic and responsive to emerging threats._
+_**NowSecure**'s comprehensive review and detailed feedback on early drafts of MASWE were critical. Their ability to pinpoint real-world vulnerabilities and suggest actionable improvements helped shape MASWE into a tool that complements both MASVS and MASTG, ensuring that our framework remains holistic and responsive to emerging threats._
 
 ## OWASP Project Summit 2024
 
