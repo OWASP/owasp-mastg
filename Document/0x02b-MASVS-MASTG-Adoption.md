@@ -65,7 +65,7 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 
 | Name | Document | Year |
 | -------------- | -------------------- | -- |
-| Government of Singapore, Cyber Security Agency (CSA) | [Safe App Standard](https://www.csa.gov.sg/docs/default-source/publications/2024/safe-app-standard-(v1-0)a4e34e8d-2679-44d1-a836-3904922d7b6a.pdf?sfvrsn=8732135_1) | 2024 |
+| Government of Singapore, Cyber Security Agency (CSA) | [Safe App Standard v2.0](https://isomer-user-content.by.gov.sg/36/b4442074-5f44-40ad-a1b5-1b45965362c3/safe-app-standard-2-0.pdf) | 2024 |
 | European Payments Council | [Payment Threats and Fraud Trends Report](https://www.europeanpaymentscouncil.eu/sites/default/files/kb/file/2021-12/EPC193-21%20v1.0%202021%20Payments%20Threats%20and%20Fraud%20Trends%20Report.pdf) | 2021 |
 | European Payments Council | [Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability) | 2019 |
 | ENISA (European Union Agency for Cybersecurity) | [Good Practices for Security of SMART CARS](https://www.enisa.europa.eu/publications/smart-cars) | 2019 |
