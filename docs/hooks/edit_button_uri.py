@@ -1,7 +1,9 @@
 import logging
+from functools import lru_cache
 
 log = logging.getLogger('mkdocs')
 
+@lru_cache(maxsize=None)
 def get_edit_url(src_path, edit_url_mastg, edit_url_masvs):
     if src_path.startswith("MASVS"):
         edit_url = f"{edit_url_masvs}{src_path}"
