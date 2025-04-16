@@ -1,0 +1,31 @@
+rules:
+  - id: MSTG-TEST-0234-3
+    severity: WARNING
+    languages:
+      - kotlin
+    metadata:
+      authors:
+        - Johan Sydseter @sydseter (OWASP Foundation)
+      owasp-mobile: M3
+      category: security
+      area: network
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://developer.android.com/reference/android/webkit/WebViewClient.html?sjid=15211564825735678155-EU#onReceivedSslError(android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError)
+      summary: This rule looks for the use of onReceivedSslError and ensures it throws an exception instead of silently muting TLS errors.
+    message: Improper use of onReceivedSslError handler
+    match:
+      any:
+        - all:
+          - not: |
+              override fun onReceivedSslError(...) {
+              ...
+              throw $CLASS(...)
+              ...
+          - inside: |
+              override fun onReceivedSslError(...) {
+              ...
+          -  handler.proceed()
+        -  override fun onReceivedSslError(...) { handler.proceed() }

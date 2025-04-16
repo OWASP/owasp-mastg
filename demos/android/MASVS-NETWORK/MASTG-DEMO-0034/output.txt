@@ -1,0 +1,17 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                                                                                  
+    app/src/main/java/com/example/uncrackable_level1_MASTG_NETWORK/MainActivity.kt
+    ❯❱ rules.MSTG-TEST-0234-2
+          Improper hostname verification detected.
+                                                  
+          151┆ val allowallhostnameverifier = HostnameVerifier { hostname, session ->
+          152┆     Log.w(null, "Do not verify host, allow: ".plus(hostname))
+          153┆     true
+          154┆ }
+            ⋮┆----------------------------------------
+          236┆ val allowallhostnameverifier =                                        
+               org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
