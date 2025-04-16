@@ -1,0 +1,32 @@
+rules:
+  - id: MSTG-TEST-0234-1
+    severity: WARNING
+    languages:
+      - kotlin
+    metadata:
+      authors:
+        - Johan Sydseter @sydseter (OWASP Foundation)
+      owasp-mobile: M3
+      category: security
+      area: network
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/master/Document/0x05g-Testing-Network-Communication.md
+      summary: This rule looks for the use of checkServerTrusted and ensures it throws an exception instead of silently muting invalid server certificates
+    message: Improper Server Certificate verification detected.
+    match:
+        all:
+        - not: |
+            override fun checkServerTrusted(...) {
+            ...
+            throw CertificateException(...)
+            }
+        -  |
+            override fun checkServerTrusted(...) {
+            ...
+            }
+
+
+            
