@@ -2,7 +2,7 @@
 platform: android
 title: Improper use of the HostnameVerifier
 id: MASTG-DEMO-0034
-code: [java]
+code: [kotlin]
 test: MSTG-TEST-0234-2
 ---
 

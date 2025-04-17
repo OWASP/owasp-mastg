@@ -2,7 +2,7 @@
 platform: android
 title: Improper use of the onReceivedSslError handler
 id: MASTG-DEMO-0035
-code: [java]
+code: [kotlin]
 test: MSTG-TEST-0234-3
 ---
 

@@ -2,7 +2,7 @@
 platform: android
 title: Targeting API versions that allow the user to use insecure CAs
 id: MASTG-DEMO-0036
-code: [java]
+code: [kotlin]
 test: MSTG-TEST-0234-4
 ---
 

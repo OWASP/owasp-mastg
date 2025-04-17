@@ -2,7 +2,7 @@
 platform: android
 title: Improper use of checkServerTrusted
 id: MASTG-DEMO-0033
-code: [java]
+code: [kotlin]
 test: MSTG-TEST-0234-1
 ---
 
