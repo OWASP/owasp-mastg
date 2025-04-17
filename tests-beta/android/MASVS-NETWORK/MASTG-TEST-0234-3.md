@@ -1,7 +1,7 @@
 ---
 title: Correct use of SSL error handling for webviews
 platform: android
-id: MASTG-TEST-0234-2
+id: MASTG-TEST-0234-3
 type: [static]
 weakness: MASWE-0052
 ---
