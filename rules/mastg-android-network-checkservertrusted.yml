@@ -27,6 +27,4 @@ rules:
             override fun checkServerTrusted(...) {
             ...
             }
-
-
-            
+          

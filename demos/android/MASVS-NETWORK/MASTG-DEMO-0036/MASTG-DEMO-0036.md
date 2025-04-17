@@ -26,4 +26,4 @@ The rule has identified one instances in the code where `targetSdk` less then 24
 
 Review each of the reported instances.
 
-- Line 14 in `build.gradle.kts` indicate that the `targetSdk` as a version less then 24. 
+- Line 14 in `build.gradle.kts` indicate that the `targetSdk` as a version less then 24.

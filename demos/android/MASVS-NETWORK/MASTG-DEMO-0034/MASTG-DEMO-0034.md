@@ -26,5 +26,5 @@ The rule has identified two instances in the code where `HostnameVerifier` not i
 
 Review each of the reported instances.
 
-- Line 151-154 contains a synthetic class that logs a statement and return true effectively muting any host name issues. 
+- Line 151-154 contains a synthetic class that logs a statement and return true effectively muting any host name issues.
 - Line 236 contains a ALLOW_ALL_HOSTNAME_VERIFIER from org.apache.http.conn.ssl.SSLSocketFactory. This should only be used for testing as it will ignore host name issues and is marked deprecated.
