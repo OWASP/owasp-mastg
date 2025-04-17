@@ -1,1 +1,1 @@
-NO_COLOR=true semgrep -c ../../../../rules/mstg-android-network-checkservertrusted.yml ./MastgTest.kt --text -o output.txt
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-network-checkservertrusted.yml ./MastgTest.kt --text -o output.txt

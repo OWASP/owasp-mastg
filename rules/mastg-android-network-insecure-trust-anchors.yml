@@ -1,0 +1,21 @@
+rules:
+  - id: MSTG-TEST-0234-5
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      authors:
+        - Johan Sydseter @sydseter (OWASP Foundation)
+      owasp-mobile: M3
+      category: security
+      area: network
+      verification-level:
+        - L1
+        - L2
+      references:
+        - https://github.com/OWASP/owasp-mastg/blob/v1.5.0/Document/0x05g-Testing-Network-Communication.md#testing-endpoint-identify-verification-mstg-network-3
+      summary: The rule elements in the network security config that allows certificates imported on the user's behalf thereby allowing connections to potentially insecure CAs
+    message: The network security config allows certificates imported on the user's behalf thereby allowing connections to potentially insecure CAs
+    match:
+      any:
+        - <certificates src="user"

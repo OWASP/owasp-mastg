@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Common Uses of Insecure Random APIs
+title: Improper use of the HostnameVerifier
 id: MASTG-DEMO-0034
 code: [java]
 test: MSTG-TEST-0234-2
@@ -14,7 +14,7 @@ test: MSTG-TEST-0234-2
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mstg-android-network-hostname-verification.yml }}
+{{ ../../../../rules/mastg-android-network-hostname-verification.yml }}
 
 {{ run.sh }}
 
