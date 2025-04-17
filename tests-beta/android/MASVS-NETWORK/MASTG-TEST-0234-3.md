@@ -8,7 +8,7 @@ weakness: MASWE-0052
 
 ## Overview
 
-Inside `onReceivedSslError` if no exceptions are thrown and there is a `handler.proceed()` call, TLS errors are muted. 
+Inside `onReceivedSslError` if no exceptions are thrown and there is a `handler.proceed()` call, TLS errors are muted.
 
 ## Steps
 
