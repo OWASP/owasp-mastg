@@ -1,11 +1,7 @@
-package com.example.uncrackable_level1_MASTG_NETWORK
+package org.owasp.mastestapp
 
-import android.R
 import android.annotation.SuppressLint
 import android.net.http.SslError
-import android.os.Bundle
-import android.os.StrictMode
-import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
@@ -13,36 +9,32 @@ import android.webkit.SslErrorHandler
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.squareup.okhttp.Callback
 import com.squareup.okhttp.CipherSuite
 import com.squareup.okhttp.ConnectionSpec
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
-import com.squareup.okhttp.Response
 import com.squareup.okhttp.TlsVersion
-import java.io.IOException
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.Collections
-import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
+import android.content.Context
+import android.content.Context.WINDOW_SERVICE
+
+import org.apache.http.conn.ssl.SSLSocketFactory
+
+class MastgTest (private val context: Context,) {
+
+    fun mastgTest(): String {
 
 
-class MastgTest {
-    fun mastgTest()() {
-        CallInsecureServers()
-        val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        val view = LinearLayout(this)
+        val windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
+        val view = LinearLayout(context)
         view.layoutParams =
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -66,7 +58,7 @@ class MastgTest {
             }
         }
 
-        var webView = WebView(this)
+        var webView = WebView(context)
         webView.webViewClient = MyWebViewClient()
         var params = WindowManager.LayoutParams()
         params.gravity = Gravity.TOP or Gravity.LEFT
@@ -78,6 +70,8 @@ class MastgTest {
         //webView.loadUrl("https://tlsrevoked.no")
         //webView.loadUrl("https://tlsbadsubjectaltname.no")
         windowManager.addView(view, params)
+
+        return CallInsecureServers()
     }
 
 
@@ -204,7 +198,7 @@ fun ClearTextBuilder(): OkHttpClient {
 
         builder.setSslSocketFactory(sslSocketFactory)
 
-        val allowallhostnameverifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+        val allowallhostnameverifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 
         builder.setHostnameVerifier(allowallhostnameverifier)
 
@@ -218,41 +212,46 @@ fun ClearTextBuilder(): OkHttpClient {
     return builder
 }
 
-fun CallInsecureServers(modifier: Modifier = Modifier) {
+fun CallInsecureServers(modifier: Modifier = Modifier): String {
     val content = "Response:"
+    val tlsRevocationResponse = ""
+    val tlsExpiredResponse = ""
+    val tlsRevokedResponse = ""
+    val tlsBadSubjectAltNameResponse = ""
+    Thread({
 
-    val tlsRevocationRequest = Request.Builder()
-        .header("User-Agent", "COOL APP 9000")
-        //Non encrypted connection
-        .url("http://tlsrevocation.org").build()
-    val tlsRevocationResponse = ClearTextBuilder().newCall(tlsRevocationRequest).execute()?.body()!!.string()
 
-    val tlsExpiredRequest = Request.Builder()
-        .header("User-Agent", "COOL APP 9000")
-        //Expired certificate
-        .url("https://tlsexpired.no").build()
-    val tlsExpiredResponse = Builder().newCall(tlsExpiredRequest).execute()?.body()!!.string()
 
-    val tlsRevokedRequest = Request.Builder()
-        .header("User-Agent", "COOL APP 9000")
-        //Revoked certificate
-        .url("https://tlsrevoked.no").build()
-    val tlsRevokedResponse = Builder().newCall(tlsRevokedRequest).execute()?.body()!!.string()
+        val tlsRevocationRequest = Request.Builder()
+            .header("User-Agent", "COOL APP 9000")
+            //Non encrypted connection
+            .url("http://tlsrevocation.org").build()
+        tlsRevocationResponse.plus(
+            ClearTextBuilder().newCall(tlsRevocationRequest).execute()?.body()!!.string())
 
-    val tlsBadSubjectAltNamerequest = Request.Builder()
-        .header("User-Agent", "COOL APP 9000")
-        //Certificate with wrong subject alt name
-        .url("https://tlsbadsubjectaltname.no").build()
-    val tlsBadSubjectAltNameResponse = Builder().newCall(tlsBadSubjectAltNamerequest).execute()?.body()!!.string()
+        val tlsExpiredRequest = Request.Builder()
+            .header("User-Agent", "COOL APP 9000")
+            //Expired certificate
+            .url("https://tlsexpired.no").build()
+        tlsExpiredResponse.plus(Builder().newCall(tlsExpiredRequest).execute()?.body()!!.string())
 
-    Surface(color = Color.Cyan) {
-        Text(
-            text = content.plus("\n\n")
-               .plus(tlsRevocationResponse).plus("\n\n")
-                .plus(tlsExpiredResponse).plus("\n\n")
-                .plus(tlsRevokedResponse).plus("\n\n")
-                .plus(tlsBadSubjectAltNameResponse).plus("\n\n"),
-            modifier = modifier.padding(24.dp)
-        )
-    }
+        val tlsRevokedRequest = Request.Builder()
+            .header("User-Agent", "COOL APP 9000")
+            //Revoked certificate
+            .url("https://tlsrevoked.no").build()
+        tlsRevokedResponse.plus(Builder().newCall(tlsRevokedRequest).execute()?.body()!!.string())
+
+        val tlsBadSubjectAltNamerequest = Request.Builder()
+            .header("User-Agent", "COOL APP 9000")
+            //Certificate with wrong subject alt name
+            .url("https://tlsbadsubjectaltname.no").build()
+        tlsBadSubjectAltNameResponse.plus(Builder().newCall(tlsBadSubjectAltNamerequest).execute()?.body()!!.string())
+
+
+    }).start()
+    return content.plus("\n\n")
+        .plus(tlsRevocationResponse).plus("\n\n")
+        .plus(tlsExpiredResponse).plus("\n\n")
+        .plus(tlsRevokedResponse).plus("\n\n")
+        .plus(tlsBadSubjectAltNameResponse).plus("\n\n")
 }
