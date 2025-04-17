@@ -1,7 +1,7 @@
 ---
 platform: android
-title: Common Uses of Insecure Random APIs
-id: MASTG-DEMO-0034
+title: Improper use of the onReceivedSslError handler
+id: MASTG-DEMO-0035
 code: [java]
 test: MSTG-TEST-0234-3
 ---
@@ -14,7 +14,7 @@ test: MSTG-TEST-0234-3
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mstg-android-network-onreceivedsslerror.yml }}
+{{ ../../../../rules/mastg-android-network-onreceivedsslerror.yml }}
 
 {{ run.sh }}
 

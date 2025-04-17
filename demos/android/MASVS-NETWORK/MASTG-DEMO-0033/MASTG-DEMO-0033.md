@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Common Uses of Insecure Random APIs
+title: Improper use of checkServerTrusted
 id: MASTG-DEMO-0033
 code: [java]
 test: MSTG-TEST-0234-1
@@ -14,7 +14,7 @@ test: MSTG-TEST-0234-1
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mstg-android-network-checkservertrusted.yml }}
+{{ ../../../../rules/mastg-android-network-checkservertrusted.yml }}
 
 {{ run.sh }}
 

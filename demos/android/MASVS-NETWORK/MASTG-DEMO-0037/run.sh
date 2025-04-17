@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-network-insecure-trust-anchors.yml ./MastgTest.kt --text -o output.txt

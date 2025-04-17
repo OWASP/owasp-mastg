@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">tlsexpired.no</domain>
+        <domain includeSubdomains="true">tlsrevocation.org</domain>
+        <domain includeSubdomains="true">tlsrevoked.no</domain>
+        <domain includeSubdomains="true">tlsbadsubjectaltname.no</domain>
+        <certificateTransparency enabled="false"/>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+            <certificates src="@raw/trusted_roots"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
