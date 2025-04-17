@@ -68,6 +68,31 @@ Once the activity has been called, the file key.xml will be created with the pro
 `MODE_PRIVATE` makes the file only accessible by the calling app. See ["Use SharedPreferences in private mode"](https://developer.android.com/privacy-and-security/security-best-practices#sharedpreferences).
 
 > Other insecure modes exist, such as `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE`, but they have been deprecated since Android 4.2 (API level 17) and [removed in Android 7.0 (API Level 24)](https://developer.android.com/reference/android/os/Build.VERSION_CODES#N). Therefore, only apps running on an older OS version (`android:minSdkVersion` less than 17) will be affected. Otherwise, Android will throw a [SecurityException](https://developer.android.com/reference/java/lang/SecurityException). If an app needs to share private files with other apps, it is best to use a [FileProvider](https://developer.android.com/reference/androidx/core/content/FileProvider) with the [FLAG_GRANT_READ_URI_PERMISSION](https://developer.android.com/reference/android/content/Intent#FLAG_GRANT_READ_URI_PERMISSION). See [Sharing Files](https://developer.android.com/training/secure-file-sharing) for more details.
+!!! Warning
+
+    The `EncryptedSharedPreferences` class shown below has been marked as Deprecated in the AOSP source. However, since there is no official replacement yet, we recommend using the official `EncryptedSharedPreferences` class until an official replacement is available.
+
+You might also use [`EncryptedSharedPreferences`](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences), which is wrapper of `SharedPreferences` that automatically encrypts all data stored to the shared preferences.
+
+```kotlin
+var masterKey: MasterKey? = null
+masterKey = Builder(this)
+    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+    .build()
+
+val sharedPreferences: SharedPreferences = EncryptedSharedPreferences.create(
+    this,
+    "secret_shared_prefs",
+    masterKey,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+)
+
+val editor = sharedPreferences.edit()
+editor.putString("username", "administrator")
+editor.putString("password", "supersecret")
+editor.commit()
+```
 
 ### Databases
 
