@@ -13,20 +13,12 @@ import android.webkit.SslErrorHandler
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.uncrackable_level1_MASTG_NETWORK.ui.theme.UnCrackableLevel1Theme
 import com.squareup.okhttp.Callback
 import com.squareup.okhttp.CipherSuite
 import com.squareup.okhttp.ConnectionSpec
@@ -46,27 +38,9 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class MainActivity : ComponentActivity() {
-    @SuppressLint("ServiceCast")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        val policy = ThreadPolicy.Builder()
-            .permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-        Log.i(null, "Set content")
-
-        setContent {
-            UnCrackableLevel1Theme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    CallInsecureServers()
-                }
-            }
-        }
-
+class MastgTest {
+    fun mastgTest()() {
+        CallInsecureServers()
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val view = LinearLayout(this)
         view.layoutParams =
@@ -104,9 +78,6 @@ class MainActivity : ComponentActivity() {
         //webView.loadUrl("https://tlsrevoked.no")
         //webView.loadUrl("https://tlsbadsubjectaltname.no")
         windowManager.addView(view, params)
-
-
-
     }
 
 
@@ -247,7 +218,6 @@ fun ClearTextBuilder(): OkHttpClient {
     return builder
 }
 
-@Composable
 fun CallInsecureServers(modifier: Modifier = Modifier) {
     val content = "Response:"
 
@@ -284,14 +254,5 @@ fun CallInsecureServers(modifier: Modifier = Modifier) {
                 .plus(tlsBadSubjectAltNameResponse).plus("\n\n"),
             modifier = modifier.padding(24.dp)
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Log.i(null, "Set preview")
-    UnCrackableLevel1Theme {
-        CallInsecureServers()
     }
 }
