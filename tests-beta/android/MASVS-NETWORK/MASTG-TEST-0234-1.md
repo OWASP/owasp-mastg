@@ -8,7 +8,7 @@ weakness: MASWE-0052
 
 ## Overview
 
-
+When `checkServerTrusted` is used without proper error handling indicate that server certificates are not being properly validated which allow for the possibility of MITM attacks.
 
 ## Steps
 
