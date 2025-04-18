@@ -8,7 +8,7 @@ test: MSTG-TEST-0234-3
 
 ### Sample
 
-{{ MastgTest.kt # MastgTest.kt }}
+{{ MastgTestWebView.kt # MastgTestWebView.kt }}
 
 ### Steps
 
