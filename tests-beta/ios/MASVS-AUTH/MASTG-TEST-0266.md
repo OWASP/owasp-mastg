@@ -1,7 +1,8 @@
 ---
 platform: ios
-title: Testing Event-bound Biometric Authentication
+title: References to APIs for Event-bound Biometric Authentication
 id: MASTG-TEST-0266
+apis: [LAContext.evaluatePolicy]
 type: [static]
 weakness: MASWE-0044
 ---
@@ -12,7 +13,7 @@ This test verifies that your application uses the Keychain API for authenticatio
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary and look for uses of [LAContext.evaluatePolicy(.deviceOwnerAuthentication)](https://developer.apple.com/documentation/localauthentication/lacontext/evaluatepolicy(_:localizedreason:reply:)) API,attribute.
+1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary and look for uses of [LAContext.evaluatePolicy(...)](https://developer.apple.com/documentation/localauthentication/lacontext/evaluatepolicy(_:localizedreason:reply:)) API,attribute.
 
 ## Observation
 
@@ -20,4 +21,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app doesn't use any API to verify the secure screen lock presence.
+The test fails if an app uses `LAContext.evaluatePolicy` API to authenticate the user.
