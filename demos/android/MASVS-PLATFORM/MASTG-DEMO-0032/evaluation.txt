@@ -1,0 +1,4 @@
+setJavaScriptEnabled: True
+setAllowFileAccess: True
+setAllowFileAccessFromFileURLs: True
+setAllowUniversalAccessFromFileURLs: False
