@@ -8,7 +8,7 @@ test: MSTG-TEST-0234-5
 
 ### Sample
 
-{{ MastgTest.kt # MastgTest.kt }}
+{{ network_security_config.xml # network_security_config.xml }}
 
 ### Steps
 
