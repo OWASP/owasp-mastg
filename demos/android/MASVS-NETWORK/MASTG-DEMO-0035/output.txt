@@ -1,0 +1,24 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                                                                  
+    app/src/main/java/com/example/uncrackable_level1_MASTG_NETWORK/MainActivity.kt
+    ❯❱ rules.MSTG-TEST-0234-3
+          Improper use of onReceivedSslError handler
+                                                    
+           79┆ override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+           80┆     var message = "SSL Certificate error."
+           81┆     when (error.getPrimaryError()) {
+           82┆         SslError.SSL_UNTRUSTED -> message = "The certificate authority is not trusted."
+           83┆         SslError.SSL_EXPIRED -> message = "The certificate has expired."
+           84┆         SslError.SSL_IDMISMATCH -> message = "The certificate Hostname mismatch."
+           85┆         SslError.SSL_NOTYETVALID -> message = "The certificate is not yet valid."
+           86┆         SslError.SSL_DATE_INVALID -> message = "The date of the certificate is invalid"
+           87┆     }
+           88┆     Log.w(null, "SSL errors onReceivedSslError: ".plus(message))
+           89┆     Log.w(null, error.toString())
+           90┆
+           91┆     handler.proceed()
+           92┆ }
