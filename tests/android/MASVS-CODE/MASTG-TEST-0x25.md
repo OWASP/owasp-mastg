@@ -11,7 +11,6 @@ masvs_v1_levels:
 type: [static, dynamic]
 available_since: 21
 deprecated_since: 29
-weakness: MASWE-xxxx
 ---
 
 ## Overview
