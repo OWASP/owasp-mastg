@@ -8,6 +8,8 @@ title: Testing Object Persistence
 masvs_v1_levels:
 - L1
 - L2
+status: deprecated
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
