@@ -1,0 +1,12 @@
+rules:
+  - id: mastg-android-object-persistance
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for use of Object Serialization.
+    message: "[MASVS-CODE-4] The application make use of Object Serialization in the code."
+    patterns:
+    - pattern-either:
+        - pattern: import org.json.JSONArray;
+        - pattern: import org.json.JSONObject;
