@@ -9,7 +9,7 @@ weakness: MASWE-0044
 
 ## Overview
 
-This test verifies that your application uses the Keychain API for authentication instead of the less secure LocalAuthentication API. The LocalAuthentication API returns only a boolean result indicating authentication success or failure. This makes it easier to manipulate the logic of the application and skip authentication altogether. Keychain API strengthens the authentication process by returning data from the keychain. This data is essential to continue using the application. For example, it could be a session token for backend API authentication or a cryptographic key to decrypt data from storage. In other words, the Keychain API allows developers to use a more secure architecture instead of relying on a simple if-statement.
+This test verifies that an app uses the Keychain API for authentication instead of the less secure LocalAuthentication API. The LocalAuthentication API returns only a boolean result indicating authentication success or failure. This makes it easier to manipulate the logic of the application and skip authentication altogether. Keychain API strengthens the authentication process by returning data from the keychain. This data is essential to continue using the application. For example, it could be a session token for backend API authentication or a cryptographic key to decrypt data from storage. In other words, the Keychain API allows developers to use a more secure architecture instead of relying on a simple if-statement.
 
 ## Steps
 
