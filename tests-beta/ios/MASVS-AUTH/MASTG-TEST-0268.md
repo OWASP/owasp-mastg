@@ -2,7 +2,7 @@
 platform: ios
 title: References to APIs Allowing Fallback to Non-Biometric Authentication
 id: MASTG-TEST-0268
-apis: [kSecAccessControlUserPresence]
+apis: [kSecAccessControlUserPresence,SecAccessControlCreateWithFlags]
 type: [static]
 weakness: MASWE-0045
 ---
@@ -13,7 +13,7 @@ This test verifies that an app denies a fallback to passcode authentication if t
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary and look for uses of [LAContext.evaluatePolicy(...)](https://developer.apple.com/documentation/localauthentication/lacontext/evaluatepolicy(_:localizedreason:reply:)) API,attribute.
+1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary and look for uses of [SecAccessControlCreateWithFlags(...)](https://developer.apple.com/documentation/security/secaccesscontrolcreatewithflags(_:_:_:_:)) with [kSecAccessControlUserPresence](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/userpresence?language=objc) flag.
 
 ## Observation
 
@@ -21,4 +21,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app uses `LAContext.evaluatePolicy` API to authenticate the user.
+The test fails if an app uses `SecAccessControlCreateWithFlags(...)` with `kSecAccessControlUserPresence` flag to authenticate.

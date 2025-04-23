@@ -2,7 +2,7 @@
 platform: ios
 title: References to APIs Allowing Fallback to Non-Biometric Authentication
 id: MASTG-TEST-0269
-apis: [kSecAccessControlUserPresence]
+apis: [kSecAccessControlUserPresence,SecAccessControlCreateWithFlags]
 type: [dynamic]
 weakness: MASWE-0045
 ---
@@ -21,4 +21,4 @@ The output should contain a list of locations where `SecAccessControlCreateWithF
 
 ## Evaluation
 
-The test fails if an app uses `SecAccessControlCreateWithFlags` API to authenticate the user.
+The test fails if an app uses `SecAccessControlCreateWithFlags(...)` with `kSecAccessControlUserPresence` flag to authenticate.
