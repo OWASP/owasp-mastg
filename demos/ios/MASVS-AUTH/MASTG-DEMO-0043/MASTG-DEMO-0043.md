@@ -27,9 +27,9 @@ The following sample checks whether the app uses a biometric authentication API 
 
 The output reveals the use of `SecAccessControlCreateWithFlags(allocator, protection, flags, error)` in the app. In this demo, we focus on the `flags` argument because it specifies the [Access Control](https://developer.apple.com/documentation/security/secaccesscontrol). `flags` is a third argument of the function, so it's at `x2/w2` register. By looking at the output, we can see that `w2` register holds value of `1`.
 
-```
-│           0x100004190      mov w2, 1
-│           0x100004194      bl sym.imp.SecAccessControlCreateWithFlags
+```assembly
+mov w2, 1
+bl sym.imp.SecAccessControlCreateWithFlags
 ```
 
 The `flags` is an enum of [SecAccessControlCreateFlags](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags). `1` corresponds with `kSecAccessControlUserPresence`. This means that the app invokes `SecAccessControlCreateWithFlags(..., kSecAccessControlUserPresence)`, which means it falls back to device's passcode authentication.
