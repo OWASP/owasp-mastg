@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Runtime Use Of Event-bound Biometric Authentication
-id: MASTG-TEST-267
+id: MASTG-TEST-0267
 apis: [LAContext.evaluatePolicy]
 type: [dynamic]
 weakness: MASWE-0044
