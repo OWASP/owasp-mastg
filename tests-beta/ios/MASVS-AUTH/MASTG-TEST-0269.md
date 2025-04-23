@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: References to APIs Allowing Fallback to Non-Biometric Authentication
+title: Runtime Use Of APIs Allowing Fallback to Non-Biometric Authentication
 id: MASTG-TEST-0269
 apis: [kSecAccessControlUserPresence,SecAccessControlCreateWithFlags]
 type: [dynamic]
