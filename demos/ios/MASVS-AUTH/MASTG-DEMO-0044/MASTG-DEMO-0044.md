@@ -26,7 +26,7 @@ The following sample checks whether the app uses a biometric authentication API 
 
 {{ output.txt }}
 
-The output reveals the use of `SecAccessControlCreateWithFlags(...)` in the app and lists all used flags. In this case, `kSecAccessControlUserPresence` flag was used. Note that the script also prints `[WARNING] The authentication may fallback to device's passcode` message when insecure flags are used.
+The output reveals the use of `SecAccessControlCreateWithFlags(...)` in the app and lists all used flags. In this case, `kSecAccessControlUserPresence` flag was used. Note that the script also prints `[WARNING] The authentication may fallback to device's passcode` message when insecure flag is used.
 
 ### Evaluation
 
