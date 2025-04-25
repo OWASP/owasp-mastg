@@ -1,13 +1,14 @@
 ---
 platform: android
 title: Uses of Object Persistance with semgrep
-id: MASTG-DEMO-xxxx
+id: MASTG-DEMO-0041
 code: [kotlin]
+test: MASTG-TEST-0266
 ---
 
 ### Sample
 
-The code snippet below shows sample code that object persistence being used for storing sensitive information on the device using `org.json.JSONObject` and `org.json.JSONArray`.
+The code snippet shows that object persistence being used for storing sensitive information on the device using `org.json.JSONObject` and `org.json.JSONArray`.
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
