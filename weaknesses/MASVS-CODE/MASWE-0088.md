@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CODE-4]
+  cwe: [502]
 
 draft:
   description: e.g. XML, JSON, java.io.Serializable, Parcelable on Android or NSCoding
