@@ -1,5 +1,5 @@
 rules:
-  - id: mastg-android-object-persistance
+  - id: mastg-android-object-persistence
     severity: WARNING
     languages:
       - java

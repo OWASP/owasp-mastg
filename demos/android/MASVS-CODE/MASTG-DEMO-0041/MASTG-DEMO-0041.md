@@ -16,7 +16,7 @@ The code snippet shows that object persistence being used for storing sensitive 
 
 Let's run @MASTG-TOOL-0110 rules against the sample code.
 
-{{ ../../../../rules/mastg-android-object-persistance.yml }}
+{{ ../../../../rules/mastg-android-object-persistence.yml }}
 
 {{ run.sh }}
 

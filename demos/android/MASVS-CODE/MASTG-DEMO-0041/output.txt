@@ -5,7 +5,7 @@
 └─────────────────┘
                                           
   MastgTest_reversed.java
-    ❯❱ rules.mastg-android-object-persistance
+    ❯❱ rules.mastg-android-object-persistence
           [MASVS-CODE-4] The application make use of Object Serialization in the code.
                                                                                       
            15┆ import org.json.JSONArray;
