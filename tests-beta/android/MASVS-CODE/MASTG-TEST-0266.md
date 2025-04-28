@@ -1,7 +1,7 @@
 ---
 title: Use of Object Persistence using JSON
 platform: android
-id: MASTG-TEST-0026
+id: MASTG-TEST-0266
 type: [static]
 weakness: MASWE-0088
 ---
