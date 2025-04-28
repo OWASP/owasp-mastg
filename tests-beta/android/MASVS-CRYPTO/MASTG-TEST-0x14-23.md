@@ -33,8 +33,3 @@ The test case fails if you can find at least one `Cipher` defined with a `transf
 - Otherwise, weak padding such as NoPadding, ZeroPadding, etc. should be avoided unless you are sure that is secure for that specific combination (e.g., as is the case for `AES/GCM/NoPadding`).
 
 Check the documentation for [specific recommendation on padding schemes to use](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms).
-
-## References
-
-- [Testing Cryptography](../../../Document/0x04g-Testing-Cryptography.md)
-- [Cryptographic Mechanisms: Recommendations and Key Lengths](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile)

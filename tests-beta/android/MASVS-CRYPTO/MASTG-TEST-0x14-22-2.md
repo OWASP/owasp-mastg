@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Reused Initialization Vectors
-id: MASTG-TEST-0x14-22-1
+id: MASTG-TEST-0x14-22-2
 type: [static, dynamic]
 weakness: MASWE-0022
 ---
@@ -28,7 +28,3 @@ The test case fails if you observe at least one of the following:
 
 - you can find the multiple `AlgorithmParameterSpec` objects created with the same data, and each then used to initialize its `Cipher`.
 - you can find the same `AlgorithmParameterSpec` object used to initialize multiple `Cipher`s.
-
-## References
-
-- [Testing Cryptography](../../../Document/0x04g-Testing-Cryptography.md)

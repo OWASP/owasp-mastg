@@ -8,7 +8,7 @@ weakness: MASWE-0021
 
 ## Overview
 
-When apps need to use hashing in security sensitive scenarios, it is important to not use [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) algorithms.
+When apps need to use hashing in security sensitive scenarios, it is important to not use [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) algorithms. 
 
 ## Steps
 
@@ -21,8 +21,4 @@ The output should contain a list of locations where hashing is being used and th
 ## Evaluation
 
 The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) hashing algorithms being used in a security sensitive scenario.
-
-## References
-
-- [NIST - Hash Functions - Approved Algorithms](https://csrc.nist.gov/projects/hash-functions)
-- [Testing Cryptography](../../../Document/0x04g-Testing-Cryptography.md)
+A list of approved algorithms is provided in [NIST - Hash Functions](https://csrc.nist.gov/projects/hash-functions).

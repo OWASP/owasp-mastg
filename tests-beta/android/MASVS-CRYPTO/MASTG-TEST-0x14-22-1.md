@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Hardcoded Initialization Vectors
-id: MASTG-TEST-0x14-22-2
+id: MASTG-TEST-0x14-22-1
 type: [static, dynamic]
 weakness: MASWE-0022
 ---
@@ -25,7 +25,3 @@ The output should contain a list of locations where `AlgorithmParameterSpec` obj
 ## Evaluation
 
 The test case fails if you can find `AlgorithmParameterSpec` objects being created with hardcoded data and then used to initialize a `Cipher`.
-
-## References
-
-- [Testing Cryptography](../../../Document/0x04g-Testing-Cryptography.md)

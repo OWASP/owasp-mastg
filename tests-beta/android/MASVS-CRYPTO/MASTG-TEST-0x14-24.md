@@ -8,7 +8,7 @@ weakness: MASWE-0024
 
 ## Overview
 
-Using a weak Weak Message Authentication Codes (`MAC`) algorithm in a security sensitive scenario will allow an attacker to affect the integrity and authenticity of the transmited data.
+Using a weak Weak Message Authentication Codes (`MAC`) algorithm in a security sensitive scenario will allow an attacker to affect the integrity and authenticity of the transmitted data.
 
 ## Steps
 
@@ -21,8 +21,4 @@ The output should contain a list of locations where `MAC` is being used and the 
 ## Evaluation
 
 The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) MAC algorithms being used in a security sensitive scenario.
-
-## References
-
-- [NIST - Hash Functions - Approved Algorithms](https://csrc.nist.gov/projects/hash-functions)
-- [Testing Cryptography](../../../Document/0x04g-Testing-Cryptography.md)
+A list of approved algorithms is provided in [NIST - Hash Functions](https://csrc.nist.gov/projects/hash-functions).

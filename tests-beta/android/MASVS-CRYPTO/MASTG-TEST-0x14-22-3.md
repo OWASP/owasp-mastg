@@ -25,7 +25,3 @@ The output should contain a list of locations where `AlgorithmParameterSpec` obj
 ## Evaluation
 
 The test case fails if you can find `AlgorithmParameterSpec` objects being created with weak or deterministic random generator and then used to initialize a `Cipher` that is used in a security sensitive scenario.
-
-## References
-
-- [Testing Cryptography](../../../Document/0x04g-Testing-Cryptography.md)
