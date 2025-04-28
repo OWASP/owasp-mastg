@@ -20,7 +20,7 @@ The output should contain a list of locations where `Signature` is being used, t
 
 ## Evaluation
 
-The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) 
+The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms)
 `Signature` algorithms being used to verify the digital signature of a piece of data used in a security sensitive scenario.
 
 More information is provided in [NIST - Digital Signatures](https://csrc.nist.gov/projects/digital-signatures).

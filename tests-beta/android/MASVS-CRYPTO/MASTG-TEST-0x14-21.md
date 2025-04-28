@@ -8,7 +8,7 @@ weakness: MASWE-0021
 
 ## Overview
 
-When apps need to use hashing in security sensitive scenarios, it is important to not use [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) algorithms. 
+When apps need to use hashing in security sensitive scenarios, it is important to not use [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) algorithms.
 
 ## Steps
 
