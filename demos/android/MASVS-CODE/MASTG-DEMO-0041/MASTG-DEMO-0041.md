@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Uses of Object Persistance with semgrep
+title: Uses of Object Persistence with semgrep
 id: MASTG-DEMO-0041
 code: [kotlin]
 test: MASTG-TEST-0266
@@ -22,7 +22,7 @@ Let's run @MASTG-TOOL-0110 rules against the sample code.
 
 ### Observation
 
-The output file shows usages of the object persistance in the code.
+The output file shows usages of the object persistence in the code.
 
 {{ output.txt }}
 

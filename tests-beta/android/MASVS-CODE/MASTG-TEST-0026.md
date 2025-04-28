@@ -16,7 +16,7 @@ Android provides the JSONObject and JSONArray classes, which are essential for h
 
 ## Observation
 
-The output file shows usages of the object persistance using `JSONObject` and `JSONArray` in the code.
+The output file shows usages of the object Persistence using `JSONObject` and `JSONArray` in the code.
 
 ## Evaluation
 
