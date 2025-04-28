@@ -28,4 +28,4 @@ The output file shows usages of the object persistence in the code.
 
 ### Evaluation
 
-The test fails if `org.json.JSONObject` and `org.json.JSONArray` was found in the code.
+The test fails because `org.json.JSONObject` and `org.json.JSONArray` were found in the code.
