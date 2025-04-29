@@ -6,7 +6,6 @@ Also, this guide uses the term "app" as a general term which refers to any kind 
 
 We place mobile apps into four categories:
 
-- [Mobile Application Taxonomy](#mobile-application-taxonomy)
   - [Native Apps](#native-apps)
   - [Web Apps](#web-apps)
   - [Hybrid Apps](#hybrid-apps)
