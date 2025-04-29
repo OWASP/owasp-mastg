@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-STORAGE-6]
   masvs-v2: [MASVS-PLATFORM-1, MASVS-STORAGE-1]
+  cwe: [926]
 
 refs:
 - https://developer.android.com/topic/security/risks/content-resolver
