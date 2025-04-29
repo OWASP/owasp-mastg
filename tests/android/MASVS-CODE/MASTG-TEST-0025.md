@@ -1,13 +1,7 @@
 ---
-masvs_v1_id:
-- MSTG-PLATFORM-2
-masvs_v2_id:
-- MASVS-CODE-4
-platform: android
-title: Testing for Injection Flaws
-masvs_v1_levels:
-- L1
-- L2
+status: deprecated
+covered_by: [MASTG-TEST-0x25]
+deprecation_note: "This test has been replaced by MASTG V2 and is now covered in MASTG-TEST-0x25."
 ---
 
 ## Overview

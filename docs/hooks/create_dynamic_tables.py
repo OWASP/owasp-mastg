@@ -390,17 +390,20 @@ def on_page_markdown(markdown, page, **kwargs):
         return append_to_page(markdown, list_of_dicts_to_md_table(weaknesses_columns_reordered, column_titles) )
 
     elif path.endswith("talks.md"):
-        # talks.md
+    # talks.md
 
         data = yaml.safe_load(open("docs/assets/data/talks.yaml"))
 
+        column_titles = {'video': 'Video', 'slides': 'Slides'}
+        column_align = ("left", "left", "left", "center", "center")
+
         for element in data:
             if element['video'].startswith("http"):
-                element['video'] = f"[:octicons-play-24: Video]({element['video']})"
+                element['video'] = f"[▶ Video]({element['video']})"
             if element['slides'].startswith("http"):
-                element['slides'] = f"[:material-file-presentation-box: Slides]({element['slides']})"
+                element['slides'] = f"[📑 Slides]({element['slides']})"
 
-        return append_to_page(markdown, list_of_dicts_to_md_table(data))
+        return append_to_page(markdown, list_of_dicts_to_md_table(data, column_titles, column_align))
 
     elif path and re.compile(r"^checklists/MASVS-\w*\.md$").match(path):
         # checklists.md
