@@ -9,7 +9,7 @@ We place mobile apps into four categories:
 - [Native Apps](#native-apps)
 - [Web Apps](#web-apps)
   - [Hybrid Apps](#hybrid-apps)
-  - [Progressive Web Apps](#progressive-web-apps)
+- [Progressive Web Apps](#progressive-web-apps)
 
 ## Native Apps
 
