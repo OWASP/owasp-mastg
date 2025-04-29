@@ -23,7 +23,7 @@ A privacy policy that is incomplete, vague, or does not match the app's behavior
 
 ## Modes of Introduction
 
-- **Unclear or Absent Privacy Policy**: Not providing a privacy policy, or having one that is not easily accessible or clear to the user, or that doesn't specifically address the data practices of that particular app, instead being a generic document that covers multiple services.  
+- **Unclear or Absent Privacy Policy**: Not providing a privacy policy, or having one that is not easily accessible or clear to the user, or that doesn't specifically address the data practices of that particular app, instead being a generic document that covers multiple services.
 - **Discrepancies in Policy vs Behavior**: Differences between the privacy policy and the app's actual behavior.
 
 ## Impact
@@ -34,6 +34,6 @@ A privacy policy that is incomplete, vague, or does not match the app's behavior
 
 ## Mitigations
 
-- **Provide a Clear Privacy Policy**: Make sure a comprehensive and understandable privacy policy is readily accessible to users. Tailor it to the specific data practices of your app and write it in clear, understandable language as stated in Article 12 of the GDPR.  
-- **Ensure Consistency in Privacy vs Behavior**: Keep your data collection practices documented and up to date in privacy policies, privacy labels, and app store listings. Ensure that these documents match the app's actual behavior to avoid discrepancies that could mislead users or violate platform policies.  
+- **Provide a Clear Privacy Policy**: Make sure a comprehensive and understandable privacy policy is readily accessible to users. Tailor it to the specific data practices of your app and write it in clear, understandable language as stated in Article 12 of the GDPR.
+- **Ensure Consistency in Privacy vs Behavior**: Keep your data collection practices documented and up to date in privacy policies, privacy labels, and app store listings. Ensure that these documents match the app's actual behavior to avoid discrepancies that could mislead users or violate platform policies.
 - **Regularly Review and Update Privacy Policy**: Regularly review and update the privacy policy to reflect any changes in data collection practices, new features, or modifications to existing features that may impact how user data is handled.

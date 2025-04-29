@@ -52,7 +52,7 @@ hide:
 
 <h2>OWASP MASTG</h2>
 
-<a href="../MASTG"><img style="border-radius: 3px; margin: 2em;" width="300px" class="grow"  src="assets/mastg_cover.png" /></a>
+<a href="../MASTG"><img style="border-radius: 3px; margin: 2em;" width="300px" class="grow" src="assets/mastg_cover.png" /></a>
 
 <br>
 

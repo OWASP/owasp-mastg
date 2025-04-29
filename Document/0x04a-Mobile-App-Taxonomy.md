@@ -2,7 +2,7 @@
 
 When we use the term "mobile application" or "mobile app," we are referring to a self-contained computer program designed to execute on a mobile device. At the time of publication, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os) and mobile Internet usage has surpassed desktop usage for the first time in history. This means that mobile apps are the [most widespread types of Internet-capable apps](https://www.idc.com/promo/smartphone-market-share/os).
 
-Also, this guide uses the term "app" as a general term which refers to any kind of application that runs on a mobile OS. Usually, apps run directly on the platform for which they’re designed, run on top of a smart device’s mobile browser, or they use a mix of these two methods. In this chapter, we will develop a mobile app taxonomy which will fit all apps into categories then discuss the variations of each app category.
+Also, this guide uses the term "app" as a general term which refers to any kind of application that runs on a mobile OS. Usually, apps run directly on the platform for which they're designed, run on top of a smart device's mobile browser, or they use a mix of these two methods. In this chapter, we will develop a mobile app taxonomy which will fit all apps into categories then discuss the variations of each app category.
 
 We place mobile apps into four categories:
 
@@ -27,11 +27,11 @@ Here are some multi-platform frameworks that allow developers to compile a singl
 - [Google Flutter](https://flutter.dev/ "Google Flutter")
 - [React Native](https://reactnative.dev/ "React Native")
 
-If an app is developed using these these frameworks, the app will use the internal APIs native to each system and offer performance equivalent to native apps. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed _native apps_, apps developed using these frameworks are said to be _native apps_.
+If an app is developed using these frameworks, the app will use the internal APIs native to each system and offer performance equivalent to native apps. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed _native apps_, apps developed using these frameworks are said to be _native apps_.
 
 ## Web Apps
 
-Mobile web apps (or simply, _web apps_) are websites designed to look and feel like a _native app_. These apps run on top of a device’s browser and are usually developed in HTML5, much like a modern web page. Launcher icons may be used to parallel the same feel of accessing a _native app_; however, these icons are essentially the same as a browser bookmark, simply opening the default web browser to load the referenced web page.
+Mobile web apps (or simply, _web apps_) are websites designed to look and feel like a _native app_. These apps run on top of a device's browser and are usually developed in HTML5, much like a modern web page. Launcher icons may be used to parallel the same feel of accessing a _native app_; however, these icons are essentially the same as a browser bookmark, simply opening the default web browser to load the referenced web page.
 
 Because they run within the confines of a browser, web apps have limited integration with the general components of the device (i.e. they are "sandboxed") and their performance is usually inferior compared to native apps. Since developers usually target multiple platforms with a web app, their UIs generally do not follow the design principles of any specific platform. However, _web apps_ are popular because developers can use a single code base to reduce development and maintenance costs and distribute updates without going through the platform-specific app stores. For example, a change to the HTML file for a _web app_ can serve as viable, cross-platform update whereas an update to a store-based app requires considerably more effort.
 

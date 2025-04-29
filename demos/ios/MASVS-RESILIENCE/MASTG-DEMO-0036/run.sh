@@ -1,0 +1,1 @@
+rabin2 -OC MASTestApp | grep -A1 get-task-allow

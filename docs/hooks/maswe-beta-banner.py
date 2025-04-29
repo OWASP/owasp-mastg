@@ -95,7 +95,7 @@ def get_maswe_draft_banner(meta):
     This weakness hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that weakness by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?usp=sharing).
 
-    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
     
     ## Initial Description or Hints
 
@@ -116,24 +116,22 @@ def get_tests_draft_banner(meta):
     note = meta.get('note', None)
     weakness = meta.get('weakness', None)
 
-    if note:
-        note = f"    > Note: {note}\n"
-
-    if weakness:
-        weakness = f"\nFor more details, check the associated weakness: @{weakness}\n"
-    
     banner = f"""
-!!! warning "Draft Test"
+!!! warning "Draft MASTG-TEST"
 
     This test hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that test by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
 
-    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
 
     If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
 
+## Draft Description
+
 {note}
-{weakness}
+
+For more details, check the associated weakness: @{weakness}
+
 """
     return banner
 
@@ -167,6 +165,10 @@ def get_android_demo_buttons(page):
 
     demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
     
+    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
+    if not artifacts_url:
+        artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
+    
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
@@ -183,10 +185,38 @@ def get_ios_demo_buttons(page):
 
     demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
 
+    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
+    if not artifacts_url:
+        artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
+    
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
 <a href="https://github.com/cpholguera/MASTestApp-iOS" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} IPA</a>
+"""
+    return banner
+
+def get_demos_draft_banner(meta):
+    id = meta.get('id')
+    note = meta.get('note', None)
+    test = meta.get('test', None)
+
+    banner = f"""
+!!! warning "Draft MASTG-DEMO"
+
+    This demo hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that demo by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
+
+    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+
+    If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
+
+## Draft Description
+
+{note}
+
+For more details, check the associated test: @{test}
+
 """
     return banner
 
@@ -209,11 +239,14 @@ def on_page_markdown(markdown, page, **kwargs):
     if "MASTG/tests/" in path and page.meta.get('status') == 'deprecated':
         banners.append(get_v1_deprecated_tests_banner(page.meta))
 
-    if "MASTG/demos/android/" in path:
+    if "MASTG/demos/android/" in path and not page.meta.get('status') == 'draft':
         banners.append(get_android_demo_buttons(page))
     
-    if "MASTG/demos/ios/" in path:
+    if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'draft':
         banners.append(get_ios_demo_buttons(page))
+
+    if "MASTG/demos/" in path and page.meta.get('status') == 'draft':
+        banners.append(get_demos_draft_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown

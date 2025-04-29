@@ -36,7 +36,9 @@ We thank everyone that has participated in the MASVS Refactoring. You can access
 
 You'll notice that we have one **new author in the MASVS: Jeroen Beckers**
 
+<!-- markdownlint-disable search-replace -->
 > Jeroen is a mobile security lead responsible for quality assurance on mobile security projects and for R&D on all things mobile. Ever since his master's thesis on Android security, Jeroen has been interested in mobile devices and their (in)security. He loves sharing his knowledge with other people, as is demonstrated by his many talks & trainings at colleges, universities, clients and conferences.
+<!-- markdownlint-disable search-replace -->
 
 💙 Special thanks to our [MAS Advocate](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/#mas-advocates), [NowSecure](https://www.nowsecure.com/), who has once again demonstrated their commitment to the project by continuously supporting it with time/dedicated resources as well as feedback, data and content contributions.
 
