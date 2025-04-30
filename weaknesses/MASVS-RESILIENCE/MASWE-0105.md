@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-3]
   masvs-v2: [MASVS-RESILIENCE-2, MASVS-CODE-4]
+  cwe: [353]
 
 draft:
   description: e.g. integrity of downloaded resources or dynamically loaded resources

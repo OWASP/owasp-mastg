@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-4]
   masvs-v2: [MASVS-RESILIENCE-4]
+  cwe: [693]
 
 draft:
   description: e.g. Frida, Xposed, Cydia Substrate, etc.
