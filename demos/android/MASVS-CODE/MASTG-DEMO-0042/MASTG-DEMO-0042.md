@@ -20,7 +20,7 @@ The code includes an application code that demonstrates how an attacker could ex
 
 ### VulnerableActivity.kt
 
-A sample internal component of the application, which contain any sensitive data.
+A sample internal component of the application, which contains any sensitive data.
 
 {{ VulnerableActivity.kt }}
 
@@ -31,7 +31,7 @@ A sample internal component of the application, which contain any sensitive data
 
 ### Observation
 
-The output shows that the attacker's application was able to successfully launch the target application's internal VulnerableActivity using implicit intent. This confirms that the activity was exported and could be reached without explicit targeting. 
+The output shows that the attacker's application was able to successfully launch the target application's internal VulnerableActivity using implicit intent. This confirms that the activity was exported and could be reached without explicit targeting.
 
 ### Evaluation
 
