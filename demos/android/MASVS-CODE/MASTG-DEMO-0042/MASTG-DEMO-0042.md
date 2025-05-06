@@ -10,7 +10,7 @@ test: MASTG-TEST-0026
 
 The code snippet shows that an implicit intent is being used to launch an activity using Intent without specifying the target component. This may allow malicious applications to hijack the intent.
 
-{{ MastgTest.kt # MastgTest_reversed.java  }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### MastgTestAttacker.kt
 
@@ -26,7 +26,7 @@ A sample internal component of the application, which contains any sensitive dat
 
 ### Steps
 
-1. Install the attacker app on a device @MASTG-TECH-0004.
+1. Install the attacker app on a device using @MASTG-TECH-0004.
 2. Press the button to trigger the malicious intent.
 
 ### Observation
