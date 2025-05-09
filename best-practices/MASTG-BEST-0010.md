@@ -11,12 +11,12 @@ Companies often hesitate to increase `minSdkVersion` because they want their app
 
 ## Clarifying the Difference: `targetSdkVersion` vs `minSdkVersion`
 
-- `targetSdkVersion`: Defines the highest API level the app is _designed_ to run on. The app _can_ run on lower API levels, but it won’t necessarily take advantage of all new security enforcements.
+- `targetSdkVersion`: Defines the highest API level the app is _designed_ to run on. The app _can_ run on lower API levels, but it won't necessarily take advantage of all new security enforcements.
 - `minSdkVersion`: Defines the lowest API level the app is _allowed_ to run on. This is crucial because many security features are only available on devices running a certain API level or higher. If you set a low `minSdkVersion`, your app **completely misses out on these protections** on older devices.
-  
-Even if you set a high `targetSdkVersion`, the app can still run on older devices **without** the latest security improvements. If you set `targetSdkVersion=33` (Android 13) but `minSdkVersion=21` (Android 5), the app can still be installed on Android 5 devices, **which lack years of critical security updates**. Malware on older devices can exploit missing security features **that your app assumes are available**.
 
-While increasing `minSdkVersion` may slightly reduce the number of devices your app can run on, **it significantly enhances security** by ensuring that **all users have a baseline level of protection**.  
+Even if you set a high `targetSdkVersion`, the app can still run on older devices **without** the latest security improvements. If you set `targetSdkVersion=33` (Android 13) but `minSdkVersion=21` (Android 5), the app can still be installed on Android 5 devices, **which lack years of critical security updates**. Malware on these older devices can exploit missing security features that app-level code alone cannot address, as evidenced by vulnerabilities listed in the [Android Security Bulletins](https://source.android.com/docs/security/bulletin).
+
+While increasing `minSdkVersion` may slightly reduce the number of devices your app can run on, **it significantly enhances security** by ensuring that **all users have a baseline level of protection**.
 
 ## Common Misconceptions
 

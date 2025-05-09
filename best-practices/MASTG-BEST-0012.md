@@ -5,9 +5,9 @@ id: MASTG-BEST-0012
 platform: android
 ---
 
-If JavaScript is **not required**, explicitly disable it in WebViews by setting [`setJavaScriptEnabled(false)`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled%28boolean%29).  
+If JavaScript is **not required**, explicitly disable it in WebViews by setting [`setJavaScriptEnabled(false)`](https://developer.android.com/reference/android/webkit/WebSettings.html#setJavaScriptEnabled%28boolean%29).
 
-Enabling JavaScript in WebViews **increases the attack surface** and can expose your app to severe security risks, including:  
+Enabling JavaScript in WebViews **increases the attack surface** and can expose your app to severe security risks, including:
 
 - **[Cross-Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/):** Malicious JavaScript can execute within the WebView, leading to session hijacking, credential theft, or defacement.
 - **Data Exfiltration:** WebViews can access sensitive data such as cookies, tokens, or local files (e.g., via `file://` or `content://` URIs when `setAllowFileAccess(true)`, `setAllowFileAccessFromFileURLs(true)`, or `setAllowContentAccess(true)` are enabled) which can be exfiltrated by malicious scripts if `setAllowUniversalAccessFromFileURLs(true)` is set.

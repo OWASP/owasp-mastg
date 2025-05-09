@@ -10,9 +10,9 @@ The recommended approach to **load file content to a WebView securely** is to us
 If you must allow the WebView to load local files using the `file://` scheme, consider the following:
 
 - For apps with a `minSdkVersion` that has secure defaults for WebView file access methods, ensure that these methods are **not used** and the default values are preserved. Alternatively, explicitly set them to `false` to guarantee the WebView does not allow local file access:
-  - `setAllowFileAccess(false)`
-  - `setAllowFileAccessFromFileURLs(false)`
-  - `setAllowUniversalAccessFromFileURLs(false)`
+    - `setAllowFileAccess(false)`
+    - `setAllowFileAccessFromFileURLs(false)`
+    - `setAllowUniversalAccessFromFileURLs(false)`
 
 - For apps with a `minSdkVersion` that **does not have secure defaults** for these methods (e.g., older API levels), ensure that the above methods are **explicitly** set to `false` in your WebView configuration.
 
