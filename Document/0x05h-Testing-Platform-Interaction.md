@@ -403,9 +403,9 @@ Contents of local_page.html (in the assets folder):
 
 **Note about accessing cookies:**
 
-Setting `setAllowUniversalAccessFromFileURLs(true)` allows JavaScript inside a local `file://` to make cross-origin requests (XHR, Fetch, etc.). This bypasses the Same-Origin Policy (SOP) for network requests, but it does not grant access to cookies from remote websites. 
+Setting `setAllowUniversalAccessFromFileURLs(true)` allows JavaScript inside a local `file://` to make cross-origin requests (XHR, Fetch, etc.). This bypasses the Same-Origin Policy (SOP) for network requests, but it does not grant access to cookies from remote websites.
 
-- Cookies are managed by the WebView’s CookieManager and cannot be accessed by a `file://` origin unless explicitly allowed via document.cookie (which most modern sites prevent using `HttpOnly` and `Secure` flags).
+- Cookies are managed by the WebView's CookieManager and cannot be accessed by a `file://` origin unless explicitly allowed via document.cookie (which most modern sites prevent using `HttpOnly` and `Secure` flags).
 - Cross-origin requests also do not include cookies unless explicitly allowed by the server via CORS headers such as `Access-Control-Allow-Origin: *` and `Access-Control-Allow-Credentials: true`.
 
 #### WebView Content Provider Access
