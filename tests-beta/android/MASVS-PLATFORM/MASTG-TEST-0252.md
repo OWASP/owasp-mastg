@@ -18,7 +18,7 @@ This test checks for references to methods from the [`WebSettings`](https://deve
 - `setAllowFileAccessFromFileURLs`: lets JavaScript within those local files access other local files.
 - `setAllowUniversalAccessFromFileURLs`: removes any cross-origin restrictions, allowing that JavaScript to read data across origins. The JavaScript **can always send data to any origin** (e.g. via `POST`), regardless of this setting; this setting only affects reading data (e.g. the code wouldn't get a response to a `POST` request but the data would still be sent).
 
-By combining these settings, an attack can become possible because if a malicious HTML file gains full privilege and it's able to access local resources and then exfiltrate them over the network, effectively bypassing the usual security barriers enforced by the same-origin policy.
+When these settings are combined, they can enable an attack in which a malicious HTML file gains elevated privileges, accesses local resources, and exfiltrates data over the network, effectively bypassing the security boundaries typically enforced by the same-origin policy.
 
 Even though these methods have secure defaults and are **deprecated in Android 10 (API level 29) and later**, they can still be explicitly set to `true` or their insecure defaults may be used in apps that run on older versions of Android (due to their `minSdkVersion`).
 
