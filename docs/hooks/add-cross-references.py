@@ -4,9 +4,11 @@ import mkdocs.plugins
 import os
 import glob
 import pathlib
+from functools import lru_cache
 log = logging.getLogger('mkdocs')
 
 
+@lru_cache(maxsize=None)
 def gather_metadata(directory, id_key):
     metadata = {}
     for file in glob.glob(f"./docs/{directory}/**/*.md", recursive=True):
