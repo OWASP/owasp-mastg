@@ -630,10 +630,10 @@ Similarly to JSON, XML has the issue of working mostly String based, which means
 
 There are libraries that provide functionality for directly storing the contents of an object in a database and then instantiating the object with the database contents. This is called Object-Relational Mapping (ORM). Libraries that use the SQLite database include
 
-- [OrmLite](http://ormlite.com/ "OrmLite"),
+- [OrmLite](https://github.com/j256/ormlite-android "OrmLite"),
 - [SugarORM](https://satyan.github.io/sugar/ "Sugar ORM"),
 - [GreenDAO](https://github.com/greenrobot/greenDAO "GreenDAO") and
-- [ActiveAndroid](http://www.activeandroid.com/ "ActiveAndroid").
+- [ActiveAndroid](https://github.com/pardom-zz/ActiveAndroid "ActiveAndroid").
 
 [Realm](https://www.mongodb.com/docs/realm/sdk/java/ "Realm Java"), on the other hand, uses its own database to store the contents of a class. The amount of protection that ORM can provide depends primarily on whether the database is encrypted. See the chapter ["Data Storage on Android"](0x05d-Testing-Data-Storage.md) for more details. The Realm website includes a nice [example of ORM Lite](https://github.com/j256/ormlite-examples/tree/master/android/HelloAndroid "OrmLite example").
 
