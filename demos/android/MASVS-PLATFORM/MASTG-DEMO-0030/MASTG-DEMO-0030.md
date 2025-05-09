@@ -84,4 +84,4 @@ The test **fails** due to the following WebView settings being configured:
 
 Note that the method `setAllowContentAccess` is not explicitly called in the code. However, using this approach we can't really tell since we're inspecting the WebView settings after they have been configured.
 
-As indicated by the backtrace in the output, the settings were called in the `mastgTest` method of the `MastgTestWebView` class. Since this app is a demo and symbols aren't stripped, we can even see the exact file and line number where the settings were configured: `MastgTestWebView.kt:25`.
+As indicated by the backtrace in the output, the settings were called in the `mastgTest` method of the `MastgTestWebView` class. Since this app is a demo and code obfuscation tools like ProGuard or R8 are not applied, we can even see the exact file name and line number where the settings were configured: `MastgTestWebView.kt:25`. In a production build, this information is typically removed or obfuscated unless explicitly preserved.
