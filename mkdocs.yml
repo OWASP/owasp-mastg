@@ -91,8 +91,8 @@ nav:
           #   - ... | flat | MASTG/tests-beta/android/MASVS-AUTH/MASTG-TEST-*.md
           - MASVS-NETWORK:
             - ... | flat | MASTG/tests-beta/android/MASVS-NETWORK/MASTG-TEST-*.md
-          # - MASVS-PLATFORM:
-          #   - ... | flat | MASTG/tests-beta/android/MASVS-PLATFORM/MASTG-TEST-*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/tests-beta/android/MASVS-PLATFORM/MASTG-TEST-*.md
           - MASVS-CODE:
             - ... | flat | MASTG/tests-beta/android/MASVS-CODE/MASTG-TEST-*.md
           - MASVS-RESILIENCE:
@@ -127,12 +127,12 @@ nav:
           #   - ... | flat | MASTG/demos/android/MASVS-AUTH/**/MASTG-DEMO-*.md
           # - MASVS-NETWORK:
           #   - ... | flat | MASTG/demos/android/MASVS-NETWORK/**/MASTG-DEMO-*.md
-          # - MASVS-PLATFORM:
-          #   - ... | flat | MASTG/demos/android/MASVS-PLATFORM/**/MASTG-DEMO-*.md
-          # - MASVS-CODE:
-          #   - ... | flat | MASTG/demos/android/MASVS-CODE/**/MASTG-DEMO-*.md
-          # - MASVS-RESILIENCE:
-          #   - ... | flat | MASTG/demos/android/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/demos/android/MASVS-PLATFORM/**/MASTG-DEMO-*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/demos/android/MASVS-CODE/**/MASTG-DEMO-*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/demos/android/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
           - MASVS-PRIVACY:
             - ... | flat | MASTG/demos/android/MASVS-PRIVACY/**/MASTG-DEMO-*.md
         - iOS:
@@ -148,8 +148,8 @@ nav:
           #   - ... | flat | MASTG/demos/ios/MASVS-PLATFORM/**/MASTG-DEMO-*.md
           # - MASVS-CODE:
           #   - ... | flat | MASTG/demos/ios/MASVS-CODE/**/MASTG-DEMO-*.md
-          # - MASVS-RESILIENCE:
-          #   - ... | flat | MASTG/demos/ios/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/demos/ios/MASVS-RESILIENCE/**/MASTG-DEMO-*.md
           # - MASVS-PRIVACY:
           #   - ... | flat | MASTG/demos/ios/MASVS-PRIVACY/**/MASTG-DEMO-*.md
       - Techniques:
