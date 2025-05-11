@@ -21,7 +21,7 @@ See @MASTG-DEMO-0030 for all the details about the sample and the attack.
 
 Run @MASTG-TOOL-0110 rules against the sample code.
 
-{{ ../../../../rules/mastg-android-webview-allow-content-access.yml }}
+{{ ../../../../rules/mastg-android-webview-allow-local-access.yml }}
 
 {{ run.sh }}
 
