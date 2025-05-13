@@ -9,11 +9,15 @@ weakness: MASWE-0045
 
 ## Overview
 
-This test verifies that an app denies a fallback to passcode authentication if the biometric no longer works. The use of [kSecAccessControlUserPresence](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/userpresence?language=objc) API allows for such a fallback. This is considered to be weaker than [kSecAccessControlBiometryAny](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany?language=objc) since it is much easier to steal someone's passcode entry by means of shouldersurfing, than it is to bypass the Touch ID or Face ID service.
+This test checks if the app uses authentication mechanisms that rely on the user's passcode instead of biometrics or allow fallback to device passcode when biometric authentication fails. Specifically, it checks for use of [`kSecAccessControlDevicePasscode`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/devicepasscode) or [`kSecAccessControlUserPresence`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/userpresence).
+
+`.userPresence` is described in the Apple docs as the option that's typically used as it "lets the system choose a mechanism, depending on the current situation". However, this allows fallback to passcode in some cases (e.g. when biometrics aren't configured yet), which is considered weaker than requiring biometrics alone because passcodes are more susceptible to compromise (e.g., through shoulder surfing).
+
+**Note:** This test does not consider [`LAPolicy.deviceOwnerAuthentication`](https://developer.apple.com/documentation/localauthentication/lapolicy/deviceownerauthentication) for LocalAuthentication flows because that shouldn't be used on its own. See @MASTG-TEST-0266.
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary and look for uses of [SecAccessControlCreateWithFlags(...)](https://developer.apple.com/documentation/security/secaccesscontrolcreatewithflags(_:_:_:_:)) with [kSecAccessControlUserPresence](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/userpresence?language=objc) flag.
+1. Run a static analysis scan using @MASTG-TOOL-0073 to detect usage of `SecAccessControlCreateWithFlags` with the `.userPresence` or `.devicePasscode` flags.
 
 ## Observation
 
@@ -21,4 +25,8 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if an app uses `SecAccessControlCreateWithFlags(...)` with `kSecAccessControlUserPresence` flag to authenticate.
+The test fails if the app uses either `.userPresence` or `.devicePasscode` to protect sensitive operations or data in high-risk scenarios.
+
+The test passes only if stricter authentication mechanisms, such as [`.biometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany), [`.biometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) are used to enforce biometric-only access (being `.biometryCurrentSet` the one considered the most secure).
+
+**Note:** Using `.userPresence` or `.devicePasscode` is not inherently a vulnerability, but in high-security applications (e.g., finance, government, health), their use can represent a weakness or misconfiguration that reduces the intended security posture. So this issue better categorized as a security weakness or hardening issue, not a critical vulnerability.

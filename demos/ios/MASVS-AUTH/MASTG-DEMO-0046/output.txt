@@ -1,7 +1,5 @@
 SecAccessControlCreateWithFlags(..., 0x2) called with kSecAccessControlBiometryAny
 
-[WARNING] The authentication may use biometric added after an entry in the keychain was created!
-
 Backtrace:
 0x102350198 MASTestApp!specialized static MastgTest.createAccessControl()
 0x1023504b0 MASTestApp!specialized static MastgTest.storeTokenInKeychain(secretToken:)

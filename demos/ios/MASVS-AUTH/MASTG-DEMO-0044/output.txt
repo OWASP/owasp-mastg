@@ -1,7 +1,5 @@
 SecAccessControlCreateWithFlags(..., 0x1) called with kSecAccessControlUserPresence
 
-[WARNING] The authentication may fallback to device's passcode!
-
 Backtrace:
 0x102cc0198 MASTestApp!specialized static MastgTest.createAccessControl()
 0x102cc04b0 MASTestApp!specialized static MastgTest.storeTokenInKeychain(secretToken:)

@@ -8,9 +8,9 @@ test: MASTG-TEST-0271
 
 ### Sample
 
-The following sample checks whether the app uses a biometric authentication API that detects the addition of a new biometric in the system settings after the application adds an entry to the keychain.
+This demo uses the same sample as @MASTG-DEMO-0045.
 
-{{ MastgTest.swift }}
+{{ ../MASTG-DEMO-0045/MastgTest.swift }}
 
 ### Steps
 
@@ -26,8 +26,8 @@ The following sample checks whether the app uses a biometric authentication API 
 
 {{ output.txt }}
 
-The output reveals the use of `SecAccessControlCreateWithFlags(...)` in the app and lists all used flags. In this case, `kSecAccessControlBiometryAny` flag was used. Note that the script also prints `[WARNING] The authentication may use biometric added after an entry in the keychain was created!` message when insecure flag is used.
+The output reveals the use of `SecAccessControlCreateWithFlags` in the app and lists all used flags.
 
 ### Evaluation
 
-The test fails because the output shows the runtime use of `SecAccessControlCreateWithFlags(..., kSecAccessControlBiometryAny)`. `kSecAccessControlBiometryAny` allows for authentication with biometric added in the system settings after the app created an entry in the keychain. It's recommended to use [kSecAccessControlBiometryCurrentSet](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset?language=objc) flag instead.
+The test fails because the output shows the runtime use of `SecAccessControlCreateWithFlags` with `kSecAccessControlBiometryAny`, which accepts any additional biometrics added after the Keychain entry was created. It's recommended to use the [`kSecAccessControlBiometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset?language=objc) flag instead.

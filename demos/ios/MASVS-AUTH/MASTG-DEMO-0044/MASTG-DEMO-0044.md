@@ -8,9 +8,9 @@ test: MASTG-TEST-0269
 
 ### Sample
 
-The following sample checks whether the app uses a biometric authentication API that allows for a fallback to passcode authentication.
+This demo uses the same sample as @MASTG-DEMO-0043.
 
-{{ MastgTest.swift }}
+{{ ../MASTG-DEMO-0043/MastgTest.swift }}
 
 ### Steps
 
@@ -26,8 +26,10 @@ The following sample checks whether the app uses a biometric authentication API 
 
 {{ output.txt }}
 
-The output reveals the use of `SecAccessControlCreateWithFlags(...)` in the app and lists all used flags. In this case, `kSecAccessControlUserPresence` flag was used. Note that the script also prints `[WARNING] The authentication may fallback to device's passcode` message when insecure flag is used.
+The output reveals the use of `SecAccessControlCreateWithFlags` in the app and lists all used flags.
 
 ### Evaluation
 
 The test fails because the output shows the runtime use of `SecAccessControlCreateWithFlags(..., kSecAccessControlUserPresence)` which allows for a fallback to passcode authentication.
+
+Since this data requires protection with biometrics, It's recommended to use the [`.biometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) or [`.biometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany) flags instead, being `.biometryCurrentSet` the most secure.

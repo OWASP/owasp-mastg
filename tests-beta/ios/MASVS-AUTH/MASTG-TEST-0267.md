@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Runtime Use Of Event-bound Biometric Authentication
+title: Runtime Use Of Event-Bound Biometric Authentication
 id: MASTG-TEST-0267
 apis: [LAContext.evaluatePolicy]
 type: [dynamic]

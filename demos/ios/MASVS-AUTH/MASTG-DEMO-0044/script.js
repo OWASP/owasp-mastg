@@ -26,20 +26,6 @@ Interceptor.attach(Module.getExportByName(null, 'SecAccessControlCreateWithFlags
     const flags_description = parseAccessControlFlags(flags)
     console.log(`\SecAccessControlCreateWithFlags(..., 0x${flags.toString(16)}) called with ${flags_description}\n`)
     
-
-    if(flags == AccessControlFlags.kSecAccessControlUserPresence || 
-        // e.g. SecAccessControlCreateFlags = [.userPresence]
-        ((flags & AccessControlFlags.kSecAccessControlDevicePasscode) && (flags & AccessControlFlags.kSecAccessControlOr)) ||
-        // e.g. SecAccessControlCreateFlags = [.biometryAny, .or, .devicePasscode]
-        ((flags & AccessControlFlags.kSecAccessControlUserPresence) && (flags & AccessControlFlags.kSecAccessControlOr))
-        // e.g. SecAccessControlCreateFlags = [.biometryAny, .or, .userPresence]
-    ){
-        console.log("[WARNING] The authentication may fallback to device's passcode!")
-    }
-    else{
-        console.log("There are no flags that fall back to device's passcode")
-    }
-
       // Use an arrow function so that `this` remains the same as in onEnter
       const printBacktrace = (maxLines = 8) => {
           console.log("\nBacktrace:");

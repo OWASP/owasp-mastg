@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: References to APIs for Event-bound Biometric Authentication
+title: References to APIs for Event-Bound Biometric Authentication
 id: MASTG-TEST-0266
 apis: [LAContext.evaluatePolicy]
 type: [static]
@@ -9,16 +9,24 @@ weakness: MASWE-0044
 
 ## Overview
 
-This test verifies that an app uses the Keychain API for authentication instead of the less secure LocalAuthentication API. The LocalAuthentication API returns only a boolean result indicating authentication success or failure. This makes it easier to manipulate the logic of the application and skip authentication altogether. Keychain API strengthens the authentication process by returning data from the keychain. This data is essential to continue using the application. For example, it could be a session token for backend API authentication or a cryptographic key to decrypt data from storage. In other words, the Keychain API allows developers to use a more secure architecture instead of relying on a simple if-statement.
+This test checks if the app insecurely accesses sensitive resources that should be protected by user authentication (e.g., tokens, keys) relying solely** on the LocalAuthentication API for access control instead of using the Keychain API and requiring user presence.
+
+The **LocalAuthentication** API (e.g., `LAContext`) provides user authentication (Touch ID, Face ID, device passcode), returning only a success or failure result. However, it **does not** securely store secrets or enforce any security. This makes it susceptible to logic manipulation (e.g., bypassing an `if authenticated { ... }` check).
+
+In contrast, the **Keychain** API securely stores sensitive data, and can be configured with access control policies (e.g., require user presence such as biometrics) via `kSecAccessControl` flags. This ensures authentication is not just a one-time boolean, but part of a **secure data retrieval path (out-of-process)**, so bypassing authentication becomes significantly harder.
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0073 on the app binary and look for uses of [LAContext.evaluatePolicy(...)](https://developer.apple.com/documentation/localauthentication/lacontext/evaluatepolicy(_:localizedreason:reply:)) API,attribute.
+1. Run a static analysis scan with @MASTG-TOOL-0073 to detect usage of `LAContext.evaluatePolicy(...)`
+2. Run a static analysis scan with @MASTG-TOOL-0073 to detect usage of Keychain APIs, especially `SecAccessControlCreateWithFlags` (which should go accompanied by other APIs such as `SecItemAdd` and `SecItemCopyMatching`).
 
 ## Observation
 
-The output should contain a list of locations where relevant APIs are used.
+The analysis should output the locations where the `evaluatePolicy` and Keychain APIs are used in the codebase (or the lack of their use).
 
 ## Evaluation
 
-The test fails if an app uses `LAContext.evaluatePolicy` API to authenticate the user.
+The test fails if for each sensitive data resource worth protecting:
+
+- `LAContext.evaluatePolicy(...)` is used explicitly.
+- There are no calls to `SecAccessControlCreateWithFlags`.

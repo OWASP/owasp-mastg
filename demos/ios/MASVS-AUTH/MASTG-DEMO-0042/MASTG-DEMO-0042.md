@@ -8,9 +8,9 @@ test: MASTG-TEST-0267
 
 ### Sample
 
-The following sample checks whether the app uses an insecure API for biometric authentication.
+This demo uses the same sample as @MASTG-DEMO-0041.
 
-{{ MastgTest.swift }}
+{{ ../MASTG-DEMO-0041/MastgTest.swift }}
 
 ### Steps
 

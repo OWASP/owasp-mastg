@@ -8,7 +8,7 @@ test: MASTG-TEST-0268
 
 ### Sample
 
-The following sample checks whether the app uses a biometric authentication API that allows for a fallback to passcode authentication.
+The following sample correctly uses the Keychain API for local authentication but it uses the [`kSecAccessControlUserPresence`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/userpresence) flag which allows fallback to device passcode when biometric authentication fails or isn't yet configured.
 
 {{ MastgTest.swift }}
 
@@ -36,4 +36,6 @@ The `flags` is an enum of [SecAccessControlCreateFlags](https://developer.apple.
 
 ### Evaluation
 
-The test fails because the output shows references to biometric verification that falls backs to device's passcode authentication.
+The test fails because the output shows references to biometric verification that falls back to device's passcode authentication, specifically `.userPresence`.
+
+Since this data requires protection with biometrics, it's recommended to use the [`.biometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) or [`.biometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany) flags instead, being `.biometryCurrentSet` the most secure.
