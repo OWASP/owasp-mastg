@@ -1,8 +1,8 @@
 ---
 title: Implicit intent to trigger internal app components
 platform: android
-id: MASTG-TEST-0026
-type: [dynamic]
+id: MASTG-TEST-0027
+type: [static]
 weakness: MASWE-0083
 ---
 
@@ -12,12 +12,11 @@ Android enables communication between its components through intents, which serv
 
 ## Steps
 
-1. Install the attacker app on a device @MASTG-TECH-0004.
-2. Press the button to trigger the malicious intent.
+1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and `AndroidManifest.xml` file.
 
 ## Observation
 
-The attacker's application was able to successfully launch the VulnerableActivity using an crafted intent.
+The code uses an implicit intent by setting an action via `Intent.setAction()` and launching it with `startActivity()`. Also, `AndroidManifest.xml` declares an exported activity with an intent filter that matches the custom action.
 
 ## Evaluation
 

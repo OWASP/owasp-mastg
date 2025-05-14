@@ -1,0 +1,2 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-implicit-intent-start-activity.yml ./MastgTest_reversed.java --text -o output1.txt
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-implicit-exported-activity.yml ./AndroidManifest_reversed.xml --text -o output2.txt

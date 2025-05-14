@@ -1,0 +1,15 @@
+rules:
+  - id: exported-activity-with-intent-filter
+    languages:
+      - xml
+    message: "Exported activity with intent-filter found. May be vulnerable to implicit intent abuse."
+    severity: WARNING
+    patterns:
+      - pattern: |
+          <activity android:exported="true" android:name="$ACTIVITY">
+            ...
+            <intent-filter>
+              <action android:name="$ACTION" />
+              ...
+            </intent-filter>
+          </activity>

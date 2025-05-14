@@ -1,0 +1,18 @@
+rules:
+  - id: implicit-intent-start-activity
+    languages:
+      - java
+    metadata:
+      summary: This rule check if the implicit Intent is used to start any activity without specifying the target component.
+    message: "Possible implicit Intent passed to startActivity. Verify that it does not expose exported components."
+    severity: WARNING
+    pattern-either:
+      - pattern: |
+          Intent $INTENT = new Intent("$ACTION");
+          ...
+          startActivity($INTENT);
+      - pattern: |
+          Intent $INTENT = new Intent();
+          $INTENT.setAction("$ACTION");
+          ...
+          $OBJ.startActivity($INTENT);

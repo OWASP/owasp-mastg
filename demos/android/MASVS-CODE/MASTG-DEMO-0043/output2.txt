@@ -1,0 +1,24 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                                
+    AndroidManifest_reversed.xml
+    ❯❱ exported-activity-with-intent-filter
+          Exported activity with intent-filter found. May be vulnerable to implicit intent abuse.
+                                                                                                 
+            6┆ <activity android:exported="true" android:name="org.owasp.mastestapp.MainActivity"
+               android:theme="@style/Theme.MASTestApp">                                          
+            7┆     <intent-filter>
+            8┆         <action android:name="android.intent.action.MAIN"/>
+            9┆         <category android:name="android.intent.category.LAUNCHER"/>
+           10┆     </intent-filter>
+           11┆ </activity>
+            ⋮┆----------------------------------------
+           12┆ <activity android:exported="true" android:name="org.owasp.mastestapp.VulnerableActivity">
+               &gt; <intent-filter>                                                                     
+           13┆         <action android:name="org.owasp.mastestapp.VULNERABLE_ACTION"/>
+           14┆         <category android:name="android.intent.category.DEFAULT"/>
+           15┆     </intent-filter>
+           16┆ </activity>
