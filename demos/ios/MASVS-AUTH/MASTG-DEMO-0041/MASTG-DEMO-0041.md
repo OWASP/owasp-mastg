@@ -33,4 +33,4 @@ The third argument of `objc_msgSend(...)` is `LAPolicyDeviceOwnerAuthenticationW
 
 ### Evaluation
 
-The test fails because the output shows references to biometric verification that uses LocalAuthentication API.
+The test fails because the output only shows references to biometric verification with LocalAuthentication API and no calls to any Keychain APIs requiring user presence.

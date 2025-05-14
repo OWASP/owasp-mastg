@@ -23,4 +23,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if `.biometryCurrentSet` is not used to protect sensitive Keychain items. Without this flag, biometric access remains valid even after new biometric data is enrolled on the device. 
+The test fails if `.biometryCurrentSet` is not used to protect sensitive Keychain items. Without this flag, biometric access remains valid even after new biometric data is enrolled on the device.
