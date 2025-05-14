@@ -91,7 +91,7 @@ Further information is available in the [Android documentation](https://source.a
 
 Even though the Android operating system is based on Linux, it doesn't implement user accounts in the same way other Unix-like systems do. In Android, the multi-user support of the Linux kernel is used to sandbox apps: with a few exceptions, each app runs as though under a separate Linux user, effectively isolated from other apps and the rest of the operating system.
 
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/9.0.0_r3/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed.
+The file [android_filesystem_config.h](https://android.googlesource.com/platform/system/core/+/master/libcutils/include/private/android_filesystem_config.h) includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed.
 
 For example, Android 9.0 (API level 28) defines the following system users:
 
@@ -166,42 +166,7 @@ The framework also offers common security functions, such as cryptography.
 
 The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well.
 
-Noteworthy [API versions](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "What is API level?"):
-
-- Android 4.2 (API level 16) in November 2012 (introduction of SELinux)
-- Android 4.3 (API level 18) in July 2013 (SELinux became enabled by default)
-- Android 4.4 (API level 19) in October 2013 (several new APIs and ART introduced)
-- Android 5.0 (API level 21) in November 2014 (ART used by default and many other features added)
-- Android 6.0 (API level 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at runtime rather than all or nothing during installation)
-- Android 7.0 (API level 24-25) in August 2016 (new JIT compiler on ART)
-- Android 8.0 (API level 26-27) in August 2017 (a lot of security improvements)
-- Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
-- **Android 10 (API level 29)** in September 2019 (access location "only while using the app", device tracking prevention, improve secure external storage,)
-    - [Privacy (overview)](https://developer.android.com/about/versions/10/highlights#privacy_for_users "Android 10 Privacy Overview")
-    - [Privacy (details 1)](https://developer.android.com/about/versions/10/privacy "Android 10 Privacy Details 1")
-    - [Privacy (details 2)](https://developer.android.com/about/versions/10/privacy/changes "Android 10 Privacy Details 2")
-    - [Security (overview)](https://developer.android.com/about/versions/10/highlights#security "Android 10 Security Overview")
-    - [Security (details)](https://developer.android.com/about/versions/10/behavior-changes-all#security "Android 10 Security Details")
-- **Android 11 (API level 30)** in September 2020 (scoped storage enforcement, Permissions auto-reset, [reduced package visibility](https://developer.android.com/training/package-visibility), APK Signature Scheme v4)
-    - [Privacy (overview)](https://developer.android.com/about/versions/11/privacy "Android 11 Privacy Overview")
-    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all "Android 11 Privacy Behavior changes (all apps)")
-    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all#security "Android 11 Security Behavior changes (all apps)")
-    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#privacy "Android 11 Privacy Behavior changes (apps targeting version)")
-    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#security "Android 11 Security Behavior changes (apps targeting version)")
-- **Android 12 (API level 31-32)** in August 2021 (Material You, Web intent resolution, Privacy Dashboard)
-    - [Security and privacy](https://developer.android.com/about/versions/12/features#security-privacy "Android 12 Security and privacy")
-    - [Behavior changes (all apps)](https://developer.android.com/about/versions/12/behavior-changes-all#security-privacy "Android 12 Behavior changes (all apps)")
-    - [Behavior changes (apps targeting version)](https://developer.android.com/about/versions/12/behavior-changes-12#security-privacy "Android 12 Behavior changes (apps targeting version)")
-- **Android 13 (API level 33)** in 2022 (Safer exporting of context-registered receivers, new photo picker)
-    - [Security and privacy](https://developer.android.com/about/versions/13/features#privacy-security "Android 13 Security and privacy")
-    - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#privacy "Android 13 Privacy Behavior changes (all apps)")
-    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#security "Android 13 Security Behavior changes (all apps)")
-    - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#privacy "Android 13 Privacy Behavior changes (apps targeting version)")
-    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#security "Android 13 Security Behavior changes (apps targeting version)")
-- **Android 14 (API level 34)** in 2023:
-    - [Summary of changes](https://developer.android.com/about/versions/14/summary "Android 14 Summary of changes")
-    - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/14/behavior-changes-all#security "Android 14 Security Behavior changes (all apps)")
-    - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/14/behavior-changes-14#security "Android 14 Security Behavior changes (apps targeting version)")
+Noteworthy [API versions](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "What is API level?"). See @MASTG-BEST-0010 for more information about security and privacy features introduced in different Android versions.
 
 Android development releases follow a unique structure. They are organized into families and given alphabetical codenames inspired by tasty treats. You can find them all [here](https://source.android.com/docs/setup/about/build-numbers "Codenames, tags, and build numbers").
 
@@ -242,7 +207,7 @@ uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),
 
 The relationship between group IDs and permissions is defined in the following file:
 
-[frameworks/base/data/etc/platform.xml](http://androidxref.com/9.0.0_r3/xref/frameworks/base/data/etc/platform.xml "platform.xml")
+[platform.xml](https://android.googlesource.com/platform/frameworks/base/+/master/data/etc/platform.xml)
 
 ```xml
 <permission name="android.permission.INTERNET" >

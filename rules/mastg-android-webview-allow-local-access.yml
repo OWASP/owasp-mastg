@@ -1,0 +1,15 @@
+rules:
+  - id: mastg-android-webview-settings
+    severity: INFO
+    languages:
+      - java
+    metadata:
+      summary: This rule detects WebView settings related to local file access and JavaScript execution.
+    message: "[MASVS-PLATFORM-2] Detected WebView settings."
+    pattern-either:
+      - pattern: $WEBVIEW.getSettings(...);
+      - pattern: $SETTINGS.setJavaScriptEnabled($ARG);
+      - pattern: $SETTINGS.setAllowContentAccess($ARG);
+      - pattern: $SETTINGS.setAllowFileAccessFromFileURLs($ARG);
+      - pattern: $SETTINGS.setAllowFileAccess($ARG);
+      - pattern: $SETTINGS.setAllowUniversalAccessFromFileURLs($ARG);

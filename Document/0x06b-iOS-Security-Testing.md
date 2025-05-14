@@ -14,7 +14,7 @@ The following is the most basic iOS app testing setup:
 - @MASTG-TOOL-0070 and @MASTG-TOOL-0071 installed.
 - Wi-Fi network that permits client-to-client traffic.
 - At least one jailbroken iOS device (of the desired iOS version).
-- @MASTG-TOOL-0007 or other interception proxy tool.
+- @MASTG-TOOL-0097 or other interception proxy tool.
 
 ### Obtaining the UDID of an iOS device
 

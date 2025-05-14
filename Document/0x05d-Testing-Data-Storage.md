@@ -252,7 +252,7 @@ if(Java.available){
 
 You can save files to the device's [internal storage](https://developer.android.com/training/data-storage#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
 
-For example, the following Kotlin snippet stores sensitive information in clear text to a file `password.txt` residing on internal storage.
+For example, the following Kotlin snippet stores sensitive information in clear text to a file `sensitive_info.txt` residing on internal storage.
 
 ```kotlin
 val fileName = "sensitive_info.txt"
