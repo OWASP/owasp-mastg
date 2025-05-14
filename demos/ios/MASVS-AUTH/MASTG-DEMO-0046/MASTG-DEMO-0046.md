@@ -20,7 +20,7 @@ This demo uses the same sample as @MASTG-DEMO-0045.
 4. Click the **Start** button
 5. Stop the script by pressing `Ctrl+C`
 
-{{ run.sh # script.js }}
+{{ run.sh # ../MASTG-DEMO-0044/script.js }}
 
 ### Observation
 
