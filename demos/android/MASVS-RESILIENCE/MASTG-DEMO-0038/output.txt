@@ -1,0 +1,30 @@
+
+[+] Frida script loaded to detect StrictMode usage and penaltyLog calls.
+
+
+[*] StrictMode.VmPolicy.Builder.penaltyLog() called
+
+
+Backtrace:
+android.os.StrictMode$VmPolicy$Builder.penaltyLog(Native Method)
+android.os.StrictMode$VmPolicy$Builder.build(StrictMode.java:1226)
+android.os.StrictMode.initVmDefaults(StrictMode.java:1522)
+android.app.ActivityThread.handleBindApplication(ActivityThread.java:6844)
+android.app.ActivityThread.handleBindApplication(Native Method)
+android.app.ActivityThread.-$$Nest$mhandleBindApplication(Unknown Source:0)
+android.app.ActivityThread$H.handleMessage(ActivityThread.java:2236)
+android.os.Handler.dispatchMessage(Handler.java:106)
+
+[*] StrictMode.setVmPolicy() called
+
+
+Backtrace:
+android.os.StrictMode.setVmPolicy(Native Method)
+android.os.StrictMode.initVmDefaults(StrictMode.java:1522)
+android.app.ActivityThread.handleBindApplication(ActivityThread.java:6844)
+android.app.ActivityThread.handleBindApplication(Native Method)
+android.app.ActivityThread.-$$Nest$mhandleBindApplication(Unknown Source:0)
+android.app.ActivityThread$H.handleMessage(ActivityThread.java:2236)
+android.os.Handler.dispatchMessage(Handler.java:106)
+android.os.Looper.loopOnce(Looper.java:205)
+Policy: [StrictMode.VmPolicy; mask=1082130464]
