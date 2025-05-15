@@ -13,6 +13,15 @@
             "justMyCode": true
         },
         {
+            "name": "Python: Current File (CWD)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${fileDirname}",
+            "justMyCode": true
+        },
+        {
             "name": "Python: MkDocs Serve",
             "type": "debugpy",
             "request": "launch",

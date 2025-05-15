@@ -1,0 +1,65 @@
+rules:
+  - id: detect-dangerous-android-permissions
+    languages:
+      - xml
+    message: "Dangerous Android permission found:"
+    severity: WARNING
+    pattern-either:
+      - pattern: <uses-permission android:name="android.permission.READ_CONTACTS"/>
+      - pattern: <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+      - pattern: <uses-permission android:name="android.permission.READ_CALENDAR"/>
+      - pattern: <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+      - pattern: <uses-permission android:name="android.permission.SEND_SMS"/>
+      - pattern: <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+      - pattern: <uses-permission android:name="android.permission.READ_SMS"/>
+      - pattern: <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH"/>
+      - pattern: <uses-permission android:name="android.permission.RECEIVE_MMS"/>
+      - pattern: <uses-permission
+          android:name="android.permission.READ_CELL_BROADCASTS"/>
+      - pattern: <uses-permission
+          android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+      - pattern: <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+      - pattern: <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+      - pattern: <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+      - pattern: <uses-permission
+          android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
+      - pattern: <uses-permission
+          android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+      - pattern: <uses-permission
+          android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+      - pattern: <uses-permission
+          android:name="android.permission.ACCESS_FINE_LOCATION"/>
+      - pattern: <uses-permission
+          android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+      - pattern: <uses-permission
+          android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+      - pattern: <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+      - pattern: <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+      - pattern: <uses-permission
+          android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+      - pattern: <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+      - pattern: <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
+      - pattern: <uses-permission android:name="android.permission.CALL_PHONE"/>
+      - pattern: <uses-permission
+          android:name="com.android.voicemail.permission.ADD_VOICEMAIL"/>
+      - pattern: <uses-permission android:name="android.permission.USE_SIP"/>
+      - pattern: <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"/>
+      - pattern: <uses-permission android:name="android.permission.ACCEPT_HANDOVER"/>
+      - pattern: <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+      - pattern: <uses-permission
+          android:name="android.permission.ACTIVITY_RECOGNITION"/>
+      - pattern: <uses-permission android:name="android.permission.CAMERA"/>
+      - pattern: <uses-permission android:name="android.permission.BODY_SENSORS"/>
+      - pattern: <uses-permission
+          android:name="android.permission.BODY_SENSORS_BACKGROUND"/>
+      - pattern: <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+      - pattern: <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+      - pattern: <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+      - pattern: <uses-permission
+          android:name="android.permission.BLUETOOTH_ADVERTISE"/>
+      - pattern: <uses-permission android:name="android.permission.UWB_RANGING"/>
+      - pattern: <uses-permission
+          android:name="android.permission.NEARBY_WIFI_DEVICES"/>
+      - pattern: <uses-permission android:name="android.permission.RANGING"/>
+      - pattern: <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+

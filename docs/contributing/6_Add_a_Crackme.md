@@ -30,6 +30,6 @@ When successfully adding a crackme, its authors will be credited in the correspo
 
 The OWASP projects have a strong foundation in openness and this includes all material related to the projects.
 
-> OWASP Projects must be open in all facets, including source material, contributors, organizational structure, and finances (if any). Project source code (if applicable) must be made openly available, project communication channels (e.g. mailing lists, forums) should be open and free from censorship, and all project materials must be licensed under a community friendly license as approved by the Free Software Foundation ([Appendix 8.2](https://owasp.org/www-pdf-archive/PROJECT_LEADER-HANDBOOK_2014.pdf)).
+> OWASP Projects must be open in all facets, including source material, contributors, organizational structure, and finances (if any). Project source code (if applicable) must be made openly available, project communication channels (e.g. mailing lists, forums) should be open and free from censorship, and all project materials must be licensed under a community friendly license as approved by the Free Software Foundation ([Appendix 8.2](https://github.com/OWASP-Foundation/Project-Handbook/blob/59b1f3538a6bcaa21f98ac86c389d04c7f4dfa9b/Project-Handbook_02_Project-Requirements.md?plain=1#L17-L23)).
 
-Please refer to the OWASP Project Leader Handbook that we as project leaders need to comply with: <https://owasp.org/www-pdf-archive/PROJECT_LEADER-HANDBOOK_2014.pdf>
+Please refer to the OWASP Project Leader Handbook that we as project leaders need to comply with: [https://github.com/OWASP-Foundation/Project-Handbook](https://github.com/OWASP-Foundation/Project-Handbook)

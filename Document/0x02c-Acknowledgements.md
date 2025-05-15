@@ -13,7 +13,7 @@ Being a "MAS Advocate" is the highest status that companies can achieve in the O
 To achieve this status, you'll need to demonstrate that you **make consistent high-impact contributions** to the project. The baseline or **the minimum meaningful monthly contribution** the following:
 
 - **1 substantial PR**, which includes a full set of Weakness+Tests+Demos
-    - Alternatively, as this is currently a priority, several PRs focused on porting v1->v2 tests (equivalent effort to the above).
+    - Alternatively, as this is currently a priority, several PRs focused on porting v1->v2 tests (equivalent effort to the above, must include at least one demo per test).
 - **2-3 in-depth PR reviews or issue support**
     - Involving a thorough analysis, constructive feedback, and actionable suggestions that demonstrate a clear understanding of the topic.
     - Reviews should go beyond surface-level comments and, where necessary, include research to provide well-informed insights.

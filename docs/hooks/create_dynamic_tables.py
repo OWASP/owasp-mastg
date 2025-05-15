@@ -240,6 +240,7 @@ def get_all_tests_beta():
             frontmatter['title'] = f"@{frontmatter['id']}"            
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             frontmatter['status'] = frontmatter.get('status', 'new')
+            frontmatter['type'] = ", ".join(frontmatter.get("type", []))
             status = frontmatter['status']
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
