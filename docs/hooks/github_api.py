@@ -1,6 +1,7 @@
 import requests
 import os
 import logging
+from functools import lru_cache
 
 log = logging.getLogger('mkdocs')
 GITHUB_REPO = "OWASP/owasp-mastg"
@@ -25,7 +26,7 @@ def log_github_token_invalid_warning(e):
     else:
         log.warning(f"\n⚠️  Error accessing GitHub API: {e}")
 
-
+@lru_cache(maxsize=None)
 def get_latest_successful_run(workflow_file, branch="master"):
     """Get the URL to the latest successful workflow run artifacts.
     Returns None if token is missing/invalid or if no successful run is found.
