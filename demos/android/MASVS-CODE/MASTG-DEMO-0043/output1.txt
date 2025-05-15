@@ -5,10 +5,9 @@
 └────────────────┘
                            
     MastgTest_reversed.java
-    ❯❱ implicit-intent-start-activity
-          Possible implicit Intent passed to startActivity. Verify that it does not expose exported
-          components.                                                                              
-                                                                                                   
+    ❯❱ mastg-android-implicit-intent-start-activity
+          [MASVS-CODE] Use implicit Intent with startActivity carefully to avoid exposing exported components
+                                                                                                             
            28┆ Intent intent = new Intent();
            29┆ intent.setAction("org.owasp.mastestapp.VULNERABLE_ACTION");
            30┆ this.context.startActivity(intent);

@@ -10,7 +10,7 @@ test: MASTG-TEST-0027
 
 The code snippet shows that an implicit intent is used to launch an activity using Intent without specifying the target component. This could allow malicious applications to hijack the intent.
 
-{{ ../MASTG-DEMO-0042/MastgTest.kt # ../MASTG-DEMO-0042/MastgTest_reversed.java # ../MASTG-DEMO-0042/AndroidManifest_reversed.xml }}
+{{ ../MASTG-DEMO-0042/MastgTest_reversed.java # ../MASTG-DEMO-0042/AndroidManifest_reversed.xml }}
 
 ### Steps
 

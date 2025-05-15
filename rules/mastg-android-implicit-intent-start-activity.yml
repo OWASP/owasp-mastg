@@ -1,11 +1,11 @@
 rules:
-  - id: implicit-intent-start-activity
+  - id: mastg-android-implicit-intent-start-activity
+    severity: WARNING
     languages:
       - java
     metadata:
-      summary: This rule check if the implicit Intent is used to start any activity without specifying the target component.
-    message: "Possible implicit Intent passed to startActivity. Verify that it does not expose exported components."
-    severity: WARNING
+      summary: The rule checks if the implicit Intent is used to start any activity without specifying the target component
+    message: "[MASVS-CODE] Use implicit Intent with startActivity carefully to avoid exposing exported components"
     pattern-either:
       - pattern: |
           Intent $INTENT = new Intent("$ACTION");

@@ -5,9 +5,10 @@
 └─────────────────┘
                                 
     AndroidManifest_reversed.xml
-    ❯❱ exported-activity-with-intent-filter
-          Exported activity with intent-filter found. May be vulnerable to implicit intent abuse.
-                                                                                                 
+    ❯❱ mastg-android-exported-activity-with-intent-filter
+          [MASVS-CODE] An exported activity with an intent-filter may be at risk of implicit intent
+          exploitation                                                                             
+                                                                                                   
             6┆ <activity android:exported="true" android:name="org.owasp.mastestapp.MainActivity"
                android:theme="@style/Theme.MASTestApp">                                          
             7┆     <intent-filter>
