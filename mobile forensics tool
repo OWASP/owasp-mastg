@@ -1,0 +1,100 @@
+import os
+import json
+import csv
+
+def load_call_logs(file_path):
+    """Load call logs from a CSV file."""
+    call_logs = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                call_logs.append(row)
+        print(f"[INFO] Loaded {len(call_logs)} call log records.")
+    except FileNotFoundError:
+        print(f"[ERROR] File {file_path} not found.")
+    except Exception as e:
+        print(f"[ERROR] Failed to load call logs: {e}")
+    return call_logs
+
+def load_sms_messages(file_path):
+    """Load SMS messages from a JSON file."""
+    messages = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            messages = json.load(f)
+        print(f"[INFO] Loaded {len(messages)} SMS messages.")
+    except FileNotFoundError:
+        print(f"[ERROR] File {file_path} not found.")
+    except json.JSONDecodeError:
+        print(f"[ERROR] Failed to decode JSON in {file_path}.")
+    except Exception as e:
+        print(f"[ERROR] Failed to load SMS messages: {e}")
+    return messages
+
+def extract_device_info(file_path):
+    """Extract device info from a JSON info file."""
+    device_info = {}
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            device_info = json.load(f)
+        print("[INFO] Device information extracted:")
+        for key, value in device_info.items():
+            print(f"  {key}: {value}")
+    except FileNotFoundError:
+        print(f"[ERROR] File {file_path} not found.")
+    except json.JSONDecodeError:
+        print(f"[ERROR] Failed to decode JSON in {file_path}.")
+    except Exception as e:
+        print(f"[ERROR] Failed to extract device info: {e}")
+
+def display_call_logs(call_logs):
+    """Display call log records in readable format."""
+    if not call_logs:
+        print("[INFO] No call logs to display.")
+        return
+    print("\n--- Call Logs ---")
+    for entry in call_logs:
+        print(f"Number: {entry.get('number','N/A')}, Type: {entry.get('type','N/A')}, Date: {entry.get('date','N/A')}, Duration: {entry.get('duration','N/A')} seconds")
+
+def display_sms_messages(messages):
+    """Display SMS messages in readable format."""
+    if not messages:
+        print("[INFO] No SMS messages to display.")
+        return
+    print("\n--- SMS Messages ---")
+    for msg in messages:
+        print(f"From: {msg.get('from','N/A')}, To: {msg.get('to','N/A')}, Date: {msg.get('date','N/A')}")
+        print(f"Message: {msg.get('message','')}")
+        print("-"*20)
+
+def main_menu():
+    print("\nMobile Forensics Tool")
+    print("1. Extract Device Information")
+    print("2. Load and Display Call Logs")
+    print("3. Load and Display SMS Messages")
+    print("4. Exit")
+
+def main():
+    while True:
+        main_menu()
+        choice = input("Select an option: ").strip()
+        if choice == '1':
+            path = input("Enter device info JSON file path: ").strip()
+            extract_device_info(path)
+        elif choice == '2':
+            path = input("Enter call logs CSV file path: ").strip()
+            logs = load_call_logs(path)
+            display_call_logs(logs)
+        elif choice == '3':
+            path = input("Enter SMS messages JSON file path: ").strip()
+            msgs = load_sms_messages(path)
+            display_sms_messages(msgs)
+        elif choice == '4':
+            print("Exiting Mobile Forensics Tool.")
+            break
+        else:
+            print("[ERROR] Invalid option. Please try again.")
+
+if __name__ == "__main__":
+    main()
