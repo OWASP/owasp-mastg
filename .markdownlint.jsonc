@@ -15,6 +15,160 @@
     "MD046": false,                               // code-block-style (unsupported admonitions)
     "MD049": {"style": "underscore"},             // emphasis-style
     "MD050": {"style": "asterisk"},               // strong-style
-    "MD055": {"style": "leading_and_trailing"}    // table-pipe-style
-
+    "MD055": {"style": "leading_and_trailing"},   // table-pipe-style
+    "search-replace": {
+      "rules": [
+        {
+          "name": "curly-double-quotes",
+          "message": "Do not use curly double quotes.",
+          "searchPattern": "/“|”/g",
+          "replace": "\"",
+          "searchScope": "text"
+        },
+        {
+          "name": "nbsp",
+          "message": "Don't use no-break spaces",
+          "searchPattern": "/ /g",
+          "replace": " ",
+          "searchScope": "all"
+        },
+        {
+          "name": "curly-single-quotes",
+          "message": "Don't use curly single quotes",
+          "searchPattern": "/‘|’/g",
+          "replace": "'",
+          "searchScope": "text"
+        },
+        {
+          "name": "gender-neutrality",
+          "message": "Ensure gender-neutral language is used.",
+          "searchPattern": "/\\bhe\\b|\\bshe\\b|\\bhis\\b|\\bhimself\\b|\\bherself\\b|\\bher\\b|\\bhim\\b|\\bhers\\b/g",
+          "replace": ""
+        },
+        {
+          "name": "trailing-spaces",
+          "message": "Avoid trailing spaces",
+          "searchPattern": "/  +$/gm",
+          "replace": "",
+          "searchScope": "all",
+        },
+        {
+          "name": "double-spaces",
+          "message": "Avoid double spaces",
+          "searchPattern": "/([^\\s>])  ([^\\s|])/g",
+          "replace": "$1 $2",
+          "searchScope": "text"
+        },
+        // {
+        //   "name": "correct-noun-forms",
+        //   "message": "Use the correct form for specific terms.",
+        //   "searchPattern": [
+        //     "/\\bMacOS\\b/g",
+        //     "/\\bAppStore\\b/g",
+        //     "/\\bBackEnd\\b/g",
+        //     "/\\bbase64\\b/g",
+        //     "/\\bBlackBox\\b/g",
+        //     "/\\bBundleID\\b/g",
+        //     "/\\bBytecode\\b/g",
+        //     "/\\bClientSide\\b/g",
+        //     "/\\bCodeBase\\b/g",
+        //     "/\\bCodeSigning\\b/g",
+        //     "/\\bCommandLine\\b/g",
+        //     "/\\bDisassembler\\b/g",
+        //     "/\\bEndUsers\\b/g",
+        //     "/\\bFileName\\b/g",
+        //     "/\\bMac OS\\b/g",
+        //     "/\\bPentest\\b/g",
+        //     "/\\bPhonegap\\b/g",
+        //     "/\\bPython\\b/g",
+        //     "/\\bRepackage\\b/g",
+        //     "/\\bRun time\\b/g",
+        //     "/\\brun time\\b/g",
+        //     "/\\bServerSide\\b/g",
+        //     "/\\bSnapshotLength\\b/g",
+        //     "/\\bUseCase\\b/g",
+        //     "/\\bWiFi\\b/g",
+        //     "/\\bWhiteBox\\b/g"
+        //   ],
+        //   "replace": [
+        //     "macOS",
+        //     "App Store",
+        //     "backend",
+        //     "Base64",
+        //     "black box",
+        //     "Bundle ID",
+        //     "bytecode",
+        //     "client side",
+        //     "codebase",
+        //     "code signing",
+        //     "command line",
+        //     "disassembler",
+        //     "end users",
+        //     "file name",
+        //     "macOS",
+        //     "pentest",
+        //     "PhoneGap",
+        //     "Python",
+        //     "repackage",
+        //     "Runtime",
+        //     "runtime",
+        //     "server side",
+        //     "snapshot length",
+        //     "use case",
+        //     "Wi-Fi",
+        //     "white box"
+        //   ],
+        //   "searchScope": "text"
+        // },   
+        // {
+        //   "name": "contractions",
+        //   "message": "Use contractions where appropriate",
+        //   "searchPattern": [
+        //     "/\\bare not\\b/g",
+        //     "/\\bcannot\\b/g",
+        //     "/\\bcould not\\b/g",
+        //     "/\\bdid not\\b/g",
+        //     "/\\bdo not\\b/g",
+        //     "/\\bdoes not\\b/g",
+        //     "/\\bhas not\\b/g",
+        //     "/\\bhad not\\b/g",
+        //     "/\\bhave not\\b/g",
+        //     "/\\bis not\\b/g",
+        //     "/\\bit is\\b/g",
+        //     "/\\bthat is\\b/g",
+        //     "/\\bthere is\\b/g",
+        //     "/\\bwas not\\b/g",
+        //     "/\\bwere not\\b/g",
+        //     "/\\bwill not\\b/g",
+        //     "/\\bwould not\\b/g",
+        //     "/\\byou are\\b/g",
+        //     "/\\byou have\\b/g",
+        //     "/\\byou will\\b/g"
+        //   ],
+        //   "replace": [
+        //     "aren't",
+        //     "can't",
+        //     "couldn't",
+        //     "didn't",
+        //     "don't",
+        //     "doesn't",
+        //     "hasn't",
+        //     "hadn't",
+        //     "haven't",
+        //     "isn't",
+        //     "it's",
+        //     "that's",
+        //     "there's",
+        //     "wasn't",
+        //     "weren't",
+        //     "won't",
+        //     "wouldn't",
+        //     "you're",
+        //     "you've",
+        //     "you'll"
+        //   ],
+        //   "searchScope": "text"
+        // },
+      ]
+    }
   }

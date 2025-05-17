@@ -32,7 +32,7 @@ If having the source code, you should take a look at the `UIActivityViewControll
 - Check if it defines custom activities (also being passed to the previous method).
 - Verify the `excludedActivityTypes`, if any.
 
-If you only have the compiled/installed app, try searching for the previous method and property, for example:
+If you only have the compiled/installed app, try searching for the previous method and property, for example using @MASTG-TOOL-0129:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep -i activityItems

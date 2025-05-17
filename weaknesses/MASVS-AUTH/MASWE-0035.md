@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1, MASVS-STORAGE-1]
+  cwe: [287]
 
 refs:
 - https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication
