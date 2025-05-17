@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-network-onreceivedsslerror.yml ./MastgTestWebView.kt --text -o output.txt --max-lines-per-finding 15
