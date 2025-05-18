@@ -10,7 +10,6 @@ kind: pass
 
 The following sample code demonstrates how to connect to a server that delivers a certificate with a **wrong or invalid hostname** using `SSLSocket` which inherently [doesn't perform any hostname validation checks](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket).
 
-
 ## Steps
 
 1. Reverse engineer the app (@MASTG-TECH-0017).
