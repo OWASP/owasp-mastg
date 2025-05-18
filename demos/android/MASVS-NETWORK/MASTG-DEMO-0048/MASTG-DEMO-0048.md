@@ -1,6 +1,7 @@
 ---
 title: SSLSocket Connection to Wrong Host Server Allowed by Lack of HostnameVerifier
 platform: android
+id: MASTG-DEMO-0048
 test: MASTG-TEST-0234
 code: [kotlin]
 kind: fail

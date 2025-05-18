@@ -1,6 +1,7 @@
 ---
 title: SSLSocket Connection to Wrong Host Server Blocked by HostnameVerifier
 platform: android
+id: MASTG-DEMO-0049
 test: MASTG-TEST-0234
 code: [kotlin]
 kind: pass
