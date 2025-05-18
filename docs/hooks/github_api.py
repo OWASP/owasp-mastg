@@ -1,6 +1,7 @@
 import requests
 import os
 import logging
+import re
 
 log = logging.getLogger('mkdocs')
 GITHUB_REPO = "OWASP/owasp-mastg"
@@ -24,6 +25,33 @@ def log_github_token_invalid_warning(e):
         log.warning("You can create a new token at: https://github.com/settings/tokens\n")
     else:
         log.warning(f"\n⚠️  Error accessing GitHub API: {e}")
+
+def get_issues_for_test_refactors():
+    SEARCH_URL = "https://api.github.com/search/issues"
+    query = (
+        f'repo:{GITHUB_REPO} '
+        f'in:body '
+        f'is:issue '
+        f'state:open '
+        f'label:"MASTG Refactor"'
+    )
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    resp = requests.get(SEARCH_URL, headers=headers, params={"q": query})
+    resp.raise_for_status()
+    data = resp.json()
+
+    issues = {}
+    for issue in data["items"]:
+        match = re.search(r'MASTG-TEST-\d+', issue["title"])
+        if match:
+            ID = match.group(0)
+            issues[ID] = (issue["html_url"], issue["title"])
+    return issues
 
 
 def get_latest_successful_run(workflow_file, branch="master"):
@@ -57,7 +85,6 @@ def get_latest_successful_run(workflow_file, branch="master"):
         response = requests.get(url, headers=headers, params=params, timeout=5)
         response.raise_for_status()
         runs = response.json().get("workflow_runs", [])
-        
         if runs:
             return f"{runs[0]['html_url']}#artifacts"
         else:

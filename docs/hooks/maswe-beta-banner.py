@@ -4,7 +4,7 @@ import mkdocs.plugins
 import glob
 from collections import defaultdict
 import github_api
-
+from html import escape
 log = logging.getLogger('mkdocs')
 
 def get_v1_tests_data():
@@ -24,7 +24,7 @@ def get_v1_tests_data():
                     id = file.split('/')[-1].split('.')[0]
                     link = f"https://mas.owasp.org/MASTG/tests/{platform}/{masvs_category}/{id}/"
                     frontmatter['link'] = link
-                    
+
                     masvs_v1_tests_metadata[id] = frontmatter
             except:
                 log.warn("No frontmatter in " + file)
@@ -37,12 +37,32 @@ def get_v1_tests_data():
 
     return masvs_v1_tests_metadata, masvs_v1_mapping
 
+
 beta_banner = """
 ??? example "Content in BETA"
     This content is in **beta** and still under active development, so it is subject to change any time (e.g. structure, IDs, content, URLs, etc.).
-    
+
     [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
 """
+
+refactor_banner = """
+??? warning "This test will be updated soon"
+
+    The test can be used in its current form, but it will receive a complete overhaul as part of the new <a href="https://docs.google.com/document/d/1veyzE4cVTSnIsKB1DOPUSMhjXow_MtJOtgHeo5HVoho/edit?tab=t.0#heading=h.ue8tn3i2ff0">OWASP MASTG v2 guidelines</a>. Feel free to use it, or help us out by submitting a PR!
+
+    More information can be found below:
+
+    {}
+
+    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
+"""
+
+def get_tests_refactor_banner(config, meta):
+    link = config["issue_mapping"].get(meta.get("id"))
+    if link:
+        return refactor_banner.format("<a href='{}'>{}</a>".format(link[0], escape(link[1])))
+    else:
+        return ""
 
 def get_mastg_v1_coverage(meta):
     mappings = meta.get('mappings', '')
@@ -86,7 +106,7 @@ def get_maswe_draft_banner(meta):
     if topics:
         topics_section = "    ## Relevant Topics\n\n"
         topics_section += "\n".join([f"    - {topic}" for topic in topics])
-    
+
     mastg_v1_tests = get_mastg_v1_coverage(meta)
 
     banner = f"""
@@ -96,13 +116,13 @@ def get_maswe_draft_banner(meta):
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that weakness by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?usp=sharing).
 
     <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
-    
+
     ## Initial Description or Hints
 
     {description}
-    
+
 {topics_section}
-    
+
 {refs_section}
 
     ## MASTG v1 Coverage
@@ -139,7 +159,7 @@ def get_v1_deprecated_tests_banner(meta):
     id = meta.get('id')
     covered_by = meta.get('covered_by', [])
     deprecation_note = meta.get('deprecation_note', "")
-    
+
     if covered_by:
         covered_by = "\n".join([f"    - @{test}" for test in covered_by])
     else:
@@ -164,11 +184,11 @@ def get_android_demo_buttons(page):
     artifacts_url = github_api.get_latest_successful_run("build-android-demos.yml")
 
     demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
-    
+
     # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
     if not artifacts_url:
         artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
-    
+
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
@@ -188,7 +208,7 @@ def get_ios_demo_buttons(page):
     # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
     if not artifacts_url:
         artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
-    
+
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
 <a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
@@ -222,14 +242,17 @@ For more details, check the associated test: @{test}
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-50)
-def on_page_markdown(markdown, page, **kwargs):
+def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
 
     banners = []
 
+    banners.append(get_tests_refactor_banner(config, page.meta))
+
+
     if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/", "MASTG/best-practices/"]):
         banners.append(beta_banner)
-    
+
     if "MASWE/" in path and page.meta.get('status') == 'draft':
         banners.append(get_maswe_draft_banner(page.meta))
 
@@ -241,7 +264,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
     if "MASTG/demos/android/" in path and not page.meta.get('status') == 'draft':
         banners.append(get_android_demo_buttons(page))
-    
+
     if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'draft':
         banners.append(get_ios_demo_buttons(page))
 
@@ -252,3 +275,7 @@ def on_page_markdown(markdown, page, **kwargs):
         markdown = "\n\n".join(banners) + "\n\n" + markdown
 
     return markdown
+
+
+def on_config(config):
+    config["issue_mapping"] = github_api.get_issues_for_test_refactors()
