@@ -27,7 +27,7 @@ def get_v1_tests_data():
                     
                     masvs_v1_tests_metadata[id] = frontmatter
             except:
-                log.warn("No frontmatter in " + file)
+                log.warning("No frontmatter in " + file)
 
     # Populate the defaultdict with MASVS v1 IDs and corresponding MASTG-TEST IDs
     masvs_v1_mapping = defaultdict(list)
