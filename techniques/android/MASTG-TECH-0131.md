@@ -24,7 +24,7 @@ plugins {
 dependencyCheck {
 
     formats = listOf("HTML", "XML", "JSON") // Generate reports in HTML, JSON and XML format
-    
+
     nvd {
         apiKey = "<YOUR NVD API KEY>"
         delay = 16000

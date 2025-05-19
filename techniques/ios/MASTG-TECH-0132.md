@@ -19,7 +19,7 @@ $ curl -X "PUT" "http://localhost:8081/api/v1/bom" \
      -d $'{
   "project": "<YOUR PROJECT ID>",
   "bom": "<BASE64-ENCODED SBOM>"
-  }'     
+  }'
 ```
 
 Also check the [alternatives for uploading](https://docs.dependencytrack.org/usage/cicd/) the SBOM file in case the produced JSON file is too large.
