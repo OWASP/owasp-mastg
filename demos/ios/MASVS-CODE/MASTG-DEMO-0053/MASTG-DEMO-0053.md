@@ -11,7 +11,7 @@ Execute @MASTG-TOOL-0134 in the root directory of the Xcode project.
 
 {{ run.sh }}
 
-This will create a SBOM file that can be uploaded to @MASTG-TOOL-0132 by following @MASTG-TECH-0133.
+This will create a SBOM file that can be uploaded to @MASTG-TOOL-0132 by following @MASTG-TECH-0132.
 
 ### Observation
 

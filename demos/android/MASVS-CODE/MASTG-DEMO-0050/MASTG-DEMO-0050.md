@@ -8,7 +8,7 @@ test: MASTG-TEST-0272
 
 ### Sample
 
-{{ build.gradle.kts # build.gradle.kts }}
+{{ build.gradle.kts }}
 
 ### Steps
 
