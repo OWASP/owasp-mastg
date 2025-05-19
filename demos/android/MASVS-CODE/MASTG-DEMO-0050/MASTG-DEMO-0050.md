@@ -12,7 +12,7 @@ test: MASTG-TEST-0272
 
 ### Steps
 
-Execute `gradle` in Android Studio to trigger @MASTG-TOOL-0116.
+Execute `gradle` in Android Studio to trigger @MASTG-TOOL-0131.
 
 {{ run.sh }}
 

@@ -14,7 +14,7 @@ In this test case we are identifying dependencies with known vulnerabilities in 
 
 1. In order to do this in the most efficient way you would need to ask the developer(s) which dependency managers are being used and to share the relevant file(s) created by them. Follow @MASTG-TECH-0134 for on overview of the package managers and request for the relevant files.
 
-2. Run a SCA analysis tool such as @MASTG-TOOL-0116 against the file(s) created by the dependency manager(s) and look for the use of vulnerable dependencies.
+2. Run a SCA analysis tool such as @MASTG-TOOL-0131 against the file(s) created by the dependency manager(s) and look for the use of vulnerable dependencies.
 
 ## Observation
 

@@ -8,7 +8,7 @@ weakness: MASWE-0076
 
 ## Overview
 
-In this test case we will identify dependencies in Android Studio and scan them with @MASTG-TOOL-0116.
+In this test case we will identify dependencies in Android Studio and scan them with @MASTG-TOOL-0131.
 
 ## Steps
 

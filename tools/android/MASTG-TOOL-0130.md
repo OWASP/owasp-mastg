@@ -10,6 +10,6 @@ The creation of an SBOM out of an Android App (APK or AAB) is supported, but [li
 
 BLint can be a choice in a black-box security assessment, but other tools should be preferred during a grey/white-box test, like:
 
-- @MASTG-TOOL-0116
-- @MASTG-TOOL-0117
-- @MASTG-TOOL-0119
+- @MASTG-TOOL-0131
+- @MASTG-TOOL-0132
+- @MASTG-TOOL-0134

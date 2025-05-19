@@ -8,6 +8,6 @@ source: https://github.com/DependencyTrack/dependency-track
 
 You can install Dependency-Track by using [docker](https://docs.dependencytrack.org/getting-started/deploy-docker/). The default credentials can be found in the [initial setup](https://docs.dependencytrack.org/getting-started/initial-startup/).
 
-Dependency-Track relies on Software Bill of Materials (SBOM) for identifying vulnerable  dependencies, which can be generated through @MASTG-TOOL-0119 and uploaded via [API](https://docs.dependencytrack.org/usage/cicd/).
+Dependency-Track relies on Software Bill of Materials (SBOM) for identifying vulnerable  dependencies, which can be generated through @MASTG-TOOL-0134 and uploaded via [API](https://docs.dependencytrack.org/usage/cicd/).
 
 To use the REST API you need to create an [API Key](https://docs.dependencytrack.org/integrations/rest-api/) and a project where the SBOM can be uploaded to.

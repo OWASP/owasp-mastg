@@ -12,13 +12,13 @@ test: MASTG-TEST-0273
 
 ### Steps
 
-Let's run @MASTG-TOOL-0116 in the root directory of the Xcode project.
+Let's run @MASTG-TOOL-0131 in the root directory of the Xcode project.
 
 {{ run.sh }}
 
 ### Observation
 
-The SARIF file can be opened by using @MASTG-TOOL-0118 for analyzing the identified vulnerabilities.
+The SARIF file can be opened by using @MASTG-TOOL-0133 for analyzing the identified vulnerabilities.
 
 {{ output.txt }}
 

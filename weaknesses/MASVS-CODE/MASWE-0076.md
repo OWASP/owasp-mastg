@@ -33,6 +33,6 @@ Dependencies can be implemented manually by adding them into the project and lin
 ## Mitigations
 
 - **Keep Dependencies Updated**: Regularly update dependencies to their latest secure versions to ensure that any known vulnerabilities are patched.
-- **Regular Dependency Audits:**: Continuously scan and audit third-party libraries for vulnerabilities using Software Composition Analysis (SCA) tools in the CI/CD pipeline, like @MASTG-TOOL-0116 or @MASTG-TOOL-0117.
-- **Software Bill of Material (SBOM)**: Create a SBOM and manage the dependencies by using tools like @MASTG-TOOL-0119 and @MASTG-TOOL-0117.
+- **Regular Dependency Audits:**: Continuously scan and audit third-party libraries for vulnerabilities using Software Composition Analysis (SCA) tools in the CI/CD pipeline, like @MASTG-TOOL-0131 or @MASTG-TOOL-0132.
+- **Software Bill of Material (SBOM)**: Create a SBOM and manage the dependencies by using tools like @MASTG-TOOL-0134 and @MASTG-TOOL-0132.
 - **Remove Unused Dependencies**: Regularly review and remove any unused or unnecessary libraries to reduce the app’s attack surface.

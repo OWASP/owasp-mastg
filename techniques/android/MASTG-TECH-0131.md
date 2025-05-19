@@ -10,9 +10,9 @@ For Android both popular build automation tools, are also dependency managers:
 
 Gradle is the default build automation tool in Android Studio and this technique will focus on it.
 
-Tools like @MASTG-TOOL-0116 can be integrated into the build environments, where they can inspect the build configuration files or the actual `.jar` files and their metadata, such as the version, to identify dependencies. Once identified such tools will identify known vulnerabilities in the dependencies by comparing them to a vulnerability database (like the National Vulnerability Database, NVD).
+Tools like @MASTG-TOOL-0131 can be integrated into the build environments, where they can inspect the build configuration files or the actual `.jar` files and their metadata, such as the version, to identify dependencies. Once identified such tools will identify known vulnerabilities in the dependencies by comparing them to a vulnerability database (like the National Vulnerability Database, NVD).
 
-In order to test for dependencies with known vulnerabilities, we need to integrate the @MASTG-TOOL-0116 plugin into the Android project via Gradle. The dependencies of the Android project are located in the following directory `~/.gradle/caches/modules-2/files-2.1`, and not in the Android Project directory.
+In order to test for dependencies with known vulnerabilities, we need to integrate the @MASTG-TOOL-0131 plugin into the Android project via Gradle. The dependencies of the Android project are located in the following directory `~/.gradle/caches/modules-2/files-2.1`, and not in the Android Project directory.
 
 The dependencies will be integrated into the project during run-time, but will also be modified and compiled into the DEX file(s) of the APK. therefore we need to scan dependencies in Android Studio and cannot scan the APK.
 

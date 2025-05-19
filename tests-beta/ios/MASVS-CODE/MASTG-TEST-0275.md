@@ -14,7 +14,7 @@ In this test case we are identifying SwiftPM dependencies with known vulnerabili
 
 1. Either ask the development team to share a SBOM in CycloneDX format, or create one by yourself and follow @MASTG-TECH-0133.
 
-2. Open @MASTG-TOOL-0117 and inspect the project where the SBOM was uploaded for the use of vulnerable dependencies.
+2. Open @MASTG-TOOL-0132 and inspect the project where the SBOM was uploaded for the use of vulnerable dependencies.
 
 ## Observation
 

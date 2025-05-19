@@ -7,15 +7,15 @@ test: MASTG-TEST-0273
 
 ### Steps
 
-Execute @MASTG-TOOL-0119 in the root directory of the Xcode project.
+Execute @MASTG-TOOL-0134 in the root directory of the Xcode project.
 
 {{ run.sh }}
 
-This will create a SBOM file that can be uploaded to @MASTG-TOOL-0117 by following @MASTG-TECH-0133.
+This will create a SBOM file that can be uploaded to @MASTG-TOOL-0132 by following @MASTG-TECH-0133.
 
 ### Observation
 
-In the project of @MASTG-TOOL-0117, where the SBOM has been uploaded, the scan should have identified 2 unique dependencies (components) with 2 vulnerable dependencies and 2 vulnerabilities (as more vulnerabilities might be found over time this number might increase).
+In the project of @MASTG-TOOL-0132, where the SBOM has been uploaded, the scan should have identified 2 unique dependencies (components) with 2 vulnerable dependencies and 2 vulnerabilities (as more vulnerabilities might be found over time this number might increase).
 
 {{ output.txt }}
 
