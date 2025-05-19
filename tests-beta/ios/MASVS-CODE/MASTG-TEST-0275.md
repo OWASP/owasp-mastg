@@ -1,24 +1,24 @@
 ---
 platform: ios
-title: Identify Dependencies with Known Vulnerabilities through usage of SBOM
+title: Dependencies with Known Vulnerabilities in the App's SBOM
 id: MASTG-TEST-0275
-type: [static]
+type: [static, developer]
 weakness: MASWE-0076
 ---
 
 ## Overview
 
-In this test case we are identifying SwiftPM dependencies with known vulnerabilities by relying on a Software Bill of Material (SBOM).
+This test case checks for dependencies with known vulnerabilities in iOS applications by using a Software Bill of Materials (SBOM). The SBOM should be in CycloneDX format, which is a standard for describing the components and dependencies of software.
 
 ## Steps
 
-1. Either ask the development team to share a SBOM in CycloneDX format, or create one by yourself and follow @MASTG-TECH-0133.
-
-2. Open @MASTG-TOOL-0132 and inspect the project where the SBOM was uploaded for the use of vulnerable dependencies.
+1. Either ask the development team to share a SBOM in CycloneDX format, or, if you have access to the original source code, create one following @MASTG-TECH-0133.
+2. Upload the SBOM to @MASTG-TOOL-0132.
+3. Inspect the @MASTG-TOOL-0132 project for the use of vulnerable dependencies.
 
 ## Observation
 
-The output should include the dependency name and the CVE identifiers for any dependency with known vulnerabilities.
+The output should include a list of dependencies with names and CVE identifiers, if any.
 
 ## Evaluation
 
