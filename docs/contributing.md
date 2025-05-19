@@ -30,17 +30,17 @@ Although we greatly appreciate any and all contributions to the project, there a
 
 Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](contact.md) in case of doubt.
 
-## Contributing with Tools
+## Tool Inclusion Disclaimer for Contributors
 
-The goal of the MASTG is to be as accessible and up-to-date as possible. For this reason, we prioritize including tools that meet the following criteria:
+OWASP MASTG encourages community contributions, including security testing tools that provide clear and practical value. However, all tool submissions are subject to review and may be rejected if they appear to be self-promotional, lack relevance, or do not meet minimum quality standards (e.g., documentation, usability, maintenance).
 
-- Open-source
-- Free to use
-- Capable of analyzing recent Android/iOS applications
-- Regularly updated or stable by nature
-- Actively maintained over a period of time
-- Strong community support
-- Solve a unique problem
+To be considered for inclusion, tools should be:
+
+* Open source or freely accessible
+* Clearly documented and usable by the community
+* Actively maintained, with updates tracking Android and iOS platform changes whenever applicable
+
+Even after inclusion, tools are subject to removal if they become outdated, broken, unmaintained, or otherwise no longer align with the goals of the MASTG. Inclusion is not permanent and does not imply endorsement by OWASP.
 
 In instances where no suitable open-source alternative exists, we may include closed-source tools. However, any closed-source tools included must be free to use, as we aim to avoid featuring paid tools whenever possible. This also extends to freeware or community editions of commercial tools.
 
