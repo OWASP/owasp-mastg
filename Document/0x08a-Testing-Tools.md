@@ -12,10 +12,8 @@ title: Testing Tools
     - Open-source
     - Free to use
     - Capable of analyzing recent Android/iOS applications
-    - Regularly updated or stable by nature
-    - Actively maintained over a period of time
+    - Regularly updated
     - Strong community support
-    - Solve a unique problem
 
     In instances where no suitable open-source alternative exists, we may include closed-source tools. However, any closed-source tools included must be free to use, as we aim to avoid featuring paid tools whenever possible. This also extends to freeware or community editions of commercial tools.
 
