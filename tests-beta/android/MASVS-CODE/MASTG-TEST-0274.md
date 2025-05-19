@@ -12,7 +12,7 @@ In this test case we are identifying dependencies with known vulnerabilities by 
 
 ## Steps
 
-1. Either ask the development team to share a SBOM in CycloneDX format, or create one by yourself and follow @MASTG-TECH-0122.
+1. Either ask the development team to share a SBOM in CycloneDX format, or create one by yourself and follow @MASTG-TECH-0130.
 
 2. Open @MASTG-TOOL-0117 and inspect the project where the SBOM was uploaded for the use of vulnerable dependencies.
 

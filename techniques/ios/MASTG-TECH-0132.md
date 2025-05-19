@@ -3,7 +3,7 @@ title: Verifying iOS Dependencies during runtime
 platform: ios
 ---
 
-> The preferred technique for analyzing dependencies, is @MASTG-TECH-0123 or @MASTG-TECH-0124. This technique described here should only be used in a black-box environment, as it is manual and cannot easily be automated.
+> The preferred technique for analyzing dependencies, is @MASTG-TECH-0133 or @MASTG-TECH-0134. This technique described here should only be used in a black-box environment, as it is manual and cannot easily be automated.
 
 When performing app analysis, it is important to also analyze the app dependencies, usually in the form of libraries or so-called iOS Frameworks and ensure that they don't contain any known vulnerabilities. Even when you don't have the source code, you can still identify some of the app dependencies using tools like @MASTG-TOOL-0038, @MASTG-TOOL-0035 or the `otool -L` command. @MASTG-TOOL-0038 is the recommended tool, since it provides the most accurate results and it is easy to use. It contains a module to work with iOS Bundles, which offers two commands: `list_bundles` and `list_frameworks`.
 

@@ -12,7 +12,7 @@ In this test case we will identify dependencies in Android Studio and scan them 
 
 ## Steps
 
-1. Follow @MASTG-TECH-0125 and execute a scan through the build environment of Android Studio by using Gradle.
+1. Follow @MASTG-TECH-0131 and execute a scan through the build environment of Android Studio by using Gradle.
 
 ## Observation
 
