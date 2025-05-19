@@ -36,9 +36,9 @@ OWASP MASTG encourages community contributions, including security testing tools
 
 To be considered for inclusion, tools should be:
 
-* Open source or freely accessible
-* Clearly documented and usable by the community
-* Actively maintained, with updates tracking Android and iOS platform changes whenever applicable
+- Open source or freely accessible
+- Clearly documented and usable by the community
+- Actively maintained, with updates tracking Android and iOS platform changes whenever applicable
 
 Even after inclusion, tools are subject to removal if they become outdated, broken, unmaintained, or otherwise no longer align with the goals of the MASTG. Inclusion is not permanent and does not imply endorsement by OWASP.
 
