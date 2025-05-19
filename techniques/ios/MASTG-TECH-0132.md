@@ -1,31 +1,29 @@
 ---
-title: Verifying iOS Dependencies during runtime
+title: Software Composition Analysis (SCA) of iOS Dependencies by Creating a SBOM
 platform: ios
 ---
 
-> The preferred techniques for analyzing dependencies are @MASTG-TECH-0133 or @MASTG-TECH-0134. This technique, which is described here, should only be used in a black-box environment because it is manual and cannot easily be automated.
-
-When performing an app analysis, it is important to analyze the app's dependencies, which are usually libraries or iOS Frameworks, to ensure they don't contain any known vulnerabilities. Even without the source code, some dependencies can be identified using tools such as @MASTG-TOOL-0038, @MASTG-TOOL-0035, or the `otool -L` command. @MASTG-TOOL-0038 is the recommended tool since it provides the most accurate results and is user-friendly. It contains a module that works with iOS bundles and offers two commands: `list_bundles` and `list_frameworks`.
-
-The `list_frameworks` command lists all of the application's bundles that represent frameworks and their version.
+You can use @MASTG-TOOL-0134 to create a Software Bill of Materials (SBOM) in the CycloneDX format if you use SwiftPM. Currently, Carthage and CocoaPods are not supported. You can either ask the development team to provide the SBOM file or create it yourself. To do so, navigate to the root directory of the Xcode project you wish to scan, then execute the following command:
 
 ```bash
-...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks
-Executable      Bundle                                     Version    Path
---------------  -----------------------------------------  ---------  -------------------------------------------
-Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-v2.app/Frameworks/Bolts.framework
-RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
-...
+$ cdxgen -o sbom.json
 ```
 
-With this information it is possible to investigate manually if the frameworks and its version have publicly known vulnerabilities.
-
-The `list_bundles` command lists all of the application's bundles **that are not related to frameworks**. The output contains the executable name, bundle id, version of the library and path to the library.
+The SBOM file that was created needs to be Base64 encoded and uploaded to @MASTG-TOOL-0132 for analysis.
 
 ```bash
-...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
-Executable    Bundle                                       Version  Path
-------------  -----------------------------------------  ---------  -------------------------------------------
-DVIA-v2       com.highaltitudehacks.DVIAswiftv2.develop          2  ...-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
-CoreGlyphs    com.apple.CoreGlyphs                               1  ...m/Library/CoreServices/CoreGlyphs.bundle
+$ cat sbom.json | base64
+$ curl -X "PUT" "http://localhost:8081/api/v1/bom" \
+     -H 'Content-Type: application/json' \
+     -H 'X-API-Key: <YOUR API KEY>>' \
+     -d $'{
+  "project": "<YOUR PROJECT ID>",
+  "bom": "<BASE64-ENCODED SBOM>"
+  }'     
 ```
+
+Also check the [alternatives for uploading](https://docs.dependencytrack.org/usage/cicd/) the SBOM file in case the produced JSON file is too large.
+
+If you are using the default settings of the @MASTG-TOOL-0133 Docker container, go to the frontend of @MASTG-TOOL-0132, which is <http://localhost:8080>. Open the project to which you uploaded the SBOM to verify if there are any vulnerable dependencies.
+
+> Note: Transitive dependencies are not supported by @MASTG-TOOL-0134 for [SwiftPM](https://cyclonedx.github.io/cdxgen/#/PROJECT_TYPES).

@@ -12,7 +12,7 @@ This test case checks for dependencies with known vulnerabilities in iOS applica
 
 ## Steps
 
-1. Either ask the development team to share a SBOM in CycloneDX format, or, if you have access to the original source code, create one following @MASTG-TECH-0133.
+1. Either ask the development team to share a SBOM in CycloneDX format, or, if you have access to the original source code, create one following @MASTG-TECH-0132.
 2. Upload the SBOM to @MASTG-TOOL-0132.
 3. Inspect the @MASTG-TOOL-0132 project for the use of vulnerable dependencies.
 

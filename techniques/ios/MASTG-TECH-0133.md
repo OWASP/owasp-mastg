@@ -1,29 +1,48 @@
 ---
-title: Software Composition Analysis (SCA) of iOS Dependencies by Creating a SBOM
+title: Software Composition Analysis (SCA) of iOS Dependencies by Scanning Package Manager Artifacts
 platform: ios
 ---
 
-You can use @MASTG-TOOL-0134 to create a Software Bill of Materials (SBOM) in the CycloneDX format if you use SwiftPM. Currently, Carthage and CocoaPods are not supported. You can either ask the development team to provide the SBOM file or create it yourself. To do so, navigate to the root directory of the Xcode project you wish to scan, then execute the following command:
+iOS has several dependency managers, where the most popular are:
+
+- [Carthage](https://github.com/Carthage/Carthage),
+- [CocoaPods](https://github.com/CocoaPods/CocoaPods) and
+- [SwiftPM (Swift Package Manager)](https://github.com/swiftlang/swift-package-manager)
+
+The dependencies are integrated into the project during the build process and are then compiled into the IPA file. However, the version information of the dependencies may be stripped out during compilation, which means we cannot scan the IPA file. Fortunately, we can scan the artifacts produced by the dependency managers.
+
+Tools such as @MASTG-TOOL-0131 can scan files created by all three dependency managers. These files list dependencies as [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") and their versions. The CPE will be included in the iOS app. These tools then search for known vulnerabilities, or [CVEs (Common Vulnerability and Exposure)](https://cve.mitre.org/ "CVE"), in the dependencies by checking them against a vulnerability database, such as the National Vulnerability Database (NVD).
+
+> Note that @MASTG-TOOL-0131 supports [Carthage](https://jeremylong.github.io/DependencyCheck/analyzers/carthage.html), [CocoaPods](https://jeremylong.github.io/DependencyCheck/analyzers/cocoapods.html) and [SwiftPM](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html), but these analyzers are considered experimental. While these analyzers may be useful and provide valid results, more testing must be completed to ensure that the false negative/positive rates are acceptable.
+
+To test with @MASTG-TOOL-0131, we need to retrieve the dependency manager's corresponding file:
+
+- For Carthage it is the file `Cartfile.resolved`.
+- For CocoaPods it is the file `*.podspec` or `Podfile.lock`
+- For SwiftPM it is the file `Package.swift` or `Package.resolved`
+
+Keep in mind that developers may use more than one dependency manager, so you may need to perform more than one scan. When scanning with @MASTG-TOOL-0131, scanning the file created by the dependency manager is sufficient; you don't need access to the entire Xcode project or source code.
+
+Before running the scan, obtain an API key for NVD. This key is used to retrieve the latest CVE information. You can request the API key to access the NVD API from <https://nvd.nist.gov/developers/request-an-api-key>.
+
+- To start a scan for a project using SwiftPM, execute the following command to scan the `Package.Swift` or `Package.resolved`:
 
 ```bash
-$ cdxgen -o sbom.json
+$ dependency-check --enableExperimental -f SARIF --nvdApiKey <YOUR-API-KEY> -s Package.resolved
 ```
 
-The SBOM file that was created needs to be Base64 encoded and uploaded to @MASTG-TOOL-0132 for analysis.
+- To start a scan for a project using CocoaPods, execute the following command to scan the `Podfile.lock` or `*.podspec`:
 
 ```bash
-$ cat sbom.json | base64
-$ curl -X "PUT" "http://localhost:8081/api/v1/bom" \
-     -H 'Content-Type: application/json' \
-     -H 'X-API-Key: <YOUR API KEY>>' \
-     -d $'{
-  "project": "<YOUR PROJECT ID>",
-  "bom": "<BASE64-ENCODED SBOM>"
-  }'     
+$ dependency-check --enableExperimental -f SARIF --nvdApiKey <YOUR-API-KEY> -s Podfile.lock
 ```
 
-Also check the [alternatives for uploading](https://docs.dependencytrack.org/usage/cicd/) the SBOM file in case the produced JSON file is too large.
+- To start a scan for a project using Carthage, execute the following command to scan the `Cartfile.resolved.`:
 
-If you are using the default settings of the @MASTG-TOOL-0133 Docker container, go to the frontend of @MASTG-TOOL-0132, which is <http://localhost:8080>. Open the project to which you uploaded the SBOM to verify if there are any vulnerable dependencies.
+```bash
+$ dependency-check --enableExperimental -f SARIF --nvdApiKey <YOUR-API-KEY> -s Cartfile.resolved
+```
 
-> Note: Transitive dependencies are not supported by @MASTG-TOOL-0134 for [SwiftPM](https://cyclonedx.github.io/cdxgen/#/PROJECT_TYPES).
+The output is always a SARIF file which can be viewed using the Sarif viewer plugin in @MASTG-TOOL-0133. Any known vulnerabilities found will be listed with their CVE number and description.
+
+You can only scan one file at a time. When scanning for CocoaPods or Carthage, use the same command but scan the corresponding dependency manager file.
