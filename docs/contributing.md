@@ -30,22 +30,6 @@ Although we greatly appreciate any and all contributions to the project, there a
 
 Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](contact.md) in case of doubt.
 
-## Can my tool be added?
-
-The goal of the MASTG is to be as accessible and up-to-date as possible. For this reason, we prioritize including tools that meet the following criteria:
-
-- Open-source
-- Free to use
-- Capable of analyzing recent Android/iOS applications
-- Regularly updated or stable by nature
-- Actively maintained over a period of time
-- Strong community support
-- Solve a unique problem
-
-In instances where no suitable open-source alternative exists, we may include closed-source tools. However, any closed-source tools included must be free to use, as we aim to avoid featuring paid tools whenever possible. This also extends to freeware or community editions of commercial tools.
-
-Our goal is to be vendor-neutral and to serve as a trusted learning resource, which is why we've **avoid the inclusion of "automated mobile application security scanners"** due to the competitive challenges they pose. Instead, we focus on tools that provide full code access and comprehensive testing, as they are better suited for educational purposes. Tools that lack this transparency, even if they offer a free version, typically do not meet the OWASP MAS project's inclusion criteria.
-
 <br>
 
 ## Our Contributors
