@@ -42,8 +42,6 @@ Or any other constructions like "he/she", "s/he", "his or her". Instead, use the
 - Use the second person: "If the attacker runs this code, he can bypass ..." -> "If you run this code, you can bypass ..."
 - Use the imperative: "A developer should never use ... in his code" -> "Never use ... in your code!"
 
-There is one exception: We are still using "man in the middle", as it is simply a common term in the industry and there is no common replacement for it.
-
 ### Timeliness of Content
 
 Keeping accurate and timely content establishes the OWASP MAS deliverables as a credible and trustworthy source of information.
@@ -136,9 +134,7 @@ When in doubt, you can verify proper capitalization on [https://titlecaseconvert
 
 ### Standardization
 
-This is a list of words/abbreviations that are used inconsistently at the moment in the MASTG and need standardization:
-
-- man-in-the-middle attack (MITM)
+The MAS project (MASVS, MASTG, MASWE) strives for consistent wording that is clear and unambiguous in context. However, due to the size of the project, there may be words or abbreviations that are used inconsistently and need to be standardised. If this is the case, please submit a pull request so that we can discuss them and suggest what should be used instead.
 
 ### Contractions
 
@@ -388,11 +384,11 @@ This produces the following result:
 public static void main(String[] args) { System.out.println(" Hello World!"); } }
 ```
 
-When including shell commands, make sure to use the correct language for syntax highlighting (e.g. `shell` or `bash`) and remove any host names and usernames from the command prompt, e.g.:
+When including shell commands, make sure to use the correct language for syntax highlighting (e.g. `shell` or `bash`) and remove any prompt (host name, username, ...) from the commands, e.g.:
 
 ````markdown
 ```shell
-$ echo 'Hello World'
+echo 'Hello World'
 Hello World
 ```
 ````
@@ -400,7 +396,7 @@ Hello World
 When a command requires parameters that need to be modified by the reader, surround them with angle brackets:
 
 ```shell
-$ adb pull <remote_file> <target_destination>
+adb pull <remote_file> <target_destination>
 ```
 
 ### In-text Keywords

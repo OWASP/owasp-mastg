@@ -4,10 +4,10 @@ Uses of CryptoKit.P256.Signing.PrivateKey:
 0x10000737c    1     12 sym.imp.CryptoKit.P256.Signing.PrivateKey.signature.for.ECDSASignature.Foundation.DataProtocol...lF
 0x100007388    1     12 sym.imp.CryptoKit.P256.Signing.PrivateKey...VMa
 
-xrefs to sym.imp.CryptoKit.P256.Signing.PrivateKey...VMa:
+xrefs to CryptoKit.P256.Signing.PrivateKey.rawRepresentation:
 sym.func.1000046dc 0x1000047f0 [CALL:--x] bl sym.imp.CryptoKit.P256.Signing.PrivateKey...VMa
 
-Use of sym.imp.CryptoKit.P256.Signing.PrivateKey:
+Use of CryptoKit.P256.Signing.PrivateKey.rawRepresentation:
 │           0x1000048b0      mov x1, x19
 │           0x1000048b4      bl sym.func.100004ed4
 │           0x1000048b8      adrp x1, reloc.Foundation.__DataStorage.bytes.allocator...itcfc ; 0x10000c000

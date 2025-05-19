@@ -185,6 +185,9 @@ def get_mastg_components_dict(name):
                         frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     else:
                         frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+                    if "tests" in component_path:
+                        frontmatter['status'] = frontmatter.get('status', 'current')
+                    
                     components.append(frontmatter)
         return components
 
@@ -212,7 +215,9 @@ def get_all_weaknessess():
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
             elif status == 'draft':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+{weaknesses_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{weaknesses_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            elif status == 'deprecated':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
             weaknesses.append(frontmatter)
 
@@ -234,6 +239,15 @@ def get_all_tests_beta():
             frontmatter['id'] = test_id
             frontmatter['title'] = f"@{frontmatter['id']}"            
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+            frontmatter['status'] = frontmatter.get('status', 'new')
+            frontmatter['type'] = ", ".join(frontmatter.get("type", []))
+            status = frontmatter['status']
+            if status == 'new':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+            elif status == 'draft':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{test_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            elif status == 'deprecated':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             
             tests.append(frontmatter)
     return tests
@@ -253,9 +267,36 @@ def get_all_demos_beta():
             frontmatter['id'] = test_id 
             frontmatter['title'] = f"@{test_id}"
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+            frontmatter['status'] = frontmatter.get('status', 'new')
+            status = frontmatter['status']
+            if status == 'new':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+            elif status == 'draft':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{test_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            elif status == 'deprecated':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             
             demos.append(frontmatter)
     return demos
+
+def get_all_mitigations_beta():
+    
+        mitigations = []
+    
+        for file in glob.glob("docs/MASTG/best-practices/**/MASTG-BEST-*.md", recursive=True):
+            with open(file, 'r') as f:
+                content = f.read()
+        
+                frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+    
+                frontmatter['path'] = f"/MASTG/best-practices/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/best-practices'))[0]}"
+                mitigation_id = frontmatter['id']
+                frontmatter['id'] = mitigation_id
+                frontmatter['title'] = f"@{mitigation_id}"
+                frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+                
+                mitigations.append(frontmatter)
+        return mitigations
 
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
@@ -270,7 +311,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         # tests/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'last_updated': 'Last Updated'} #'id': 'ID',  ... , 'refs': 'Refs', 'techniques': 'Techniques'
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'status': 'Status'}
         tests = get_mastg_components_dict("docs/MASTG/tests")
         tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests]
         for test in tests_of_type:
@@ -284,7 +325,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         # tests-beta/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type"}
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type", 'status': "Status"}
 
         tests_beta = get_all_tests_beta()
         tests_beta_columns_reordered = [reorder_dict_keys(test, column_titles.keys()) for test in tests_beta]
@@ -294,12 +335,22 @@ def on_page_markdown(markdown, page, **kwargs):
     elif path.endswith("demos/index.md"):
         # demos-beta/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test"} # TODO , 'tools': "Tools"
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'status': "Status"} # TODO , 'tools': "Tools"
 
         demos_beta = get_all_demos_beta()
         demos_beta_columns_reordered = [reorder_dict_keys(demo, column_titles.keys()) for demo in demos_beta]
 
         return append_to_page(markdown, list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles))
+
+    elif path.endswith("best-practices/index.md"):
+        # mitigations-beta/index.md
+
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"} 
+
+        mitigations_beta = get_all_mitigations_beta()
+        mitigations_beta_columns_reordered = [reorder_dict_keys(mitigation, column_titles.keys()) for mitigation in mitigations_beta]
+
+        return append_to_page(markdown, list_of_dicts_to_md_table(mitigations_beta_columns_reordered, column_titles))
 
     elif path.endswith("tools/index.md"):
 

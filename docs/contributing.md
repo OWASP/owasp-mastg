@@ -30,6 +30,22 @@ Although we greatly appreciate any and all contributions to the project, there a
 
 Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](contact.md) in case of doubt.
 
+## Tool Inclusion Disclaimer for Contributors
+
+OWASP MASTG encourages community contributions, including security testing tools that provide clear and practical value. However, all tool submissions are subject to review and may be rejected if they appear to be self-promotional, lack relevance, or do not meet minimum quality standards (e.g., documentation, usability, maintenance).
+
+To be considered for inclusion, tools should be:
+
+- Open source or freely accessible
+- Clearly documented and usable by the community
+- Actively maintained, with updates tracking Android and iOS platform changes whenever applicable
+
+Even after inclusion, tools are subject to removal if they become outdated, broken, unmaintained, or otherwise no longer align with the goals of the MASTG. Inclusion is not permanent and does not imply endorsement by OWASP.
+
+In instances where no suitable open-source alternative exists, we may include closed-source tools. However, any closed-source tools included must be free to use, as we aim to avoid featuring paid tools whenever possible. This also extends to freeware or community editions of commercial tools.
+
+Our goal is to be vendor-neutral and to serve as a trusted learning resource, which is why we've **avoid the inclusion of "automated mobile application security scanners"** due to the competitive challenges they pose. Instead, we focus on tools that provide full code access and comprehensive testing, as they are better suited for educational purposes. Tools that lack this transparency, even if they offer a free version, typically do not meet the OWASP MAS project's inclusion criteria.
+
 <br>
 
 ## Our Contributors
@@ -95,7 +111,7 @@ The latest version of the MASTG v1 is available here: <https://github.com/OWASP/
 | ---- | ---- | ----- | --- | --- | --- |
 | Bernhard Mueller, Sven Schleier, Jeroen Willemsen, Carlos Holguera | Jeroen Beckers, Sjoerd Langkemper, Anant Shrivastava | Pawel Rzepa, Francesco Stillavato, Henry Hoggard, Andreas Happe, Kyle Benac, Paulino Calderon, Alexander Anthuk, Caleb Kinney, Abderrahmane Aftahi, Koki Takeyama, Wen Bin Kong, Abdessamad Temmar, Cláudio André, Slawomir Kosowski, Bolot Kerimbaev, Lukasz Wierzbicki | kryptoknight13, DarioI, luander, oguzhantopgul, Osipion, mpishu, pmilosev, isher-ux, thec00n, ssecteam, jay0301, magicansk, jinkunong, nick-epson, caitlinandrews, dharshin, raulsiles, righettod, karolpiateknet, mkaraoz, Sjord, bugwrangler, jasondoyle, joscandreu, yog3shsharma, ryantzj, rylyade1, shivsahni, diamonddocumentation, 51j0, AnnaSzk, hlhodges, legik, abjurato, serek8, mhelwig, locpv-ibl and ThunderSon. | jonasw234, zehuanli, jadeboer, Isopach, prabhant, jhscheer, meetinthemiddle-be, bet4it, aslamanver, juan-dambra, OWASP-Seoul, hduarte, TommyJ1994, forced-request, D00gs, vasconcedu, mehradn7, whoot, LucasParsy, DotDotSlashRepo, enovella, ionis111, vishalsodani, chame1eon, allRiceOnMe, crazykid95, Ralireza, Chan9390, tamariz-boop, abhaynayar, camgaertner, EhsanMashhadi, fujiokayu, decidedlygray, Ali-Yazdani, Fi5t, MatthiasGabriel, colman-mbuya and anyashka | Heaven Hodges, Caitlin Andrews, Nick Epson, Anita Diamond, Anna Szkudlarek |
 
-### OWASP MASTG Beta  
+### OWASP MASTG Beta
 
 #### OWASP MSTG "Beta 2" (Google Doc)
 

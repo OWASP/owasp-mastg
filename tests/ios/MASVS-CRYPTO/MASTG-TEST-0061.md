@@ -9,6 +9,9 @@ title: Verifying the Configuration of Cryptographic Standard Algorithms
 masvs_v1_levels:
 - L1
 - L2
+status: deprecated
+covered_by: [MASTG-TEST-0209, MASTG-TEST-0210, MASTG-TEST-0211]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
@@ -23,7 +26,7 @@ Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](.
 
 ### CommonCryptor
 
-If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
+If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://web.archive.org/web/20240606000307/https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
 
 ```c
 CCCryptorStatus CCCryptorCreate(

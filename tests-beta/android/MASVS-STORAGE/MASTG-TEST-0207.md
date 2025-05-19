@@ -3,9 +3,6 @@ platform: android
 title: Data Stored in the App Sandbox at Runtime
 id: MASTG-TEST-0207
 type: [dynamic, filesystem]
-mitigations:
-- android-use-keystore
-- android-use-androidx-security
 prerequisites:
 - identify-sensitive-data
 weakness: MASWE-0006
@@ -13,7 +10,7 @@ weakness: MASWE-0006
 
 ## Overview
 
-The goal of this test is to retrieve the files written to the **internal storage** and inspect them regardless of the APIs used to write them. It uses a simple approach based on file retrieval from the device storage (@MASTG-TECH-0002) before and after the app is exercised to identify the files created during the app's execution and to check if they contain sensitive data.
+The goal of this test is to retrieve the files written to the [internal storage](../../../0x05d-Testing-Data-Storage.md/#internal-storage) and inspect them regardless of the APIs used to write them. It uses a simple approach based on file retrieval from the device storage (@MASTG-TECH-0002) before and after the app is exercised to identify the files created during the app's execution and to check if they contain sensitive data.
 
 ## Steps
 
@@ -27,7 +24,7 @@ The goal of this test is to retrieve the files written to the **internal storage
 
 ## Observation
 
-The output should contain a list of files that were created in the app's private storage during  execution.
+The output should contain a list of files that were created in the app's private storage during execution.
 
 ## Evaluation
 

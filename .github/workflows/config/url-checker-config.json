@@ -49,6 +49,9 @@
             "pattern": "^https://support.virustotal.com"
         },
         {
+            "pattern": "^https://research.kudelskisecurity.com"
+        },
+        {
             "pattern": "^https://www.europeanpaymentscouncil.eu"
         },
         {
@@ -92,6 +95,9 @@
         },
         {
             "pattern": "^https://linkedin.com/in/"
+        },
+        {
+            "pattern": "^https://chromium.googlesource.com/"
         },
         {
             "pattern": "^https://github.com/sushi2k/MSTG-MASVS-Internal"

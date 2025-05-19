@@ -27,7 +27,7 @@ None of the input from these sources can be trusted; it must be validated and/or
 
 The Android version in which the app runs also influences the risk of using deep links. Inspect the Android Manifest to check if `minSdkVersion` is 31 or higher.
 
-- Before Android 12 (API level 31), if the app has any [non-verifiable deep links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
+- Before Android 12 (API level 31), if the app has any [non-verifiable deep links](https://developer.android.com/training/app-links/verify-android-applinks#fix-errors), it can cause the system to not verify all Android App Links for that app.
 - Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
 
 ### Check for Deep Link Usage
@@ -59,7 +59,7 @@ You can easily determine whether deep links (with or without custom URL schemes)
   </intent-filter>
   ```
 
-- **App Links**: If the `<intent-filter>` includes the flag `android:autoVerify="true"`, this causes the Android system to reach out to the declared `android:host` in an attempt to access the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the App Links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"). **A deep link can be considered an App Link only if the verification is successful.**
+- **App Links**: If the `<intent-filter>` includes the flag `android:autoVerify="true"`, this causes the Android system to reach out to the declared `android:host` in an attempt to access the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the App Links](https://developer.android.com/training/app-links/verify-android-applinks "Verify Android App Links"). **A deep link can be considered an App Link only if the verification is successful.**
 
   ```xml
   <intent-filter android:autoVerify="true">
@@ -117,11 +117,11 @@ Use the [Android "App Link Verification" Tester](https://github.com/inesmartins/
 
 You can use @MASTG-TOOL-0004 to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. This feature allows you to:
 
-- [invoke the verification process manually](https://developer.android.com/training/app-links/verify-site-associations#manual-verification).
-- [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-site-associations#reset-state).
-- [invoke the domain verification process](https://developer.android.com/training/app-links/verify-site-associations#invoke-domain-verification).
+- [invoke the verification process manually](https://developer.android.com/training/app-links/verify-android-applinks#support-updated-domain-verification).
+- [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-android-applinks#reset-state).
+- [invoke the domain verification process](https://developer.android.com/training/app-links/verify-android-applinks#invoke-domain-verification).
 
-You can also [review the verification results](https://developer.android.com/training/app-links/verify-site-associations#review-results). For example:
+You can also [review the verification results](https://developer.android.com/training/app-links/verify-android-applinks#review-results). For example:
 
 ```bash
 adb shell pm get-app-links com.example.package
@@ -140,7 +140,7 @@ com.example.package:
 
 #### Manual Verification
 
-This section details a few, of potentially many, reasons why the verification process failed or was not actually triggered. See more information in the [Android Developers Documentation](https://developer.android.com/training/app-links/verify-site-associations#fix-errors) and in the white paper ["Measuring the Insecurity of Mobile Deep Links of Android"](https://people.cs.vt.edu/gangwang/deep17.pdf).
+This section details a few, of potentially many, reasons why the verification process failed or was not actually triggered. See more information in the [Android Developers Documentation](https://developer.android.com/training/app-links/verify-android-applinks#fix-errors) and in the white paper ["Measuring the Insecurity of Mobile Deep Links of Android"](https://people.cs.vt.edu/gangwang/deep17.pdf).
 
 **Check the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link"):**
 
@@ -154,7 +154,7 @@ This section details a few, of potentially many, reasons why the verification pr
 
 **Check for Redirects:**
 
-To enhance the app security, the system [doesn't verify any Android App Links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors) for an app if the server sets a redirect such as `http://example.com` to `https://example.com` or `example.com` to `www.example.com`.
+To enhance the app security, the system [doesn't verify any Android App Links](https://developer.android.com/training/app-links/verify-android-applinks#fix-errors) for an app if the server sets a redirect such as `http://example.com` to `https://example.com` or `example.com` to `www.example.com`.
 
 **Check for Subdomains:**
 

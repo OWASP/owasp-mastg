@@ -1,11 +1,20 @@
-# Find the address of the CCCrypt function
+e asm.bytes=false
+e scr.color=false
+e asm.var=false
+
+?e Uses of the CCCrypt function:
 afl~CCCrypt
 
-# Find all xrefs to CCCrypt (Replace the address with the one you find in the output)
+?e
+
+?e xrefs to CCCrypt:
 axt @ 0x1000076c4
 
-# Seek to the function where CCCrypt is called (Replace with the address found from axt output)
-s fcn.1000040b8
+?e
 
-# Print the disassembly of the function
-pdf
+?e Use of CCCrypt:
+
+# Seek to the function where CCCrypt is called (Replace with the address found from axt output)
+pd-- 9 @ 0x1000040e0
+
+pdf @ sym.func.100004000 > function.asm

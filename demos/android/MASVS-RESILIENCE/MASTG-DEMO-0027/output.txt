@@ -1,0 +1,27 @@
+
+[*] KeyguardManager.isDeviceSecure() called
+
+
+Backtrace:
+android.app.KeyguardManager.isDeviceSecure(Native Method)
+org.owasp.mastestapp.MastgTest.isDeviceSecure(MastgTest.kt:24)
+org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:10)
+org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:93)
+org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:91)
+androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke-k-4lQ0M(Clickable.kt:987)
+androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke(Clickable.kt:981)
+androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)
+Result: false
+
+[*] BiometricManager.canAuthenticate(15) called with BIOMETRIC_ERROR_NONE_ENROLLED - No biometrics enrolled.
+
+
+Backtrace:
+android.hardware.biometrics.BiometricManager.canAuthenticate(Native Method)
+org.owasp.mastestapp.MastgTest.checkStrongBiometricStatus(MastgTest.kt:38)
+org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:11)
+org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:93)
+org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:91)
+androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke-k-4lQ0M(Clickable.kt:987)
+androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke(Clickable.kt:981)
+androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)
