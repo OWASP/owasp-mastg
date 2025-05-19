@@ -2,7 +2,7 @@
 platform: android
 title: Identifying Insecure Dependencies through SBOM creation
 id: MASTG-DEMO-0051
-test: MASTG-TEST-0216
+test: MASTG-TEST-0272
 ---
 
 ### Steps

@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Identify Dependencies with Known Vulnerabilities through usage of SBOM
-id: MASTG-TEST-0217
+id: MASTG-TEST-0275
 type: [static]
 weakness: MASWE-0076
 ---

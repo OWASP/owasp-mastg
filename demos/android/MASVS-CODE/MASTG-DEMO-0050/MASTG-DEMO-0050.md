@@ -3,7 +3,7 @@ platform: android
 title: Identifying Insecure Dependencies in Android Studio
 id: MASTG-DEMO-0050
 code: [java]
-test: MASTG-TEST-0216
+test: MASTG-TEST-0272
 ---
 
 ### Sample

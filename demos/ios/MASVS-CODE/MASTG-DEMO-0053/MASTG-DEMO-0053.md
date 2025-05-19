@@ -2,7 +2,7 @@
 platform: ios
 title: Identifying Insecure Dependencies in SwiftPM through SBOM creation
 id: MASTG-DEMO-0053
-test: MASTG-TEST-0215
+test: MASTG-TEST-0273
 ---
 
 ### Steps

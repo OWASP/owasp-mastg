@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Identify Dependencies with Known Vulnerabilities through usage of SBOM
-id: MASTG-TEST-0218
+id: MASTG-TEST-0274
 type: [static]
 weakness: MASWE-0076
 ---

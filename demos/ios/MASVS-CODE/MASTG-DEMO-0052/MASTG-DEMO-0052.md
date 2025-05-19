@@ -3,7 +3,7 @@ platform: ios
 title: Scanning Package Manager Artifacts for Insecure iOS Dependencies
 id: MASTG-DEMO-0052
 code: [java]
-test: MASTG-TEST-0215
+test: MASTG-TEST-0273
 ---
 
 ### Sample
