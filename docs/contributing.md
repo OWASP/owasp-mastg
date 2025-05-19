@@ -30,7 +30,7 @@ Although we greatly appreciate any and all contributions to the project, there a
 
 Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](contact.md) in case of doubt.
 
-## Can my tool be added?
+## Contributing with Tools
 
 The goal of the MASTG is to be as accessible and up-to-date as possible. For this reason, we prioritize including tools that meet the following criteria:
 
