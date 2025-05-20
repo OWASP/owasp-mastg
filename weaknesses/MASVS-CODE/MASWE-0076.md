@@ -1,38 +1,79 @@
 ---
 title: Dependencies with Known Vulnerabilities
 id: MASWE-0076
-alias: known-vuln-deps
+alias: dependencies-with-known-vulns
 platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-CODE-5]
   masvs-v2: [MASVS-CODE-3]
+  android-core-app-quality: [SC-N3, PS-T4]
+  android-risks:
+  - https://developer.android.com/privacy-and-security/risks/insecure-library
+  nist-ssdf: [PS.3.2]
 status: new
 refs:
 - https://developer.android.com/privacy-and-security/risks/insecure-library
+- https://www.cisa.gov/sites/default/files/2023-04/sbom-types-document-508c.pdf
+- https://www.ntia.doc.gov/files/ntia/publications/sbom_minimum_elements_report.pdf
+- https://developer.android.com/guide/practices/sdk-best-practices
+- https://developer.android.com/privacy-and-security/security-best-practices#services-dependencies-updated
+- https://developer.android.com/privacy-and-security/security-best-practices#update-dependencies
+- https://support.google.com/googleplay/android-developer/answer/14514531
+- https://support.google.com/googleplay/android-developer/answer/13326895
+- https://developer.apple.com/support/third-party-SDK-requirements/
+- https://www.youtube.com/watch?v=3klmiHX0uVQ
+- https://developer.apple.com/videos/play/wwdc2023/10060/
 ---
 
 ## Overview
 
-"Dependencies with Known Vulnerabilities" are external or third-party libraries, SDKs, or frameworks used by the app that contain publicly documented security flaws, usually through CVEs.
+Mobile apps often depend on third-party libraries, software development kits (SDKs), or frameworks, either open-source components maintained by the community or closed-source products provided by commercial vendors, to implement functionality, streamline development, or integrate platform services.
+
+When these dependencies contain vulnerabilities, they can be more easily exploited than first-party code because these vulnerabilities (and some exploits) are often documented in public databases, such as the CVE list, or accessible through security advisories from maintainers or other Open Source Intelligence (OSINT) sources.
+
+These dependencies are compiled into the mobile app binary, so any vulnerabilities they contain become part of the app's attack surface. **The developer is responsible** for ensuring these dependencies are secure and up to date because they are part of the app's codebase. Google and Apple emphasize this in their security best practices, which recommend that developers regularly update their dependencies to mitigate known vulnerabilities.
+
+!!! quote "Google's [Using SDKs safely and securely](https://support.google.com/googleplay/android-developer/answer/13326895)"
+
+    "If you include an SDK in your app, you are responsible for ensuring that their third-party code and practices are compliant with Google Play Developer Program Policies and do not cause your app to violate policies."
+
+!!! quote "Apple's [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)"
+
+    "You are responsible for making sure everything in your app complies with these guidelines, including ad networks, analytics services, and third-party SDKs, so review and choose them carefully."
+
+In terms of privacy, dependencies can introduce risks if they collect or transmit user data without proper consent or transparency. Both Google and Apple require third-party SDKs used in apps to comply with their privacy policies and guidelines to ensure user data is handled securely and transparently. It is the developer's responsibility to ensure that any third-party libraries or SDKs used in the app adhere to these requirements, even if the libraries themselves are not under their direct control and even if they don't use the specific code that could violate the platform's policies.
+
+!!! quote "Google's [Using SDKs safely and securely](https://support.google.com/googleplay/android-developer/answer/13326895)"
+
+    "App developers are required to treat any data collection from within their app by an SDK as if they collected it directly."
+
+!!! quote "Apple's [Third-party SDK requirements](https://developer.apple.com/support/third-party-SDK-requirements/)"
+
+    "When you use a third-party SDK with your app, you are responsible for all the code the SDK includes in your app, and need to be aware of its data collection and use practices.
+
+For more information on privacy and data collection declarations, see @MASWE-0112.
 
 ## Impact
 
 Using dependencies with known vulnerabilities in mobile apps can result in various security risks, including but not limited to:
 
-- **Data Exposure**: Attackers can exploit known vulnerabilities in dependencies to gain unauthorized access to sensitive user data or app functionality. This can lead to data breaches that expose private information, such as user credentials or personal data. Such breaches can have legal and financial consequences for the app owner and undermine user trust.
-- **Compromise of System Integrity and Functionality**: Vulnerabilities in dependencies may allow attackers to compromise the app's overall integrity, potentially introducing malicious behavior such as unauthorized code execution or privilege escalation. This can lead to account takeover or app downtime.
-- **Non-Compliance**: Using outdated or vulnerable dependencies may result in noncompliance with security standards and regulations. This can expose businesses to regulatory penalties and legal liabilities, especially those in industries that handle sensitive data, such as healthcare or finance.
+- **Sensitive Data Exposure**: Vulnerable dependencies may be exploited to bypass access controls or cryptographic protections, which could lead to the exposure of sensitive user data, including credentials, session tokens, and personally identifiable information (PII). This can result in data breaches, which can have legal, financial and reputational consequences.
+- **Execution of Unauthorized Code or Privilege Escalation**: Exploitable flaws in embedded dependencies can allow attackers to execute arbitrary code within the app's context (e.g., through code injection or remote code execution (RCE)), escalate privileges, or manipulate app behavior. The overall impact can range from full compromise of user accounts, abuse of backend services or persistent access to protected resources. The consequences for the business can be severe, including financial loss, service disruption, and damage to customer trust.
+- **Regulatory and Policy Non-Compliance**: Including dependencies with publicly known CVEs may violate regulatory requirements (e.g., GDPR, HIPAA, PCI-DSS) or platform security policies (e.g., Google Play or App Store guidelines). Failure to update or remediate such vulnerabilities can result in app rejection, fines, or mandatory disclosures.
 
 ## Modes of Introduction
 
-Mobile apps rely heavily on dependencies. These dependencies can be "closed-source" through vendor products or "open-source" and maintained by the community.
-
-Dependencies can be implemented manually by adding them into the project and linking them, but they are usually added through dependency managers, which handle the integration into the project's files.
+- **Direct Dependencies**: Vulnerable dependencies can be introduced into the app either manually (by copying and linking source or binary files) or more commonly via package managers and build tools (e.g., Gradle, CocoaPods, Swift Package Manager). This includes both first- and third-party SDKs, and may involve both statically and dynamically linked libraries.
+- **Transitive Dependencies**: Dependencies can be pulled in indirectly through other libraries or SDKs that the app uses. This means that an app may still be affected by a vulnerable library if one of its dependencies includes it, even if the app does not directly include the library.
+- **Dynamically Loaded Dependencies**: Some libraries may be dynamically loaded at runtime, which can make it difficult to track and manage dependencies. This can lead to situations where a vulnerable version of a library is used without the developer's knowledge.
+- **Outdated Platform Security Components**: Mobile apps may depend on platform-provided security components, such as cryptographic libraries or SSL/TLS implementations. If these components are outdated or lack timely updates, they can introduce known vulnerabilities into the application. For instance, on Android, the system's security provider responsible for secure network communications must be explicitly updated by the developer at app startup.
 
 ## Mitigations
 
-- **Keep Dependencies Updated**: Regularly update dependencies to their latest secure versions to ensure that any known vulnerabilities are patched.
-- **Regular Dependency Audits:**: Continuously scan and audit third-party libraries for vulnerabilities using Software Composition Analysis (SCA) tools in the CI/CD pipeline, like @MASTG-TOOL-0131 or @MASTG-TOOL-0132.
-- **Software Bill of Material (SBOM)**: Create a SBOM and manage the dependencies by using tools like @MASTG-TOOL-0134 and @MASTG-TOOL-0132.
-- **Remove Unused Dependencies**: Regularly review and remove any unused or unnecessary libraries to reduce the app's attack surface.
+- **Keep Dependencies Up to Date**: Regularly update all third-party libraries and SDKs to their latest stable versions to ensure known vulnerabilities are patched.
+- **Perform Regular Dependency Vulnerability Scanning**: Continuously monitor and audit dependencies using Software Composition Analysis (SCA) tools in the CI/CD pipeline to detect known vulnerabilities (e.g., CVEs) and outdated components.
+- **Use a Software Bill of Materials (SBOM)**: Produce and maintain an SBOM to track all components and transitive dependencies, ensuring visibility and accountability for third-party code. See [NIST SSDF (NIST SP 800-218) PS.3.2](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf), [NTIA The Minimum Elements For a Software Bill of Materials (SBOM)](https://www.ntia.doc.gov/files/ntia/publications/sbom_minimum_elements_report.pdf), [CISA SBOM Types document](https://www.cisa.gov/sites/default/files/2023-04/sbom-types-document-508c.pdf) for more information on SBOMs and their importance in managing software dependencies.
+- **Remove Unused or Obsolete Dependencies**: Periodically review and eliminate unused, legacy, or unnecessary libraries to reduce the app's attack surface and dependency footprint.
+- **Use Trusted Sources**: Only include libraries and SDKs from reputable sources, such as official repositories or well-maintained open-source projects, to minimize the risk of introducing malicious or vulnerable code.
+- **Implement Dependency Pinning**: Use dependency pinning to lock specific versions of libraries, ensuring that the app does not inadvertently use a vulnerable version due to automatic updates or transitive dependencies.
