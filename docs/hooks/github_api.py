@@ -34,6 +34,7 @@ def get_issues_for_test_refactors():
         f'is:issue '
         f'state:open '
         f'label:"MASTG Refactor"'
+        f'MASTG v1->v2 MASTG-TEST-'
     )
 
     headers = {
@@ -41,18 +42,27 @@ def get_issues_for_test_refactors():
         "Accept": "application/vnd.github.v3+json",
     }
 
-    resp = requests.get(SEARCH_URL, headers=headers, params={"q": query})
-    resp.raise_for_status()
-    data = resp.json()
-
     issues = {}
-    for issue in data["items"]:
-        match = re.search(r'MASTG-TEST-\d+', issue["title"])
-        if match:
-            ID = match.group(0)
-            issues[ID] = (issue["html_url"], issue["title"])
-    return issues
+    page = 1
+    while True:
+        resp = requests.get(SEARCH_URL, headers=headers, params={"q": query, "per_page": 100, "page": page})
+        resp.raise_for_status()
+        data = resp.json()
 
+        for issue in data["items"]:
+            match = re.search(r'MASTG-TEST-\d+', issue["title"])
+            if match:
+                ID = match.group(0)
+                issues[ID] = (issue["html_url"], issue["title"])
+            else:
+                log.warning(f"Could not find MASTG-TEST ID in issue title: {issue['title']}")
+
+        # Break if there are no more pages
+        if "next" not in resp.links:
+            break
+        page += 1
+
+    return issues
 
 def get_latest_successful_run(workflow_file, branch="master"):
     """Get the URL to the latest successful workflow run artifacts.
