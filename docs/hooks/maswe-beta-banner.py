@@ -45,25 +45,6 @@ beta_banner = """
     [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
 """
 
-refactor_banner = """
-??? warning "This test will be updated soon"
-
-    The test can be used in its current form, but it will receive a complete overhaul as part of the new <a href="https://docs.google.com/document/d/1veyzE4cVTSnIsKB1DOPUSMhjXow_MtJOtgHeo5HVoho/edit?tab=t.0#heading=h.ue8tn3i2ff0">OWASP MASTG v2 guidelines</a>. Feel free to use it, or help us out by submitting a PR!
-
-    More information can be found below:
-
-    {}
-
-    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
-"""
-
-def get_tests_refactor_banner(config, meta):
-    link = config["issue_mapping"].get(meta.get("id"))
-    if link:
-        return refactor_banner.format("<a href='{}'>{}</a>".format(link[0], escape(link[1])))
-    else:
-        return ""
-
 def get_mastg_v1_coverage(meta):
     mappings = meta.get('mappings', '')
 
@@ -176,6 +157,19 @@ def get_v1_deprecated_tests_banner(meta):
 """
     return banner
 
+def get_v1_refactor_tests_banner(meta, url, title):
+
+    banner = f"""
+!!! tip "This test will be updated soon"
+
+    The test can be used in its current form, but it will receive a complete overhaul as part of the new <a href="https://docs.google.com/document/d/1veyzE4cVTSnIsKB1DOPUSMhjXow_MtJOtgHeo5HVoho/edit?tab=t.0#heading=h.ue8tn3i2ff0">OWASP MASTG v2 guidelines</a>.
+
+    Help us out by submitting a PR for: <a href='{url}'>{title}</a>
+
+    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
+"""
+    return banner
+
 def get_android_demo_buttons(page):
     id = page.meta.get('id')
 
@@ -247,9 +241,6 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     banners = []
 
-    banners.append(get_tests_refactor_banner(config, page.meta))
-
-
     if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/", "MASTG/best-practices/"]):
         banners.append(beta_banner)
 
@@ -259,8 +250,11 @@ def on_page_markdown(markdown, page, config, **kwargs):
     if "MASTG/tests-beta/" in path and page.meta.get('status') == 'draft':
         banners.append(get_tests_draft_banner(page.meta))
 
-    if "MASTG/tests/" in path and page.meta.get('status') == 'deprecated':
-        banners.append(get_v1_deprecated_tests_banner(page.meta))
+    if "MASTG/tests/" in path:
+        if page.meta.get('status') == 'deprecated':
+            banners.append(get_v1_deprecated_tests_banner(page.meta))
+        if link := config["issue_mapping"].get(page.meta.get("id")):
+            banners.append(get_v1_refactor_tests_banner(page.meta, link[0], escape(link[1])))
 
     if "MASTG/demos/android/" in path and not page.meta.get('status') == 'draft':
         banners.append(get_android_demo_buttons(page))
