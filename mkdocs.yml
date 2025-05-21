@@ -104,8 +104,8 @@ nav:
             - ... | flat | MASTG/tests-beta/ios/MASVS-STORAGE/MASTG-TEST-*.md
           - MASVS-CRYPTO:
             - ... | flat | MASTG/tests-beta/ios/MASVS-CRYPTO/MASTG-TEST-*.md
-          # - MASVS-AUTH:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-AUTH/MASTG-TEST-*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/tests-beta/ios/MASVS-AUTH/MASTG-TEST-*.md
           # - MASVS-NETWORK:
           #   - ... | flat | MASTG/tests-beta/ios/MASVS-NETWORK/MASTG-TEST-*.md
           # - MASVS-PLATFORM:
@@ -125,8 +125,8 @@ nav:
             - ... | flat | MASTG/demos/android/MASVS-CRYPTO/**/MASTG-DEMO-*.md
           # - MASVS-AUTH:
           #   - ... | flat | MASTG/demos/android/MASVS-AUTH/**/MASTG-DEMO-*.md
-          # - MASVS-NETWORK:
-          #   - ... | flat | MASTG/demos/android/MASVS-NETWORK/**/MASTG-DEMO-*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/demos/android/MASVS-NETWORK/**/MASTG-DEMO-*.md
           - MASVS-PLATFORM:
             - ... | flat | MASTG/demos/android/MASVS-PLATFORM/**/MASTG-DEMO-*.md
           - MASVS-CODE:
@@ -140,8 +140,8 @@ nav:
             - ... | flat | MASTG/demos/ios/MASVS-STORAGE/**/MASTG-DEMO-*.md
           - MASVS-CRYPTO:
             - ... | flat | MASTG/demos/ios/MASVS-CRYPTO/**/MASTG-DEMO-*.md
-          # - MASVS-AUTH:
-          #   - ... | flat | MASTG/demos/ios/MASVS-AUTH/**/MASTG-DEMO-*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/demos/ios/MASVS-AUTH/**/MASTG-DEMO-*.md
           # - MASVS-NETWORK:
           #   - ... | flat | MASTG/demos/ios/MASVS-NETWORK/**/MASTG-DEMO-*.md
           # - MASVS-PLATFORM:

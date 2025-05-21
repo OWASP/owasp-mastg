@@ -2,7 +2,7 @@
 platform: android
 title: References to Local File Access in WebViews
 alias: references-to-local-file-access-in-webviews
-id: MASTG-TEST-0x33
+id: MASTG-TEST-0252
 apis: [WebView, WebSettings, getSettings, setAllowFileAccess, setAllowFileAccessFromFileURLs, setAllowUniversalAccessFromFileURLs]
 type: [static]
 weakness: MASWE-0069

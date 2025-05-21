@@ -14,6 +14,10 @@ refs:
 - https://developer.apple.com/app-store/review/guidelines/#5.1.2
 - https://developer.apple.com/app-store/app-privacy-details/#data-collection
 - https://support.google.com/googleplay/android-developer/answer/10787469
+- https://developer.apple.com/videos/play/wwdc2023/10060
+- https://support.google.com/googleplay/answer/11416267
+- https://www.youtube.com/watch?v=J7TM0Yy0aTQ
+- https://www.youtube.com/watch?v=4rfF3y4xchU
 status: new
 ---
 
