@@ -32,7 +32,7 @@ Mobile apps often depend on third-party libraries, software development kits (SD
 
 When these dependencies contain vulnerabilities, they can be more easily exploited than vulnerabilities in first-party code because these vulnerabilities (and some exploits) are often documented in public databases, such as the CVE list, or accessible through security advisories.
 
-These dependencies are compiled into the mobile app binary, so any vulnerabilities they contain become part of the app's attack surface. **The developer is responsible** for ensuring these dependencies are secure and up to date because they are part of the app's codebase. Google and Apple emphasize this in their security best practices, which recommend that developers regularly update their dependencies to mitigate known vulnerabilities.
+**The developer is responsible** for ensuring all dependencies are secure and up to date because they are part of the app's codebase and therefore extend the app's attack surface. Google and Apple emphasize this in their security best practices:
 
 !!! quote "Google's [Using SDKs safely and securely](https://support.google.com/googleplay/android-developer/answer/13326895)"
 
