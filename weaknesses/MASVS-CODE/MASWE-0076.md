@@ -72,9 +72,7 @@ Using dependencies with known vulnerabilities in mobile apps can result in vario
 
 ## Mitigations
 
-- **Keep Dependencies Up to Date**: Regularly update all third-party libraries and SDKs to their latest stable versions to ensure known vulnerabilities are patched.
-- **Perform Regular Dependency Vulnerability Scanning**: Continuously monitor and audit dependencies using Software Composition Analysis (SCA) tools in the CI/CD pipeline to detect known vulnerabilities (e.g., CVEs) and outdated components.
 - **Use a Software Bill of Materials (SBOM)**: Produce and maintain an SBOM to track all components and transitive dependencies, ensuring visibility and accountability for third-party code. See [NIST SSDF (NIST SP 800-218) PS.3.2](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf), [NTIA The Minimum Elements For a Software Bill of Materials (SBOM)](https://www.ntia.doc.gov/files/ntia/publications/sbom_minimum_elements_report.pdf), [CISA SBOM Types document](https://www.cisa.gov/sites/default/files/2023-04/sbom-types-document-508c.pdf) for more information on SBOMs and their importance in managing software dependencies.
+- **Update Dependencies Responsibly**: Regularly monitor all used third-party dependencies for security-related updates (for example, by using Software Composition Analysis (SCA) tools and SBOMs in your CI/CD pipelines). Apply updates when they fix known vulnerabilities, and pin versions explicitly to prevent unexpected changes and reduce the risk of supply-chain attacks.
 - **Remove Unused or Obsolete Dependencies**: Periodically review and eliminate unused, legacy, or unnecessary libraries to reduce the app's attack surface and dependency footprint.
 - **Use Trusted Sources**: Only include libraries and SDKs from reputable sources, such as official repositories or well-maintained open-source projects, to minimize the risk of introducing malicious or vulnerable code.
-- **Implement Dependency Pinning**: Use dependency pinning to lock specific versions of libraries, ensuring that the app does not inadvertently use a vulnerable version due to automatic updates or transitive dependencies.
