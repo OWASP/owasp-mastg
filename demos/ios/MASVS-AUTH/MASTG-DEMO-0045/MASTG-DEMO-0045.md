@@ -36,4 +36,4 @@ The `flags` is an enum of [SecAccessControlCreateFlags](https://developer.apple.
 
 ### Evaluation
 
-The test fails because the output shows references to biometric verification, which allows adding new biometric in the system settings after the app created an entry in the keychain. It's recommended to use [kSecAccessControlBiometryCurrentSet](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset?language=objc) flag instead.
+The test fails because the output shows a reference to `SecAccessControlCreateWithFlags` with `kSecAccessControlBiometryAny`, which accepts any additional biometrics added after the Keychain entry was created. It's recommended to use the [`kSecAccessControlBiometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset?language=objc) flag instead.
