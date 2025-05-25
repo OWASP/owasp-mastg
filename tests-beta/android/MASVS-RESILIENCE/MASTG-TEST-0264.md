@@ -16,7 +16,7 @@ While `StrictMode` is useful for developers to log policy violations such as dis
 
 ## Steps
 
-1. Run a dynamic analysis tool like @MASTG-TOOL-0001 and look for uses of `StrictMode` APIs.
+1. Use runtime method hooking (see @MASTG-TECH-0043) and look for uses of `StrictMode` APIs.
 
 ## Observation
 
