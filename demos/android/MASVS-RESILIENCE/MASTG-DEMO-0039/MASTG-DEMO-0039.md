@@ -29,6 +29,4 @@ The output shows all usages of APIs related to `StrictMode.setVmPolicy`.
 
 ### Evaluation
 
-The test fails because the output shows usages of `StrictMode` APIs, specifically:
-
-- `StrictMode.setVmPolicy`
+The test fails because the output shows usages of `StrictMode.setVmPolicy`.
