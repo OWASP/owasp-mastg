@@ -10,7 +10,7 @@ status: new
 
 ## Overview
 
-This test checks whether the app uses `StrictMode`, which while useful for developers to log policy violations such as disk I/O or network operations in production apps, can expose sensitive implementation details in the logs that could be exploited by attackers.
+This test checks whether the app uses `StrictMode`. While useful for developers to log policy violations such as disk I/O or network operations during development, it can expose sensitive implementation details in the logs that could be exploited by attackers.
 
 ## Steps
 

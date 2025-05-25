@@ -9,7 +9,7 @@ status: new
 
 ### Sample
 
-This sample demonstrates the detection of `StrictMode` uses at runtime using Frida. The app enables a `StrictMode` policy to detect leaked SQLite objects and intentionally leaves a cursor unclosed to trigger the policy.
+This sample demonstrates the static detection of `StrictMode` in the app using Semgrep. The app enables a `StrictMode` policy to detect leaked SQLite objects and intentionally leaves a cursor unclosed to trigger the policy.
 
 {{ ../MASTG-DEMO-0037/MastgTest.kt # MastgTest_reversed.java }}
 

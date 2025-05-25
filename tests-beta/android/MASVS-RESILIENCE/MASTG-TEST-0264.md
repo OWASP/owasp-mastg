@@ -12,11 +12,11 @@ status: new
 
 This test checks whether the app uses `StrictMode` by dynamically analyzing the app's behavior and placing relevant hooks to detect the use of `StrictMode` APIs, such as `StrictMode.setVmPolicy` and `StrictMode.VmPolicy.Builder.penaltyLog`.
 
-While `StrictMode` is useful for developers to log policy violations such as disk I/O or network operations in production apps, it can expose sensitive implementation details in the logs that could be exploited by attackers.
+While `StrictMode` is useful for developers to log policy violations such as disk I/O or network operations during development, it can expose sensitive implementation details in the logs that could be exploited by attackers.
 
 ## Steps
 
-1. Run a dynamic analysis tool like @MASTG-TOOL-0039 and look for uses of `StrictMode` APIs.
+1. Run a dynamic analysis tool like @MASTG-TOOL-0001 and look for uses of `StrictMode` APIs.
 
 ## Observation
 
