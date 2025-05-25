@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-STORAGE-1]
   masvs-v2: [MASVS-CRYPTO-2, MASVS-STORAGE-1]
-  cwe: [321]
+  cwe: [312, 318, 321]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/hardcoded-cryptographic-secrets
 refs:
@@ -25,7 +25,7 @@ Attackers can decompile or reverse-engineer the app to extract hardcoded keys.
 ## Impact
 
 - **Unauthorized Access**: If cryptographic keys are not properly protected, attackers may gain unauthorized access to sensitive data and potential identity theft.
-- **Data Tampering**: Compromised keys can allow attackers to tamper with encrypted data, leading to data integrity issues.
+- **Loss of Integrity**: Compromised keys can allow attackers to tamper with encrypted data.
 - **Loss of Confidentiality**: Sensitive information can be exposed, resulting in a loss of confidentiality. Once keys are exposed, all data encrypted with those keys is at risk.
 
 ## Modes of Introduction

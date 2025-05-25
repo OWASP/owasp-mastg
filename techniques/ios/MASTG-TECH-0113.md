@@ -19,7 +19,7 @@ r2 -A MASTestApp
 74  0x000078c4 0x1000078c4 LOCAL  FUNC 0        imp.SecKeyVerifySignature
 ```
 
-Alternatively, you can use [rabin2 to obtain the symbols](https://book.rada.re/tools/rabin2/symbols.html) by running `rabin2 -s MASTestApp`.
+Alternatively, you can use @MASTG-TOOL-0129 to [obtain the symbols](https://book.rada.re/tools/rabin2/symbols.html) by running `rabin2 -s MASTestApp`.
 
 ## objdump
 

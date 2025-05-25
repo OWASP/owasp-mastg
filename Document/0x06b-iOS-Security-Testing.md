@@ -14,7 +14,7 @@ The following is the most basic iOS app testing setup:
 - @MASTG-TOOL-0070 and @MASTG-TOOL-0071 installed.
 - Wi-Fi network that permits client-to-client traffic.
 - At least one jailbroken iOS device (of the desired iOS version).
-- @MASTG-TOOL-0007 or other interception proxy tool.
+- @MASTG-TOOL-0097 or other interception proxy tool.
 
 ### Obtaining the UDID of an iOS device
 
@@ -37,10 +37,9 @@ It is also possible to get the UDID via various command line tools on macOS whil
     |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
     ```
 
-- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (also available on Linux):
+- By using @MASTG-TOOL-0126:
 
     ```sh
-    $ brew install ideviceinstaller
     $ idevice_id -l
     316f01bd160932d2bf2f95f1f142bc29b1c62dbc
     ```

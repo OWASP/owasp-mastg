@@ -6,12 +6,13 @@ on:
     branches:
       - master
     paths:
-      - 'demos/**'
+      - 'demos/android/**'
   pull_request:
     branches:
       - master
     paths:
       - 'demos/**'
+      - '.github/workflows/build-android-demos.yml'
 
 jobs:
   generate-matrix:
@@ -21,26 +22,99 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: demos/android
+          fetch-depth: 2 # Required for git diff in PRs
 
       - name: Generate matrix
         id: set-matrix
         run: |
-          demos=$(find demos/android -type d -name "MASTG-DEMO-*")
-          matrix="{\"demo\":["
-          for demo in $demos; do
-            matrix="${matrix}\"$demo\","
-          done
-          matrix="${matrix%,}]}"
-          echo "matrix=$matrix" >> $GITHUB_ENV
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Get list of changed files in demos/android/ directory
+            changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD -- 'demos/android/*')
 
+            echo "Changed files:"
+            echo "$changed_files"
+
+            # Extract unique demo directories
+            matrix=$(echo "$changed_files" | grep -oE 'demos/android/[^/]*/MASTG-DEMO-[^/]+' | sort -u | head -c -1 | tr '\n' ' ' | sed 's/ /","/g')
+
+            # If no changes, set empty matrix
+            if [ -z "$matrix" ]; then
+              echo "matrix={\"demo\":[]}" >> $GITHUB_OUTPUT
+            else
+              echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+            fi
+          else
+            # Default behavior: include all demos for master branch
+            matrix=$(echo demos/android/*/MASTG-DEMO-* | sed 's/ /","/g')
+            echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+          fi
+          echo "Print matrix: $matrix"
       - name: Print matrix
         run: echo "${{ steps.set-matrix.outputs.matrix }}"
 
-  build:
-    needs: generate-matrix
+  build-base-app:
     runs-on: ubuntu-latest
-    timeout-minutes: 60  # Increase this value as needed
+    timeout-minutes: 10
+    steps:
+      - name: Get last commit hash of MASTestApp-Android
+        id: get-mastestapp-hash
+        run: |
+          echo "MASTESTAPP_HASH=$(git ls-remote https://github.com/cpholguera/MASTestApp-Android.git HEAD | awk '{print $1}')" >> $GITHUB_ENV 
+          echo "MASTESTAPP_HASH=$MASTESTAPP_HASH" >> $GITHUB_OUTPUT
+
+      - name: Check if already cached
+        id: cache-check
+        uses: actions/cache/restore@v4
+        with:
+          lookup-only: true
+          path: MASTestApp-Android/ # we're forced to write a path even if we don't need it
+          key: base-app-${{ env.MASTESTAPP_HASH }}
+
+      - name: Set up JDK 17
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+
+      - name: Clone MASTestApp-Android repository
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: cpholguera/MASTestApp-Android
+          path: MASTestApp-Android
+          ref: ${{ env.MASTESTAPP_HASH }}
+
+      - name: Build base app
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        run: |
+          cd MASTestApp-Android
+          grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
+          ./gradlew assembleDebug --stacktrace || (
+            echo "Build failed"
+            exit 1
+          )
+          echo "Build succeeded"
+
+      - name: Saving cache
+        if: steps.cache-check.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: MASTestApp-Android/
+          key: ${{ steps.cache-check.outputs.cache-primary-key }}
+   
+  build:
+    needs: [generate-matrix, build-base-app]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30  # Increase this value as needed
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
       max-parallel: 3  # Limit the number of parallel jobs
@@ -48,52 +122,75 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Clone MASTestApp-Android repository
-        run: git clone https://github.com/cpholguera/MASTestApp-Android.git
+        with:
+          sparse-checkout: demos/android
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
+
+      - name: Restore cache
+        id: cache-base-app
+        uses: actions/cache/restore@v4
+        with:
+          path: MASTestApp-Android/
+          key: base-app-${{ env.MASTESTAPP_HASH }}
+
       - name: Replace files and build APK
         run: |
           demo="${{ matrix.demo }}"
-          if [ -d "$demo" ]; then
-            echo "Processing $demo"
-            [ -f "$demo/MastgTest.kt" ] && cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt && echo "Copied MastgTest.kt for $demo" || echo "No MastgTest.kt found for $demo"
-            [ -f "$demo/AndroidManifest.xml" ] && cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml && echo "Copied AndroidManifest.xml for $demo" || echo "No AndroidManifest.xml found for $demo"
-            cd MASTestApp-Android
-            echo "Building APK for $demo"
-            ./gradlew assembleDebug --stacktrace
-            build_status=$?
-            cd ..
-            if [ $build_status -eq 0 ]; then
-              echo "Build succeeded for $demo"
-              apk_name="$(basename "$demo").apk"
-              if [ -f "MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk" ]; then
-                mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$apk_name"
-                echo "APK for $demo moved to $apk_name"
-              else
-                echo "APK not found for $demo"
-              fi
-            else
-              echo "Build failed for $demo"
-            fi
-          else
+          [ -d "$demo" ] || (
             echo "Demo directory not found: $demo"
-          fi
+            exit 1
+          )
 
-      - name: Set APK name variable
-        id: set_apk_name
-        run: echo "APK_NAME=$(basename ${{ matrix.demo }}).apk" >> $GITHUB_ENV
+          echo "Processing $demo"
+          cp -f "$demo/MastgTest.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTest.kt 2>/dev/null \
+            && echo "Copied MastgTest.kt for $demo" \
+            || echo "No MastgTest.kt found for $demo"
+          cp -f "$demo/MastgTestWebView.kt" MASTestApp-Android/app/src/main/java/org/owasp/mastestapp/MastgTestWebView.kt 2>/dev/null \
+            && echo "Copied MastgTestWebView.kt for $demo" \
+            || echo "No MastgTestWebView.kt found for $demo"
+          cp -f "$demo/AndroidManifest.xml" MASTestApp-Android/app/src/main/AndroidManifest.xml 2>/dev/null \
+            && echo "Copied AndroidManifest.xml for $demo" \
+            || echo "No AndroidManifest.xml found for $demo"
+          cp -f "$demo/filepaths.xml" MASTestApp-Android/app/src/main/res/xml/filepaths.xml 2>/dev/null \
+            && echo "Copied filepaths.xml for $demo" \
+            || echo "No filepaths.xml found for $demo"
+          cp -f "$demo/network_security_config.xml" MASTestApp-Android/app/src/main/res/xml/network_security_config.xml 2>/dev/null \
+            && echo "Copied network_security_config.xml for $demo" \
+            || echo "No network_security_config.xml found for $demo"
+          cp -f "$demo/backup_rules.xml" MASTestApp-Android/app/src/main/res/xml/backup_rules.xml 2>/dev/null \
+            && echo "Copied backup_rules.xml for $demo" \
+            || echo "No backup_rules.xml found for $demo"
+          cp -f "$demo/data_extraction_rules.xml" MASTestApp-Android/app/src/main/res/xml/data_extraction_rules.xml 2>/dev/null \
+            && echo "Copied data_extraction_rules.xml for $demo" \
+            || echo "No data_extraction_rules.xml found for $demo"
+          
+          echo "Building APK for $demo"
+          cd MASTestApp-Android
+          grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
+          ./gradlew assembleDebug --stacktrace || (
+            echo "Build failed for $demo"
+            exit 1
+          )
+          cd ..
+          echo "Build succeeded for $demo"          
 
-      - name: List generated APK
-        run: |
-          echo "Listing generated APK in demos/android directory:"
-          ls -l "${{ env.APK_NAME }}" || echo "No APK found."
+          apk_filename="$(basename "$demo").apk"
+          mv MASTestApp-Android/app/build/outputs/apk/debug/app-debug.apk "$apk_filename" || (
+            echo "APK not found for $demo"
+            exit 1
+          )
+          echo "APK for $demo moved to $apk_filename"
+          echo "APK_NAME=$apk_filename" >> $GITHUB_ENV
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
