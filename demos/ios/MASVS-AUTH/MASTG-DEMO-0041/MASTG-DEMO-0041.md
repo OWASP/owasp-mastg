@@ -34,3 +34,5 @@ The third argument of `objc_msgSend(...)` is `LAPolicyDeviceOwnerAuthenticationW
 ### Evaluation
 
 The test fails because the output only shows references to biometric verification with LocalAuthentication API and no calls to any Keychain APIs requiring user presence.
+
+This approach can be easily bypassed as shown in @MASTG-TECH-0xxx.
