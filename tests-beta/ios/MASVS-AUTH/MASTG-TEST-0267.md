@@ -18,8 +18,10 @@ This test is the dynamic counterpart to @MASTG-TEST-0266.
 
 ## Observation
 
-The output should contain a list of locations where `LAContext.evaluatePolicy` API are used.
+The analysis should output the locations where the `evaluatePolicy` and Keychain APIs are used.
 
 ## Evaluation
 
-The test fails if an app uses `LAContext.evaluatePolicy` API to authenticate the user.
+The test fails if for each sensitive data resource worth protecting:
+- `LAContext.evaluatePolicy(...)` is used explicitly.
+- There are no calls to `SecAccessControlCreateWithFlags`.
