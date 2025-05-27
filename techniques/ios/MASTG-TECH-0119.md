@@ -11,7 +11,7 @@ This section describes a technique to bypass Event-Bound Biometrics Authenticati
 
 If you have a jailbroken device with frida-server installed, you can bypass Event-Bound Biometrics Authentication by running @MASTG-TOOL-0038 tool with the the following commands:
 
-```
+```bash
 objection -g MASTestApp explore
 ios ui biometrics_bypass
 ```

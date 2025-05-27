@@ -23,5 +23,6 @@ The analysis should output the locations where the `evaluatePolicy` and Keychain
 ## Evaluation
 
 The test fails if for each sensitive data resource worth protecting:
+
 - `LAContext.evaluatePolicy(...)` is used explicitly.
 - There are no calls to `SecAccessControlCreateWithFlags`.
