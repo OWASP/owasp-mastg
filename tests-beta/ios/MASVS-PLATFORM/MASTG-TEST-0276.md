@@ -32,3 +32,5 @@ The output should contain a list of locations where relevant APIs are used.
 ## Evaluation
 
 The test fails if there are calls to `UIPasteboard.generalPasteboard` and sensitive data is written to it.
+
+As determining what constitutes sensitive data is context-dependent, it can be challenging to detect statically. To determine whether sensitive data is being written to the pasteboard by the aforementioned methods, you can inspect the reported code locations in the reverse-engineered code (see @MASTG-TECH-0076).
