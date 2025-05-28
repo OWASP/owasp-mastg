@@ -9,11 +9,11 @@ mappings:
   cwe: [922, 326, 312]
 
 draft:
-  description: It's better to use the OS Local Auth / bind to a key stored in the
-    platform KeyStore.
+  description: It's better to use the OS Local Auth / bind to a key stored in the platform KeyStore. Consider new title App Custom Password Not Bound to Platform KeyStore where password could be password or PIN.
   topics:
   - use the OS Local Auth
   - binding to keys stored in the platform KeyStore
+  - https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/applicationpassword
 status: draft
 
 ---
