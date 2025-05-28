@@ -4,7 +4,6 @@ title: Data Exclusion using backup_rules.xml with Backup Manager
 id: MASTG-DEMO-0020
 code: [kotlin]
 test: MASTG-TEST-0216
-status: new
 ---
 
 ### Sample
