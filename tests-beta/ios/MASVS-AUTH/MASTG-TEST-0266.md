@@ -17,16 +17,16 @@ In contrast, the **Keychain** API securely stores sensitive data, and can be con
 
 ## Steps
 
-1. Run a static analysis scan with @MASTG-TOOL-0073 to detect usage of `LAContext.evaluatePolicy(...)`
+1. Run a static analysis scan with @MASTG-TOOL-0073 to detect usage of `LAContext.evaluatePolicy`
 2. Run a static analysis scan with @MASTG-TOOL-0073 to detect usage of Keychain APIs, especially `SecAccessControlCreateWithFlags` (which should go accompanied by other APIs such as `SecItemAdd` and `SecItemCopyMatching`).
 
 ## Observation
 
-The analysis should output the locations where the `evaluatePolicy` and Keychain APIs are used in the codebase (or the lack of their use).
+The analysis should output the locations where the `LAContext.evaluatePolicy` and Keychain APIs are used in the codebase (or the lack of their use).
 
 ## Evaluation
 
 The test fails if for each sensitive data resource worth protecting:
 
-- `LAContext.evaluatePolicy(...)` is used explicitly.
+- `LAContext.evaluatePolicy` is used explicitly.
 - There are no calls to `SecAccessControlCreateWithFlags`.
