@@ -386,4 +386,4 @@ extra:
   status:
     draft: This page is in draft.
     deprecated: This page is deprecated.
-    new: New in this beta!
+    new: This page is new!
