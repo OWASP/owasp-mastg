@@ -5,7 +5,6 @@ id: MASTG-TEST-0264
 type: [dynamic]
 weakness: MASWE-0094
 best-practices: []
-status: new
 ---
 
 ## Overview

@@ -4,7 +4,6 @@ title: Dangerous Permissions in the AndroidManifest with semgrep
 id: MASTG-DEMO-0033
 code: [kotlin]
 test: MASTG-TEST-0254
-status: new
 ---
 
 ### Sample

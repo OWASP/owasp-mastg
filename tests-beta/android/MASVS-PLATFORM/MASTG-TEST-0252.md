@@ -7,7 +7,6 @@ apis: [WebView, WebSettings, getSettings, setAllowFileAccess, setAllowFileAccess
 type: [static]
 weakness: MASWE-0069
 best-practices: [MASTG-BEST-0010, MASTG-BEST-0011, MASTG-BEST-0012]
-status: new
 ---
 
 ## Overview
