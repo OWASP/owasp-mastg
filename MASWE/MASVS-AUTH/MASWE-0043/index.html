@@ -2424,7 +2424,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 15.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-.25-8.25a.75.75 0 0 0-1.5 0v4.5a.75.75 0 0 0 1.5 0z"/><path d="M11.46.637a1.75 1.75 0 0 1 1.08 0l8.25 2.675A1.75 1.75 0 0 1 22 4.976V10c0 6.19-3.77 10.705-9.401 12.83a1.7 1.7 0 0 1-1.198 0C5.771 20.704 2 16.19 2 10V4.976c0-.76.49-1.43 1.21-1.664Zm.617 1.426a.25.25 0 0 0-.154 0L3.673 4.74a.25.25 0 0 0-.173.237V10c0 5.461 3.28 9.483 8.43 11.426a.2.2 0 0 0 .14 0C17.22 19.483 20.5 15.46 20.5 10V4.976a.25.25 0 0 0-.173-.237Z"/></svg>
   
   <span class="md-ellipsis">
-    MASWE-0044: Biometric Authentication is Event-bound
+    MASWE-0044: Biometric Authentication Can Be Bypassed
     
   </span>
   
@@ -25862,11 +25862,12 @@
 If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that weakness by following our <a href="https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?usp=sharing">guidelines</a>.</p>
 <p><a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+MASWE-0043" target="_blank"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> Check our GitHub Issues for MASWE-0043</a></p>
 <h2 id="initial-description-or-hints">Initial Description or Hints<a class="headerlink" href="#initial-description-or-hints" title="Permanent link">&para;</a></h2>
-<p>It's better to use the OS Local Auth / bind to a key stored in the platform KeyStore.</p>
+<p>It's better to use the OS Local Auth / bind to a key stored in the platform KeyStore. Consider new title App Custom Password Not Bound to Platform KeyStore where password could be password or PIN.</p>
 <h2 id="relevant-topics">Relevant Topics<a class="headerlink" href="#relevant-topics" title="Permanent link">&para;</a></h2>
 <ul>
 <li>use the OS Local Auth</li>
 <li>binding to keys stored in the platform KeyStore</li>
+<li>https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/applicationpassword</li>
 </ul>
 <h2 id="mastg-v1-coverage">MASTG v1 Coverage<a class="headerlink" href="#mastg-v1-coverage" title="Permanent link">&para;</a></h2>
 <p>No MASTG v1 tests are related to this weakness.</p>
