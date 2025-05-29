@@ -30,4 +30,4 @@ The output reveals the use of `LAContext.evaluatePolicy(0x1, ...)` in the app. P
 
 ### Evaluation
 
-The test passes because the output shows the runtime use of `LAcontext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, ...)` which verifies whether the app uses an insecure API for biometric authentication.
+The test fails because the output only shows calls to biometric verification with LocalAuthentication API and no calls to any Keychain APIs requiring user presence.
