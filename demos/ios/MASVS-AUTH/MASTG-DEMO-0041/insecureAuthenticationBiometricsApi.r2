@@ -17,3 +17,6 @@ axt @ 0x100010098
 
 ?e Print disassembly around \"evaluatePolicy\" in the function
 pdf @ 0x100004344 | grep -C 5 "evaluatePolicy:"
+
+?e Print xrefs to \'SecAccessControlCreateWithFlags\"
+f~SecAccessControlCreateWithFlags

@@ -18,3 +18,4 @@ Print disassembly around "evaluatePolicy" in the function
 │           0x100004350      mov x3, x20
 │           0x100004354      mov x4, x22
 │           0x100004358      bl sym.imp.objc_msgSend                   ; void *objc_msgSend(void *instance, char *selector)
+Print xrefs to 'SecAccessControlCreateWithFlags"
