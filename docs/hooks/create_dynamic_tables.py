@@ -51,9 +51,18 @@ def get_mastg_tests_dict():
 
 def retrieve_masvs(version="latest"):
     global MASVS
-    url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
-    response = requests.get(url)
-    content = response.content
+    try:
+        url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
+        response = requests.get(url)
+        content = response.content
+    except Exception as e:
+        log.warning("⚠️ Conection failed when retrieving OWASP_MASVS.yaml")
+        masvs_yaml_file = Path("OWASP_MASVS.yaml")
+        if masvs_yaml_file.exists():
+            log.warning("⚠️ Reading OWASP_MASVS.yaml from file")
+            content = masvs_yaml_file.read_text()
+        else:
+            raise Exception("ERROR Failed reading OWASP_MASVS.yaml from file")
     MASVS = yaml.safe_load(content)
     return MASVS
 
