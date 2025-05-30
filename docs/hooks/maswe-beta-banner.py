@@ -75,7 +75,7 @@ def get_maswe_placeholder_banner(meta):
         refs_section = "    ## References\n\n"
         refs_section += "\n".join([f"    - <{ref}>" for ref in refs])
 
-    placeholder_info = meta.get('placeholder', None)
+    placeholder_info = meta.get('draft', None)
 
     description = placeholder_info.get('description', None)
 
@@ -216,16 +216,16 @@ def get_demos_placeholder_banner(meta):
     test = meta.get('test', None)
 
     banner = f"""
-!!! warning "placeholder MASTG-DEMO"
+!!! warning "Placeholder MASTG-DEMO"
 
-    This demo hasn't been created yet and it's in **placeholder**. But you can check its status or start working on it yourself.
+    This demo hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that demo by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
 
     <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
 
     If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
 
-## placeholder Description
+## Draft Description
 
 {note}
 

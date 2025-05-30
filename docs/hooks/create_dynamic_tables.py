@@ -237,35 +237,6 @@ def get_all_weaknessess():
 
     return weaknesses
 
-def get_all_tests_beta():
-
-    tests = []
-
-    for file in glob.glob("docs/MASTG/tests-beta/**/MASTG-TEST-*.md", recursive=True):
-        with open(file, 'r') as f:
-            content = f.read()
-    
-            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-
-            frontmatter['path'] = f"/MASTG/tests-beta/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/tests-beta'))[0]}"
-
-            test_id = frontmatter['id']            
-            frontmatter['id'] = test_id
-            frontmatter['title'] = f"@{frontmatter['id']}"            
-            frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
-            frontmatter['status'] = frontmatter.get('status', 'new')
-            frontmatter['type'] = ", ".join(frontmatter.get("type", []))
-            status = frontmatter['status']
-            if status == 'new':
-                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
-            elif status == 'placeholder':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{test_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
-            elif status == 'deprecated':
-                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
-            
-            tests.append(frontmatter)
-    return tests
-
 def get_all_demos_beta():
 
     demos = []
@@ -336,7 +307,7 @@ def on_page_markdown(markdown, page, **kwargs):
         return append_to_page(markdown, list_of_dicts_to_md_table(tests_of_type, column_titles))
 
     elif path.endswith("demos/index.md"):
-        # demos-beta/index.md
+        # demos/index.md
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'status': "Status"} # TODO , 'tools': "Tools"
 
@@ -346,7 +317,7 @@ def on_page_markdown(markdown, page, **kwargs):
         return append_to_page(markdown, list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles))
 
     elif path.endswith("best-practices/index.md"):
-        # mitigations-beta/index.md
+        # mitigations/index.md
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"} 
 
