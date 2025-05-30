@@ -209,7 +209,7 @@ theme:
       l1: material/circle
       l2: material/circle-multiple-outline
       r: material/circle-double
-      draft: material/pencil-plus
+      placeholder: material/pencil-plus
       update-pending: material/information-outline
       deprecated: material/trash-can
       new: material/alert-decagram
@@ -337,7 +337,7 @@ extra:
     L1: l1
     L2: l2
     R: r
-    draft: draft
+    placeholder: placeholder
     update-pending: update-pending
     deprecated: deprecated
     new: new
@@ -350,7 +350,7 @@ extra:
     masvs: masvs
     best: best
   status:
-    draft: This page is in draft.
+    placeholder: This page is a placeholder.
     deprecated: This page is deprecated.
     new: This page is new!
     update-pending: This page is pending an update.
