@@ -17,7 +17,7 @@ The following sample uses the `kSecAccessControlBiometryAny` flag, which is part
 1. Unzip the app package and locate the main binary file (@MASTG-TECH-0058), which in this case is `./Payload/MASTestApp.app/MASTestApp`.
 2. Run `run.sh`.
 
-{{ biometricAuthenticationFallback.r2 }}
+{{ biometricAuthenticationEnrollmentChange.r2 }}
 
 {{ run.sh }}
 
