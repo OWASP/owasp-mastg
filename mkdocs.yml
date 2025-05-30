@@ -209,7 +209,8 @@ theme:
       l1: material/circle
       l2: material/circle-multiple-outline
       r: material/circle-double
-      draft: material/information-outline
+      draft: material/pencil-plus
+      update-pending: material/information-outline
       deprecated: material/trash-can
       new: material/alert-decagram
       tool: octicons/tools-24
@@ -300,7 +301,6 @@ markdown_extensions:
 hooks:
   - docs/hooks/replace_snippets.py
   - docs/hooks/update_titles.py
-  - docs/hooks/maswe-beta-banner.py
   - docs/hooks/add-tags.py
   - docs/hooks/add-cross-references.py
   - docs/hooks/edit_button_uri.py
@@ -308,6 +308,7 @@ hooks:
   - docs/hooks/create_dynamic_tables.py
   - docs/hooks/update_git_info.py
   - docs/hooks/add-checklists-banner.py
+  - docs/hooks/maswe-beta-banner.py
 
 extra:
   generator: false # removed but recreated in copyright above
@@ -337,6 +338,7 @@ extra:
     L2: l2
     R: r
     draft: draft
+    update-pending: update-pending
     deprecated: deprecated
     new: new
     tool: tool
@@ -351,3 +353,4 @@ extra:
     draft: This page is in draft.
     deprecated: This page is deprecated.
     new: This page is new!
+    update-pending: This page is pending an update.
