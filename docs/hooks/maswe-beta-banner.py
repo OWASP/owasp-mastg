@@ -247,12 +247,11 @@ def on_page_markdown(markdown, page, config, **kwargs):
     if "MASWE/" in path and page.meta.get('status') == 'draft':
         banners.append(get_maswe_draft_banner(page.meta))
 
-    if "MASTG/tests-beta/" in path and page.meta.get('status') == 'draft':
-        banners.append(get_tests_draft_banner(page.meta))
-
     if "MASTG/tests/" in path:
         if page.meta.get('status') == 'deprecated':
             banners.append(get_v1_deprecated_tests_banner(page.meta))
+        if page.meta.get('status') == 'draft':
+            banners.append(get_tests_draft_banner(page.meta))
         if link := config["issue_mapping"].get(page.meta.get("id")):
             banners.append(get_v1_refactor_tests_banner(page.meta, link[0], escape(link[1])))
 
