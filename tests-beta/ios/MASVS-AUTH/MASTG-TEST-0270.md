@@ -23,4 +23,4 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if the app uses `SecAccessControlCreateWithFlags` without the `kSecAccessControlBiometryCurrentSet` flag.
+The test fails if the app uses `SecAccessControlCreateWithFlags` with any flag except the `kSecAccessControlBiometryCurrentSet` flag for any sensitive data resource worth protecting.

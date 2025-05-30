@@ -4,6 +4,9 @@ Interceptor.attach(ObjC.classes.LAContext["- evaluatePolicy:localizedReason:repl
       const LAPolicy = {
           1: ".deviceOwnerAuthenticationWithBiometrics",
           2: ".deviceOwnerAuthentication"
+          3: ".deviceOwnerAuthenticationWithWatch",
+          4: ".deviceOwnerAuthenticationWithBiometricsOrWatch",
+          5: ".deviceOwnerAuthenticationWithWristDetection",
       };
 
       const policy = args[2].toInt32();

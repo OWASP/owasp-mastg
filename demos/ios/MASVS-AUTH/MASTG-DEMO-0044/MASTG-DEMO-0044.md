@@ -32,4 +32,4 @@ The output reveals the use of `SecAccessControlCreateWithFlags` in the app and l
 
 The test fails because the output shows the runtime use of `SecAccessControlCreateWithFlags(..., kSecAccessControlUserPresence)` which allows for a fallback to passcode authentication.
 
-Since this data requires protection with biometrics, It's recommended to use the [`.biometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) or [`.biometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany) flags instead, being `.biometryCurrentSet` the most secure.
+Since this data requires protection with biometrics, It's recommended to use the [`kSecAccessControlBiometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) or [`kSecAccessControlBiometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany) flags instead, being `kSecAccessControlBiometryCurrentSet` the most secure.

@@ -17,8 +17,8 @@ This test is the dynamic counterpart to @MASTG-TEST-0270.
 
 ## Observation
 
-The output should contain a list of locations where `SecAccessControlCreateWithFlags` function is called including all used flags.
+The output should contain a list of locations where the `SecAccessControlCreateWithFlags` function is called including all used flags.
 
 ## Evaluation
 
-The test fails if the app uses `SecAccessControlCreateWithFlags` without the `kSecAccessControlBiometryCurrentSet` flag.
+The test fails if the app uses `SecAccessControlCreateWithFlags` with any flag except the `kSecAccessControlBiometryCurrentSet` flag for any sensitive data resource worth protecting.

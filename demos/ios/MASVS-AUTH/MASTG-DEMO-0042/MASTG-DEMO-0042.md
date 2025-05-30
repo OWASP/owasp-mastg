@@ -30,4 +30,4 @@ The output reveals the use of `LAContext.evaluatePolicy(0x1, ...)` in the app. P
 
 ### Evaluation
 
-The test fails because the output only shows calls to biometric verification with LocalAuthentication API and no calls to any Keychain APIs requiring user presence.
+The test fails because the output only shows calls to biometric verification with LocalAuthentication API and no calls to any Keychain APIs requiring user presence (`SecAccessControlCreateWithFlags`).

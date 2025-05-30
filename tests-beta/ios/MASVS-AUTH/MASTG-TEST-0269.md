@@ -17,8 +17,10 @@ This test is the dynamic counterpart to @MASTG-TEST-0268.
 
 ## Observation
 
-The output should contain a list of locations where `SecAccessControlCreateWithFlags` function is called including all used flags.
+The output should contain a list of locations where the `SecAccessControlCreateWithFlags` function is called including all used flags.
 
 ## Evaluation
 
-The test fails if the app uses `SecAccessControlCreateWithFlags` with `kSecAccessControlUserPresence` or `kSecAccessControlDevicePasscode` flags.
+The test fails if the app uses `SecAccessControlCreateWithFlags` with the `kSecAccessControlUserPresence` or `kSecAccessControlDevicePasscode` flags for any sensitive data resource that needs protection.
+
+The test passes only if the app uses `SecAccessControlCreateWithFlags` with stricter flags, such as [`kSecAccessControlBiometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany), [`kSecAccessControlBiometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) to enforce biometric-only access for any sensitive data resource that needs protection (being `kSecAccessControlBiometryCurrentSet` the one considered the most secure).

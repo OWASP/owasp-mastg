@@ -25,8 +25,8 @@ The output should contain a list of locations where relevant APIs are used.
 
 ## Evaluation
 
-The test fails if the app uses either `kSecAccessControlUserPresence` or `kSecAccessControlDevicePasscode` to protect sensitive operations or data in high-risk scenarios.
+The test fails if the app uses `SecAccessControlCreateWithFlags` with the `kSecAccessControlUserPresence` or `kSecAccessControlDevicePasscode` flags for any sensitive data resource that needs protection.
 
-The test passes only if stricter authentication mechanisms, such as [`kSecAccessControlBiometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany), [`kSecAccessControlBiometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) are used to enforce biometric-only access (being `kSecAccessControlBiometryCurrentSet` the one considered the most secure).
+The test passes only if the app uses `SecAccessControlCreateWithFlags` with stricter flags, such as [`kSecAccessControlBiometryAny`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany), [`kSecAccessControlBiometryCurrentSet`](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometrycurrentset) to enforce biometric-only access for any sensitive data resource that needs protection (being `kSecAccessControlBiometryCurrentSet` the one considered the most secure).
 
 **Note:** Using `kSecAccessControlUserPresence` or `kSecAccessControlDevicePasscode` is not inherently a vulnerability, but in high-security applications (e.g., finance, government, health), their use can represent a weakness or misconfiguration that reduces the intended security posture. So this issue better categorized as a security weakness or hardening issue, not a critical vulnerability.
