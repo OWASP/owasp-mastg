@@ -4,7 +4,6 @@ title: Uses of WebViews Allowing Local File Access with semgrep
 id: MASTG-DEMO-0032
 code: [kotlin]
 test: MASTG-TEST-0252
-status: new
 ---
 
 ## Sample

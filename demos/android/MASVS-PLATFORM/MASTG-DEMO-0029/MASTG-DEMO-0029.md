@@ -4,7 +4,6 @@ title: Uses of WebViews Allowing Content Access with semgrep
 id: MASTG-DEMO-0029
 code: [kotlin]
 test: MASTG-TEST-0250
-status: new
 ---
 
 ## Sample
