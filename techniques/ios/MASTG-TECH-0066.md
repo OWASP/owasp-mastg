@@ -61,7 +61,7 @@ The output shows the cross-references to the given address, indicating where the
 
 Use the [`iz` command](https://book.rada.re/tools/rabin2/strings.html) to list all strings in the binary. Combine it with [`~` filtering](https://book.rada.re/first_steps/syntax.html#filtering) to filter for specific strings. For example, to search for a string containing `somestring`:
 
-```bash
+```console
 iz~+somestring
 ```
 
@@ -83,7 +83,7 @@ Use advanced search options with [`/`](https://book.rada.re/search/intro.html).
 
 Use the [`axt` command](https://book.rada.re/analysis/code_analysis.html#recursive-analysis) to find cross-references to a specific function. This helps understand how and where the function is invoked.
 
-```bash
+```console
 axt @ <function_address>
 ```
 
