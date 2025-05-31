@@ -106,6 +106,9 @@
             "pattern": "^https://github.com/sushi2k/MSTG-MASVS-Internal"
         },
         {
+            "pattern": "^https://fidoalliance.org/"
+        },
+        {
             "pattern": "^/MASVS/"
         },
         {
