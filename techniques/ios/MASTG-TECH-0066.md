@@ -23,6 +23,28 @@ Use the `afl` command to [list all functions](https://book.rada.re/analysis/code
 afl~SecKeyCreateRandomKey
 ```
 
+You can also use the `afl,` command to output all function information in CSV format, which allows for custom views, filtering, and sorting of function details in a table. This is useful for more advanced analysis or when working with large binaries.
+
+```console
+afl,
+addr        size name                                                                                                                               noret nbbs nins refs xref axref calls cc file
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0x100007894 12   sym.imp.SecKeyCopyExternalRepresentation                                                                                           0     1    3    2    2    2     0     1
+0x1000078a0 12   sym.imp.SecKeyCopyPublicKey                                                                                                        0     1    3    2    1    1     0     1
+0x1000078ac 12   sym.imp.SecKeyCreateRandomKey                                                                                                      0     1    3    2    1    1     0     1
+0x1000078b8 12   sym.imp.SecKeyCreateSignature                                                                                                      0     1    3    2    1    1     0     1
+0x1000078c4 12   sym.imp.SecKeyVerifySignature                                                                                                      0     1    3    2    1    1     0     1
+0x1000078d0 12   sym.imp.__stack_chk_fail                                                                                                           1     1    3    2    2    2     0     1
+...
+```
+
+Additionally, the `aflc` command shows the total count of functions identified in the binary:
+
+```console
+aflc
+175
+```
+
 Example: In @MASTG-DEMO-0011, `SecKeyCreateRandomKey` is identified as a function of interest.
 
 **When Not to Use `afl`**:
@@ -35,6 +57,8 @@ afl~canEvaluatePolicy
 ```
 
 Instead, use [flags](https://book.rada.re/commandline/flags.html) (`f`), string searches with `/`, `/z`, `iz~` and then use [cross-references](#analyzing-cross-references) (`axt`) to locate its usage in the binary. This approach ensures that dynamically resolved or obfuscated functions are not overlooked.
+
+> In visual mode you can use `V_` which is the visual hud that interactively filters all the flags, classes, methods, comments, symbols, strings in a single view. So you can simply type `V_`, press enter, and then type `canEvaluatePolicy` to find the references to the string.
 
 ```console
 f~canEvaluatePolicy
@@ -81,17 +105,59 @@ Use advanced search options with [`/`](https://book.rada.re/search/intro.html).
 
 **Finding Cross-References**:
 
-Use the [`axt` command](https://book.rada.re/analysis/code_analysis.html#recursive-analysis) to find cross-references to a specific function. This helps understand how and where the function is invoked.
+Use the [`ax,` command](https://book.rada.re/analysis/code_analysis.html#recursive-analysis) to display a table of all cross-references in the binary, which is especially useful for getting an overview or exporting data. You can filter this table by address using the `~` operator. For example, to show all cross-references to `0x1000078ac`, run:
 
 ```console
-axt @ <function_address>
+ax,~78ac
+0x1000049a0 0x1000078ac 0    CALL --x  sym.func.1000046f8 + 680                                                                                                               sym.imp.SecKeyCreateRandomKey
+0x1000078ac 0x10000c000 4    ICOD --x  sym.imp.SecKeyCreateRandomKey                                                                                                          section.16.__DATA_CONST.__got
 ```
 
-Note: The `@` symbol is used for [seeking to specific addresses](https://book.rada.re/commandline/seeking.html) in radare2.
+This will output only the rows related to the address `0x1000078ac`, making it easier to focus on relevant references. The table includes columns such as source address, destination address, type, permissions, and symbolic names, helping you quickly identify where and how a function like `SecKeyCreateRandomKey` is used.
+
+You can also open the entire cross-reference table with `ax,` and manually search or filter as needed.
+
+```console
+ax,
+
+from        to          size type perm fromname                                                                                                                               toname
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0x100000040 0x100000000 0    NULL r--  segment.__TEXT + 64                                                                                                                    segment.__TEXT
+0x100000080 0x100000000 0    NULL r--  segment.__TEXT + 128                                                                                                                   segment.__TEXT
+0x1000000d0 0x100004000 0    NULL r--  segment.__TEXT + 208                                                                                                                   section.0.__TEXT.__text
+...
+0x1000049a0 0x1000078ac 0    CALL --x  sym.func.1000046f8 + 680                                                                                                               sym.imp.SecKeyCreateRandomKey
+0x1000078ac 0x10000c000 4    ICOD --x  sym.imp.SecKeyCreateRandomKey                                                                                                          section.16.__DATA_CONST.__got
+
+```
+
+Use the [`axt` command](https://book.rada.re/analysis/code_analysis.html#recursive-analysis) to find cross-references to a specific function or address. This helps you understand how and where the function is invoked.
+
+```console
+axt @ 0x1000078ac
+sym.func.1000046f8 0x1000049a0 [CALL:--x] bl sym.imp.SecKeyCreateRandomKey
+```
+
+The `@` symbol is used for [temporal seeking](https://book.rada.re/first_steps/syntax.html#temporal-seek) to a specific address for the duration of the command.
+
+You can also pass the address directly to `axt` without using `@`:
+
+```console
+axt 0x1000078ac
+sym.func.1000046f8 0x1000049a0 [CALL:--x] bl sym.imp.SecKeyCreateRandomKey
+```
+
+Alternatively, you can use the [`s` (seek)](https://book.rada.re/commandline/seeking.html) command to move to an address before running `axt`, which is useful if you plan to run multiple commands at that location:
+
+```console
+s 0x1000078ac
+axt
+sym.func.1000046f8 0x1000049a0 [CALL:--x] bl sym.imp.SecKeyCreateRandomKey
+```
+
+Both `@` and `s` accept partial addresses, so you don't need to type the full hexadecimal value. For example, `axt@..78ac` is sufficient if the address is unique.
 
 Example: In @MASTG-DEMO-0011, cross-references to `SecKeyCreateRandomKey` are analyzed to ensure secure key sizes.
-
-### Inspecting the Disassembly
 
 **Inspecting Function Calls**:
 
@@ -104,11 +170,16 @@ pdf @ <function_address>
 The `@` symbol [seeks to the specified address](https://book.rada.re/commandline/seeking.html) before executing the command.
 
 **Inspecting Specific Instructions**:
-
-Use the [`pd` command](https://book.rada.re/commandline/print_modes.html) to disassemble a specific number of instructions at a given address. For example, to disassemble 5 instructions:
+Use the [`pd--` command](https://book.rada.re/commandline/print_modes.html) to disassemble a specific number of instructions **before and after a given address**, providing context around that point in the code:
 
 ```console
 pd-- 5 @ 0x1000048c4
+```
+
+If you want to disassemble instructions **starting from a specific address**, use `pd <number_of_instructions>` instead:
+
+```console
+pd 5 @ 0x1000048c4
 ```
 
 This is particularly useful for examining the immediate context of a function call or instruction.
