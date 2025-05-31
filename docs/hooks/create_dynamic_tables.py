@@ -56,7 +56,7 @@ def retrieve_masvs(version="latest"):
         response = requests.get(url)
         content = response.content
     except Exception as e:
-        log.warning("⚠️ Conection failed when retrieving OWASP_MASVS.yaml")
+        log.warning("⚠️ Connection failed when retrieving OWASP_MASVS.yaml")
         masvs_yaml_file = Path("OWASP_MASVS.yaml")
         if masvs_yaml_file.exists():
             log.warning("⚠️ Reading OWASP_MASVS.yaml from file")
