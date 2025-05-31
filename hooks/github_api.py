@@ -44,23 +44,27 @@ def get_issues_for_test_refactors():
 
     issues = {}
     page = 1
-    while True:
-        resp = requests.get(SEARCH_URL, headers=headers, params={"q": query, "per_page": 100, "page": page})
-        resp.raise_for_status()
-        data = resp.json()
+    try:
+        while True:
+            
+            resp = requests.get(SEARCH_URL, headers=headers, params={"q": query, "per_page": 100, "page": page})
+            resp.raise_for_status()
+            data = resp.json()
 
-        for issue in data["items"]:
-            match = re.search(r'MASTG-TEST-\d+', issue["title"])
-            if match:
-                ID = match.group(0)
-                issues[ID] = (issue["html_url"], issue["title"])
-            else:
-                log.warning(f"Could not find MASTG-TEST ID in issue title: {issue['title']}")
+            for issue in data["items"]:
+                match = re.search(r'MASTG-TEST-\d+', issue["title"])
+                if match:
+                    ID = match.group(0)
+                    issues[ID] = (issue["html_url"], issue["title"])
+                else:
+                    log.warning(f"Could not find MASTG-TEST ID in issue title: {issue['title']}")
 
-        # Break if there are no more pages
-        if "next" not in resp.links:
-            break
-        page += 1
+            # Break if there are no more pages
+            if "next" not in resp.links:
+                break
+            page += 1
+    except Exception as e:
+        log.warning("⚠️ Connection Error, skipping GitHub API Requests")
 
     return issues
 
