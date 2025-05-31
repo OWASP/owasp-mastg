@@ -157,6 +157,28 @@ sym.func.1000046f8 0x1000049a0 [CALL:--x] bl sym.imp.SecKeyCreateRandomKey
 
 Both `@` and `s` accept partial addresses, so you don't need to type the full hexadecimal value. For example, `axt@..78ac` is sufficient if the address is unique.
 
+There's also `axg` which finds the path between a function and its cross-references, showing the **call graph in reverse** of how functions are related. This is particularly useful for understanding the flow of execution in the binary.
+
+The `axg` command output starts from the target function or address you gave it and works **backward**, showing which functions lead to it. So even though the output is printed **top to bottom**, it represents a path from the **callee** up to its **callers**.
+
+```console
+axg ..78ac
+- 0x1000078ac fcn 0x1000078ac sym.imp.SecKeyCreateRandomKey
+  - 0x1000049a0 fcn 0x1000046f8 sym.func.1000046f8
+  - 0x1000046f8 fcn 0x1000046f8 sym.func.1000046f8
+    - 0x1000063d8 fcn 0x1000063a0 sym.func.1000063a0
+    - 0x1000063a0 fcn 0x1000063a0 sym.func.1000063a0
+      - 0x100006fc4 fcn 0x100006fbc sym.func.100006fbc
+      - 0x100006fbc fcn 0x100006fbc sym.func.100006fbc
+        - 0x100006040 fcn 0x100005c8c sym.func.100005c8c
+        - 0x100005c8c fcn 0x100005c8c sym.func.100005c8c
+          - 0x100005944 fcn 0x1000056b8 sym.func.1000056b8
+          - 0x1000056b8 fcn 0x1000056b8 sym.func.1000056b8
+            - 0x100006de8 fcn 0x100006d60 sym.func.100006d60
+```
+
+In the above example, the call graph shows how `SecKeyCreateRandomKey` is invoked by `sym.func.1000046f8`, which in turn is called by `sym.func.1000063a0`, and so on, tracing back through the function calls. Reading it becomes easier after you've analyzed the functions and renamed them according to their purpose.
+
 Example: In @MASTG-DEMO-0011, cross-references to `SecKeyCreateRandomKey` are analyzed to ensure secure key sizes.
 
 **Inspecting Function Calls**:
