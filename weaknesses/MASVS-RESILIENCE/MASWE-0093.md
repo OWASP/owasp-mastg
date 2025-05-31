@@ -12,7 +12,7 @@ draft:
   description: nm or objdump reveal symbols
   topics:
   - debugging symbols not removed
-status: draft
+status: placeholder
 
 ---
 

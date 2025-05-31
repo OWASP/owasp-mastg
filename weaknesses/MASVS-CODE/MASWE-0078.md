@@ -13,7 +13,7 @@ draft:
   topics:
   - targetSDK on Android
   - XCode version on iOS
-status: draft
+status: placeholder
 
 ---
 

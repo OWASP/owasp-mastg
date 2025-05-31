@@ -4,12 +4,14 @@ set -euo pipefail
 mkdir -p docs/MASTG
 mkdir -p docs/MASWE
 
-directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules" "utils" "best-practices")
+directories=("tests" "techniques" "tools" "apps" "demos" "rules" "utils" "best-practices")
 
 for dir in "${directories[@]}"; do
     rm -rf "docs/MASTG/$dir"
     cp -r "$dir" docs/MASTG/ || { echo "Failed to copy $dir"; exit 1; }
 done
+
+cp -r tests-beta/** docs/MASTG/tests/ || { echo "Failed to copy tests"; exit 1; }
 
 cp -r weaknesses/** docs/MASWE/ || { echo "Failed to copy weaknesses"; exit 1; }
 

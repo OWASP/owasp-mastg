@@ -24,7 +24,7 @@ draft:
   - detection in place
   - Effectiveness Assessment (e.g. bypassing the detection)
   note: consider Static Code Modification? / Repackaging Detection Not Implemented
-status: draft
+status: placeholder
 
 ---
 

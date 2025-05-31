@@ -16,7 +16,7 @@ draft:
   description: The use of weak MAC such as HmacMD5, etc. in a security sensitive context
     may expose cryptographic vulnerabilities, affecting data integrity.
   topics: null
-status: draft
+status: placeholder
 
 ---
 

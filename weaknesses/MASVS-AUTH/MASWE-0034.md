@@ -12,7 +12,7 @@ draft:
   description: https://mas.owasp.org/MASTG/tests/android/MASVS-AUTH/MASTG-TEST-0017/
   topics:
   - Confirm Credentials
-status: draft
+status: placeholder
 
 ---
 

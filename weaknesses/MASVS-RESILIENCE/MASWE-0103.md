@@ -13,6 +13,6 @@ draft:
     responses
   topics:
   - detection triggering different responses
-status: draft
+status: placeholder
 
 ---

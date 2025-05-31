@@ -15,7 +15,7 @@ draft:
   description: e.g. via WebView.getHttpAuthUsernamePassword / WebViewClient.onReceivedHttpAuthRequest
   topics:
   - Using WebView.getHttpAuthUsernamePassword / WebViewClient.onReceivedHttpAuthRequest
-status: draft
+status: placeholder
 
 ---
 

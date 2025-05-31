@@ -19,7 +19,7 @@ draft:
   topics:
   - Backup Device Conditions clientSideEncryption and deviceToDeviceTransfer Not Checked
     (Android)
-status: draft
+status: placeholder
 
 ---
 

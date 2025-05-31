@@ -13,7 +13,7 @@ draft:
   topics:
   - data/resource obfuscated/encrypted
   - binaries encrypted/packed
-status: draft
+status: placeholder
 
 ---
 

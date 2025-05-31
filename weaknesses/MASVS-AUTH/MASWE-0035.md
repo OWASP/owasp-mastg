@@ -28,7 +28,7 @@ draft:
   - WebAuthn/ASAuthorization
   - use of Physical Security Keys which stored the public-private key pair on a physical
     medium, such as a security card or a USB key
-status: draft
+status: placeholder
 
 ---
 

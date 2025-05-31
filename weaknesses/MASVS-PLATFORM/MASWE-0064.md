@@ -23,7 +23,7 @@ draft:
   - exposed
   - permission tags
   - protection level
-status: draft
+status: placeholder
 
 ---
 

@@ -17,7 +17,7 @@ draft:
     sensitive context may compromise data integrity and authenticity.
   topics:
   - Weak hashing algorithms (e.g. MD5, SHA1, etc.)
-status: draft
+status: placeholder
 
 ---
 

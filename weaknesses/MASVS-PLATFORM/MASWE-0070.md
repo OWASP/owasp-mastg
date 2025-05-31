@@ -10,7 +10,7 @@ mappings:
 draft:
   description: e.g. not validating the source of the JavaScript code
   topics: null
-status: draft
+status: placeholder
 
 ---
 

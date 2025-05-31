@@ -19,7 +19,7 @@ draft:
     export. This is true even if the key is sent over a secure channel.
   topics:
   - key wrapping (NIST.SP.800-175Br1 5.3.5)
-status: draft
+status: placeholder
 
 ---
 

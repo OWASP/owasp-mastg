@@ -17,7 +17,7 @@ draft:
   - java.io.Serializable
   - Parcelable
   - NSCoding
-status: draft
+status: placeholder
 refs:
 - https://i.blackhat.com/EU-22/Wednesday-Briefings/EU-22-Ke-Android-Parcels-Introducing-Android-Safer-Parcel.pdf
 - https://github.com/michalbednarski/ReparcelBug2

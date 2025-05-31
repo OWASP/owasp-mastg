@@ -14,7 +14,7 @@ draft:
   - use the OS Local Auth
   - binding to keys stored in the platform KeyStore
   - https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/applicationpassword
-status: draft
+status: placeholder
 
 ---
 

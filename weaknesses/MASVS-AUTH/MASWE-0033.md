@@ -28,7 +28,7 @@ draft:
   - use of context to add security to authentication e.g. via IP or location data
   - set prefersEphemeralWebBrowserSession to true before calling start for a session
     on iOS
-status: draft
+status: placeholder
 
 ---
 

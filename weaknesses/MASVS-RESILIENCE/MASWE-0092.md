@@ -11,7 +11,7 @@ draft:
   description: AKA static damage control
   topics:
   - prevent decompilation
-status: draft
+status: placeholder
 
 ---
 

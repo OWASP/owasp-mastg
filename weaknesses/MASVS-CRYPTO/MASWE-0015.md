@@ -17,7 +17,7 @@ draft:
   description: Avoid deprecated implementations such as BKS
   topics:
   - Bouncy Castle (BKS)
-status: draft
+status: placeholder
 
 ---
 

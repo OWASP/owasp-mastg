@@ -19,7 +19,7 @@ draft:
   - Unintentionally exported broadcast receivers
   - Unrestricted permissions
   - Sticky broadcasts
-status: draft
+status: placeholder
 
 ---
 

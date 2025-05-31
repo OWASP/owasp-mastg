@@ -20,7 +20,7 @@ draft:
   topics:
   - key import from untrusted sources
   - key import from untrusted storage
-status: draft
+status: placeholder
 
 ---
 

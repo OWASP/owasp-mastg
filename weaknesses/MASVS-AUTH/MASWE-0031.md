@@ -14,7 +14,7 @@ draft:
     ordinarily show on the user's device.
   topics:
   - Android Protected Confirmation
-status: draft
+status: placeholder
 
 ---
 

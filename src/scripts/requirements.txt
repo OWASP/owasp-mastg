@@ -2,7 +2,6 @@ mkdocs==1.6.1
 mkdocs-awesome-pages-plugin==2.9.2
 mkdocs-include-dir-to-nav==1.2.0
 mkdocs-material==9.6.11
-mkdocs-mermaid2-plugin==1.1.1
 mkdocs-redirects==1.2.2
 pandas
 pyyaml

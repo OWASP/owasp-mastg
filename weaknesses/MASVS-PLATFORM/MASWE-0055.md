@@ -18,7 +18,7 @@ draft:
   - Screenshots Not Prevented (e.g. via DETECT_SCREEN_CAPTURE on Android)
   - Screenshots not deleted when backgrounding
   - Auto-Generated Screenshots
-status: draft
+status: placeholder
 
 ---
 

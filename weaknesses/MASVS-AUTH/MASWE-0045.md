@@ -18,7 +18,7 @@ draft:
   topics:
   - DEVICE_CREDENTIAL on Android
   - LAPolicy.deviceOwnerAuthentication on iOS
-status: draft
+status: placeholder
 
 ---
 

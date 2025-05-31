@@ -25,7 +25,7 @@ draft:
   - (ioXt) UP107 App shall re-authenticate the user when displaying sensitive PII
     data or conducting sensitive transactions.
   - null
-status: draft
+status: placeholder
 
 ---
 

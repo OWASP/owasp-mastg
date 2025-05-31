@@ -31,6 +31,17 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/.venv/bin/python3"
             }
+        },
+        {
+            "name": "Python: Dirty MkDocs Serve",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/mkdocs",  // Adjust the path if mkdocs is not in a virtual environment
+            "args": ["serve", "-a", "localhost:8002", "--dirtyreload"],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/.venv/bin/python3"
+            }
         }
     ]
 }

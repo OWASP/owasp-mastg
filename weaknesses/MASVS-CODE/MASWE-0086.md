@@ -14,7 +14,7 @@ draft:
     queries)
   topics:
   - not using prepared statements
-status: draft
+status: placeholder
 
 ---
 

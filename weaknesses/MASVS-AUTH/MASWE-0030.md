@@ -21,7 +21,7 @@ draft:
   - ASVS V3.3 Session Logout and Timeout Requirements
   - NIST 800-63
   - etc.
-status: draft
+status: placeholder
 
 ---
 

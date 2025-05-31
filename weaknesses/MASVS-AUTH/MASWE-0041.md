@@ -17,7 +17,7 @@ draft:
   - (IEEE) Since client-side security controls are capable of being invaded, authentication
     and authorization controls should be implemented on the server-side.
   - biometry only used as part of MFA authentication and not as the only auth method
-status: draft
+status: placeholder
 
 ---
 

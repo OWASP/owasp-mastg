@@ -18,7 +18,7 @@ draft:
   - use of oauth
   - use of SharedWebcredentials
   - use of WebAuthn/ASAuthorization
-status: draft
+status: placeholder
 
 ---
 

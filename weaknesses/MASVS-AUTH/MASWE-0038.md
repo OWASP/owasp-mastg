@@ -21,7 +21,7 @@ draft:
   - none algorithm
   - PKCE
   - implicit grant
-status: draft
+status: placeholder
 
 ---
 

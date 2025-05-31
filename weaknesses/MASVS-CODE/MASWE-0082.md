@@ -16,7 +16,7 @@ draft:
   - Internal Storage
   - External Storage
   - UIDocumentPickerViewController used by the receiver app
-status: draft
+status: placeholder
 
 ---
 

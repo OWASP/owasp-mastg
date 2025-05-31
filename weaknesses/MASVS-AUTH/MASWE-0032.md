@@ -31,7 +31,7 @@ draft:
   - iOS Password AutoFill streamlines logging into web services at your domain. However,
     if you need to log into a third-party service, use ASWebAuthenticationSession
     instead
-status: draft
+status: placeholder
 
 ---
 
