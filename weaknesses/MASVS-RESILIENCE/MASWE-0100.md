@@ -14,9 +14,9 @@ refs:
 - https://www.youtube.com/watch?v=TyxL78e5Bag
 - https://github.com/1nikolas/play-integrity-checker-app
 - https://developer.apple.com/videos/play/wwdc2021/10244/ 
-- https://developer.apple.com/documentation/devicecheck/preparing_to_use_the_app_attest_service 
+- https://developer.apple.com/documentation/devicecheck/preparing-to-use-the-app-attest-service 
 - https://github.com/iansampson/AppAttest 
-- https://github.com/firebase/firebase-ios-sdk/blob/master/FirebaseAppCheck/Sources/AppAttestProvider/DCAppAttestService+FIRAppAttestService.h 
+- https://github.com/firebase/firebase-ios-sdk/blob/v8.15.0/FirebaseAppCheck/Sources/AppAttestProvider/DCAppAttestService%2BFIRAppAttestService.h 
 - https://blog.restlesslabs.com/john/ios-app-attest
 draft:
   description: e.g. Gooogle Play Integrity API, iOS DeviceCheck API

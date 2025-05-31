@@ -12,7 +12,7 @@ refs:
 - https://developers.google.com/identity/blockstore/android?hl=en
 - https://cloud.google.com/docs/authentication/best-practices-applications#semi-trusted_or_restricted_environments
 - https://cloud.google.com/docs/authentication/best-practices-applications#security_considerations
-- https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/authenticating_users_with_sign_in_with_apple/
+- https://developer.apple.com/documentation/signinwithapplerestapi
 draft:
   description: General authentication material management best practices. Note that API keys are covered separately.
   topics:
