@@ -21,6 +21,7 @@ Mobile apps may need to store sensitive data locally within private storage loca
 > **Note:** On Android, incorrect file permissions (e.g., world-readable or world-writable files) are only a risk for apps targeting `minSdkVersion` < 17. Since API 17, `Context.MODE_PRIVATE` is obligatory and files are private by default. Modern apps are not at risk from file permission misconfiguration, but are still at risk if sensitive data is stored unencrypted.
 
 [Sensitive data](../../Document/0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Sensitive Data") may include:
+
 - Personally identifiable information (PII), passwords, cryptographic keys, or session tokens (user sensitive data)
 - Proprietary or business assets (e.g., intellectual property, business logic, confidential algorithms)
 
