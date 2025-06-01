@@ -41,7 +41,9 @@ Understanding each relevant data storage function is crucial for performing the 
 
 The [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs.
 
-Since Android 4.2 (API level 17) the `SharedPreferences` object can only be declared to be private (and not world-readable, i.e. accessible to all apps). However, since data stored in a `SharedPreferences` object is written to a plain-text XML file so its misuse can often lead to exposure of sensitive data.
+Since Android 4.2 (API level 17), the `SharedPreferences` object can only be declared to be private (not world-readable). This means that, by default, other apps cannot access these files. However, data stored in a `SharedPreferences` object is written to a plain-text XML file. **Sensitive information stored here is at risk if the device is rooted, if backups are enabled, or if the device is compromised.** Even though file permissions are correct by default, unencrypted sensitive data can be extracted from backups or by an attacker with device access.
+
+> Storing sensitive data in SharedPreferences is only safe if the data is encrypted. Use [`EncryptedSharedPreferences`](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences) for this purpose. See ["Use SharedPreferences in private mode"](https://developer.android.com/privacy-and-security/security-best-practices#sharedpreferences).
 
 Consider the following example:
 
@@ -126,6 +128,13 @@ The database's directory may contain several files besides the SQLite database:
 - [Lock files](https://www.sqlite.org/lockingv3.html "SQLite Lock Files"): The lock files are part of the locking and journaling feature, which was designed to improve SQLite concurrency and reduce the writer starvation problem.
 
 Sensitive information should not be stored in unencrypted SQLite databases.
+
+> **When is this a problem?**
+> - If the device is rooted, an attacker can access the database files directly.
+> - If backups are enabled, unencrypted databases may be included in device backups and can be extracted by anyone who can decrypt the backup (e.g., the user or someone with their credentials).
+> - If the app is vulnerable (e.g., via an exposed content provider), data may be leaked.
+
+Use [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/) or similar libraries to encrypt sensitive data in SQLite databases.
 
 ### SQLite Databases (Encrypted)
 
@@ -250,7 +259,7 @@ if(Java.available){
 
 ### Internal Storage
 
-You can save files to the device's [internal storage](https://developer.android.com/training/data-storage#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
+You can save files to the device's [internal storage](https://developer.android.com/training/data-storage#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device (since API 17). When the user uninstalls your app, these files are removed.
 
 For example, the following Kotlin snippet stores sensitive information in clear text to a file `sensitive_info.txt` residing on internal storage.
 
@@ -599,28 +608,9 @@ You can create log files in several ways. The following list includes two classe
 
 ### Backups
 
-[Android backups](https://developer.android.com/identity/data/backup) usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
+Android backups may include app data, including sensitive files, unless explicitly excluded. **If the device is encrypted, backup files are encrypted as well, but the backup can be decrypted by the user's password. This protects user data from others, but not from the user themselves.**
 
-- Stock Android has built-in USB backup facilities. When USB debugging is enabled, use the `adb backup` command ([restricted since Android 12](https://developer.android.com/about/versions/12/behavior-changes-12#adb-backup-restrictions), requires `android:debuggable=true` in the AndroidManifest.xml) to create full data backups and backups of an app's data directory.
-
-- Google provides a "Back Up My Data" feature that backs up all app data to Google's servers.
-
-- Two Backup APIs are available to app developers:
-    - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
-
-    - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (API level 23) and above, Google added the "Auto Backup for Apps feature". This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
-
-- OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
-
-Apps must carefully ensure that sensitive user data doesn't end within these backups as this may allow an attacker to extract it.
-
-### ADB Backup Support
-
-Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute") to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup` ([restricted in Android 12](https://developer.android.com/about/versions/12/behavior-changes-12#adb-backup-restrictions)).
-
-To prevent the app data backup, set the `android:allowBackup` attribute to **false**. When this attribute is unavailable, the allowBackup setting is enabled by default, and backup must be manually deactivated.
-
-> Note: If the device was encrypted, then the backup files will be encrypted as well.
+> **Summary:** Always encrypt sensitive data before storing it, even in private app storage, to protect against device compromise, backups, and rooted devices. Exclude sensitive files from backups where possible, and use platform encryption APIs for maximum protection.
 
 ### Process Memory
 
@@ -745,15 +735,6 @@ OutlinedTextField(
 
 In this Compose example, the `PasswordVisualTransformation()` masks the input, and `keyboardOptions` with [`KeyboardType.Password`](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui-text/src/commonMain/kotlin/androidx/compose/ui/text/input/KeyboardType.kt) helps specify the password input type. The `autoCorrect` parameter is set to `false` to prevent suggestions.
 
-[Internally](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/src/androidMain/kotlin/androidx/compose/ui/text/input/TextInputServiceAndroid.android.kt;l=528-529), the `KeyboardType` enum in Jetpack Compose maps to the Android `inputType` values. For example, the `KeyboardType.Password` corresponds to the following `inputType`:
-
-```kotlin
-KeyboardType.Password -> {
-    this.inputType =
-        InputType.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
-}
-```
-
 ##### Non-Caching Input Types
 
 Regardless of the method used, the app can use the following `inputType` attributes, when applied to `<EditText>` elements, instruct the system to disable suggestions and prevent caching for those input fields:
@@ -768,7 +749,7 @@ Regardless of the method used, the app can use the following `inputType` attribu
 
 **Note:** In the MASTG tests we won't be checking the minimum required SDK version in the Android Manifest `minSdkVersion` because we are considering testing modern apps. If you are testing an older app, you should check it. For example, Android API level 11 is required for `textWebPassword`. Otherwise, the compiled app would not honor the used input type constants allowing keyboard caching.
 
-The `inputType` attribute is a bitwise combination of flags and classes. The `InputType` class contains constants for both flags and classes. The flags are defined as `TYPE_TEXT_FLAG_*` and the classes are defined as `TYPE_CLASS_*`. The values of these constants are defined in the Android source code. You can find the source code for the `InputType` class [here](http://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/text/InputType.java "Android InputType class").
+The `inputType` attribute is a bitwise combination of flags and classes. The flags are defined as `TYPE_TEXT_FLAG_*` and the classes are defined as `TYPE_CLASS_*`. The values of these constants are defined in the Android source code. You can find the source code for the `InputType` class [here](http://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/text/InputType.java "Android InputType class").
 
 The `inputType` attribute in Android is a bitwise combination of these constants:
 
