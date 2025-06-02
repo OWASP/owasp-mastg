@@ -16,6 +16,7 @@ Before running the website, ensure you have the following installed on your syst
 - pip (Python package manager)
 - Git
 - Visual Studio Code (vscode)
+- Gnu sed (gsed)
 
 ## Step 1: Open the OWASP MASTG Repository in vscode
 
@@ -36,15 +37,41 @@ Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/u
 1. Create a venv:
     - Press `⌘+Shift+P` -> `Python: Create Environment`
     - Select `"Quick Create"`
-
+    
 2. Select the venv as the Python interpreter:
     - Press `⌘+Shift+P` -> `Python: Select Interpreter`
     - Choose the venv you just created.
+  
 3. Install the dependencies
    - Press `⌘ + j` to open the terminal
    - Run `pip install -r src/scripts/requirements.txt`
 
-## Step 3: Run the Website
+## Step 3: Install Gnu sed
+
+Install `gsed`, for exampe through brew on macOS:
+
+```bash
+brew install gnu-sed
+```
+
+## Step 4: Checkout MASVS repository
+
+Execute the following command in the MASTG directory that you just checked out, to also clone the repo of the MASVS:
+
+```bash
+cd .. && git clone https://github.com/OWASP/owasp-masvs.git
+```
+
+
+## Step 5: Personal Access Token
+
+[Create a personal access token](https://github.com/settings/personal-access-tokens) on Github and export this token as environment variable:
+
+```bash
+export GITHUB_TOKEN=<TOKEN>
+```
+
+## Step 6: Run the Website
 
 Run the following command in the terminal:
 
@@ -54,7 +81,7 @@ Run the following command in the terminal:
 
 Access the website at [http://localhost:8000](http://localhost:8000).
 
-## Step 4: Debugging the Website
+## Step 7: Debugging the Website
 
 To debug the website:
 
