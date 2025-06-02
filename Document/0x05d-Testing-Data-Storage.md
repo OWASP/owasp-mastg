@@ -609,9 +609,221 @@ You can create log files in several ways. The following list includes two classe
 
 ### Backups
 
-Android backups may include app data, including sensitive files, unless explicitly excluded. **If the device is encrypted, backup files are encrypted as well, but the backup can be decrypted by the user's password. This protects user data from others, but not from the user themselves.**
+[Android backups](https://developer.android.com/identity/data/backup) usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
 
-> **Summary:** Always encrypt sensitive data before storing it, even in private app storage, to protect against device compromise, backups, and rooted devices. Exclude sensitive files from backups where possible, and use platform encryption APIs for maximum protection.
+- Stock Android has built-in USB backup facilities. When USB debugging is enabled, use the `adb backup` command ([restricted since Android 12](https://developer.android.com/about/versions/12/behavior-changes-12#adb-backup-restrictions), requires `android:debuggable=true` in the AndroidManifest.xml) to create full data backups and backups of an app's data directory.
+
+- Google provides a "Back Up My Data" feature that backs up all app data to Google's servers.
+
+- Two Backup APIs are available to app developers:
+    - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
+
+    - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (API level 23) and above, Google added the "Auto Backup for Apps feature". This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
+
+- OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
+
+Apps must carefully ensure that sensitive user data doesn't end within these backups as this may allow an attacker to extract it.
+
+### ADB Backup Support
+
+Android provides an attribute called [`allowBackup`](https://developer.android.com/guide/topics/manifest/application-element.html#allowbackup "allowBackup attribute") to back up all your application data. This attribute is set in the `AndroidManifest.xml` file. If the value of this attribute is **true**, the device allows users to back up the application with Android Debug Bridge (ADB) via the command `$ adb backup` ([restricted in Android 12](https://developer.android.com/about/versions/12/behavior-changes-12#adb-backup-restrictions)).
+
+To prevent the app data backup, set the `android:allowBackup` attribute to **false**. When this attribute is unavailable, the allowBackup setting is enabled by default, and backup must be manually deactivated.
+
+> Note: If the device was encrypted, then the backup files will be encrypted as well, but the backup can be decrypted by the user's password. This protects user data from others, but not from the user themselves.
+
+### Process Memory
+
+All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible.
+
+The investigation of an application's memory can be done from memory dumps, and from analyzing the memory in real time via a debugger.
+
+For an overview of possible sources of data exposure, check the documentation and identify application components before you examine the source code. For example, sensitive data from a backend may be in the HTTP client, the XML parser, etc. You want all these copies to be removed from memory as soon as possible.
+
+In addition, understanding the application's architecture and the architecture's role in the system will help you identify sensitive information that doesn't have to be exposed in memory at all. For example, assume your app receives data from one server and transfers it to another without any processing. That data can be handled in an encrypted format, which prevents exposure in memory.
+
+However, if you need to expose sensitive data in memory, you should make sure that your app is designed to expose as few data copies as possible as briefly as possible. In other words, you want the handling of sensitive data to be centralized (i.e., with as few components as possible) and based on primitive, mutable data structures.
+
+The latter requirement gives developers direct memory access. Make sure that they use this access to overwrite the sensitive data with dummy data (typically zeroes). Examples of preferable data types include `byte []` and `char []`, but not `String` or `BigInteger`. Whenever you try to modify an immutable object like `String`, you create and change a copy of the object.
+
+Using non-primitive mutable types like `StringBuffer` and `StringBuilder` may be acceptable, but it's indicative and requires care. Types like `StringBuffer` are used to modify content (which is what you want to do). To access such a type's value, however, you would use the `toString` method, which would create an immutable copy of the data. There are several ways to use these data types without creating an immutable copy, but they require more effort than using a primitive array. Safe memory management is one benefit of using types like `StringBuffer` , but this can be a two-edged sword. If you try to modify the content of one of these types and the copy exceeds the buffer capacity, the buffer size will automatically increase. The buffer content may be copied to a different location, leaving the old content without a reference use to overwrite it.
+
+Unfortunately, few libraries and frameworks are designed to allow sensitive data to be overwritten. For example, destroying a key, as shown below, doesn't remove the key from memory:
+
+Example in Java:
+
+```java
+SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES");
+secretKey.destroy();
+```
+
+Example in Kotlin:
+
+```kotlin
+val secretKey: SecretKey = SecretKeySpec("key".toByteArray(), "AES")
+secretKey.destroy()
+```
+
+Overwriting the backing byte-array from `secretKey.getEncoded` doesn't remove the key either; the SecretKeySpec-based key returns a copy of the backing byte-array. See the sections below for the proper way to remove a `SecretKey` from memory.
+
+The RSA key pair is based on the `BigInteger` type and therefore resides in memory after its first use outside the `AndroidKeyStore`. Some ciphers (such as the AES `Cipher` in `BouncyCastle`) do not properly clean up their byte-arrays.
+
+User-provided data (credentials, social security numbers, credit card information, etc.) is another type of data that may be exposed in memory. Regardless of whether you flag it as a password field, `EditText` delivers content to the app via the `Editable` interface. If your app doesn't provide `Editable.Factory`, user-provided data will probably be exposed in memory for longer than necessary. The default `Editable` implementation, the `SpannableStringBuilder`, causes the same issues as Java's `StringBuilder` and `StringBuffer` cause (discussed above).
+
+### Third-party Services Embedded in the App
+
+The features provided by third-party services can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
+
+The downside is that developers don't usually know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
+
+Most third-party services are implemented in two ways:
+
+- with a standalone library
+- with a full SDK
+
+### User Interface
+
+#### UI Components
+
+At certain points in time, the user will have to enter sensitive information into the application. This data may be financial information such as credit card data or user account passwords, or maybe healthcare data. The data may be exposed if the app doesn't properly mask it while it is being typed.
+
+In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
+
+#### Screenshots
+
+Manufacturers want to provide device users with an aesthetically pleasing experience at application startup and exit, so they introduced the screenshot-saving feature for use when the application is backgrounded. This feature may pose a security risk. Sensitive data may be exposed if the user deliberately screenshots the application while sensitive data is displayed. A malicious application that is running on the device and able to continuously capture the screen may also expose data. Screenshots are written to local storage, from which they may be recovered by a rogue application (if the device is rooted) or someone who has stolen the device.
+
+For example, capturing a screenshot of a banking application may reveal information about the user's account, credit, transactions, and so on.
+
+#### App Notifications
+
+It is important to understand that [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview") should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
+
+There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuses the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacker. A safer alternative for the user would be to use a 2FA application that does not generate notifications.
+
+Furthermore there are a number of apps on the Google Play Store that provide notification logging, which logs locally any notifications on the Android system. This highlights that notifications are in no way private on Android and accessible by any other app on the device.
+
+For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
+
+#### Keyboard Cache
+
+When users enter information into input fields, the keyboard software often provides suggestions based on previously entered data. This auto-completion feature can be very useful for messaging apps and other scenarios. However, by default, the Android keyboard may retain (or "cache") input history to offer suggestions and auto-completion. In contexts where sensitive data is entered (such as passwords or PINs), this caching behavior can inadvertently expose sensitive information.
+
+Apps can control this behavior by appropriately configuring the `inputType` attribute on text input fields. There are several ways to do this:
+
+**XML Layouts:**
+
+In the app's XML layout files (typically located in the `/res/layout` directory after unpacking the APK), you can define the input type directly in the `<EditText>` element using the `android:inputType` attribute. For example, setting the input type to `"textPassword"` automatically disables auto-suggestions and caching:
+
+```xml
+<EditText
+    android:id="@+id/password"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/password_hint"
+    android:inputType="textPassword" />
+```
+
+**Using the Traditional Android View System:**
+
+When creating input fields in code using the traditional Android view system, you can set the input type programmatically. For example, using an `EditText` in Kotlin:
+
+```kotlin
+val input = EditText(context).apply {
+    hint = "Enter PIN"
+    inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+}
+```
+
+**Using Jetpack Compose:**
+
+If you are developing with [Jetpack Compose](https://developer.android.com/develop/ui/compose/text/user-input), you do not use `EditText` directly. Instead, you use composable functions such as `TextField` or `OutlinedTextField` along with parameters like `keyboardOptions` and `visualTransformation` to achieve similar behavior. For example, to create a password field without suggestions:
+
+```kotlin
+OutlinedTextField(
+    value = password,
+    onValueChange = { password = it },
+    label = { Text("Enter Password") },
+    visualTransformation = PasswordVisualTransformation(),
+    keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Password,
+        autoCorrect = false
+    ),
+    modifier = Modifier.fillMaxWidth()
+)
+```
+
+In this Compose example, the `PasswordVisualTransformation()` masks the input, and `keyboardOptions` with [`KeyboardType.Password`](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui-text/src/commonMain/kotlin/androidx/compose/ui/text/input/KeyboardType.kt) helps specify the password input type. The `autoCorrect` parameter is set to `false` to prevent suggestions.
+
+[Internally](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/src/androidMain/kotlin/androidx/compose/ui/text/input/TextInputServiceAndroid.android.kt;l=528-529), the `KeyboardType` enum in Jetpack Compose maps to the Android `inputType` values. For example, the `KeyboardType.Password` corresponds to the following `inputType`:
+
+```kotlin
+KeyboardType.Password -> {
+    this.inputType =
+        InputType.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
+}
+```
+
+##### Non-Caching Input Types
+
+Regardless of the method used, the app can use the following `inputType` attributes, when applied to `<EditText>` elements, instruct the system to disable suggestions and prevent caching for those input fields:
+
+| XML `android:inputType` | Code `InputType` | API level |
+| -- | --- | - |
+| [`textNoSuggestions`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=the%20performance%20reasons.-,textNoSuggestions,-80001) | [`TYPE_TEXT_FLAG_NO_SUGGESTIONS`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=TYPE_TEXT_FLAG_NO_SUGGESTIONS. "Text input type") | 3 |
+| [`textPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_SUGGESTIONS.-,textPassword,-81) | [`TYPE_TEXT_VARIATION_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_PASSWORD "Text password input type") | 3 |
+| [`textVisiblePassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_URI.-,textVisiblePassword,-91) | [`TYPE_TEXT_VARIATION_VISIBLE_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_VISIBLE_PASSWORD "Text visible password input type") | 3 |
+| [`numberPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_DECIMAL.-,numberPassword,-12) | [`TYPE_NUMBER_VARIATION_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_NUMBER_VARIATION_PASSWORD "A numeric password field") | 11 |
+| [`textWebPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_ADDRESS.-,textWebPassword,-e1) | [`TYPE_TEXT_VARIATION_WEB_PASSWORD`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_WEB_PASSWORD "Text web password input type") | 11 |
+
+**Note:** In the MASTG tests we won't be checking the minimum required SDK version in the Android Manifest `minSdkVersion` because we are considering testing modern apps. If you are testing an older app, you should check it. For example, Android API level 11 is required for `textWebPassword`. Otherwise, the compiled app would not honor the used input type constants allowing keyboard caching.
+
+The `inputType` attribute is a bitwise combination of flags and classes. The `InputType` class contains constants for both flags and classes. The flags are defined as `TYPE_TEXT_FLAG_*` and the classes are defined as `TYPE_CLASS_*`. The values of these constants are defined in the Android source code. You can find the source code for the `InputType` class [here](http://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/text/InputType.java "Android InputType class").
+
+The `inputType` attribute in Android is a bitwise combination of these constants:
+
+- **Class constants** (`TYPE_CLASS_*`): Input type (text, number, phone, etc.)
+- **Variation constants** (`TYPE_TEXT_VARIATION_*`, etc.): Specific behavior (password, email, URI, etc.)
+- **Flag constants** (`TYPE_TEXT_FLAG_*`): Additional modifiers (no suggestions, multi-line, etc.)
+
+For example, this Kotlin code:
+
+```kotlin
+inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+```
+
+Where:
+
+- `TYPE_CLASS_TEXT` = 1
+- `TYPE_TEXT_VARIATION_PASSWORD` = 128
+
+Results in `1 or 128 = 129`, which is the value you will see in the decompiled code.
+
+**How to decode input type attributes after reverse engineering:**
+
+To decode the `inputType` value, you can use the following masks:
+
+- [`TYPE_MASK_CLASS`](https://developer.android.com/reference/android/text/InputType#TYPE_MASK_CLASS) = `0x0000000F` (to extract the class part)
+- [`TYPE_MASK_VARIATION`](https://developer.android.com/reference/android/text/InputType#TYPE_MASK_VARIATION) = `0x00000FF0` (to extract the variation part)
+- [`TYPE_MASK_FLAGS`](https://developer.android.com/reference/android/text/InputType#TYPE_MASK_FLAGS) = `0x00FFF000` (to extract the flags part)
+
+You can quickly decode `inputType` values using the masks and the bitwise AND operation e.g. in Python:
+
+```python
+129 & 0x0000000F  #   1 (TYPE_CLASS_TEXT)
+129 & 0x00000FF0  # 128 (TYPE_TEXT_VARIATION_PASSWORD)
+```
+
+**How to find cached data:**
+
+If you write e.g. "OWASPMAS" in the passphrase field a couple of times, the app will cache it and you will be able to find it in the cache database:
+
+```bash
+adb shell 'strings /data/data/com.google.android.inputmethod.latin/databases/trainingcachev3.db' | grep -i "OWASPMAS"
+OWASPMAS@
+OWASPMAS@
+OWASPMAS%
+```
 
 ### Process Memory
 
