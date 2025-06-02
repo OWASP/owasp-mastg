@@ -16,19 +16,41 @@ Before running the website, ensure you have the following installed on your syst
 - pip (Python package manager)
 - Git
 - Visual Studio Code (vscode)
-- Gnu sed (gsed)
+- Gnu sed (gsed; e.g. `brew install gnu-sed` on macOS)
 
-## Step 1: Open the OWASP MASTG Repository in vscode
+Add an alias for `gsed` (e.g. in your .zshrc file):
+
+```bash
+alias sed='gsed'
+```
+
+[Create a personal access token](https://github.com/settings/personal-access-tokens) on Github and export this token as environment variable (e.g. in your .zshrc file):
+
+```bash
+export GITHUB_TOKEN=<TOKEN>
+```
+
+## Step 1: Clone the OWASP MASVS & OWASP MASTG Repositories
 
 Run the following commands in your terminal:
 
 ```bash
+git clone https://github.com/OWASP/owasp-masvs.git
 git clone https://github.com/OWASP/owasp-mastg.git
+```
+
+**Note:** We'll just work with the `OWASP/owasp-mastg` repo, but the `OWASP/owasp-masvs` is required for the website to run.
+
+## Step 2: Open the OWASP MASTG Repository in vscode
+
+Run the following commands in your terminal:
+
+```bash
 cd owasp-mastg
 code .
 ```
 
-## Step 2: Install Dependencies
+## Step 3: Install Python Dependencies
 
 It is highly recommended to use a virtual environment (venv) to manage dependencies and avoid conflicts with other Python projects. Follow these steps to set up a virtual environment and install the required dependencies.
 
@@ -44,31 +66,7 @@ Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/u
    - Press `⌘ + j` to open the terminal
    - Run `pip install -r src/scripts/requirements.txt`
 
-## Step 3: Install Gnu sed
-
-Install `gsed`, for example through brew on macOS:
-
-```bash
-brew install gnu-sed
-```
-
-## Step 4: Checkout MASVS repository
-
-Execute the following command in the MASTG directory that you just checked out, to also clone the repo of the MASVS:
-
-```bash
-cd .. && git clone https://github.com/OWASP/owasp-masvs.git
-```
-
-## Step 5: Personal Access Token
-
-[Create a personal access token](https://github.com/settings/personal-access-tokens) on Github and export this token as environment variable:
-
-```bash
-export GITHUB_TOKEN=<TOKEN>
-```
-
-## Step 6: Run the Website
+## Step 4: Run the Website
 
 Run the following command in the terminal:
 
@@ -78,7 +76,7 @@ Run the following command in the terminal:
 
 Access the website at [http://localhost:8000](http://localhost:8000).
 
-## Step 7: Debugging the Website
+## Step 5: Debugging the Website
 
 To debug the website:
 
