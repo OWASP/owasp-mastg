@@ -37,18 +37,16 @@ Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/u
 1. Create a venv:
     - Press `⌘+Shift+P` -> `Python: Create Environment`
     - Select `"Quick Create"`
-    
 2. Select the venv as the Python interpreter:
     - Press `⌘+Shift+P` -> `Python: Select Interpreter`
     - Choose the venv you just created.
-  
 3. Install the dependencies
    - Press `⌘ + j` to open the terminal
    - Run `pip install -r src/scripts/requirements.txt`
 
 ## Step 3: Install Gnu sed
 
-Install `gsed`, for exampe through brew on macOS:
+Install `gsed`, for example through brew on macOS:
 
 ```bash
 brew install gnu-sed
@@ -61,7 +59,6 @@ Execute the following command in the MASTG directory that you just checked out, 
 ```bash
 cd .. && git clone https://github.com/OWASP/owasp-masvs.git
 ```
-
 
 ## Step 5: Personal Access Token
 
