@@ -6,6 +6,8 @@ This guide will help you set up and run the OWASP MAS website locally on your ma
 >
 > - Setup a virtual environment
 > - Install dependencies from `src/scripts/requirements.txt`
+> - Install `brew install gnu-sed` (on macOS)
+> - In your .zshrc, add: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens) and `alias sed='gsed'`
 > - Run the website using `./run_web.sh`
 
 ## Prerequisites
