@@ -65,7 +65,7 @@ Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/u
     - Press `⌘+Shift+P` -> `Python: Select Interpreter`
     - Choose the venv you just created.
 3. Install the dependencies
-   - Press `⌘ + j` to open the terminal
+   - Press `⌘+j` to open the terminal
    - Run `pip install -r src/scripts/requirements.txt`
 
 ## Step 4: Run the Website
