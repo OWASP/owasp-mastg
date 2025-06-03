@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-Local-Storage-for-Input-Validation.yml ./MastgTest_reversed.java --text -o output.txt

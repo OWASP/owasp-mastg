@@ -1,0 +1,24 @@
+                   
+                   
+┌─────────────────┐
+│ 6 Code Findings │
+└─────────────────┘
+                                                                    
+  [36m[22m[24m  MASTestApp-Android/output/MastgTest_reversed.java[0m
+    ❯❱ [1mmastg-android-Local-Storage-for-Input-Validation[0m
+          [MASVS-CODE-4] The application make use of Object Serialization in the code.
+                                                                                      
+           48┆ $this$storeStrings_u24lambda_u241.putString("userJson",
+               "{\"name\":\"John\",\"admin\":false}");                
+            ⋮┆----------------------------------------
+           49┆ $this$storeStrings_u24lambda_u241.putString("htmlContent", "<div>Safe content</div>");
+            ⋮┆----------------------------------------
+           67┆ $this$simulateTampering_u24lambda_u242.putString("userJson",
+               "{\"name\":\"John\",\"admin\":true}");                      
+            ⋮┆----------------------------------------
+           68┆ $this$simulateTampering_u24lambda_u242.putString("htmlContent",
+               "<script>alert('XSS')</script>");                              
+            ⋮┆----------------------------------------
+           81┆ String userJson = this.sharedPref.getString("userJson", "");
+            ⋮┆----------------------------------------
+           83┆ String htmlContent = this.sharedPref.getString("htmlContent", "");
