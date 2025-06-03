@@ -41,7 +41,9 @@ Understanding each relevant data storage function is crucial for performing the 
 
 The [`SharedPreferences`](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs.
 
-Since Android 4.2 (API level 17) the `SharedPreferences` object can only be declared to be private (and not world-readable, i.e. accessible to all apps). However, since data stored in a `SharedPreferences` object is written to a plain-text XML file so its misuse can often lead to exposure of sensitive data.
+Since Android 4.2 (API level 17), the `SharedPreferences` object can only be declared to be private (not world-readable). This means that, by default, other apps cannot access these files. However, data stored in a `SharedPreferences` object is written to a plain-text XML file. **Sensitive information stored here is at risk if the device is rooted, if backups are enabled, or if the device is compromised.** Even though file permissions are correct by default, unencrypted sensitive data can be extracted from backups or by an attacker with device access.
+
+> Storing sensitive data in SharedPreferences is only safe if the data is encrypted. Use [`EncryptedSharedPreferences`](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences) for this purpose. See ["Use SharedPreferences in private mode"](https://developer.android.com/privacy-and-security/security-best-practices#sharedpreferences).
 
 Consider the following example:
 
@@ -126,6 +128,14 @@ The database's directory may contain several files besides the SQLite database:
 - [Lock files](https://www.sqlite.org/lockingv3.html "SQLite Lock Files"): The lock files are part of the locking and journaling feature, which was designed to improve SQLite concurrency and reduce the writer starvation problem.
 
 Sensitive information should not be stored in unencrypted SQLite databases.
+
+> **When is this a problem?**
+>
+> - If the device is rooted, an attacker can access the database files directly.
+> - If backups are enabled, unencrypted databases may be included in device backups and can be extracted by anyone who can decrypt the backup (e.g., the user or someone with their credentials).
+> - If the app is vulnerable (e.g., via an exposed content provider), data may be leaked.
+
+Use [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/) or similar libraries to encrypt sensitive data in SQLite databases.
 
 ### SQLite Databases (Encrypted)
 
@@ -250,7 +260,7 @@ if(Java.available){
 
 ### Internal Storage
 
-You can save files to the device's [internal storage](https://developer.android.com/training/data-storage#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
+You can save files to the device's [internal storage](https://developer.android.com/training/data-storage#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device (since API 17). When the user uninstalls your app, these files are removed.
 
 For example, the following Kotlin snippet stores sensitive information in clear text to a file `sensitive_info.txt` residing on internal storage.
 
@@ -620,7 +630,7 @@ Android provides an attribute called [`allowBackup`](https://developer.android.c
 
 To prevent the app data backup, set the `android:allowBackup` attribute to **false**. When this attribute is unavailable, the allowBackup setting is enabled by default, and backup must be manually deactivated.
 
-> Note: If the device was encrypted, then the backup files will be encrypted as well.
+> Note: If the device was encrypted, then the backup files will be encrypted as well, but the backup can be decrypted by the user's password. This protects user data from others, but not from the user themselves.
 
 ### Process Memory
 
