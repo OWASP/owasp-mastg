@@ -30,5 +30,5 @@ The output file shows usages of string-based local storage in the code.
 
 The test fails because `putString()` and `getString()` were used to store and retrieve structured or potentially user-controlled data, such as:
 
-- Line 48, 49, 67, 68 contains the `putString()`
-- Line 81, 83 contains the `getString()`
+- Line 48, 49, 67, 68 contains the `putString()`.
+- Line 81, 83 contains the `getString()`.
