@@ -16,7 +16,7 @@ The code snippet shows the utilization of object deserialization being using `ja
 
 Let's run @MASTG-TOOL-0110 rules against the sample code.
 
-{{ ../../../../rules/mastg-android-object-persistence.yml }}
+{{ ../../../../rules/mastg-android-object-deserialization.yml }}
 
 {{ run.sh }}
 
