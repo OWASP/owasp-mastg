@@ -2,82 +2,43 @@ package org.owasp.mastestapp
 
 import android.content.Context
 import android.util.Log
-import org.json.JSONObject
-import org.json.JSONArray
-import java.io.File
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.io.Serializable
 
 class MastgTest(private val context: Context) {
 
-    private val sensitiveData = mapOf(
-        "username" to "admin",
-        "password" to "SuperSecret123!",
-        "api_key" to "AKIAIOSFODNN7EXAMPLE",
-        "auth_token" to "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-    )
-
-    // Vulnerable function: stores sensitive data in an insecure JSON file
-    fun storeSensitiveDataInsecurely(): Boolean {
-        try {
-            val jsonData = JSONObject(sensitiveData as Map<*, *>)
-            val file = File(context.filesDir, "config.json")
-            file.writeText(jsonData.toString())
-            Log.d("MASTG-TEST", "Sensitive data stored insecurely at: ${file.absolutePath}")
-            return true
-        } catch (e: Exception) {
-            Log.e("MASTG-TEST", "Error storing data", e)
-            return false
-        }
-    }
-
-    // Vulnerable function: loads sensitive data without proper validation
-    fun loadSensitiveDataInsecurely(): Map<String, String> {
-        try {
-            val file = File(context.filesDir, "config.json")
-            val jsonString = file.readText()
-            val jsonData = JSONObject(jsonString)
-
-            val result = mutableMapOf<String, String>()
-            val keys = jsonData.keys()
-            while (keys.hasNext()) {
-                val key = keys.next()
-                result[key] = jsonData.getString(key)
-            }
-
-            Log.d("MASTG-TEST", "Loaded sensitive data: $result")
-            return result
-        } catch (e: Exception) {
-            Log.e("MASTG-TEST", "Error loading data", e)
-            return emptyMap()
-        }
-    }
-
-    // Another vulnerable example: storing serialized JSON array with sensitive data
-    fun storeSensitiveArrayInsecurely(): Boolean {
-        try {
-            val jsonArray = JSONArray()
-            jsonArray.put(JSONObject(mapOf("credit_card" to "4111111111111111", "cvv" to "123")))
-            jsonArray.put(JSONObject(mapOf("credit_card" to "5555555555554444", "cvv" to "456")))
-
-            val file = File(context.filesDir, "transactions.json")
-            file.writeText(jsonArray.toString())
-            Log.d("MASTG-TEST", "Sensitive array stored insecurely at: ${file.absolutePath}")
-            return true
-        } catch (e: Exception) {
-            Log.e("MASTG-TEST", "Error storing array", e)
-            return false
-        }
-    }
+    // Serializable class (normally would contain business logic)
+    class UserData(val username: String, val isAdmin: Boolean) : Serializable
 
     fun mastgTest(): String {
-        // Store sensitive data
-        storeSensitiveDataInsecurely()
-        
-        // Load sensitive data
-        val loadedData = loadSensitiveDataInsecurely()
-        
-        // Store sensitive array
-        storeSensitiveArrayInsecurely()
-        
-        return "MASTG Test completed successfully. Check logs for details."
+        val fileName = "userdata.ser"
+        val sensitiveString = "Hello from the OWASP MASTG Test app."
+
+        try {
+            // Step 1: Serialize UserData object
+            val user = UserData("alice", false)
+            val fileOutput = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+            val objectOutput = ObjectOutputStream(fileOutput)
+            objectOutput.writeObject(user)
+            objectOutput.close()
+            fileOutput.close()
+            Log.d("MASTG-TEST", "UserData object serialized")
+
+            // Step 2: Deserialize the object (simulate untrusted input later)
+            val fileInput = context.openFileInput(fileName)
+            val objectInput = ObjectInputStream(fileInput)
+            val deserializedUser = objectInput.readObject() as UserData
+            objectInput.close()
+            fileInput.close()
+            Log.d("MASTG-TEST", "Deserialized username: ${deserializedUser.username}")
+            Log.d("MASTG-TEST", "Is Admin: ${deserializedUser.isAdmin}")
+
+            return "Deserialized user: ${deserializedUser.username}, isAdmin=${deserializedUser.isAdmin}"
+
+        } catch (e: Exception) {
+            Log.e("MASTG-TEST", "Deserialization error: ${e.message}")
+            return "Error during deserialization: ${e.message}"
+        }
     }
 }
