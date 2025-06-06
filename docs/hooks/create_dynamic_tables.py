@@ -30,29 +30,39 @@ def get_mastg_tests_dict():
                 platform = get_platform(file)
                 try:
                     frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-                    masvs_v2_id = frontmatter['masvs_v2_id']
-                    frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
-                    if masvs_v2_id:
-                        id = masvs_v2_id[0] 
-                        if id not in mastg_tests:
-                            mastg_tests[id] = {}
-                        if platform not in mastg_tests[id]:
-                            mastg_tests[id][platform] = []
+                    if frontmatter.get('masvs_v2_id'):
+                        masvs_v2_id = frontmatter['masvs_v2_id']
+                        frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
+                        if masvs_v2_id:
+                            id = masvs_v2_id[0] 
+                            if id not in mastg_tests:
+                                mastg_tests[id] = {}
+                            if platform not in mastg_tests[id]:
+                                mastg_tests[id][platform] = []
 
-                        MASTG_TEST_ID = re.compile(r".*(MASTG-TEST-\d*).md$").match(file).group(1)
-                        frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
-                        mastg_tests[id][platform].append(frontmatter)
-                    else:
-                        print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                            MASTG_TEST_ID = re.compile(r".*(MASTG-TEST-\d*).md$").match(file).group(1)
+                            frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
+                            mastg_tests[id][platform].append(frontmatter)
+                        else:
+                            print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
                 except StopIteration:
                     continue
     return mastg_tests
 
 def retrieve_masvs(version="latest"):
     global MASVS
-    url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
-    response = requests.get(url)
-    content = response.content
+    try:
+        url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
+        response = requests.get(url)
+        content = response.content
+    except Exception as e:
+        log.warning("⚠️ Connection failed when retrieving OWASP_MASVS.yaml")
+        masvs_yaml_file = Path("OWASP_MASVS.yaml")
+        if masvs_yaml_file.exists():
+            log.warning("⚠️ Reading OWASP_MASVS.yaml from file")
+            content = masvs_yaml_file.read_text()
+        else:
+            raise Exception("ERROR Failed reading OWASP_MASVS.yaml from file")
     MASVS = yaml.safe_load(content)
     return MASVS
 
@@ -185,8 +195,21 @@ def get_mastg_components_dict(name):
                         frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     else:
                         frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
-                    if "tests" in component_path:
-                        frontmatter['status'] = frontmatter.get('status', 'current')
+                    if "MASTG-TEST-00" in component_id:
+                        frontmatter['status'] = frontmatter.get('status', 'update-pending')
+                        if frontmatter['status'] == 'update-pending':
+                            # add github link to the issue tracker
+                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em">update-pending</span></a><span style="display: none;">status:update-pending</span>'
+                        elif frontmatter['status'] == 'deprecated':
+                            frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
+                    elif "MASTG-TEST-02" in component_id:
+                        frontmatter['status'] = frontmatter.get('status', 'new')
+                        if frontmatter['status'] == 'new':
+                            frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+                        elif frontmatter['status'] == 'placeholder':
+                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                        elif frontmatter['status'] == 'deprecated':
+                            frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
                     
                     components.append(frontmatter)
         return components
@@ -214,43 +237,14 @@ def get_all_weaknessess():
             status = frontmatter['status']
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
-            elif status == 'draft':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{weaknesses_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            elif status == 'placeholder':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{weaknesses_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
             weaknesses.append(frontmatter)
 
     return weaknesses
-
-def get_all_tests_beta():
-
-    tests = []
-
-    for file in glob.glob("docs/MASTG/tests-beta/**/MASTG-TEST-*.md", recursive=True):
-        with open(file, 'r') as f:
-            content = f.read()
-    
-            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-
-            frontmatter['path'] = f"/MASTG/tests-beta/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/tests-beta'))[0]}"
-
-            test_id = frontmatter['id']            
-            frontmatter['id'] = test_id
-            frontmatter['title'] = f"@{frontmatter['id']}"            
-            frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
-            frontmatter['status'] = frontmatter.get('status', 'new')
-            frontmatter['type'] = ", ".join(frontmatter.get("type", []))
-            status = frontmatter['status']
-            if status == 'new':
-                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
-            elif status == 'draft':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{test_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
-            elif status == 'deprecated':
-                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
-            
-            tests.append(frontmatter)
-    return tests
 
 def get_all_demos_beta():
 
@@ -263,16 +257,16 @@ def get_all_demos_beta():
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
 
             frontmatter['path'] = f"/MASTG/demos/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/demos'))[0]}"
-            test_id = frontmatter['id']            
-            frontmatter['id'] = test_id 
-            frontmatter['title'] = f"@{test_id}"
+            demo_id = frontmatter['id']            
+            frontmatter['id'] = demo_id
+            frontmatter['title'] = f"@{demo_id}"
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
             frontmatter['status'] = frontmatter.get('status', 'new')
             status = frontmatter['status']
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
-            elif status == 'draft':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{test_id}" target="_blank"><span class="md-tag md-tag-icon md-tag--draft" style="min-width: 4em">draft</span></a><span style="display: none;">status:draft</span>'
+            elif status == 'placeholder':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{demo_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             
@@ -311,7 +305,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         # tests/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs", 'status': 'Status'}
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'status': 'Status'} # 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs",
         tests = get_mastg_components_dict("docs/MASTG/tests")
         tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests]
         for test in tests_of_type:
@@ -321,19 +315,8 @@ def on_page_markdown(markdown, page, **kwargs):
                 test['masvs_v1_id'] = "<br>".join([f"{v1_id}" for v1_id in test['masvs_v1_id']])
         return append_to_page(markdown, list_of_dicts_to_md_table(tests_of_type, column_titles))
 
-    elif path.endswith("tests-beta/index.md"):
-
-        # tests-beta/index.md
-
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'weakness': "Weakness", 'type': "Type", 'status': "Status"}
-
-        tests_beta = get_all_tests_beta()
-        tests_beta_columns_reordered = [reorder_dict_keys(test, column_titles.keys()) for test in tests_beta]
-
-        return append_to_page(markdown, list_of_dicts_to_md_table(tests_beta_columns_reordered, column_titles))
-
     elif path.endswith("demos/index.md"):
-        # demos-beta/index.md
+        # demos/index.md
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'status': "Status"} # TODO , 'tools': "Tools"
 
@@ -343,7 +326,7 @@ def on_page_markdown(markdown, page, **kwargs):
         return append_to_page(markdown, list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles))
 
     elif path.endswith("best-practices/index.md"):
-        # mitigations-beta/index.md
+        # mitigations/index.md
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"} 
 

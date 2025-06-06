@@ -21,7 +21,6 @@ While both the MASVS and the MASTG are created and maintained by the community o
 
 <center>
 <a href="https://owasp.org/donate/?reponame=www-project-mobile-app-security&title=OWASP+Mobile+Application+Security" class="md-button md-button--primary" style="margin: 5px;">:white_heart:{ .pump } Donate</a>
-<a href="https://leanpub.com/owasp-mastg" class="md-button md-button--primary" style="margin: 5px;">:material-book-heart: Purchase the MASTG</a>
 </center>
 
 **Effort Based:** You can instead support the project by contributing with your work and end up at our [acknowledgement section](MASTG/0x02c-Acknowledgements.md "MASTG acknowledgements").

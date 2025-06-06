@@ -3,7 +3,7 @@ import yaml
 import mkdocs.plugins
 import os
 import glob
-import pathlib
+
 log = logging.getLogger('mkdocs')
 
 
@@ -18,7 +18,8 @@ def gather_metadata(directory, id_key):
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
             
             if not id_key in frontmatter:
-                log.error(f"Missing frontmatter ID in {file}")
+                if "MASTG-TEST-02" in file:
+                    log.error(f"Missing frontmatter ID in {file}")
                 continue
 
             frontmatter["path"] = file.replace("./docs/", "") # os.path.relpath(file, "./docs")
@@ -27,7 +28,7 @@ def gather_metadata(directory, id_key):
     return metadata
 
 def generate_cross_references():
-    tests = gather_metadata("MASTG/tests-beta", "id")
+    tests = gather_metadata("MASTG/tests", "id")
     demos = gather_metadata("MASTG/demos", "id")
 
     cross_references = {
