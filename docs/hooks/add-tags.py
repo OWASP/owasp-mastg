@@ -4,7 +4,8 @@ import mkdocs.plugins
 log = logging.getLogger('mkdocs')
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
-@mkdocs.plugins.event_priority(-50)
+# mkdocs/tags runs at -50 so this has to be called before -50
+@mkdocs.plugins.event_priority(-49)
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
