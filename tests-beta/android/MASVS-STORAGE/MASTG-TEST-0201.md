@@ -5,8 +5,8 @@ id: MASTG-TEST-0201
 apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, FileOutputStream]
 type: [dynamic]
 weakness: MASWE-0007
+profiles: [L1, L2]
 ---
-
 ## Overview
 
 Android apps use a variety of [APIs to access the external storage](../../../0x05d-Testing-Data-Storage.md/#external-storage-apis). Collecting a comprehensive list of these APIs can be challenging, especially if an app uses a third-party framework, loads code at runtime, or includes native code. The most effective approach to testing applications that write to device storage is usually dynamic analysis, and specifically method tracing (@MASTG-TECH-0033).

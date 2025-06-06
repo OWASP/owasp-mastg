@@ -4,8 +4,8 @@ title: Testing for Debugging Symbols
 id: MASTG-TEST-0219
 type: [static]
 weakness: MASWE-0093
+profiles: [R]
 ---
-
 ## Overview
 
 This test case checks for [debugging symbols](https://mas.owasp.org/MASWE/MASVS-RESILIENCE/MASWE-0093/) in all binaries contained in the app.

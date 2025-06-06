@@ -5,8 +5,8 @@ id: MASTG-TEST-0270
 apis: [kSecAccessControlBiometryCurrentSet,SecAccessControlCreateWithFlags]
 type: [static]
 weakness: MASWE-0046
+profiles: [L2]
 ---
-
 ## Overview
 
 This test checks whether the app fails to protect sensitive operations against unauthorized access following biometric enrollment changes. An attacker who obtains the device passcode could add a new fingerprint or facial representation via system settings and use it to authenticate in the app.

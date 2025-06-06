@@ -4,8 +4,8 @@ title: Identify Dependencies with Known Vulnerabilities by Scanning Dependency M
 id: MASTG-TEST-0273
 type: [static]
 weakness: MASWE-0076
+profiles: [L1, L2]
 ---
-
 ## Overview
 
 In this test case we are identifying dependencies with known vulnerabilities in iOS. Dependencies are integrated through dependency managers, and there might be one or more of them being used. We therefore need all of the relevant artifacts created by them to analyse them with a SCA scanning tool.

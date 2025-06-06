@@ -4,8 +4,8 @@ platform: android
 id: MASTG-TEST-0242
 type: [static]
 weakness: MASWE-0047
+profiles: [L2]
 ---
-
 ## Overview
 
 Apps can configure [certificate pinning using the Network Security Configuration]("../../../Document/0x05g-Testing-Network-Communication.md#pinning-via-network-security-configuration-api-24"). For each domain, one or multiple digests can be pinned.

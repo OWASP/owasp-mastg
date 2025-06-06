@@ -5,8 +5,8 @@ id: MASTG-TEST-0216
 type: [dynamic, filesystem]
 weakness: MASWE-0004
 best-practices: [MASTG-BEST-0004]
+profiles: [L1, L2, P]
 ---
-
 ## Overview
 
 This test verifies whether apps correctly instruct the system to exclude sensitive files from backups by performing a backup and restore of the app data and checking which files are restored.

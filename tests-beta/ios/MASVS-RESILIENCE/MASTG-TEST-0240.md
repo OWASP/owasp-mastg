@@ -5,8 +5,8 @@ id: MASTG-TEST-0240
 type: [dynamic]
 weakness: MASWE-0097
 false_negative_prone: true
+profiles: [R]
 ---
-
 ## Overview
 
 The test verifies that a mobile app can detect if the iOS device it is running on is jailbroken. It does so by statically analyzing the app binary for [common jailbreak detection checks](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#common-jailbreak-detection-checks). For example, the app may check for the presence of a third-party app store (e.g. Sileo, Zebra, ...), or for the presence of certain files or directories that are indicative of a jailbroken device.

@@ -5,8 +5,8 @@ id: MASTG-TEST-0266
 apis: [LAContext.evaluatePolicy]
 type: [static]
 weakness: MASWE-0044
+profiles: [L2]
 ---
-
 ## Overview
 
 This test checks if the app insecurely accesses sensitive resources that should be protected by user authentication (e.g., tokens, keys) relying solely** on the LocalAuthentication API for access control instead of using the Keychain API and requiring user presence.

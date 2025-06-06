@@ -5,8 +5,8 @@ id: MASTG-TEST-0269
 apis: [kSecAccessControlUserPresence, kSecAccessControlDevicePasscode, SecAccessControlCreateWithFlags]
 type: [dynamic]
 weakness: MASWE-0045
+profiles: [L2]
 ---
-
 ## Overview
 
 This test is the dynamic counterpart to @MASTG-TEST-0268.

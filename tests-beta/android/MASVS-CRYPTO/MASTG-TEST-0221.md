@@ -5,8 +5,8 @@ id: MASTG-TEST-0221
 type: [static, dynamic]
 weakness: MASWE-0020
 best-practices: [MASTG-BEST-0009]
+profiles: [L1, L2]
 ---
-
 ## Overview
 
 To test for the [use of weak encryption algorithms](../../../Document/0x04g-Testing-Cryptography.md#identifying-insecure-andor-deprecated-cryptographic-algorithms) in Android apps, we need to focus on methods from cryptographic frameworks and libraries that are used to perform encryption and decryption operations.

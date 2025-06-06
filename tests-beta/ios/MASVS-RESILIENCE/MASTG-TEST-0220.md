@@ -4,8 +4,8 @@ title: Usage of Outdated Code Signature Format
 id: MASTG-TEST-0220
 type: [static]
 weakness: MASWE-0104
+profiles: [R]
 ---
-
 ## Overview
 
 On iOS, code signatures verify the integrity and authenticity of an app's binary, preventing unauthorized modifications and ensuring that the app is trusted by the operating system. Apple regularly updates its [code signature formats](https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format) to enhance cryptographic strength and improve protection against tampering.

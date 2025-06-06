@@ -5,8 +5,8 @@ id: MASTG-TEST-0264
 type: [dynamic]
 weakness: MASWE-0094
 best-practices: []
+profiles: [R]
 ---
-
 ## Overview
 
 This test checks whether the app uses `StrictMode` by dynamically analyzing the app's behavior and placing relevant hooks to detect the use of `StrictMode` APIs, such as `StrictMode.setVmPolicy` and `StrictMode.VmPolicy.Builder.penaltyLog`.

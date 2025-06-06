@@ -6,8 +6,8 @@ apis: [Build]
 type: [static]
 weakness: MASWE-0077
 best-practices: []
+profiles: [L2]
 ---
-
 ## Overview
 
 This test verifies whether an app is running on a recent version of the Android operating system.

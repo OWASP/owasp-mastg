@@ -8,8 +8,8 @@ prerequisites:
 - identify-sensitive-data
 - identify-security-relevant-contexts
 weakness: MASWE-0027
+profiles: [L1, L2]
 ---
-
 ## Overview
 
 Android applications sometimes use non-random sources to generate "random" values, leading to potential security vulnerabilities. Common practices include relying on the current time, such as `Date().getTime()`, or accessing `Calendar.MILLISECOND` to produce values that are easily guessable and reproducible.

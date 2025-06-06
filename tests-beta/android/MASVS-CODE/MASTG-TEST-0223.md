@@ -4,8 +4,8 @@ platform: android
 id: MASTG-TEST-0223
 type: [static]
 weakness: MASWE-0116
+profiles: [L2]
 ---
-
 ## Overview
 
 This test case checks if the [native libraries](../../../Document/0x05i-Testing-Code-Quality-and-Build-Settings.md/#binary-protection-mechanisms) of the app are compiled without stack canaries and therefore lacking [stack smashing protection](../../../Document/0x04h-Testing-Code-Quality.md/#stack-smashing-protection), a common mitigation technique against buffer overflow attacks.

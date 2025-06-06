@@ -5,8 +5,8 @@ id: MASTG-TEST-0233
 type: [static]
 weakness: MASWE-0050
 related-tests: [MASTG-TEST-0235, MASTG-TEST-0236, MASTG-TEST-0238]
+profiles: [L1, L2]
 ---
-
 ## Overview
 
 An Android app may have hardcoded HTTP URLs embedded in the app binary, library binaries, or other resources within the APK. These URLs may indicate potential locations where the app communicates with servers over an unencrypted connection.

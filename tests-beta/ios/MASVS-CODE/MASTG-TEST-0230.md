@@ -4,8 +4,8 @@ platform: ios
 id: MASTG-TEST-0230
 type: [static]
 weakness: MASWE-0116
+profiles: [L2]
 ---
-
 ## Overview
 
 This test case checks if [ARC (Automatic Reference Counting)](../../../Document/0x04h-Testing-Code-Quality.md/#automatic-reference-counting) is enabled in iOS apps. ARC is a compiler feature in Objective-C and Swift that automates memory management, reducing the likelihood of memory leaks and other related issues. Enabling ARC is crucial for maintaining the security and stability of iOS applications.

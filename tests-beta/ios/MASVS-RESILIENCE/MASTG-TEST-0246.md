@@ -6,8 +6,8 @@ apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceO
 type: [dynamic]
 weakness: MASWE-0008
 best-practices: []
+profiles: [L2]
 ---
-
 ## Overview
 
 This test is the dynamic counterpart to @MASTG-TEST-0248.

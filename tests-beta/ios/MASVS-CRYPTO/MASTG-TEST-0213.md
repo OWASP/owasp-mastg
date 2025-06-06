@@ -4,8 +4,8 @@ platform: ios
 id: MASTG-TEST-0213
 type: [static]
 weakness: MASWE-0014
+profiles: [L1, L2]
 ---
-
 ## Overview
 
 In this test case, we will examine iOS applications for the presence of hardcoded cryptographic keys. Hardcoded keys can be typically found in calls to cryptographic functions or stored as constants or variables within the code. In iOS, cryptographic keys are often used in the following frameworks:

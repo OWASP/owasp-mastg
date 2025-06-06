@@ -5,8 +5,8 @@ id: MASTG-TEST-0232
 type: [static, dynamic]
 weakness: MASWE-0020
 best-practices: [MASTG-BEST-0005]
+profiles: [L1, L2]
 ---
-
 ## Overview
 
 To test for the [use of weak encryption modes](../../../Document/0x04g-Testing-Cryptography.md#weak-block-cipher-mode) in Android apps, we need to focus on methods from cryptographic frameworks and libraries that are used to configure and apply encryption modes.
