@@ -17,8 +17,6 @@ cp -r weaknesses/** docs/MASWE/ || { echo "Failed to copy weaknesses"; exit 1; }
 
 cp -r Document/0x0*.md docs/MASTG
 cp -r Document/index.md docs/MASTG
-cp docs/MASTG/0x08b-Reference-Apps.md docs/MASTG/apps/index.md
-cp docs/MASTG/0x08a-Testing-Tools.md docs/MASTG/tools/index.md
 
 cp -r Document/Images/ docs/assets/Images/
 

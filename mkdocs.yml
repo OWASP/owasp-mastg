@@ -178,7 +178,7 @@ nav:
       - news/index.md
   - talks.md
   - "&#11088; Contribute":
-      - contributing.md
+      - contributing/index.md
       - ... | flat | contributing/*.md
   - "&#128153; Donate":
       - donate.md
