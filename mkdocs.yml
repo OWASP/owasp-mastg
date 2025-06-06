@@ -214,7 +214,7 @@ nav:
       - news/index.md
   - talks.md
   - "&#11088; Contribute":
-      - contributing.md
+      - contributing/index.md
       - ... | flat | contributing/*.md
   - "&#128153; Donate":
       - donate.md
@@ -293,7 +293,7 @@ plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
   - awesome-pages
-  - mermaid2
+  # - mermaid2
   - blog:
   # https://squidfunk.github.io/mkdocs-material/plugins/blog/
       blog_dir: news

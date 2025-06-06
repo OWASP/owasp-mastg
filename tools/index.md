@@ -9,4 +9,4 @@ title: Testing Tools
 
     These tools have been tested to work when added, but compatibility may vary depending on your OS version, the device you're testing, or whether you're using a rooted or jailbroken device. Tool functionality may also be affected by specific versions of the rooting/jailbreaking method or the tool itself. OWASP MASTG does not guarantee the functionality of the tools. If you encounter problems, try to search for solutions online or contact the tool owner (e.g. via GitHub Issues).
 
-    Before proposing a new tool via GitHub Issues/Pull Requests, please check our [contribution guidelines](../../contributing.md#tool-inclusion-disclaimer-for-contributors).
+    Before proposing a new tool via GitHub Issues/Pull Requests, please check our [contribution guidelines](../../contributing/index.md#tool-inclusion-disclaimer-for-contributors).
