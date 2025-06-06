@@ -78,8 +78,8 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-CODE/*.md
           - MASVS-RESILIENCE:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
-          - MASVS-PRIVACY:
-            - ... | flat | MASTG/tests/ios/MASVS-PRIVACY/*.md
+          # - MASVS-PRIVACY:
+          #   - ... | flat | MASTG/tests/ios/MASVS-PRIVACY/*.md
       - Demos:
         - MASTG/demos/index.md
         - Android:
