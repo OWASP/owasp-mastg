@@ -7,6 +7,7 @@ platform: android
 title: Testing Root Detection
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Bypassing Root Detection
