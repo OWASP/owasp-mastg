@@ -19,55 +19,68 @@ def log_github_token_warning():
 
 
 def log_github_token_invalid_warning(e):
-    if hasattr(e.response, 'status_code') and e.response.status_code == 401:
-        log.warning("\n⚠️  GitHub Token is invalid or expired. Some features will be limited.")
-        log.warning("To fix this issue, please update your GITHUB_TOKEN environment variable.")
-        log.warning("You can create a new token at: https://github.com/settings/tokens\n")
-    else:
-        log.warning(f"\n⚠️  Error accessing GitHub API: {e}")
+    global GITHUB_TOKEN_WARNING
+
+    if not GITHUB_TOKEN_WARNING:
+        if hasattr(e.response, 'status_code') and e.response.status_code == 401:
+            log.warning("\n⚠️  GitHub Token is invalid or expired. Some features will be limited.")
+            log.warning("To fix this issue, please update your GITHUB_TOKEN environment variable.")
+            log.warning("You can create a new token at: https://github.com/settings/tokens\n")
+        else:
+            log.warning(f"\n⚠️  Error accessing GitHub API: {e}")
+        GITHUB_TOKEN_WARNING = True  # Only show the warning once
+    return None
+
+    
 
 def get_issues_for_test_refactors():
-    SEARCH_URL = "https://api.github.com/search/issues"
-    query = (
-        f'repo:{GITHUB_REPO} '
-        f'in:body '
-        f'is:issue '
-        f'state:open '
-        f'label:"MASTG Refactor"'
-        f'MASTG v1->v2 MASTG-TEST-'
-    )
 
-    headers = {
-        "Authorization": f"token {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github.v3+json",
-    }
+    if not ensure_github_token():
+        return {}
+    
+    try:
+            
+        SEARCH_URL = "https://api.github.com/search/issues"
+        query = (
+            f'repo:{GITHUB_REPO} '
+            f'in:body '
+            f'is:issue '
+            f'state:open '
+            f'label:"MASTG Refactor"'
+            f'MASTG v1->v2 MASTG-TEST-'
+        )
 
-    issues = {}
-    page = 1
-    while True:
-        resp = requests.get(SEARCH_URL, headers=headers, params={"q": query, "per_page": 100, "page": page})
-        resp.raise_for_status()
-        data = resp.json()
+        headers = {
+            "Authorization": f"token {GITHUB_TOKEN}",
+            "Accept": "application/vnd.github.v3+json",
+        }
 
-        for issue in data["items"]:
-            match = re.search(r'MASTG-TEST-\d+', issue["title"])
-            if match:
-                ID = match.group(0)
-                issues[ID] = (issue["html_url"], issue["title"])
-            else:
-                log.warning(f"Could not find MASTG-TEST ID in issue title: {issue['title']}")
+        issues = {}
+        page = 1
+        while True:
+            resp = requests.get(SEARCH_URL, headers=headers, params={"q": query, "per_page": 100, "page": page})
+            resp.raise_for_status()
+            data = resp.json()
 
-        # Break if there are no more pages
-        if "next" not in resp.links:
-            break
-        page += 1
+            for issue in data["items"]:
+                match = re.search(r'MASTG-TEST-\d+', issue["title"])
+                if match:
+                    ID = match.group(0)
+                    issues[ID] = (issue["html_url"], issue["title"])
+                else:
+                    log.warning(f"Could not find MASTG-TEST ID in issue title: {issue['title']}")
 
-    return issues
+            # Break if there are no more pages
+            if "next" not in resp.links:
+                break
+            page += 1
 
-def get_latest_successful_run(workflow_file, branch="master"):
-    """Get the URL to the latest successful workflow run artifacts.
-    Returns None if token is missing/invalid or if no successful run is found.
-    """
+        return issues
+    except requests.exceptions.RequestException as e:
+        log_github_token_invalid_warning(e)
+        return None
+
+def ensure_github_token():
     global GITHUB_TOKEN_WARNING
     global GITHUB_TOKEN_LOGGED
     
@@ -82,6 +95,16 @@ def get_latest_successful_run(workflow_file, branch="master"):
         log.info("✅ GitHub Token detected in environment variables.")
         GITHUB_TOKEN_LOGGED = True  # Only show the log once
 
+
+
+def get_latest_successful_run(workflow_file, branch="master"):
+    """Get the URL to the latest successful workflow run artifacts.
+    Returns None if token is missing/invalid or if no successful run is found.
+    """
+
+    if not ensure_github_token():
+        return None
+    
     # GitHub API headers
     headers = {
         "Authorization": f"Bearer {GITHUB_TOKEN}",
@@ -101,7 +124,6 @@ def get_latest_successful_run(workflow_file, branch="master"):
             return None
             
     except requests.exceptions.RequestException as e:
-        if not GITHUB_TOKEN_WARNING:
-            log_github_token_invalid_warning(e)
-            GITHUB_TOKEN_WARNING = True  # Only show the warning once
+        log_github_token_invalid_warning(e)
         return None
+        
