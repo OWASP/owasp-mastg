@@ -65,7 +65,7 @@ def get_mastg_v1_coverage(meta):
             mastg_v1_tests = "    No MASTG v1 tests are related to this weakness."
     return mastg_v1_tests
 
-def get_maswe_draft_banner(meta):
+def get_maswe_placeholder_banner(meta):
 
     id = meta.get('id')
 
@@ -75,14 +75,14 @@ def get_maswe_draft_banner(meta):
         refs_section = "    ## References\n\n"
         refs_section += "\n".join([f"    - <{ref}>" for ref in refs])
 
-    draft_info = meta.get('draft', None)
+    placeholder_info = meta.get('draft', None)
 
-    description = draft_info.get('description', None)
+    description = placeholder_info.get('description', None)
 
-    if draft_info.get('note', None):
-        description += "\n\n" + "    > Note: " + draft_info.get('note', None) + "\n"
+    if placeholder_info.get('note', None):
+        description += "\n\n" + "    > Note: " + placeholder_info.get('note', None) + "\n"
 
-    topics = draft_info.get('topics', None)
+    topics = placeholder_info.get('topics', None)
     topics_section = ""
     if topics:
         topics_section = "    ## Relevant Topics\n\n"
@@ -91,9 +91,9 @@ def get_maswe_draft_banner(meta):
     mastg_v1_tests = get_mastg_v1_coverage(meta)
 
     banner = f"""
-!!! warning "Draft Weakness"
+!!! warning "Placeholder Weakness"
 
-    This weakness hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    This weakness hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that weakness by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?usp=sharing).
 
     <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
@@ -112,15 +112,15 @@ def get_maswe_draft_banner(meta):
 """
     return banner
 
-def get_tests_draft_banner(meta):
+def get_tests_placeholder_banner(meta):
     id = meta.get('id')
     note = meta.get('note', None)
     weakness = meta.get('weakness', None)
 
     banner = f"""
-!!! warning "Draft MASTG-TEST"
+!!! warning "Placeholder MASTG-TEST"
 
-    This test hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    This test hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that test by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
 
     <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
@@ -210,15 +210,15 @@ def get_ios_demo_buttons(page):
 """
     return banner
 
-def get_demos_draft_banner(meta):
+def get_demos_placeholder_banner(meta):
     id = meta.get('id')
     note = meta.get('note', None)
     test = meta.get('test', None)
 
     banner = f"""
-!!! warning "Draft MASTG-DEMO"
+!!! warning "Placeholder MASTG-DEMO"
 
-    This demo hasn't been created yet and it's in **draft**. But you can check its status or start working on it yourself.
+    This demo hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that demo by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
 
     <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
@@ -241,29 +241,28 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     banners = []
 
-    if any(substring in path for substring in ["MASWE/", "MASTG/tests-beta/", "MASTG/demos/", "MASTG/best-practices/"]):
+    if any(substring in path for substring in ["MASWE/"]):
         banners.append(beta_banner)
 
-    if "MASWE/" in path and page.meta.get('status') == 'draft':
-        banners.append(get_maswe_draft_banner(page.meta))
-
-    if "MASTG/tests-beta/" in path and page.meta.get('status') == 'draft':
-        banners.append(get_tests_draft_banner(page.meta))
+    if "MASWE/" in path and page.meta.get('status') == 'placeholder':
+        banners.append(get_maswe_placeholder_banner(page.meta))
 
     if "MASTG/tests/" in path:
         if page.meta.get('status') == 'deprecated':
             banners.append(get_v1_deprecated_tests_banner(page.meta))
+        if page.meta.get('status') == 'placeholder':
+            banners.append(get_tests_placeholder_banner(page.meta))
         if link := config["issue_mapping"].get(page.meta.get("id")):
             banners.append(get_v1_refactor_tests_banner(page.meta, link[0], escape(link[1])))
 
-    if "MASTG/demos/android/" in path and not page.meta.get('status') == 'draft':
+    if "MASTG/demos/android/" in path and not page.meta.get('status') == 'placeholder':
         banners.append(get_android_demo_buttons(page))
 
-    if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'draft':
+    if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'placeholder':
         banners.append(get_ios_demo_buttons(page))
 
-    if "MASTG/demos/" in path and page.meta.get('status') == 'draft':
-        banners.append(get_demos_draft_banner(page.meta))
+    if "MASTG/demos/" in path and page.meta.get('status') == 'placeholder':
+        banners.append(get_demos_placeholder_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown

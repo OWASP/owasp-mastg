@@ -11,6 +11,10 @@ def get_edit_url(src_path, edit_url_mastg, edit_url_masvs):
         edit_url = f"{edit_url_mastg}{src_path}"
         edit_url = edit_url.replace("master/MASTG/0x", "master/Document/0x")
         edit_url = edit_url.replace("master/MASTG/", "master/")
+        
+        # TODO Remove after porting v1 is completed
+        if 'MASTG-TEST-02' in src_path:
+            edit_url = edit_url.replace('/tests/', '/tests-beta/')
     elif src_path.startswith("MASWE"):
         edit_url = f"{edit_url_mastg}{src_path}"
         edit_url = edit_url.replace("master/MASWE/", "master/weaknesses/")

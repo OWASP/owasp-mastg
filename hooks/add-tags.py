@@ -43,8 +43,8 @@ def on_page_markdown(markdown, page, **kwargs):
     # END TODO
 
     if page.meta.get('status'):
-        if page.meta.get('status') == 'draft':
-            tags.append('draft')
+        if page.meta.get('status') == 'placeholder':
+            tags.append('placeholder')
 
     if page.meta.get('status'):
         if page.meta.get('status') == 'deprecated':
