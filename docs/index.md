@@ -32,8 +32,6 @@ hide:
 
 <br>
 
-<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS.pdf';"> Download the MASVS</button>
-
 </center>
 
 <center>
@@ -44,8 +42,6 @@ hide:
 
 <br>
 
-<button class="mas-button" onclick="window.location.href='../MASWE';"> Access the Beta</button>
-
 </center>
 
 <center>
@@ -55,8 +51,6 @@ hide:
 <a href="../MASTG"><img style="border-radius: 3px; margin: 2em;" width="300px" class="grow" src="assets/mastg_cover.png" /></a>
 
 <br>
-
-<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MASTG.pdf';"> Download the MASTG</button>
 
 </center>
 
@@ -69,8 +63,6 @@ hide:
 <a href="../checklists"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/mas_checklist.png" /></a>
 
 <br>
-
-<button class="mas-button" style="margin-top: 1.8em;" onclick="window.location.href='https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MAS_Checklist.xlsx';"> Download the Checklist</button>
 
 </center>
 
