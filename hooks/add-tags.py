@@ -7,7 +7,7 @@ log = logging.getLogger('mkdocs')
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
-
+    print("tags_opm: ", path)
     tags = page.meta.get('tags', [])
 
     if page.meta.get('masvs_category'):
@@ -25,7 +25,9 @@ def on_page_markdown(markdown, page, **kwargs):
 
     if page.meta.get('weakness'):
         tags.append(page.meta.get('weakness'))
+    print("\ttest? ", page.meta.get('test'))
     if page.meta.get('test'):
+        print("\tappending test to tags")
         tags.append(page.meta.get('test'))
     
     if mappings:=page.meta.get('mappings'):
@@ -50,6 +52,7 @@ def on_page_markdown(markdown, page, **kwargs):
         if page.meta.get('status') == 'deprecated':
             tags.append('deprecated')
     
+    print("\t final tags: ", tags)
     page.meta['tags'] = tags
 
     return markdown
