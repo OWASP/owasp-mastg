@@ -6,6 +6,7 @@ type: [static]
 weakness: MASWE-0053
 profiles: [L2]
 ---
+
 ## Overview
 
 This test verifies that the app appropriately configures text input fields to prevent the [keyboard from caching](../../../Document/0x05d-Testing-Data-Storage.md#keyboard-cache) sensitive information, such as passwords or personal data.

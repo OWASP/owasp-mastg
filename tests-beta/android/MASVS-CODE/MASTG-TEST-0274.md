@@ -6,6 +6,7 @@ type: [static, developer]
 weakness: MASWE-0076
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 In this test case we are identifying dependencies with known vulnerabilities by relying on a Software Bill of Material (SBOM).

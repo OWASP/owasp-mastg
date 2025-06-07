@@ -6,6 +6,7 @@ type: [static]
 weakness: MASWE-0116
 profiles: [L2]
 ---
+
 ## Overview
 
 [PIE (Position Independent Executables)](../../../Document/0x04h-Testing-Code-Quality.md/#position-independent-code) are designed to enhance security by allowing executables to be loaded at random memory addresses, mitigating certain types of attacks.

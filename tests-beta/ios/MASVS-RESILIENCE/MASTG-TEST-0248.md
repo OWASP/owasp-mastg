@@ -8,6 +8,7 @@ weakness: MASWE-0008
 best-practices: []
 profiles: [L2]
 ---
+
 ## Overview
 
 This test verifies that an app is running on a device with a secure [screen lock (e.g. a passcode)](https://support.apple.com/en-us/guide/iphone/iph14a867ae/ios).

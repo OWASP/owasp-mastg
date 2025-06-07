@@ -6,6 +6,7 @@ type: [network]
 weakness: MASWE-0047
 profiles: [L2]
 ---
+
 ## Overview
 
 There are multiple ways an application can implement certificate pinning, including via the Android Network Security Config, custom TrustManager implementations, third-party libraries, and native code. Since some implementations might be difficult to identify through static analysis, especially when obfuscation or dynamic code loading is involved, this test uses network interception techniques to determine if certificate pinning is enforced at runtime.

@@ -6,6 +6,7 @@ type: [network]
 weakness: MASWE-0050
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 While static analysis can identify configurations that allow insecure TLS versions, it may not accurately reflect the actual protocol used during live communications. This is because TLS version negotiation occurs between the client (app) and the server at runtime, where they agree on the most secure, mutually supported version.

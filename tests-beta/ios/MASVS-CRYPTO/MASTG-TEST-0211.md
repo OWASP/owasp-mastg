@@ -6,6 +6,7 @@ type: [static, dynamic]
 weakness: MASWE-0021
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 To test for the use of weak hashing algorithms in iOS apps, we need to focus on methods from cryptographic frameworks and libraries that are used to perform hashing operations.

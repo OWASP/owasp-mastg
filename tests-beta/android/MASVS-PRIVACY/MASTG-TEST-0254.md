@@ -6,6 +6,7 @@ type: [static]
 weakness: MASWE-0117
 profiles: [P]
 ---
+
 ## Overview
 
 In Android apps, permissions are acquired through different methods to access information and system functionalities, including the camera, location, or storage. The necessary permissions are specified in the `AndroidManifest.xml` file with `<uses-permission>` tags.

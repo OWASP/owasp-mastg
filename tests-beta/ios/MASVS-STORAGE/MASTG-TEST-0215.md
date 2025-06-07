@@ -6,6 +6,7 @@ type: [static, filesystem]
 weakness: MASWE-0004
 profiles: [L1, L2, P]
 ---
+
 ## Overview
 
 This test verifies whether your app correctly instructs the system to exclude sensitive files from backups.

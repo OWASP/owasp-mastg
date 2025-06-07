@@ -8,6 +8,7 @@ weakness: MASWE-0104
 best-practices: [MASTG-BEST-0006]
 profiles: [R]
 ---
+
 ## Overview
 
 Not using newer APK signing schemes means that the app lacks the enhanced security provided by more robust, updated mechanisms.

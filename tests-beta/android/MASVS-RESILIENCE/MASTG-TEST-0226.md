@@ -7,6 +7,7 @@ weakness: MASWE-0067
 best-practices: [MASTG-BEST-0007]
 profiles: [R]
 ---
+
 ## Overview
 
 This test case checks if the app has the `debuggable` flag ([`android:debuggable`](https://developer.android.com/guide/topics/manifest/application-element#debug)) set to `true` in the `AndroidManifest.xml`. When this flag is enabled, it allows the app to be debugged enabling attackers to inspect the app's internals, bypass security controls, or manipulate runtime behavior.

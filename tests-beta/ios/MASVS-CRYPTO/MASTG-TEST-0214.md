@@ -6,6 +6,7 @@ type: [static]
 weakness: MASWE-0014
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 Cryptographic keys may be embedded files such as configuration files or key files, certificate files, or other resource files bundled with the app, making them accessible to anyone who can extract the app's resources. Real-world cases include storing API keys, SSL/TLS private keys, or encryption keys within these files, which can lead to serious security vulnerabilities if the app is reverse-engineered.

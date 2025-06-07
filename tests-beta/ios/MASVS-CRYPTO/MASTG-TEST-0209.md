@@ -6,6 +6,7 @@ type: [static, dynamic]
 weakness: MASWE-0009
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 In this test case, we will look for the use inappropriate key sizes in iOS apps. To do this, we need to focus on the cryptographic frameworks and libraries that are available in iOS and the methods that are used to generate cryptographic keys.

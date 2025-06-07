@@ -6,6 +6,7 @@ type: [static, developer]
 weakness: MASWE-0076
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 This test case checks for dependencies with known vulnerabilities in iOS applications by using a Software Bill of Materials (SBOM). The SBOM should be in CycloneDX format, which is a standard for describing the components and dependencies of software.

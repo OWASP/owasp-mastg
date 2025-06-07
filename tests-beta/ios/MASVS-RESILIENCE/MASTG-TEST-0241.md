@@ -7,6 +7,7 @@ weakness: MASWE-0097
 false_negative_prone: true
 profiles: [R]
 ---
+
 ## Overview
 
 The test verifies that a mobile application can identify if the iOS device it is running on is jailbroken. It does so by dynamically analyzing the app binary for [common jailbreak detection checks](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#common-jailbreak-detection-checks) and trying to bypass them. For example, it may detect a check for the presence of certain files or directories that are indicative of a jailbroken device.

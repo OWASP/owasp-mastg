@@ -6,6 +6,7 @@ type: [dynamic]
 weakness: MASWE-0050
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 This test intercepts the app's incoming and outgoing network traffic, and checks for any cleartext communication.

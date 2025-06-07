@@ -7,6 +7,7 @@ type: [static]
 weakness: MASWE-0116
 profiles: [L2]
 ---
+
 ## Overview
 
 This test case checks if the [native libraries](../../../Document/0x05i-Testing-Code-Quality-and-Build-Settings.md/#binary-protection-mechanisms) of the app are compiled without enabling [Position Independent Code (PIC)](../../../Document/0x04h-Testing-Code-Quality.md/#position-independent-code), a common mitigation technique against memory corruption attacks.

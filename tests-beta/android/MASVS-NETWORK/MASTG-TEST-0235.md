@@ -6,6 +6,7 @@ type: [static]
 weakness: MASWE-0050
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default (thanks to the [default Network Security Configuration](../../../Document/0x05g-Testing-Network-Communication.md#default-configurations)) but there are multiple ways in which an application can still send it:

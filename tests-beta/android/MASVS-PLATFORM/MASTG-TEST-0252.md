@@ -9,6 +9,7 @@ weakness: MASWE-0069
 best-practices: [MASTG-BEST-0010, MASTG-BEST-0011, MASTG-BEST-0012]
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 This test checks for references to methods from the [`WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings.html) class used by Android WebViews which [enable loading content from various sources, including local files](../../../Document/0x05h-Testing-Platform-Interaction.md/#webview-local-file-access-settings). If improperly configured, these methods can introduce security risks such as unauthorized file access and data exfiltration. These methods are:

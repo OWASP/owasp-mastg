@@ -6,6 +6,7 @@ type: [static]
 weakness: MASWE-0104
 profiles: [R]
 ---
+
 ## Overview
 
 For Android apps, the cryptographic strength of the APK signature is essential for maintaining the app's integrity and authenticity. Using a signature key with insufficient length, such as an RSA key shorter than 2048 bits, weakens security, making it easier for attackers to compromise the signature. This vulnerability could allow malicious actors to forge signatures, tamper with the app's code, or distribute unauthorized, modified versions.

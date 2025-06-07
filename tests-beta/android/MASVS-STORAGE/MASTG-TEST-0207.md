@@ -8,6 +8,7 @@ prerequisites:
 weakness: MASWE-0006
 profiles: [L2]
 ---
+
 ## Overview
 
 The goal of this test is to retrieve the files written to the [internal storage](../../../0x05d-Testing-Data-Storage.md/#internal-storage) and inspect them regardless of the APIs used to write them. It uses a simple approach based on file retrieval from the device storage (@MASTG-TECH-0002) before and after the app is exercised to identify the files created during the app's execution and to check if they contain sensitive data.

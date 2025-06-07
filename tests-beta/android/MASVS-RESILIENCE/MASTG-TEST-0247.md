@@ -8,6 +8,7 @@ weakness: MASWE-0008
 best-practices: []
 profiles: [L2]
 ---
+
 ## Overview
 
 This test verifies whether an app is running on a device with a passcode set. Android apps can determine whether a secure [screen lock (such as PIN, or password)](https://support.google.com/android/answer/9079129) is enabled by using platform-provided APIs. Specifically, apps can utilize the [KeyguardManager](https://developer.android.com/reference/android/app/KeyguardManager) API, which provides the [isDeviceSecure()](https://developer.android.com/reference/android/app/KeyguardManager#isDeviceSecure()) and [isKeyguardSecure()](https://developer.android.com/reference/android/app/KeyguardManager#isKeyguardLocked()) methods to check if the device has a secure lock mechanism in place.

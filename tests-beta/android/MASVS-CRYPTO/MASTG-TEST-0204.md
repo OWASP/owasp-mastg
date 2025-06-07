@@ -10,6 +10,7 @@ prerequisites:
 weakness: MASWE-0027
 profiles: [L1, L2]
 ---
+
 ## Overview
 
 Android apps sometimes use an insecure [pseudorandom number generator (PRNG)](../../../Document/0x05e-Testing-Cryptography.md#random-number-generation), such as [`java.util.Random`](https://developer.android.com/reference/java/util/Random), which is a linear congruential generator and produces a predictable sequence for any given seed value. As a result, `java.util.Random` and `Math.random()` ([the latter](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/) simply calls `nextDouble()` on a static `java.util.Random` instance) generate reproducible sequences across all Java implementations whenever the same seed is used. This predictability makes them unsuitable for cryptographic or other security-sensitive contexts.

@@ -9,6 +9,7 @@ prerequisites:
 - identify-sensitive-data
 profiles: [L2]
 ---
+
 ## Overview
 
 This test checks whether the app uses the systemwide general [pasteboard](../../../Document/0x06h-Testing-Platform-Interaction.md/#pasteboard), which is persistent across device restarts and app uninstalls and is accessible by all foreground apps and, in some cases, other devices. Placing sensitive data here may pose a privacy risk.

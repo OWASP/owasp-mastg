@@ -7,6 +7,7 @@ weakness: MASWE-0067
 best-practices: [MASTG-BEST-0008]
 profiles: [R]
 ---
+
 ## Overview
 
 The `WebView.setWebContentsDebuggingEnabled(true)` API enables debugging for **all** WebViews in the application. This feature can be useful during development, but introduces significant security risks if left enabled in production. When enabled, a connected PC can debug, eavesdrop, or modify communication within any WebView in the application. See the ["Android Documentation"](https://developer.chrome.com/docs/devtools/remote-debugging/webviews/#configure_webviews_for_debugging) for more details.
