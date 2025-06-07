@@ -147,7 +147,7 @@ def add_control_row(checklist, control):
 def add_test_rows(checklist, platform, control):
     if platform in control['tests']:
         for test in control['tests'][platform]:
-            levels = test['masvs_v1_levels']
+            levels = test['profiles']
             checklist_row = {}
             checklist_row['MASVS-ID'] = ""
             checklist_row['path'] = f"/MASTG/{os.path.splitext(test['path'])[0]}"
