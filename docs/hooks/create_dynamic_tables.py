@@ -139,9 +139,12 @@ def add_control_row(checklist, control):
     checklist_row['path'] = f"./MASVS/controls/{os.path.basename(control['id'])}"
     checklist_row['Platform'] = ""
     checklist_row['Control / MASTG Test'] = control['statement']
+    checklist_row['MASTG-TEST-ID'] = ""
     checklist_row['L1'] = ""
     checklist_row['L2'] = ""
     checklist_row['R'] = ""
+    checklist_row['P'] = ""
+    checklist_row['Status'] = ""
     checklist.append(checklist_row)
 
 def add_test_rows(checklist, platform, control):
@@ -149,7 +152,8 @@ def add_test_rows(checklist, platform, control):
         for test in control['tests'][platform]:
             levels = test['profiles']
             checklist_row = {}
-            checklist_row['MASVS-ID'] = ""
+            checklist_row['MASVS-ID'] = "" # test['masvs_v2_id'][0] if test['masvs_v2_id'] else ""
+            # checklist_row['Weakness'] = test.get('weakness', "")
             checklist_row['path'] = f"/MASTG/{os.path.splitext(test['path'])[0]}"
             checklist_row['Platform'] = test['platform']
             checklist_row['Control / MASTG Test'] = test['title']
@@ -157,6 +161,11 @@ def add_test_rows(checklist, platform, control):
             checklist_row['L1'] = "L1" in levels
             checklist_row['L2'] = "L2" in levels
             checklist_row['R'] = "R" in levels
+            checklist_row['P'] = "P" in levels
+            if "MASTG-TEST-00" in test['MASTG-TEST-ID']:
+                checklist_row['Status'] = test.get('status', 'update-pending')
+            elif "MASTG-TEST-02" in test['MASTG-TEST-ID']:
+                checklist_row['Status'] = test.get('status', 'new')
             checklist.append(checklist_row)
 
 def get_checklist_dict():
@@ -190,18 +199,34 @@ def set_icons_for_web(checklist):
 
     for row in checklist:
         # if it's a control row, make the MASVS-ID and Control bold
-        if row['MASVS-ID'] != "":
+        if row['Platform'] == "":
             relPath = os.path.relpath(row['path'], './checklists/') + ".md"
             row['MASVS-ID'] = f"**[{row['MASVS-ID']}]({relPath})**"
             row['Control / MASTG Test'] = f"**{row['Control / MASTG Test']}**"
-            
+                        
         # if it's a test row, set the icons for platform and levels
         else:
             row['Platform'] = get_platform_icon(row['Platform'])
             row['Control / MASTG Test'] = f"@{row['MASTG-TEST-ID']}"
             row['L1'] = get_level_icon('L1', row['L1'])
             row['L2'] = get_level_icon('L2', row['L2'])
-            row['R'] = get_level_icon('R', row['R'])        
+            row['R'] = get_level_icon('R', row['R'])
+            row['P'] = get_level_icon('P', row['P'])
+            
+            test_id = row['MASTG-TEST-ID']
+
+            row['MASTG-TEST-ID'] = f'<span style="display:inline-block; border-radius:2.4em; background:#499fffff; color: white; padding:0.2em 0.8em; font-size:75%;">{row["MASTG-TEST-ID"]}</span><span style="display: none;">{row["MASTG-TEST-ID"]}</span>'
+            
+            # Process status field for test rows
+            status = row.get('Status')
+            if status == 'new':
+                row['Status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+            elif status == 'placeholder':
+                row['Status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em;">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+            elif status == 'deprecated':
+                row['Status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
+            elif status == 'update-pending':
+                row['Status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em;">update-pending</span></a><span style="display: none;">status:update-pending</span>'
 
 def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
     if column_titles is None: column_titles = {key:key.title() for (key,_) in data[0].items()}
@@ -402,8 +427,8 @@ def on_page_markdown(markdown, page, **kwargs):
     elif path and re.compile(r"^checklists/MASVS-\w*\.md$").match(path):
         # checklists.md
 
-        column_titles = {'MASVS-ID': 'MASVS-ID', 'Platform': "Platform", 'Control / MASTG Test': 'Control / MASTG Test', 'L1': 'L1', 'L2': 'L2', 'R': 'R'}
-        column_align = ("left", "center", "left", "center", "center", "center")
+        column_titles = {'MASVS-ID': 'MASVS-ID', 'MASTG-TEST-ID': 'MASTG-TEST-ID', 'Control / MASTG Test': 'Control / MASTG Test',  'Platform': "Platform", 'L1': 'L1', 'L2': 'L2', 'R': 'R', 'P': 'P', 'Status': 'Status'}
+        column_align = ("left", "center", "left", "center", "left", "center", "center", "center", "center")
 
         ID = re.compile(r"^checklists/(MASVS-\w*)\.md$").match(path).group(1)
         checklist = CHECKLIST_DICT[ID]
@@ -415,9 +440,9 @@ def on_page_markdown(markdown, page, **kwargs):
             cleaned_check = dict(check)
 
             del cleaned_check['path']
-            if 'MASTG-TEST-ID' in cleaned_check:
-                del cleaned_check['MASTG-TEST-ID']
             cleaned_checklist.append(cleaned_check)
+        
+        cleaned_checklist = [reorder_dict_keys(check, column_titles.keys()) for check in cleaned_checklist]
         
         content = list_of_dicts_to_md_table(cleaned_checklist, column_titles, column_align) + "\n\n<br><br>"
         
