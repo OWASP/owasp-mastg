@@ -4,6 +4,7 @@ title: Dependencies with Known Vulnerabilities in the App's SBOM
 id: MASTG-TEST-0275
 type: [static, developer]
 weakness: MASWE-0076
+profiles: [L1, L2]
 ---
 
 ## Overview

@@ -8,6 +8,7 @@ title: Memory Corruption Bugs
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview

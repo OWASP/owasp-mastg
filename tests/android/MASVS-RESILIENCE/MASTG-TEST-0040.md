@@ -7,6 +7,7 @@ platform: android
 title: Testing for Debugging Symbols
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Overview

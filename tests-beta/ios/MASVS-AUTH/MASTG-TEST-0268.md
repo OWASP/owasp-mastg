@@ -5,6 +5,7 @@ id: MASTG-TEST-0268
 apis: [kSecAccessControlUserPresence, kSecAccessControlDevicePasscode, SecAccessControlCreateWithFlags]
 type: [static]
 weakness: MASWE-0045
+profiles: [L2]
 ---
 
 ## Overview

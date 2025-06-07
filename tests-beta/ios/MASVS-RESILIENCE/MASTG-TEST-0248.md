@@ -6,6 +6,7 @@ apis: [LAContext.canEvaluatePolicy, kSecAttrAccessibleWhenPasscodeSetThisDeviceO
 type: [static]
 weakness: MASWE-0008
 best-practices: []
+profiles: [L2]
 ---
 
 ## Overview

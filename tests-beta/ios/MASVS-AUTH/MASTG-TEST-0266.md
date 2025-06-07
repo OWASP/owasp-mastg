@@ -5,6 +5,7 @@ id: MASTG-TEST-0266
 apis: [LAContext.evaluatePolicy]
 type: [static]
 weakness: MASWE-0044
+profiles: [L2]
 ---
 
 ## Overview

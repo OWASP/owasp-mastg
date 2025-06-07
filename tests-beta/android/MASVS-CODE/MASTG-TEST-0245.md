@@ -6,6 +6,7 @@ apis: [Build]
 type: [static]
 weakness: MASWE-0077
 best-practices: []
+profiles: [L2]
 ---
 
 ## Overview

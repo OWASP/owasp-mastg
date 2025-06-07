@@ -5,6 +5,7 @@ id: MASTG-TEST-0202
 apis: [Environment#getExternalStoragePublicDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, MediaStore, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE]
 type: [static]
 weakness: MASWE-0007
+profiles: [L1, L2]
 ---
 
 ## Overview

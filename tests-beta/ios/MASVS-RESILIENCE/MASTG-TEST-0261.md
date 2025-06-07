@@ -4,6 +4,7 @@ title: Debuggable Entitlement Enabled in the entitlements.plist
 id: MASTG-TEST-0261
 type: [static]
 weakness: MASWE-0067
+profiles: [R]
 ---
 
 ## Overview

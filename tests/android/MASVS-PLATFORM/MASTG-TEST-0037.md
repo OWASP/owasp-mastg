@@ -7,6 +7,7 @@ platform: android
 title: Testing WebViews Cleanup
 masvs_v1_levels:
 - L2
+profiles: [L2]
 ---
 
 ## Overview

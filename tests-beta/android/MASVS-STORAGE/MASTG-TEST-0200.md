@@ -4,6 +4,7 @@ title: Files Written to External Storage
 id: MASTG-TEST-0200
 type: [dynamic]
 weakness: MASWE-0007
+profiles: [L1, L2]
 ---
 
 ## Overview

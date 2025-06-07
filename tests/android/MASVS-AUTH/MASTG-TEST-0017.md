@@ -8,6 +8,7 @@ platform: android
 title: Testing Confirm Credentials
 masvs_v1_levels:
 - L2
+profiles: [L2]
 ---
 
 ## Overview

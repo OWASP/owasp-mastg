@@ -6,6 +6,7 @@ apis: [Log, Logger, System.out.print, System.err.print, java.lang.Throwable#prin
 type: [dynamic]
 weakness: MASWE-0001
 best-practices: [MASTG-BEST-0002]
+profiles: [L1, L2, P]
 ---
 
 ## Overview

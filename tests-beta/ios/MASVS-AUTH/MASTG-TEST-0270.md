@@ -5,6 +5,7 @@ id: MASTG-TEST-0270
 apis: [kSecAccessControlBiometryCurrentSet,SecAccessControlCreateWithFlags]
 type: [static]
 weakness: MASWE-0046
+profiles: [L2]
 ---
 
 ## Overview

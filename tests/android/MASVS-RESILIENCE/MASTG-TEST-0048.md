@@ -7,6 +7,7 @@ platform: android
 title: Testing Reverse Engineering Tools Detection
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Effectiveness Assessment

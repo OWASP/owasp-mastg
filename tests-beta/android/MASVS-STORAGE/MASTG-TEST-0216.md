@@ -5,6 +5,7 @@ id: MASTG-TEST-0216
 type: [dynamic, filesystem]
 weakness: MASWE-0004
 best-practices: [MASTG-BEST-0004]
+profiles: [L1, L2, P]
 ---
 
 ## Overview

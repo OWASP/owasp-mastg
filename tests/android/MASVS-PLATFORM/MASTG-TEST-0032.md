@@ -8,6 +8,7 @@ title: Testing WebView Protocol Handlers
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 status: deprecated
 covered_by: [MASTG-TEST-0250, MASTG-TEST-0251, MASTG-TEST-0252, MASTG-TEST-0253]
 deprecation_note: New version available in MASTG V2
