@@ -308,6 +308,7 @@ hooks:
   - docs/hooks/resolve_references.py
   - docs/hooks/create_dynamic_tables.py
   - docs/hooks/update_git_info.py
+  - docs/hooks/add-checklists-banner.py
   - docs/hooks/maswe-beta-banner.py
 
 extra:
