@@ -235,7 +235,7 @@ For more details, check the associated test: @{test}
     return banner
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
-@mkdocs.plugins.event_priority(-50)
+@mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
 
