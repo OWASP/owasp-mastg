@@ -211,7 +211,7 @@ theme:
       r: material/circle-double
       placeholder: material/pencil-plus
       update-pending: material/information-outline
-      deprecated: material/trash-can
+      deprecated: material/file-remove-outline
       new: material/alert-decagram
       tool: octicons/tools-24
       test: octicons/codescan-checkmark-24
@@ -301,16 +301,23 @@ markdown_extensions:
           case: lower
 
 hooks:
-  - docs/hooks/replace_snippets.py
-  - docs/hooks/update_titles.py
-  - docs/hooks/add-tags.py
-  - docs/hooks/add-cross-references.py
+  # General
   - docs/hooks/edit_button_uri.py
-  - docs/hooks/resolve_references.py
-  - docs/hooks/create_dynamic_tables.py
-  - docs/hooks/update_git_info.py
+
+  # Priority -40 for adding content
   - docs/hooks/add-checklists-banner.py
+  - docs/hooks/add-cross-references.py
+  - docs/hooks/replace_snippets.py
   - docs/hooks/maswe-beta-banner.py
+  - docs/hooks/create_dynamic_tables.py
+
+  # Priority -49 for last-minute tag modification
+  - docs/hooks/add-tags.py
+  - docs/hooks/update_titles.py
+  - docs/hooks/update_git_info.py
+
+  # Priority -50 for conversion of tags and cross-references
+  - docs/hooks/resolve_references.py
 
 extra:
   generator: false # removed but recreated in copyright above

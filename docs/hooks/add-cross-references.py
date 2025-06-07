@@ -85,7 +85,7 @@ def get_platform_icon(platform):
 def on_pre_build(config):
     config.cross_references = generate_cross_references()
 
-@mkdocs.plugins.event_priority(-50)
+@mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
     meta = page.meta

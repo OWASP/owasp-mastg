@@ -18,7 +18,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
     icons_for_text = {key.upper(): f":{value.replace('/', '-')}: " for key, value in icons.items()}
 
     pageRefs = {"TECH": [], "TOOL": [], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": [], "BEST": []}
-    
+
     def replaceReference(match):
         refType = match.group(2)
 

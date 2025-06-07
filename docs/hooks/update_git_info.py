@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
-@mkdocs.plugins.event_priority(-50)
+@mkdocs.plugins.event_priority(-49)
 def on_page_markdown(markdown, page, **kwargs):
 
     abs_path = page.file.abs_src_path

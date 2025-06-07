@@ -9,7 +9,7 @@ log = logging.getLogger('mkdocs')
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#tabbed
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#snippets
 
-@mkdocs.plugins.event_priority(-50)
+@mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
 
