@@ -334,7 +334,7 @@ def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
 
 # Higher priority, so that tables are parsed by the other hooks too
-@mkdocs.plugins.event_priority(50)
+@mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, **kwargs):
 
     path = page.file.src_uri
