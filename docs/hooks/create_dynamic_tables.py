@@ -12,6 +12,63 @@ import requests
 log = logging.getLogger('mkdocs')
 MASVS = None
 
+def get_level_icon(level, value):
+    if level == "L1" and value == True:
+        return '<span class="mas-dot-blue"></span><span style="display: none;">profile:L1</span>'
+    elif level == "L2" and value == True:
+        return '<span class="mas-dot-green"></span><span style="display: none;">profile:L2</span>'
+    elif level == "R" and value == True:
+        return '<span class="mas-dot-orange"></span><span style="display: none;">profile:R</span>'
+    elif level == "P" and value == True:
+        return '<span class="mas-dot-purple"></span><span style="display: none;">profile:P</span>'
+
+def get_platform_icon(platform):
+    if platform == "android":
+        return '<span style="font-size: x-large; color: #54b259;" title="Android"> :material-android: </span><span style="display: none;">platform:android</span>'
+    elif platform == "ios":
+        return '<span style="font-size: x-large; color: #007aff;" title="iOS"> :material-apple: </span><span style="display: none;">platform:ios</span>'
+    elif platform == "generic":
+        return '<span style="font-size: x-large; color: darkgrey;" title="Generic"> :material-asterisk: </span><span style="display: none;">platform:generic</span>'
+    elif platform == "network":
+        return '<span style="font-size: x-large; color: #9383e2;" title="Network"> :material-web: </span><span style="display: none;">platform:network</span>'
+    else:
+        return '<span style="font-size: x-large; color: darkgrey;" title="Unknown"> :material-progress-question: </span><span style="display: none;">platform:unknown</span>'
+
+def get_all_weaknessess():
+
+    weaknesses = []
+
+    for file in glob.glob("docs/MASWE/**/MASWE-*.md", recursive=True):
+        with open(file, 'r') as f:
+            content = f.read()
+    
+            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
+            frontmatter['path'] = f"/MASWE/{os.path.splitext(os.path.relpath(file, 'docs/MASWE'))[0]}"
+            weaknesses_id = frontmatter['id']
+            frontmatter['id'] = weaknesses_id
+            frontmatter['title'] = f"@{frontmatter['id']}"            
+            frontmatter['masvs_v2_id'] = frontmatter['mappings']['masvs-v2'][0]
+            frontmatter['masvs_category'] = frontmatter['masvs_v2_id'][:frontmatter['masvs_v2_id'].rfind('-')]
+            frontmatter['L1'] = get_level_icon('L1', "L1" in frontmatter['profiles'])
+            frontmatter['L2'] = get_level_icon('L2', "L2" in frontmatter['profiles'])
+            frontmatter['R'] = get_level_icon('R', "R" in frontmatter['profiles'])
+            frontmatter['P'] = get_level_icon('P', "P" in frontmatter['profiles'])
+            frontmatter['status'] = frontmatter.get('status', 'new')
+            status = frontmatter['status']
+            if status == 'new':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
+            elif status == 'placeholder':
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{weaknesses_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+            elif status == 'deprecated':
+                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
+            frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
+            weaknesses.append(frontmatter)
+
+    return weaknesses
+
+weaknesses = get_all_weaknessess()
+MASWE = {weakness['id']: weakness for weakness in weaknesses}
+
 def get_platform(input_file: str) -> str:
     if "/android/" in input_file:
         return "android"
@@ -30,21 +87,24 @@ def get_mastg_tests_dict():
                 platform = get_platform(file)
                 try:
                     frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-                    if frontmatter.get('masvs_v2_id'):
-                        masvs_v2_id = frontmatter['masvs_v2_id']
-                        frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
-                        if masvs_v2_id:
-                            id = masvs_v2_id[0] 
-                            if id not in mastg_tests:
-                                mastg_tests[id] = {}
-                            if platform not in mastg_tests[id]:
-                                mastg_tests[id][platform] = []
+                    if not frontmatter.get('masvs_v2_id'):
+                        frontmatter['masvs_v2_id'] = []
+                        if frontmatter['weakness'] in MASWE:
+                            frontmatter['masvs_v2_id'].append(MASWE[frontmatter['weakness']]['masvs_v2_id'])
+                    masvs_v2_id = frontmatter['masvs_v2_id']
+                    frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
+                    if masvs_v2_id:
+                        id = masvs_v2_id[0] 
+                        if id not in mastg_tests:
+                            mastg_tests[id] = {}
+                        if platform not in mastg_tests[id]:
+                            mastg_tests[id][platform] = []
 
-                            MASTG_TEST_ID = re.compile(r".*(MASTG-TEST-\d*).md$").match(file).group(1)
-                            frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
-                            mastg_tests[id][platform].append(frontmatter)
-                        else:
-                            print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                        MASTG_TEST_ID = re.compile(r".*(MASTG-TEST-\d*).md$").match(file).group(1)
+                        frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
+                        mastg_tests[id][platform].append(frontmatter)
+                    else:
+                        print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
                 except StopIteration:
                     continue
     return mastg_tests
@@ -126,30 +186,6 @@ def on_pre_build(config):
     global CHECKLIST_DICT
     CHECKLIST_DICT = get_checklist_dict()
 
-
-
-def get_platform_icon(platform):
-    if platform == "android":
-        return '<span style="font-size: x-large; color: #54b259;" title="Android"> :material-android: </span><span style="display: none;">platform:android</span>'
-    elif platform == "ios":
-        return '<span style="font-size: x-large; color: #007aff;" title="iOS"> :material-apple: </span><span style="display: none;">platform:ios</span>'
-    elif platform == "generic":
-        return '<span style="font-size: x-large; color: darkgrey;" title="Generic"> :material-asterisk: </span><span style="display: none;">platform:generic</span>'
-    elif platform == "network":
-        return '<span style="font-size: x-large; color: #9383e2;" title="Network"> :material-web: </span><span style="display: none;">platform:network</span>'
-    else:
-        return '<span style="font-size: x-large; color: darkgrey;" title="Unknown"> :material-progress-question: </span><span style="display: none;">platform:unknown</span>'
-
-def get_level_icon(level, value):
-    if level == "L1" and value == True:
-        return '<span class="mas-dot-blue"></span><span style="display: none;">profile:L1</span>'
-    elif level == "L2" and value == True:
-        return '<span class="mas-dot-green"></span><span style="display: none;">profile:L2</span>'
-    elif level == "R" and value == True:
-        return '<span class="mas-dot-orange"></span><span style="display: none;">profile:R</span>'
-    elif level == "P" and value == True:
-        return '<span class="mas-dot-purple"></span><span style="display: none;">profile:P</span>'
-
 def set_icons_for_web(checklist):
 
     for row in checklist:
@@ -195,6 +231,13 @@ def get_mastg_components_dict(name):
                         frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     else:
                         frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
+
+                    profiles = frontmatter.get('profiles', [])
+                    frontmatter['L1'] = get_level_icon('L1', "L1" in profiles)
+                    frontmatter['L2'] = get_level_icon('L2', "L2" in profiles)
+                    frontmatter['R'] = get_level_icon('R', "R" in profiles)
+                    frontmatter['P'] = get_level_icon('P', "P" in profiles)
+
                     if "MASTG-TEST-00" in component_id:
                         frontmatter['status'] = frontmatter.get('status', 'update-pending')
                         if frontmatter['status'] == 'update-pending':
@@ -214,37 +257,7 @@ def get_mastg_components_dict(name):
                     components.append(frontmatter)
         return components
 
-def get_all_weaknessess():
 
-    weaknesses = []
-
-    for file in glob.glob("docs/MASWE/**/MASWE-*.md", recursive=True):
-        with open(file, 'r') as f:
-            content = f.read()
-    
-            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-            frontmatter['path'] = f"/MASWE/{os.path.splitext(os.path.relpath(file, 'docs/MASWE'))[0]}"
-            weaknesses_id = frontmatter['id']
-            frontmatter['id'] = weaknesses_id
-            frontmatter['title'] = f"@{frontmatter['id']}"            
-            frontmatter['masvs_v2_id'] = frontmatter['mappings']['masvs-v2'][0]
-            frontmatter['masvs_category'] = frontmatter['masvs_v2_id'][:frontmatter['masvs_v2_id'].rfind('-')]
-            frontmatter['L1'] = get_level_icon('L1', "L1" in frontmatter['profiles'])
-            frontmatter['L2'] = get_level_icon('L2', "L2" in frontmatter['profiles'])
-            frontmatter['R'] = get_level_icon('R', "R" in frontmatter['profiles'])
-            frontmatter['P'] = get_level_icon('P', "P" in frontmatter['profiles'])
-            frontmatter['status'] = frontmatter.get('status', 'new')
-            status = frontmatter['status']
-            if status == 'new':
-                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
-            elif status == 'placeholder':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{weaknesses_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
-            elif status == 'deprecated':
-                frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
-            frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
-            weaknesses.append(frontmatter)
-
-    return weaknesses
 
 def get_all_demos_beta():
 
@@ -305,7 +318,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         # tests/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'status': 'Status'} # 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs",
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'L1': 'L1', 'L2': 'L2', 'R': 'R', 'P': 'P', 'status': 'Status'} # 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs",
         tests = get_mastg_components_dict("docs/MASTG/tests")
         tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests]
         for test in tests_of_type:
