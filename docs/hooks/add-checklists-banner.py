@@ -4,10 +4,8 @@ import mkdocs.plugins
 log = logging.getLogger('mkdocs')
 
 checklists_banner = """
-!!! info "Checklist Updates Ongoing (June 2025)"
-    The checklists now contain the new [MAS profiles](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing) for each test.
-    
-    We are currently working on updating this view for a better user experience.
+!!! info "Checklists Updated (June 2025)"
+    The checklists now include **all MASTG tests**, as well as updated mappings to the new [MAS profiles](https://docs.google.com/document/d/1paz7dxKXHzAC9MN7Mnln1JiZwBNyg7Gs364AJ6KudEs/edit?usp=sharing).
 """
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
