@@ -26,6 +26,10 @@ This test case focuses on identifying potentially sensitive data stored by an ap
 
 **NOTE:** For MASVS L1 compliance, it is sufficient to store data unencrypted in the application's internal storage directory (sandbox). For L2 compliance, additional encryption is required using cryptographic keys securely managed in the Android KeyStore. This includes using envelope encryption (DEK+KEK) or equivalent methods, or using the Android Security Library's [`EncryptedFile`](https://developer.android.com/reference/androidx/security/crypto/EncryptedFile)/[`EncryptedSharedPreferences`](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences).
 
+!!! Warning
+
+    The **Jetpack security crypto library**, including the `EncryptedFile` and  `EncryptedSharedPreferences` classes, has been [deprecated](https://developer.android.com/privacy-and-security/cryptography#jetpack_security_crypto_library). However, since an official replacement has not yet been released, we recommend using these classes until one is available.
+
 ## Static Analysis
 
 First of all, try to determine the kind of storage used by the Android app and to find out whether the app processes sensitive data insecurely.
