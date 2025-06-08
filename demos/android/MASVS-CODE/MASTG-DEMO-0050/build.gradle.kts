@@ -79,6 +79,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
-    implementation ("com.squareup.okhttp3:okhttp:4.8.0") // vulnerable library
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1") // vulnerable library
 
 }

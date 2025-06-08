@@ -24,4 +24,4 @@ The scan has identified 262 unique dependencies with 35 vulnerable dependencies 
 
 ### Evaluation
 
-Due to the number of vulnerabilities, the `dependency-check` report can be lengthy and can contain false positives. Review each of the reported instances. The dependency `okhttp-4.8.0.jar` added in the `build.gradle.kts` has known vulnerabilities and should be updated to the latest version.
+Due to the number of vulnerabilities, the `dependency-check` report can be lengthy and can contain false positives. Review each of the reported instances. The dependency `okhttp-4.9.1.jar` added in the `build.gradle.kts` has known vulnerabilities and should be updated to the latest version.
