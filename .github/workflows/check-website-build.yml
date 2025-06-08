@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call reusable build workflow (no deploy)
-        uses: ./.github/workflows/build-website-reusable.yml
+        uses: OWASP/owasp-mastg/.github/workflows/build-website-reusable.yml@main # ./.github/workflows/build-website-reusable.yml
         with:
           deploy: false
