@@ -8,6 +8,7 @@ title: Testing Custom URL Schemes
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -30,7 +31,7 @@ If you have the original source code and want to view registered protocol handle
 
 <img src="Images/Chapters/0x06h/URL_scheme.png" width="100%" />
 
-Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in the app’s `Info.plist` file (example from @MASTG-APP-0028):
+Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in the app's `Info.plist` file (example from @MASTG-APP-0028):
 
 ```xml
 <key>CFBundleURLTypes</key>
@@ -246,7 +247,7 @@ Search for deprecated methods like:
 - [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc "UIApplication openURL:")
 - [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application "UIApplicationDelegate application:openURL:sourceApplication:annotation:")
 
-For example, here we find those three:
+For example, using @MASTG-TOOL-0129 we find those three:
 
 ```bash
 $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"

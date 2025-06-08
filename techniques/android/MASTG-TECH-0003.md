@@ -97,7 +97,7 @@ After the preparation, you can test instant apps locally on a device running And
 
 - Test the app locally:
   Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
-  
+
   ```bash
   ia run output-from-build-command <app-artifact>
   ```

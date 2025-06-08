@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1]
+  cwe: [285, 287]
 
 refs:
 - https://mobidev.biz/blog/single-sign-on-sso-implementation-benefits-enterprise
@@ -27,7 +28,7 @@ draft:
   - use of context to add security to authentication e.g. via IP or location data
   - set prefersEphemeralWebBrowserSession to true before calling start for a session
     on iOS
-status: draft
+status: placeholder
 
 ---
 

@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-CRYPTO-2]
   masvs-v2: [MASVS-CRYPTO-2]
+  cwe: [326, 327]
 
 refs:
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf
@@ -15,7 +16,7 @@ draft:
   topics:
   - weak sources
   - lack of salt encryption when doing PBKDF2
-status: draft
+status: placeholder
 
 ---
 

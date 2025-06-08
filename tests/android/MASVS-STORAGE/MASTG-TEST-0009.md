@@ -7,6 +7,9 @@ platform: android
 title: Testing Backups for Sensitive Data
 masvs_v1_levels:
 - L2
+profiles: [L1, L2]
+status: deprecated
+covered_by: [MASTG-TEST-0216]
 ---
 
 ## Overview

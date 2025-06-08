@@ -7,29 +7,29 @@ platform: android
 title: Testing for Debugging Code and Verbose Error Logging
 masvs_v1_levels:
 - R
+profiles: [R]
+status: deprecated
+covered_by: [MASTG-TEST-0263]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
 
 ## Static Analysis
 
-To determine whether `StrictMode` is enabled, you can look for the `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy` methods. Most likely, they will be in the `onCreate` method.
+To determine whether [`StrictMode`](https://developer.android.com/reference/android/os/StrictMode) is enabled, you can look for the `StrictMode.setThreadPolicy` or `StrictMode.setVmPolicy` methods. Most likely, they will be in the `onCreate` method.
 
-The [detection methods for the thread policy](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
+The detection methods for the thread policy are:
 
-```java
-detectDiskWrites()
-detectDiskReads()
-detectNetwork()
-```
+- `detectDiskWrites()`
+- `detectDiskReads()`
+- `detectNetwork()`
 
-The [penalties for thread policy violation](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
+The penalties for thread policy violation are:
 
-```java
-penaltyLog() // Logs a message to LogCat
-penaltyDeath() // Crashes application, runs at the end of all enabled penalties
-penaltyDialog() // Shows a dialog
-```
+- `penaltyLog()`: Logs a message to LogCat.
+- `penaltyDeath()`: Crashes application, runs at the end of all enabled penalties.
+- `penaltyDialog()`: Shows a dialog.
 
 Have a look at the [best practices](https://code.tutsplus.com/tutorials/android-best-practices-strictmode--mobile-7581 "Android Best Practices: StrictMode") for using StrictMode.
 

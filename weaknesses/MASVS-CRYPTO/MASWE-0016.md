@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CRYPTO-2, MASVS-CODE-4]
+  cwe: [322]
 
 refs:
 - https://mas.owasp.org/MASTG/0x05d-Testing-Data-Storage/#secure-key-import-into-keystore
@@ -19,7 +20,7 @@ draft:
   topics:
   - key import from untrusted sources
   - key import from untrusted storage
-status: draft
+status: placeholder
 
 ---
 

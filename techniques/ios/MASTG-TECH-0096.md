@@ -60,7 +60,7 @@ If you're only interested into the modules (binaries and libraries) that the app
 
 As you might expect you can correlate the addresses of the libraries with the memory maps: e.g. the main app from @MASTG-APP-0028 is called "iGoat-Swift" and is located at `0x0000000100b7c000` and the Realm Framework at `0x0000000100f60000`.
 
-You can also use objection to display the same information.
+You can also use @MASTG-TOOL-0074 to display the same information.
 
 ```bash
 $ objection --gadget OWASP.iGoat-Swift explore
@@ -168,7 +168,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ## Memory Dump
 
-You can dump the app's process memory with @MASTG-TOOL-0038 and @MASTG-TOOL-0106. To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is described in @MASTG-TECH-0079. To use these tools on a jailbroken phone, simply have frida-server installed and running.
+You can dump the app's process memory with @MASTG-TOOL-0074 and @MASTG-TOOL-0106. To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is described in @MASTG-TECH-0090. To use these tools on a jailbroken phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 

@@ -7,7 +7,7 @@ import yaml
 
 log = logging.getLogger('mkdocs')
 
-mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}, "DEMO": {}}
+mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}, "DEMO": {}, "BEST": {}}
 
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, config, **kwargs):
@@ -17,7 +17,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     icons_for_text = {key.upper(): f":{value.replace('/', '-')}: " for key, value in icons.items()}
 
-    pageRefs = {"TECH": [], "TOOL": [], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": []}
+    pageRefs = {"TECH": [], "TOOL": [], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": [], "BEST": []}
     
     def replaceReference(match):
         refType = match.group(2)
@@ -30,7 +30,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
         icon = icons_for_text.get(refType, ":octicons-question-24: ")
 
-        return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
+        return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']} \"{refType}\")_"
 
     def replaceReferenceMASWE(match):
         refType = "MASWE"
@@ -42,7 +42,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
             mapping[refType][match] = target
 
         icon = icons_for_text.get(refType, ":octicons-question-24: ")
-        return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
+        return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']} \"{refType}\")_"
 
     def replaceReferenceMASVS(match):
         refType = "MASVS"
@@ -54,10 +54,10 @@ def on_page_markdown(markdown, page, config, **kwargs):
             mapping[refType][match] = target
 
         icon = icons_for_text.get(refType, ":octicons-question-24: ")
-        return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']})_"
+        return f"_[{icon}{mapping[refType][match]['title']}]({mapping[refType][match]['file']} \"{refType}\")_"
 
 
-    updated_markdown = re.sub(r'@(MASTG-(TECH|TOOL|TEST|APP|DEMO)-\d{3,})', replaceReference, markdown)
+    updated_markdown = re.sub(r'@(MASTG-(TECH|TOOL|TEST|APP|DEMO|BEST)-\d{3,})', replaceReference, markdown)
     updated_markdown = re.sub(r'@(MASWE-\d{3,})', replaceReferenceMASWE, updated_markdown)
     updated_markdown = re.sub(r'@(MASVS-\w+)', replaceReferenceMASVS, updated_markdown)
 

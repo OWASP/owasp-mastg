@@ -46,7 +46,7 @@ After your PR or issue has been submitted, we will review it as quickly as possi
 
 ## 🔎 Proof-reading
 
-If you do proof-reading, these are the things we’re looking for:
+If you do proof-reading, these are the things we're looking for:
 
 - Content [cohesion & coherence](https://writing.chalmers.se/chalmers-writing-guide/writing-a-text/coherence-cohesion/)
     - is there a good linkage of ideas?
