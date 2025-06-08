@@ -18,7 +18,7 @@ Execute `gradle` in Android Studio to trigger @MASTG-TOOL-0131.
 
 ### Observation
 
-The scan has identified 262 unique dependencies with 35 vulnerable dependencies and 83 vulnerabilities (as more vulnerabilities might be found over time this number might increase).
+The scan has identified 303 unique dependencies with 4 vulnerable dependencies and 5 vulnerabilities (as more vulnerabilities might be found over time this number might increase). There are 57 vulnerabilities suppressed, if you have used the `suppress.xml` file.
 
 {{ output.txt }}
 

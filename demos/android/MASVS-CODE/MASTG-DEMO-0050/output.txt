@@ -20,7 +20,7 @@
                     "url": "https:\/\/ossindex.sonatype.org\/component\/pkg:maven\/com.squareup.okhttp3\/okhttp@4.9.1?utm_source=dependency-check&utm_medium=integration&utm_content=12.1.1"
                 }
             ],
-            "vulnerabilityIds": [
+             "vulnerabilityIds": [
                 {
                     "id": "cpe:2.3:a:squareup:okhttp:4.9.1:*:*:*:*:*:*:*",
                     "confidence": "HIGHEST",
@@ -86,6 +86,30 @@
                         }
                     ]
                 },
+                {
+                    "source": "NVD",
+                    "name": "CVE-2023-0833",
+                    "severity": "MEDIUM",
+                    "cvssv3": {
+                        "baseScore": 5.5,
+                        "attackVector": "LOCAL",
+                        "attackComplexity": "LOW",
+                        "privilegesRequired": "LOW",
+                        "userInteraction": "NONE",
+                        "scope": "UNCHANGED",
+                        "confidentialityImpact": "HIGH",
+                        "integrityImpact": "NONE",
+                        "availabilityImpact": "NONE",
+                        "baseSeverity": "MEDIUM",
+                        "exploitabilityScore": "1.8",
+                        "impactScore": "3.6",
+                        "version": "3.1"
+                    },
+                    "cwes": [
+                        "CWE-209"
+                    ],
+                    "description": "A flaw was found in Red Hat's AMQ-Streams, which ships a version of the OKHttp component with an information disclosure flaw via an exception triggered by a header containing an illegal value. This issue could allow an authenticated attacker to access information outside of their regular permissions.",
+                    "notes": "",
 ...
 [redacted for readability]
 ...
