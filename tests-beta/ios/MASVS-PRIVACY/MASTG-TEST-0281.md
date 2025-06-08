@@ -12,7 +12,7 @@ This test identifies whether the app communicates with known tracking domains th
 
 ## Steps
 
-1. Obtain the app's privacy manifests (both main binary and dependencies). 
+1. Obtain the app's privacy manifests (both main binary and dependencies).
 2. Search statically with @MASTG-TOOL-0110 for tracking domain names, or dynamically intercept network requests with @MASTG-TOOL-0097.
 
 ## Observation
