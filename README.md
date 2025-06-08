@@ -53,6 +53,6 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 ## Connect with Us
 
-<a href="https://mas.owasp.org/contact">
+<a href="https://mas.owasp.org/contact">Contact details of project leaders.</a>
 
 <br>
