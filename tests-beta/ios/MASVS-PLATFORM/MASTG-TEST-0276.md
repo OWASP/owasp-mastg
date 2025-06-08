@@ -7,6 +7,7 @@ weakness: MASWE-0053
 threat: [app]
 prerequisites:
 - identify-sensitive-data
+profiles: [L2]
 ---
 
 ## Overview

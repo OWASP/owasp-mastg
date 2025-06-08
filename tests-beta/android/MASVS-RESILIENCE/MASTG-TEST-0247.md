@@ -6,6 +6,7 @@ apis: [KeyguardManager, BiometricManager#canAuthenticate]
 type: [static]
 weakness: MASWE-0008
 best-practices: []
+profiles: [L2]
 ---
 
 ## Overview

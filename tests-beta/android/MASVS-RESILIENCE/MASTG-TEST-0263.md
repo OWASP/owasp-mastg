@@ -5,6 +5,7 @@ id: MASTG-TEST-0263
 apis: [StrictMode]
 type: [dynamic]
 weakness: MASWE-0094
+profiles: [R]
 ---
 
 ## Overview

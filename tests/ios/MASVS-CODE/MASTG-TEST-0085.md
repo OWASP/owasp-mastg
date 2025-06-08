@@ -8,6 +8,7 @@ title: Checking for Weaknesses in Third Party Libraries
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 status: deprecated
 covered_by: [MASTG-TEST-0273, MASTG-TEST-0275]
 deprecation_note: New version available in MASTG V2
