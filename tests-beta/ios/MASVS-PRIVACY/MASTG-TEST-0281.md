@@ -4,6 +4,7 @@ title: Undeclared Known Tracking Domains
 id: MASTG-TEST-0281
 type: [static, dynamic]
 weakness: MASWE-0108
+profiles: [P]
 ---
 
 ## Overview
