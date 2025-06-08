@@ -6,11 +6,8 @@ on:
       - master
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/build-website-reusable.yml
+    with:
+      deploy: true
+    secrets: inherit
     if: github.actor == 'cpholguera' || github.actor == 'sushi2k' || github.actor == 'TheDauntless'
-    steps:
-      - name: Call reusable build workflow and deploy
-        uses: ./.github/workflows/build-website-reusable.yml
-        with:
-          deploy: true
-        secrets: inherit
