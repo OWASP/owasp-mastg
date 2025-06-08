@@ -13,3 +13,4 @@ jobs:
         uses: ./.github/workflows/build-website-reusable.yml
         with:
           deploy: true
+        secrets: inherit
