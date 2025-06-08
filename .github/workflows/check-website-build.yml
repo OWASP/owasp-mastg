@@ -1,0 +1,13 @@
+name: Check Website Build
+on:
+  pull_request:
+    branches:
+      - "*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call reusable build workflow (no deploy)
+        uses: ./.github/workflows/build-website-reusable.yml
+        with:
+          deploy: false
