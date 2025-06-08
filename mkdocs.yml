@@ -258,8 +258,8 @@ plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
   - awesome-pages
-  - privacy
-  - offline
+  # - privacy
+  # - offline
   - blog:
   # https://squidfunk.github.io/mkdocs-material/plugins/blog/
       blog_dir: news
