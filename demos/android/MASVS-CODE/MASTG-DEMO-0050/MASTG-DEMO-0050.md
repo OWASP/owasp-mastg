@@ -18,10 +18,10 @@ Execute `gradle` in Android Studio to trigger @MASTG-TOOL-0131.
 
 ### Observation
 
-The scan has identified 262 unique dependencies with 35 vulnerable dependencies and 83 vulnerabilities (as more vulnerabilities might be found over time this number might increase).
+The scan identified 303 unique dependencies, four of which are vulnerable, as well as five vulnerabilities. More vulnerabilities may be found over time, so this number may increase. If you have used the `suppress.xml` file, there are 57 suppressed vulnerabilities.
 
 {{ output.txt }}
 
 ### Evaluation
 
-Due to the number of vulnerabilities, the `dependency-check` report can be lengthy and can contain false positives. Review each of the reported instances. The dependency `okhttp-4.8.0.jar` added in the `build.gradle.kts` has known vulnerabilities and should be updated to the latest version.
+Due to the number of vulnerabilities, the `dependency-check` report can be lengthy and can contain false positives. Review each of the reported instances. The dependency `okhttp-4.9.1.jar` added in the `build.gradle.kts` has known vulnerabilities and should be updated to the latest version.
