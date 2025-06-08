@@ -8,6 +8,7 @@ title: Testing Custom URL Schemes
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -30,7 +31,7 @@ If you have the original source code and want to view registered protocol handle
 
 <img src="Images/Chapters/0x06h/URL_scheme.png" width="100%" />
 
-Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in the app’s `Info.plist` file (example from @MASTG-APP-0028):
+Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in the app's `Info.plist` file (example from @MASTG-APP-0028):
 
 ```xml
 <key>CFBundleURLTypes</key>

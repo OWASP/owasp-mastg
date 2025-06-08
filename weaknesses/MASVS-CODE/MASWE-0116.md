@@ -19,7 +19,7 @@ draft:
   - PIC
   - stack canaries
   note: PIC cannot be switched off in newer versions of Android, the NDK does not link against such libraries anymore [source](https://cs.android.com/android/platform/superproject/main/+/main:bionic/linker/linker_main.cpp;l=397?q=linker_main&ss=android%2Fplatform%2Fsuperproject%2Fmain). 
-status: draft
+status: placeholder
 observed_examples:
 - https://nvd.nist.gov/vuln/detail/CVE-2019-3568
 ---

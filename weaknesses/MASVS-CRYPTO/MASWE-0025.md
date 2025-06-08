@@ -17,7 +17,7 @@ draft:
   description: The use of weak signature such as SHA1withRSA, etc. in a security sensitive
     context should be avoided to ensure the integrity and authenticity of the data.
   topics: null
-status: draft
+status: placeholder
 
 ---
 

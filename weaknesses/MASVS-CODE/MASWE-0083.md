@@ -15,7 +15,7 @@ draft:
   - QR Codes
   - URLs
   - Pasteboard
-status: draft
+status: placeholder
 
 ---
 

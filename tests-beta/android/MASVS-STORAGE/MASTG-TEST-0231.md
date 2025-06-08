@@ -6,11 +6,12 @@ apis: [Log, Logger, System.out.print, System.err.print, java.lang.Throwable#prin
 type: [static]
 weakness: MASWE-0001
 best-practices: [MASTG-BEST-0002]
+profiles: [L1, L2, P]
 ---
 
 ## Overview
 
-This test verifies if an app uses logging APIs like `android.util.Log`, `Log`, `Logger`, `System.out.print`, `System.err.print`, and `java.lang.Throwable#printStackTrace`.
+This test verifies if an app uses [logging APIs](../../../0x05d-Testing-Data-Storage.md/#logs) like `android.util.Log`, `Log`, `Logger`, `System.out.print`, `System.err.print`, and `java.lang.Throwable#printStackTrace`.
 
 ## Steps
 

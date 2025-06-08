@@ -16,7 +16,7 @@ The Corellium GUI provides an app overview and app installer and many other feat
 - [Built-in Frida server](https://support.corellium.com/features/frida/)
 - [Snapshot management](https://support.corellium.com/features/snapshots)
 - [Network monitor](https://support.corellium.com/features/network-monitor/)
-  
+
 ## iOS emulation
 
 Corellium is the only available commercial option for [iOS emulation](https://support.corellium.com/devices/ios). It is possible to launch all types of iOS devices with any supported iOS version. Each device can be jailbroken from the start, so even recent versions of iOS can be used to analyze applications.
