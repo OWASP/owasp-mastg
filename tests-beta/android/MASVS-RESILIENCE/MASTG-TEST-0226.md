@@ -5,6 +5,7 @@ id: MASTG-TEST-0226
 type: [static]
 weakness: MASWE-0067
 best-practices: [MASTG-BEST-0007]
+profiles: [R]
 ---
 
 ## Overview

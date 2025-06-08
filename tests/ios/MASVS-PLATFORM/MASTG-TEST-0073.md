@@ -8,6 +8,7 @@ title: Testing UIPasteboard
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 status: deprecated
 deprecation_note: New version available in MASTG V2
 covered_by: [MASTG-TEST-0276, MASTG-TEST-0277, MASTG-TEST-0278, MASTG-TEST-0279, MASTG-TEST-0280]

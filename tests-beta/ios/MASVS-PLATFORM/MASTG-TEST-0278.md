@@ -5,6 +5,7 @@ id: MASTG-TEST-0278
 type: [dynamic]
 weakness: MASWE-0053
 threat: [app]
+profiles: [L2]
 ---
 
 ## Overview

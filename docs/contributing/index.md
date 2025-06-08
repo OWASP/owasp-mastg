@@ -10,16 +10,16 @@ The MAS project is an open source effort and we welcome all kinds of contributio
 
 **Help us improve & join our community:**
 
-- 🐞 [Report an error (typos, grammar)](contributing/1_How_Can_You_Contribute.md#create-issues) or [fix it on a Pull Request](contributing/1_How_Can_You_Contribute.md#open-a-pull-request).
+- 🐞 [Report an error (typos, grammar)](1_How_Can_You_Contribute.md#create-issues) or [fix it on a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request).
 - 💬 Give feedback ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/general)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/general)).
 - 🙏 Ask questions ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/q-a)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/q-a)).
 
 **Contribute with content:**
 
 - 💡 Propose ideas or suggest improvements ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/ideas)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/ideas)). If it qualifies we'll promote it to an Issue.
-- 📄 [Create a Pull Request](contributing/1_How_Can_You_Contribute.md#open-a-pull-request) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
+- 📄 [Create a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
-Before you start contributing, please check our pages ["How Can You Contribute?"](contributing/1_How_Can_You_Contribute.md) and ["Getting Started"](contributing/2_Getting_Started.md). If you have any doubts [please contact us](contact.md).
+Before you start contributing, please check our pages ["How Can You Contribute?"](1_How_Can_You_Contribute.md) and ["Getting Started"](2_Getting_Started.md). If you have any doubts [please contact us](../contact.md).
 
 ## 🚫 What not to do
 
@@ -28,7 +28,7 @@ Although we greatly appreciate any and all contributions to the project, there a
 - **No advertisement**: The OWASP mobile Security Project cannot be used as a platform for advertisement of commercial tools, companies or individuals. Technical content such as the implementation of certain techniques or tests should be written with free and open-source tools in mind. Commercial tools are typically not accepted, but might be referenced in some specific cases.
 - **No unnecessary self-promotion of tools or blog posts**: If you have a relation with one of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
 
-Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](contact.md) in case of doubt.
+Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](../contact.md) in case of doubt.
 
 ## Tool Inclusion Disclaimer for Contributors
 
@@ -50,7 +50,7 @@ Our goal is to be vendor-neutral and to serve as a trusted learning resource, wh
 
 ## Our Contributors
 
-All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
+All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](../MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
 
 **Update March 2023: We're creating a new concept for contributions that aligns with the new MASTG v2 workflows. Stay tuned...**
 

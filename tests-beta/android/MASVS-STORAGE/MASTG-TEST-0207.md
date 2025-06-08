@@ -6,6 +6,7 @@ type: [dynamic, filesystem]
 prerequisites:
 - identify-sensitive-data
 weakness: MASWE-0006
+profiles: [L2]
 ---
 
 ## Overview

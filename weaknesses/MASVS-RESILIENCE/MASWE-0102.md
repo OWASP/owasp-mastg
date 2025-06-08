@@ -14,7 +14,7 @@ draft:
   - frida detection
   - xposed detection
   - cydia substrate detection
-status: draft
+status: placeholder
 
 ---
 

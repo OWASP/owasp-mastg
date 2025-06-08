@@ -1,5 +1,5 @@
 ---
-title: Biometric Authentication is Event-bound
+title: Biometric Authentication Can Be Bypassed
 id: MASWE-0044
 alias: event-bound-biometric-auth
 platform: [android, ios]
@@ -21,7 +21,7 @@ draft:
   - no use of CryptoObject
   - keychain items protected with access control flags such as kSecAccessControlTouchIDAny
     or kSecAccessControlTouchIDCurrentSet
-status: draft
+status: placeholder
 
 ---
 
