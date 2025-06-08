@@ -74,7 +74,7 @@ In case there are dependencies you want to suppress, either as they are false po
 
 To use the `suppression.xml` file, add the following line to your `build.gradle.kts` file:
 
-```json
+```java
 dependencyCheck {
 
     formats = listOf("HTML", "XML", "JSON") // Generate reports in HTML, JSON and XML format
