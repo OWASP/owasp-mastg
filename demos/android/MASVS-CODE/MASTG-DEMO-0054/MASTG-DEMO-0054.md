@@ -22,7 +22,7 @@ Let's run @MASTG-TOOL-0110 rules against the sample code.
 
 ### Observation
 
-The output file shows usages of string-based local storage in the code.
+The output file shows usages of string based local storage in the code.
 
 {{ output.txt }}
 
