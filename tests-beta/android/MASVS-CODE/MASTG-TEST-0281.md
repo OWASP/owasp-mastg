@@ -20,4 +20,4 @@ The output file shows usages of object persistence using string-based storage (`
 
 ## Evaluation
 
-The test fails if `putString()` and `getString()` are found in the code and used to store or retrieve JSON, HTML, or other potentially unsafe input.
+The test fails if the `putString()` and `getString()` was found in the code.
