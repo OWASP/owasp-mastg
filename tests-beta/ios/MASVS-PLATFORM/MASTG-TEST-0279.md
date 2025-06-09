@@ -2,7 +2,7 @@
 platform: ios
 title: Pasteboard Contents Not Expiring
 id: MASTG-TEST-0279
-type: [dynamic]
+type: [static]
 weakness: MASWE-0053
 threat: [app]
 profiles: [L2]
