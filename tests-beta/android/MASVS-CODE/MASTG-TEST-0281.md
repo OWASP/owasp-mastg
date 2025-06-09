@@ -1,22 +1,22 @@
 ---
-title: Testing Local Storage for Input Validation with Semgrep
+title: Use of Local Storage for Input Validation
 platform: android
 id: MASTG-TEST-0281
 type: [static]
-weakness: MASWE-0088
+weakness: MASWE-0082
 ---
 
 ## Overview
 
-Android provides `SharedPreferences` for storing key-value pairs of primitive data and strings. When structured data such as JSON or HTML is stored using `putString()` & `getString()` without proper validation, it can lead to security issues like tampering or injection. This is particularly risky if the stored data is later trusted and used directly by the app.
+Android offers `SharedPreferences` for saving key-value pairs of basic data types and strings. When you store structured data like JSON or HTML using `putString()` and `getString()` without adequate validation, it can result in security vulnerabilities such as tampering or injection. This becomes especially dangerous if the stored data is subsequently trusted and utilized directly by the application.
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for uses of the `putString` and `getString` methods from the `SharedPreferences` API.
+1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for uses of the `putString` and `getString`.
 
 ## Observation
 
-The output file shows usages of object persistence using string-based storage (`putString`, `getString`, etc.) in the code.
+The output file shows usages of the input validation using `putString` and `getString` in the code.
 
 ## Evaluation
 
