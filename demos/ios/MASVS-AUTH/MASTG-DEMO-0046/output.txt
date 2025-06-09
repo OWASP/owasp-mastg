@@ -1,0 +1,11 @@
+SecAccessControlCreateWithFlags(..., 0x2) called with kSecAccessControlBiometryAny
+
+Backtrace:
+0x102350198 MASTestApp!specialized static MastgTest.createAccessControl()
+0x1023504b0 MASTestApp!specialized static MastgTest.storeTokenInKeychain(secretToken:)
+0x102351b98 MASTestApp!closure #1 in closure #1 in closure #1 in ContentView.body.getter
+0x19908bc54 SwiftUI!partial apply for closure #1 in closure #2 in ContextMenuBridge.contextMenuInteraction(_:willPerformPreviewActionForMenuWith:animator:)
+0x198f986d0 SwiftUI!partial apply for specialized thunk for @callee_guaranteed () -> (@out A, @error @owned Error)
+0x1996657c4 SwiftUI!specialized static MainActor.assumeIsolated<A>(_:file:line:)
+0x1996321a8 SwiftUI!ButtonAction.callAsFunction()
+0x198b14c2c SwiftUI!partial apply for implicit closure #2 in implicit closure #1 in PlatformItemListButtonStyle.makeBody(configuration:)

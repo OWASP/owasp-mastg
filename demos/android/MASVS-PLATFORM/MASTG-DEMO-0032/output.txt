@@ -1,0 +1,18 @@
+                   
+                   
+┌─────────────────┐
+│ 4 Code Findings │
+└─────────────────┘
+                                  
+    MastgTestWebView_reversed.java
+     ❱ rules.mastg-android-webview-settings
+          [MASVS-PLATFORM-2] Detected WebView settings.
+                                                       
+           29┆ WebSettings $this$mastgTest_u24lambda_u240 = webView.getSettings();
+            ⋮┆----------------------------------------
+           30┆ $this$mastgTest_u24lambda_u240.setJavaScriptEnabled(true);
+            ⋮┆----------------------------------------
+           31┆ $this$mastgTest_u24lambda_u240.setAllowFileAccess(true);
+            ⋮┆----------------------------------------
+           32┆ $this$mastgTest_u24lambda_u240.setAllowFileAccessFromFileURLs(true);
+

@@ -15,14 +15,9 @@ refs:
 draft:
   description: The app may not check for a secure device lock (e.g. device passcode) and may allow for unauthorized access to sensitive data. On iOS enforcing device lock security (i.e., ensuring a passcode is set) has an additional benefit which is that it is tightly coupled with data encryption, assuming the app leverages the correct data protection APIs.
   topics:
-  - user set a device passcode via `isDeviceSecure()` on Android better than only ensuring
-    that the secure screen lock is set via `KeyguardManager.isKeyguardSecure()`
-  - before attempting to authenticate, test to make sure that you actually have the
-    ability to do so by calling the `LAContext.canEvaluatePolicy(_:error:)` method on
-    iOS
-  - to make sure that biometrics can be used, verify that the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`
-    or the `kSecAttrAccessibleWhenPasscodeSet` protection class is set when the `SecAccessControlCreateWithFlags`
-    method is called
-status: draft
+  - user set a device passcode via `isDeviceSecure()` on Android better than only ensuring that the secure screen lock is set via `KeyguardManager.isKeyguardSecure()`
+  - before attempting to authenticate, test to make sure that you actually have the ability to do so by calling the `LAContext.canEvaluatePolicy(_:error:)` method on iOS
+  - to make sure that biometrics can be used, verify that the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` or the `kSecAttrAccessibleWhenPasscodeSet` protection class is set when the `SecAccessControlCreateWithFlags` method is called
+status: placeholder
 
 ---

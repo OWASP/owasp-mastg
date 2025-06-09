@@ -1,0 +1,32 @@
+[
+    {
+        "group": "com.squareup.okhttp3",
+        "name": "okhttp",
+        "version": "4.8.0",
+        "scope": "optional",
+        "purl": "pkg:maven/com.squareup.okhttp3/okhttp@4.8.0?type=jar",
+        "type": "library",
+        "bom-ref": "pkg:maven/com.squareup.okhttp3/okhttp@4.8.0?type=jar",
+        "properties": [
+            {
+                "name": "GradleProfileName",
+                "value": "debugAndroidTestCompileClasspath"
+            }
+        ]
+    },
+    {
+        "group": "com.squareup.okio",
+        "name": "okio",
+        "version": "2.7.0",
+        "scope": "optional",
+        "purl": "pkg:maven/com.squareup.okio/okio@2.7.0?type=jar",
+        "type": "library",
+        "bom-ref": "pkg:maven/com.squareup.okio/okio@2.7.0?type=jar",
+        "properties": [
+            {
+                "name": "GradleProfileName",
+                "value": "debugAndroidTestCompileClasspath"
+            }
+        ]
+    }
+]

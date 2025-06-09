@@ -1,0 +1,13 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ rules.mastg-android-strictmode
+          [MASVS-RESILIENCE] Detected usage of StrictMode
+                                                         
+           29┆ StrictMode.setVmPolicy(new                                                        
+               StrictMode.VmPolicy.Builder().detectLeakedClosableObjects().penaltyLog().build());
+

@@ -5,6 +5,7 @@ id: MASTG-TEST-0241
 type: [dynamic]
 weakness: MASWE-0097
 false_negative_prone: true
+profiles: [R]
 ---
 
 ## Overview

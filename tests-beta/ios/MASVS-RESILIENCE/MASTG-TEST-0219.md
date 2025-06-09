@@ -4,6 +4,7 @@ title: Testing for Debugging Symbols
 id: MASTG-TEST-0219
 type: [static]
 weakness: MASWE-0093
+profiles: [R]
 ---
 
 ## Overview
