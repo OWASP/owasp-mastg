@@ -4,8 +4,8 @@
 │ 6 Code Findings │
 └─────────────────┘
                                                                     
-  [36m[22m[24m  MASTestApp-Android/output/MastgTest_reversed.java[0m
-    ❯❱ [1mmastg-android-local-storage-for-input-validation[0m
+  MASTestApp-Android/output/MastgTest_reversed.java
+    ❯❱  mastg-android-local-storage-for-input-validation
           [MASVS-CODE-4] The application make use of input validation in the code.
                                                                                   
            48┆ $this$storeStrings_u24lambda_u241.putString("userJson",
