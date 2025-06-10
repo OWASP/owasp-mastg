@@ -71,6 +71,10 @@ Once the activity has been called, the file key.xml will be created with the pro
 
 You might also use [`EncryptedSharedPreferences`](https://developer.android.com/reference/androidx/security/crypto/EncryptedSharedPreferences), which is wrapper of `SharedPreferences` that automatically encrypts all data stored to the shared preferences.
 
+!!! Warning
+
+    The **Jetpack security crypto library**, including the `EncryptedFile` and  `EncryptedSharedPreferences` classes, has been [deprecated](https://developer.android.com/privacy-and-security/cryptography#jetpack_security_crypto_library). However, since an official replacement has not yet been released, we recommend using these classes until one is available.
+
 ```kotlin
 var masterKey: MasterKey? = null
 masterKey = Builder(this)
@@ -560,7 +564,11 @@ In order to securely store symmetric keys on devices running on Android 5.1 (API
 
 Envelope encryption, or key wrapping, is a similar approach that uses symmetric encryption to encapsulate key material. Data encryption keys (DEKs) can be encrypted with key encryption keys (KEKs) which are securely stored. Encrypted DEKs can be stored in `SharedPreferences` or written to files. When required, the application reads the KEK, then decrypts the DEK. Refer to [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#encrypting-stored-keys "OWASP Cryptographic Storage Cheat Sheet: Encrypting Stored Keys") to learn more about encrypting cryptographic keys.
 
-Also, as the illustration of this approach, refer to the [EncryptedSharedPreferences from androidx.security.crypto package](https://developer.android.com/jetpack/androidx/releases/security "androidx.security.crypto API reference").
+Also, as the illustration of this approach, refer to the [`EncryptedSharedPreferences`](https://android.googlesource.com/platform/frameworks/support/+/8d4dee36b185eb647753338de4e161bebaeff24d/security/security-crypto/src/main/java/androidx/security/crypto/EncryptedSharedPreferences.java) from the **Jetpack security crypto library**.
+
+!!! Warning
+
+    The **Jetpack security crypto library**, including the `EncryptedFile` and  `EncryptedSharedPreferences` classes, has been [deprecated](https://developer.android.com/privacy-and-security/cryptography#jetpack_security_crypto_library). However, since an official replacement has not yet been released, we recommend using these classes until one is available.
 
 #### Insecure options to store keys
 

@@ -6,6 +6,7 @@ type: [static]
 available_since: 24
 weakness: MASWE-0104
 best-practices: [MASTG-BEST-0006]
+profiles: [R]
 ---
 
 ## Overview

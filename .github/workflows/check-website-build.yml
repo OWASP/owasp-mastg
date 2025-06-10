@@ -1,13 +1,11 @@
-name: Build GitHub Pages
+name: Check Website Build
 on:
-  workflow_dispatch:
-  push:
+  pull_request:
     branches:
-      - master
+      - "*"
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    if: github.actor == 'cpholguera' || github.actor == 'sushi2k' || github.actor == 'TheDauntless'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,7 +36,5 @@ jobs:
       - name: Generate MASVS Control Markdown Files
         run: python3 src/scripts/write_masvs_control_md_files.py
       
-      - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mkdocs gh-deploy --force --clean --verbose
+      - name: Build website (no deploy)
+        run: mkdocs build --clean --verbose

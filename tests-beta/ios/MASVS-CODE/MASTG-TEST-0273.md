@@ -4,6 +4,7 @@ title: Identify Dependencies with Known Vulnerabilities by Scanning Dependency M
 id: MASTG-TEST-0273
 type: [static]
 weakness: MASWE-0076
+profiles: [L1, L2]
 ---
 
 ## Overview

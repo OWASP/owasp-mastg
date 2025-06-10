@@ -8,6 +8,7 @@ title: Testing for Sensitive Functionality Exposure Through IPC
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview

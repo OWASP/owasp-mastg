@@ -16,7 +16,7 @@ draft:
   description: Cryptographic signature verification should be performed properly to
     ensure the integrity and authenticity of the data.
   topics: null
-status: draft
+status: placeholder
 
 ---
 

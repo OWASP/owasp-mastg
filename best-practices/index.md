@@ -1,7 +1,6 @@
 ---
 hide: toc
-title: Best Practices (v2 Beta)
-status: new
+title: Best Practices
 ---
 
 ??? info "About the MASTG Best Practices"

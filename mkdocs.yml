@@ -41,7 +41,7 @@ nav:
         - ... | flat | MASTG/0x05*.md
       - iOS Security Testing: 
         - ... | flat | MASTG/0x06*.md
-      - Best Practices (v2 Beta):
+      - Best Practices:
         - MASTG/best-practices/index.md
         - ... | flat | MASTG/best-practices/*.md
       - Tests:
@@ -80,43 +80,7 @@ nav:
             - ... | flat | MASTG/tests/ios/MASVS-RESILIENCE/*.md
           - MASVS-PRIVACY:
             - ... | flat | MASTG/tests/ios/MASVS-PRIVACY/*.md
-      - Tests (v2 Beta):
-        - MASTG/tests-beta/index.md
-        - Android:
-          - MASVS-STORAGE:
-            - ... | flat | MASTG/tests-beta/android/MASVS-STORAGE/MASTG-TEST-*.md
-          - MASVS-CRYPTO:
-            - ... | flat | MASTG/tests-beta/android/MASVS-CRYPTO/MASTG-TEST-*.md
-          # - MASVS-AUTH:
-          #   - ... | flat | MASTG/tests-beta/android/MASVS-AUTH/MASTG-TEST-*.md
-          - MASVS-NETWORK:
-            - ... | flat | MASTG/tests-beta/android/MASVS-NETWORK/MASTG-TEST-*.md
-          - MASVS-PLATFORM:
-            - ... | flat | MASTG/tests-beta/android/MASVS-PLATFORM/MASTG-TEST-*.md
-          - MASVS-CODE:
-            - ... | flat | MASTG/tests-beta/android/MASVS-CODE/MASTG-TEST-*.md
-          - MASVS-RESILIENCE:
-            - ... | flat | MASTG/tests-beta/android/MASVS-RESILIENCE/MASTG-TEST-*.md
-          - MASVS-PRIVACY:
-            - ... | flat | MASTG/tests-beta/android/MASVS-PRIVACY/MASTG-TEST-*.md
-        - iOS:
-          - MASVS-STORAGE:
-            - ... | flat | MASTG/tests-beta/ios/MASVS-STORAGE/MASTG-TEST-*.md
-          - MASVS-CRYPTO:
-            - ... | flat | MASTG/tests-beta/ios/MASVS-CRYPTO/MASTG-TEST-*.md
-          - MASVS-AUTH:
-            - ... | flat | MASTG/tests-beta/ios/MASVS-AUTH/MASTG-TEST-*.md
-          # - MASVS-NETWORK:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-NETWORK/MASTG-TEST-*.md
-          # - MASVS-PLATFORM:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-PLATFORM/MASTG-TEST-*.md
-          - MASVS-CODE:
-            - ... | flat | MASTG/tests-beta/ios/MASVS-CODE/MASTG-TEST-*.md
-          - MASVS-RESILIENCE:
-            - ... | flat | MASTG/tests-beta/ios/MASVS-RESILIENCE/MASTG-TEST-*.md
-          # - MASVS-PRIVACY:
-          #   - ... | flat | MASTG/tests-beta/ios/MASVS-PRIVACY/MASTG-TEST-*.md 
-      - Demos (v2 Beta):
+      - Demos:
         - MASTG/demos/index.md
         - Android:
           - MASVS-STORAGE:
@@ -214,7 +178,7 @@ nav:
       - news/index.md
   - talks.md
   - "&#11088; Contribute":
-      - contributing.md
+      - contributing/index.md
       - ... | flat | contributing/*.md
   - "&#128153; Donate":
       - donate.md
@@ -245,7 +209,8 @@ theme:
       l1: material/circle
       l2: material/circle-multiple-outline
       r: material/circle-double
-      draft: material/information-outline
+      placeholder: material/pencil-plus
+      update-pending: material/information-outline
       deprecated: material/trash-can
       new: material/alert-decagram
       tool: octicons/tools-24
@@ -293,7 +258,8 @@ plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
   - awesome-pages
-  - mermaid2
+  # - privacy
+  # - offline
   - blog:
   # https://squidfunk.github.io/mkdocs-material/plugins/blog/
       blog_dir: news
@@ -336,7 +302,6 @@ markdown_extensions:
 hooks:
   - docs/hooks/replace_snippets.py
   - docs/hooks/update_titles.py
-  - docs/hooks/maswe-beta-banner.py
   - docs/hooks/add-tags.py
   - docs/hooks/add-cross-references.py
   - docs/hooks/edit_button_uri.py
@@ -344,6 +309,7 @@ hooks:
   - docs/hooks/create_dynamic_tables.py
   - docs/hooks/update_git_info.py
   - docs/hooks/add-checklists-banner.py
+  - docs/hooks/maswe-beta-banner.py
 
 extra:
   generator: false # removed but recreated in copyright above
@@ -372,7 +338,8 @@ extra:
     L1: l1
     L2: l2
     R: r
-    draft: draft
+    placeholder: placeholder
+    update-pending: update-pending
     deprecated: deprecated
     new: new
     tool: tool
@@ -384,6 +351,7 @@ extra:
     masvs: masvs
     best: best
   status:
-    draft: This page is in draft.
+    placeholder: This page is a placeholder.
     deprecated: This page is deprecated.
-    new: New in this beta!
+    new: This page is new!
+    update-pending: This page is pending an update.
