@@ -10,7 +10,7 @@ test: MASTG-TEST-0266
 
 The following sample insecurely accesses sensitive resources, a secret token, **relying solely** on the LocalAuthentication API for access control instead of using the Keychain API and requiring user presence. It does so by using the `evaluatePolicy` method of the `LAContext` class to authenticate the user with biometrics (`deviceOwnerAuthenticationWithBiometrics`).
 
-This method is weak because it depends on an if statement to check if the authentication was successful, which can be bypassed by an attacker using techniques such as @MASTG-TECH-0119.
+This method is weak because it depends on an if statement to check if the authentication was successful, which can be bypassed by an attacker using techniques such as @MASTG-TECH-0135.
 
 {{ MastgTest.swift }}
 
