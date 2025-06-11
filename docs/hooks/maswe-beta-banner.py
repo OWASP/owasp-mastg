@@ -247,6 +247,9 @@ def on_page_markdown(markdown, page, config, **kwargs):
     if "MASWE/" in path and page.meta.get('status') == 'placeholder':
         banners.append(get_maswe_placeholder_banner(page.meta))
 
+    # print(path)
+    if "TEST-0058" in path:
+        print(">>>>>", page.meta.get('status', "none"))
     if "MASTG/tests/" in path:
         if page.meta.get('status') == 'deprecated':
             banners.append(get_v1_deprecated_tests_banner(page.meta))
