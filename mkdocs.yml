@@ -304,6 +304,9 @@ hooks:
   # General
   - docs/hooks/edit_button_uri.py
 
+  # Priority -30 for extracting the ID for old tests
+  - docs/hooks/extract-id-from-path.py
+
   # Priority -40 for adding content
   - docs/hooks/add-checklists-banner.py
   - docs/hooks/add-cross-references.py
