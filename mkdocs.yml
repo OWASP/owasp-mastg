@@ -301,25 +301,25 @@ markdown_extensions:
 
 hooks:
   # General
-  - docs/hooks/edit_button_uri.py
+  # - docs/hooks/edit_button_uri.py
 
   # Priority -30 for extracting the ID for old tests
   - docs/hooks/extract-id-from-path.py
 
-  # Priority -40 for adding content
-  - docs/hooks/add-checklists-banner.py
-  - docs/hooks/add-cross-references.py
-  - docs/hooks/replace_snippets.py
-  - docs/hooks/maswe-beta-banner.py
-  - docs/hooks/create_dynamic_tables.py
+  # # Priority -40 for adding content
+  # - docs/hooks/add-checklists-banner.py
+  # - docs/hooks/add-cross-references.py
+  # - docs/hooks/replace_snippets.py
+  # - docs/hooks/maswe-beta-banner.py
+  # - docs/hooks/create_dynamic_tables.py
 
-  # Priority -49 for last-minute tag modification
-  - docs/hooks/add-tags.py
-  - docs/hooks/update_titles.py
-  - docs/hooks/update_git_info.py
+  # # Priority -49 for last-minute tag modification
+  # - docs/hooks/add-tags.py
+  # - docs/hooks/update_titles.py
+  # - docs/hooks/update_git_info.py
 
-  # Priority -50 for conversion of tags and cross-references
-  - docs/hooks/resolve_references.py
+  # # Priority -50 for conversion of tags and cross-references
+  # - docs/hooks/resolve_references.py
 
 extra:
   generator: false # removed but recreated in copyright above
