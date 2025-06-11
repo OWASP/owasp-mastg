@@ -41,12 +41,12 @@ def get_all_weaknessess():
     for file in glob.glob("docs/MASWE/**/MASWE-*.md", recursive=True):
         with open(file, 'r') as f:
             content = f.read()
-    
+
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
             frontmatter['path'] = f"/MASWE/{os.path.splitext(os.path.relpath(file, 'docs/MASWE'))[0]}"
             weaknesses_id = frontmatter['id']
             frontmatter['id'] = weaknesses_id
-            frontmatter['title'] = f"@{frontmatter['id']}"            
+            frontmatter['title'] = f"@{frontmatter['id']}"
             frontmatter['masvs_v2_id'] = frontmatter['mappings']['masvs-v2'][0]
             frontmatter['masvs_category'] = frontmatter['masvs_v2_id'][:frontmatter['masvs_v2_id'].rfind('-')]
             frontmatter['L1'] = get_level_icon('L1', "L1" in frontmatter['profiles'])
@@ -94,7 +94,7 @@ def get_mastg_tests_dict():
                     masvs_v2_id = frontmatter['masvs_v2_id']
                     frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
                     if masvs_v2_id:
-                        id = masvs_v2_id[0] 
+                        id = masvs_v2_id[0]
                         if id not in mastg_tests:
                             mastg_tests[id] = {}
                         if platform not in mastg_tests[id]:
@@ -203,7 +203,7 @@ def set_icons_for_web(checklist):
             relPath = os.path.relpath(row['path'], './checklists/') + ".md"
             row['MASVS-ID'] = f"**[{row['MASVS-ID']}]({relPath})**"
             row['Control / MASTG Test'] = f"**{row['Control / MASTG Test']}**"
-                        
+
         # if it's a test row, set the icons for platform and levels
         else:
             row['Platform'] = get_platform_icon(row['Platform'])
@@ -212,11 +212,11 @@ def set_icons_for_web(checklist):
             row['L2'] = get_level_icon('L2', row['L2'])
             row['R'] = get_level_icon('R', row['R'])
             row['P'] = get_level_icon('P', row['P'])
-            
+
             test_id = row['MASTG-TEST-ID']
 
             row['MASTG-TEST-ID'] = f'<span style="display:inline-block; border-radius:2.4em; background:#499fffff; color: white; padding:0.2em 0.8em; font-size:75%;">{row["MASTG-TEST-ID"]}</span><span style="display: none;">{row["MASTG-TEST-ID"]}</span>'
-            
+
             # Process status field for test rows
             status = row.get('Status')
             if status == 'new':
@@ -229,7 +229,10 @@ def set_icons_for_web(checklist):
                 row['Status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em;">update-pending</span></a><span style="display: none;">status:update-pending</span>'
 
 def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
-    if column_titles is None: column_titles = {key:key.title() for (key,_) in data[0].items()}
+
+    if column_titles is None:
+        column_titles = {key:key.title() for (key,_) in data[0].items()}
+
     df = pandas.DataFrame.from_dict(data).rename(columns=column_titles)
     return df.to_markdown(index=False, colalign=column_align)
 
@@ -239,14 +242,14 @@ def append_to_page(markdown, new_content):
 
 
 def get_mastg_components_dict(name):
-    
+
         components = []
-    
+
         for file in glob.glob(f"{name}/**/*.md", recursive=True):
             if "index.md" not in file:
                 with open(file, 'r') as f:
                     content = f.read()
-        
+
                     frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
                     component_id = os.path.splitext(os.path.basename(file))[0]
                     component_path = os.path.splitext(os.path.relpath(file, "docs/"))[0]
@@ -278,7 +281,7 @@ def get_mastg_components_dict(name):
                             frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
                         elif frontmatter['status'] == 'deprecated':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
-                    
+
                     components.append(frontmatter)
         return components
 
@@ -291,11 +294,11 @@ def get_all_demos_beta():
     for file in glob.glob("docs/MASTG/demos/**/MASTG-DEMO-*.md", recursive=True):
         with open(file, 'r') as f:
             content = f.read()
-    
+
             frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
 
             frontmatter['path'] = f"/MASTG/demos/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/demos'))[0]}"
-            demo_id = frontmatter['id']            
+            demo_id = frontmatter['id']
             frontmatter['id'] = demo_id
             frontmatter['title'] = f"@{demo_id}"
             frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
@@ -307,26 +310,26 @@ def get_all_demos_beta():
                 frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{demo_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
-            
+
             demos.append(frontmatter)
     return demos
 
 def get_all_mitigations_beta():
-    
+
         mitigations = []
-    
+
         for file in glob.glob("docs/MASTG/best-practices/**/MASTG-BEST-*.md", recursive=True):
             with open(file, 'r') as f:
                 content = f.read()
-        
+
                 frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-    
+
                 frontmatter['path'] = f"/MASTG/best-practices/{os.path.splitext(os.path.relpath(file, 'docs/MASTG/best-practices'))[0]}"
                 mitigation_id = frontmatter['id']
                 frontmatter['id'] = mitigation_id
                 frontmatter['title'] = f"@{mitigation_id}"
                 frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
-                
+
                 mitigations.append(frontmatter)
         return mitigations
 
@@ -366,7 +369,7 @@ def on_page_markdown(markdown, page, **kwargs):
     elif path.endswith("best-practices/index.md"):
         # mitigations/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"} 
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"}
 
         mitigations_beta = get_all_mitigations_beta()
         mitigations_beta_columns_reordered = [reorder_dict_keys(mitigation, column_titles.keys()) for mitigation in mitigations_beta]
@@ -441,11 +444,11 @@ def on_page_markdown(markdown, page, **kwargs):
 
             del cleaned_check['path']
             cleaned_checklist.append(cleaned_check)
-        
+
         cleaned_checklist = [reorder_dict_keys(check, column_titles.keys()) for check in cleaned_checklist]
-        
+
         content = list_of_dicts_to_md_table(cleaned_checklist, column_titles, column_align) + "\n\n<br><br>"
-        
+
         return append_to_page(markdown, content)
 
 
