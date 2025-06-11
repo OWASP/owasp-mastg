@@ -190,18 +190,12 @@ def get_android_demo_buttons(page):
 """
     return banner
 
-def get_ios_demo_buttons(page):
+def get_ios_demo_buttons(page, artifacts_url):
     id = page.meta.get('id')
 
     page_uri = page.file.src_uri
 
-    artifacts_url = github_api.get_latest_successful_run("build-ios-demos.yml")
-
     demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
-
-    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
-    if not artifacts_url:
-        artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
 
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
@@ -247,9 +241,6 @@ def on_page_markdown(markdown, page, config, **kwargs):
     if "MASWE/" in path and page.meta.get('status') == 'placeholder':
         banners.append(get_maswe_placeholder_banner(page.meta))
 
-    # print(path)
-    if "TEST-0058" in path:
-        print(">>>>>", page.meta.get('status', "none"))
     if "MASTG/tests/" in path:
         if page.meta.get('status') == 'deprecated':
             banners.append(get_v1_deprecated_tests_banner(page.meta))
@@ -262,7 +253,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
         banners.append(get_android_demo_buttons(page))
 
     if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'placeholder':
-        banners.append(get_ios_demo_buttons(page))
+        banners.append(get_ios_demo_buttons(page, config["artifacts_url"]))
 
     if "MASTG/demos/" in path and page.meta.get('status') == 'placeholder':
         banners.append(get_demos_placeholder_banner(page.meta))
@@ -275,3 +266,8 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
 def on_config(config):
     config["issue_mapping"] = github_api.get_issues_for_test_refactors()
+    config["artifacts_url"] = github_api.get_latest_successful_run("build-ios-demos.yml")
+
+    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
+    if not config["artifacts_url"]:
+        config["artifacts_url"] = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
