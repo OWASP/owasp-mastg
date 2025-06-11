@@ -338,7 +338,7 @@ def reorder_dict_keys(original_dict, key_order):
 
 # Higher priority, so that tables are parsed by the other hooks too
 @mkdocs.plugins.event_priority(-40)
-def on_page_markdown(markdown, page, **kwargs):
+def on_page_markdown(markdown, page, config, **kwargs):
 
     path = page.file.src_uri
 
@@ -361,7 +361,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'test': "Test", 'status': "Status"} # TODO , 'tools': "Tools"
 
-        demos_beta = get_all_demos_beta()
+        demos_beta = config["demos_beta"]
         demos_beta_columns_reordered = [reorder_dict_keys(demo, column_titles.keys()) for demo in demos_beta]
 
         return append_to_page(markdown, list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles))
@@ -371,7 +371,7 @@ def on_page_markdown(markdown, page, **kwargs):
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"}
 
-        mitigations_beta = get_all_mitigations_beta()
+        mitigations_beta = config["mitigations_beta"]
         mitigations_beta_columns_reordered = [reorder_dict_keys(mitigation, column_titles.keys()) for mitigation in mitigations_beta]
 
         return append_to_page(markdown, list_of_dicts_to_md_table(mitigations_beta_columns_reordered, column_titles))
@@ -453,3 +453,8 @@ def on_page_markdown(markdown, page, **kwargs):
 
 
     return markdown
+
+
+def on_config(config):
+    config["mitigations_beta"] = get_all_mitigations_beta()
+    config["demos_beta"] = get_all_demos_beta()
