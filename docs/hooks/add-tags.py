@@ -20,6 +20,7 @@ def on_page_markdown(markdown, page, **kwargs):
     for profile in page.meta.get('profiles', []):
         tags.append(profile)
 
+    # If any of these tags don't exist, they will be stripped automatically at the end of the function
     tags.append(page.meta.get("masvs_category"))
     tags.append(page.meta.get("component_type"))
     tags.append(page.meta.get("weakness"))
