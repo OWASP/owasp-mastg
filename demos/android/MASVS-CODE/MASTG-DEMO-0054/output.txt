@@ -1,0 +1,24 @@
+                   
+                   
+┌─────────────────┐
+│ 6 Code Findings │
+└─────────────────┘
+                                                                    
+  MASTestApp-Android/output/MastgTest_reversed.java
+    ❯❱  mastg-android-local-storage-for-input-validation
+          [MASVS-CODE-4] The application make use of input validation in the code.
+                                                                                  
+           48┆ $this$storeStrings_u24lambda_u241.putString("userJson",
+               "{\"name\":\"John\",\"admin\":false}");                
+            ⋮┆----------------------------------------
+           49┆ $this$storeStrings_u24lambda_u241.putString("htmlContent", "<div>Safe content</div>");
+            ⋮┆----------------------------------------
+           67┆ $this$simulateTampering_u24lambda_u242.putString("userJson",
+               "{\"name\":\"John\",\"admin\":true}");                      
+            ⋮┆----------------------------------------
+           68┆ $this$simulateTampering_u24lambda_u242.putString("htmlContent",
+               "<script>alert('XSS')</script>");                              
+            ⋮┆----------------------------------------
+           81┆ String userJson = this.sharedPref.getString("userJson", "");
+            ⋮┆----------------------------------------
+           83┆ String htmlContent = this.sharedPref.getString("htmlContent", "");
