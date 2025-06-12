@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-PLATFORM-2, MASVS-RESILIENCE-4]
+  cwe: [489]
 
 refs:
 - https://developer.android.com/reference/android/webkit/WebView#setWebContentsDebuggingEnabled(boolean)
