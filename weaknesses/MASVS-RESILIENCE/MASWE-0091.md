@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-12]
   masvs-v2: [MASVS-RESILIENCE-3]
+  cwe: [657]
 
 draft:
   description: incl. anti-deobfuscation techniques

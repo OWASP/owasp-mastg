@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [R]
 mappings:
   masvs-v2: [MASVS-RESILIENCE-3]
+  cwe: [657]
 
 draft:
   description: AKA static damage control
