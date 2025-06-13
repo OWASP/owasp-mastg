@@ -1,1 +1,0 @@
-NO_COLOR=true semgrep -c ../../../../rules/mastg-android-network-target-sdk-version.yml ./build.gradle.kts --text -o output.txt

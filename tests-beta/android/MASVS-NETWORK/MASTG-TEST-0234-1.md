@@ -20,3 +20,5 @@ When `checkServerTrusted` is used without proper error handling indicate that se
 The output contains a list of locations where `checkServerTrusted` is used.
 
 ## Evaluation
+
+The test fails if there is no indication of a `CertificateException` being throw except through the method signature.
