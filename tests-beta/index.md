@@ -17,3 +17,13 @@ title: MASTG Tests
     - **Evaluation**: Specific instructions for evaluating the results of the test.
 
     Each test comes with a collection of demos that demonstrate the weakness in a sample application. These demos are written in markdown and are located in the [Demos](../../MASTG/demos/index.md) section of the MASTG.
+
+<button id="tests-btn-android" class="md-button md-sort-button">
+  :fontawesome-brands-android: Android
+</button>
+<button id="tests-btn-ios" class="md-button md-sort-button">
+  :fontawesome-brands-apple: iOS
+</button>
+<button id="tests-btn-deprecated" class="md-button md-sort-button active">
+  :octicons-trash-24: Include Deprecated
+</button>

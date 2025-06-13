@@ -236,14 +236,24 @@ def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
     df = pandas.DataFrame.from_dict(data).rename(columns=column_titles)
     return df.to_markdown(index=False, colalign=column_align)
 
-def append_to_page(markdown, new_content):
+def append_to_page(markdown, new_content, tableid=""):
 
-    return markdown + "\n"+ new_content + "\n\n<br>\n\n"
+    return markdown + f"\n<div id='{tableid}' />\n"+ new_content + "</div>\n\n<br>\n\n"
 
 
 def get_mastg_components_dict(name):
 
         components = []
+        
+        weaknesses = {"": "MASVS-Legacy"}
+        for file in glob.glob(f"docs/MASWE/**/*.md", recursive=True):
+            if "index.md" in file:
+                continue
+            (path, ext) = os.path.splitext(file)
+            (head, id) = os.path.split(path)
+            (_, masvs) = os.path.split(head)
+            weaknesses[id] = masvs
+
 
         for file in glob.glob(f"{name}/**/*.md", recursive=True):
             if "index.md" not in file:
@@ -259,18 +269,19 @@ def get_mastg_components_dict(name):
                         frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
                     else:
                         frontmatter['platform'] = get_platform_icon(frontmatter['platform'])
-
+                    import random
                     profiles = frontmatter.get('profiles', [])
                     frontmatter['L1'] = get_level_icon('L1', "L1" in profiles)
                     frontmatter['L2'] = get_level_icon('L2', "L2" in profiles)
                     frontmatter['R'] = get_level_icon('R', "R" in profiles)
                     frontmatter['P'] = get_level_icon('P', "P" in profiles)
+                    frontmatter['maswe_mapping'] = weaknesses.get(frontmatter.get('weakness'), "")
 
                     if "MASTG-TEST-00" in component_id:
                         frontmatter['status'] = frontmatter.get('status', 'update-pending')
                         if frontmatter['status'] == 'update-pending':
                             # add github link to the issue tracker
-                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em">update-pending</span></a><span style="display: none;">status:update-pending</span>'
+                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em">pending</span></a><span style="display: none;">status:update-pending</span>'
                         elif frontmatter['status'] == 'deprecated':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
                     elif "MASTG-TEST-02" in component_id:
@@ -346,7 +357,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
         # tests/index.md
 
-        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'L1': 'L1', 'L2': 'L2', 'R': 'R', 'P': 'P', 'status': 'Status'} # 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs",
+        column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform", 'L1': 'L1', 'L2': 'L2', 'R': 'R', 'P': 'P', 'status': 'Status', 'maswe_mapping': 'MASWE'} # 'masvs_v2_id': "MASVS v2 ID", 'masvs_v1_id': "MASVS v1 IDs",
         tests = get_mastg_components_dict("docs/MASTG/tests")
         tests_of_type = [reorder_dict_keys(test, column_titles.keys()) for test in tests]
         for test in tests_of_type:
@@ -354,7 +365,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
                 test['masvs_v2_id'] = test['masvs_v2_id'][0]
             if test.get("masvs_v1_id"):
                 test['masvs_v1_id'] = "<br>".join([f"{v1_id}" for v1_id in test['masvs_v1_id']])
-        return append_to_page(markdown, list_of_dicts_to_md_table(tests_of_type, column_titles))
+        return append_to_page(markdown, list_of_dicts_to_md_table(tests_of_type, column_titles), "table_tests")
 
     elif path.endswith("demos/index.md"):
         # demos/index.md
