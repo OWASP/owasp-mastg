@@ -1,12 +1,16 @@
 import logging
 import mkdocs.plugins
+import yaml
+import glob
+import os
+import re
 
 log = logging.getLogger('mkdocs')
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 # mkdocs/tags runs at -50 so this has to be called before -50
 @mkdocs.plugins.event_priority(-49)
-def on_page_markdown(markdown, page, **kwargs):
+def _on_page_markdown_2(markdown, page, **kwargs):
 
     tags = page.meta.get('tags', [])
 
@@ -22,19 +26,25 @@ def on_page_markdown(markdown, page, **kwargs):
 
     # If any of these tags don't exist, they will be stripped automatically at the end of the function
     tags.append(page.meta.get("masvs_category"))
-    tags.append(page.meta.get("component_type"))
-    tags.append(page.meta.get("weakness"))
-    tags.append(page.meta.get("test"))
+    # tags.append(page.meta.get("component_type"))
+
+    # tags.append(page.meta.get("weakness"))
+    tags.append(page.meta.get("component_type", "").lower())
+
+    # If there is a weakness, add the place holder. This is then picked up by the tag builder and styled correctly
+    # The placeholder is swapped to the correct value later
+    if page.meta.get("weakness"):
+        tags.append("placeholder-tag-maswe")
 
     # TODO - This is only for the MASTG v1 tests; remove this once all pages have been updated to use mappings
     tags += page.meta.get("masvs_v1_id", [])
-    tags += page.meta.get("masvs_v2_id", [])
+    tags += [tag.lower() for tag in page.meta.get("masvs_v2_id", [])]
     # END TODO
 
     if mappings:=page.meta.get('mappings'):
         if masvs_v2:=mappings.get('masvs-v2'):
             for masvs_id in masvs_v2:
-                tags.append(masvs_id)
+                tags.append(masvs_id.lower())
 
     meta_status = page.meta.get('status')
     if meta_status in ["placeholder", "deprecated"]:
@@ -43,3 +53,57 @@ def on_page_markdown(markdown, page, **kwargs):
     page.meta['tags'] = [tag for tag in tags if tag]
 
     return markdown
+
+# Run again after the tags have been rendered
+# This way, the correct value gets picked up for the search indexer
+@mkdocs.plugins.event_priority(-51)
+def _on_page_markdown_1(markdown, page, **kwargs):
+
+    tags = page.meta.get('tags', [])
+
+    if weakness := page.meta.get("weakness"):
+        tags.remove("placeholder-tag-maswe")
+        tags.append(weakness)
+
+    page.meta['tags'] = [tag for tag in tags if tag]
+
+
+on_page_markdown = mkdocs.plugins.CombinedEvent(_on_page_markdown_1, _on_page_markdown_2)
+
+# The tag renderer used the placeholder value, so we have to convert it to the actual value
+# At the same time, we're making some of the URLs more purposeful
+@mkdocs.plugins.event_priority(-51)
+def on_post_page(output, page, config):
+
+    # Replace maswe placeholder with actual value
+    if weakness := page.meta.get("weakness"):
+        output = output.replace("placeholder-tag-maswe", weakness)
+
+    # By default, tags link to the main tags page. Let's make some tags a bit more useful
+    output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f"/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}\"" , output)
+    output = re.sub(r'/tags/#tag:mas-test"', '/MASTG/tests/"' , output)
+    output = re.sub(r'/tags/#tag:maswe"', '/MASWE/"' , output)
+    output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
+    output = re.sub(r'/tags/#tag:tool"', '/MASTG/tools/"' , output)
+    output = re.sub(r'/tags/#tag:app"', '/MASTG/apps/"' , output)
+    output = re.sub(r'/tags/#tag:tech"', '/MASTG/techniques/"' , output)
+    output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', r'/MASVS/controls/\g<1>"' , output)
+
+    return output
+
+def get_maswe_data():
+
+    data = {}
+    # Each test has an ID which is the filename
+    for file in glob.glob("docs/MASWE/**/MASWE-*.md", recursive=True):
+        path_parts = os.path.split(file)
+        id = os.path.splitext(path_parts[1])[0]
+        masvs_category = os.path.split(path_parts[0])[1]
+        data[id] = masvs_category
+
+    return data
+
+def on_config(config):
+
+    config["hook_add_tags_maswe_data"] = get_maswe_data()
+

@@ -8,6 +8,120 @@
 .md-tag {
   text-transform: uppercase;
 }
+.md-tag--masvs-storage {
+  background-color: #DF5C8D !important;
+  color: white !important;
+}
+.md-tag--masvs-storage[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--masvs-crypto {
+  background-color: #F65928 !important;
+  color: white !important;
+}
+.md-tag--masvs-crypto[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--masvs-auth {
+  background-color: #F09236 !important;
+  color: white !important;
+}
+.md-tag--masvs-auth[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--masvs-network {
+  background-color: #F2C200 !important;
+  color: white !important;
+}
+.md-tag--masvs-network[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--masvs-platform {
+  background-color: #4FB991 !important;
+  color: white !important;
+}
+.md-tag--masvs-platform[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--masvs-code {
+  background-color: #5FACD3 !important;
+  color: white !important;
+}
+.md-tag--masvs-code[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--masvs-resilience {
+  background-color: #317CC0 !important;
+  color: white !important;
+}
+.md-tag--masvs-resilience[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--masvs-privacy {
+  background-color: #8B5F9E !important;
+  color: white !important;
+}
+.md-tag--masvs-privacy[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--android {
+  background-color: #3DDC84 !important;
+  color: white !important;
+}
+.md-tag--android[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+.md-tag--ios {
+  background-color: #007AFF !important;
+  color: white !important;
+}
+.md-tag--ios[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+/* profile tags */
+.md-tag--l1 {
+  background-color: #33CCCC !important;
+  color: white !important;
+}
+.md-tag--l1[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--l2 {
+  background-color: #99CC00 !important;
+  color: white !important;
+}
+.md-tag--l2[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+.md-tag--r {
+  background-color: #FF9900 !important;
+  color: white !important;
+}
+.md-tag--r[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+
+.md-tag--p {
+  background-color: #9933CC !important;
+  color: white !important;
+}
+.md-tag--p[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+
 
 
 /* Wider space for pages */

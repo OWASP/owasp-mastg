@@ -214,13 +214,22 @@ theme:
       deprecated: octicons/circle-slash-16
       new: material/alert-decagram
       tool: octicons/tools-24
-      test: octicons/codescan-checkmark-24
+      mas-test: octicons/codescan-checkmark-24
       app: octicons/code-square-24
       demo: material/flask-outline
       tech: material/magic-staff # fontawesome/solid/wand-magic-sparkles
       best: material/shield-check
       maswe: octicons/shield-24
       masvs: simple/owasp
+      masvs-storage: simple/owasp
+      masvs-crypto: simple/owasp
+      masvs-auth: simple/owasp
+      masvs-network: simple/owasp
+      masvs-platform: simple/owasp
+      masvs-code: simple/owasp
+      masvs-resilience: simple/owasp
+      masvs-privacy: simple/owasp
+
   features:
     - search.suggest
     - search.share
@@ -354,11 +363,45 @@ extra:
     deprecated: deprecated
     new: new
     tool: tool
-    test: test
+    mas-test: mas-test
     app: app
     demo: demo
     tech: tech
     maswe: maswe
+    placeholder-tag-maswe: maswe
+    placeholder-tag-test: test
+    placeholder-tag-tech: tech
+    placeholder-tag-demo: demo
+    placeholder-tag-app: app
+    placeholder-tag-tool: tool
+
+    masvs-storage-1: masvs-storage
+    masvs-storage-2: masvs-storage
+    masvs-crypto-1: masvs-crypto
+    masvs-crypto-2: masvs-crypto
+    masvs-auth-1: masvs-auth
+    masvs-auth-2: masvs-auth
+    masvs-auth-3: masvs-auth
+    masvs-network-1: masvs-network
+    masvs-network-2: masvs-network
+    masvs-platform-1: masvs-platform
+    masvs-platform-2: masvs-platform
+    masvs-platform-3: masvs-platform
+    masvs-code-1: masvs-code
+    masvs-code-2: masvs-code
+    masvs-code-3: masvs-code
+    masvs-code-4: masvs-code
+    masvs-resilience-1: masvs-resilience
+    masvs-resilience-2: masvs-resilience
+    masvs-resilience-3: masvs-resilience
+    masvs-resilience-4: masvs-resilience
+    masvs-privacy-1: masvs-privacy
+    masvs-privacy-2: masvs-privacy
+    masvs-privacy-3: masvs-privacy
+    masvs-privacy-4: masvs-privacy
+
+
+    
     masvs: masvs
     best: best
   status:

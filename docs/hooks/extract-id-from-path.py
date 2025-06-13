@@ -5,7 +5,7 @@ log = logging.getLogger('mkdocs')
 
 # This plugin extracts the ID and component_type from the filename if no ID is defined
 # This is only the case for older tests (ID < 200)
-@mkdocs.plugins.event_priority(30)
+@mkdocs.plugins.event_priority(-30)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
 
@@ -20,6 +20,10 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
         page.meta['id'] = item_id
         page.meta['component_type'] = item_id.split("-")[1]
+
+        # Because a tag with 'TEST' looks weird
+        if page.meta['component_type'] == "TEST":
+            page.meta['component_type'] = "mas-test"
 
     if "MASWE-" in path:
         if not page.meta.get("id", None):
