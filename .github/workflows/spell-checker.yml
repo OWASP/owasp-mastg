@@ -14,5 +14,5 @@ jobs:
       - uses: codespell-project/actions-codespell@master
         with:
           ignore_words_list: "aas,aaS,ba,bund,compliancy,firt,ist,keypair,ligh,Manuel,Manual,ro,ser,synopsys,theses,zuser,lief,EDE"
-          skip: "*.json,*.yml,*.apk,*.ipa,*.svg"
+          skip: "*.json,*.yml,*.apk,*.ipa,*.svg,*.txt"
           exclude_file: docs/contributing.md

@@ -5,11 +5,12 @@ id: MASTG-TEST-0202
 apis: [Environment#getExternalStoragePublicDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, MediaStore, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE]
 type: [static]
 weakness: MASWE-0007
+profiles: [L1, L2]
 ---
 
 ## Overview
 
-This test uses static analysis to look for uses of APIs allowing an app to write to locations that are shared with other apps (@MASTG-TEST-0001) such as the external storage APIs or the `MediaStore` API as well as the relevant Android manifest storage-related permissions.
+This test uses static analysis to look for uses of APIs allowing an app to write to locations that are shared with other apps (@MASTG-TEST-0001) such as the [external storage APIs](../../../0x05d-Testing-Data-Storage.md/#external-storage-apis) or the [`MediaStore` API](../../../0x05d-Testing-Data-Storage.md/#mediastore-api) as well as the relevant [Android manifest storage-related permissions](../../../0x05d-Testing-Data-Storage.md/#manifest-permissions).
 
 This static test is great for identifying all code locations where the app is writing data to shared storage. However, it does not provide the actual data being written, and in some cases, the actual path in the device storage where the data is being written. Therefore, it is recommended to combine this test with others that take a dynamic approach, as this will provide a more complete view of the data being written to shared storage.
 

@@ -1,9 +1,8 @@
-mkdocs
-mkdocs-material
-mkdocs-mermaid2-plugin
-mkdocs-include-dir-to-nav
-mkdocs-awesome-pages-plugin
-mkdocs-redirects
+mkdocs==1.6.1
+mkdocs-awesome-pages-plugin==2.9.2
+mkdocs-include-dir-to-nav==1.2.0
+mkdocs-material==9.6.11
+mkdocs-redirects==1.2.2
 pandas
 pyyaml
 tabulate

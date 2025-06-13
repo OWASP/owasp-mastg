@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CRYPTO-2]
+  cwe: [262, 324]
 
 refs:
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf
@@ -15,7 +16,7 @@ draft:
     It is especially important for long-lived keys such as asymmetric keys.
   topics:
   - long-lived keys (cryptoperiods as per NIST.SP.800-57pt1r5)
-status: draft
+status: placeholder
 
 ---
 

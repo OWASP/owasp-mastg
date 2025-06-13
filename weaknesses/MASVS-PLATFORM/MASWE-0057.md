@@ -6,6 +6,7 @@ platform: [android]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-PLATFORM-3]
+  cwe: [451, 1104]
 
 refs:
 - https://developer.android.com/topic/security/risks/strandhogg
@@ -15,7 +16,7 @@ draft:
   topics:
   - StrandHogg Attack v1
   - StrandHogg Attack v2
-status: draft
+status: placeholder
 
 ---
 

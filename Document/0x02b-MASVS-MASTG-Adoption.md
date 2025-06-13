@@ -49,7 +49,7 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 BSI stands for "Federal Office for Information Security", it has the goal to promote IT security in Germany and is the central IT security service provider for the federal government.
 
 - [Technical Guideline BSI TR-03161 Security requirements for eHealth applications v1.0, 2020](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TR03161/TR-03161.pdf)
-- [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten“ und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf)
+- [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten" und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf)
 
 ### ioXt
 
@@ -65,7 +65,7 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 
 | Name | Document | Year |
 | -------------- | -------------------- | -- |
-| Government of Singapore, Cyber Security Agency (CSA) | [Safe App Standard](https://www.csa.gov.sg/docs/default-source/publications/2024/safe-app-standard-(v1-0)a4e34e8d-2679-44d1-a836-3904922d7b6a.pdf?sfvrsn=8732135_1) | 2024 |
+| Government of Singapore, Cyber Security Agency (CSA) | [Safe App Standard v2.0](https://www.csa.gov.sg/resources/publications/safe-app-standard-2-0) | 2024 |
 | European Payments Council | [Payment Threats and Fraud Trends Report](https://www.europeanpaymentscouncil.eu/sites/default/files/kb/file/2021-12/EPC193-21%20v1.0%202021%20Payments%20Threats%20and%20Fraud%20Trends%20Report.pdf) | 2021 |
 | European Payments Council | [Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability) | 2019 |
 | ENISA (European Union Agency for Cybersecurity) | [Good Practices for Security of SMART CARS](https://www.enisa.europa.eu/publications/smart-cars) | 2019 |

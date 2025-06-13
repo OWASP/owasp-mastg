@@ -7,6 +7,7 @@ platform: android
 title: Testing Anti-Debugging Detection
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Bypassing Debugger Detection

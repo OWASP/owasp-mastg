@@ -1,0 +1,132 @@
+name: Build All iOS Demos
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'demos/ios/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'demos/**'
+      - '.github/workflows/build-ios-demos.yml'
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: demos/ios
+          fetch-depth: 2 # Required for git diff in PRs
+
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Get list of changed files in demos/ios/ directory
+            changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD -- 'demos/ios/*')
+
+            echo "Changed files:"
+            echo "$changed_files"
+
+            # Extract unique demo directories
+            matrix=$(echo "$changed_files" | grep -oE 'demos/ios/[^/]*/MASTG-DEMO-[^/]+' | sort -u | head -c -1 | tr '\n' ' ' | sed 's/ /","/g')
+
+            # If no changes, set empty matrix
+            if [ -z "$matrix" ]; then
+              echo "matrix={\"demo\":[]}" >> $GITHUB_OUTPUT
+            else
+              echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+            fi
+          else
+            # Default behavior: include all demos for master branch
+            matrix=$(echo demos/ios/*/MASTG-DEMO-* | sed 's/ /","/g')
+            echo "matrix={\"demo\":[\"$matrix\"]}" >> $GITHUB_OUTPUT
+          fi
+          echo "Print matrix: $matrix"
+
+  build:
+    needs: generate-matrix
+    runs-on: macos-latest
+    timeout-minutes: 15
+    strategy:
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+      max-parallel: 3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: ${{ matrix.demo }}
+
+      - name: Clone MASTestApp-iOS repository
+        uses: actions/checkout@v4
+        with:
+          repository: cpholguera/MASTestApp-iOS
+          path: MASTestApp-iOS
+        
+      - name: Install dependencies
+        uses: tecolicom/actions-use-homebrew-tools@v1
+        with:
+          tools: ldid
+
+      - name: Set default scheme and iOS deployment target
+        run: |
+          cd MASTestApp-iOS
+          default=$(xcodebuild -list -json | jq -r '.project.targets[0]')
+          echo "DEFAULT_SCHEME=$default" >> "$GITHUB_ENV"
+          echo "Using default scheme: $default"
+
+          DEPLOYMENT_TARGET=14.4
+          echo "Setting iOS Deployment Target to $DEPLOYMENT_TARGET"
+          sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = .*;/IPHONEOS_DEPLOYMENT_TARGET = $DEPLOYMENT_TARGET;/g" "MASTestApp.xcodeproj/project.pbxproj"
+
+      - name: Replace files with demo and prepare build
+        run: |
+          demo="${{ matrix.demo }}"
+          [ -d "$demo" ] || (
+            echo "Demo directory not found: $demo"
+            exit 1
+          )
+
+          echo "Processing $demo"
+          [ -f "$demo/MastgTest.swift" ] && cp -f "$demo/MastgTest.swift" MASTestApp-iOS/MASTestApp/MastgTest.swift && echo "Copied MastgTest.swift for $demo" || echo "No MastgTest.swift found for $demo"
+          [ -f "$demo/Info.plist" ] && cp -f "$demo/Info.plist" MASTestApp-iOS/MASTestApp/Info.plist && echo "Copied Info.plist for $demo" || echo "No Info.plist found for $demo"
+
+      - name: Build the app (unsigned)
+        run: |
+          cd MASTestApp-iOS
+          xcodebuild archive \
+            -project "MASTestApp.xcodeproj" \
+            -scheme "$DEFAULT_SCHEME" \
+            -archivePath "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive" \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Pseudo sign with entitlements.plist
+        run: |
+          ldid -SMASTestApp-iOS/entitlements.plist "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products/Applications/MASTestApp.app/MASTestApp"
+
+      - name: Create IPA manually
+        run: |
+          cd "$GITHUB_WORKSPACE/build/MASTestApp.xcarchive/Products" || exit 1
+          mv Applications Payload
+          zip -r9q MASTestApp.zip Payload
+          mv MASTestApp.zip MASTestApp.ipa
+          mkdir -p "$GITHUB_WORKSPACE/output"
+          mv MASTestApp.ipa "$GITHUB_WORKSPACE/output/$(basename "${{ matrix.demo }}").ipa"
+          echo "IPA_NAME=$(basename "${{ matrix.demo }}").ipa" >> $GITHUB_ENV
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.IPA_NAME }}"
+          path: "output/${{ env.IPA_NAME }}"

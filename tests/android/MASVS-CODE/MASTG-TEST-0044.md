@@ -8,6 +8,10 @@ title: Make Sure That Free Security Features Are Activated
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
+status: deprecated
+covered_by: [MASTG-TEST-0222, MASTG-TEST-0223]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
@@ -16,7 +20,7 @@ masvs_v1_levels:
 
 Test the app native libraries to determine if they have the PIE and stack smashing protections enabled.
 
-You can use @MASTG-TOOL-0028 to get the binary information. We'll use the @MASTG-APP-0015 v1.0 APK as an example.
+You can use @MASTG-TOOL-0129 to get the binary information. We'll use the @MASTG-APP-0015 v1.0 APK as an example.
 
 All native libraries must have `canary` and `pic` both set to `true`.
 

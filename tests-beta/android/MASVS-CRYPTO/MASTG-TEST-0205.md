@@ -3,12 +3,12 @@ platform: android
 title: Non-random Sources Usage
 id: MASTG-TEST-0205
 type: [static]
-mitigations:
-- android-use-secure-random
+best-practices: [MASTG-BEST-0001]
 prerequisites:
 - identify-sensitive-data
 - identify-security-relevant-contexts
 weakness: MASWE-0027
+profiles: [L1, L2]
 ---
 
 ## Overview

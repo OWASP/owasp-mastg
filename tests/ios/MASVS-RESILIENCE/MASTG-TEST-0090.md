@@ -8,13 +8,14 @@ platform: ios
 title: Testing File Integrity Checks
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Overview
 
 **Application Source Code Integrity Checks:**
 
-Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in @MASTG-TECH-0090, and run it.
+Run the app on the device in an unmodified state and make sure that everything works. Then apply some patches to the executable (e.g. see @MASTG-TECH-0090), re-sign the app (@MASTG-TECH-0092), and run it.
 
 The app should respond in some way. For example by:
 

@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CRYPTO-2, MASVS-STORAGE-1, MASVS-NETWORK-1]
+  cwe: [522]
 
 refs:
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf
@@ -18,7 +19,7 @@ draft:
     export. This is true even if the key is sent over a secure channel.
   topics:
   - key wrapping (NIST.SP.800-175Br1 5.3.5)
-status: draft
+status: placeholder
 
 ---
 
