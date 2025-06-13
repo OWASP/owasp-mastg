@@ -1,0 +1,2 @@
+/data/user/0/org.owasp.mastestapp/files/profileInstalled
+/data/user/0/org.owasp.mastestapp/files/secret.txt
