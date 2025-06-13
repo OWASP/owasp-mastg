@@ -24,6 +24,8 @@ The rule has identified one instances in the code where `onReceivedSslError` not
 
 ### Evaluation
 
-Review each of the reported instances.
+The test fails because of the presence of the `handler.proceed()` on line 91 in the `onReceivedSslError` method (lines 79-92), as well as the absence of exceptions being thrown.
 
-- Line 79-92 contains the `onReceivedSslError` method. At the end, on line 91, there is a `handler.proceed()`. There are no exceptions being thrown which means that TLS errors are being ignored.
+By doing this, the app is effectively ignoring every TLS error even though we can see that the expired certificate error is logged (see @MASTG-TECH-0009):
+
+{{ logcat.txt }}
