@@ -17,6 +17,6 @@ When `checkServerTrusted` is used without proper error handling indicate that se
 
 ## Observation
 
-You will find two instances of `checkServerTrusted` within the `MainActivity` smali file. There are calls to null checks for each of the parameters `chain` and `authType` as required by the method signature and the invocation of a static log function `w` denoted by `invoke-static`, but there is no indication that a `CertificateException` can be thrown beside an annotation connected to the `checkServerTrusted` method signature.
+The output contains a list of locations where `checkServerTrusted` is used.
 
 ## Evaluation
