@@ -1,5 +1,5 @@
 ---
-title: References to Screen Capturing API
+title: References to Screen Capturing APIs
 platform: ios
 id: MASTG-TEST-0240
 type: [static]

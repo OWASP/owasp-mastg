@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Sensitive Data Leaked via Screenshots
+title: Uses of FLAG_SECURE with semgrep
 id: MASTG-DEMO-0021
 code: [kotlin]
 test: MASTG-TEST-0216

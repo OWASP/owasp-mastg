@@ -1,5 +1,5 @@
 ---
-title: Sensitive Data Leaked via Screenshots
+title: References to Screen Capturing Prevention APIs
 platform: android
 id: MASTG-TEST-0216
 type: [static]
@@ -10,8 +10,8 @@ weakness: MASWE-0055
 
 This test verifies whether an app uses APIs to prevent or detect screen capturing. While prevention is preferable to detection, this test ensures that the app is aware of potential screenshot issues. On Android, several APIs allow developers to detect when screenshots are taken, such as:
 
-- [FLAG_SECURE](https://developer.android.com/security/fraud-prevention/activities#flag_secure) - prevents screen recording
-- [DETECT_SCREEN_CAPTURE](https://developer.android.com/about/versions/14/features/screenshot-detection#implementation) - detects when a screenshot is taken
+- [`FLAG_SECURE`](https://developer.android.com/security/fraud-prevention/activities#flag_secure): prevents screen recording.
+- [`DETECT_SCREEN_CAPTURE`](https://developer.android.com/about/versions/14/features/screenshot-detection#implementation): detects when a screenshot is taken.
 
 ## Steps
 

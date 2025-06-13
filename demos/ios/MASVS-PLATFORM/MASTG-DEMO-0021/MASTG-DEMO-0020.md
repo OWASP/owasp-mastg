@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: References to Screen Capturing API
+title: Uses of Screen Capturing APIs with r2
 code: [swift]
 id: MASTG-DEMO-0020
 test: MASTG-TEST-0240
