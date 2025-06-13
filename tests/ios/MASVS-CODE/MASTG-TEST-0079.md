@@ -8,6 +8,7 @@ title: Testing Object Persistence
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -20,7 +21,7 @@ All different flavors of object persistence share the following concerns:
 - Need to guarantee the integrity of the information? Use an HMAC mechanism or sign the information stored. Always verify the HMAC/signature before processing the actual information stored in the objects.
 - Make sure that keys used in the two notions above are safely stored in the KeyChain and well protected. See the chapter "[Data Storage on iOS](../../../Document/0x06d-Testing-Data-Storage.md)" for more details.
 - Ensure that the data within the deserialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic is possible).
-- Do not use persistence mechanisms that use [Runtime Reference](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C Runtime Reference") to serialize/deserialize objects in high-risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (see the chapter "[iOS Anti-Reversing Defenses](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)" for more details).
+- Do not use persistence mechanisms that use [Runtime Reference](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C Runtime Reference") to serialize/deserialize objects in high-risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (see the chapter "[iOS Anti-Reversing Defenses](../../../Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)" for more details).
 - Note that in Swift 2 and beyond, a [Mirror](https://developer.apple.com/documentation/swift/mirror "Mirror") can be used to read parts of an object, but cannot be used to write against the object.
 
 ## Dynamic Analysis

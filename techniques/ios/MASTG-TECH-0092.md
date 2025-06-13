@@ -1,56 +1,90 @@
 ---
-title: Repackaging and Re-Signing
+title: Signing IPA files
 platform: ios
 ---
 
-Tampering an app invalidates the main executable's code signature, so this won't run on a non-jailbroken device. You'll need to replace the provisioning profile and sign both the main executable and the files you've made include (e.g. `FridaGadget.dylib`) with the certificate listed in the profile.
+To install an IPA file on a non-jailbroken device, it needs to have a valid signature. On a jailbroken device, this is not required after installing @MASTG-TOOL-0127.
 
-## Repackaging
+First, you need to obtain a developer provisioning profile and certificate, as explained in @MASTG-TECH-0079.
 
-First, let's add our own provisioning profile to the package:
+!!! Warning
 
-```bash
-cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
+    If you have a normal Apple account, you will only be able to sign the IPA with a modified (unique) Bundle identifier. If you have a Developer account, you can sign with the original Bundle identifier.
+
+The signing process can be done using @MASTG-TOOL-0102, @MASTG-TOOL-0117, @MASTG-TOOL-0118 or @MASTG-TOOL-0114.
+
+## Using fastlane
+
+Create a directory `fastlane` and create a `Fastfile` file as described in the documentation for [resigning](https://docs.fastlane.tools/actions/resign/). Put both the `Fastfile` and your IPA in the `fastlane` directory.
+
+Example:
+
+```yaml
+lane :resignipa do
+  resign(
+    ipa: "./filename.ipa",
+    signing_identity: "Apple Development: MAS@owasp.org (LVGBSLUQB4)",
+    provisioning_profile: "./embedded.mobileprovision",
+  )
+end
 ```
 
-Next, we need to make sure that the Bundle ID in `Info.plist` matches the one specified in the profile because the codesign tool will read the Bundle ID from `Info.plist` during signing; the wrong value will lead to an invalid signature.
+Afterwards, execute the `fastlane resignipa` command.
 
 ```bash
-/usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
+$ fastlane resignipa
+[✔] 🚀 
+[15:21:51]: Get started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile
+[15:21:52]: Driving the lane 'resignipa' 🚀
+[15:21:52]: --------------------
+[15:21:52]: --- Step: resign ---
+[15:21:52]: --------------------
+...
+[15:22:03]: Successfully signed /test.ipa!
+[15:22:03]: Successfully re-signed .ipa 🔏.
+
++-----------------------------+
+|      fastlane summary       |
++------+--------+-------------+
+| Step | Action | Time (in s) |
++------+--------+-------------+
+| 1    | resign | 11          |
++------+--------+-------------+
+
+[15:22:03]: fastlane.tools finished successfully 🎉
 ```
 
-## Re-Signing
+Once this is set up, all you need to do is change the path in the `Fastfile` for the IPA you want to resign and run the command again.
 
-Finally, we use the @MASTG-TOOL-0114 tool to re-sign both binaries. You need to use _your own_ signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -v`.
+More information can be found in the official documentation: ["Codesign an existing ipa file with fastlane resign"](https://docs.fastlane.tools/actions/resign/)
 
-```bash
-$ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
-$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 1.app/FridaGadget.dylib
-Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
-```
+!!! warning
 
-`entitlements.plist` is the file you created for your empty iOS project.
+    By default, fastlane will always use the Bundle identifier from the given provisioning profile, both for normal Apple accounts and Developer accounts. If you have a Developer account, you can specify the desired Bundle identifier by directly using the `resign.sh` script bundled with Fastlane and specifying the `--bundle-id` property:
 
-```bash
-$ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
-Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
-```
+    ```bash
+    $ /opt/homebrew/Cellar/fastlane/2.226.0/libexec/gems/fastlane-2.226.0/sigh/lib/assets/resign.sh /Users/MAS/uncrackable1.ipa <CERTIFICATE> -p /Users/MAS/embedded.mobileprovision /Users/MAS/signed.ipa -v --bundle-id "org.mas.myapp"
 
-Now you should be ready to run the modified app. Deploy and run the app on the device using @MASTG-TOOL-0054:
+    Specified provisioning profile: '/Users/MAS/embedded.mobileprovision'
+    Original file: '/Users/MAS/uncrackable1.ipa'
+    Certificate: '<CERTIFICATE>'
+    Specified bundle identifier: 'org.mas.myapp'
+    Output file name: '/Users/MAS/signed.ipa'
+    Current bundle identifier is: 'org.mas.testapp'
+    New bundle identifier will be: 'org.mas.myapp'
+    Validating the new provisioning profile: /Users/MAS/embedded.mobileprovision
+    Profile app identifier prefix is '6FZT6QZ6X3'
+    Profile team identifier is '6FZT6QZ6X3'
+    Updating the bundle identifier from 'org.mas.testapp' to 'org.mas.myapp'
+    Fixing nested app and extension references
+    Extracting entitlements from provisioning profile
+    Resigning application using certificate: '<CERTIFICATE>'
+    and entitlements from provisioning profile: /Users/MAS/embedded.mobileprovision
+    _floatsignTemp/Payload/UnCrackable Level 1.app: replacing existing signature
+    _floatsignTemp/Payload/UnCrackable Level 1.app: signed app bundle with Mach-O universal (armv7 arm64) [org.mas.myapp]
+    Repackaging as /Users/MAS/signed.ipa
+    ```
 
-```bash
-ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
-```
+## Using Sideloadly
 
-If everything went well, the app should start in debugging mode with LLDB attached. Frida should then be able to attach to the app as well. You can verify this via the frida-ps command:
-
-```bash
-$ frida-ps -U
-PID  Name
----  ------
-499  Gadget
-```
-
-<img src="Images/Chapters/0x06b/fridaStockiOS.png" width="100%" />
-
-When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/support/code-signing/ "Code Signing") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.
+Sideloadly can take care of obtaining a valid certificate for your app, but it is not possible to simply sign an existing IPA file in-place. Sideloadly will sign the given IPA file and directly install it on the connected device. When using a normal Apple account, Sideloadly will modify the original package name by appending your team identifier (e.g. `sg.vp.UnCrackable1` becomes `sg.vp.UnCrackable1.QH868V5764`)

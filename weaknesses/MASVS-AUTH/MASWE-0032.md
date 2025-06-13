@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1, MASVS-CODE-3]
+  cwe: [287]
 
 refs:
 - https://developer.android.com/privacy-and-security/security-tips#Credentials
@@ -30,7 +31,7 @@ draft:
   - iOS Password AutoFill streamlines logging into web services at your domain. However,
     if you need to log into a third-party service, use ASWebAuthenticationSession
     instead
-status: draft
+status: placeholder
 
 ---
 

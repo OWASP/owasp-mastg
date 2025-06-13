@@ -7,7 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-AUTH-12]
   masvs-v2: [MASVS-AUTH-2]
-  cwe: [284, 285, 862, 863]
+  cwe: [285, 602, 863]
 
 refs:
 - https://developers.google.com/identity/smartlock-passwords/android/associate-apps-and-sites
@@ -18,7 +18,7 @@ draft:
   - use of oauth
   - use of SharedWebcredentials
   - use of WebAuthn/ASAuthorization
-status: draft
+status: placeholder
 
 ---
 

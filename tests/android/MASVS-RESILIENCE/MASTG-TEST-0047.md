@@ -7,6 +7,7 @@ platform: android
 title: Testing File Integrity Checks
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Bypassing File Integrity Checks

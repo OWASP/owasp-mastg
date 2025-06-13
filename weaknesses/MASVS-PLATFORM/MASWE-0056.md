@@ -7,6 +7,7 @@ profiles: [L2]
 mappings:
   masvs-v1: [MSTG-PLATFORM-9]
   masvs-v2: [MASVS-PLATFORM-3, MASVS-CODE-1]
+  cwe: [1021]
 
 refs:
 - https://developer.android.com/topic/security/risks/tapjacking
@@ -17,7 +18,7 @@ draft:
   topics:
   - Full occlusion
   - Partial occlusion
-status: draft
+status: placeholder
 
 ---
 
