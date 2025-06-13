@@ -4,7 +4,7 @@ import mkdocs.plugins
 log = logging.getLogger('mkdocs')
 
 
-# This plugin is responsible for adding the ID to the title and setting the page's icon
+# This hook is responsible for adding the ID to the title and setting the page's icon
 @mkdocs.plugins.event_priority(-49)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
