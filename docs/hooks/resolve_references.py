@@ -5,6 +5,7 @@ import os
 from glob import glob
 import yaml
 from functools import lru_cache
+
 log = logging.getLogger('mkdocs')
 
 mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}, "DEMO": {}, "BEST": {}}
