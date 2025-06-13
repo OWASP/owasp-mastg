@@ -211,7 +211,7 @@ theme:
       r: material/circle-double
       placeholder: material/pencil-plus
       update-pending: material/information-outline
-      deprecated: material/file-remove-outline
+      deprecated: octicons/circle-slash-16
       new: material/alert-decagram
       tool: octicons/tools-24
       test: octicons/codescan-checkmark-24
