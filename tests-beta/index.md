@@ -25,5 +25,17 @@ title: MASTG Tests
   :fontawesome-brands-apple: iOS
 </button>
 <button id="tests-btn-deprecated" class="md-button md-sort-button active">
-  :octicons-trash-24: Include Deprecated
+  :octicons-circle-slash-16: Include Deprecated
 </button>
+
+<div class="mas-table-filter-row">
+  <div class="mas-table-filter-row-left">
+    <button>Button 1</button>
+    <button>Button 2</button>
+    <button>Button 3</button>
+  </div>
+  <div class="mas-table-filter-row-right">
+    <button>Button 4</button>
+    <button>Button 5</button>
+  </div>
+</div>

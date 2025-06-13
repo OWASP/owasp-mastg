@@ -36,7 +36,23 @@
   border-color:     var(--md-accent-fg-color);
 } */
 
+.mas-table-filter-row {
+  display: flex;
+  width: 100%;
+  align-items: center;   /* vertically center if needed */
+  gap: 8px;              /* space between the two groups */
+}
 
+.mas-table-filter-row-left,
+.mas-table-filter-row-right {
+  display: flex;
+  gap: 8px;              /* space between buttons within each group */
+}
+
+/* push the right group all the way to the right edge */
+.mas-table-filter-row-right {
+  margin-left: auto;
+}
 
 /* 3) Active state (no hover leak-in) */
 .md-sort-button.active {
