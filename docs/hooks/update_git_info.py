@@ -2,6 +2,7 @@ import logging
 import mkdocs.plugins
 import subprocess
 import os
+
 log = logging.getLogger('mkdocs')
 
 
