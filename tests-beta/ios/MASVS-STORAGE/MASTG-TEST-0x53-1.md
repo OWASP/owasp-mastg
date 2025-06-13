@@ -26,7 +26,7 @@ The output should contain all logged data.
 
 ## Evaluation
 
-The test case fails if you can find sensitive data inside the output. Ideally, a production app shouldn’t use any logging functions at all.
+The test case fails if you can find sensitive data inside the output. Ideally, a production app shouldn't use any logging functions at all.
 
 ### Mitigation
 

@@ -22,7 +22,7 @@ The output should include the location of all logging functions. Check the decom
 
 ## Evaluation
 
-The test case fails if you can find the use of APIs such as `NSLog` or `print`. Ideally, a production app shouldn’t use any logging functions at all.
+The test case fails if you can find the use of APIs such as `NSLog` or `print`. Ideally, a production app shouldn't use any logging functions at all.
 
 ### Mitigation
 
