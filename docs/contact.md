@@ -21,7 +21,7 @@ If you'd like to contribute, take a look at our [Contributions page](contributin
 [:simple-mastodon:](https://infosec.exchange/@OWASP_MAS)
 [:material-slack:](https://owasp.slack.com/archives/C1M6ZVC6S)
 
-> [Request an invitation](https://owasp.org/slack/invite) to join our Slack channel `#project-mobile-app-security`
+> [Request an invitation](https://join.slack.com/t/owasp/shared_invite/zt-36ppepxs2-ncLn77RK_Ybg_wX5CJsGig) to join our Slack channel `#project-mobile-app-security`
 
 <br>
 
