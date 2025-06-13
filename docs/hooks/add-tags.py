@@ -40,6 +40,6 @@ def on_page_markdown(markdown, page, **kwargs):
     if meta_status in ["placeholder", "deprecated"]:
         tags.append(meta_status)
 
-    page.meta['tags'] = [tag.upper() for tag in tags if tag]
+    page.meta['tags'] = [tag for tag in tags if tag]
 
     return markdown

@@ -7,8 +7,8 @@ log = logging.getLogger('mkdocs')
 
 
 def get_last_commit_date(file_path):
-    if os.getenv("IGNORE_LAST_COMMIT_DATE"):
-        return "Unavailable"
+    if os.getenv("IGNORE_LAST_COMMIT_DATE") == "1":
+            return None
     try:
         # get the last commit date as "September 12, 2022"
         command = f"git log -n 1 --date=format:'%B %d, %Y' --format=%ad -- {file_path}"
