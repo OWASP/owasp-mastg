@@ -26,4 +26,4 @@ The rule has identified two instances in the code file where `checkServerTrusted
 
 Review each of the reported instances.
 
-- Line 128-133 and line 214-219 contains the checkServerTrusted function meant to throw an CertificateException, but as the method only contain a log statement, no such exception will be thrown. This will effectively ensure that all server certificate issues will be muted by the application.
+- Line 128-133 and line 214-219 contains the `checkServerTrusted` function which doesn't throw any `CertificateException`, as it only contains a log statement. This is dangerous as it suppresses all server certificate issues.
