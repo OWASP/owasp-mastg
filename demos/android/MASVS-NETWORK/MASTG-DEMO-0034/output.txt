@@ -1,20 +1,17 @@
 
 
-┌─────────────────┐
-│ 2 Code Findings │
-└─────────────────┘
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
 
     MastgTest_reversed.java
        owasp-mastg.rules.MSTG-TEST-0234-2
           Improper server hostname verification detected
 
-          112┆ HostnameVerifier allowallhostnameverifier = new HostnameVerifier() { // from class:
+           69┆ connection.setHostnameVerifier(new HostnameVerifier() { // from class:
   org.owasp.mastestapp.MastgTest$$ExternalSyntheticLambda0
-          113┆     @Override // javax.net.ssl.HostnameVerifier
-          114┆     public final boolean verify(String str, SSLSession sSLSession) {
-          115┆         return MastgTest.Builder$lambda$1(str, sSLSession);
-          116┆     }
-          117┆ };
-            ⋮┆----------------------------------------
-          161┆ X509HostnameVerifier allowallhostnameverifier =
-  org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+           70┆     @Override // javax.net.ssl.HostnameVerifier
+           71┆     public final boolean verify(String str, SSLSession sSLSession) {
+           72┆         return MastgTest.fetchUrl$lambda$1(str, sSLSession);
+           73┆     }
+           74┆ });

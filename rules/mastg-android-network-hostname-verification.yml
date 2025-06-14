@@ -18,6 +18,7 @@ rules:
     message: Improper server hostname verification detected
     match:
       any:
-        - $X = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-        - $X = new HostnameVerifier() {...$F(...) {...return MastgTest.Builder$lambda$1(str, sSLSession);...}...};
-        - $X = new HostnameVerifier() {...$F(...) {...return true;...}...};
+        - org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+        - new HostnameVerifier() {...$F(...) {...return MastgTest.Builder$lambda$1(str, sSLSession);...}...};
+        - new HostnameVerifier() {...$F(...) {...return MastgTest.fetchUrl$lambda$1(str, sSLSession);...}...};
+        - new HostnameVerifier() {...$F(...) {...return true;...}...};
