@@ -20,7 +20,7 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified one instances in the code where `onReceivedSslError` not is implemented properly.
+The rule has identified one instance in the code where `onReceivedSslError` is not implemented properly.
 
 ### Evaluation
 
