@@ -1,23 +1,13 @@
 
 
-┌─────────────────┐
-│ 2 Code Findings │
-└─────────────────┘
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
 
     MastgTest_reversed.java
        owasp-mastg.rules.MSTG-TEST-0234-1
           Improper Server Certificate verification detected.
 
-           95┆ @Override // javax.net.ssl.X509TrustManager
-           96┆ public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-           97┆     Intrinsics.checkNotNullParameter(chain, "chain");
-           98┆     Intrinsics.checkNotNullParameter(authType, "authType");
-           99┆     Log.w((String) null, "Server not trusted");
-          100┆ }
-            ⋮┆----------------------------------------
-          144┆ @Override // javax.net.ssl.X509TrustManager
-          145┆ public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-          146┆     Intrinsics.checkNotNullParameter(chain, "chain");
-          147┆     Intrinsics.checkNotNullParameter(authType, "authType");
-          148┆     Log.w((String) null, "Server not trusted");
-          149┆ }
+           93┆ @Override // javax.net.ssl.X509TrustManager
+           94┆ public void checkServerTrusted(X509Certificate[] chain, String authType) {
+           95┆ }

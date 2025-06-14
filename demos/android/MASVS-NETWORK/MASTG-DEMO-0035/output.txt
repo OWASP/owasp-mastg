@@ -8,4 +8,4 @@
        owasp-mastg.rules.MSTG-TEST-0234-3
           Improper use of onReceivedSslError handler
 
-           52┆ handler.proceed();
+           35┆ handler.proceed();

@@ -20,14 +20,13 @@ rules:
       any:
         - all:
           - not: |
-              public void onReceivedSslError(...) {
+              $RETURN onReceivedSslError(...) {
               ...
-              throw new $CLASS(...);
+              throw new $EXCEPTION(...);
               ...
               }
           - inside: |
-              public void onReceivedSslError(...) {
+              $RETURN onReceivedSslError(...) {
               ...
               }
-          -  handler.proceed();
-        -  public void onReceivedSslError(...) { handler.proceed(); ... }
+          -  $HANDLER.proceed();
