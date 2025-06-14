@@ -18,7 +18,6 @@ title: MASTG Tests
 
     Each test comes with a collection of demos that demonstrate the weakness in a sample application. These demos are written in markdown and are located in the [Demos](../../MASTG/demos/index.md) section of the MASTG.
 
-
 ??? tip "Filtering Tests"
     
     You can use the filter options above the table to filter tests by:
