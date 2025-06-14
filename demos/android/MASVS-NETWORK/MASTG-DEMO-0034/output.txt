@@ -1,17 +1,20 @@
-                   
-                   
+
+
 ┌─────────────────┐
 │ 2 Code Findings │
 └─────────────────┘
-                                                                                  
-    app/src/main/java/com/example/uncrackable_level1_MASTG_NETWORK/MainActivity.kt
-    ❯❱ rules.MSTG-TEST-0234-2
-          Improper hostname verification detected.
-                                                  
-          151┆ val allowallhostnameverifier = HostnameVerifier { hostname, session ->
-          152┆     Log.w(null, "Do not verify host, allow: ".plus(hostname))
-          153┆     true
-          154┆ }
+
+    MastgTest_reversed.java
+       owasp-mastg.rules.MSTG-TEST-0234-2
+          Improper server hostname verification detected
+
+          112┆ HostnameVerifier allowallhostnameverifier = new HostnameVerifier() { // from class:
+  org.owasp.mastestapp.MastgTest$$ExternalSyntheticLambda0
+          113┆     @Override // javax.net.ssl.HostnameVerifier
+          114┆     public final boolean verify(String str, SSLSession sSLSession) {
+          115┆         return MastgTest.Builder$lambda$1(str, sSLSession);
+          116┆     }
+          117┆ };
             ⋮┆----------------------------------------
-          236┆ val allowallhostnameverifier =                                        
-               org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+          161┆ X509HostnameVerifier allowallhostnameverifier =
+  org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;

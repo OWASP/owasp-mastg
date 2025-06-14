@@ -2,7 +2,7 @@ rules:
   - id: MSTG-TEST-0234-2
     severity: WARNING
     languages:
-      - kotlin
+      - java
     metadata:
       authors:
         - Johan Sydseter @sydseter (OWASP Foundation)
@@ -18,15 +18,6 @@ rules:
     message: Improper server hostname verification detected
     match:
       any:
-        - $X = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
-        - all:
-          - not: |
-              val $X = HostnameVerifier { $Z, $Y ->
-              ...
-              false
-              ...}
-          -  |
-              val $X = HostnameVerifier { $Z, $Y ->
-              ...
-              true
-              }
+        - $X = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+        - $X = new HostnameVerifier() {...$F(...) {...return MastgTest.Builder$lambda$1(str, sSLSession);...}...};
+        - $X = new HostnameVerifier() {...$F(...) {...return true;...}...};
