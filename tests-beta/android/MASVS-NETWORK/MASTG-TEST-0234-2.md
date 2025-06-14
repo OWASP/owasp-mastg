@@ -1,5 +1,5 @@
 ---
-title: Correct implementation of server hostname verification
+title: Incorrect Implementation of Server Hostname Verification
 platform: android
 id: MASTG-TEST-0234-2
 type: [static]
