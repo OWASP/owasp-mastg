@@ -1,5 +1,5 @@
 rules:
-  - id: MSTG-TEST-0234-1
+  - id: mastg-android-network-checkservertrusted
     severity: WARNING
     languages:
       - java

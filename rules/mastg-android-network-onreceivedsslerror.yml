@@ -1,5 +1,5 @@
 rules:
-  - id: MSTG-TEST-0234-3
+  - id: mastg-android-network-onreceivedsslerror
     severity: WARNING
     languages:
       - java

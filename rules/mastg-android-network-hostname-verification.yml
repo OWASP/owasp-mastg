@@ -1,5 +1,5 @@
 rules:
-  - id: MSTG-TEST-0234-2
+  - id: mastg-android-network-hostname-verification
     severity: WARNING
     languages:
       - java

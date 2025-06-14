@@ -1,5 +1,5 @@
 rules:
-  - id: MSTG-TEST-0234-5
+  - id: mastg-android-network-insecure-trust-anchors
     severity: WARNING
     languages:
       - xml

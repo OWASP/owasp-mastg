@@ -1,5 +1,5 @@
 rules:
-  - id: MSTG-TEST-0234-4
+  - id: mastg-android-network-target-sdk-version
     severity: WARNING
     languages:
       - kotlin
