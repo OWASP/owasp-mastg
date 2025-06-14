@@ -20,7 +20,7 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified two instances in the code file where `checkServerTrusted` is used without the use of exception handling.The specified line numbers can be located in the original code for further investigation and remediation.
+The rule has identified two instances in the code file where `checkServerTrusted` is used without the use of exception handling. The specified line numbers can be located in the original code for further investigation and remediation.
 
 ### Evaluation
 
