@@ -8,7 +8,7 @@ test: MSTG-TEST-0234-1
 
 ### Sample
 
-{{ MastgTest.kt # MastgTest.kt }}
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
