@@ -7,49 +7,50 @@ document.addEventListener('DOMContentLoaded', function() {
   const filters = [
     {
       id: 'filter-status-deprecated',
-      label: 'Show Deprecated Only',
+      label: 'Show Deprecated',
       type: 'status',
       value: 'deprecated',
-      columnIndex: 7 // Status column
+      columnIndex: 7, // Status column
+      invertLogic: true // Invert logic for deprecated filter - hide by default, show when checked
     },
     {
       id: 'filter-platform-android',
-      label: 'Android Only',
+      label: 'Android',
       type: 'platform',
       value: 'android',
       columnIndex: 2 // Platform column
     },
     {
       id: 'filter-platform-ios',
-      label: 'iOS Only',
+      label: 'iOS',
       type: 'platform',
       value: 'ios',
       columnIndex: 2 // Platform column
     },
     {
       id: 'filter-profile-l1',
-      label: 'L1 Only',
+      label: 'L1',
       type: 'profile',
       value: 'L1',
       columnIndex: 3 // L1 column
     },
     {
       id: 'filter-profile-l2',
-      label: 'L2 Only',
+      label: 'L2',
       type: 'profile',
       value: 'L2',
       columnIndex: 4 // L2 column
     },
     {
       id: 'filter-profile-r',
-      label: 'R Only',
+      label: 'R',
       type: 'profile',
       value: 'R',
       columnIndex: 5 // R column
     },
     {
       id: 'filter-profile-p',
-      label: 'P Only',
+      label: 'P',
       type: 'profile',
       value: 'P',
       columnIndex: 6 // P column
@@ -61,8 +62,9 @@ document.addEventListener('DOMContentLoaded', function() {
   mainFilterContainer.className = 'mastg-filters-wrapper';
   mainFilterContainer.style.marginBottom = '1rem';
   mainFilterContainer.style.padding = '1rem';
-  mainFilterContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
+  mainFilterContainer.style.backgroundColor = 'var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.05))';
   mainFilterContainer.style.borderRadius = '4px';
+  mainFilterContainer.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
   
   // Create the filter UI rows
   const filterContainer = document.createElement('div');
@@ -108,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     groupLabel.textContent = group.label;
     groupLabel.style.fontWeight = 'bold';
     groupLabel.style.minWidth = '70px';
+    groupLabel.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
     groupContainer.appendChild(groupLabel);
     
     group.filters.forEach(filter => {
@@ -118,10 +121,11 @@ document.addEventListener('DOMContentLoaded', function() {
       toggleLabel.style.cursor = 'pointer';
       toggleLabel.style.marginRight = '0.5rem';
       toggleLabel.style.padding = '0.25rem 0.5rem';
-      toggleLabel.style.border = '1px solid rgba(0, 0, 0, 0.1)';
+      toggleLabel.style.border = '1px solid var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.1))';
       toggleLabel.style.borderRadius = '4px';
-      toggleLabel.style.backgroundColor = 'white';
+      toggleLabel.style.backgroundColor = 'var(--md-default-bg-color, white)';
       toggleLabel.style.transition = 'background-color 0.2s, border-color 0.2s';
+      toggleLabel.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
       
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
@@ -129,29 +133,32 @@ document.addEventListener('DOMContentLoaded', function() {
       checkbox.dataset.type = filter.type;
       checkbox.dataset.value = filter.value;
       checkbox.dataset.columnIndex = filter.columnIndex;
+      if (filter.invertLogic) {
+        checkbox.dataset.invertLogic = 'true';
+      }
       checkbox.style.marginRight = '6px';
       
       // Add hover effect
       toggleLabel.addEventListener('mouseover', function() {
         if (!checkbox.checked) {
-          toggleLabel.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
+          toggleLabel.style.backgroundColor = 'var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.05))';
         }
       });
       
       toggleLabel.addEventListener('mouseout', function() {
         if (!checkbox.checked) {
-          toggleLabel.style.backgroundColor = 'white';
+          toggleLabel.style.backgroundColor = 'var(--md-default-bg-color, white)';
         }
       });
       
       // Add active state styling
       checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
-          toggleLabel.style.backgroundColor = 'rgba(13, 110, 253, 0.1)';
-          toggleLabel.style.borderColor = 'rgba(13, 110, 253, 0.5)';
+          toggleLabel.style.backgroundColor = 'var(--md-primary-fg-color--transparent, rgba(13, 110, 253, 0.1))';
+          toggleLabel.style.borderColor = 'var(--md-primary-fg-color--light, rgba(13, 110, 253, 0.5))';
         } else {
-          toggleLabel.style.backgroundColor = 'white';
-          toggleLabel.style.borderColor = 'rgba(0, 0, 0, 0.1)';
+          toggleLabel.style.backgroundColor = 'var(--md-default-bg-color, white)';
+          toggleLabel.style.borderColor = 'var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.1))';
         }
       });
       
@@ -172,20 +179,21 @@ document.addEventListener('DOMContentLoaded', function() {
   const clearButton = document.createElement('button');
   clearButton.textContent = 'Clear All Filters';
   clearButton.style.padding = '0.3rem 0.75rem';
-  clearButton.style.border = '1px solid rgba(0, 0, 0, 0.1)';
+  clearButton.style.border = '1px solid var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.1))';
   clearButton.style.borderRadius = '4px';
-  clearButton.style.backgroundColor = '#f8f8f8';
+  clearButton.style.backgroundColor = 'var(--md-default-fg-color--lightest, #f8f8f8)';
+  clearButton.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
   clearButton.style.cursor = 'pointer';
   clearButton.style.marginLeft = 'auto';
   clearButton.style.transition = 'background-color 0.2s';
   
   // Add hover effect to button
   clearButton.addEventListener('mouseover', function() {
-    clearButton.style.backgroundColor = '#e9e9e9';
+    clearButton.style.backgroundColor = 'var(--md-accent-fg-color--transparent, #e9e9e9)';
   });
   
   clearButton.addEventListener('mouseout', function() {
-    clearButton.style.backgroundColor = '#f8f8f8';
+    clearButton.style.backgroundColor = 'var(--md-default-fg-color--lightest, #f8f8f8)';
   });
   
   clearButton.addEventListener('click', function() {
@@ -209,6 +217,29 @@ document.addEventListener('DOMContentLoaded', function() {
   // Insert the filters before the table wrapper
   tableWrapper.parentNode.insertBefore(mainFilterContainer, tableWrapper);
   
+  // Initialize table - hide deprecated items by default
+  setTimeout(() => {
+    // Hide deprecated items on page load
+    const rows = dataTable.querySelectorAll('tbody tr');
+    rows.forEach(function(row) {
+      const statusCell = row.querySelector('td:nth-child(8)'); // Status column
+      if (statusCell && (statusCell.textContent.includes('deprecated') || 
+                         statusCell.innerHTML.includes('status:deprecated'))) {
+        row.style.display = 'none';
+      }
+    });
+    
+    // Update the showing count
+    const info = tableWrapper.querySelector('.dataTables_info');
+    if (info) {
+      const totalRows = rows.length;
+      const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none').length;
+      if (visibleRows < totalRows) {
+        info.textContent = `Showing ${visibleRows} of ${totalRows} entries (deprecated items hidden)`;
+      }
+    }
+  }, 0);
+  
   // Function to filter the table
   function filterTable() {
     const activeFilters = {};
@@ -228,60 +259,80 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
     
+    // First, handle the special case of deprecated items - hide them by default
+    let showDeprecatedChecked = false;
+    const deprecatedCheckbox = mainFilterContainer.querySelector('#filter-status-deprecated');
+    if (deprecatedCheckbox && deprecatedCheckbox.checked) {
+      showDeprecatedChecked = true;
+    }
+
+    // By default, hide deprecated items if the checkbox is not checked
     const rows = dataTable.querySelectorAll('tbody tr');
     
     rows.forEach(function(row) {
       let shouldShow = true;
       
-      // Apply each filter type
-      Object.keys(activeFilters).forEach(filterType => {
-        // If any filter in this type matches, we'll keep the row
-        let typeMatch = false;
-        
-        activeFilters[filterType].forEach(filter => {
-          const cell = row.querySelector(`td:nth-child(${filter.columnIndex + 1})`);
-          if (!cell) return;
+      // First, check if the row is deprecated
+      const statusCell = row.querySelector('td:nth-child(8)'); // Status column
+      const isDeprecated = statusCell && (statusCell.textContent.includes('deprecated') || 
+                                         statusCell.innerHTML.includes('status:deprecated'));
+      
+      // Handle deprecated items specially:
+      // - If "Show Deprecated" is not checked, hide deprecated items
+      // - If "Show Deprecated" is checked, allow them to be shown (subject to other filters)
+      if (isDeprecated && !showDeprecatedChecked) {
+        shouldShow = false;
+      } else {
+        // Apply each regular filter type (excluding the deprecated filter which we handled separately)
+        Object.keys(activeFilters).forEach(filterType => {
+          // Skip the status filter which we handled separately
+          if (filterType === 'status') return;
           
-          let isMatch = false;
+          // If any filter in this type matches, we'll keep the row
+          let typeMatch = false;
           
-          // Status filter
-          if (filterType === 'status') {
-            isMatch = cell.textContent.includes(filter.value) || 
-                    cell.innerHTML.includes(`status:${filter.value}`);
-          } 
-          // Platform filter
-          else if (filterType === 'platform') {
-            isMatch = cell.textContent.toLowerCase().includes(filter.value.toLowerCase()) || 
-                    cell.innerHTML.includes(`platform:${filter.value.toLowerCase()}`);
-          } 
-          // Profile filters (L1, L2, R, P)
-          else if (filterType === 'profile') {
-            // Check which profile this filter is for
-            if (filter.value === 'L1') {
-              isMatch = cell.querySelector('.mas-dot-blue');
-            } else if (filter.value === 'L2') {
-              isMatch = cell.querySelector('.mas-dot-green');
-            } else if (filter.value === 'R') {
-              isMatch = cell.querySelector('.mas-dot-orange');
-            } else if (filter.value === 'P') {
-              isMatch = cell.querySelector('.mas-dot-purple');
+          activeFilters[filterType].forEach(filter => {
+            const cell = row.querySelector(`td:nth-child(${filter.columnIndex + 1})`);
+            if (!cell) return;
+            
+            let isMatch = false;
+            
+            // Platform filter
+            if (filterType === 'platform') {
+              isMatch = cell.textContent.toLowerCase().includes(filter.value.toLowerCase()) || 
+                      cell.innerHTML.includes(`platform:${filter.value.toLowerCase()}`);
+            } 
+            // Profile filters (L1, L2, R, P)
+            else if (filterType === 'profile') {
+              // Check which profile this filter is for
+              if (filter.value === 'L1') {
+                isMatch = cell.querySelector('.mas-dot-blue');
+              } else if (filter.value === 'L2') {
+                isMatch = cell.querySelector('.mas-dot-green');
+              } else if (filter.value === 'R') {
+                isMatch = cell.querySelector('.mas-dot-orange');
+              } else if (filter.value === 'P') {
+                isMatch = cell.querySelector('.mas-dot-purple');
+              }
             }
-          }
+            
+            if (isMatch) {
+              typeMatch = true;
+            }
+          });
           
-          if (isMatch) {
-            typeMatch = true;
+          // If no filters of this type matched, hide the row
+          if (!typeMatch && activeFilters[filterType].length > 0) {
+            shouldShow = false;
           }
         });
-        
-        // If no filters of this type matched, hide the row
-        if (!typeMatch && activeFilters[filterType].length > 0) {
-          shouldShow = false;
-        }
-      });
+      }
       
-      // If we have no active filters, show all rows
-      if (Object.keys(activeFilters).length === 0) {
-        shouldShow = true;
+      // If we have no active filters except possibly the deprecated filter, 
+      // and the deprecated filter is not checked, show all non-deprecated rows
+      if (Object.keys(activeFilters).length === 0 || 
+          (Object.keys(activeFilters).length === 1 && 'status' in activeFilters && !showDeprecatedChecked)) {
+        shouldShow = !isDeprecated || showDeprecatedChecked;
       }
       
       row.style.display = shouldShow ? '' : 'none';
