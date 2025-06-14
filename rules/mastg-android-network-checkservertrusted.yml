@@ -2,7 +2,7 @@ rules:
   - id: MSTG-TEST-0234-1
     severity: WARNING
     languages:
-      - kotlin
+      - java
     metadata:
       authors:
         - Johan Sydseter @sydseter (OWASP Foundation)
@@ -19,12 +19,12 @@ rules:
     match:
         all:
         - not: |
-            override fun checkServerTrusted(...) {
+            public void checkServerTrusted (...) {
             ...
-            throw CertificateException(...)
+            throw new CertificateException(...);
             }
         -  |
-            override fun checkServerTrusted(...) {
+            public void checkServerTrusted (...) {
             ...
             }
           

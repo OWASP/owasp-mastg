@@ -1,23 +1,23 @@
-                   
-                   
+
+
 ┌─────────────────┐
 │ 2 Code Findings │
 └─────────────────┘
-                                                                                  
-    app/src/main/java/com/example/uncrackable_level1_MASTG_NETWORK/MainActivity.kt
-    ❯❱ rules.MSTG-TEST-0234-1
+
+    MastgTest_reversed.java
+       owasp-mastg.rules.MSTG-TEST-0234-1
           Improper Server Certificate verification detected.
-                                                            
-          128┆ @SuppressLint("TrustAllX509TrustManager")
-          129┆ @Throws(CertificateException::class)
-          130┆ override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
-          131┆     // N / A
-          132┆     Log.w(null, "Server not trusted")
-          133┆ }
+
+           95┆ @Override // javax.net.ssl.X509TrustManager
+           96┆ public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+           97┆     Intrinsics.checkNotNullParameter(chain, "chain");
+           98┆     Intrinsics.checkNotNullParameter(authType, "authType");
+           99┆     Log.w((String) null, "Server not trusted");
+          100┆ }
             ⋮┆----------------------------------------
-          214┆ @SuppressLint("TrustAllX509TrustManager")
-          215┆ @Throws(CertificateException::class)
-          216┆ override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
-          217┆     // N / A
-          218┆     Log.w(null, "Server not trusted")
-          219┆ }
+          144┆ @Override // javax.net.ssl.X509TrustManager
+          145┆ public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+          146┆     Intrinsics.checkNotNullParameter(chain, "chain");
+          147┆     Intrinsics.checkNotNullParameter(authType, "authType");
+          148┆     Log.w((String) null, "Server not trusted");
+          149┆ }
