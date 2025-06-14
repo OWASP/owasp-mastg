@@ -8,7 +8,14 @@ weakness: MASWE-0052
 
 ## Overview
 
-`SSLSocket` does not perform hostname verification by default unless the app explicitly uses [`HostnameVerifier.verify()`](https://developer.android.com/reference/javax/net/ssl/HostnameVerifier#verify(java.lang.String,%20javax.net.SSL.SSLSession)). See the ["Android documentation"](https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket) and ["Unsafe HostnameVerifier"](https://developer.android.com/privacy-and-security/risks/unsafe-hostname) for more details.
+Using [`HostnameVerifier.verify()`](https://developer.android.com/reference/javax/net/ssl/HostnameVerifier#verify(java.lang.String,%20javax.net.SSL.SSLSession)) is a good practise (especially in cases when it's not automatically done, such as [when using the `SSLSocket` API](https://developer.android.com/privacy-and-security/security-ssl#WarningsSslSocket). However, when used and [implemented in an unsafe manner](https://developer.android.com/privacy-and-security/risks/unsafe-hostname) such as:
+
+- overriding `verify(...)` to unconditionally return `true`
+- applying overly-broad wildcard rules
+- forgetting to invoke your verifier on *every* SSL/TLS channel (e.g. after renegotiation or on a raw `SSLSocket`)
+- etc.
+
+In these cases, the app effectively turns off hostname validation for the affected connections. In this state, the app will accept any certificate for any host, allowing an attacker to run a [MITM attack](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) with a valid (or self-signed) certificate and intercept or tamper with the app's traffic.
 
 ## Steps
 
