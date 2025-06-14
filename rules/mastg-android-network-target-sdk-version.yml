@@ -2,18 +2,8 @@ rules:
   - id: mastg-android-network-target-sdk-version
     severity: WARNING
     languages:
-      - kotlin
+      - xml
     metadata:
-      authors:
-        - Johan Sydseter @sydseter (OWASP Foundation)
-      owasp-mobile: M3
-      category: security
-      area: network
-      verification-level:
-        - L1
-        - L2
-      references:
-        - https://github.com/OWASP/owasp-mastg/blob/master/Document/0x05a-Platform-Overview.md#android-manifest
       summary: This rule will look for the use of targetSdk and generate a warning if the version used is to low.
     message: The targeted SDK is less then 24 which means that the network configuration allows users to use insecure CAs
     match:

@@ -4,16 +4,6 @@ rules:
     languages:
       - java
     metadata:
-      authors:
-        - Johan Sydseter @sydseter (OWASP Foundation)
-      owasp-mobile: M3
-      category: security
-      area: network
-      verification-level:
-        - L1
-        - L2
-      references:
-        - https://github.com/OWASP/owasp-mastg/blob/master/Document/0x05g-Testing-Network-Communication.md#pinning-using-custom-trustmanagers
       summary: This rule looks for the use of HostnameVerifier and ensure it doesn't just return true which would mean that it mutes all server host name issues
     message: Improper server hostname verification detected
     match:

@@ -1,5 +1,5 @@
 ---
-title: Correct use of SSL error handling for webviews
+title: Incorrect SSL Error Handling in WebViews
 platform: android
 id: MASTG-TEST-0234-3
 type: [static]
