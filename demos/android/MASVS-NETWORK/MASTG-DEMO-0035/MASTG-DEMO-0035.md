@@ -8,7 +8,7 @@ test: MSTG-TEST-0234-3
 
 ### Sample
 
-{{ MastgTestWebView.kt # MastgTestWebView.kt }}
+{{ MastgTestWebView.kt # MastgTestWebView_reversed.java }}
 
 ### Steps
 
