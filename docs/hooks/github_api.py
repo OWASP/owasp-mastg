@@ -46,7 +46,7 @@ def get_issues_for_test_refactors():
     page = 1
     try:
         while True:
-            
+
             resp = requests.get(SEARCH_URL, headers=headers, params={"q": query, "per_page": 100, "page": page})
             resp.raise_for_status()
             data = resp.json()
@@ -74,7 +74,7 @@ def get_latest_successful_run(workflow_file, branch="master"):
     """
     global GITHUB_TOKEN_WARNING
     global GITHUB_TOKEN_LOGGED
-    
+
     # Check if token exists
     if not GITHUB_TOKEN:
         if not GITHUB_TOKEN_WARNING:
@@ -103,7 +103,7 @@ def get_latest_successful_run(workflow_file, branch="master"):
             return f"{runs[0]['html_url']}#artifacts"
         else:
             return None
-            
+
     except requests.exceptions.RequestException as e:
         if not GITHUB_TOKEN_WARNING:
             log_github_token_invalid_warning(e)

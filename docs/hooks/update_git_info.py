@@ -1,11 +1,14 @@
 import logging
 import mkdocs.plugins
 import subprocess
+import os
 
 log = logging.getLogger('mkdocs')
 
 
 def get_last_commit_date(file_path):
+    if os.getenv("IGNORE_LAST_COMMIT_DATE") == "1":
+            return None
     try:
         # get the last commit date as "September 12, 2022"
         command = f"git log -n 1 --date=format:'%B %d, %Y' --format=%ad -- {file_path}"
@@ -23,7 +26,7 @@ if __name__ == '__main__':
 
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
-@mkdocs.plugins.event_priority(-50)
+@mkdocs.plugins.event_priority(-49)
 def on_page_markdown(markdown, page, **kwargs):
 
     abs_path = page.file.abs_src_path
