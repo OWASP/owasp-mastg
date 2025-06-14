@@ -2,7 +2,7 @@ rules:
   - id: MSTG-TEST-0234-3
     severity: WARNING
     languages:
-      - kotlin
+      - java
     metadata:
       authors:
         - Johan Sydseter @sydseter (OWASP Foundation)
@@ -20,12 +20,14 @@ rules:
       any:
         - all:
           - not: |
-              override fun onReceivedSslError(...) {
+              public void onReceivedSslError(...) {
               ...
-              throw $CLASS(...)
+              throw new $CLASS(...);
               ...
+              }
           - inside: |
-              override fun onReceivedSslError(...) {
+              public void onReceivedSslError(...) {
               ...
-          -  handler.proceed()
-        -  override fun onReceivedSslError(...) { handler.proceed() }
+              }
+          -  handler.proceed();
+        -  public void onReceivedSslError(...) { handler.proceed(); ... }
