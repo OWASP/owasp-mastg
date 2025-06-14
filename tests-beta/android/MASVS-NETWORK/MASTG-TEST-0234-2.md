@@ -28,4 +28,6 @@ The output contains a list of locations where `HostnameVerifier` or `X509Hostnam
 
 ## Evaluation
 
-The test case fails if hostname verification is missing or implemented incorrectly.
+The test case fails if hostname verification is present but implemented incorrectly, e.g. by unconditionally returning `true`.
+
+When testing using automated tools, you will need to inspect all the reported locations in the reverse-engineered code to confirm the incorrect implementation (@MASTG-TECH-0023).
