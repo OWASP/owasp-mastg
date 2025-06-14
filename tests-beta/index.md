@@ -17,13 +17,3 @@ title: MASTG Tests
     - **Evaluation**: Specific instructions for evaluating the results of the test.
 
     Each test comes with a collection of demos that demonstrate the weakness in a sample application. These demos are written in markdown and are located in the [Demos](../../MASTG/demos/index.md) section of the MASTG.
-
-??? tip "Filtering Tests"
-    
-    You can use the filter options above the table to filter tests by:
-    
-    - **Status**: Show deprecated tests only
-    - **Platform**: Filter for Android or iOS tests only
-    - **Profile**: Filter for tests with specific compliance profiles (L1, L2, R, P)
-    
-    You can combine multiple filters to narrow down your search. For example, you can display only L2 Android tests or deprecated iOS tests. Use the "Clear All Filters" button to reset all filters.
