@@ -1,0 +1,12 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                                    
+    app/src/main/res/xml/network_security_config.xml
+    ❯❱ rules.MSTG-TEST-0234-5
+          The app has customized it's trust anchors allowing connections to potentially insecure user defined
+          CAs                                                                                                
+                                                                                                             
+           11┆ <certificates src="user" />
