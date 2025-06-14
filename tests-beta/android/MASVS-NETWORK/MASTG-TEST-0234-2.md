@@ -24,7 +24,7 @@ In these cases, the app effectively turns off hostname validation for the affect
 
 ## Observation
 
-You will find the `HostnameVerifier` used as an interface for a `synthetic constructor` within the `MainActivity` smali file. This synthetic class only has a constructor that return void indicating that the `HostnameVerifier` does not verify the host as it should. In the same file, you will also find the `X509HostnameVerifier` called `ALLOW_ALL_HOSTNAME_VERIFIER`. As the name indicate, it does not do any host name verification.
+The output contains a list of locations where `HostnameVerifier` or `X509HostnameVerifier` are used.
 
 ## Evaluation
 
