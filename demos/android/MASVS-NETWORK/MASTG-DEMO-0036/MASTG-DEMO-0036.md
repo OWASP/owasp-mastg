@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Network security config allows certificates imported on the user's behalf
-id: MASTG-DEMO-0037
+id: MASTG-DEMO-0036
 code: [xml]
 test: MSTG-TEST-0234-5
 ---
