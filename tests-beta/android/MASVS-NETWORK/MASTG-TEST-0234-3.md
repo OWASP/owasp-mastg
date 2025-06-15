@@ -17,9 +17,10 @@ Inside `onReceivedSslError` if no exceptions are thrown and there is a `handler.
 
 ## Observation
 
-You will find the public method `onReceivedSslError` within the `MainActivity` smali file. There are calls to null checks for each of the parameters `view`, `handler` and `error` as required by the method signature. Several if statements follows, but none of them does more then initializing strings. There are also invocations of two static log functions `w` denoted by `invoke-static`.
-At the end there is a invocation of a `SslErrorHandler` named `proceed` and a `return-void` statement which indicate that the `handler.proceed()` is called without returning anything from the function. Nowhere, within the method, is there any indication that there are exception handling that properly handles TLS errors.
+The output contains a list of locations where `onReceivedSslError` that includes a `handler.proceed()` is used without exception handling that properly handles TLS errors.
 
 ## Evaluation
 
-The test case fails if `onReceivedSslError` together with `handler.proceed()` without proper exception handling.
+The test case fails if `onReceivedSslError` is used together with `handler.proceed()` without proper exception handling.
+
+When testing using automated tools, you will need to inspect all the reported locations in the reverse-engineered code to confirm the incorrect implementation (@MASTG-TECH-0023).

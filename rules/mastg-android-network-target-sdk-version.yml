@@ -4,11 +4,12 @@ rules:
     languages:
       - xml
     metadata:
-      summary: This rule will look for the use of targetSdk and generate a warning if the version used is to low.
-    message: The targeted SDK is less then 24 which means that the network configuration allows users to use insecure CAs
+      summary: This rule will look for the use of minSdkVersion and generate a warning
+        if the version used is to low.
+    message: The minSdkVersion is less then 24 which means that the network
+      configuration allows users to use insecure CAs
     match:
       all:
-      - |
-        targetSdk = $ARG
-      where:
-        - comparison: $ARG < 24
+       - android:minSdkVersion="$ARG"
+    where:
+      - comparison: $ARG < 24
