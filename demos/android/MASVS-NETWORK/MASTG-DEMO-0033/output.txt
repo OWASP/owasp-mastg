@@ -1,0 +1,13 @@
+
+
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+
+    MastgTest_reversed.java
+       owasp-mastg.rules.MSTG-TEST-0234-1
+          Improper Server Certificate verification detected.
+
+           93┆ @Override // javax.net.ssl.X509TrustManager
+           94┆ public void checkServerTrusted(X509Certificate[] chain, String authType) {
+           95┆ }

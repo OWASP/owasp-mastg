@@ -1,0 +1,14 @@
+rules:
+  - id: mastg-android-network-hostname-verification
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for the use of HostnameVerifier and ensure it doesn't just return true which would mean that it mutes all server host name issues
+    message: Improper server hostname verification detected
+    match:
+      any:
+        - org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+        - new HostnameVerifier() {...$F(...) {...return MastgTest.Builder$lambda$1(str, sSLSession);...}...};
+        - new HostnameVerifier() {...$F(...) {...return MastgTest.fetchUrl$lambda$1(str, sSLSession);...}...};
+        - new HostnameVerifier() {...$F(...) {...return true;...}...};
