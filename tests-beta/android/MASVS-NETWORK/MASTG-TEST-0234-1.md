@@ -1,5 +1,5 @@
 ---
-title: Correct implementation of server certificate verification
+title: Incorrect implementation of server certificate verification
 platform: android
 id: MASTG-TEST-0234-1
 type: [static]

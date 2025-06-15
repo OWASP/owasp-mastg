@@ -1,1 +1,0 @@
-NO_COLOR=true semgrep -c ../../../../rules/mastg-android-network-target-sdk-version.yml ./AndroidManifest.xml --text -o output.txt
