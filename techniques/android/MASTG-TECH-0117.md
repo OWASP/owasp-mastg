@@ -60,7 +60,7 @@ If you need to modify and rebuild the manifest with different SDK values, you'd 
 
 ## Using @MASTG-TOOL-0124
 
-If you are only interested in specific values of the manifest, you can alternatively use aapt2.
+If you are only interested in specific values of the manifest, you can use aapt2.
 
 Note that **the output is not an XML file**.
 
