@@ -262,7 +262,7 @@ We recommend that you test both the APK with and without the additional modules,
 
 ### Android Manifest
 
-Every Android app contains an `AndroidManifest.xml` file in the root of its APK, written in binary XML format. This file defines the app's structure and key properties used by the Android operating system during installation and runtime.
+Every Android app contains an `AndroidManifest.xml` file in the root of the APK, stored in binary XML format. This file defines the app's structure and key properties used by the Android operating system during installation and runtime.
 
 Security-relevant elements include:
 
@@ -270,16 +270,15 @@ Security-relevant elements include:
 - **Components:** The manifest lists all [app components](#app-components) declared in the app serving as entry points. They can be exposed to other apps (via intent filters or the `exported` attribute) so they are critical to determine how an attacker might interact with the app. The main component types are:
     - **Activities:** define user interface screens. If associated with intent filters and not properly restricted, they may be invoked by other apps.
     - **Services:** run background tasks. Exported services can be invoked externally, so should be secured if not meant for public use.
-    - **Broadcast Receivers:** handle system-wide messages. Unprotected receivers are a common attack surface.
+    - **Broadcast Receivers:** handle external messages. Unprotected receivers are a common attack surface.
     - **Content Providers:** expose structured data. Improper permissions can lead to unauthorized read or write access.
 - **Deep Links:** [Deep links](0x05h-Testing-Platform-Interaction.md#deep-links) are configured via intent filters with the `VIEW` action, `BROWSABLE` category, and a `data` element specifying a URI pattern. These can expose activities to web or app links and must be verified carefully to avoid injection or spoofing risks. Adding `android:autoVerify="true"` enables App Links, which restrict handling of verified links to the declared app, reducing the risk of link hijacking.
-- **Uses Cleartext Traffic:** The `android:usesCleartextTraffic` attribute controls whether the app allows non-encrypted HTTP traffic. From Android 9 (API 28) onward, cleartext traffic is disabled by default unless explicitly allowed. This attribute can be overridden by the `networkSecurityConfig`.
+- **Uses Cleartext Traffic:** The `android:usesCleartextTraffic` attribute controls whether the app allows non-encrypted HTTP traffic. From Android 9 (API 28) onward, cleartext traffic is disabled by default unless explicitly allowed. This attribute can also be overridden by the `networkSecurityConfig`.
 - **Network Security Config:** An optional XML file defined via `android:networkSecurityConfig`, available since Android 7.0 (API level 24), that provides granular control over [network security behavior](0x05g-Testing-Network-Communication.md#android-network-security-configuration). It allows specifying trusted certificate authorities, per-domain TLS requirements, and cleartext traffic exceptions, overriding global settings defined in `android:usesCleartextTraffic`.
 - **Backup Behavior:** The `android:allowBackup` attribute allows or prevents app data from being [backed up](0x05d-Testing-Data-Storage.md#backups).
 - **Task Affinities and Launch Modes:** These settings influence how activities are grouped and launched. Misconfigurations can allow task hijacking or phishing-style attacks if an attacker's app mimics legitimate components.
-- **Install Location:** Specifies whether the APK file can be installed on external storage. Regardless, all private app data, optimized DEX files, and native libraries are stored on internal device memory.
 
-The full list of available manifest options is in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+The full list of available manifest options can be found in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
 
 At build time, the manifest is merged with those from all included libraries and dependencies. The final merged manifest may include additional permissions, components, or settings not explicitly declared by the developer. Security reviews must analyze the merged output to understand the app's real exposure.
 

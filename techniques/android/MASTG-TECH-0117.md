@@ -5,7 +5,7 @@ platform: android
 
 The [AndroidManifest.xml](../../Document/0x05a-Platform-Overview.md) file is a critical component of any Android application, providing essential information about the app's structure, permissions, components, and configurations. During a security assessment, analyzing the manifest can reveal potential vulnerabilities or misconfigurations that could be exploited by attackers.
 
-The AndroidManifest can be obtained from the APK file, and if you try to open it directly, you might see it's in a binary format. To properly analyze the manifest, you need to extract and decode it into a human-readable XML format.
+The AndroidManifest is stored in a binary XML format and cannot simply be extracted from the APK by unzipping it. To properly analyze the manifest, you first need to extract and decode it into a human-readable XML format.
 
 Different tools extract the manifest in various formats, with some preserving more raw structure while others interpret or modify it during decoding.
 
@@ -29,7 +29,7 @@ jadx outputs the manifest in full to `out_dir/resources/AndroidManifest.xml`, in
 
 ## Using @MASTG-TOOL-0011
 
-The full AndroidManifest can be extracted using apktool:
+The AndroidManifest can be extracted using apktool:
 
 ```sh
 $ apktool d -s -f -o output_dir MASTG-DEMO-0001.apk
@@ -56,7 +56,6 @@ sdkInfo:
   targetSdkVersion: 35
 ```
 
-If you need to modify and rebuild the manifest with different SDK values, you'd update that sdkInfo section in apktool.yml and rebuild using apktool b.
 
 ## Using @MASTG-TOOL-0124
 
