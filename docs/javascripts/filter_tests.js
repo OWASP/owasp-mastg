@@ -63,8 +63,9 @@ function configureTestsTable() {
   // Create main filters container
   const mainFilterContainer = document.createElement('div');
   mainFilterContainer.className = 'mastg-filters-wrapper';
-  mainFilterContainer.style.marginBottom = '1rem';
   mainFilterContainer.style.padding = '1rem';
+  mainFilterContainer.style.marginBottom = '1.5rem';
+
   mainFilterContainer.style.backgroundColor = 'var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.05))';
   mainFilterContainer.style.borderRadius = '4px';
   mainFilterContainer.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
@@ -75,16 +76,14 @@ function configureTestsTable() {
   filterContainer.style.display = 'flex';
   filterContainer.style.flexWrap = 'wrap';
   filterContainer.style.gap = '1rem';
-  filterContainer.style.marginBottom = '1rem';
   
-  // Create a separate row for filter groups and search
+  // Create a separate row for filter groups
   const filterGroupsRow = document.createElement('div');
   filterGroupsRow.style.display = 'flex';
   filterGroupsRow.style.flexWrap = 'wrap';
   filterGroupsRow.style.gap = '1rem';
   filterGroupsRow.style.alignItems = 'center';
   filterGroupsRow.style.width = '100%';
-  filterGroupsRow.style.marginBottom = '0.5rem';
   
   // Group filters by type for better organization
   const filterGroups = {
@@ -107,7 +106,6 @@ function configureTestsTable() {
     groupContainer.style.display = 'flex';
     groupContainer.style.alignItems = 'center';
     groupContainer.style.gap = '0.5rem';
-    groupContainer.style.marginBottom = '0.5rem';
     
     const groupLabel = document.createElement('span');
     groupLabel.textContent = group.label;
@@ -184,7 +182,6 @@ function configureTestsTable() {
   searchContainer.style.display = 'flex';
   searchContainer.style.alignItems = 'center';
   searchContainer.style.gap = '0.5rem';
-  searchContainer.style.marginBottom = '0.5rem';
   
   const searchLabel = document.createElement('span');
   searchLabel.textContent = "Search:";
@@ -208,7 +205,21 @@ function configureTestsTable() {
 
   searchInput.addEventListener('keyup', filterTable);
 
-  // Clear all filters button
+
+  // Create bottom row container
+  const bottomRow = document.createElement('div');
+  bottomRow.style.display = 'flex';
+  bottomRow.style.justifyContent = 'space-between';
+  bottomRow.style.alignItems = 'center';
+  bottomRow.style.width = '100%';
+
+  // Create span on the left
+  const infoSpan = document.createElement('span');
+  infoSpan.id = "filter-info";
+  infoSpan.style.fontWeight = 'bold';
+  infoSpan.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
+
+  // Create clear button on the right
   const clearButton = document.createElement('button');
   clearButton.textContent = 'Clear All Filters';
   clearButton.style.padding = '0.3rem 0.75rem';
@@ -217,8 +228,15 @@ function configureTestsTable() {
   clearButton.style.backgroundColor = 'var(--md-default-fg-color--lightest, #f8f8f8)';
   clearButton.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
   clearButton.style.cursor = 'pointer';
-  clearButton.style.marginLeft = 'auto';
   clearButton.style.transition = 'background-color 0.2s';
+
+  // Append span and button to bottom row
+  bottomRow.appendChild(infoSpan);
+  bottomRow.appendChild(clearButton);
+
+  // Append bottom row to filter container
+  filterGroupsRow.appendChild(bottomRow);
+
   
   // Add hover effect to button
   clearButton.addEventListener('mouseover', function() {
@@ -238,7 +256,6 @@ function configureTestsTable() {
     filterTable();
   });
   
-  filterGroupsRow.appendChild(clearButton);
   filterContainer.appendChild(filterGroupsRow);
   
   // Add filter container to main container
@@ -263,7 +280,7 @@ function configureTestsTable() {
     });
     
     // Update the showing count
-    const info = tableWrapper.querySelector('.dataTables_info');
+    const info = $("#filter-info")[0]
     if (info) {
       const totalRows = rows.length;
       const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none').length;
@@ -381,7 +398,7 @@ function configureTestsTable() {
     });
     
     // Update the "Showing X to Y of Z entries" text
-    const info = tableWrapper.querySelector('.dataTables_info');
+    const info = $("#filter-info")[0]
     if (info) {
       const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none').length;
       const totalRows = rows.length;
