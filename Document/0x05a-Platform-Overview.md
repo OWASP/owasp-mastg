@@ -268,10 +268,10 @@ Security-relevant elements include:
 
 - **Permissions:** Declares required permissions using `<uses-permission>` such as access to the internet, camera, storage, location, or contacts. These define the app's access boundaries and should follow the principle of least privilege. Custom permissions can be defined using `<permission>` and should include a proper `protectionLevel` such as `signature` or `dangerous` to avoid being misused by other apps.
 - **Components:** The manifest lists all [app components](#app-components) declared in the app serving as entry points. They can be exposed to other apps (via intent filters or the `exported` attribute) so they are critical to determine how an attacker might interact with the app. The main component types are:
-    - **Activities:** define user interface screens. If associated with intent filters and not properly restricted, they may be invoked by other apps.
-    - **Services:** run background tasks. Exported services can be invoked externally, so should be secured if not meant for public use.
-    - **Broadcast Receivers:** handle external messages. Unprotected receivers are a common attack surface.
-    - **Content Providers:** expose structured data. Improper permissions can lead to unauthorized read or write access.
+    - **Activities:** define user interface screens.
+    - **Services:** run background tasks.
+    - **Broadcast Receivers:** handle external messages.
+    - **Content Providers:** expose structured data.
 - **Deep Links:** [Deep links](0x05h-Testing-Platform-Interaction.md#deep-links) are configured via intent filters with the `VIEW` action, `BROWSABLE` category, and a `data` element specifying a URI pattern. These can expose activities to web or app links and must be verified carefully to avoid injection or spoofing risks. Adding `android:autoVerify="true"` enables App Links, which restrict handling of verified links to the declared app, reducing the risk of link hijacking.
 - **Uses Cleartext Traffic:** The `android:usesCleartextTraffic` attribute controls whether the app allows non-encrypted HTTP traffic. From Android 9 (API 28) onward, cleartext traffic is disabled by default unless explicitly allowed. This attribute can also be overridden by the `networkSecurityConfig`.
 - **Network Security Config:** An optional XML file defined via `android:networkSecurityConfig`, available since Android 7.0 (API level 24), that provides granular control over [network security behavior](0x05g-Testing-Network-Communication.md#android-network-security-configuration). It allows specifying trusted certificate authorities, per-domain TLS requirements, and cleartext traffic exceptions, overriding global settings defined in `android:usesCleartextTraffic`.
