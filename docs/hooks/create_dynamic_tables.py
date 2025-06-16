@@ -236,9 +236,9 @@ def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
     df = pandas.DataFrame.from_dict(data).rename(columns=column_titles)
     return df.to_markdown(index=False, colalign=column_align)
 
-def append_to_page(markdown, new_content):
+def append_to_page(markdown, new_content, tableid=""):
 
-    return markdown + "\n"+ new_content + "\n\n<br>\n\n"
+    return markdown + f"\n<div id='{tableid}' markdown='1'>\n"+ new_content + "</div>\n\n<br>\n\n"
 
 
 def get_mastg_components_dict(name):
@@ -354,7 +354,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
                 test['masvs_v2_id'] = test['masvs_v2_id'][0]
             if test.get("masvs_v1_id"):
                 test['masvs_v1_id'] = "<br>".join([f"{v1_id}" for v1_id in test['masvs_v1_id']])
-        return append_to_page(markdown, list_of_dicts_to_md_table(tests_of_type, column_titles))
+        return append_to_page(markdown, list_of_dicts_to_md_table(tests_of_type, column_titles), "table_tests")
 
     elif path.endswith("demos/index.md"):
         # demos/index.md

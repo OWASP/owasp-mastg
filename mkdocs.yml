@@ -264,6 +264,7 @@ extra_javascript:
   - https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js
   - javascripts/datatables.js
   - javascripts/tags.js
+  - javascripts/filter_tests.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
