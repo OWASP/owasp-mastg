@@ -285,7 +285,7 @@ function configureTestsTable() {
       const totalRows = rows.length;
       const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none').length;
       if (visibleRows < totalRows) {
-        info.textContent = `Showing ${visibleRows} of ${totalRows} entries (deprecated items hidden)`;
+        info.textContent = `Showing ${visibleRows} of ${totalRows} entries (filtered)`;
       }
     }
   }, 0);
