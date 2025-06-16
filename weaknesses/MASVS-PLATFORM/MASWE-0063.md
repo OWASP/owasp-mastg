@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-PLATFORM-4]
   masvs-v2: [MASVS-PLATFORM-1, MASVS-STORAGE-2]
+  cwe: [925, 926]
 
 refs:
 - https://developer.android.com/guide/components/broadcasts#security-and-best-practices
