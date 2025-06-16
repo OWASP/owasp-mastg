@@ -363,7 +363,7 @@ extra:
     deprecated: deprecated
     new: new
     tool: tool
-    mas-test: mas-test
+    test: test
     app: app
     demo: demo
     tech: tech
