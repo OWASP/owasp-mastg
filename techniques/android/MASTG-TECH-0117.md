@@ -56,7 +56,6 @@ sdkInfo:
   targetSdkVersion: 35
 ```
 
-
 ## Using @MASTG-TOOL-0124
 
 If you are only interested in specific values of the manifest, you can use aapt2.
