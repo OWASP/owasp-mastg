@@ -26,6 +26,9 @@ def _on_page_markdown_2(markdown, page, **kwargs):
 
     # If any of these tags don't exist, they will be stripped automatically at the end of the function
     tags.append(page.meta.get("masvs_category"))
+
+    if page.meta.get("test"):
+        tags.append("placeholder-tag-test")
     # tags.append(page.meta.get("component_type"))
 
     # tags.append(page.meta.get("weakness"))
@@ -65,6 +68,10 @@ def _on_page_markdown_1(markdown, page, **kwargs):
         tags.remove("placeholder-tag-maswe")
         tags.append(weakness)
 
+    if test := page.meta.get("test"):
+        tags.remove("placeholder-tag-test")
+        tags.append(test)
+
     page.meta['tags'] = [tag for tag in tags if tag]
 
 
@@ -79,8 +86,12 @@ def on_post_page(output, page, config):
     if weakness := page.meta.get("weakness"):
         output = output.replace("placeholder-tag-maswe", weakness)
 
+    if test := page.meta.get("test"):
+        output = output.replace("placeholder-tag-test", test)
+
     # By default, tags link to the main tags page. Let's make some tags a bit more useful
     output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}"' , output)
+    output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/MASTG/tests/{config["hook_add_tags_test_data"].get(x.group(1).upper())}/{x.group(1).upper()}"' , output)
     output = re.sub(r'/tags/#tag:test"', '/MASTG/tests/"' , output)
     output = re.sub(r'/tags/#tag:maswe"', '/MASWE/"' , output)
     output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
@@ -89,7 +100,9 @@ def on_post_page(output, page, config):
     output = re.sub(r'/tags/#tag:tech"', '/MASTG/techniques/"' , output)
     output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
 
+    # A final switch for things like the main tags page or other places where tags were collected
     output = output.replace("placeholder-tag-maswe", "MASWE")
+    output = output.replace("placeholder-tag-test", "TEST")
 
     return output
 
@@ -105,7 +118,19 @@ def get_maswe_data():
 
     return data
 
+
+def get_test_data():
+    data = {}
+    # Each test has an ID which is the filename
+    for file in glob.glob("docs/MASTG/tests/**/MASTG-TEST-*.md", recursive=True):
+        path_parts = file.split('/')
+        id = os.path.splitext(path_parts[-1])[0]
+        masvs_category = f"{path_parts[-3]}/{path_parts[-2]}"
+        data[id] = masvs_category
+    return data
+
 def on_config(config):
 
     config["hook_add_tags_maswe_data"] = get_maswe_data()
+    config["hook_add_tags_test_data"] = get_test_data()
 
