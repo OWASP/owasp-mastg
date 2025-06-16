@@ -214,7 +214,7 @@ theme:
       deprecated: octicons/circle-slash-16
       new: material/alert-decagram
       tool: octicons/tools-24
-      mas-test: octicons/codescan-checkmark-24
+      test: octicons/codescan-checkmark-24
       app: octicons/code-square-24
       demo: material/flask-outline
       tech: material/magic-staff # fontawesome/solid/wand-magic-sparkles
