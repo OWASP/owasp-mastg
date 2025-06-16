@@ -21,10 +21,6 @@ def on_page_markdown(markdown, page, config, **kwargs):
         page.meta['id'] = item_id
         page.meta['component_type'] = item_id.split("-")[1]
 
-        # Because a tag with 'TEST' looks weird
-        if page.meta['component_type'] == "TEST":
-            page.meta['component_type'] = "mas-test"
-
     if "MASWE-" in path:
         if not page.meta.get("id", None):
             raise Exception(f"MASWE without ID: '{path}'")
