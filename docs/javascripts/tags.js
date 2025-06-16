@@ -9,7 +9,6 @@ document$.subscribe(function(){
       }).css({
         'pointer-events': 'none',
         'cursor': 'default',
-        // 'opacity': '0.6',
         'text-decoration': 'none'
       });
     }
