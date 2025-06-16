@@ -39,6 +39,4 @@ jobs:
         run: python3 src/scripts/write_masvs_control_md_files.py
 
       - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mkdocs gh-deploy --force --clean --verbose
