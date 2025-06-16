@@ -205,6 +205,7 @@ theme:
     tag:
       android: material/android
       ios: material/apple
+      network: material/web
       p: material/eye-circle-outline
       l1: material/circle
       l2: material/circle-multiple-outline
@@ -355,6 +356,7 @@ extra:
   tags:
     android: android
     ios: ios
+    network: network
     P: p
     L1: l1
     L2: l2
