@@ -26,7 +26,7 @@
   --tag-color-tech:              #597006;
   --tag-color-tool:              #087a21;
   --tag-color-demo:              #4051b5;
-  ;
+  --tag-color-app:               #b5407b;
 }
 
 
@@ -52,6 +52,7 @@
 .md-tag--tech              { background-color: var(--tag-color-tech) !important; color: white !important; }
 .md-tag--tool              { background-color: var(--tag-color-tool) !important; color: white !important; }
 .md-tag--demo              { background-color: var(--tag-color-demo) !important; color: white !important; }
+.md-tag--app               { background-color: var(--tag-color-app) !important; color: white !important; }
 
 
 
