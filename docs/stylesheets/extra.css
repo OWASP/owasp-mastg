@@ -7,6 +7,8 @@
 
 .md-tag {
   text-transform: uppercase;
+  cursor: default;
+  user-select: none;
 }
 .md-tag--masvs-storage {
   background-color: #DF5C8D !important;
