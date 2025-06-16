@@ -36,7 +36,6 @@
   /* user-select: none; */
 }
 
-
 .md-tag--masvs-storage     { background-color: var(--tag-color-masvs-storage) !important; color: white !important; }
 .md-tag--masvs-crypto      { background-color: var(--tag-color-masvs-crypto) !important; color: white !important; }
 .md-tag--masvs-auth        { background-color: var(--tag-color-masvs-auth) !important; color: white !important; }
@@ -64,8 +63,6 @@
 .md-typeset .md-tag-icon[href]::before {
   background-color: var(--md-accent-bg-color) !important;
 }
-
-
 
 /* Wider space for pages */
 .md-grid {
