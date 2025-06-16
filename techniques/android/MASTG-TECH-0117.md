@@ -17,7 +17,7 @@ Use jadx CLI with `--no-src` to extract only resources without decompiling all s
 jadx --no-src -d out_dir MASTG-DEMO-0001.apk
 ```
 
-jadx outputs the manifest in full to `out_dir/resources/AndroidManifest.xml`, including the `<uses-sdk>` element which is not included when using other
+jadx outputs the manifest in full to `out_dir/resources/AndroidManifest.xml`, including the `<uses-sdk>` element which is not included when using other tools like apktool.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -33,7 +33,7 @@ The full AndroidManifest can be extracted using apktool:
 
 ```sh
 $ apktool d -s -f -o output_dir MASTG-DEMO-0001.apk
-I: Using Apktool 2.11.1 on temp_base.apk with 8 threads
+I: Using Apktool 2.11.1 on MASTG-DEMO-0001.apk with 8 threads
 I: Copying raw classes.dex file...
 ...
 I: Loading resource table...
@@ -62,7 +62,7 @@ If you need to modify and rebuild the manifest with different SDK values, you'd 
 
 If you are only interested in specific values of the manifest, you can alternatively use aapt2.
 
-Note that **the output is not a XML file**.
+Note that **the output is not an XML file**.
 
 ```bash
 $ aapt2 d badging MASTG-DEMO-0001.apk
