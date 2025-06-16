@@ -175,6 +175,36 @@ document.addEventListener('DOMContentLoaded', function() {
     filterGroupsRow.appendChild(groupContainer);
   });
   
+  // Add search field
+  const searchContainer = document.createElement('div');
+  searchContainer.className = 'filter-group';
+  searchContainer.style.display = 'flex';
+  searchContainer.style.alignItems = 'center';
+  searchContainer.style.gap = '0.5rem';
+  searchContainer.style.marginBottom = '0.5rem';
+  
+  const searchLabel = document.createElement('span');
+  searchLabel.textContent = "Search:";
+  searchLabel.style.fontWeight = 'bold';
+  searchLabel.style.minWidth = '70px';
+  searchLabel.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
+
+  const searchInput = document.createElement('input');
+  searchInput.type = 'text'
+  searchInput.id = "filter-search"
+  searchInput.style.fontWeight = 'bold';
+  searchInput.style.minWidth = '300px'
+
+  searchInput.style.padding = '10px';
+  searchInput.style.border = '1px solid #ccc';
+  searchInput.style.borderRadius = '5px';
+
+  searchContainer.appendChild(searchLabel)
+  searchContainer.appendChild(searchInput);
+  filterGroupsRow.appendChild(searchContainer);
+
+  searchInput.addEventListener('keyup', filterTable);
+
   // Clear all filters button
   const clearButton = document.createElement('button');
   clearButton.textContent = 'Clear All Filters';
@@ -269,6 +299,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // By default, hide deprecated items if the checkbox is not checked
     const rows = dataTable.querySelectorAll('tbody tr');
     
+    const searchTerm = mainFilterContainer.querySelector('#filter-search').value.toLowerCase()
+
     rows.forEach(function(row) {
       let shouldShow = true;
       
@@ -333,6 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (Object.keys(activeFilters).length === 0 || 
           (Object.keys(activeFilters).length === 1 && 'status' in activeFilters && !showDeprecatedChecked)) {
         shouldShow = !isDeprecated || showDeprecatedChecked;
+      }
+      
+      if(searchTerm.length > 0){
+        const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        if(title.indexOf(searchTerm) === -1){
+          shouldShow = false;
+        }
       }
       
       row.style.display = shouldShow ? '' : 'none';
