@@ -1,6 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
+document$.subscribe(function() {
+  configureTestsTable();
+});
+function configureTestsTable() {
   // Check if we're on a page with a test table
-  const dataTable = document.getElementById('DataTables_Table_0');
+  const dataTable = $('#table_tests table').get(0);
   if (!dataTable) return;
   
   // Define filter types and their corresponding column indices and match criteria
@@ -389,4 +392,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   }
-});
+};
