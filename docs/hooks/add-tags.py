@@ -80,14 +80,16 @@ def on_post_page(output, page, config):
         output = output.replace("placeholder-tag-maswe", weakness)
 
     # By default, tags link to the main tags page. Let's make some tags a bit more useful
-    output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f"/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}\"" , output)
+    output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}"' , output)
     output = re.sub(r'/tags/#tag:mas-test"', '/MASTG/tests/"' , output)
     output = re.sub(r'/tags/#tag:maswe"', '/MASWE/"' , output)
     output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
     output = re.sub(r'/tags/#tag:tool"', '/MASTG/tools/"' , output)
     output = re.sub(r'/tags/#tag:app"', '/MASTG/apps/"' , output)
     output = re.sub(r'/tags/#tag:tech"', '/MASTG/techniques/"' , output)
-    output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', r'/MASVS/controls/\g<1>"' , output)
+    output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
+
+    output = output.replace("placeholder-tag-maswe", "MASWE")
 
     return output
 
