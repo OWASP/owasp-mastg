@@ -11,8 +11,12 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     if item_id := page.meta.get("id", None):
 
-        page.meta['title'] = f"{item_id}: {page.meta.get('title', '')}"
-        page.meta['hide'] = ['toc']
 
-        icons = config.get('theme').get('icon').get('tag', {})
-        page.meta['icon'] = icons.get(page.meta.get('component_type'))
+        # For some files, the title == id (e.g. checklists pages)
+        if not item_id == page.meta.get("title", None):
+
+            page.meta['title'] = f"{item_id}: {page.meta.get('title', '')}"
+            page.meta['hide'] = ['toc']
+
+            icons = config.get('theme').get('icon').get('tag', {})
+            page.meta['icon'] = icons.get(page.meta.get('component_type'))
