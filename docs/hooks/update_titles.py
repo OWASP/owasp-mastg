@@ -17,6 +17,3 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
             page.meta['title'] = f"{item_id}: {page.meta.get('title', '')}"
             page.meta['hide'] = ['toc']
-
-            icons = config.get('theme').get('icon').get('tag', {})
-            page.meta['icon'] = icons.get(page.meta.get('component_type'))
