@@ -90,6 +90,9 @@ def on_post_page(output, page, config):
         output = output.replace("placeholder-tag-test", test)
 
     # By default, tags link to the main tags page. Let's make some tags a bit more useful
+    # Transform URLs for MASWE tags to a more purposeful format.
+    # Matches URLs like '/tags/#tag:MASWE-<number>' and replaces them with '/MASWE/<category>/MASWE-<number>',
+    # where <category> is determined from the 'hook_add_tags_maswe_data' mapping in the config.
     output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}"' , output)
     output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/MASTG/tests/{config["hook_add_tags_test_data"].get(x.group(1).upper())}/{x.group(1).upper()}"' , output)
     output = re.sub(r'/tags/#tag:test"', '/MASTG/tests/"' , output)

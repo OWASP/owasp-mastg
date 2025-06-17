@@ -22,11 +22,11 @@
   --tag-color-r:                 #FF9900;
   --tag-color-p:                 #9933CC;
 
-  --tag-color-test:              #3d0670;
-  --tag-color-tech:              #597006;
-  --tag-color-tool:              #087a21;
-  --tag-color-demo:              #4051b5;
-  --tag-color-app:               #b5407b;
+  --tag-color-test:              #499fffff;
+  --tag-color-tech:              #ff44aad5;
+  --tag-color-tool:              #595959ff;
+  --tag-color-demo:              #9900ffff;
+  --tag-color-app:               #8e7cc3d1;
 }
 
 

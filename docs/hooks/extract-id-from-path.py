@@ -3,7 +3,7 @@ import mkdocs.plugins
 
 log = logging.getLogger('mkdocs')
 
-# This plugin extracts the ID and component_type from the filename if no ID is defined
+# This hook extracts the ID and component_type from the filename if no ID is defined
 # This is only the case for older tests (ID < 200)
 @mkdocs.plugins.event_priority(-30)
 def on_page_markdown(markdown, page, config, **kwargs):
