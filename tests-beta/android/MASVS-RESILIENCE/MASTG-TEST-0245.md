@@ -1,38 +1,28 @@
 ---
-title: Root Indicators Detection
+title: References to APIs for Root Detection
 platform: android
 id: MASTG-TEST-0245
 type: [static]
 weakness: MASWE-0097
 best-practices: []
 false_negative_prone: true
+apis: [Runtime.exec]
 ---
 
 ## Overview
 
-This test verifies that a mobile app can accurately detect if the Android device it is running on is rooted.
+This test checks if the app tries to detect whether the device is rooted. It does not guarantee that the device is secure because some rooting tools might bypass the detection techniques described below. You can use this test as an indicator that the app includes some root detection.
 
-The testing process involves analyzing the device environment to identify common indicators of root access. This includes checking for the presence of root management tools, suspicious files or directories, and modified system properties on the device itself. It does so by statically analyzing the device for [common root detection checks](../../../Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#root-etection-and-common-root-detection-methods).
+The testing process involves analyzing the device environment to identify common indicators of root access. This includes checking for the presence of:
+
+- root management tools - e.g. Magisk, SuperSU
+- suspicious files or directories - e.g `/system/bin/su`, `/system/xbin/su`
+- modified system properties - e.g. `ro.debuggable`,  `ro.secure`
+
 
 ## Steps
 
-1. **Check for root detection indicators:**
-
-   - Apps may check for the presence of files commonly associated with rooted devices (e.g., /system/xbin/su, /data/data/com.superuser.android.id) or for root management apps (e.g., SuperSU, Magisk).
-   - Run a static analysis tool such as @MASTG-TOOL-0002 or @MASTG-TOOL-0011 on the app binary to look for common root detection checks.
-
-2. **Non-standard system behavior detection:**
-
-   - Check if the app monitors processes that shouldn't normally be running, such as su or sh, which are typically associated with root management tools.
-   - Reviewing the app's smali or assembler code can reveal whether the app checks for or interacts with such processes.
-
-3. **System properties modification detection:**
-
-   - Apps may monitor system properties (e.g., ro.debuggable, ro.secure) for changes, adding another layer to the root detection process.
-
-4. **Critical system directories modification detection:**
-
-   - Check if the app attempts to modify files or settings in critical system directories, such as /data or /system, which should remain immutable on unrooted devices.
+1. Run @MASTG-TECH-0014 with a tool such as @MASTG-TOOL-0110 on the app binary to detect root detections that use `Runtime.exec`, `File.exists()` and `getprop` APIs.
 
 ## Observation
 
@@ -40,6 +30,8 @@ The output should include any instances of common root detection checks in the a
 
 ## Evaluation
 
-The test passes if the root detection mechanisms are correctly implemented to identify indicators of root access.
-
-The test is considered unsuccessful if the app does not implement root detection mechanisms.This test is not exhaustive and may not identify all possible root detection checks. More advanced techniques, such as manual reverse engineering or deobfuscation, might be necessary to uncover additional, more sophisticated root detection methods.
+The test fails if the app does not implement root detection mechanisms. This test is not exhaustive and may not identify all possible root detection checks because the detections may:
+- be written in the native part of the app
+- use different API than covered by this test
+- be obfuscated
+Even if the test uncovers root detections, they might not be sufficient against more advanced rooting tools. The most effective way is to test an app against a set of rooting tools. This test should only verify that the developer included the intended detection mechanisms.

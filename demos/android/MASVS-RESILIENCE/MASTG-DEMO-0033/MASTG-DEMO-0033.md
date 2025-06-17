@@ -28,4 +28,4 @@ The output reveals the presence of root detection mechanisms in the app, includi
 
 ### Evaluation
 
-The test passes because root detection checks are implemented in the app.
+The test fails because the app relies on only one root detection method.

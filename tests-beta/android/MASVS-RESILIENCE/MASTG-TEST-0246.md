@@ -1,5 +1,5 @@
 ---
-title: Root Detection Resilience Testing
+title: Runtime Use Of Root Detection
 platform: android
 id: MASTG-TEST-0246
 type: [dynamic]
@@ -9,9 +9,7 @@ best-practices: []
 
 ## Overview
 
-This test is designed to evaluate whether a mobile app attempts to detect if the Android device it is running on is rooted. The goal is to confirm that the app actively checks for signs of root access, in order to mitigate the security risks associated with rooted devices.
-
-The test is conducted by dynamically analyzing the app binary for [common root detection checks](../../../Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#root-etection-and-common-root-detection-methods), ensuring that the app performs relevant checks to identify potential root access.
+This test is the dynamic counterpart to @MASTG-TEST-0245.
 
 ## Steps
 
@@ -27,6 +25,5 @@ The output should include any observed instances of common root detection checks
 
 ## Evaluation
 
-The test passes if the automated root detection bypass confirms that the application actively checks for known root artifacts.
 
 The test fails if no root detection mechanisms are identified, indicating that the app does not attempt to detect root access. However, this test is not exhaustive, as it relies on predefined bypass techniques that may not cover all possible root detection methods or may be outdated. Additionally, some applications may use more advanced detection mechanisms that automated tools cannot easily identify, requiring manual reverse engineering and deobfuscation to fully assess their effectiveness.
