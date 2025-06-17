@@ -29,14 +29,15 @@
   --tag-color-app:               #8e7cc3d1;
   --tag-color-best:              #087a21ff;
 
-  --masvs-storage:   #DF5C8D;
-  --masvs-crypto:    #F65928;
-  --masvs-auth:      #F09236;
-  --masvs-network:   #F2C200;
-  --masvs-platform:  #4FB991;
-  --masvs-code:      #5FACD3;
-  --masvs-resilience:#317CC0;
-  --masvs-privacy:   #8B5F9E;
+  --masvs-storage:               #DF5C8D;
+  --masvs-crypto:                #F65928;
+  --masvs-auth:                  #F09236;
+  --masvs-network:               #F2C200;
+  --masvs-platform:              #4FB991;
+  --masvs-code:                  #5FACD3;
+  --masvs-resilience:            #317CC0;
+  --masvs-privacy:               #8B5F9E;
+  --masvs-maswe:                 #FF0000;
 }
 
 
@@ -64,6 +65,7 @@
 .md-tag--demo              { background-color: var(--tag-color-demo) !important; color: white !important; }
 .md-tag--app               { background-color: var(--tag-color-app) !important; color: white !important; }
 .md-tag--best              { background-color: var(--tag-color-best) !important; color: white !important; }
+.md-tag--maswe             { background-color: var(--tag-color-maswe) !important; color: white !important; }
 
 
 
@@ -76,6 +78,14 @@
   background-color: var(--md-accent-bg-color) !important;
 }
 
+.md-typeset .md-tag-icon::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+/* Used on the tags page */
+.md-sidebar--secondary {
+  text-transform: uppercase;
+}
 
 
 /* Shared tag/link styling */
