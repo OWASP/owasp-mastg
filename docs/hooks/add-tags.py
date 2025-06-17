@@ -100,6 +100,7 @@ def on_post_page(output, page, config):
     output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
     output = re.sub(r'/tags/#tag:tool"', '/MASTG/tools/"' , output)
     output = re.sub(r'/tags/#tag:app"', '/MASTG/apps/"' , output)
+    output = re.sub(r'/tags/#tag:best"', '/MASTG/best-practices/"' , output)
     output = re.sub(r'/tags/#tag:tech"', '/MASTG/techniques/"' , output)
     output = re.sub(r'/tags/#tag:network"', '/MASTG/tests/#network"' , output)
     output = re.sub(r'/tags/#tag:l1"', '/MASTG/tests/#l1"' , output)
