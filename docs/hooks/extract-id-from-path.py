@@ -20,6 +20,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
         page.meta['id'] = item_id
 
+        # Assign component_type and icon. icon will be used to automatically add icons to navigation
         component_type = item_id.split("-")[-2]
         page.meta['component_type'] = component_type
         page.meta['icon'] = config.get('theme').get('icon').get('tag', {}).get(component_type.lower())

@@ -317,7 +317,7 @@ hooks:
   # General
   - docs/hooks/edit_button_uri.py
 
-  # Priority -30 for extracting the ID for old tests
+  # Priority -30 for extracting the ID for old tests. Also assigns icons to pages so they show up in navigation
   - docs/hooks/extract-id-from-path.py
 
   # Priority -40 for adding content
