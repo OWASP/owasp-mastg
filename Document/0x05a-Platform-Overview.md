@@ -262,48 +262,137 @@ We recommend that you test both the APK with and without the additional modules,
 
 ### Android Manifest
 
-Every app has an Android Manifest file, which embeds content in binary XML format. The standard name of this file is AndroidManifest.xml. It is located in the root directory of the app's Android Package Kit (APK) file.
+Every Android app contains an `AndroidManifest.xml` file in the root of the APK, stored in binary XML format. This file defines the app's structure and key properties used by the Android operating system during installation and runtime.
 
-The manifest file describes the app structure, its components (activities, services, content providers, and intent receivers), and requested permissions. It also contains general app metadata, such as the app's icon, version number, and theme. The file may list other information, such as compatible APIs (minimal, targeted, and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location").
+Security-relevant elements include:
 
-Here is an example of a manifest file, including the package name (the convention is a reversed URL, but any string is acceptable). It also lists the app version, relevant SDKs, required permissions, exposed content providers, broadcast receivers used with intent filters and a description of the app and its activities:
+- **Permissions:** Declares required permissions using `<uses-permission>` such as access to the internet, camera, storage, location, or contacts. These define the app's access boundaries and should follow the principle of least privilege. Custom permissions can be defined using `<permission>` and should include a proper `protectionLevel` such as `signature` or `dangerous` to avoid being misused by other apps.
+- **Components:** The manifest lists all [app components](#app-components) declared in the app serving as entry points. They can be exposed to other apps (via intent filters or the `exported` attribute) so they are critical to determine how an attacker might interact with the app. The main component types are:
+    - **Activities:** define user interface screens.
+    - **Services:** run background tasks.
+    - **Broadcast Receivers:** handle external messages.
+    - **Content Providers:** expose structured data.
+- **Deep Links:** [Deep links](0x05h-Testing-Platform-Interaction.md#deep-links) are configured via intent filters with the `VIEW` action, `BROWSABLE` category, and a `data` element specifying a URI pattern. These can expose activities to web or app links and must be verified carefully to avoid injection or spoofing risks. Adding `android:autoVerify="true"` enables App Links, which restrict handling of verified links to the declared app, reducing the risk of link hijacking.
+- **Uses Cleartext Traffic:** The `android:usesCleartextTraffic` attribute controls whether the app allows non-encrypted HTTP traffic. From Android 9 (API 28) onward, cleartext traffic is disabled by default unless explicitly allowed. This attribute can also be overridden by the `networkSecurityConfig`.
+- **Network Security Config:** An optional XML file defined via `android:networkSecurityConfig`, available since Android 7.0 (API level 24), that provides granular control over [network security behavior](0x05g-Testing-Network-Communication.md#android-network-security-configuration). It allows specifying trusted certificate authorities, per-domain TLS requirements, and cleartext traffic exceptions, overriding global settings defined in `android:usesCleartextTraffic`.
+- **Backup Behavior:** The `android:allowBackup` attribute allows or prevents app data from being [backed up](0x05d-Testing-Data-Storage.md#backups).
+- **Task Affinities and Launch Modes:** These settings influence how activities are grouped and launched. Misconfigurations can allow task hijacking or phishing-style attacks if an attacker's app mimics legitimate components.
+
+The full list of available manifest options can be found in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+
+At build time, the manifest is merged with those from all included libraries and dependencies. The final merged manifest may include additional permissions, components, or settings not explicitly declared by the developer. Security reviews must analyze the merged output to understand the app's real exposure.
+
+Here is an example of a manifest file as defined by a developer. It declares several permissions, allows backup, and defines the app's main activity:
 
 ```xml
-<manifest
-    package="com.owasp.myapplication"
-    android:versionCode="0.1" >
-
-    <uses-sdk android:minSdkVersion="12"
-        android:targetSdkVersion="22"
-        android:maxSdkVersion="25" />
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <provider
-        android:name="com.owasp.myapplication.MyProvider"
-        android:exported="false" />
-
-    <receiver android:name=".MyReceiver" >
-        <intent-filter>
-            <action android:name="com.owasp.myapplication.myaction" />
-        </intent-filter>
-    </receiver>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:icon="@drawable/ic_launcher"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Material.Light" >
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MASTestApp"
+        tools:targetApi="31">
         <activity
-            android:name="com.owasp.myapplication.MainActivity" >
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MASTestApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
 ```
 
-The full list of available manifest options is in the official [Android Manifest file documentation](https://developer.android.com/guide/topics/manifest/manifest-intro.html "Android Developer Guide for Manifest").
+If you were to obtain the AndroidManifest.xml file from an APK (@MASTG-TECH-0117), you would see that it includes additional elements such as the `package` attribute, which defines the app's unique identifier, the `<uses-sdk>` element that specifies the `android:minSdkVersion` and `android:targetSdkVersion`, new activities, providers and receivers and other attributes such as `android:debuggable="true"` which indicates that the app is in debug mode.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0"
+    android:compileSdkVersion="35"
+    android:compileSdkVersionCodename="15"
+    package="org.owasp.mastestapp"
+    platformBuildVersionCode="35"
+    platformBuildVersionName="15">
+    <uses-sdk
+        android:minSdkVersion="29"
+        android:targetSdkVersion="35"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <permission
+        android:name="org.owasp.mastestapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="org.owasp.mastestapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <application
+        android:theme="@style/Theme.MASTestApp"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:debuggable="true"
+        android:testOnly="true"
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:extractNativeLibs="false"
+        android:fullBackupContent="@xml/backup_rules"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:dataExtractionRules="@xml/data_extraction_rules">
+        <activity
+            android:theme="@style/Theme.MASTestApp"
+            android:name="org.owasp.mastestapp.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="androidx.compose.ui.tooling.PreviewActivity"
+            android:exported="true"/>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:exported="true"/>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:exported="false"
+            android:authorities="org.owasp.mastestapp.androidx-startup">
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup"/>
+            ...
+        </provider>
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:permission="android.permission.DUMP"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE"/>
+            </intent-filter>
+            ...
+        </receiver>
+    </application>
+</manifest>
+```
 
 ### App Components
 
