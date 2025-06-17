@@ -1,5 +1,5 @@
 ---
-title: Use of Object Persistence using JSON
+title: Unwanted Object Deserialization Using Serializable
 platform: android
 id: MASTG-TEST-0266
 type: [static]
@@ -12,12 +12,12 @@ Android provides the JSONObject and JSONArray classes, which are essential for h
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for uses of the `JSONObject` and `JSONArray`.
+1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for uses of the `import java.io.Serializable` and `implements Serializable`.
 
 ## Observation
 
-The output file shows usages of the object Persistence using `JSONObject` and `JSONArray` in the code.
+The output file shows usages of the object Deserialization using `import java.io.Serializable` and `implements Serializable` in the code.
 
 ## Evaluation
 
-The test fails if the `org.json.JSONObject` and `org.json.JSONArray` was found in the code.
+The test fails if the `import java.io.Serializable` and `implements Serializable` was found in the code.
