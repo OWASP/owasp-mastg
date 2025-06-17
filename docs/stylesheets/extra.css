@@ -27,6 +27,16 @@
   --tag-color-tool:              #595959ff;
   --tag-color-demo:              #9900ffff;
   --tag-color-app:               #8e7cc3d1;
+  --tag-color-best:              #087a21ff;
+
+  --masvs-storage:   #DF5C8D;
+  --masvs-crypto:    #F65928;
+  --masvs-auth:      #F09236;
+  --masvs-network:   #F2C200;
+  --masvs-platform:  #4FB991;
+  --masvs-code:      #5FACD3;
+  --masvs-resilience:#317CC0;
+  --masvs-privacy:   #8B5F9E;
 }
 
 
@@ -53,6 +63,7 @@
 .md-tag--tool              { background-color: var(--tag-color-tool) !important; color: white !important; }
 .md-tag--demo              { background-color: var(--tag-color-demo) !important; color: white !important; }
 .md-tag--app               { background-color: var(--tag-color-app) !important; color: white !important; }
+.md-tag--best              { background-color: var(--tag-color-best) !important; color: white !important; }
 
 
 
@@ -64,6 +75,75 @@
 .md-typeset .md-tag-icon[href]::before {
   background-color: var(--md-accent-bg-color) !important;
 }
+
+
+
+/* Shared tag/link styling */
+.masvs-link[class*="--masvs-"] {
+  color: white !important;
+  font-weight: bold;
+  margin: 0.5em 0.5em 0.5em 0.2em;
+  border-radius: 5px;
+  padding: 0.3em;
+}
+
+/* Active nav link styling */
+.masvs-link.md-nav__link--active {
+  /* height: 6em; */
+}
+
+/* Individual MASVS categories using variables */
+.md-tag--masvs-storage,
+.masvs-link--masvs-storage {
+  background-color: var(--masvs-storage) !important;
+}
+
+.md-tag--masvs-crypto,
+.masvs-link--masvs-crypto {
+  background-color: var(--masvs-crypto) !important;
+}
+
+.md-tag--masvs-auth,
+.masvs-link--masvs-auth {
+  background-color: var(--masvs-auth) !important;
+}
+
+.md-tag--masvs-network,
+.masvs-link--masvs-network {
+  background-color: var(--masvs-network) !important;
+}
+
+.md-tag--masvs-platform,
+.masvs-link--masvs-platform {
+  background-color: var(--masvs-platform) !important;
+}
+
+.md-tag--masvs-code,
+.masvs-link--masvs-code {
+  background-color: var(--masvs-code) !important;
+}
+
+.md-tag--masvs-resilience,
+.masvs-link--masvs-resilience {
+  background-color: var(--masvs-resilience) !important;
+}
+
+.md-tag--masvs-privacy,
+.masvs-link--masvs-privacy {
+  background-color: var(--masvs-privacy) !important;
+}
+
+/* Optional icon highlight
+.md-tag--masvs-storage[href]::before,
+.md-tag--masvs-crypto[href]::before,
+.md-tag--masvs-auth[href]::before,
+.md-tag--masvs-network[href]::before,
+.md-tag--masvs-platform[href]::before,
+.md-tag--masvs-code[href]::before,
+.md-tag--masvs-resilience[href]::before,
+.md-tag--masvs-privacy[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+} */
 
 /* Wider space for pages */
 .md-grid {
