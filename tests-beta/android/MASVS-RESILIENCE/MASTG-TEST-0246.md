@@ -25,5 +25,4 @@ The output should include any observed instances of common root detection checks
 
 ## Evaluation
 
-
 The test fails if no root detection mechanisms are identified, indicating that the app does not attempt to detect root access. However, this test is not exhaustive, as it relies on predefined bypass techniques that may not cover all possible root detection methods or may be outdated. Additionally, some applications may use more advanced detection mechanisms that automated tools cannot easily identify, requiring manual reverse engineering and deobfuscation to fully assess their effectiveness.

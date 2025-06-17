@@ -17,8 +17,7 @@ The testing process involves analyzing the device environment to identify common
 
 - root management tools - e.g. Magisk, SuperSU
 - suspicious files or directories - e.g `/system/bin/su`, `/system/xbin/su`
-- modified system properties - e.g. `ro.debuggable`,  `ro.secure`
-
+- modified system properties - e.g. `ro.debuggable`, `ro.secure`
 
 ## Steps
 
@@ -31,7 +30,9 @@ The output should include any instances of common root detection checks in the a
 ## Evaluation
 
 The test fails if the app does not implement root detection mechanisms. This test is not exhaustive and may not identify all possible root detection checks because the detections may:
+
 - be written in the native part of the app
 - use different API than covered by this test
 - be obfuscated
+
 Even if the test uncovers root detections, they might not be sufficient against more advanced rooting tools. The most effective way is to test an app against a set of rooting tools. This test should only verify that the developer included the intended detection mechanisms.
