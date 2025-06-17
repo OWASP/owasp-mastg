@@ -236,6 +236,7 @@ theme:
     - search.share
     # - toc.integrate
     - navigation.instant
+    # - navigation.prune
     # - navigation.expand
     - navigation.tabs
     - navigation.tabs.sticky
@@ -265,6 +266,7 @@ extra_javascript:
   - https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js
   - javascripts/datatables.js
   - javascripts/filter_tests.js
+  - javascripts/navigation.js
   - javascripts/tags.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
