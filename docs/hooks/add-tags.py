@@ -101,14 +101,16 @@ def on_post_page(output, page, config):
     output = re.sub(r'/tags/#tag:tool"', '/MASTG/tools/"' , output)
     output = re.sub(r'/tags/#tag:app"', '/MASTG/apps/"' , output)
     output = re.sub(r'/tags/#tag:tech"', '/MASTG/techniques/"' , output)
-    output = re.sub(r'/tags/#tag:android"', '/MASTG/tests/#android"' , output)
-    output = re.sub(r'/tags/#tag:ios"', '/MASTG/tests/#ios"' , output)
     output = re.sub(r'/tags/#tag:network"', '/MASTG/tests/#network"' , output)
     output = re.sub(r'/tags/#tag:l1"', '/MASTG/tests/#l1"' , output)
     output = re.sub(r'/tags/#tag:l2"', '/MASTG/tests/#l2"' , output)
     output = re.sub(r'/tags/#tag:r"', '/MASTG/tests/#r"' , output)
     output = re.sub(r'/tags/#tag:p"', '/MASTG/tests/#p"' , output)
     output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
+    
+    # These are disabled currently, as multiple pages have android/ios labels and they shouldn't always to go the tests page
+    # output = re.sub(r'/tags/#tag:android"', '/MASTG/tests/#android"' , output)
+    # output = re.sub(r'/tags/#tag:ios"', '/MASTG/tests/#ios"' , output)
 
     # A final switch for things like the main tags page or other places where tags were collected
     output = output.replace("placeholder-tag-maswe", "MASWE")
