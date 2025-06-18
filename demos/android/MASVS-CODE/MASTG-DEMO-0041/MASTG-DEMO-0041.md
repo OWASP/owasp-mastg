@@ -4,6 +4,7 @@ title: Object Deserialization Using Serializable with semgrep
 id: MASTG-DEMO-0041
 code: [kotlin]
 test: MASTG-TEST-0266
+profiles: [L1, L2]
 ---
 
 ### Sample

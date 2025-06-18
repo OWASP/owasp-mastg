@@ -9,7 +9,7 @@ profiles: [L1, L2]
 
 ## Overview
 
-Android's Parcel class, used with the Parcelable interface, allows fast serialization of objects for inter-process communication (IPC). However, deserializing data from untrusted sources without proper validation can lead to serious security risks. An attacker could craft a malicious Parcel to manipulate object fields, bypass logic, or crash the application. This makes the app vulnerable to privilege escalation or denial of service.
+The Parcel class in Android, which works with the Parcelable interface, enables quick serialization of objects for inter-process communication (IPC). However, if you deserialize data from untrusted sources without adequate validation, it can pose significant security threats. An attacker might create a harmful Parcel to alter object fields, circumvent logic, or crash the application. This vulnerability can lead to privilege escalation or denial of service.
 
 ## Steps
 
