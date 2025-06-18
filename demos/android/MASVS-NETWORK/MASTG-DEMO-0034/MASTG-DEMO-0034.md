@@ -20,11 +20,31 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified two instances in the code where `HostnameVerifier` not is implemented properly.
+The rule identified one instance of the use of the `HostnameVerifier` in the code.
 
-### Evaluation
+### Evaluation:
 
-Review each of the reported instances.
+The test fails because the app uses a `HostnameVerifier` that always returns true. You can manually validate this in the app's reverse-engineered code by inspecting the provided code locations.
 
-- Line 151-154 contains a synthetic class that logs a statement and return true effectively muting any host name issues.
-- Line 236 contains a ALLOW_ALL_HOSTNAME_VERIFIER from org.apache.http.conn.ssl.SSLSocketFactory. This should only be used for testing as it will ignore host name issues and is marked deprecated.
+In this case:
+
+```java
+            connection.setHostnameVerifier(new HostnameVerifier() { // from class: org.owasp.mastestapp.MastgTest$$ExternalSyntheticLambda0
+                @Override // javax.net.ssl.HostnameVerifier
+                public final boolean verify(String str, SSLSession sSLSession) {
+                    return MastgTest.fetchUrl$lambda$1(str, sSLSession);
+                }
+            });
+            ...
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final boolean fetchUrl$lambda$1(String hostname, SSLSession sSLSession) {
+        Log.w("HOSTNAME_VERIFIER", "Insecurely allowing host: " + hostname);
+        return true;
+    }
+```
+
+We can see how:
+
+- the app sets a custom `HostnameVerifier` on the HTTPS connection.
+- the verifier calls `fetchUrl$lambda$1`, which logs a warning and returns `true`.
