@@ -29,9 +29,6 @@ def _on_page_markdown_2(markdown, page, **kwargs):
 
     if page.meta.get("test"):
         tags.append("placeholder-tag-test")
-    # tags.append(page.meta.get("component_type"))
-
-    # tags.append(page.meta.get("weakness"))
     tags.append(page.meta.get("component_type", "").lower())
 
     # If there is a weakness, add the place holder. This is then picked up by the tag builder and styled correctly
@@ -112,7 +109,7 @@ def on_post_page(output, page, config):
     # Some context-specific changes
     if "MASTG/0x" in path:
         # These are the MASTG testing pages
-        # Temp hack until after MASVS page restructure
+        # TODO - Temp hack until after MASVS page restructure
         mapping = {
             "MASVS-STORAGE": "/MASVS/05-MASVS-STORAGE/",
             "MASVS-CRYPTO": "/MASVS/06-MASVS-CRYPTO/",
@@ -128,7 +125,7 @@ def on_post_page(output, page, config):
         output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
     
     
-    # These are disabled currently, as multiple pages have android/ios labels and they shouldn't always to go the tests page
+    # TODO - These are disabled currently, as multiple pages have android/ios labels and they shouldn't always to go the tests page
     # output = re.sub(r'/tags/#tag:android"', '/MASTG/tests/#android"' , output)
     # output = re.sub(r'/tags/#tag:ios"', '/MASTG/tests/#ios"' , output)
 
