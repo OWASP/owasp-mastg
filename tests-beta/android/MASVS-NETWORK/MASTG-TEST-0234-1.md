@@ -8,7 +8,9 @@ weakness: MASWE-0052
 
 ## Overview
 
-When `checkServerTrusted` is used without proper error handling indicate that server certificates are not being properly validated which allow for the possibility of MITM attacks.
+This test evaluates whether an Android app uses [`X509TrustManager.checkServerTrusted()`](https://developer.android.com/reference/javax/net/ssl/X509TrustManager#checkServerTrusted%28java.security.cert.X509Certificate[],%20java.lang.String%29) [in an unsafe manner](https://developer.android.com/privacy-and-security/risks/unsafe-trustmanager) as part of a custom `TrustManager`, causing any connection configured to use that `TrustManager` to skip certificate validation.
+
+Such unsafe implementations can allow an attacker to run a [MITM attack](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) with a valid (or self-signed) certificate and intercept or tamper with the app's traffic.
 
 ## Steps
 
