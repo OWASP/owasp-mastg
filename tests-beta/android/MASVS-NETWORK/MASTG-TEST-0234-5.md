@@ -8,7 +8,9 @@ weakness: MASWE-0052
 
 ## Overview
 
-Even though starting on Android 7.0 (API level 24) apps no longer trust user-added CAs by default, developers can override this behaviour by explicitly including `<certificates src="user"/>` in their network security configuration. Such trust can expose the application to man-in-the-middle (MITM) attacks, as malicious CAs installed by users could intercept secure communications.
+This test evaluates whether an Android app explicitly trusts user-added CA certificates by including [`<certificates src="user"/>`](https://developer.android.com/privacy-and-security/security-config#certificates) in its [Network Security Configuration](https://developer.android.com/privacy-and-security/security-config#CustomTrust). Even though starting with Android 7.0 (API level 24) apps no longer trust user-added CAs by default, this configuration overrides that behavior.
+
+Such trust can expose the application to [MITM attacks](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm), as malicious CAs installed by users could intercept secure communications.
 
 ## Steps
 
