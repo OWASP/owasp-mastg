@@ -326,7 +326,6 @@ function configureTestsTable() {
     history.replaceState(null, null, '#' + anchor.join(';'));
 
 
-    console.log(anchor)
     
     // First, handle the special case of deprecated items - hide them by default
     let showDeprecatedChecked = false;
