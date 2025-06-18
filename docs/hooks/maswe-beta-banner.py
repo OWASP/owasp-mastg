@@ -244,10 +244,10 @@ def on_page_markdown(markdown, page, config, **kwargs):
             banners.append(get_v1_refactor_tests_banner(page.meta, link[0], escape(link[1])))
 
     if "MASTG/demos/android/" in path and not page.meta.get('status') == 'placeholder':
-        banners.append(get_android_demo_buttons(page, config["artifacts_url"]))
+        banners.append(get_android_demo_buttons(page, config["artifacts_url_android"]))
 
     if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'placeholder':
-        banners.append(get_ios_demo_buttons(page, config["artifacts_url"]))
+        banners.append(get_ios_demo_buttons(page, config["artifacts_url_ios"]))
 
     if "MASTG/demos/" in path and page.meta.get('status') == 'placeholder':
         banners.append(get_demos_placeholder_banner(page.meta))
@@ -260,10 +260,12 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
 def on_config(config):
     config["issue_mapping"] = github_api.get_issues_for_test_refactors()
-    config["artifacts_url"] = github_api.get_latest_successful_run("build-ios-demos.yml")
+    config["artifacts_url_ios"] = github_api.get_latest_successful_run("build-ios-demos.yml")
+    config["artifacts_url_android"] = github_api.get_latest_successful_run("build-android-demos.yml")
 
     # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
-    if not config["artifacts_url"]:
-        config["artifacts_url"] = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
+    if not config["artifacts_url_android"]:
+        config["artifacts_url_ios"] = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
+        config["artifacts_url_android"] = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
 
     config["v1_tests_data"] = get_v1_tests_data()
