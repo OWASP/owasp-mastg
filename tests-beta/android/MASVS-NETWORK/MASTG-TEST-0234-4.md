@@ -5,6 +5,7 @@ id: MASTG-TEST-0234-4
 type: [static]
 deprecated_since: 24
 weakness: MASWE-0052
+profiles: [L1, L2]
 ---
 
 ## Overview
