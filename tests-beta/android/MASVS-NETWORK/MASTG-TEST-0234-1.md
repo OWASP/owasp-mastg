@@ -1,5 +1,5 @@
 ---
-title: Incorrect implementation of server certificate verification
+title: Unsafe Custom Trust Evaluation
 platform: android
 id: MASTG-TEST-0234-1
 type: [static]
