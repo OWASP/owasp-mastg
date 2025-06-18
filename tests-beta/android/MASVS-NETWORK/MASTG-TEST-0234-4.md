@@ -13,8 +13,8 @@ This test evaluates whether an Android app can be installed to devices running A
 
 ## Steps
 
-1. Reverse engineer (@MASTG-TECH-0017) the app (@MASTG-APP-0018).
-1. Obtain the `minSdkVersion` attribute from the `AndroidManifest.xml`.
+1. Obtain the AndroidManifest.xml (@MASTG-TECH-0117).
+2. Read the value of the `minSdkVersion` attribute from the `<uses-sdk>` element.
 
 ## Observation
 
