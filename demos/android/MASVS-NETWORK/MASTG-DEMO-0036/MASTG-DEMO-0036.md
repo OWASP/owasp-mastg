@@ -26,4 +26,4 @@ The rule has identified an element in the network security config that allows ce
 
 Review each of the reported instances.
 
-- Line 11 contains the `<certificates src="user" />` element which allows certificates imported on the user's behalf.
+- Line 7 contains the `<certificates src="user" />` element which allows certificates imported on the user's behalf.
