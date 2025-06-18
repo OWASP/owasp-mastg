@@ -9,7 +9,7 @@ profiles: [L1, L2]
 
 ## Overview
 
-In Android and Java, the Serializable interface enables the conversion of object data into a byte stream for storage or transmission.However, deserializing objects from untrusted sources without proper validation can lead to the creation of unwanted or malicious objects.Attackers may take advantage of this by crafting inputs that alter application behavior, resulting in security vulnerabilities like arbitrary code execution, privilege escalation, or denial of service.
+In Android, the Serializable interface enables the conversion of object data into a byte stream for storage or transmission. However, deserializing objects from untrusted sources without proper validation can lead to the creation of unwanted or malicious objects.Attackers may take advantage of this by crafting inputs that alter application behavior, resulting in security vulnerabilities like arbitrary code execution, privilege escalation, or denial of service.
 
 ## Steps
 
