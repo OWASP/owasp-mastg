@@ -8,7 +8,9 @@ weakness: MASWE-0052
 
 ## Overview
 
-Inside `onReceivedSslError` if no exceptions are thrown and there is a `handler.proceed()` call, TLS errors are muted.
+The method [`WebViewClient.onReceivedSslError()`](https://developer.android.com/reference/android/webkit/WebViewClient#onReceivedSslError%28android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError%29) is triggered when a `WebView` encounters an SSL certificate error while loading a page. By default, the `WebView` cancels the request to protect users from insecure connections. Overriding this method and calling [`SslErrorHandler.proceed()`](https://developer.android.com/reference/android/webkit/SslErrorHandler#proceed%28%29) without proper validation or user consent disables these protections.
+
+This effectively bypasses SSL certificate checks in the `WebView`, exposing the app to [MITM attacks](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) using invalid, expired, or self-signed certificates.
 
 ## Steps
 
