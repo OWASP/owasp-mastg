@@ -113,12 +113,12 @@ def on_post_page(output, page, config):
         mapping = {
             "MASVS-STORAGE": "/MASVS/05-MASVS-STORAGE/",
             "MASVS-CRYPTO": "/MASVS/06-MASVS-CRYPTO/",
-            "MASVS-AUTH": "MASVS/07-MASVS-AUTH/",
-            "MASVS-NETWORK": "MASVS/08-MASVS-NETWORK/",
-            "MASVS-PLATFORM": "MASVS/09-MASVS-PLATFORM/",
-            "MASVS-CODE": "MASVS/10-MASVS-CODE/",
-            "MASVS-RESILIENCE": "MASVS/11-MASVS-RESILIENCE/",
-            "MASVS-PRIVACY": "MASVS/12-MASVS-PRIVACY/",
+            "MASVS-AUTH": "/MASVS/07-MASVS-AUTH/",
+            "MASVS-NETWORK": "/MASVS/08-MASVS-NETWORK/",
+            "MASVS-PLATFORM": "/MASVS/09-MASVS-PLATFORM/",
+            "MASVS-CODE": "/MASVS/10-MASVS-CODE/",
+            "MASVS-RESILIENCE": "/MASVS/11-MASVS-RESILIENCE/",
+            "MASVS-PRIVACY": "/MASVS/12-MASVS-PRIVACY/",
         }
         output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'{mapping.get(x.group(1).upper())}"' , output)
     else:
