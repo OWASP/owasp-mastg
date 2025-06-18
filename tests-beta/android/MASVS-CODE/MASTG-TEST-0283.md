@@ -1,7 +1,7 @@
 ---
 title: Unsafe Deserialization of Untrusted Input Using Parcelable
 platform: android
-id: MASTG-TEST-0267
+id: MASTG-TEST-0283
 type: [static]
 weakness: MASWE-0088
 profiles: [L1, L2]

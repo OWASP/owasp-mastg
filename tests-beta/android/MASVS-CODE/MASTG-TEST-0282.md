@@ -1,7 +1,7 @@
 ---
 title: Unwanted Object Deserialization Using Serializable
 platform: android
-id: MASTG-TEST-0266
+id: MASTG-TEST-0282
 type: [static]
 weakness: MASWE-0088
 profiles: [L1, L2]

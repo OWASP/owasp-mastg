@@ -3,7 +3,7 @@ platform: android
 title: Object Deserialization Using Parcelable with semgrep
 id: MASTG-DEMO-0054
 code: [kotlin]
-test: MASTG-TEST-0267
+test: MASTG-TEST-0283
 profiles: [L1, L2]
 ---
 
