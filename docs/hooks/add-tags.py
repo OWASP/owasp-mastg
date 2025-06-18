@@ -128,7 +128,7 @@ def on_post_page(output, page, config):
         output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
     
     
-    # These are disabled currently, as multiple pages have android/ios labels and they shouldn't always to go the tests page
+    # TODO - These are disabled currently, as multiple pages have android/ios labels and they shouldn't always to go the tests page
     # output = re.sub(r'/tags/#tag:android"', '/MASTG/tests/#android"' , output)
     # output = re.sub(r'/tags/#tag:ios"', '/MASTG/tests/#ios"' , output)
 
