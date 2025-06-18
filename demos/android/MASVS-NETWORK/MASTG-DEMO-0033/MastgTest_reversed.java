@@ -55,7 +55,6 @@ public final class MastgTest {
         Intrinsics.checkNotNullParameter(content, "$content");
         Intrinsics.checkNotNullParameter(this$0, "this$0");
         content.append(this$0.fetchUrl("https://tlsexpired.no"));
-        content.append(this$0.fetchUrl("https://tlsrevoked.no/"));
     }
 
     private final String fetchUrl(String urlString) throws IOException {
