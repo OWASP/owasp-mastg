@@ -1,12 +1,14 @@
 ---
 platform: android
-title: Improper use of the onReceivedSslError handler
+title: WebView Ignoring TLS Errors in onReceivedSslError
 id: MASTG-DEMO-0035
 code: [kotlin]
 test: MSTG-TEST-0234-3
 ---
 
 ### Sample
+
+This sample demonstrates the insecure handling of TLS errors in a WebView by allowing all SSL errors without proper validation.
 
 {{ MastgTestWebView.kt # MastgTestWebView_reversed.java }}
 
