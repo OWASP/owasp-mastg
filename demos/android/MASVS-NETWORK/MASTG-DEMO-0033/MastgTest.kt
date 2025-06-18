@@ -16,7 +16,6 @@ class MastgTest(private val context: Context) {
         val content = StringBuilder("Response:\n\n")
         val thread = Thread {
             content.append(fetchUrl("https://tlsexpired.no"))     // Expired cert
-            content.append(fetchUrl("https://tlsrevoked.no/"))     // Revoked cert
         }
         thread.start()
         thread.join()
