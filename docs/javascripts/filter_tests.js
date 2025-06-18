@@ -31,6 +31,13 @@ function configureTestsTable() {
       columnIndex: 2 // Platform column
     },
     {
+      id: 'filter-platform-network',
+      label: 'Network',
+      type: 'platform',
+      value: 'network',
+      columnIndex: 2 // Platform column
+    },
+    {
       id: 'filter-profile-l1',
       label: 'L1',
       type: 'profile',
@@ -285,7 +292,7 @@ function configureTestsTable() {
       const totalRows = rows.length;
       const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none').length;
       if (visibleRows < totalRows) {
-        info.textContent = `Showing ${visibleRows} of ${totalRows} entries (deprecated items hidden)`;
+        info.textContent = `Showing ${visibleRows} of ${totalRows} entries (filtered)`;
       }
     }
   }, 0);
@@ -296,9 +303,16 @@ function configureTestsTable() {
     
     // Collect all active filters
     const checkboxes = mainFilterContainer.querySelectorAll('input[type="checkbox"]:checked');
+
+    // build up a new anchor for URL
+    var anchor = []
+
     checkboxes.forEach(checkbox => {
       const type = checkbox.dataset.type;
       const value = checkbox.dataset.value;
+
+      // extract filter name
+      anchor.push(checkbox.dataset.value.toLowerCase())
       
       if (!activeFilters[type]) {
         activeFilters[type] = [];
@@ -308,6 +322,10 @@ function configureTestsTable() {
         columnIndex: parseInt(checkbox.dataset.columnIndex)
       });
     });
+
+    history.replaceState(null, null, '#' + anchor.join(';'));
+
+
     
     // First, handle the special case of deprecated items - hide them by default
     let showDeprecatedChecked = false;
@@ -409,4 +427,31 @@ function configureTestsTable() {
       }
     }
   }
+  $(function() {
+    const hash = window.location.hash;
+    if (!hash) return;
+  
+    const mapping = {
+      "android": "#filter-platform-android",
+      "ios": "#filter-platform-ios",
+      "network": "#filter-platform-network",
+      "l1": "#filter-profile-l1",
+      "l2": "#filter-profile-l2",
+      "r": "#filter-profile-r",
+      "p": "#filter-profile-p",
+    }
+
+    const items = hash.substring(1).split(';');
+  
+    items.forEach(function(item) {
+      const checkbox = $(mapping[item]);
+      if (checkbox.length) {
+        checkbox.prop('checked', true).trigger('change');
+      }
+    });
+  
+    if(items.length > 0){
+      filterTable()
+    }
+  });
 };
