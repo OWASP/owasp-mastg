@@ -7,18 +7,23 @@ log = logging.getLogger('mkdocs')
 
 
 def get_last_commit_date(file_path):
-    if os.getenv("IGNORE_LAST_COMMIT_DATE") == "1":
+    if any(keyword in file_path for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-", "MASTG-BEST-"]):
+        if os.getenv("IGNORE_LAST_COMMIT_DATE") == "1":
             return None
-    try:
-        # get the last commit date as "September 12, 2022"
-        command = f"git log -n 1 --date=format:'%B %d, %Y' --format=%ad -- {file_path}"
-        result = subprocess.check_output(command, shell=True, universal_newlines=True)
+        try:
+            file_path = file_path.replace("/docs/MASTG/", "/")
+            if "MASTG-TEST-02" in file_path:
+                file_path = file_path.replace("/tests", "/tests-beta")
+            # get the last commit date as "September 12, 2022"
+            command = f"git log -n 1 --date=format:'%B %d, %Y' --format=%ad -- {file_path}"
+            result = subprocess.check_output(command, shell=True, universal_newlines=True)
 
-        return result.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing Git command: {e}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+            return result.strip()
+        except subprocess.CalledProcessError as e:
+            print(f"Error executing Git command: {e}")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+        
     return None
 
 if __name__ == '__main__':
