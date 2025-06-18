@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Improper use of the HostnameVerifier
+title: Use of the HostnameVerifier that Allows Any Hostname
 id: MASTG-DEMO-0034
 code: [kotlin]
 test: MSTG-TEST-0234-2
@@ -8,7 +8,9 @@ test: MSTG-TEST-0234-2
 
 ### Sample
 
-{{ MastgTest.kt # MastgTest.kt }}
+This sample connects to a URL with an subject alternative name that does not match the hostname and configures a `HostnameVerifier` that allows any hostname.
+
+{{ MastgTest.kt # MastgTest_reversed.java }}
 
 ### Steps
 
