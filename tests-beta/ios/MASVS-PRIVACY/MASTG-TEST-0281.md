@@ -13,7 +13,7 @@ This test identifies whether the app properly declares all known tracking domain
 
 To perform this test, use one or more curated lists of known trackers. These lists include domains and identifiers associated with advertising networks, analytics providers, and user profiling services. They are commonly used in privacy-focused tools and browsers to detect and block tracking behavior.
 
-For example:
+Some example lists:
 
 - **[DuckDuckGo iOS Trackers](https://github.com/duckduckgo/tracker-blocklists/blob/main/web/v5/ios-tds.json)**: Includes domains, matching rules, descriptions, and categories such as "Action Pixels," "Ad Fraud," "Ad Motivated Tracking," and "Advertising."
 - **[Exodus Privacy Trackers](https://reports.exodus-privacy.eu.org/en/trackers/)**: Includes tracker names, categories (e.g., "Advertisement," "Analytics," "Profiling"), descriptions, and detection metadata such as network and code signatures.
