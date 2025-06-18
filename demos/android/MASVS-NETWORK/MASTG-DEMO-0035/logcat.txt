@@ -1,0 +1,54 @@
+OnBackInvokedCallback is not enabled for the application.
+Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+AssetManager2(0x7652f84760f8) locale list changing from [] to [en-US]
+Loading com.google.android.webview version 133.0.6943.137 (code 694313738)
+AssetManager2(0x7652f8470338) locale list changing from [] to [en-US]
+AssetManager2(0x7652f84741b8) locale list changing from [] to [en-US]
+AssetManager2(0x7652f8471918) locale list changing from [] to [en-US]
+AssetManager2(0x7652f846ea38) locale list changing from [] to [en-US]
+The following library key has been added: ResourcesKey{ mHash=d7cfcb5c mResDir=null mSplitDirs=[] mOverlayDirs=[] mLibDirs=[/data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/WebViewGoogle.apk,/data/app/~~QSwBv2PdhkayyNqWPN8uDg==/com.google.android.trichromelibrary_694313738-AqX4dJVdLHAOTWAw16eJJg==/TrichromeLibrary.apk,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v36 mCompatInfo={420dpi always-compat} mLoaders=[]}
+Failed to find entry 'classes.dex': Entry not found
+Configuring clns-10 for other apk /data/app/~~QSwBv2PdhkayyNqWPN8uDg==/com.google.android.trichromelibrary_694313738-AqX4dJVdLHAOTWAw16eJJg==/TrichromeLibrary.apk. target_sdk_version=34, uses_libraries=ALL, library_path=/data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/lib/x86_64:/data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~QSwBv2PdhkayyNqWPN8uDg==/com.google.android.trichromelibrary_694313738-AqX4dJVdLHAOTWAw16eJJg==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+Configuring clns-11 for other apk /data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/WebViewGoogle.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/lib/x86_64:/data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~QSwBv2PdhkayyNqWPN8uDg==/com.google.android.trichromelibrary_694313738-AqX4dJVdLHAOTWAw16eJJg==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+version=133.0.6943.137 (694313738) minSdkVersion=29 isBundle=false multiprocess=true packageId=2
+Load /data/app/~~QSwBv2PdhkayyNqWPN8uDg==/com.google.android.trichromelibrary_694313738-AqX4dJVdLHAOTWAw16eJJg==/TrichromeLibrary.apk!/lib/x86_64/libmonochrome_64.so using class loader ns clns-11 (caller=/data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/WebViewGoogle.apk): ok
+Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-11 (caller=/data/app/~~gPH26EmPqmZbPBGPVD9WKw==/com.google.android.webview-M0IjjirtaJEK1kXWAAB3AQ==/WebViewGoogle.apk): ok
+[0618/161048.591796:ERROR:variations_seed_loader.cc(39)] Seed missing signature.
+[INFO:variations_seed_loader.cc(67)] Failed to open file for reading.: No such file or directory (2)
+Successfully loaded native library
+Flushed 6 samples from 6 histograms, 0 samples were dropped.
+#registerProvider() provider:WV.C8@229f55c isPolicyCacheEnabled:false policyProvidersSize:0
+#setManagerAndSource() 0
+#linkNativeInternal() 1
+#getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+#notifySettingsAvailable() 0
+#onSettingsAvailable() 0
+#flushPolicies()
+Start proc 8097:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i1 for  {org.owasp.mastestapp/org.chromium.content.app.SandboxedProcessService0:0}
+AssetManager2(0x7652f8470018) locale list changing from [] to [en-US]
+[WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
+AssetManager2(0x7652f8473538) locale list changing from [] to [en-US]
+Background concurrent mark compact GC freed 3250KB AllocSpace bytes, 5(160KB) LOS objects, 49% free, 4692KB/9385KB, paused 5.733ms,4.332ms total 86.099ms
+Tracking association SourceState{3a7c4a2 org.owasp.mastestapp/10215 BTop #9908} whose proc state 2 is better than process ProcessState{a71a82e com.google.android.webview:webview_service/10165 pkg=com.google.android.webview} proc state 15 (1 skipped)
+BLUETOOTH_CONNECT permission is missing.
+getBluetoothAdapter() requires BLUETOOTH permission
+registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+Access denied finding property "vendor.mesa.log"
+Access denied finding property "vendor.mesa.log.file"
+Failed to open rendernode: No such file or directory
+searching for layers in '/data/app/~~GB7KOjRe5UgnCSKp_Xt9Sw==/org.owasp.mastestapp-7VAu_WKSTCwzu1EYxJPqDg==/lib/x86_64'
+searching for layers in '/data/app/~~GB7KOjRe5UgnCSKp_Xt9Sw==/org.owasp.mastestapp-7VAu_WKSTCwzu1EYxJPqDg==/base.apk!/lib/x86_64'
+Access denied finding property "vendor.mesa.vk.trace.per.submit"
+Access denied finding property "vendor.mesa.gallium.print.optio"
+Access denied finding property "vendor.mesa.vk.trace.frame"
+Access denied finding property "vendor.mesa.vk.wsi.headless.swa"
+[WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+Connecting to camera service
+Unsupported mime video/apv
+Unsupported mime video/apv
+[ERROR:ssl_client_socket_impl.cc(877)] handshake failed; returned -1, SSL error code 1, net_error -201
+SSL errors onReceivedSslError: The date of the certificate is invalid.
+primary error: 4 certificate: Issued to: OU=Insubordinate,O=Insecure CA,1.2.840.113549.1.9.1=#161a696e73656375726540746c737265766f636174696f6e2e6f7267,C=NO,ST=Buskerud,CN=tlsexpired.no;
+Issued by: 1.2.840.113549.1.9.1=#16126a6f68616e4073796473657465722e636f6d,CN=sydseter.com,OU=Sydseter,O=Sydseter,L=Drammen,ST=Drammen,C=NO;
+ on URL: https://tlsexpired.no/
