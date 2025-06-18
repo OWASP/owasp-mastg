@@ -29,9 +29,6 @@ def _on_page_markdown_2(markdown, page, **kwargs):
 
     if page.meta.get("test"):
         tags.append("placeholder-tag-test")
-    # tags.append(page.meta.get("component_type"))
-
-    # tags.append(page.meta.get("weakness"))
     tags.append(page.meta.get("component_type", "").lower())
 
     # If there is a weakness, add the place holder. This is then picked up by the tag builder and styled correctly
