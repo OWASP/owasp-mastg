@@ -22,11 +22,23 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified one instance in the code where `onReceivedSslError` is not implemented properly.
+The rule identified one instance of the use of the `onReceivedSslError` in the code.
 
 ### Evaluation
 
-The test fails because of the presence of the `handler.proceed()` on line 91 in the `onReceivedSslError` method (lines 79-92), as well as the absence of exceptions being thrown.
+The test fails because the app uses a WebView that calls `handler.proceed()` in its `onReceivedSslError` method without validating the SSL error at all. You can manually validate this in the app's reverse-engineered code by inspecting the provided code locations.
+
+In this case:
+
+```java
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                ...
+                String message = this.this$0.getSslErrorMessage(error);
+                Log.e("MastgTestWebView", "SSL errors onReceivedSslError: " + message);
+                Log.e("MastgTestWebView", error.toString());
+                handler.proceed();
+            }
+```
 
 By doing this, the app is effectively ignoring every TLS error even though we can see that the expired certificate error is logged (see @MASTG-TECH-0009):
 
