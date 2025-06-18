@@ -14,8 +14,8 @@ Such trust can expose the application to [MITM attacks](../../../Document/0x04f-
 
 ## Steps
 
-1. Reverse engineer the app (@MASTG-TECH-0017).
-2. Obtain the AndroidManifest.xml (@MASTG-TECH-0117), and check if a `networkSecurityConfig` is set in the `<application>` tag.
+1. Obtain the AndroidManifest.xml (@MASTG-TECH-0117).
+2. Check if a `networkSecurityConfig` is set in the `<application>` tag.
 3. Inspect the referenced network security config file, and extract all uses of `<certificates src="user" />.
 
 ## Observation
