@@ -112,7 +112,7 @@ def on_post_page(output, page, config):
     # Some context-specific changes
     if "MASTG/0x" in path:
         # These are the MASTG testing pages
-        # Temp hack until after MASVS page restructure
+        # TODO - Temp hack until after MASVS page restructure
         mapping = {
             "MASVS-STORAGE": "/MASVS/05-MASVS-STORAGE/",
             "MASVS-CRYPTO": "/MASVS/06-MASVS-CRYPTO/",
