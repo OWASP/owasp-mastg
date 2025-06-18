@@ -89,12 +89,11 @@ def on_post_page(output, page, config):
     if test := page.meta.get("test"):
         output = output.replace("placeholder-tag-test", test)
 
-    # By default, tags link to the main tags page. Let's make some tags a bit more useful
+    # By default, tags link to the main tags page. These substitutions make the tag links more useful
     # Transform URLs for MASWE tags to a more purposeful format.
     # Matches URLs like '/tags/#tag:MASWE-<number>' and replaces them with '/MASWE/<category>/MASWE-<number>',
     # where <category> is determined from the 'hook_add_tags_maswe_data' mapping in the config.
     output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}"' , output)
-    output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/MASTG/tests/{config["hook_add_tags_test_data"].get(x.group(1).upper())}/{x.group(1).upper()}"' , output)
     output = re.sub(r'/tags/#tag:test"', '/MASTG/tests/"' , output)
     output = re.sub(r'/tags/#tag:maswe"', '/MASWE/"' , output)
     output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
@@ -107,7 +106,27 @@ def on_post_page(output, page, config):
     output = re.sub(r'/tags/#tag:l2"', '/MASTG/tests/#l2"' , output)
     output = re.sub(r'/tags/#tag:r"', '/MASTG/tests/#r"' , output)
     output = re.sub(r'/tags/#tag:p"', '/MASTG/tests/#p"' , output)
-    output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
+    output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/MASTG/tests/{config["hook_add_tags_test_data"].get(x.group(1).upper())}/{x.group(1).upper()}"' , output)
+    
+    path = page.file.src_uri
+    # Some context-specific changes
+    if "MASTG/0x" in path:
+        # These are the MASTG testing pages
+        # Temp hack until after MASVS page restructure
+        mapping = {
+            "MASVS-STORAGE": "/MASVS/05-MASVS-STORAGE/",
+            "MASVS-CRYPTO": "/MASVS/06-MASVS-CRYPTO/",
+            "MASVS-AUTH": "MASVS/07-MASVS-AUTH/",
+            "MASVS-NETWORK": "MASVS/08-MASVS-NETWORK/",
+            "MASVS-PLATFORM": "MASVS/09-MASVS-PLATFORM/",
+            "MASVS-CODE": "MASVS/10-MASVS-CODE/",
+            "MASVS-RESILIENCE": "MASVS/11-MASVS-RESILIENCE/",
+            "MASVS-PRIVACY": "MASVS/12-MASVS-PRIVACY/",
+        }
+        output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'{mapping.get(x.group(1).upper())}"' , output)
+    else:
+        output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
+    
     
     # These are disabled currently, as multiple pages have android/ios labels and they shouldn't always to go the tests page
     # output = re.sub(r'/tags/#tag:android"', '/MASTG/tests/#android"' , output)

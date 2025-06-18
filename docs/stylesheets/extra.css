@@ -28,16 +28,7 @@
   --tag-color-demo:              #9900ffff;
   --tag-color-app:               #8e7cc3d1;
   --tag-color-best:              #087a21ff;
-
-  --masvs-storage:               #DF5C8D;
-  --masvs-crypto:                #F65928;
-  --masvs-auth:                  #F09236;
-  --masvs-network:               #F2C200;
-  --masvs-platform:              #4FB991;
-  --masvs-code:                  #5FACD3;
-  --masvs-resilience:            #317CC0;
-  --masvs-privacy:               #8B5F9E;
-  --masvs-maswe:                 #FF0000;
+  --tag-color-maswe:             linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
 }
 
 
@@ -47,44 +38,54 @@
   /* user-select: none; */
 }
 
-.md-tag--masvs-storage     { background-color: var(--tag-color-masvs-storage) !important; color: white !important; }
-.md-tag--masvs-crypto      { background-color: var(--tag-color-masvs-crypto) !important; color: white !important; }
-.md-tag--masvs-auth        { background-color: var(--tag-color-masvs-auth) !important; color: white !important; }
-.md-tag--masvs-network     { background-color: var(--tag-color-masvs-network) !important; color: white !important; }
-.md-tag--masvs-platform    { background-color: var(--tag-color-masvs-platform) !important; color: white !important; }
-.md-tag--masvs-code        { background-color: var(--tag-color-masvs-code) !important; color: white !important; }
-.md-tag--masvs-resilience  { background-color: var(--tag-color-masvs-resilience) !important; color: white !important; }
-.md-tag--masvs-privacy     { background-color: var(--tag-color-masvs-privacy) !important; color: white !important; }
+/* Individual MASVS categories using variables */
+.md-tag--masvs-storage,   .masvs-link--masvs-storage   { background-color: var(--tag-color-masvs-storage) !important; color: white !important; }
+.md-tag--masvs-crypto,    .masvs-link--masvs-crypto    { background-color: var(--tag-color-masvs-crypto) !important; color: white !important; }
+.md-tag--masvs-auth,      .masvs-link--masvs-auth      { background-color: var(--tag-color-masvs-auth) !important; color: white !important; }
+.md-tag--masvs-network,   .masvs-link--masvs-network   { background-color: var(--tag-color-masvs-network) !important; color: white !important; }
+.md-tag--masvs-platform,  .masvs-link--masvs-platform  { background-color: var(--tag-color-masvs-platform) !important; color: white !important; }
+.md-tag--masvs-code,      .masvs-link--masvs-code      { background-color: var(--tag-color-masvs-code) !important; color: white !important; }
+.md-tag--masvs-resilience,.masvs-link--masvs-resilience{ background-color: var(--tag-color-masvs-resilience) !important; color: white !important; }
+.md-tag--masvs-privacy,   .masvs-link--masvs-privacy   { background-color: var(--tag-color-masvs-privacy) !important; color: white !important; }
 
-.md-tag--android           { background-color: var(--tag-color-android) !important; color: white !important; }
-.md-tag--ios               { background-color: var(--tag-color-ios) !important; color: white !important; }
-.md-tag--network           { background-color: var(--tag-color-network) !important; color: white !important; }
-.md-tag--test              { background-color: var(--tag-color-test) !important; color: white !important; }
-.md-tag--tech              { background-color: var(--tag-color-tech) !important; color: white !important; }
-.md-tag--tool              { background-color: var(--tag-color-tool) !important; color: white !important; }
-.md-tag--demo              { background-color: var(--tag-color-demo) !important; color: white !important; }
-.md-tag--app               { background-color: var(--tag-color-app) !important; color: white !important; }
-.md-tag--best              { background-color: var(--tag-color-best) !important; color: white !important; }
-.md-tag--maswe             { background-color: var(--tag-color-maswe) !important; color: white !important; }
+.md-tag--android,         .masvs-link--android         { background-color: var(--tag-color-android) !important; color: white !important; }
+.md-tag--ios,             .masvs-link--ios             { background-color: var(--tag-color-ios) !important; color: white !important; }
+.md-tag--network,         .masvs-link--network         { background-color: var(--tag-color-network) !important; color: white !important; }
+.md-tag--test,            .masvs-link--test            { background-color: var(--tag-color-test) !important; color: white !important; }
+.md-tag--tech,            .masvs-link--tech            { background-color: var(--tag-color-tech) !important; color: white !important; }
+.md-tag--tool,            .masvs-link--tool            { background-color: var(--tag-color-tool) !important; color: white !important; }
+.md-tag--demo,            .masvs-link--demo            { background-color: var(--tag-color-demo) !important; color: white !important; }
+.md-tag--app,             .masvs-link--app             { background-color: var(--tag-color-app) !important; color: white !important; }
+.md-tag--best,            .masvs-link--best            { background-color: var(--tag-color-best) !important; color: white !important; }
+.md-tag--maswe,           .masvs-link--maswe           { background: var(--tag-color-maswe) !important; color: white !important; }
+
+.md-tag--l1,              .masvs-link--l1              { background-color: var(--tag-color-l1) !important; color: white !important; }
+.md-tag--l2,              .masvs-link--l2              { background-color: var(--tag-color-l2) !important; color: white !important; }
+.md-tag--r,               .masvs-link--r               { background-color: var(--tag-color-r) !important; color: white !important; }
+.md-tag--p,               .masvs-link--p               { background-color: var(--tag-color-p) !important; color: white !important; }
 
 
 
-.md-tag--l1                { background-color: var(--tag-color-l1) !important; color: white !important; }
-.md-tag--l2                { background-color: var(--tag-color-l2) !important; color: white !important; }
-.md-tag--r                 { background-color: var(--tag-color-r) !important; color: white !important; }
-.md-tag--p                 { background-color: var(--tag-color-p) !important; color: white !important; }
-
+/* Normal tags should always have white icons */
 .md-typeset .md-tag-icon[href]::before {
   background-color: var(--md-accent-bg-color) !important;
 }
-
-.md-typeset .md-tag-icon::before {
+.md-tag-icon::before {
   background-color: var(--md-accent-bg-color) !important;
 }
 
-/* Used on the tags page */
-.md-sidebar--secondary {
-  text-transform: uppercase;
+/* Inactive tags should have grey icons */
+.md-typeset .md-tag-inactive[href]::before {
+  /* background-color: var(--md-accent-bg-color) !important; */
+  background-color: var(--md-default-fg-color--lighter) !important;
+}
+.md-tag-inactive::before {
+  background-color: var(--md-default-fg-color--lighter) !important;
+}
+
+/* Inactive tags should have grey text */
+.md-tag-inactive {
+  color: var(--md-default-fg-color--lighter) !important;
 }
 
 
@@ -97,51 +98,6 @@
   padding: 0.3em;
 }
 
-/* Active nav link styling */
-.masvs-link.md-nav__link--active {
-  /* height: 6em; */
-}
-
-/* Individual MASVS categories using variables */
-.md-tag--masvs-storage,
-.masvs-link--masvs-storage {
-  background-color: var(--masvs-storage) !important;
-}
-
-.md-tag--masvs-crypto,
-.masvs-link--masvs-crypto {
-  background-color: var(--masvs-crypto) !important;
-}
-
-.md-tag--masvs-auth,
-.masvs-link--masvs-auth {
-  background-color: var(--masvs-auth) !important;
-}
-
-.md-tag--masvs-network,
-.masvs-link--masvs-network {
-  background-color: var(--masvs-network) !important;
-}
-
-.md-tag--masvs-platform,
-.masvs-link--masvs-platform {
-  background-color: var(--masvs-platform) !important;
-}
-
-.md-tag--masvs-code,
-.masvs-link--masvs-code {
-  background-color: var(--masvs-code) !important;
-}
-
-.md-tag--masvs-resilience,
-.masvs-link--masvs-resilience {
-  background-color: var(--masvs-resilience) !important;
-}
-
-.md-tag--masvs-privacy,
-.masvs-link--masvs-privacy {
-  background-color: var(--masvs-privacy) !important;
-}
 
 /* Optional icon highlight
 .md-tag--masvs-storage[href]::before,
