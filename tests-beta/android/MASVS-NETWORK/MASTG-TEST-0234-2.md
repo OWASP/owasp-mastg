@@ -19,7 +19,7 @@ In these cases, the app effectively turns off hostname validation for the affect
 
 ## Steps
 
-1. Reverse engineer (@MASTG-TECH-0017) the app (@MASTG-APP-0018).
+1. Reverse engineer the app (@MASTG-TECH-0017).
 2. Inspect the source code and run a static analysis (@MASTG-TECH-0014) tool and look for all usages of `X509HostnameVerifier` and `HostnameVerifier`.
 
 ## Observation
