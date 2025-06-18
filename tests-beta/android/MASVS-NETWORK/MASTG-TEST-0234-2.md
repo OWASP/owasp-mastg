@@ -23,6 +23,13 @@ The output contains a list of locations where `HostnameVerifier` or `X509Hostnam
 
 ## Evaluation
 
-The test case fails if hostname verification is present but implemented incorrectly, e.g. by unconditionally returning `true`.
+The test fails if the app does **not** properly validate that the server's hostname matches the certificate.
+
+This includes cases such as:
+
+- **Always accepting hostnames:** overriding `verify(...)` to unconditionally return `true`, regardless of the actual hostname or certificate.
+- **Overly broad matching rules:** using permissive wildcard logic that matches unintended domains.
+- **Incomplete verification coverage:** failing to invoke hostname verification on all SSL/TLS channels, such as those created via `SSLSocket`, or during renegotiation.
+- **Missing manual verification:** not performing hostname verification when it is not done automatically, such as when using the low-level `SSLSocket` API.
 
 When testing using automated tools, you will need to inspect all the reported locations in the reverse-engineered code to confirm the incorrect implementation (@MASTG-TECH-0023).
