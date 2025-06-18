@@ -9,7 +9,7 @@ profiles: [L1, L2]
 
 ### Sample
 
-The code snippet shows the utilization of object deserialization being using `java.io.Serializable` and `implements Serializable`.
+The code snippet shows the utilization of object deserialization using `java.io.Serializabl` and implementing the `Serializable` interface.
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
@@ -30,6 +30,3 @@ The output file shows usages of the object persistence in the code.
 ### Evaluation
 
 The test fails because `java.io.Serializable` and `implements Serializable` were found in the code.
-
-- Line 15 contains the import of `java.io.Serializable`.
-- Line 16 contains the import of `implements Serializable`.

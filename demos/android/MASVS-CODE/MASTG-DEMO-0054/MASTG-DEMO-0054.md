@@ -9,7 +9,7 @@ profiles: [L1, L2]
 
 ### Sample
 
-The code snippet shows the utilization of object deserialization being using `import android.os.Parcelable` and `implements Parcelable`.
+The code snippet shows the utilization of object deserialization using `android.os.Parcelable` and implementing the `Parcelable` interface.
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
