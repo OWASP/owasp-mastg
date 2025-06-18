@@ -14,8 +14,8 @@ Such unsafe implementations can allow an attacker to run a [MITM attack](../../.
 
 ## Steps
 
-1. Reverse engineer (@MASTG-TECH-0017) the app (@MASTG-APP-0018).
-2. Run a static analysis (@MASTG-TECH-0014) tool for the app (@MASTG-APP-0018) and look for all usages of `checkServerTrusted`.
+1. Reverse engineer the app (@MASTG-TECH-0017).
+2. Run a static analysis (@MASTG-TECH-0014) tool for the app and look for all usages of `checkServerTrusted`.
 
 ## Observation
 
