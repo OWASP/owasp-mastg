@@ -34,8 +34,6 @@
 
 .md-tag {
   text-transform: uppercase;
-  /* cursor: default; */
-  /* user-select: none; */
 }
 
 /* Individual MASVS categories using variables */
@@ -98,18 +96,6 @@
   padding: 0.3em;
 }
 
-
-/* Optional icon highlight
-.md-tag--masvs-storage[href]::before,
-.md-tag--masvs-crypto[href]::before,
-.md-tag--masvs-auth[href]::before,
-.md-tag--masvs-network[href]::before,
-.md-tag--masvs-platform[href]::before,
-.md-tag--masvs-code[href]::before,
-.md-tag--masvs-resilience[href]::before,
-.md-tag--masvs-privacy[href]::before {
-  background-color: var(--md-accent-bg-color) !important;
-} */
 
 /* Wider space for pages */
 .md-grid {
