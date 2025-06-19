@@ -369,6 +369,7 @@ function configureTestsTable() {
   
     // Update info manually
     const info = document.querySelector("#filter-info");
+
     if (info) {
       const filteredCount = dtApi.rows({ filter: 'applied' }).count();
       const totalCount = dtApi.rows().count();

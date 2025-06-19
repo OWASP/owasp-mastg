@@ -23,7 +23,7 @@ def get_last_commit_date(file_path):
             print(f"Error executing Git command: {e}")
         except Exception as e:
             print(f"An error occurred: {e}")
-        
+
     return None
 
 if __name__ == '__main__':
@@ -39,4 +39,5 @@ def on_page_markdown(markdown, page, **kwargs):
     if any(substring in abs_path for substring in ["MASWE/", "MASTG/"]) and "index.md" not in abs_path:
         last_updated = get_last_commit_date(abs_path)
         page.meta["last_updated"] = last_updated
+
     return markdown

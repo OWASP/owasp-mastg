@@ -28,3 +28,5 @@ def on_page_markdown(markdown, page, config, **kwargs):
     if "MASWE-" in path:
         if not page.meta.get("id", None):
             raise Exception(f"MASWE without ID: '{path}'")
+
+    return markdown
