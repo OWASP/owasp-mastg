@@ -51,4 +51,3 @@ We can see how:
 - the app sets a custom `HostnameVerifier` on the HTTPS connection.
 - the verifier calls `fetchUrl$lambda$1`, which logs a warning and returns `true`.
 
-In these cases, you will also need to inspect the reverse-engineered code to confirm the incorrect implementation (@MASTG-TECH-0023).
