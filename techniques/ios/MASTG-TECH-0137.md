@@ -79,10 +79,10 @@ Let's use the `SocialApp.app/PrivacyInfo.xcprivacy` file as an example.
 
 This `PrivacyInfo.xcprivacy` file contains:
 
-- **NSPrivacyAccessedAPITypes**: Lists the APIs accessed by the app along with their [reasons for access](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacyaccessedapitypes/nsprivacyaccessedapitypereasons). In this case:
-    - `NSPrivacyAccessedAPICategoryUserDefaults`: `UserDefaults` accessed for reasons CA92.1, 1C8F.1, C56D.1
-    - `NSPrivacyAccessedAPICategoryActiveKeyboards`: interaction with active keyboards Accessed for reason 54BD.1
-- **NSPrivacyCollectedDataTypes**: Lists the types of data collected by the app and the [specific purposes](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacycollecteddatatypes/nsprivacycollecteddatatypepurposes). It also indicates whether the collected data is linked to the user's identity and whether it is used for tracking purposes. In this case:
+- **NSPrivacyAccessedAPITypes**: Lists the [APIs types accessed](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacyaccessedapitypes/nsprivacyaccessedapitype) by the app along with their [reasons for access](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacyaccessedapitypes/nsprivacyaccessedapitypereasons). In this case:
+    - `NSPrivacyAccessedAPICategoryUserDefaults`: `UserDefaults` accessed for reasons `CA92.1`, `1C8F.1`, `C56D.1`.
+    - `NSPrivacyAccessedAPICategoryActiveKeyboards`: interaction with active keyboards accessed for reason `54BD.1`.
+- **NSPrivacyCollectedDataTypes**: Lists the types of data collected by the app and the [specific purposes](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacycollecteddatatypes/nsprivacycollecteddatatypepurposes). It also indicates whether the collected data is [linked to the user's identity](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacycollecteddatatypes/nsprivacycollecteddatatypelinked) (`NSPrivacyCollectedDataTypeLinked`) and whether it is [used for tracking purposes](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacycollecteddatatypes/nsprivacycollecteddatatypetracking) (`NSPrivacyCollectedDataTypeTracking`). In this case:
     - `NSPrivacyCollectedDataTypeName`: collects the user name with purposes including "App Functionality" and "Other" (linked to the user identity but not used for tracking).
     - `NSPrivacyCollectedDataTypeOtherDiagnosticData`: collects other diagnostic data for purposes including "Analytics", "App Functionality", and "Other" (linked to the user identity but not used for tracking).
 - **NSPrivacyTracking**: Indicates that SocialApp uses data for tracking as defined under the App Tracking Transparency framework.
