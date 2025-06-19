@@ -11,7 +11,7 @@ To retrieve these files, you can use the following command in your terminal:
 find . -name "PrivacyInfo.xcprivacy"
 ```
 
-For example, assuming you have an iOS app named `SocialApp.ipa`, and you've extracted it using @MASTG-TECH-0054, you can run the following commands from the `Payload/` folder to find all `PrivacyInfo.xcprivacy` files within the app bundle (truncated and reordered for readability):
+For example, assuming you have an iOS social media app named `SocialApp.ipa`, and you've extracted it using @MASTG-TECH-0054, you can run the following commands from the `Payload/` folder to find all `PrivacyInfo.xcprivacy` files within the app bundle (truncated and reordered for readability):
 
 ```sh
 find . -name "PrivacyInfo.xcprivacy"
