@@ -30,10 +30,8 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified an element in the network security config that allows certificates imported on the user's behalf.
+The rule has identified an element in the network security config that allows user-added CA certificates.
 
 ### Evaluation
 
-Review each of the reported instances.
-
-- Line 7 contains the `<certificates src="user" />` element which allows certificates imported on the user's behalf.
+The test fails due to the `<certificates src="user" />` element which allows user-added CA certificates.
