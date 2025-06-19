@@ -24,11 +24,15 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 The rule identified one instance of the use of the `HostnameVerifier` in the code.
 
+{{ output.txt }}
+
 ### Evaluation
 
-The test fails because the app uses a `HostnameVerifier`. You need to manually validate the app's reverse-engineered code and inspect the provided code locations.
+The test fails because the app uses a `HostnameVerifier` that allows any hostname.
 
-In this case:
+In this case, since the rule only checks for the presence of a `HostnameVerifier` and does not validate the implementation of the verifier, you need to manually validate the app's reverse-engineered code and inspect the provided code locations.
+
+The rule points to MastgTest_reversed.java, where we can see the following code:
 
 ```java
             connection.setHostnameVerifier(new HostnameVerifier() { // from class: org.owasp.mastestapp.MastgTest$$ExternalSyntheticLambda0
@@ -51,4 +55,4 @@ We can see how:
 - the app sets a custom `HostnameVerifier` on the HTTPS connection.
 - the verifier calls `fetchUrl$lambda$1`, which logs a warning and returns `true`.
 
-We can conclude that the hostname verification does **not** properly validate that the server's hostname matches the certificate subject alternative name.
+This way we can conclude that the hostname verification does **not** properly validate that the server's hostname matches the certificate subject alternative name.

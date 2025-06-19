@@ -8,11 +8,11 @@ test: MSTG-TEST-0234-1
 
 ### Sample
 
-This sample demonstrates the insecure use of a custom `TrustManager` that ignores certificate chain validity. It connects to <https://tlsexpired.no>, which has an expired SSL certificate.
+This sample connects to <https://tlsexpired.no>, which has an expired certificate, to demonstrate the insecure use of a custom `TrustManager` that ignores certificate chain validity. It does this by overriding the `checkServerTrusted(...)` method and leaving it empty, which effectively disables certificate validation.
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
-If the app wouldn't use the insecure `TrustManager`, you'd see this message:
+If the app wouldn't use the insecure `TrustManager`, you would see this message:
 
 ```txt
 [https://tlsexpired.no] Error: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
@@ -28,8 +28,10 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 ### Observation
 
-The rule has identified two instances in the code file where `checkServerTrusted` is used without the use of exception handling.
+The rule identified one instance in the code where `checkServerTrusted(...)` is used without exception handling.
+
+{{ output.txt }}
 
 ### Evaluation
 
-The test fails because of the presence of the `checkServerTrusted` method on in the `TrustManager` implementation, as well as the absence of exceptions being thrown.
+The test fails because of the presence of the `checkServerTrusted(...)` method on in the `TrustManager` implementation, as well as the absence of exceptions being thrown.
