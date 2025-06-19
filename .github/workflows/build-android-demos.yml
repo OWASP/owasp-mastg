@@ -173,9 +173,6 @@ jobs:
           cp -f "$demo/data_extraction_rules.xml" MASTestApp-Android/app/src/main/res/xml/data_extraction_rules.xml 2>/dev/null \
             && echo "Copied data_extraction_rules.xml for $demo" \
             || echo "No data_extraction_rules.xml found for $demo"
-          cp -f "$demo/build.gradle.kts" MASTestApp-Android/app/build.gradle.kts 2>/dev/null \
-            && echo "Copied build.gradle.kts for $demo" \
-            || echo "No build.gradle.kts found for $demo"
           
           echo "Building APK for $demo"
           cd MASTestApp-Android
