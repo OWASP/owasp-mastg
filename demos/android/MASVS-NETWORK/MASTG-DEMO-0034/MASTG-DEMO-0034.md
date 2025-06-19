@@ -50,4 +50,3 @@ We can see how:
 
 - the app sets a custom `HostnameVerifier` on the HTTPS connection.
 - the verifier calls `fetchUrl$lambda$1`, which logs a warning and returns `true`.
-
