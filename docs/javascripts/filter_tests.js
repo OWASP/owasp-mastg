@@ -406,8 +406,6 @@ function configureTestsTable() {
       }
     });
   
-    // if(items.length > 0){
-      filterTable()
-    // }
+    filterTable()
   });
 };
