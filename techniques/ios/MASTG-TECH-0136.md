@@ -17,20 +17,16 @@ For example, assuming you have an iOS social media app named `SocialApp.ipa`, an
 find . -name "PrivacyInfo.xcprivacy"
 
 ./SocialApp.app/PrivacyInfo.xcprivacy
-./SocialApp.app/HeimdallrPrivacyInfo.bundle/PrivacyInfo.xcprivacy
 ./SocialApp.app/FirebaseCore_Privacy.bundle/PrivacyInfo.xcprivacy
-./SocialApp.app/BDMemoryMatrix.bundle/PrivacyInfo.xcprivacy
-./SocialApp.app/LottiePrivacyInfo.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/LetterPrivacyInfo.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/CoreMain.bundle/PrivacyInfo.xcprivacy
 ...
-./SocialApp.app/PlugIns/SocialAppIntentExtension.appex/PrivacyInfo.xcprivacy
-./SocialApp.app/PlugIns/SocialAppMessageExtension.appex/PrivacyInfo.xcprivacy
-./SocialApp.app/PlugIns/SocialAppMessageExtension.appex/BDALog.bundle/PrivacyInfo.xcprivacy
-./SocialApp.app/PlugIns/AwemeWidgetExtension.appex/PrivacyInfo.xcprivacy
-./SocialApp.app/PlugIns/AwemeWidgetExtension.appex/BDALog.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/PlugIns/WidgetExtension.appex/PrivacyInfo.xcprivacy
+./SocialApp.app/PlugIns/WidgetExtension.appex/Deep_Privacy.bundle/PrivacyInfo.xcprivacy
 ...
-./SocialApp.app/Extensions/SocialAppBackgroundAssetExtension.appex/PrivacyInfo.xcprivacy
+./SocialApp.app/Extensions/SocialAppAssetExtension.appex/PrivacyInfo.xcprivacy
 ...
-./SocialApp.app/Frameworks/OMSDK_Bytedance1.framework/PrivacyInfo.xcprivacy
+./SocialApp.app/Frameworks/OXSDK_1.framework/PrivacyInfo.xcprivacy
 ./SocialApp.app/Frameworks/SpotifyLogin.framework/PrivacyInfo.xcprivacy
 ...
 ```
