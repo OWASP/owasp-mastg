@@ -7,14 +7,6 @@ rules:
       summary: This rule looks for the use of checkServerTrusted and ensures it throws an exception instead of silently muting invalid server certificates
     message: Improper Server Certificate verification detected.
     match:
-        all:
-        - not: |
-            public void checkServerTrusted (...) {
-            ...
-            throw new CertificateException(...);
-            }
-        -  |
-            public void checkServerTrusted (...) {
-            ...
-            }
+        any:
+        - public void checkServerTrusted (...) { ... }
           

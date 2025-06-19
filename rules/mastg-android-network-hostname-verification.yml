@@ -8,4 +8,4 @@ rules:
     message: Improper server hostname verification detected
     match:
       any:
-        - new HostnameVerifier() {...};
+        - new HostnameVerifier() {...}

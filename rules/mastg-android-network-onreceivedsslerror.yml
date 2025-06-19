@@ -8,15 +8,5 @@ rules:
     message: Improper use of onReceivedSslError handler
     match:
       any:
-        - all:
-          - not: |
-              $RETURN onReceivedSslError(...) {
-              ...
-              throw new $EXCEPTION(...);
-              ...
-              }
-          - inside: |
-              $RETURN onReceivedSslError(...) {
-              ...
-              }
-          -  $HANDLER.proceed();
+        - public void onReceivedSslError(...) {...}
+          
