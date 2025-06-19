@@ -5,9 +5,9 @@ platform: ios
 
 Once you've obtained a privacy manifest as indicated in @MASTG-TECH-0136, you can proceed to analyze it.
 
-Let's use the `TikTok.app/PrivacyInfo.xcprivacy` file as an example.
+Let's use the `SocialApp.app/PrivacyInfo.xcprivacy` file as an example.
 
-??? note "TikTok.app/PrivacyInfo.xcprivacy"
+??? note "SocialApp.app/PrivacyInfo.xcprivacy"
 
   ```xml
   <?xml version="1.0" encoding="UTF-8"?>
@@ -69,14 +69,14 @@ Let's use the `TikTok.app/PrivacyInfo.xcprivacy` file as an example.
           <true/>
           <key>NSPrivacyTrackingDomains</key>
           <array>
-                  <string>da-an-v3.tiktokv.com</string>
-                  <string>da-an-v3-va.tiktokv.com</string>
-                  <string>da-an-v3-sg.tiktokv.com</string>
-                  <string>da-an-v3-i18n.tiktokv.com</string>
-                  <string>da-an-v3.tiktokv.us</string>
-                  <string>da-an-v3-ttp2.tiktokv.us</string>
-                  <string>da-an-v3.tiktokv.eu</string>
-                  <string>da-an-v3-ru.tiktokv.com</string>
+                  <string>da-an-v3.socialappv.com</string>
+                  <string>da-an-v3-va.socialappv.com</string>
+                  <string>da-an-v3-sg.socialappv.com</string>
+                  <string>da-an-v3-i18n.socialappv.com</string>
+                  <string>da-an-v3.socialappv.us</string>
+                  <string>da-an-v3-ttp2.socialappv.us</string>
+                  <string>da-an-v3.socialappv.eu</string>
+                  <string>da-an-v3-ru.socialappv.com</string>
           </array>
   </dict>
   </plist>
@@ -92,8 +92,8 @@ This `PrivacyInfo.xcprivacy` file contains:
     - `NSPrivacyCollectedDataTypeName`: Linked, with purposes including App Functionality and Other.
     - `NSPrivacyCollectedDataTypeOtherDiagnosticData`: Linked, with purposes including Analytics, App Functionality, and Other.
     - This indicates that the app collects user name and other diagnostic data for [specific purposes](https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacycollecteddatatypes/nsprivacycollecteddatatypepurposes).
-- **NSPrivacyTracking**: Indicates that TikTok uses data for tracking as defined under the App Tracking Transparency framework.
-- **NSPrivacyTrackingDomains**: Lists the domains used for tracking purposes, which in this case includes various TikTok-related domains.
+- **NSPrivacyTracking**: Indicates that SocialApp uses data for tracking as defined under the App Tracking Transparency framework.
+- **NSPrivacyTrackingDomains**: Lists the domains used for tracking purposes, which in this case includes various SocialApp-related domains.
 
 You can use several tools and parsers to read and analyze these files programmatically.
 
@@ -104,7 +104,7 @@ If you convert the `PrivacyInfo.xcprivacy` file to JSON format as described in @
 For example, to extract all `NSPrivacyAccessedAPITypeReasons` for each `NSPrivacyAccessedAPIType`:
 
 ```console
-cat TikTok.app/PrivacyInfo.json | jq '.NSPrivacyAccessedAPITypes[] | {api: .NSPrivacyAccessedAPIType, reasons: .NSPrivacyAccessedAPITypeReasons}'
+cat SocialApp.app/PrivacyInfo.json | jq '.NSPrivacyAccessedAPITypes[] | {api: .NSPrivacyAccessedAPIType, reasons: .NSPrivacyAccessedAPITypeReasons}'
 ```
 
 Which outputs (truncated for readability):
@@ -140,7 +140,7 @@ import plistlib
 import json
 
 # load the .xcprivacy plist
-with open('TikTok.app/PrivacyInfo.xcprivacy', 'rb') as fp:
+with open('SocialApp.app/PrivacyInfo.xcprivacy', 'rb') as fp:
     data = plistlib.load(fp)
 
 # extract and print each API and its reasons in JSON
@@ -165,7 +165,7 @@ Use `PlistBuddy` to read and manipulate plist files directly without converting 
 For example, you can read `NSPrivacyAccessedAPITypes` using the following command:
 
 ```console
-/usr/libexec/PlistBuddy -c "Print NSPrivacyAccessedAPITypes" ./TikTok.app/PrivacyInfo.xcprivacy
+/usr/libexec/PlistBuddy -c "Print NSPrivacyAccessedAPITypes" ./SocialApp.app/PrivacyInfo.xcprivacy
 Array {
     Dict {
         NSPrivacyAccessedAPIType = NSPrivacyAccessedAPICategoryUserDefaults
@@ -182,7 +182,7 @@ Array {
 You can dive deeper into the file to extract more specific information. For example, you can get the `NSPrivacyAccessedAPITypeReasons` of the first `NSPrivacyAccessedAPITypes` element (index `0`) this way:
 
 ```console
-/usr/libexec/PlistBuddy -c "Print NSPrivacyAccessedAPITypes:0:NSPrivacyAccessedAPITypeReasons" ./TikTok.app/PrivacyInfo.xcprivacy
+/usr/libexec/PlistBuddy -c "Print NSPrivacyAccessedAPITypes:0:NSPrivacyAccessedAPITypeReasons" ./SocialApp.app/PrivacyInfo.xcprivacy
 
 Array {
     CA92.1

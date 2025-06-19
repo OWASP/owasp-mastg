@@ -10,7 +10,7 @@ You can convert Plist files, such as `Info.plist` or `PrivacyInfo.xcprivacy` (al
 You can use @MASTG-TOOL-0062 to convert `PrivacyInfo.xcprivacy` files to JSON format, making them easier to read and analyze.
 
 ```console
-plutil -convert json -o - TikTok.app/PrivacyInfo.xcprivacy > PrivacyInfo.xcprivacy.json
+plutil -convert json -o - SocialApp.app/PrivacyInfo.xcprivacy > PrivacyInfo.xcprivacy.json
 ```
 
 ### Using plistlib
@@ -21,7 +21,7 @@ You can use Python's built-in `plistlib` module to convert `PrivacyInfo.xcprivac
 import plistlib
 import json
 
-with open('TikTok.app/PrivacyInfo.xcprivacy', 'rb') as fp:
+with open('SocialApp.app/PrivacyInfo.xcprivacy', 'rb') as fp:
     data = plistlib.load(fp)
 
 with open('PrivacyInfo.json', 'w', encoding='utf-8') as fp:
@@ -57,8 +57,8 @@ Which outputs:
   ],
   "NSPrivacyTracking": true,
   "NSPrivacyTrackingDomains": [
-    "da-an-v3.tiktokv.com",
-    "da-an-v3-va.tiktokv.com",
+    "da-an-v3.socialappv.com",
+    "da-an-v3-va.socialappv.com",
     ...
   ]
 }

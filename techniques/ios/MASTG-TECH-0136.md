@@ -11,33 +11,33 @@ To retrieve these files, you can use the following command in your terminal:
 find . -name "PrivacyInfo.xcprivacy"
 ```
 
-For example, assuming you have an iOS app named `TikTok.ipa`, and you've extracted it using @MASTG-TECH-0054, you can run the following commands from the `Payload/` folder to find all `PrivacyInfo.xcprivacy` files within the app bundle (truncated and reordered for readability):
+For example, assuming you have an iOS app named `SocialApp.ipa`, and you've extracted it using @MASTG-TECH-0054, you can run the following commands from the `Payload/` folder to find all `PrivacyInfo.xcprivacy` files within the app bundle (truncated and reordered for readability):
 
 ```sh
 find . -name "PrivacyInfo.xcprivacy"
 
-./TikTok.app/PrivacyInfo.xcprivacy
-./TikTok.app/HeimdallrPrivacyInfo.bundle/PrivacyInfo.xcprivacy
-./TikTok.app/FirebaseCore_Privacy.bundle/PrivacyInfo.xcprivacy
-./TikTok.app/BDMemoryMatrix.bundle/PrivacyInfo.xcprivacy
-./TikTok.app/LottiePrivacyInfo.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/PrivacyInfo.xcprivacy
+./SocialApp.app/HeimdallrPrivacyInfo.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/FirebaseCore_Privacy.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/BDMemoryMatrix.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/LottiePrivacyInfo.bundle/PrivacyInfo.xcprivacy
 ...
-./TikTok.app/PlugIns/TikTokIntentExtension.appex/PrivacyInfo.xcprivacy
-./TikTok.app/PlugIns/TikTokMessageExtension.appex/PrivacyInfo.xcprivacy
-./TikTok.app/PlugIns/TikTokMessageExtension.appex/BDALog.bundle/PrivacyInfo.xcprivacy
-./TikTok.app/PlugIns/AwemeWidgetExtension.appex/PrivacyInfo.xcprivacy
-./TikTok.app/PlugIns/AwemeWidgetExtension.appex/BDALog.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/PlugIns/SocialAppIntentExtension.appex/PrivacyInfo.xcprivacy
+./SocialApp.app/PlugIns/SocialAppMessageExtension.appex/PrivacyInfo.xcprivacy
+./SocialApp.app/PlugIns/SocialAppMessageExtension.appex/BDALog.bundle/PrivacyInfo.xcprivacy
+./SocialApp.app/PlugIns/AwemeWidgetExtension.appex/PrivacyInfo.xcprivacy
+./SocialApp.app/PlugIns/AwemeWidgetExtension.appex/BDALog.bundle/PrivacyInfo.xcprivacy
 ...
-./TikTok.app/Extensions/TikTokBackgroundAssetExtension.appex/PrivacyInfo.xcprivacy
+./SocialApp.app/Extensions/SocialAppBackgroundAssetExtension.appex/PrivacyInfo.xcprivacy
 ...
-./TikTok.app/Frameworks/OMSDK_Bytedance1.framework/PrivacyInfo.xcprivacy
-./TikTok.app/Frameworks/SpotifyLogin.framework/PrivacyInfo.xcprivacy
+./SocialApp.app/Frameworks/OMSDK_Bytedance1.framework/PrivacyInfo.xcprivacy
+./SocialApp.app/Frameworks/SpotifyLogin.framework/PrivacyInfo.xcprivacy
 ...
 ```
 
-This output shows how TikTok has multiple `PrivacyInfo.xcprivacy` files, including one for the main app (`./TikTok.app/PrivacyInfo.xcprivacy`) and several others for its .bundles, PlugIns, Extensions and Frameworks (and any other nested .bundles).
+This output shows how SocialApp has multiple `PrivacyInfo.xcprivacy` files, including one for the main app (`./SocialApp.app/PrivacyInfo.xcprivacy`) and several others for its .bundles, PlugIns, Extensions and Frameworks (and any other nested .bundles).
 
-Let's take a look at the main privacy manifest, `./TikTok.app/PrivacyInfo.xcprivacy` (truncated for readability):
+Let's take a look at the main privacy manifest, `./SocialApp.app/PrivacyInfo.xcprivacy` (truncated for readability):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -76,8 +76,8 @@ Let's take a look at the main privacy manifest, `./TikTok.app/PrivacyInfo.xcpriv
         <true/>
         <key>NSPrivacyTrackingDomains</key>
         <array>
-                <string>da-an-v3.tiktokv.com</string>
-                <string>da-an-v3-va.tiktokv.com</string>
+                <string>da-an-v3.socialappv.com</string>
+                <string>da-an-v3-va.socialappv.com</string>
                 ...
         </array>
 </dict>
