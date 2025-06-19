@@ -4,4 +4,4 @@ platform: android
 source: https://github.com/sydseter/MASTestApp-Android-NETWORK
 ---
 
-An android application designed to include weaknesses related to MASVS-NETWORK.
+An Android application designed to include weaknesses related to MASVS-NETWORK.
