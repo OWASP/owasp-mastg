@@ -24,7 +24,7 @@ Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 The rule identified one instance of the use of the `HostnameVerifier` in the code.
 
-### Evaluation:
+### Evaluation
 
 The test fails because the app uses a `HostnameVerifier` that always returns true. You can manually validate this in the app's reverse-engineered code by inspecting the provided code locations.
 
