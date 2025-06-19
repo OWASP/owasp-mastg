@@ -5,7 +5,13 @@ platform: ios
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the @MASTG-APP-0028 IPA as explained in @MASTG-TECH-0054.
 
-You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder containing the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
+You can unzip the IPA using the standard `unzip` or any other ZIP utility.
+
+```bash
+unzip iGoat-Swift.ipa
+```
+
+Inside you'll find a `Payload` folder containing the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```bash
 $ ls -1 Payload/iGoat-Swift.app
