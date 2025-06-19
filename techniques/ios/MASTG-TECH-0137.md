@@ -8,74 +8,74 @@ Once you've obtained a privacy manifest as indicated in @MASTG-TECH-0136, you ca
 Let's use the `SocialApp.app/PrivacyInfo.xcprivacy` file as an example.
 
 ??? note "SocialApp.app/PrivacyInfo.xcprivacy"
-
-  ```xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-  <plist version="1.0">
-  <dict>
-          <key>NSPrivacyAccessedAPITypes</key>
-          <array>
-                  <dict>
-                          <key>NSPrivacyAccessedAPIType</key>
-                          <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
-                          <key>NSPrivacyAccessedAPITypeReasons</key>
-                          <array>
-                                  <string>CA92.1</string>
-                                  <string>1C8F.1</string>
-                                  <string>C56D.1</string>
-                          </array>
-                  </dict>
-                  <dict>
-                          <key>NSPrivacyAccessedAPIType</key>
-                          <string>NSPrivacyAccessedAPICategoryActiveKeyboards</string>
-                          <key>NSPrivacyAccessedAPITypeReasons</key>
-                          <array>
-                                  <string>54BD.1</string>
-                          </array>
-                  </dict>
-          </array>
-          <key>NSPrivacyCollectedDataTypes</key>
-          <array>
-                  <dict>
-                          <key>NSPrivacyCollectedDataType</key>
-                          <string>NSPrivacyCollectedDataTypeName</string>
-                          <key>NSPrivacyCollectedDataTypeLinked</key>
-                          <true/>
-                          <key>NSPrivacyCollectedDataTypePurposes</key>
-                          <array>
-                                  <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
-                                  <string>NSPrivacyCollectedDataTypePurposeOther</string>
-                          </array>
-                          <key>NSPrivacyCollectedDataTypeTracking</key>
-                          <false/>
-                  </dict>
-                  <dict>
-                          <key>NSPrivacyCollectedDataType</key>
-                          <string>NSPrivacyCollectedDataTypeOtherDiagnosticData</string>
-                          <key>NSPrivacyCollectedDataTypeLinked</key>
-                          <true/>
-                          <key>NSPrivacyCollectedDataTypePurposes</key>
-                          <array>
-                                  <string>NSPrivacyCollectedDataTypePurposeAnalytics</string>
-                                  <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
-                                  <string>NSPrivacyCollectedDataTypePurposeOther</string>
-                          </array>
-                          <key>NSPrivacyCollectedDataTypeTracking</key>
-                          <false/>
-                  </dict>
-          </array>
-          <key>NSPrivacyTracking</key>
-          <true/>
-          <key>NSPrivacyTrackingDomains</key>
-          <array>
-                  <string>trk-v2.socialapp.com</string>
-                  <string>trk-v2.socialapp.us</string>
-                  <string>trk-v2.socialapp.eu</string>
-          </array>
-  </dict>
-  </plist>
-  ```
+    
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+            <key>NSPrivacyAccessedAPITypes</key>
+            <array>
+                    <dict>
+                            <key>NSPrivacyAccessedAPIType</key>
+                            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+                            <key>NSPrivacyAccessedAPITypeReasons</key>
+                            <array>
+                                    <string>CA92.1</string>
+                                    <string>1C8F.1</string>
+                                    <string>C56D.1</string>
+                            </array>
+                    </dict>
+                    <dict>
+                            <key>NSPrivacyAccessedAPIType</key>
+                            <string>NSPrivacyAccessedAPICategoryActiveKeyboards</string>
+                            <key>NSPrivacyAccessedAPITypeReasons</key>
+                            <array>
+                                    <string>54BD.1</string>
+                            </array>
+                    </dict>
+            </array>
+            <key>NSPrivacyCollectedDataTypes</key>
+            <array>
+                    <dict>
+                            <key>NSPrivacyCollectedDataType</key>
+                            <string>NSPrivacyCollectedDataTypeName</string>
+                            <key>NSPrivacyCollectedDataTypeLinked</key>
+                            <true/>
+                            <key>NSPrivacyCollectedDataTypePurposes</key>
+                            <array>
+                                    <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+                                    <string>NSPrivacyCollectedDataTypePurposeOther</string>
+                            </array>
+                            <key>NSPrivacyCollectedDataTypeTracking</key>
+                            <false/>
+                    </dict>
+                    <dict>
+                            <key>NSPrivacyCollectedDataType</key>
+                            <string>NSPrivacyCollectedDataTypeOtherDiagnosticData</string>
+                            <key>NSPrivacyCollectedDataTypeLinked</key>
+                            <true/>
+                            <key>NSPrivacyCollectedDataTypePurposes</key>
+                            <array>
+                                    <string>NSPrivacyCollectedDataTypePurposeAnalytics</string>
+                                    <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+                                    <string>NSPrivacyCollectedDataTypePurposeOther</string>
+                            </array>
+                            <key>NSPrivacyCollectedDataTypeTracking</key>
+                            <false/>
+                    </dict>
+            </array>
+            <key>NSPrivacyTracking</key>
+            <true/>
+            <key>NSPrivacyTrackingDomains</key>
+            <array>
+                    <string>trk-v2.socialapp.com</string>
+                    <string>trk-v2.socialapp.us</string>
+                    <string>trk-v2.socialapp.eu</string>
+            </array>
+    </dict>
+    </plist>
+    ```
 
 This `PrivacyInfo.xcprivacy` file contains:
 
