@@ -21,6 +21,7 @@ draft:
     may expose cryptographic vulnerabilities, affecting data integrity.
   topics: null
 status: draft
+
 ---
 Improper use of MAC by e.g by generating a MAC over a message without the timestamp can make the application susceptible for replay attacks.
 

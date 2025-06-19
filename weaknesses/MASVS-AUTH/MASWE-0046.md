@@ -17,7 +17,7 @@ draft:
     (prev. `touchIDCurrentSet`) when setting access control (since iOS 9). This invalidates
     keychain items when a fingerprint is added or removed. See kSecAccessControlTouchIDCurrentSet,
     biometryCurrentSet.
-status: draft
+status: placeholder
 
 ---
 

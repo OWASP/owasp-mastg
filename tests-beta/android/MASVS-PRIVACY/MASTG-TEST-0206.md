@@ -8,6 +8,7 @@ prerequisites:
 - identify-sensitive-data
 - privacy-policy
 - app-store-privacy-declarations
+profiles: [P]
 ---
 
 ## Overview

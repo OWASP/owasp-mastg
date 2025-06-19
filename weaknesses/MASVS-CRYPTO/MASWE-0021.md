@@ -21,6 +21,7 @@ draft:
   topics:
   - Broken hashing algorithms (e.g. MD5, SHA1, etc.)
 status: draft
+
 ---
 
 Choosing a deprecated, risky or broken hash algorithm, that is insufficiently collision resistant, may compromise the integrity and authenticity of data at rest and in transit by opening the application up for collision attacks.
