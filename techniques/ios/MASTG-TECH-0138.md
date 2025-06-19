@@ -10,7 +10,7 @@ You can convert Plist files, such as `Info.plist` or `PrivacyInfo.xcprivacy` (al
 You can use @MASTG-TOOL-0062 to convert `PrivacyInfo.xcprivacy` files to JSON format, making them easier to read and analyze.
 
 ```console
-plutil -convert json -o - SocialApp.app/PrivacyInfo.xcprivacy > PrivacyInfo.xcprivacy.json
+plutil -convert json -o PrivacyInfo.xcprivacy.json SocialApp.app/PrivacyInfo.xcprivacy
 ```
 
 ### Using plistlib
