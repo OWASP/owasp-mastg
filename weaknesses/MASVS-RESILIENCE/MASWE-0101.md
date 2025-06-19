@@ -12,7 +12,7 @@ draft:
   description: implementing techniques to detect debuggers
   topics:
   - debugger detection
-status: draft
+status: placeholder
 
 ---
 

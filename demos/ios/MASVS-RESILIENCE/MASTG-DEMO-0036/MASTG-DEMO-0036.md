@@ -1,6 +1,6 @@
 ---
-platform: ios
 title: Debuggable Entitlement Enabled in the entitlements.plist with rabin2
+platform: ios
 code: [swift]
 id: MASTG-DEMO-0036
 test: MASTG-TEST-0261
@@ -8,9 +8,9 @@ test: MASTG-TEST-0261
 
 ### Sample
 
-The code snippet below shows sample code that verify the application is debuggable.
+The sample code includes the entitlements.plist file with the `get-task-allow' entitlement, which makes the app debuggable.
 
-{{ entitlements.plist # entitlements_reversed.plist }}
+{{ entitlements.plist }}
 
 ### Steps
 
@@ -27,4 +27,4 @@ The output reveals the value of the `get-task-allow` entitlement.
 
 ### Evaluation
 
-The test fails because the app is debuggable due to the `get-task-allow` entitlement being present.
+The test fails because the app is debuggable due to the `get-task-allow` entitlement being present and set to `true`.

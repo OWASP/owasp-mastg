@@ -16,7 +16,7 @@ draft:
   topics:
   - improper cryptography
   - lack of salt encryption when doing PBKDF2
-status: draft
+status: placeholder
 
 ---
 

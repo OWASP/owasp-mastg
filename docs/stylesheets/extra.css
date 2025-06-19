@@ -2,7 +2,100 @@
   --md-primary-fg-color: #499FFF;
   --mas-blue: #499FFF;
   --mas-gradient: linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
+  --md-status--deprecated: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M8%200a8%208%200%201%201%200%2016A8%208%200%200%201%208%200M3.965%2013.096a6.5%206.5%200%200%200%209.131-9.131ZM1.5%208a6.47%206.47%200%200%200%201.404%204.035l9.131-9.131A6.499%206.499%200%200%200%201.5%208%22/%3E%3C/svg%3E');
+
+  --tag-color-masvs-storage:     #DF5C8D;
+  --tag-color-masvs-crypto:      #F65928;
+  --tag-color-masvs-auth:        #F09236;
+  --tag-color-masvs-network:     #F2C200;
+  --tag-color-masvs-platform:    #4FB991;
+  --tag-color-masvs-code:        #5FACD3;
+  --tag-color-masvs-resilience:  #317CC0;
+  --tag-color-masvs-privacy:     #8B5F9E;
+
+  --tag-color-android:           #3DDC84;
+  --tag-color-ios:               #007AFF;
+  --tag-color-network:           #5E568E;
+
+  --tag-color-l1:                #33CCCC;
+  --tag-color-l2:                #99CC00;
+  --tag-color-r:                 #FF9900;
+  --tag-color-p:                 #9933CC;
+
+  --tag-color-test:              #499fffff;
+  --tag-color-tech:              #ff44aad5;
+  --tag-color-tool:              #595959ff;
+  --tag-color-demo:              #9900ffff;
+  --tag-color-app:               #8e7cc3d1;
+  --tag-color-best:              #087a21ff;
+  --tag-color-maswe:             linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
 }
+
+
+.md-tag {
+  text-transform: uppercase;
+}
+
+/* Individual MASVS categories using variables */
+.md-tag--masvs-storage,   .masvs-link--masvs-storage   { background-color: var(--tag-color-masvs-storage) !important; color: white !important; }
+.md-tag--masvs-crypto,    .masvs-link--masvs-crypto    { background-color: var(--tag-color-masvs-crypto) !important; color: white !important; }
+.md-tag--masvs-auth,      .masvs-link--masvs-auth      { background-color: var(--tag-color-masvs-auth) !important; color: white !important; }
+.md-tag--masvs-network,   .masvs-link--masvs-network   { background-color: var(--tag-color-masvs-network) !important; color: white !important; }
+.md-tag--masvs-platform,  .masvs-link--masvs-platform  { background-color: var(--tag-color-masvs-platform) !important; color: white !important; }
+.md-tag--masvs-code,      .masvs-link--masvs-code      { background-color: var(--tag-color-masvs-code) !important; color: white !important; }
+.md-tag--masvs-resilience,.masvs-link--masvs-resilience{ background-color: var(--tag-color-masvs-resilience) !important; color: white !important; }
+.md-tag--masvs-privacy,   .masvs-link--masvs-privacy   { background-color: var(--tag-color-masvs-privacy) !important; color: white !important; }
+
+.md-tag--android,         .masvs-link--android         { background-color: var(--tag-color-android) !important; color: white !important; }
+.md-tag--ios,             .masvs-link--ios             { background-color: var(--tag-color-ios) !important; color: white !important; }
+.md-tag--network,         .masvs-link--network         { background-color: var(--tag-color-network) !important; color: white !important; }
+.md-tag--test,            .masvs-link--test            { background-color: var(--tag-color-test) !important; color: white !important; }
+.md-tag--tech,            .masvs-link--tech            { background-color: var(--tag-color-tech) !important; color: white !important; }
+.md-tag--tool,            .masvs-link--tool            { background-color: var(--tag-color-tool) !important; color: white !important; }
+.md-tag--demo,            .masvs-link--demo            { background-color: var(--tag-color-demo) !important; color: white !important; }
+.md-tag--app,             .masvs-link--app             { background-color: var(--tag-color-app) !important; color: white !important; }
+.md-tag--best,            .masvs-link--best            { background-color: var(--tag-color-best) !important; color: white !important; }
+.md-tag--maswe,           .masvs-link--maswe           { background: var(--tag-color-maswe) !important; color: white !important; }
+
+.md-tag--l1,              .masvs-link--l1              { background-color: var(--tag-color-l1) !important; color: white !important; }
+.md-tag--l2,              .masvs-link--l2              { background-color: var(--tag-color-l2) !important; color: white !important; }
+.md-tag--r,               .masvs-link--r               { background-color: var(--tag-color-r) !important; color: white !important; }
+.md-tag--p,               .masvs-link--p               { background-color: var(--tag-color-p) !important; color: white !important; }
+
+
+
+/* Normal tags should always have white icons */
+.md-typeset .md-tag-icon[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+.md-tag-icon::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+/* Inactive tags should have grey icons */
+.md-typeset .md-tag-inactive[href]::before {
+  /* background-color: var(--md-accent-bg-color) !important; */
+  background-color: var(--md-default-fg-color--lighter) !important;
+}
+.md-tag-inactive::before {
+  background-color: var(--md-default-fg-color--lighter) !important;
+}
+
+/* Inactive tags should have grey text */
+.md-tag-inactive {
+  color: var(--md-default-fg-color--lighter) !important;
+}
+
+
+/* Shared tag/link styling */
+.masvs-link[class*="--masvs-"] {
+  color: white !important;
+  font-weight: bold;
+  margin: 0.5em 0.5em 0.5em 0.2em;
+  border-radius: 5px;
+  padding: 0.3em;
+}
+
 
 /* Wider space for pages */
 .md-grid {
