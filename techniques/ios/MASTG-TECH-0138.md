@@ -1,0 +1,87 @@
+---
+title: Convert Plist Files to JSON
+platform: ios
+---
+
+You can convert Plist files, such as `Info.plist` or `PrivacyInfo.xcprivacy` (also a Plist file despite the extension), to JSON format for easier readability and analysis.
+
+### Using plutil
+
+You can use @MASTG-TOOL-0062 to convert `PrivacyInfo.xcprivacy` files to JSON format, making them easier to read and analyze.
+
+```console
+plutil -convert json -o - TikTok.app/PrivacyInfo.xcprivacy > PrivacyInfo.xcprivacy.json
+```
+
+### Using plistlib
+
+You can use Python's built-in `plistlib` module to convert `PrivacyInfo.xcprivacy` files to JSON format.
+
+```python
+import plistlib
+import json
+
+with open('TikTok.app/PrivacyInfo.xcprivacy', 'rb') as fp:
+    data = plistlib.load(fp)
+
+with open('PrivacyInfo.json', 'w', encoding='utf-8') as fp:
+    json.dump(data, fp, indent=2, ensure_ascii=False)
+```
+
+Which outputs:
+
+```json
+{
+  "NSPrivacyAccessedAPITypes": [
+    {
+      "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+      "NSPrivacyAccessedAPITypeReasons": [
+        "CA92.1",
+        "1C8F.1",
+        "C56D.1"
+      ]
+    },
+    ...
+  ],
+  "NSPrivacyCollectedDataTypes": [
+    {
+      "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeName",
+      "NSPrivacyCollectedDataTypeLinked": true,
+      "NSPrivacyCollectedDataTypePurposes": [
+        "NSPrivacyCollectedDataTypePurposeAppFunctionality",
+        "NSPrivacyCollectedDataTypePurposeOther"
+      ],
+      "NSPrivacyCollectedDataTypeTracking": false
+    },
+    ...
+  ],
+  "NSPrivacyTracking": true,
+  "NSPrivacyTrackingDomains": [
+    "da-an-v3.tiktokv.com",
+    "da-an-v3-va.tiktokv.com",
+    ...
+  ]
+}
+```
+
+## Using @MASTG-TOOL-0105
+
+IPSW can convert a binary plist or XML plist to JSON:
+
+```bash
+$ ipsw plist ./Info.plist
+{
+    "BuildMachineOSBuild": "23B74",
+    "CFBundleDevelopmentRegion": "en",
+    "CFBundleExecutable": "MASTestApp",
+    "CFBundleIdentifier": "org.owasp.mastestapp.MASTestApp",
+    "CFBundleInfoDictionaryVersion": "6.0",
+    "CFBundleName": "MASTestApp",
+    "CFBundlePackageType": "APPL",
+    "CFBundleShortVersionString": "1.0",
+    "CFBundleSupportedPlatforms": [
+        "iPhoneOS"
+    ],
+    ...
+}
+```
