@@ -57,8 +57,8 @@ Which outputs:
   ],
   "NSPrivacyTracking": true,
   "NSPrivacyTrackingDomains": [
-    "da-an-v3.socialappv.com",
-    "da-an-v3-va.socialappv.com",
+    "trk-v2.socialapp.com",
+    "trk-v2.socialapp.us",
     ...
   ]
 }

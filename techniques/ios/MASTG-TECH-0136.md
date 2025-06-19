@@ -72,8 +72,8 @@ Let's take a look at the main privacy manifest, `./SocialApp.app/PrivacyInfo.xcp
         <true/>
         <key>NSPrivacyTrackingDomains</key>
         <array>
-                <string>da-an-v3.socialappv.com</string>
-                <string>da-an-v3-va.socialappv.com</string>
+                <string>trk-v2.socialapp.com</string>
+                <string>trk-v2.socialapp.us</string>
                 ...
         </array>
 </dict>

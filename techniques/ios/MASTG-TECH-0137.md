@@ -69,14 +69,9 @@ Let's use the `SocialApp.app/PrivacyInfo.xcprivacy` file as an example.
           <true/>
           <key>NSPrivacyTrackingDomains</key>
           <array>
-                  <string>da-an-v3.socialappv.com</string>
-                  <string>da-an-v3-va.socialappv.com</string>
-                  <string>da-an-v3-sg.socialappv.com</string>
-                  <string>da-an-v3-i18n.socialappv.com</string>
-                  <string>da-an-v3.socialappv.us</string>
-                  <string>da-an-v3-ttp2.socialappv.us</string>
-                  <string>da-an-v3.socialappv.eu</string>
-                  <string>da-an-v3-ru.socialappv.com</string>
+                  <string>trk-v2.socialapp.com</string>
+                  <string>trk-v2.socialapp.us</string>
+                  <string>trk-v2.socialapp.eu</string>
           </array>
   </dict>
   </plist>
