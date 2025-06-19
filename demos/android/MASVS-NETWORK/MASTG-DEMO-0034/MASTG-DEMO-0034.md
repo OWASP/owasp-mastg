@@ -26,7 +26,7 @@ The rule identified one instance of the use of the `HostnameVerifier` in the cod
 
 ### Evaluation
 
-The test fails because the app uses a `HostnameVerifier` that always returns true. You can manually validate this in the app's reverse-engineered code by inspecting the provided code locations.
+The test fails because the app uses a `HostnameVerifier`. You need to manually validate the app's reverse-engineered code and inspect the provided code locations.
 
 In this case:
 
@@ -50,3 +50,5 @@ We can see how:
 
 - the app sets a custom `HostnameVerifier` on the HTTPS connection.
 - the verifier calls `fetchUrl$lambda$1`, which logs a warning and returns `true`.
+
+We can conclude that the hostname verification does **not** properly validate that the server's hostname matches the certificate subject alternative name.
