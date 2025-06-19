@@ -1,0 +1,12 @@
+rules:
+  - id: mastg-android-local-storage-for-input-validation
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for use of Local Storage for Input Validation.
+    message: "[MASVS-CODE-4] The application make use of input validation in the code."
+    patterns:
+      - pattern-either:
+          - pattern: $EDITOR.putString($KEY, $VALUE)
+          - pattern: $PREF.getString($KEY, $DEFAULT)
