@@ -22,11 +22,12 @@ These references can be used to match hardcoded or dynamically accessed domains 
 
 ## Steps
 
-1. Extract the app's privacy manifest files, including those from third-party SDKs or frameworks.
-2. Run a static analysis scan using @MASTG-TOOL-0073:
+1. Extract the app's privacy manifest files, including those from third-party SDKs or frameworks using @MASTG-TECH-0136.
+2. Obtain the list of declared tracking domains from the privacy manifest files using @MASTG-TECH-0137.
+3. Run a static analysis scan using @MASTG-TOOL-0073:
     - Search for hardcoded references to known tracking domains.
     - Identify code references to well-known tracking libraries.
-3. Perform network analysis with @MASTG-TOOL-0097:
+4. Perform network analysis with @MASTG-TOOL-0097:
     - Intercept and log all outbound network traffic.
     - Extract all domain names contacted during runtime.
 
@@ -34,13 +35,15 @@ These references can be used to match hardcoded or dynamically accessed domains 
 
 The output should contain:
 
-- A list of all extracted privacy manifests from the app and its embedded components.
+- All extracted privacy manifests from the app.
+- A list of declared tracking domains from the `NSPrivacyTrackingDomains` key in the manifests (preferably with associated components).
 - A list of all domains contacted during dynamic testing.
 - A list of code matches for known tracking domains or tracking libraries from static analysis.
 
 ## Evaluation
 
-The test fails if:
+The test fails if any of the following is missing in the privacy manifest files' `NSPrivacyTrackingDomains` key for the app or any of its components (Frameworks, Plugins, etc.):
 
-- Any domain associated with known trackers is used by the app but not declared in the `NSPrivacyTrackingDomains` key of the manifest.
-- Any tracking SDK or domain is identified in the code but not declared as a tracking domain in the `NSPrivacyTrackingDomains` key of the manifest.
+- Tracking domains contacted by the app at runtime.
+- Tracking domains found in the code.
+- Domains corresponding to tracking SDKs found in the code.
