@@ -3,10 +3,11 @@
 ┌────────────────┐
 │ 1 Code Finding │
 └────────────────┘
-                                                    
-    app/src/main/res/xml/network_security_config.xml
-    ❯❱ rules.MSTG-TEST-0234-5
-          The app has customized it's trust anchors allowing connections to potentially insecure user defined
-          CAs                                                                                                
-                                                                                                             
-           11┆ <certificates src="user" />
+                               
+    network_security_config.xml
+    ❯❱ rules.mastg-android-network-insecure-trust-anchors
+          The network security config allows certificates imported on the user's behalf thereby allowing
+          connections to potentially insecure CAs                                                       
+                                                                                                        
+            6┆ <certificates src="user" />
+

@@ -1,11 +1,12 @@
-
-
+                  
+                  
 ┌────────────────┐
 │ 1 Code Finding │
 └────────────────┘
-
+                                  
     MastgTestWebView_reversed.java
-       owasp-mastg.rules.MSTG-TEST-0234-3
+    ❯❱ rules.mastg-android-network-onreceivedsslerror
           Improper use of onReceivedSslError handler
-
+                                                    
            35┆ handler.proceed();
+
