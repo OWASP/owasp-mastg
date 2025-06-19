@@ -361,8 +361,6 @@ function configureTestsTable() {
 
     activeFilterState.searchTerm = mainFilterContainer.querySelector('#filter-search').value.toLowerCase();
   
-    const searchTerm = mainFilterContainer.querySelector('#filter-search').value.toLowerCase();
-  
     // Update anchor
     history.replaceState(null, null, '#' + anchor.join(';'));   
   
