@@ -5,9 +5,9 @@ platform: ios
 
 You can convert Plist files, such as `Info.plist` or `PrivacyInfo.xcprivacy` (also a Plist file despite the extension), to JSON format for easier readability and analysis.
 
-### Using @MASTG-TOOL-0062
+### Using plutil
 
-Use plutil to convert any Plist files, such as `PrivacyInfo.xcprivacy`, to JSON format:
+Use @MASTG-TOOL-0062 to convert any Plist files, such as `PrivacyInfo.xcprivacy`, to JSON format:
 
 ```console
 plutil -convert json -o PrivacyInfo.xcprivacy.json SocialApp.app/PrivacyInfo.xcprivacy
@@ -64,9 +64,9 @@ Which outputs:
 }
 ```
 
-## Using @MASTG-TOOL-0105
+## Using IPSW
 
-Use IPSW to convert any Plist files, such as `Info.plist`, to JSON format:
+Use @MASTG-TOOL-0105 to convert any Plist files, such as `Info.plist`, to JSON format:
 
 ```bash
 $ ipsw plist ./Info.plist

@@ -153,7 +153,7 @@ The output is (truncated for readability):
 
 ## Using PlistBuddy
 
-Use `PlistBuddy` to read and manipulate plist files directly without converting them to JSON, including `PrivacyInfo.xcprivacy`.
+Use @MASTG-TOOL-0135 to read and manipulate plist files directly without converting them to JSON, including `PrivacyInfo.xcprivacy`.
 
 For example, you can read `NSPrivacyAccessedAPITypes` using the following command:
 
