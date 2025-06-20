@@ -12,4 +12,4 @@ cd apkx
 sudo ./install.sh
 ```
 
-This should copy apkx to `/usr/local/bin`. See @MASTG-TECH-0017 for more information about usage.
+This should copy apkx to `/usr/local/bin`.
