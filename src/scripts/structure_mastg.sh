@@ -19,7 +19,7 @@ cp -r Document/0x0*.md docs/MASTG
 cp -r Document/index.md docs/MASTG
 
 
-cp -r Document/Images/* docs/assets/Images/
+cp -r Document/Images/ docs/assets/Images/
 
 if [[ "$(uname)" == "Darwin" ]]; then
     SED="gsed"
