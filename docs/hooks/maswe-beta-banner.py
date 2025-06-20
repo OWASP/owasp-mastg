@@ -191,9 +191,6 @@ def on_page_markdown(markdown, page, config, **kwargs):
         if link := config["issue_mapping"].get(page.meta.get("id")):
             banners.append(get_v1_refactor_tests_banner(page.meta, link[0], escape(link[1])))
 
-   
-    
-
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
 
