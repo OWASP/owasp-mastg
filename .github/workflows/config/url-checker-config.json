@@ -119,6 +119,12 @@
         },
         {
             "pattern": "^/checklists/"
+        },
+        {
+            "pattern": "https://techbeacon.com/evolution-devops-new-thinking-gene-kim"
+        },
+        {
+            "pattern": "https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/"
         }
         
     ],
