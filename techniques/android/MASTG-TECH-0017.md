@@ -17,7 +17,7 @@ Due to the long legacy of Java applications, many decompilers can be used to dec
 
 Let's take a look at the decompiled version of @MASTG-APP-0003 in a few different decompilers:
 
-## Using Jadx-GUI
+## Using jadx-gui
 
 <img src="Images/Techniques/0017-jadxgui.png" width="800px" />
 

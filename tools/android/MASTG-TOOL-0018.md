@@ -14,9 +14,9 @@ The @MASTG-APP-0003 app can be decompiled using `jadx` by specifying the output 
 jadx -d decompiled UnCrackable-Level1.apk
 ```
 
-## Opening an APK with JADX-GUI
+## Opening an APK with jadx-gui
 
-You can open an APK file either by launching `jadx-gui` and using the GUI, or by directly specifying the APK when launching JADX-GUI:
+You can open an APK file either by launching `jadx-gui` and using the GUI, or by directly specifying the APK when launching jadx-gui:
 
 ```console
 jadx-gui Uncrackable-Level1.apk
