@@ -1,7 +1,7 @@
 import requests
 import os
 import logging
-import re
+import re, json
 
 log = logging.getLogger('mkdocs')
 GITHUB_REPO = "OWASP/owasp-mastg"
@@ -91,18 +91,31 @@ def get_latest_successful_run(workflow_file, branch="master"):
         "Authorization": f"Bearer {GITHUB_TOKEN}",
         "Accept": "application/vnd.github+json",
     }
+    
+     # Get the latest successful run
+    runs_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
+    params = {"status": "success", "branch": branch, "per_page": 1}
 
-    # Try to fetch data from GitHub API
     try:
-        url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
-        params = {"status": "success", "branch": branch, "per_page": 1}
-        response = requests.get(url, headers=headers, params=params, timeout=5)
+        response = requests.get(runs_url, headers=headers, params=params, timeout=10)
         response.raise_for_status()
         runs = response.json().get("workflow_runs", [])
-        if runs:
-            return f"{runs[0]['html_url']}#artifacts"
-        else:
+        if not runs:
             return None
+        run_id = runs[0]["id"]
+
+        # Fetch the artifacts for this run
+        artifacts_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/runs/{run_id}/artifacts"
+        response = requests.get(artifacts_url, headers=headers, timeout=10)
+        response.raise_for_status()
+
+        artifacts = response.json().get("artifacts", [])
+
+        mapping = {}
+        for artifact in artifacts:
+            mapping[artifact["name"].split(".")[0]] = f"https://github.com/{GITHUB_REPO}/actions/runs/{artifact['workflow_run']['id']}/artifacts/{artifact['id']}"
+
+        return mapping
 
     except requests.exceptions.RequestException as e:
         if not GITHUB_TOKEN_WARNING:
