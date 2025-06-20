@@ -3,6 +3,7 @@ set -euo pipefail
 
 mkdir -p docs/MASTG
 mkdir -p docs/MASWE
+mkdir -p docs/assets/Images
 
 directories=("tests" "techniques" "tools" "apps" "demos" "rules" "utils" "best-practices")
 
