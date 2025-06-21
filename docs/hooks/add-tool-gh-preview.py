@@ -1,5 +1,4 @@
 
-import logging
 import re
 import mkdocs.plugins
 
