@@ -120,7 +120,7 @@ Which outputs (truncated for readability):
 ...
 ```
 
-Benefits include readable output, standard JSON tooling, and concise selection syntax. Caveats are that dates and raw data blobs become strings, numeric precision may shift, and comments and key ordering are lost. Consider Python's [plistlib](https://docs.python.org/3/library/plistlib.html) if you need to preserve plist-specific types.
+Benefits include readable output, standard JSON tooling, and concise selection syntax. Caveats are that dates and raw data blobs become strings, numeric precision may shift, and comments and key ordering are lost. Consider Python's @MASTG-TOOL-0136 module if you need to preserve plist-specific types.
 
 ## Using plistlib
 

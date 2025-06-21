@@ -15,7 +15,7 @@ plutil -convert json -o PrivacyInfo.xcprivacy.json SocialApp.app/PrivacyInfo.xcp
 
 ### Using plistlib
 
-Use Python's built-in `plistlib` module to convert any Plist files, such as `PrivacyInfo.xcprivacy`, to JSON format:
+Use Python's built-in @MASTG-TOOL-0136 module to convert any Plist files, such as `PrivacyInfo.xcprivacy`, to JSON format:
 
 ```python
 import plistlib
