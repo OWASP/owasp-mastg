@@ -32,6 +32,31 @@
 }
 
 
+/* Default: hide both */
+img.light-img,
+img.dark-img {
+  display: none !important;
+}
+
+/* Show light image only in light mode */
+[data-md-color-scheme="default"] img.light-img,
+[data-md-color-scheme="light"] img.light-img {
+  display: block !important;
+}
+
+/* Show dark image only in dark mode */
+[data-md-color-scheme="slate"] img.dark-img,
+[data-md-color-scheme="dark"] img.dark-img {
+  display: block !important;
+}
+
+.floating-right {
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+  height: 120px; /* Adjust as needed */
+}
+
 .md-tag {
   text-transform: uppercase;
 }
