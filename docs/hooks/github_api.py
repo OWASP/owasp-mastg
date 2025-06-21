@@ -121,7 +121,7 @@ def get_latest_successful_run(workflow_file, branch="master"):
         return mapping
 
     except requests.exceptions.RequestException as e:
-        print(e)
+        log.error(e)
         if not GITHUB_TOKEN_WARNING:
             log_github_token_invalid_warning(e)
             GITHUB_TOKEN_WARNING = True  # Only show the warning once
