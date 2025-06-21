@@ -361,14 +361,14 @@ Note: if the app also encrypts files, make sure that it encrypts and then calcul
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a jailbroken device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide and also in the real world. Other tools, such as Cydia Substrate or Cycript, can be detected similarly. Note that injection, hooking and DBI (Dynamic Binary Instrumentation) tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
+You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide and also in the real world. Other tools, such as ElleKit, can be detected similarly. Note that injection, hooking and DBI (Dynamic Binary Instrumentation) tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
 
 **Bypass:**
 
 The following steps should guide you when bypassing detection of reverse engineering tools:
 
 1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of radare2/[iaito](https://github.com/radareorg/iaito "iaito") or Ghidra.
-2. Use Frida or Cydia Substrate to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
+2. Use Frida or ElleKit to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
 
 #### Frida Detection
 
@@ -399,7 +399,7 @@ Looking at these _traces_ that Frida _leaves behind_, you might already imagine 
 <div style="page-break-after: always;">
 </div>
 
-> Some of the following detection methods are implemented in the [iOS Security Suite](https://github.com/securing/IOSSecuritySuite "iOS Security Suite").
+> Some of the following detection methods are implemented in @MASTG-TOOL-0141
 
 | Method | Description | Discussion |
 | --- | --- | --- |
@@ -424,7 +424,7 @@ However, since its release, [Corellium](https://www.corellium.com/) (commercial 
 
 With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu "Apple Metal Framework")). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
 
-Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators.
+Pairing these results with the ones from 3rd party frameworks such as @MASTG-TOOL-0141, [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators.
 
 ### Obfuscation
 

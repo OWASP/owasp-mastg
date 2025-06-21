@@ -9,11 +9,11 @@ mappings:
   masvs-v2: [MASVS-RESILIENCE-4]
 
 draft:
-  description: e.g. Frida, Xposed, Cydia Substrate, etc.
+  description: e.g. Frida, Xposed, ellekit, etc.
   topics:
   - frida detection
   - xposed detection
-  - cydia substrate detection
+  - ellekit detection
 status: placeholder
 
 ---

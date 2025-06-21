@@ -222,6 +222,22 @@ For more details, check the associated test: @{test}
 """
     return banner
 
+def get_deprecated_tools_banner(meta):
+
+    deprecation_note = meta.get('deprecation_note', "")
+
+    banner = f"""
+!!! warning "Deprecated Tool"
+
+    This tool is **deprecated** and should not be used anymore.
+
+    The following tools have similar functionality and should be used instead:
+
+    - {", ".join([f"@{id}" for id in meta.get('covered_by', [])])}
+"""
+
+    return banner
+
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
@@ -251,6 +267,9 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     if "MASTG/demos/" in path and page.meta.get('status') == 'placeholder':
         banners.append(get_demos_placeholder_banner(page.meta))
+
+    if "MASTG/tools/" in path and page.meta.get('status') == 'deprecated':
+        banners.append(get_deprecated_tools_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
