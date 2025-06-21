@@ -1,7 +1,7 @@
 import requests
 import os
 import logging
-import re
+import re, json
 
 log = logging.getLogger('mkdocs')
 GITHUB_REPO = "OWASP/owasp-mastg"
@@ -80,7 +80,7 @@ def get_latest_successful_run(workflow_file, branch="master"):
         if not GITHUB_TOKEN_WARNING:
             log_github_token_warning()
             GITHUB_TOKEN_WARNING = True  # Only show the warning once
-        return None
+        return {}
 
     if not GITHUB_TOKEN_LOGGED:
         log.info("✅ GitHub Token detected in environment variables.")
@@ -92,20 +92,37 @@ def get_latest_successful_run(workflow_file, branch="master"):
         "Accept": "application/vnd.github+json",
     }
 
-    # Try to fetch data from GitHub API
+     # Get the latest successful run
+    runs_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
+    params = {"status": "success", "branch": branch, "per_page": 1}
+
     try:
-        url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
-        params = {"status": "success", "branch": branch, "per_page": 1}
-        response = requests.get(url, headers=headers, params=params, timeout=5)
+        response = requests.get(runs_url, headers=headers, params=params, timeout=10)
         response.raise_for_status()
         runs = response.json().get("workflow_runs", [])
-        if runs:
-            return f"{runs[0]['html_url']}#artifacts"
-        else:
-            return None
+        if not runs:
+            return {}
+        run_id = runs[0]["id"]
+
+        # Fetch the artifacts for this run
+        artifacts_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/runs/{run_id}/artifacts"
+        response = requests.get(artifacts_url, headers=headers, timeout=10)
+        response.raise_for_status()
+
+        artifacts = response.json().get("artifacts", [])
+
+        mapping = {}
+        for artifact in artifacts:
+            if artifact["name"].startswith("MASTG-DEMO-"):
+                # Use the artifact name without the file extension as the key
+                # and the URL to download the artifact as the value
+                mapping[artifact["name"].split(".")[0]] = f"https://github.com/{GITHUB_REPO}/actions/runs/{artifact['workflow_run']['id']}/artifacts/{artifact['id']}"
+
+        return mapping
 
     except requests.exceptions.RequestException as e:
+        log.error(e)
         if not GITHUB_TOKEN_WARNING:
             log_github_token_invalid_warning(e)
             GITHUB_TOKEN_WARNING = True  # Only show the warning once
-        return None
+        return {}

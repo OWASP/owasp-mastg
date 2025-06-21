@@ -320,6 +320,9 @@ hooks:
   # Priority -30 for extracting the ID for old tests. Also assigns icons to pages so they show up in navigation
   - docs/hooks/extract-id-from-path.py
 
+  # Adding demo buttons at -30 before replace_snippets at -40
+  - docs/hooks/add-demo-buttons.py
+  
   # Priority -40 for adding content
   - docs/hooks/add-checklists-banner.py
   - docs/hooks/add-cross-references.py
