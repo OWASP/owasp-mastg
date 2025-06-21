@@ -321,6 +321,7 @@ hooks:
   - docs/hooks/extract-id-from-path.py
 
   # Priority -40 for adding content
+  - docs/hooks/add-tool-gh-preview.py
   - docs/hooks/add-checklists-banner.py
   - docs/hooks/add-cross-references.py
   - docs/hooks/replace_snippets.py
