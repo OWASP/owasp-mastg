@@ -91,7 +91,7 @@ def get_latest_successful_run(workflow_file, branch="master"):
         "Authorization": f"Bearer {GITHUB_TOKEN}",
         "Accept": "application/vnd.github+json",
     }
-    
+
      # Get the latest successful run
     runs_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
     params = {"status": "success", "branch": branch, "per_page": 1}
