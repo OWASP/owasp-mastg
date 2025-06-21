@@ -35,19 +35,19 @@
 /* Default: hide both */
 img.light-img,
 img.dark-img {
-  display: none !important;
+  display: none;
 }
 
 /* Show light image only in light mode */
 [data-md-color-scheme="default"] img.light-img,
 [data-md-color-scheme="light"] img.light-img {
-  display: block !important;
+  display: block;
 }
 
 /* Show dark image only in dark mode */
 [data-md-color-scheme="slate"] img.dark-img,
 [data-md-color-scheme="dark"] img.dark-img {
-  display: block !important;
+  display: block;
 }
 
 .floating-right {
