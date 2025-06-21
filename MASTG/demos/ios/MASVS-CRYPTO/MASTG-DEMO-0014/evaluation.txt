@@ -1,0 +1,6 @@
+0x1000047b4      adrp x0, segment.__DATA    ; 0x100010000   -> This instruction loads the base address of the `.data` segment into register `x0`.
+0x1000047b8      add x0, x0, 0xe8           ; int64_t arg1  -> This adds an offset to the base address, pointing to a specific memory location within the `.data` segment, possibly where the hardcoded key or related data is stored.
+0x1000047bc      bl sym.func.100004e0c                      -> A function is called, with `x0` as an argument, likely using the data at the computed address (which could be the key) for further operations.
+0x1000047c0      ldur x8, [x0, -8]                          -> This loads data from the memory location computed earlier (potentially part of the key) into register `x8`.
+0x1000047c4      ldr x8, [x8, 0x40]                         -> Further data manipulation, loading another piece of data related to the earlier load. This could be part of the key processing.
+0x1000047f0      bl sym CryptoKit.P256.Signing.PrivateKey.  -> This calls the `PrivateKey` initializer, which may use the previously loaded data (potentially a hardcoded key) in its process of key creation.

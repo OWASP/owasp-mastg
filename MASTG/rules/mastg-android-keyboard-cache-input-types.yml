@@ -1,0 +1,10 @@
+rules:
+  - id: mastg-android-non-caching-input-types
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule scans all usages of setInputType().
+    message: "[MASVS-STORAGE] Set input type detected ($OBJ) with $ARG"
+    patterns:
+      - pattern: $OBJ.setInputType($ARG)

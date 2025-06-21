@@ -1,0 +1,9 @@
+│       │   0x10000484c      080942f9       ldr x8, reloc.kSecAttrKeySizeInBits ; 0x10000c410   ->  Load the address of kSecAttrKeySizeInBits into x8
+│       │   0x100004850      000140f9       ldr x0, [x8]
+│       │   0x100004854      e30b0094       bl fcn.1000077e0
+│       │   0x100004858      800605a9       stp x0, x1, [x20, 0x50]
+│       │   0x10000485c      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
+│       │   0x100004860      089d41f9       ldr x8, reloc.Swift.Int    ; 0x10000c338
+│       │   0x100004864      883e00f9       str x8, [x20, 0x78]
+│       │   0x100004868      08808052       mov w8, 0x400                                       ->  Move 0x400 (1024 in decimal) into w8, the lower 32 bits of x8
+│       │   0x10000486c      883200f9       str x8, [x20, 0x60]                                 ->  Store the final value (1024-bit key size) into memory
