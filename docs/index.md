@@ -17,7 +17,7 @@ hide:
 </div>
 
 <center>
-<img style="padding: 10px; max-width: 250px" src="assets/logo_circle.png" />
+<img style="padding: 10px; max-width: 250px" src="assets/logo_circle.png"  class="no-lightbox"/>
 </center>
 
 </div>
@@ -75,7 +75,7 @@ hide:
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](MASTG/0x02b-MASVS-MASTG-Adoption.md).
 
 <a href="MASTG/0x02b-MASVS-MASTG-Adoption/">
-<img style="border-radius: 1em;" src="assets/trusted-by-logos.png"/>
+<img style="border-radius: 1em;" src="assets/trusted-by-logos.png" class="no-lightbox"/>
 </a>
 
 <br>
@@ -90,10 +90,10 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 <div style="display: flex; flex-direction: column; align-items: center; gap: 1em; min-width: 300px;">
 <a href="MASTG/0x02c-Acknowledgements/#our-mas-advocates">
-<img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/nowsecure-logo.png" style="width: 250px;" />
+<img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/nowsecure-logo.png" style="width: 250px;" class="no-lightbox"/>
 </a>
 <a href="MASTG/0x02c-Acknowledgements/#our-mas-advocates">
-<img src="assets/guardsquare-logo.png" style="width: 250px; border-radius: 5px;" />
+<img src="assets/guardsquare-logo.png" style="width: 250px; border-radius: 5px;" class="no-lightbox"/>
 </a>
 </div>
 
