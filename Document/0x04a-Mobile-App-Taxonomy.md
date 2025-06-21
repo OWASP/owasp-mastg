@@ -37,7 +37,7 @@ If an app is developed using these frameworks, the app will use the internal API
 
 It's important to know when an application uses a cross-platform mobile framework, because they typically require specific tools to perform static or dynamic analysis. The actual application logic is typically located in framework-specific files inside the app, even though the app also contains the typical code that you would see in a _native app_. This native code is however usually only used to initialize the cross-platform framework, and provide bindings between the native system API and the framework SDK through so called platform-specific bindings.
 
-Although it is rare, applications can combine native code and cross-platform frameworks, or even multiple cross-platform frameworks, so it's important to identify all the used technologies to get correctly cover all the entire attack surface of the application.
+Although it is rare, applications can combine native code and cross-platform frameworks, or even multiple cross-platform frameworks, so it's important to identify all the used technologies to correctly cover the entire attack surface of the application.
 
 ## Web Apps
 
