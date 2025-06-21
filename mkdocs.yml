@@ -274,6 +274,9 @@ plugins:
   - awesome-pages
   # - privacy
   # - offline
+  - glightbox:
+      skip_classes:
+        - no-lightbox
   - blog:
   # https://squidfunk.github.io/mkdocs-material/plugins/blog/
       blog_dir: news
