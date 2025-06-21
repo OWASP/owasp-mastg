@@ -2,16 +2,15 @@
 
 When we use the term "mobile application" or "mobile app," we are referring to a self-contained computer program designed to execute on a mobile device. At the time of publication, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os) and mobile Internet usage has far surpassed desktop Internet usage. This means that mobile apps are the [most widespread types of Internet-capable apps](https://www.idc.com/promo/smartphone-market-share/os).
 
-Also, this guide uses the term "app" as a general term which refers to any kind of application that runs on a mobile OS. Usually, apps run directly on the platform for which they're designed, run on top of a smart device's mobile browser, or they use a mix of these two methods. In this chapter, we will develop a mobile app taxonomy which will fit all apps into categories then discuss the variations of each app category.
+Also, this guide uses the term "app" as a general term which refers to any kind of application that runs on a mobile OS. Usually, apps run directly on the platform for which they're designed, run on top of a smart device's mobile browser, or they use a mix of these two methods. 
 
-We place mobile apps into four categories:
+In this chapter, will discuss the following types of apps:
 
-- [Mobile Application Taxonomy](#mobile-application-taxonomy)
-  - [Native Apps](#native-apps)
-  - [Cross-platform Mobile Frameworks](#cross-platform-mobile-frameworks)
-  - [Web Apps](#web-apps)
-  - [Hybrid Apps](#hybrid-apps)
-  - [Progressive Web Apps](#progressive-web-apps)
+- [Native Apps](#native-apps)
+- [Cross-platform Mobile Frameworks](#cross-platform-mobile-frameworks)
+- [Web Apps](#web-apps)
+- [Hybrid Apps](#hybrid-apps)
+- [Progressive Web Apps](#progressive-web-apps)
 
 ## Native Apps
 
@@ -33,11 +32,11 @@ Here are some cross-platform mobile frameworks that allow developers to compile 
 - [React Native](https://reactnative.dev/ "React Native")
 - [Unity](https://unity.com/ "Unity")
 
-If an app is developed using these frameworks, the app will use the internal APIs native to each system and offer performance equivalent to native apps. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Even though an application created using one of these frameworks is functionally equivalent to a true native app, they are typically not referred to as such. The term _native app_ is used for applications created with the OS's native SDK, while apps created using one of these frameworks are typically called cross-platform apps.
+If an app is developed using these frameworks, the app will use the internal APIs native to each system and offer performance equivalent to native apps. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Even though an app created using one of these frameworks is functionally equivalent to a true native app, they are typically not referred to as such. The term _native app_ is used for apps created with the OS's native SDK, while apps created using one of these frameworks are typically called cross-platform apps.
 
-It's important to know when an application uses a cross-platform mobile framework, because they typically require specific tools to perform static or dynamic analysis. The actual application logic is typically located in framework-specific files inside the app, even though the app also contains the typical code that you would see in a _native app_. This native code is however usually only used to initialize the cross-platform framework, and provide bindings between the native system API and the framework SDK through so called platform-specific bindings.
+It's important to know when an app uses a cross-platform mobile framework, because they typically require specific tools to perform static or dynamic analysis. The actual application logic is typically located in framework-specific files inside the app, even though the app also contains the typical code that you would see in a _native app_. This native code is however usually only used to initialize the cross-platform framework, and provide bindings between the native system API and the framework SDK through so called platform-specific bindings.
 
-Although it is rare, applications can combine native code and cross-platform frameworks, or even multiple cross-platform frameworks, so it's important to identify all the used technologies to correctly cover the entire attack surface of the application.
+Although it is rare, apps can combine native code and cross-platform frameworks, or even multiple cross-platform frameworks, so it's important to identify all the used technologies to correctly cover the entire attack surface of the app.
 
 ## Web Apps
 
