@@ -1,7 +1,7 @@
 ---
 title: Incorrect Implementation of Server Hostname Verification
 platform: android
-id: MASTG-TEST-0234-2
+id: MASTG-TEST-0283
 type: [static]
 weakness: MASWE-0052
 profiles: [L1, L2]

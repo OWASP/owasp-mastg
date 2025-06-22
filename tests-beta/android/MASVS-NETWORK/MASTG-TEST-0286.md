@@ -1,7 +1,7 @@
 ---
 title: Network Security Configuration Allowing Trust in User-Provided CAs
 platform: android
-id: MASTG-TEST-0234-5
+id: MASTG-TEST-0286
 type: [static]
 weakness: MASWE-0052
 profiles: [L1, L2]

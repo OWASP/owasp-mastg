@@ -3,7 +3,7 @@ platform: android
 title: Use of the HostnameVerifier that Allows Any Hostname
 id: MASTG-DEMO-0055
 code: [kotlin]
-test: MSTG-TEST-0234-2
+test: MSTG-TEST-0283
 ---
 
 ### Sample
