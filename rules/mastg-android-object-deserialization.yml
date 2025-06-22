@@ -1,0 +1,12 @@
+rules:
+  - id: mastg-android-object-deserialization
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for use of Object Serialization
+    message: "[MASVS-CODE-4] The application make use of Object deserialization in the code."
+    patterns:
+    - pattern-either:
+      - pattern: import java.io.Serializable
+      - pattern: class $CLASS implements Serializable

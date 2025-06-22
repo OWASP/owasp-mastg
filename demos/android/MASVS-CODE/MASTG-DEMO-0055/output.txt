@@ -1,0 +1,25 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ [1mrules.mastg-android-object-deserialization[0m
+          [MASVS-CODE-4] The application make use of Object deserialization in the code.
+                                                                                        
+            9┆ import java.io.Serializable;
+            ⋮┆----------------------------------------
+           14┆ @Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u000
+               2\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u00
+               12\n\u0002\b\u0003\b\u0007\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u0002\u001a\u
+               00020\u0003¢\u0006\u0004\b\u0004\u0010\u0005J\u0006\u0010\u0006\u001a\u00020\u0007J\u0010\u
+               0010\b\u001a\u0004\u0018\u00010\t2\u0006\u0010\n\u001a\u00020\u000bJ\u000e\u0010\f\u001a\u0
+               0020\u000b2\u0006\u0010\r\u001a\u00020\tR\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004
+               ¢\u0006\u0002\n\u0000¨\u0006\u000e"}, d2 = {"Lorg/owasp/mastestapp/MastgTest;",            
+               "Ljava/io/Serializable;", "context", "Landroid/content/Context;", "<init>",                
+               "(Landroid/content/Context;)V", "mastgTest", "", "processSerializedData", "",              
+               "serializedData", "", "serializeObject", "obj", "app_debug"}, k = 1, mv = {2, 0, 0}, xi =  
+               48)                                                                                        
+           15┆ /* loaded from: classes3.dex */
+           16┆ public final class MastgTest implements Serializable {
