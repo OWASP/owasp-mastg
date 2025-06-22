@@ -9,6 +9,8 @@ host:
 
 The [plistlib module](https://docs.python.org/3/library/plistlib.html) is part of the Python standard library and allows you to programmatically read, modify, and write `.plist` (Property List) files. It supports both XML and binary plist formats and provides a native dictionary-based API.
 
+This makes `plistlib` a cross-platform alternative to @MASTG-TOOL-0135, suitable for scripting or automation use cases.
+
 ## Reading a Plist File
 
 The following example prints the contents of a plist file by loading it into a Python dictionary:
@@ -60,4 +62,3 @@ with open("Info.plist", "wb") as f:
     plistlib.dump(plist, f)
 ```
 
-This makes `plistlib` a cross-platform alternative to @MASTG-TOOL-0135, suitable for scripting or automation use cases.
