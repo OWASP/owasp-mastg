@@ -4,7 +4,7 @@ rules:
     languages:
       - java
     metadata:
-      summary: This rule looks for the use of HostnameVerifier and ensure it doesn't just return true which would mean that it mutes all server host name issues
+      summary: This rule looks for the use of HostnameVerifier in the app
     message: Improper server hostname verification detected
     match:
       any:
