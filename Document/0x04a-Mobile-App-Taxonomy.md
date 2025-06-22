@@ -2,7 +2,7 @@
 
 When we use the term "mobile application" or "mobile app," we are referring to a self-contained computer program designed to execute on a mobile device. At the time of publication, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os) and mobile Internet usage has far surpassed desktop Internet usage. This means that mobile apps are the [most widespread types of Internet-capable apps](https://www.idc.com/promo/smartphone-market-share/os).
 
-Also, this guide uses the term "app" as a general term which refers to any kind of application that runs on a mobile OS. Usually, apps run directly on the platform for which they're designed, run on top of a smart device's mobile browser, or they use a mix of these two methods. 
+Also, this guide uses the term "app" as a general term which refers to any kind of application that runs on a mobile OS. Usually, apps run directly on the platform for which they're designed, run on top of a smart device's mobile browser, or they use a mix of these two methods.
 
 In this chapter, will discuss the following types of apps:
 
