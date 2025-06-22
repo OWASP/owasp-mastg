@@ -268,6 +268,7 @@ extra_javascript:
   - javascripts/filter_tests.js
   - javascripts/navigation.js
   - javascripts/tags.js
+  - javascripts/lightbox.js
 plugins:
   # Uses https://github.com/mkdocs/mkdocs-redirects getting the redirects map from src/scripts/generate_redirects.py
   - search
