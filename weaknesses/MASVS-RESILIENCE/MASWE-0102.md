@@ -9,11 +9,11 @@ mappings:
   masvs-v2: [MASVS-RESILIENCE-4]
 
 draft:
-  description: e.g. Frida, Xposed, ellekit, etc.
+  description: e.g. Frida, Xposed, ElleKit, etc.
   topics:
-  - frida detection
-  - xposed detection
-  - ellekit detection
+  - Frida detection
+  - Xposed detection
+  - ElleKit detection
 status: placeholder
 
 ---
