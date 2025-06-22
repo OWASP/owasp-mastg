@@ -1,12 +1,12 @@
 ---
-title: inspectorplus
+title: GlobalWebInspect
 platform: ios
-source: https://github.com/lich4/inspectorplus
+source: https://github.com/ChiChou/GlobalWebInspect
 host:
 - ios
 ---
 
-Inspector+ can be installed on a jailbroken iOS device to enable web-inspection on any WebView in any application. The tweak can be installed by copying it over to your device and using `dpkg -i <file>` or by searching for it via Sileo / Zebra XXX TODO?
+GlobalWebInspect can be installed on a jailbroken iOS device to enable web-inspection on any WebView in any application. The tweak can be installed by copying it over to your device and using `sudo dpkg -i <file>`.
 
 To activate the web inspection you have to follow these steps:
 
@@ -22,8 +22,9 @@ To open the web inspector and debug a WebView:
 
 Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
 
-![Enable Developer settings](Images/Tools/tool-0137-safari-dev.png.png)
+![Enable Developer settings](Images/Tools/TOOL-0137-safari-dev.png)
 
-If everything is set up correctly, you can attach to WKWebViews by selecting XXXX:
+If everything is set up correctly, you can attach to WKWebViews with Safari:
 
-XXX TODO
+![alt text](TOOL-0137-attach-webview.png)
+
