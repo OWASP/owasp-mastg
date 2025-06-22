@@ -61,4 +61,3 @@ del plist["CustomDictionary"]["CustomProperty"]
 with open("Info.plist", "wb") as f:
     plistlib.dump(plist, f)
 ```
-
