@@ -22,6 +22,8 @@ This sample Kotlin code fetches <https://mitm-software.badssl.com/> using `Https
 
 ### Steps
 
+First of all we obtain the AndroidManifest.xml file (`AndroidManifest_reversed.xml`), which contains the `android:networkSecurityConfig` attribute pointing to the app's Network Security Configuration file (`network_security_config.xml`).
+
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
 {{ ../../../../rules/mastg-android-network-insecure-trust-anchors.yml }}
