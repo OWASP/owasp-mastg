@@ -17,7 +17,7 @@ hide:
 </div>
 
 <center>
-<img style="padding: 10px; max-width: 250px" src="assets/logo_circle.png"  class="no-lightbox"/>
+<img style="padding: 10px; max-width: 250px" src="assets/logo_circle.png" class="no-lightbox"/>
 </center>
 
 </div>
