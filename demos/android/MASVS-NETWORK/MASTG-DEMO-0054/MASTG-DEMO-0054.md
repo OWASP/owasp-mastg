@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Use of a TrustManager that Does Not Validate Certificate Chains
-id: MASTG-DEMO-0033
+id: MASTG-DEMO-0054
 code: [kotlin]
 test: MSTG-TEST-0234-1
 ---

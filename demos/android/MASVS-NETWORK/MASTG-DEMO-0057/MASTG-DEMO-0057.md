@@ -1,7 +1,7 @@
 ---
 platform: android
 title: Network Security Configuration Allows User-Added Certificates
-id: MASTG-DEMO-0036
+id: MASTG-DEMO-0057
 code: [xml, kotlin]
 test: MSTG-TEST-0234-5
 ---
