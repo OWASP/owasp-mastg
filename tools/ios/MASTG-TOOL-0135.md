@@ -7,7 +7,7 @@ host:
 
 PlistBuddy is available on macOS and allows you to print and modify `.plist` files. It is not on the default PATH, but it can be run via `/usr/libexec/PlistBuddy`. PlistBuddy uses a custom syntax to execute commands on the given plist file.
 
-## Printing a plist file
+## Printing a Plist File
 
 The example below prints an ASCII representation of the Info.plist file of @MASTG-APP-0025 by specifying the `Print` command:
 
@@ -93,7 +93,7 @@ You can also print specific entries. Dictionary properties are specified via `:`
 AppIcon-140x40
 ```
 
-## Changing plist values
+## Changing Plist Values
 
 PlistBuddy can also change values via the `Set <key> <value>` command. The following example updates the CFBundleDisplayName:
 
@@ -103,7 +103,7 @@ PlistBuddy can also change values via the `Set <key> <value>` command. The follo
 My New App Name
 ```
 
-## Adding and deleting plist values
+## Adding and Deleting Plist Values
 
 Entries can be added and deleted by specifying the key, value and type:
 
