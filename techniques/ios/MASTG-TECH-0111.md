@@ -3,18 +3,11 @@ title: Extracting Entitlements from MachO Binaries
 platform: ios
 ---
 
-To extract the entitlements from a MachO binary, the following tools can be used:
+Several tools can be used to extract entitlements from MachO binaries on iOS. This is useful for security assessments, as entitlements can reveal permissions and capabilities granted to an app.
 
-- @MASTG-TOOL-0129
-- @MASTG-TOOL-0111
-- @MASTG-TOOL-0105
-- @MASTG-TOOL-0114
+## Using @MASTG-TOOL-0129
 
-The following examples use these tools on the main binary of @MASTG-APP-0028, which contains two architectures.
-
-## rabin2
-
-The entitlements can be extracted using `rabin2 -OC <binary>`.
+Use rabin2 to extract entitlements from MachO binaries using `rabin2 -OC <binary>`:
 
 ```bash
 rabin2 -OC MASTestApp
@@ -35,9 +28,9 @@ rabin2 -OC MASTestApp
 </plist>
 ```
 
-## ldid
+## Using @MASTG-TOOL-0111
 
-The entitlements can be extracted using `ldid -e <binary>`. The `-A` flag is added to specify the desired architecture (16777228:0, which is CPU_TYPE_ARM64:CPU_SUBTYPE_ARM64_ALL):
+Use ldid to extract entitlements from MachO binaries. The `-e` flag is used to specify that entitlements should be extracted, and the `-A` flag is added to specify the desired architecture (`16777228:0`, which is `CPU_TYPE_ARM64:CPU_SUBTYPE_ARM64_ALL`):
 
 ```bash
 ldid -e -A16777228:0 iGoat-Swift.app/iGoat-Swift
@@ -60,12 +53,12 @@ ldid -e -A16777228:0 iGoat-Swift.app/iGoat-Swift
 </plist>
 ```
 
-## ipsw
+## Using @MASTG-TOOL-0105
 
-The entitlements can be extracted using `ipsw macho info -e <binary>`. The `-a` flag is added to specify the desired architecture:
+Use ipsw to extract entitlements from MachO binaries using the `ipsw macho info -e` command:
 
 ```bash
-ipsw macho info -e iGoat-Swift.app/iGoat-Swift -a arm64
+ipsw macho info -e iGoat-Swift.app/iGoat-Swift
 ```
 
 ```xml
@@ -87,9 +80,9 @@ ipsw macho info -e iGoat-Swift.app/iGoat-Swift -a arm64
 </plist>
 ```
 
-## codesign
+## Using @MASTG-TOOL-0114
 
-The entitlements can be extracted using `codesign -d --entitlements - <binary>`. Make sure to include the `-` as the argument for the `--entitlements` flag:
+Use `codesign` to extract entitlements from a MachO binary using `codesign -d --entitlements - <binary>`. Make sure to include the `-` as the argument for the `--entitlements` flag:
 
 ```bash
 codesign -d --entitlements - iGoat-Swift.app/iGoat-Swift

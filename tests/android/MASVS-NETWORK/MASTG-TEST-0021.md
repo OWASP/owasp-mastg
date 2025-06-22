@@ -8,6 +8,10 @@ title: Testing Endpoint Identify Verification
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
+status: deprecated
+covered_by: [MASTG-TEST-0282, MASTG-TEST-0283, MASTG-TEST-0284, MASTG-TEST-0285, MASTG-TEST-0286]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview

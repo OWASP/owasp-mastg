@@ -45,3 +45,7 @@ On iOS, apps cannot directly write to or read from the arbitrary locations, as c
 ## Mitigations
 
 Sensitive data stored in the external storage should be encrypted, and any keys used for data encryption should be protected by the device's hardware-backed keystore, where available. It is highly discouraged to include cryptographic keys hardcoded inside the application. You can also consider storing your files in the [private app sandbox or internal storage](https://developer.android.com/training/data-storage/app-specific#internal) and using [Android's EncryptedFile API wrapper for file encryption](https://developer.android.com/reference/androidx/security/crypto/EncryptedFile).
+
+!!! Warning
+
+    The **Jetpack security crypto library**, including the `EncryptedFile` and  `EncryptedSharedPreferences` classes, has been [deprecated](https://developer.android.com/privacy-and-security/cryptography#jetpack_security_crypto_library). However, since an official replacement has not yet been released, we recommend using these classes until one is available.

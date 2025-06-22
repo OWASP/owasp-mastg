@@ -6,39 +6,8 @@ on:
       - master
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/build-website-reusable.yml
+    with:
+      deploy: true
+    secrets: inherit
     if: github.actor == 'cpholguera' || github.actor == 'sushi2k' || github.actor == 'TheDauntless'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - name: Install dependencies
-        run: pip install -r src/scripts/requirements.txt
-
-      - run: bash -x ./src/scripts/structure_mastg.sh
-
-      - name: Get Latest MASVS Release Tag
-        run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
-
-      - uses: actions/checkout@v4
-        with:
-          repository: "OWASP/owasp-masvs"
-          fetch-depth: 1
-          path: owasp-masvs/
-      - name: Generate MASVS yaml
-        run: python3 ./owasp-masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./owasp-masvs/Document -c ./owasp-masvs/controls
-      - name: Populate MASVS Categories Markdown Files
-        run: python3 ./owasp-masvs/tools/populate_masvs_categories_md.py -d ./owasp-masvs/Document -w
-      - run: ./src/scripts/structure_masvs.sh
-
-      - name: Generate MASVS Control Markdown Files
-        run: python3 src/scripts/write_masvs_control_md_files.py
-      
-      - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mkdocs gh-deploy --force --clean --verbose
