@@ -26,7 +26,7 @@ For a quick start you can go through the [iOS examples](https://www.frida.re/doc
 
 ## Installing Frida on iOS
 
-To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device since we can install `frida-server` through Sileo. Start Sileo and add Frida's repository by navigating to **Manage** -> **Sources** -> **Edit** -> **Add** and entering <https://build.frida.re>. You should then be able to find and install the Frida package.
+To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device since you can install `frida-server` through a third-party app store such as @MASTG-TOOL-0064. Open Sileo and add Frida's repository by navigating to **Manage** -> **Sources** -> **Edit** -> **Add** and entering <https://build.frida.re>. You should then be able to find and install the Frida package.
 
 By default, `frida-server` only listens on the local interface, requiring you to connect the device over USB. If you want to expose `frida-server` on the public interface, modify `/var/jb/Library/LaunchDaemons/re.frida.server.plist` and two items to the `ProgramArguments` as shown below:
 
