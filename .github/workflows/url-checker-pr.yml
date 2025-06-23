@@ -1,4 +1,4 @@
-name: URL Checker (PR)
+name: URL Checker PR
 
 on:
   pull_request:
