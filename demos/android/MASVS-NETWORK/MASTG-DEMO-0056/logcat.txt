@@ -1,0 +1,5 @@
+[ERROR:ssl_client_socket_impl.cc(877)] handshake failed; returned -1, SSL error code 1, net_error -201
+SSL errors onReceivedSslError: The date of the certificate is invalid.
+primary error: 4 certificate: Issued to: OU=Insubordinate,O=Insecure CA,1.2.840.113549.1.9.1=#161a696e73656375726540746c737265766f636174696f6e2e6f7267,C=NO,ST=Buskerud,CN=tlsexpired.no;
+Issued by: 1.2.840.113549.1.9.1=#16126a6f68616e4073796473657465722e636f6d,CN=sydseter.com,OU=Sydseter,O=Sydseter,L=Drammen,ST=Drammen,C=NO;
+ on URL: https://tlsexpired.no/
