@@ -26,10 +26,10 @@ To open the web inspector and debug a WebView:
 
 Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
 
-![Enable Developer settings](Images/Tools/TOOL-0137-safari-dev.png)
+<img src="Images/Tools/TOOL-0137-safari-dev.png" width="400px"/>
 
 If everything is set up correctly, you can attach to WKWebViews with Safari:
 
-![Attaching to a webview](Images/Tools/TOOL-0137-attach-webview.png)
+<img src="Images/Tools/TOOL-0137-attach-webview.png" width="400px"/>
 
-![Safari Web Inspector](Images/Tools/TOOL-0137-web-inspector.png)
+<img src="Images/Tools/TOOL-0137-web-inspector.png.png" width="400px"/>
