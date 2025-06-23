@@ -28,7 +28,7 @@ Now you're able to debug the WebView as you would with a regular web page on you
 
 <img src="Images/Tools/TOOL-0137-safari-dev.png" width="400px"/>
 
-If everything is set up correctly, you can attach to WKWebViews with Safari:
+If everything is set up correctly, you can attach to `WKWebViews` with Safari:
 
 <img src="Images/Tools/TOOL-0137-attach-webview.png" width="400px"/>
 
