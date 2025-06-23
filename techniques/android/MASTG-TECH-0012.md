@@ -13,7 +13,7 @@ This section describes various ways to bypass SSL Pinning and gives guidance abo
 
 There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
 
-- Frida: Use the @MASTG-TOOL-0140
+- Frida: Use @MASTG-TOOL-0140
 - Objection: Use the `android sslpinning disable` command.
 - Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or the @MASTG-TOOL-0025 module.
 
