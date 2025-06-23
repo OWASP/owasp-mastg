@@ -10,9 +10,9 @@ host:
 
     This tool may or may not work depending on your macOS / iOS combination.
 
-GlobalWebInspect can be installed on a jailbroken iOS device to enable web-inspection on any WebView in any application. The tweak can be installed by copying it over to your device and using `sudo dpkg -i <file>`.
+GlobalWebInspect can be installed on a jailbroken iOS device to enable web inspection on any WebView in any application. You can install the tweak by copying it over to your device and using `sudo dpkg -i <file>`.
 
-To activate the web inspection you have to follow these steps:
+To activate the web inspection, follow these steps:
 
 1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on _Web Inspector_.
 2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable _Show Develop menu in menu bar_.
@@ -21,14 +21,14 @@ To activate the web inspection you have to follow these steps:
 
 To open the web inspector and debug a WebView:
 
-1. In iOS, open the app and navigate to the screen that should contain a WebView.
-2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView based context. Click on it to open the Web Inspector.
+1. In iOS, open the app and navigate to any screen containing a WebView.
+2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView-based context. Click on it to open the Web Inspector.
 
 Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
 
 <img src="Images/Tools/TOOL-0137-safari-dev.png" width="400px"/>
 
-If everything is set up correctly, you can attach to WKWebViews with Safari:
+If everything is set up correctly, you can attach to `WKWebViews` with Safari:
 
 <img src="Images/Tools/TOOL-0137-attach-webview.png" width="400px"/>
 
