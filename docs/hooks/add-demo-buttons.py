@@ -87,7 +87,4 @@ def on_config(config):
     config["default_ios"] = better_fallback_ios if better_fallback_ios else fallback_ios
     config["default_android"] = better_fallback_android if better_fallback_android else fallback_android
     
-    print("artifacts_url_ios:", json.dumps(config["artifacts_url_ios"], indent=2))
-    print("artifacts_url_android:", json.dumps(config["artifacts_url_android"], indent=2))
-
     return config
