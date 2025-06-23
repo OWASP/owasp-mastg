@@ -4,7 +4,7 @@ platform: ios
 source: https://github.com/Sileo/Sileo
 ---
 
-Sileo is a third-party app store available for both rooted and rootless jailbreaks on iOS 12+. It provides a graphical user interface around `apt/dpkg` and allows you to install applications, binaries and tweaks. Sileo is packaged with popular jailbreaks such as Dopamine and palera1n.
+[Sileo](https://getsileo.app) is a third-party app store available for both rooted and rootless jailbreaks on iOS 12+. It provides a graphical user interface around `apt/dpkg` and allows you to install apps, binaries and tweaks. Sileo is packaged with popular jailbreaks such as Dopamine and palera1n.
 
 !!! Warning "Installing apps"
 
