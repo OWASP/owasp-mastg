@@ -8,6 +8,7 @@ title: Testing Data Encryption on the Network
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 status: deprecated
 covered_by: [MASTG-TEST-0233, MASTG-TEST-0234, MASTG-TEST-0235, MASTG-TEST-0236, MASTG-TEST-0237, MASTG-TEST-0238, MASTG-TEST-0239]
 deprecation_note: New version available in MASTG V2

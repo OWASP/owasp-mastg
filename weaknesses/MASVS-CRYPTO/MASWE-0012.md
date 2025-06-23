@@ -18,7 +18,7 @@ draft:
   topics:
   - key used together with an authorized algorithm
   - key reuse for different purposes or operations (encrypt, decrypt, sign,...)
-status: draft
+status: placeholder
 
 ---
 

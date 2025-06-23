@@ -1,0 +1,10 @@
+name: Check Website Build
+on:
+  pull_request:
+    branches:
+      - "*"
+jobs:
+  build:
+    uses: ./.github/workflows/build-website-reusable.yml
+    with:
+      deploy: false

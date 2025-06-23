@@ -4,6 +4,7 @@ platform: network
 id: MASTG-TEST-0244
 type: [network]
 weakness: MASWE-0047
+profiles: [L2]
 ---
 
 ## Overview

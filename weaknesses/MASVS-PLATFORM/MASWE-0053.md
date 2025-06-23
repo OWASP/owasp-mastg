@@ -16,7 +16,7 @@ draft:
   - copy/paste disabled
   - auto-correct
   - etc.
-status: draft
+status: placeholder
 
 ---
 

@@ -1,4 +1,5 @@
 .DS_Store
+.cache
 ~*
 node_modules
 *.out
@@ -32,3 +33,5 @@ cross_references.yaml
 drafts/
 Payload/
 .vscode/settings.json
+site/
+.cache/

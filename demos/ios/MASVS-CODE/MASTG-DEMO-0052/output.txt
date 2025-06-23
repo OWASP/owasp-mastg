@@ -1,0 +1,63 @@
+{
+    "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "dependency-check",
+                    "version": "10.0.4",
+                    "informationUri": "https://jeremylong.github.io/DependencyCheck/",
+                    "rules": [
+                        {
+                            "id": "CVE-2020-9861",
+                            "shortDescription": {
+                                "text": "high severity - CVE-2020-9861 Uncontrolled Recursion vulnerability in pkg:swift\/swift-nio@2.33.0"
+                            },
+                            "fullDescription": {
+                                "text": "A stack overflow issue existed in Swift for Linux. The issue was addressed with improved input validation for dealing with deeply nested malicious JSON input."
+                            },
+                            "help": {
+                                "text": "",
+                                "markdown": "For more information see [CVE-2020-9861](https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2020-9861).\n\n\nIf this is a false positive - consider using the HTML report to generate a suppression file. For more information see [How dependency-check works](https://jeremylong.github.io/DependencyCheck/general/internals.html), [How to read the HTML report](https://jeremylong.github.io/DependencyCheck/general/thereport.html), and [Suppressing false positives](https://jeremylong.github.io/DependencyCheck/general/suppression.html)."
+                            },
+                            "properties": {
+                                "cvssv2_score": 5.0,
+                                "cvssv2_accessVector": "NETWORK",
+                                "cvssv2_accessComplexity": "LOW",
+                                "cvssv2_authenticationr": "NONE",
+                                "cvssv2_confidentialityImpact": "NONE",
+                                "cvssv2_integrityImpact": "NONE",
+                                "cvssv2_availabilityImpact": "PARTIAL",
+                                "cvssv2_severity": "MEDIUM",
+                                "cvssv3_baseScore": 7.5,
+                                "security-severity": "7.5",
+                                "cvssv3_attackVector": "NETWORK",
+                                "cvssv3_attackComplexity": "LOW",
+                                "cvssv3_privilegesRequired": "NONE",
+                                "cvssv3_userInteraction": "NONE",
+                                "cvssv3_scope": "UNCHANGED",
+                                "cvssv3_confidentialityImpact": "NONE",
+                                "cvssv3_integrityImpact": "NONE",
+                                "cvssv3_availabilityImpact": "HIGH",
+                                "cvssv3_baseSeverity": "HIGH",
+                                "cvssv3_exploitabilityScore": "3.9",
+                                "cvssv3_impactScore": "3.6",
+                                "cvssv3_version": "_3_1",
+                                "source": "NVD"
+                            }
+                        },
+                        {
+                            "id": "CVE-2022-1642",
+                            "shortDescription": {
+                                "text": "high severity - CVE-2022-1642 Incorrect Type Conversion or Cast vulnerability in pkg:swift\/swift-nio@2.33.0"
+                            },
+                            "fullDescription": {
+                                "text": "A program using swift-corelibs-foundation is vulnerable to a denial of service attack caused by a potentially malicious source producing a JSON document containing a type mismatch. This vulnerability is caused by the interaction between a deserialization mechanism offered by the Swift standard library, the Codable protocol; and the JSONDecoder class offered by swift-corelibs-foundation, which can deserialize types that adopt the Codable protocol based on the content of a provided JSON document. When a type that adopts Codable requests the initialization of a field with an integer value, the JSONDecoder class uses a type-erased container with different accessor methods to attempt and coerce a corresponding JSON value and produce an integer. In the case the JSON value was a numeric literal with a floating-point portion, JSONDecoder used different type-eraser methods during validation than it did during the final casting of the value. The checked casting produces a deterministic crash due to this mismatch. The JSONDecoder class is often wrapped by popular Swift-based web frameworks to parse the body of HTTP requests and perform basic type validation. This makes the attack low-effort: sending a specifically crafted JSON document during a request to these endpoints will cause them to crash. The attack does not have any confidentiality or integrity risks in and of itself; the crash is produced deterministically by an abort function that ensures that execution does not continue in the face of this violation of assumptions. However, unexpected crashes can lead to violations of invariants in services, so it's possible that this attack can be used to trigger error conditions that escalate the risk. Producing a denial of service may also be the goal of an attacker in itself. This issue is solved in Swift 5.6.2 for Linux and Windows. This issue was solved by ensuring that the same methods are invoked both when validating and during casting, so that no type mismatch occurs. Swift for Linux and Windows versions are not ABI-interchangeable. To upgrade a service, its owner must update to this version of the Swift toolchain, then recompile and redeploy their software. The new version of Swift includes an updated swift-corelibs-foundation package. Versions of Swift running on Darwin-based operating systems are not affected."
+                            },
+                            "help": {
+                                "text": "",
+                                "markdown": "For more information see [CVE-2022-1642](https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2022-1642).\n\n\nIf this is a false positive - consider using the HTML report to generate a suppression file. For more information see [How dependency-check works](https://jeremylong.github.io/DependencyCheck/general/internals.html), [How to read the HTML report](https://jeremylong.github.io/DependencyCheck/general/thereport.html), and [Suppressing false positives](https://jeremylong.github.io/DependencyCheck/general/suppression.html)."
+                             
+                            }
+...[REDACTED]...
