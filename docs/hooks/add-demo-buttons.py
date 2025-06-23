@@ -1,5 +1,6 @@
 import mkdocs.plugins
 import github_api
+import json
 
 def get_android_demo_buttons(page, artifacts_url):
     id = page.meta.get('id')
@@ -82,5 +83,8 @@ def on_config(config):
 
     config["artifacts_url_ios"] = github_api.get_latest_successful_run("build-ios-demos.yml")
     config["artifacts_url_android"] = github_api.get_latest_successful_run("build-android-demos.yml")
+    
+    print("formatted json:", json.dumps(config["artifacts_url_ios"], indent=2))
+    print("formatted json:", json.dumps(config["artifacts_url_android"], indent=2))
 
     return config

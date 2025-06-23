@@ -101,8 +101,11 @@ def get_latest_successful_run(workflow_file, branch="master"):
         response.raise_for_status()
         runs = response.json().get("workflow_runs", [])
         if not runs:
+            log.info("No successful runs found for workflow: %s", workflow_file)
             return {}
         run_id = runs[0]["id"]
+
+        log.info("Latest successful run ID for %s: %s", workflow_file, run_id)
 
         # Fetch the artifacts for this run
         artifacts_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/runs/{run_id}/artifacts"
@@ -110,18 +113,22 @@ def get_latest_successful_run(workflow_file, branch="master"):
         response.raise_for_status()
 
         artifacts = response.json().get("artifacts", [])
-
+        if not artifacts:
+            log.info("No artifacts found for run ID: %s", run_id)
+            return {}
+        log.info("Artifacts found for run ID %s: %d", run_id, len(artifacts))
         mapping = {}
         for artifact in artifacts:
             if artifact["name"].startswith("MASTG-DEMO-"):
                 # Use the artifact name without the file extension as the key
                 # and the URL to download the artifact as the value
+                log.info("Found artifact: %s", artifact["name"])
                 mapping[artifact["name"].split(".")[0]] = f"https://github.com/{GITHUB_REPO}/actions/runs/{artifact['workflow_run']['id']}/artifacts/{artifact['id']}"
 
         return mapping
 
     except requests.exceptions.RequestException as e:
-        log.error(e)
+        log.error(e, stack_info=True, exc_info=True)
         if not GITHUB_TOKEN_WARNING:
             log_github_token_invalid_warning(e)
             GITHUB_TOKEN_WARNING = True  # Only show the warning once
