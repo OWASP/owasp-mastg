@@ -10,9 +10,9 @@ host:
 
     This tool may or may not work depending on your macOS / iOS combination.
 
-GlobalWebInspect can be installed on a jailbroken iOS device to enable web-inspection on any WebView in any application. The tweak can be installed by copying it over to your device and using `sudo dpkg -i <file>`.
+GlobalWebInspect can be installed on a jailbroken iOS device to enable web inspection on any WebView in any application. You can install the tweak by copying it over to your device and using `sudo dpkg -i <file>`.
 
-To activate the web inspection you have to follow these steps:
+To activate the web inspection, follow these steps:
 
 1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on _Web Inspector_.
 2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable _Show Develop menu in menu bar_.
