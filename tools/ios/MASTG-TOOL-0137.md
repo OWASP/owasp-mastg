@@ -21,8 +21,8 @@ To activate the web inspection, follow these steps:
 
 To open the web inspector and debug a WebView:
 
-1. In iOS, open the app and navigate to the screen that should contain a WebView.
-2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView based context. Click on it to open the Web Inspector.
+1. In iOS, open the app and navigate to any screen containing a WebView.
+2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView-based context. Click on it to open the Web Inspector.
 
 Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
 
