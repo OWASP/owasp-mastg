@@ -64,13 +64,10 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     buttons = []
 
-    fallback_ios = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
-    fallback_android = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
-
     if "MASTG/demos/android/" in path and not page.meta.get('status') == 'placeholder':
-        buttons.append(get_android_demo_buttons(page, config["artifacts_url_android"].get(page.meta.get('id'), fallback_android)))
+        buttons.append(get_android_demo_buttons(page, config["artifacts_url_android"].get(page.meta.get('id'), config["default_android"])))
     elif "MASTG/demos/ios/" in path and not page.meta.get('status') == 'placeholder':
-        buttons.append(get_ios_demo_buttons(page, config["artifacts_url_ios"].get(page.meta.get('id'), fallback_ios)))
+        buttons.append(get_ios_demo_buttons(page, config["artifacts_url_ios"].get(page.meta.get('id'), config["default_ios"])))
     elif "MASTG/demos/" in path and page.meta.get('status') == 'placeholder':
         buttons.append(get_demos_placeholder_banner(page.meta))
 
@@ -81,10 +78,16 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
 def on_config(config):
 
-    config["artifacts_url_ios"] = github_api.get_latest_successful_run("build-ios-demos.yml")
-    config["artifacts_url_android"] = github_api.get_latest_successful_run("build-android-demos.yml")
+    fallback_ios = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
+    fallback_android = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
+
+    config["artifacts_url_ios"], better_fallback_ios = github_api.get_latest_successful_run("build-ios-demos.yml")
+    config["artifacts_url_android"], better_fallback_android = github_api.get_latest_successful_run("build-android-demos.yml")
+
+    config["default_ios"] = better_fallback_ios if better_fallback_ios else fallback_ios
+    config["default_android"] = better_fallback_android if better_fallback_android else fallback_android
     
-    print("formatted json:", json.dumps(config["artifacts_url_ios"], indent=2))
-    print("formatted json:", json.dumps(config["artifacts_url_android"], indent=2))
+    print("artifacts_url_ios:", json.dumps(config["artifacts_url_ios"], indent=2))
+    print("artifacts_url_android:", json.dumps(config["artifacts_url_android"], indent=2))
 
     return config

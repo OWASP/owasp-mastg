@@ -75,12 +75,14 @@ def get_latest_successful_run(workflow_file, branch="master"):
     global GITHUB_TOKEN_WARNING
     global GITHUB_TOKEN_LOGGED
 
+    fallback_url = None
+
     # Check if token exists
     if not GITHUB_TOKEN:
         if not GITHUB_TOKEN_WARNING:
             log_github_token_warning()
             GITHUB_TOKEN_WARNING = True  # Only show the warning once
-        return {}
+        return {}, fallback_url
 
     if not GITHUB_TOKEN_LOGGED:
         log.info("✅ GitHub Token detected in environment variables.")
@@ -92,6 +94,7 @@ def get_latest_successful_run(workflow_file, branch="master"):
         "Accept": "application/vnd.github+json",
     }
 
+
      # Get the latest successful run
     runs_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
     params = {"status": "success", "branch": branch, "per_page": 1}
@@ -102,8 +105,9 @@ def get_latest_successful_run(workflow_file, branch="master"):
         runs = response.json().get("workflow_runs", [])
         if not runs:
             log.info("No successful runs found for workflow: %s", workflow_file)
-            return {}
+            return {}, fallback_url
         run_id = runs[0]["id"]
+        fallback_url = f"{runs[0]['html_url']}#artifacts"
 
         log.info("Latest successful run ID for %s: %s", workflow_file, run_id)
 
@@ -115,9 +119,11 @@ def get_latest_successful_run(workflow_file, branch="master"):
         artifacts = response.json().get("artifacts", [])
         if not artifacts:
             log.info("No artifacts found for run ID: %s", run_id)
-            return {}
+            return {}, fallback_url
+
         log.info("Artifacts found for run ID %s: %d", run_id, len(artifacts))
         mapping = {}
+
         for artifact in artifacts:
             if artifact["name"].startswith("MASTG-DEMO-"):
                 # Use the artifact name without the file extension as the key
@@ -125,11 +131,11 @@ def get_latest_successful_run(workflow_file, branch="master"):
                 log.info("Found artifact: %s", artifact["name"])
                 mapping[artifact["name"].split(".")[0]] = f"https://github.com/{GITHUB_REPO}/actions/runs/{artifact['workflow_run']['id']}/artifacts/{artifact['id']}"
 
-        return mapping
+        return mapping, fallback_url
 
     except requests.exceptions.RequestException as e:
         log.error(e, stack_info=True, exc_info=True)
         if not GITHUB_TOKEN_WARNING:
             log_github_token_invalid_warning(e)
             GITHUB_TOKEN_WARNING = True  # Only show the warning once
-        return {}
+        return {}, fallback_url
