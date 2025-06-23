@@ -3,6 +3,7 @@ title: Cydia
 platform: ios
 source: https://cydia.saurik.com/
 status: deprecated
+deprecation_note: Modern Jailbreaks use Sileo / Zebra
 covered_by: [MASTG-TOOL-0064]
 ---
 

@@ -107,7 +107,7 @@ The `Codable`s can easily be encoded / decoded into various representations: `NS
 
 #### JSON and Codable
 
-There are various ways to encode and decode JSON within iOS by using different 3rd party libraries:
+There are various ways to encode and decode JSON within iOS by using different third-party libraries:
 
 - [Mantle](https://github.com/Mantle/Mantle "Mantle")
 - [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel")
