@@ -28,6 +28,17 @@ None of these measures can assure a 100% effectiveness, as the reverse engineer 
 
 For example, preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
+The techniques discussed below will allow you to detect various ways in which an attacker is attacking your application. Since these techniques are documented publicly, they are generally easy to bypass. Using an open-source detection tehcniques is a good first step in imrpoving the resiliency of your application, but they are typically easily bypassed by standard anti-detection tools. Commercial products do typically offer a higher resilience, as they will combine multiple techniques, such as:
+
+- Using undocumented detection techniques
+- Implementing the same techniques in various ways
+- Triggering the detection logic in different scenarios
+- Providing unique detection combinations per build
+- Working together with a backend component for additional verification and HTTP payload encryption
+- Communicating the detection status to the backend
+- Advanced static obfuscation
+
+
 ### Jailbreak Detection
 
 Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme.
@@ -424,7 +435,6 @@ However, since its release, [Corellium](https://www.corellium.com/) (commercial 
 
 With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu "Apple Metal Framework")). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
 
-Open-source frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module) contain different detection techniques for emulators. Note, however, that any publicly documented detection technique is easily defeated by standard detection-bypass scripts.
 
 ### Obfuscation
 
