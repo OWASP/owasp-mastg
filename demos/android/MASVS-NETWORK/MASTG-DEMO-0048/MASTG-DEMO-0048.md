@@ -9,7 +9,9 @@ kind: fail
 
 ## Overview
 
-The following sample code demonstrates how to connect to a server that delivers a certificate with a **wrong or invalid hostname** using `SSLSocket` which inherently [doesn't perform any hostname validation checks](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket). This approach doesn't require modifying the Network Security Configuration (NSC) settings.
+The following sample code demonstrates how to connect to a server that delivers a certificate with a **wrong or invalid hostname** using `SSLSocket`, which inherently [doesn't perform any hostname validation checks](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket).
+
+**Note:** The connection succeeds even if the app has a fully secure Network Security Configuration (NSC) in place because `SSLSocket` is not affected by it.
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
