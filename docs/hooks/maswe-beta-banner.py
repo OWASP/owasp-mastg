@@ -172,14 +172,18 @@ def get_v1_refactor_tests_banner(meta, url, title):
 
 def get_deprecated_tools_banner(meta):
 
-    deprecation_note = meta.get('deprecation_note', "No longer relevant or replaced by other tools.")
+    deprecation_note = meta.get('deprecation_note', "The tool is no longer relevant or was replaced by other tools.")
+
+    deprecation_note = f"**Reason**: {deprecation_note}"
 
     banner = f"""
 !!! warning "Deprecated Tool"
 
-    {deprecation_note if deprecation_note else "This tool is **deprecated** and should not be used anymore."}
+    This tool is **deprecated** and should not be used anymore.
 
-    The following tools have similar functionality and should be used instead:
+    {deprecation_note}
+
+    **Use instead**:
 
     - {", ".join([f"@{id}" for id in meta.get('covered_by', [])])}
 """
