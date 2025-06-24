@@ -1,0 +1,21 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                  
+    MastgTestWebView_reversed.java
+    ❯❱ rules.mastg-android-network-onreceivedsslerror
+          Improper use of onReceivedSslError handler
+                                                    
+           27┆ @Override // android.webkit.WebViewClient
+           28┆ public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+           29┆     Intrinsics.checkNotNullParameter(view, "view");
+           30┆     Intrinsics.checkNotNullParameter(handler, "handler");
+           31┆     Intrinsics.checkNotNullParameter(error, "error");
+           32┆     String message = this.this$0.getSslErrorMessage(error);
+           33┆     Log.e("MastgTestWebView", "SSL errors onReceivedSslError: " + message);
+           34┆     Log.e("MastgTestWebView", error.toString());
+           35┆     handler.proceed();
+           36┆ }
+
