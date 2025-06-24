@@ -3,6 +3,7 @@ title: Cycript
 platform: ios
 source: https://www.cycript.org/
 status: deprecated
+deprecation_note: Cycript is no longer actively maintained and fails on modern iOS versions. It last saw meaningful updates between 2009 and 2013. Key components like cynject broke on iOS 12 around 2019 due to changes in Cydia Substrate and have not been fixed. Frida offers broader compatibility, active support, and more powerful dynamic instrumentation capabilities.
 covered_by: [MASTG-TOOL-0039]
 ---
 

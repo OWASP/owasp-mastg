@@ -60,9 +60,13 @@ By default, `frida-server` only listens on the local interface, requiring you to
 
 Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
 
+!!! Warning
+
+    Exposing frida-server on the public interface will let anyone connected on the same network to inject code into any process running on the device. You should only do this in a controlled lab environment.
+
 ## Using Frida on iOS
 
-Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
+Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag `-U`. This should return the list of processes running on the device:
 
 ```bash
 $ frida-ps -U

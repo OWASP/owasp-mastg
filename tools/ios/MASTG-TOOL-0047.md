@@ -3,7 +3,7 @@ title: Cydia
 platform: ios
 source: https://cydia.saurik.com/
 status: deprecated
-deprecation_note: Modern Jailbreaks use Sileo / Zebra
+deprecation_note: Modern Jailbreaks like Dopamine and palera1n use  more modern package managers like Sileo and Zebra. Cydia has not received any meaningful update since iOS 14 and is no longer relevant on modern jailbreaks.
 covered_by: [MASTG-TOOL-0064]
 ---
 

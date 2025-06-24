@@ -177,7 +177,7 @@ def get_deprecated_tools_banner(meta):
     banner = f"""
 !!! warning "Deprecated Tool"
 
-    This tool is **deprecated** and should not be used anymore for the following reason: {deprecation_note}
+    {deprecation_note if deprecation_note else "This tool is **deprecated** and should not be used anymore."}
 
     The following tools have similar functionality and should be used instead:
 
