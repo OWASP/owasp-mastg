@@ -8,7 +8,7 @@ source: https://github.com/Sileo/Sileo
 
 !!! Warning "Installing apps"
 
-    Installing applications via Sileo or any other third party app-store entails risks, as the applications are not validated by Apple. Be careful with installing unknown applications.
+    Installing applications via Sileo or any other third-party app store entails risks, as the applications are not validated by Apple. Be careful with installing unknown applications.
 
 Many tools on a jailbroken device can be installed by using Sileo. By default, Sileo will already have some package repositories configured. You can add new repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left.
 

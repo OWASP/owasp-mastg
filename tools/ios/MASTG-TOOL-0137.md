@@ -32,4 +32,4 @@ If everything is set up correctly, you can attach to `WKWebViews` with Safari:
 
 <img src="Images/Tools/TOOL-0137-attach-webview.png" width="400px"/>
 
-<img src="Images/Tools/TOOL-0137-web-inspector.png.png" width="400px"/>
+<img src="Images/Tools/TOOL-0137-web-inspector.png" width="400px"/>
