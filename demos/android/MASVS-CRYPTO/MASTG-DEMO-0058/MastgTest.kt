@@ -15,7 +15,7 @@ class MastgTest (private val context: Context){
                 KeyProperties.PURPOSE_ENCRYPT
             )
             b.setBlockModes(KeyProperties.BLOCK_MODE_ECB)
-            r.add(Status.FAIL, "The associated key uses the insecure symmetric encryption block mode ECB only.")
+            r.add(Status.FAIL, "The associated key can only use the insecure symmetric encryption block mode ECB.")
 
             b.setBlockModes(KeyProperties.BLOCK_MODE_ECB, KeyProperties.BLOCK_MODE_CBC)
             r.add(Status.FAIL, "The associated key may use the insecure symmetric encryption block mode ECB.")

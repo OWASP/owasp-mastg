@@ -8,7 +8,7 @@ test: MASTG-TEST-0232
 
 ### Sample
 
-The code snippet below shows sample code contains usage of insecure ECB block modes with `KeyGenParameterSpec`.
+The code snippet below shows sample code which uses insecure ECB block modes with `KeyGenParameterSpec`.
 
 The method used to configure the block mode is:
 

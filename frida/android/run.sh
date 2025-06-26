@@ -16,4 +16,5 @@ randomNumber=$RANDOM
 
 frida -U -f org.owasp.mastestapp -l /tmp/frida_script_$randomNumber.js -o output.txt
 
+# cleanup
 rm /tmp/frida_script_$randomNumber.js
