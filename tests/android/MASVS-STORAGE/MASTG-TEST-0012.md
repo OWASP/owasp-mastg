@@ -7,6 +7,7 @@ platform: android
 title: Testing the Device-Access-Security Policy
 masvs_v1_levels:
 - L2
+profiles: [L2]
 status: deprecated
 covered_by: [MASTG-TEST-0247, MASTG-TEST-0249]
 deprecation_note: New version available in MASTG V2

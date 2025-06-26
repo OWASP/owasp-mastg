@@ -15,7 +15,7 @@ draft:
   - tokens
   - passwords
   - API keys
-status: draft
+status: placeholder
 
 ---
 

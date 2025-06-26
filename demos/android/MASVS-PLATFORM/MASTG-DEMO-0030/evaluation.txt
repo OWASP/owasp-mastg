@@ -1,0 +1,3 @@
+JavaScriptEnabled: True
+AllowContentAccess: True
+AllowUniversalAccessFromFileURLs: True

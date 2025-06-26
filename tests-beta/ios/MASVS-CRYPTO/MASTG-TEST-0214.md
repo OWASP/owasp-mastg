@@ -4,6 +4,7 @@ platform: ios
 id: MASTG-TEST-0214
 type: [static]
 weakness: MASWE-0014
+profiles: [L1, L2]
 ---
 
 ## Overview

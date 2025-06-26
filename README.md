@@ -21,7 +21,7 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 
 <br>
 
-- ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mastg/releases/latest)
+- 🌐 [Access the MASTG Web](https://mas.owasp.org/MASTG/)
 - ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/owasp-mastg/releases/latest)
 - ⚡ [Contribute!](https://mas.owasp.org/contributing)
 - 💥 [Play with our Crackmes](https://mas.owasp.org/crackmes)
@@ -46,23 +46,13 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 <a href="https://mas.owasp.org/MASTG/0x02c-Acknowledgements#our-mastg-advocates">
 <img src="Document/Images/Other/nowsecure-logo.png" width="200px;" />
+<img src="Document/Images/Other/guardsquare-logo.png" width="200px;" />
 </a>
 
 <br><br>
 
 ## Connect with Us
 
-<ul>
-<li><a href="https://github.com/OWASP/owasp-mastg/discussions"><img src="Document/Images/GitHub_logo.png" width="14px"> GitHub Discussions</a></li>
-<li><a href="https://owasp.slack.com/archives/C1M6ZVC6S"><img src="Document/Images/slack_logo.png" width="14px">  #project-mobile-app-security</a> (<a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Get Invitation</a>)</li>
-<li><a href="https://twitter.com/OWASP_MAS"><img src="Document/Images/twitter_logo.png" width="14px"> @OWASP_MAS </a> (Official Account)</li>
-<li><a href="https://twitter.com/bsd_daemon"><img src="Document/Images/twitter_logo.png" width="14px"> @bsd_daemon </a> (Sven Schleier, Project Lead) <a href="https://twitter.com/grepharder"><img src="Document/Images/twitter_logo.png" width="14px"> @grepharder </a> (Carlos Holguera, Project Lead)</li>
-</ul>
+<a href="https://mas.owasp.org/contact">Contact details of project leaders.</a>
 
 <br>
-
-## Other Formats
-
-- Get the [printed version via lulu.com](https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html)
-- Get the [e-book on leanpub.com](https://leanpub.com/owasp-mastg) (please consider purchasing it to support our project or [make a donation](https://mas.owasp.org/donate/#make-your-donation))
-- Check our [Document generation scripts](src/pandocker/README.md)

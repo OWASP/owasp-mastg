@@ -28,6 +28,16 @@ None of these measures can assure a 100% effectiveness, as the reverse engineer 
 
 For example, preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
+The techniques discussed below will allow you to detect various ways in which an attacker may target your app. Since these techniques are publicly documented, they are generally easy to bypass. Using open-source detection techniques is a good first step in improving the resiliency of your app, but standard anti-detection tools can easily bypass them. Commercial products typically offer higher resilience, as they will combine multiple techniques, such as:
+
+- Using undocumented detection techniques
+- Implementing the same techniques in various ways
+- Triggering the detection logic in different scenarios
+- Providing unique detection combinations per build
+- Working together with a backend component for additional verification and HTTP payload encryption
+- Communicating the detection status to the backend
+- Advanced static obfuscation
+
 ### Jailbreak Detection
 
 Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme.
@@ -361,14 +371,14 @@ Note: if the app also encrypts files, make sure that it encrypts and then calcul
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a jailbroken device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide and also in the real world. Other tools, such as Cydia Substrate or Cycript, can be detected similarly. Note that injection, hooking and DBI (Dynamic Binary Instrumentation) tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
+You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide and also in the real world. Other tools, such as ElleKit, can be detected similarly. Note that injection, hooking and DBI (Dynamic Binary Instrumentation) tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
 
 **Bypass:**
 
 The following steps should guide you when bypassing detection of reverse engineering tools:
 
 1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of radare2/[iaito](https://github.com/radareorg/iaito "iaito") or Ghidra.
-2. Use Frida or Cydia Substrate to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
+2. Use Frida or ElleKit to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
 
 #### Frida Detection
 
@@ -399,7 +409,7 @@ Looking at these _traces_ that Frida _leaves behind_, you might already imagine 
 <div style="page-break-after: always;">
 </div>
 
-> Some of the following detection methods are implemented in the [iOS Security Suite](https://github.com/securing/IOSSecuritySuite "iOS Security Suite").
+> Some of the following detection methods are implemented in @MASTG-TOOL-0141
 
 | Method | Description | Discussion |
 | --- | --- | --- |
@@ -423,8 +433,6 @@ As discussed in the section [Testing on the iOS Simulator](0x06b-iOS-Security-Te
 However, since its release, [Corellium](https://www.corellium.com/) (commercial tool) has enabled real emulation, [setting itself apart from the iOS simulator](https://www.corellium.com/compare/ios-simulator "Corellium vs Apple\'s iOS Simulator"). In addition to that, being a SaaS solution, Corellium enables large-scale device analysis with the limiting factor just being available funds.
 
 With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu "Apple Metal Framework")). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
-
-Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators.
 
 ### Obfuscation
 
