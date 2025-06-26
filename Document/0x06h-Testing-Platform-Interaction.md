@@ -267,9 +267,9 @@ This should be sufficient for an app analysis and therefore, `SFSafariViewContro
 
 #### Safari Web Inspector
 
-Enabling Safari web inspection on iOS allows you to inspect the contents of a WebView remotely from a macOS device. By default, you can view the contents of any page loaded into the Safari app because the Safari app has the `get-task-allowed` entitlement. Applications installed from the App store will however not have this entitlement, and so cannot be attached to. On jailbroken devices, this entitlement can be added to any application by installing @MASTG-TOOL-0137. Afterwards, you can attach Safari on your host to examine the content of the WebView (see @MASTG-TECH-0139)
+Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html) on iOS allows you to remotely [inspect the contents of a WebView from a macOS device](https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios). This is particularly useful in applications that expose native APIs using a JavaScript bridge, such as hybrid applications.
 
-Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html) is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
+The Safari Web Inspector requires apps to have the `get-task-allowed` entitlement. The Safari app has this entitlement by default, so you can view the contents of any page loaded into it. However, applications installed from the App Store will not have this entitlement and cannot be attached. On jailbroken devices, you can add this entitlement to any application by installing @MASTG-TOOL-0137. Then, you can attach Safari on your host to examine the contents of the WebView (see @MASTG-TECH-0139).
 
 #### Native Functionality Exposed Through WebViews
 
