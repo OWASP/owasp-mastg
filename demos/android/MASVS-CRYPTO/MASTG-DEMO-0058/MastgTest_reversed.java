@@ -22,7 +22,7 @@ public final class MastgTest {
         try {
             KeyGenParameterSpec.Builder b = new KeyGenParameterSpec.Builder("testKeyGenParameter", 1);
             b.setBlockModes("ECB");
-            r.add(DemoResults4.FAIL, "The associated key uses the insecure symmetric encryption block mode ECB only.");
+            r.add(DemoResults4.FAIL, "The associated key can only use the insecure symmetric encryption block mode ECB.");
             b.setBlockModes("ECB", "CBC");
             r.add(DemoResults4.FAIL, "The associated key may use the insecure symmetric encryption block mode ECB.");
             b.setBlockModes("CBC", "ECB");

@@ -1,6 +1,6 @@
 ---
 platform: android
-title:  Use of Insecure ECB Block Mode in KeyGenParameterSpec
+title: Use of Insecure ECB Block Mode in KeyGenParameterSpec
 id: MASTG-DEMO-0058
 code: [kotlin]
 test: MASTG-TEST-0232
@@ -18,9 +18,9 @@ public KeyGenParameterSpec.Builder setBlockModes (String... blockModes)
 
 As the parameter can be variable, the demo sets the ECB block mode in the following ways:
 
-1. ECB as single parameter
-2. ECB as second parameter
-3. ECB as first of two parameters
+1. ECB as a single parameter
+2. ECB as the second of two parameters
+3. ECB as the first of two parameters
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
