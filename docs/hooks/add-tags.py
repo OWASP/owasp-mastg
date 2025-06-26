@@ -26,7 +26,6 @@ def _on_page_markdown_2(markdown, page, **kwargs):
 
     # If any of these tags don't exist, they will be stripped automatically at the end of the function
     tags.append(page.meta.get("masvs_category"))
-
     if page.meta.get("test"):
         tags.append("placeholder-tag-test")
     tags.append(page.meta.get("component_type", "").lower())

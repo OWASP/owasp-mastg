@@ -8,9 +8,7 @@
     {% endif %}
 
     {% if page.meta.last_updated %}
-    <em><small style="color: darkgrey;">Last updated: {{ page.meta.last_updated }}</small></em>
-    <br><br>
+    <em class="last-updated-on"><small style="color: darkgrey;">Last updated: {{ page.meta.last_updated }}</small></em>
     {% endif %}
     {{ super() }}
-   
 {% endblock %}

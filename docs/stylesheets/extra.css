@@ -96,6 +96,19 @@
   padding: 0.3em;
 }
 
+.md-main {
+  position: relative;
+}
+
+.last-updated-on {
+  position: absolute;
+  bottom: -2em;
+  right: 0;
+}
+.md-content__inner{
+  position: relative;
+  margin-bottom: 2rem;
+}
 
 /* Wider space for pages */
 .md-grid {
