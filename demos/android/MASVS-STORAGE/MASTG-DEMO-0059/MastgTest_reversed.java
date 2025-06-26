@@ -22,21 +22,18 @@ public final class MastgTest {
     }
 
     public final String mastgTest() {
-        DemoResults r = new DemoResults("0059");
         try {
             SharedPreferences sharedPref = this.context.getSharedPreferences("MasSharedPref_Sensitive_Data", 0);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("SensitiveData", this.sensitiveData);
             editor.apply();
-            r.add(DemoResults4.FAIL, "Sensitive data has been written to the sandbox using putString().");
             Set stringSet = new HashSet();
             stringSet.add(this.sensitiveData);
             editor.putStringSet("SensitiveDataStringSet", stringSet);
             editor.apply();
-            r.add(DemoResults4.FAIL, "Sensitive data has been written to the sandbox using putStringSet().");
+            return "Sensitive data has been written to the sandbox.";
         } catch (Exception e) {
-            r.add(DemoResults4.ERROR, e.toString());
+            return "Sensitive data has been written to the sandbox.";
         }
-        return r.toJson();
     }
 }
