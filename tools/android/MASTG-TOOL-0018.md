@@ -4,7 +4,7 @@ platform: android
 source: https://github.com/skylot/jadx
 ---
 
-Jadx is an opensource Dex and Java decompiler available both in a CLI (`jadx`) and GUI (`jadx-gui`) form. It's actively developed and offers an extensive range of features that can help you when analyzing Android applications:
+Jadx is an open-source Dex and Java decompiler available both in a CLI (`jadx`) and GUI (`jadx-gui`) form. It's actively developed and offers an extensive range of features to help you analyze Android applications:
 
 - Decoding of resources and Manifest
 - Refactoring of symbols
