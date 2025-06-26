@@ -7,8 +7,8 @@ After installing @MASTG-TOOL-0137 on a jailbroken device, it is possible to atta
 
 To activate the web inspection, follow these steps:
 
-1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on _Web Inspector_.
-2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable _Show Develop menu in menu bar_.
+1. On the iOS device open the Settings app: Go to **Safari** -> **Advanced** and toggle on _Web Inspector_.
+2. On the macOS device, open Safari: in the menu bar, go to **Safari** -> **Preferences** -> **Advanced** and enable _Show Develop menu in menu bar_.
 3. Connect your iOS device to the macOS device and unlock it: the iOS device name should appear in the _Develop_ menu.
 4. (If not yet trusted) On macOS's Safari, go to the _Develop_ menu, click on the iOS device name, then on "Use for Development" and enable trust.
 
