@@ -1,9 +1,11 @@
 import requests
 import os
 import logging
-import re
+import re, json
 
-log = logging.getLogger('mkdocs')
+log = logging.getLogger(f"mkdocs.plugins.{__name__}")
+log.setLevel(logging.INFO)
+
 GITHUB_REPO = "OWASP/owasp-mastg"
 
 # GitHub API Token for Authentication
@@ -75,12 +77,14 @@ def get_latest_successful_run(workflow_file, branch="master"):
     global GITHUB_TOKEN_WARNING
     global GITHUB_TOKEN_LOGGED
 
+    fallback_url = None
+
     # Check if token exists
     if not GITHUB_TOKEN:
         if not GITHUB_TOKEN_WARNING:
             log_github_token_warning()
             GITHUB_TOKEN_WARNING = True  # Only show the warning once
-        return None
+        return {}, fallback_url
 
     if not GITHUB_TOKEN_LOGGED:
         log.info("✅ GitHub Token detected in environment variables.")
@@ -92,20 +96,56 @@ def get_latest_successful_run(workflow_file, branch="master"):
         "Accept": "application/vnd.github+json",
     }
 
-    # Try to fetch data from GitHub API
+
+     # Get the latest successful run
+    runs_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
+    params = {"status": "success", "branch": branch, "per_page": 1}
+    
+    mapping = {}
+
+    log.info("Fetching latest successful run for workflow: %s", workflow_file)
     try:
-        url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/{workflow_file}/runs"
-        params = {"status": "success", "branch": branch, "per_page": 1}
-        response = requests.get(url, headers=headers, params=params, timeout=5)
+        response = requests.get(runs_url, headers=headers, params=params, timeout=10)
         response.raise_for_status()
         runs = response.json().get("workflow_runs", [])
-        if runs:
-            return f"{runs[0]['html_url']}#artifacts"
-        else:
-            return None
+        if not runs:
+            log.warning("No successful runs found for workflow: %s", workflow_file)
+            return mapping, fallback_url
+        run_id = runs[0]["id"]
+        fallback_url = f"{runs[0]['html_url']}#artifacts"
+        log.info("Latest successful run ID for %s: %s", workflow_file, run_id)
+
+        
+        artifacts_url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/runs/{run_id}/artifacts"
+
+        while artifacts_url:
+            response = requests.get(artifacts_url, headers=headers, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+
+            artifacts = data.get("artifacts", [])
+            if not artifacts:
+                log.warning("No artifacts found for run ID: %s", run_id)
+                return mapping, fallback_url
+
+            
+
+            for artifact in artifacts:
+                if artifact["name"].startswith("MASTG-DEMO-"):
+                    log.debug("Found artifact: %s", artifact["name"])
+                    mapping[artifact["name"].split(".")[0]] = f"https://github.com/{GITHUB_REPO}/actions/runs/{artifact['workflow_run']['id']}/artifacts/{artifact['id']}"
+
+            # Pagination: Check if there's a next page
+            artifacts_url = None
+            if "next" in response.links:
+                artifacts_url = response.links["next"]["url"]
+
+        log.info("Artifacts found for run ID %s: %d", run_id, len(mapping.keys()))
+        return mapping, fallback_url
 
     except requests.exceptions.RequestException as e:
+        log.error(e, stack_info=True, exc_info=True)
         if not GITHUB_TOKEN_WARNING:
             log_github_token_invalid_warning(e)
-            GITHUB_TOKEN_WARNING = True  # Only show the warning once
-        return None
+            GITHUB_TOKEN_WARNING = True
+        return mapping, fallback_url
