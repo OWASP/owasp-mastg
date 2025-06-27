@@ -1,0 +1,28 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ rules.mastg-android-object-deserialization-parcelable
+          [MASVS-CODE-4] The application make use of Object deserialization in the code.
+                                                                                        
+            4┆ import android.os.Parcelable;
+            ⋮┆----------------------------------------
+           11┆ @Metadata(d1 = {"\u0000*\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\
+               b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b
+               \u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\b\u000
+               7\u0018\u0000 \u000f2\u00020\u0001:\u0001\u000fB\u0007¢\u0006\u0004\b\u00
+               02\u0010\u0003B\u0011\b\u0016\u0012\u0006\u0010\u0004\u001a\u00020\u0005¢
+               \u0006\u0004\b\u0002\u0010\u0006J\u0006\u0010\t\u001a\u00020\bJ\u0018\u00
+               10\n\u001a\u00020\u000b2\u0006\u0010\u0004\u001a\u00020\u00052\u0006\u001
+               0\f\u001a\u00020\rH\u0016J\b\u0010\u000e\u001a\u00020\rH\u0016R\u000e\u00
+               10\u0007\u001a\u00020\bX\u0082D¢\u0006\u0002\n\u0000¨\u0006\u0010"}, d2 =
+               {"Lorg/owasp/mastestapp/MastgTest;", "Landroid/os/Parcelable;", "<init>",
+               "()V", "parcel", "Landroid/os/Parcel;", "(Landroid/os/Parcel;)V",        
+               "sensitiveString", "", "mastgTest", "writeToParcel", "", "flags", "",    
+               "describeContents", "CREATOR", "app_debug"}, k = 1, mv = {2, 0, 0}, xi = 
+               48)                                                                      
+           12┆ /* loaded from: classes3.dex */
+           13┆ public final class MastgTest implements Parcelable {
