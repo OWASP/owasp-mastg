@@ -314,6 +314,9 @@ markdown_extensions:
           case: lower
 
 hooks:
+
+  # Pre-build: restructure files
+  - docs/hooks/structure-mastg.py
   # General
   - docs/hooks/edit_button_uri.py
 
