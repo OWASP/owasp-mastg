@@ -90,15 +90,15 @@ function registerHook(
       inputParameters: decodeArguments(parameterTypes, arguments),
     };
 
-    try{
+    try {
       var returnValue = this[method].apply(this, arguments);
-      event.returnValue = decodeArguments([returnType], [returnValue]),
-      callback(event)
-      return returnValue
-    } catch (e){
-      event.exception = e.toString(),
-      callback(event)
-      throw e
+      event.returnValue = decodeArguments([returnType], [returnValue]);
+      callback(event);
+      return returnValue;
+    } catch (e) {
+      event.exception = e.toString();
+      callback(event);
+      throw e;
     }
   };
 }
