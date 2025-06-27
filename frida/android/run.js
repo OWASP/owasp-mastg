@@ -53,13 +53,15 @@ function generateUUID() {
  * @param {number} overloadIndex - If there are overloaded methods available, this number represents them (e.g., 0 for the first one)
  * @param {string} categoryName - OWASP MAS category for easier identification (e.g., "CRYPTO")
  * @param {function} callback - Callback function. The function takes the information gathered as JSON string.
+ * @param {number} maxFrames - Maximum number of stack frames to capture (default is 8,  set to -1 for unlimited frames).
  */
 function registerHook(
   clazz,
   method,
   overloadIndex,
   categoryName,
-  callback
+  callback,
+  maxFrames = 8
 ) {
 
   var Exception = Java.use("java.lang.Exception");
@@ -71,11 +73,13 @@ function registerHook(
   toHook.overloads[overloadIndex].implementation = function () {
 
     var st = Exception.$new().getStackTrace();
-    var stackTrace = []
-    st.forEach(function(stElement){
-      var stLine = stElement.toString()
-      stackTrace.push(stLine)
-    })
+    var stackTrace = [];
+    st.forEach(function (stElement, index) {
+      if (maxFrames === -1 || index < maxFrames) {
+        var stLine = stElement.toString();
+        stackTrace.push(stLine);
+      }
+    });
 
     var parameterTypes = parseParameterTypes(methodHeader);
     var returnType = parseReturnValue(methodHeader);
@@ -117,7 +121,7 @@ function registerAllHooks(hook, categoryName, callback) {
         var overloadCount = toHook.overloads.length;
 
         for (var i = 0; i < overloadCount; i++) {
-          registerHook(hook.class, hook.methods[m], i, categoryName, callback);
+          registerHook(hook.class, hook.methods[m], i, categoryName, callback, hook.maxFrames);
         }
       } catch (err) {
         console.error(err)
