@@ -4,10 +4,10 @@ This guide will help you set up and run the OWASP MAS website locally on your ma
 
 > **TLDR for advanced users:**
 >
-> - Setup a virtual environment
-> - Install dependencies from `src/scripts/requirements.txt`
-> - Install `brew install gnu-sed` (on macOS)
-> - In your .zshrc, add: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens) and `alias sed='gsed'`
+> - Clone both MASVS and MASTG to the same directorys
+> - Set up a virtual environment
+> - `Install dependencies from `src/scripts/requirements.txt``
+> - Add your token as an environment variable: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens)
 > - Run the website using `./run_web.sh`
 
 ## Prerequisites
@@ -18,19 +18,14 @@ Before running the website, ensure you have the following installed on your syst
 - pip (Python package manager)
 - Git
 - Visual Studio Code (vscode)
-- Gnu sed (gsed; e.g. `brew install gnu-sed` on macOS)
-
-Add an alias for `gsed` (e.g. in your .zshrc file):
-
-```bash
-alias sed='gsed'
-```
 
 [Create a personal access token](https://github.com/settings/personal-access-tokens) on Github and export this token as environment variable (e.g. in your .zshrc file):
 
 ```bash
 export GITHUB_TOKEN=<TOKEN>
 ```
+
+Alternatively, you can add your token inside of the `run_web.sh` script. Open the script in a code editor for more information.
 
 ## Step 1: Clone the OWASP MASVS & OWASP MASTG Repositories
 
@@ -75,6 +70,8 @@ Run the following command in the terminal:
 ```bash
 ./run_web.sh
 ```
+
+The script simply runs `mkdocs serve` with some additional arguments. Open the script in a code editor for more information.
 
 Access the website at [http://localhost:8000](http://localhost:8000).
 
