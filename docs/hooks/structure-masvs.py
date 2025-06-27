@@ -15,10 +15,10 @@ def on_pre_build(config):
     masvs_candidates = [Path("../owasp-masvs"), Path("./owasp-masvs")]
     masvs_dir = next((p for p in masvs_candidates if p.is_dir()), None)
 
-    log.info(f"Using MASVS directory: {masvs_dir}")
-
     if not masvs_dir:
-        raise SystemExit("Error: Please clone owasp-masvs to same directory as owasp-mastg: cd .. && git clone https://github.com/OWASP/owasp-masvs.git")
+        raise Exception("Error: Please clone owasp-masvs to same directory as owasp-mastg: cd .. && git clone https://github.com/OWASP/owasp-masvs.git")
+
+    log.info(f"Using MASVS directory: {masvs_dir}")
 
     # Clean MASVS dir except Index.md
     if masvs_docs_dir.exists():
