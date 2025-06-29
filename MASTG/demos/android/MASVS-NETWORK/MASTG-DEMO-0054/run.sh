@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-network-checkservertrusted.yml ./MastgTest_reversed.java --text > output.txt

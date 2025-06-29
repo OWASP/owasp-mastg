@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-hardcoded-crypto-keys-usage.yml ./MastgTest_reversed.java --text -o output.txt

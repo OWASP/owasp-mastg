@@ -1,0 +1,115 @@
+...
+[redacted for readability]
+...
+        {
+            "isVirtual": false,
+            "fileName": "okhttp-4.9.1.jar",
+            "filePath": "\/Users\/sushi2k\/.gradle\/caches\/modules-2\/files-2.1\/com.squareup.okhttp3\/okhttp\/4.9.1\/51215279c3fe472c59b6b7dd7491e6ac2e28a81b\/okhttp-4.9.1.jar",
+            "md5": "018ce5d28ab7958a1f0bb93b35215ef6",
+            "sha1": "51215279c3fe472c59b6b7dd7491e6ac2e28a81b",
+            "sha256": "6afdd8f35f4eb60df965c290fa3acf29443fa986545113d0729b8461f6571f8f",
+            "description": "Square\u2019s meticulous HTTP client for Java and Kotlin.",
+            "license": "The Apache Software License, Version 2.0: http:\/\/www.apache.org\/licenses\/LICENSE-2.0.txt",
+...
+[redacted for readability]
+...
+            "packages": [
+                {
+                    "id": "pkg:maven\/com.squareup.okhttp3\/okhttp@4.9.1",
+                    "confidence": "HIGH",
+                    "url": "https:\/\/ossindex.sonatype.org\/component\/pkg:maven\/com.squareup.okhttp3\/okhttp@4.9.1?utm_source=dependency-check&utm_medium=integration&utm_content=12.1.1"
+                }
+            ],
+             "vulnerabilityIds": [
+                {
+                    "id": "cpe:2.3:a:squareup:okhttp:4.9.1:*:*:*:*:*:*:*",
+                    "confidence": "HIGHEST",
+                    "url": "https:\/\/nvd.nist.gov\/vuln\/search\/results?form_type=Advanced&results_type=overview&search_type=all&cpe_vendor=cpe%3A%2F%3Asquareup&cpe_product=cpe%3A%2F%3Asquareup%3Aokhttp&cpe_version=cpe%3A%2F%3Asquareup%3Aokhttp%3A4.9.1"
+                },
+                {
+                    "id": "cpe:2.3:a:squareup:okhttp3:4.9.1:*:*:*:*:*:*:*",
+                    "confidence": "HIGHEST",
+                    "url": "https:\/\/nvd.nist.gov\/vuln\/search\/results?form_type=Advanced&results_type=overview&search_type=all&cpe_vendor=cpe%3A%2F%3Asquareup&cpe_product=cpe%3A%2F%3Asquareup%3Aokhttp3&cpe_version=cpe%3A%2F%3Asquareup%3Aokhttp3%3A4.9.1"
+                }
+            ],
+            "vulnerabilities": [
+                {
+                    "source": "OSSINDEX",
+                    "name": "CVE-2021-0341",
+                    "severity": "HIGH",
+                    "cvssv3": {
+                        "baseScore": 7.5,
+                        "attackVector": "NETWORK",
+                        "attackComplexity": "LOW",
+                        "privilegesRequired": "NONE",
+                        "userInteraction": "NONE",
+                        "scope": "UNCHANGED",
+                        "confidentialityImpact": "HIGH",
+                        "integrityImpact": "NONE",
+                        "availabilityImpact": "NONE",
+                        "baseSeverity": "HIGH",
+                        "version": "3.1"
+                    },
+                    "cwes": [
+                        "CWE-295"
+                    ],
+                    "description": "In verifyHostName of OkHostnameVerifier.java, there is a possible way to accept a certificate for the wrong domain due to improperly used crypto. This could lead to remote information disclosure with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-8.1 Android-9 Android-10 Android-11Android ID: A-171980069\n\nSonatype's research suggests that this CVE's details differ from those defined at NVD. See https:\/\/ossindex.sonatype.org\/vulnerability\/CVE-2021-0341 for details",
+                    "notes": "",
+                    "references": [
+                        {
+                            "source": "OSSIndex",
+                            "url": "https:\/\/source.android.com\/security\/bulletin\/2021-02-01#android-runtime",
+                            "name": "https:\/\/source.android.com\/security\/bulletin\/2021-02-01#android-runtime"
+                        },
+                        {
+                            "source": "OSSINDEX",
+                            "url": "https:\/\/ossindex.sonatype.org\/vulnerability\/CVE-2021-0341?component-type=maven&component-name=com.squareup.okhttp3%2Fokhttp&utm_source=dependency-check&utm_medium=integration&utm_content=12.1.1",
+                            "name": "[CVE-2021-0341] CWE-295: Improper Certificate Validation"
+                        },
+                        {
+                            "source": "OSSIndex",
+                            "url": "http:\/\/web.nvd.nist.gov\/view\/vuln\/detail?vulnId=CVE-2021-0341",
+                            "name": "http:\/\/web.nvd.nist.gov\/view\/vuln\/detail?vulnId=CVE-2021-0341"
+                        },
+                        {
+                            "source": "OSSIndex",
+                            "url": "https:\/\/github.com\/square\/okhttp\/pull\/6353",
+                            "name": "https:\/\/github.com\/square\/okhttp\/pull\/6353"
+                        }
+                    ],
+                    "vulnerableSoftware": [
+                        {
+                            "software": {
+                                "id": "cpe:2.3:a:com.squareup.okhttp3:okhttp:4.9.1:*:*:*:*:*:*:*",
+                                "vulnerabilityIdMatched": "true"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "source": "NVD",
+                    "name": "CVE-2023-0833",
+                    "severity": "MEDIUM",
+                    "cvssv3": {
+                        "baseScore": 5.5,
+                        "attackVector": "LOCAL",
+                        "attackComplexity": "LOW",
+                        "privilegesRequired": "LOW",
+                        "userInteraction": "NONE",
+                        "scope": "UNCHANGED",
+                        "confidentialityImpact": "HIGH",
+                        "integrityImpact": "NONE",
+                        "availabilityImpact": "NONE",
+                        "baseSeverity": "MEDIUM",
+                        "exploitabilityScore": "1.8",
+                        "impactScore": "3.6",
+                        "version": "3.1"
+                    },
+                    "cwes": [
+                        "CWE-209"
+                    ],
+                    "description": "A flaw was found in Red Hat's AMQ-Streams, which ships a version of the OKHttp component with an information disclosure flaw via an exception triggered by a header containing an illegal value. This issue could allow an authenticated attacker to access information outside of their regular permissions.",
+                    "notes": "",
+...
+[redacted for readability]
+...

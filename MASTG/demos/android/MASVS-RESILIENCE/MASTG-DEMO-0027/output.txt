@@ -1,0 +1,25 @@
+
+
+[*] KeyguardManager.isDeviceSecure() called - RESULT: false
+
+
+Backtrace:
+android.app.KeyguardManager.isDeviceSecure(Native Method)
+org.owasp.mastestapp.MastgTest.isDeviceSecure(MastgTest.kt:24)
+org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:10)
+org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$9$lambda$8(MainActivity.kt:53)
+org.owasp.mastestapp.MainActivityKt.$r8$lambda$PhzGLzmkS_ibruOfiTT32AhzWl4(Unknown Source:0)
+org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+java.lang.Thread.run(Thread.java:1012)
+
+
+[*] BiometricManager.canAuthenticate called with: BIOMETRIC_STRONG (15) - RESULT: BIOMETRIC_ERROR_NONE_ENROLLED (11)
+
+Backtrace:
+android.hardware.biometrics.BiometricManager.canAuthenticate(Native Method)
+org.owasp.mastestapp.MastgTest.checkStrongBiometricStatus(MastgTest.kt:38)
+org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:11)
+org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$9$lambda$8(MainActivity.kt:53)
+org.owasp.mastestapp.MainActivityKt.$r8$lambda$PhzGLzmkS_ibruOfiTT32AhzWl4(Unknown Source:0)
+org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+java.lang.Thread.run(Thread.java:1012)

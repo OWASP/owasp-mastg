@@ -1,0 +1,36 @@
+Uses of CommonCrypto hash function:
+0x1000071a8    1     12 sym.imp.CC_MD5
+0x1000071b4    1     12 sym.imp.CC_SHA1
+
+xrefs to CC_MD5:
+(nofunc) 0x1000048c4 [CALL:--x] bl sym.imp.CC_MD5
+xrefs to CC_SHA1:
+(nofunc) 0x10000456c [CALL:--x] bl sym.imp.CC_SHA1
+
+Use of MD5:
+            0x1000048b0      ffe301f8       stur xzr, [sp, 0x1e]
+            0x1000048b4      ff0f00f9       str xzr, [sp, 0x18]
+            0x1000048b8      e01b00f9       str x0, [sp, 0x30]
+            0x1000048bc      e0630091       add x0, sp, 0x18
+            0x1000048c0      01008052       mov w1, 0
+            ; CODE XREF from sym.func.100004728 @ +0xf0(x)
+            0x1000048c4      390a0094       bl sym.imp.CC_MD5
+            0x1000048c8      e00316aa       mov x0, x22
+            0x1000048cc      e10314aa       mov x1, x20
+            0x1000048d0      7d000094       bl sym.func.100004ac4
+            ; CODE XREF from sym.func.100004728 @ +0x184(x)
+            0x1000048d4      e00316aa       mov x0, x22
+
+Use of SHA1:
+            0x100004558      ffe301f8       stur xzr, [sp, 0x1e]
+            0x10000455c      ff0f00f9       str xzr, [sp, 0x18]
+            0x100004560      e01b00f9       str x0, [sp, 0x30]
+            0x100004564      e0630091       add x0, sp, 0x18
+            0x100004568      01008052       mov w1, 0
+            ; CODE XREF from sym.func.1000043cc @ +0xf4(x)
+            0x10000456c      120b0094       bl sym.imp.CC_SHA1
+            0x100004570      e00316aa       mov x0, x22
+            0x100004574      e10314aa       mov x1, x20
+            0x100004578      53010094       bl sym.func.100004ac4
+            ; CODE XREF from sym.func.1000043cc @ +0x188(x)
+            0x10000457c      e00316aa       mov x0, x22
