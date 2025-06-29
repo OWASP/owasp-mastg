@@ -21,6 +21,6 @@ WORKDIR /workspaces/owasp-mastg
 EXPOSE 8000
 
 # Start the container with a shell
-CMD ["bash"]
+CMD ["sh", "-c", "IGNORE_LAST_COMMIT_DATE=1 mkdocs serve -a 0.0.0.0:8000"]
 
 # If running manually: docker run -it --rm -p 8000:8000 -v $(pwd):/workspaces/owasp-mastg mastg
