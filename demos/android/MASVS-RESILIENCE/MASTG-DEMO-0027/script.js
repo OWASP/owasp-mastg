@@ -47,21 +47,21 @@ Java.perform(() => {
     [BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED.value]: "BIOMETRIC_ERROR_NONE_ENROLLED"
   };
 
-  originalCanAuth.implementation = function (flags) {
-    // Build readable flags string
+  originalCanAuth.implementation = function (authenticators) {
+    // Build readable authenticators string
     const names = Object.keys(flagNames)
       .map(key => parseInt(key, 10))
-      .filter(key => (flags & key) === key)
+      .filter(key => (authenticators & key) === key)
       .map(key => flagNames[key]);
     const readable = names.length ? names.join(" | ") : "NONE";
 
     // Call original
-    const res = originalCanAuth.call(this, flags);
+    const res = originalCanAuth.call(this, authenticators);
 
     // Lookup result message
     const msg = resultMessages[res] || `Unknown biometric status: ${res}`;
 
-    console.log(`\n\n[*] BiometricManager.canAuthenticate called with: ${readable} (${flags}) - RESULT: ${msg} (${res})`);
+    console.log(`\n\n[*] BiometricManager.canAuthenticate called with: ${readable} (${authenticators}) - RESULT: ${msg} (${res})`);
 
     printBacktrace();
 
