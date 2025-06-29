@@ -15,50 +15,56 @@ Java.perform(() => {
   let KeyguardManager = Java.use("android.app.KeyguardManager");
 
   KeyguardManager["isDeviceSecure"].overload().implementation = function () {
-      console.log(`\n[*] KeyguardManager.isDeviceSecure() called\n`);
-
-      // Java stack trace
-      printBacktrace();
 
       let result = this["isDeviceSecure"]();
-      console.log(`Result: ${result}`);
-      return result;
-  };
-
-  // Hook BiometricManager.canAuthenticate()
-  let BiometricManager = Java.use("android.hardware.biometrics.BiometricManager");
-
-  BiometricManager["canAuthenticate"].overload("int").implementation = function (authenticators) {
-
-      let result = this["canAuthenticate"](authenticators);
-      let statusMessage;
-
-      // Mapping the authentication result to a readable message
-      switch (result) {
-          case BiometricManager.BIOMETRIC_SUCCESS.value:
-              statusMessage = "BIOMETRIC_SUCCESS - Strong biometric authentication is available.";
-              break;
-          case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE.value:
-              statusMessage = "BIOMETRIC_ERROR_NO_HARDWARE - No biometric hardware available.";
-              break;
-          case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE.value:
-              statusMessage = "BIOMETRIC_ERROR_HW_UNAVAILABLE - Biometric hardware is currently unavailable.";
-              break;
-          case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED.value:
-              statusMessage = "BIOMETRIC_ERROR_NONE_ENROLLED - No biometrics enrolled.";
-              break;
-          default:
-              statusMessage = `Unknown biometric status: ${result}`;
-              break;
-      }
-
-      console.log(`\n[*] BiometricManager.canAuthenticate(${authenticators}) called with ${statusMessage}\n`);
-
+      console.log(`\n\n[*] KeyguardManager.isDeviceSecure() called - RESULT: ${result}\n`);
 
       // Java stack trace
       printBacktrace();
       
-
       return result;
+  };
+
+  // Hook BiometricManager.canAuthenticate()
+  const BiometricManager = Java.use("android.hardware.biometrics.BiometricManager");
+  const Authenticators = Java.use("android.hardware.biometrics.BiometricManager$Authenticators");
+
+  // Cache original implementation
+  const originalCanAuth = BiometricManager.canAuthenticate.overload("int");
+
+  // Map flag values to names
+  const flagNames = {
+    [Authenticators.BIOMETRIC_WEAK.value]: "BIOMETRIC_WEAK",
+    [Authenticators.BIOMETRIC_STRONG.value]: "BIOMETRIC_STRONG",
+    [Authenticators.DEVICE_CREDENTIAL.value]: "DEVICE_CREDENTIAL"
+  };
+
+  // Map result codes to messages
+  const resultMessages = {
+    [BiometricManager.BIOMETRIC_SUCCESS.value]: "BIOMETRIC_SUCCESS",
+    [BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE.value]: "BIOMETRIC_ERROR_NO_HARDWARE",
+    [BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE.value]: "BIOMETRIC_ERROR_HW_UNAVAILABLE",
+    [BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED.value]: "BIOMETRIC_ERROR_NONE_ENROLLED"
+  };
+
+  originalCanAuth.implementation = function (flags) {
+    // Build readable flags string
+    const names = Object.keys(flagNames)
+      .map(key => parseInt(key, 10))
+      .filter(key => (flags & key) === key)
+      .map(key => flagNames[key]);
+    const readable = names.length ? names.join(" | ") : "NONE";
+
+    // Call original
+    const res = originalCanAuth.call(this, flags);
+
+    // Lookup result message
+    const msg = resultMessages[res] || `Unknown biometric status: ${res}`;
+
+    console.log(`\n\n[*] BiometricManager.canAuthenticate called with: ${readable} (${flags}) - RESULT: ${msg} (${res})`);
+
+    printBacktrace();
+
+    return res;
   };
 });
