@@ -24,7 +24,7 @@ docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -e GITHUB_TOK
 
 > **TLDR for advanced users:**
 >
-> - Clone both MASVS and MASTG to the same directorys
+> - Clone both MASVS and MASTG to the same directories
 > - Set up a virtual environment
 > - Install dependencies from `src/scripts/requirements.txt`
 > - Add your token as an environment variable: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens)
