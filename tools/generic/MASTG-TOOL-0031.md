@@ -49,7 +49,13 @@ Independently of the chosen mode, you can make use of the [Frida JavaScript APIs
 
 ### Frida 17
 
-Frida 17 introduces [breaking changes](https://frida.re/news/2025/05/17/frida-17-0-0-released/), such as the removal of the bundled runtime bridges (`frida-{objc,swift,java}-bridge`) within Frida's GumJS runtime. This means you must now explicitly pull the bridges you need. However, the Frida REPL and `frida-trace` come with the Java, Objective-C, and Swift bridges pre-bundled, so you can still use them without manual installation in those contexts. You can learn more about bridges in the [Frida documentation](https://frida.re/docs/bridges/).
+Frida 17 introduces [breaking changes](https://frida.re/news/2025/05/17/frida-17-0-0-released/), such as the removal of the bundled runtime bridges (`frida-{objc,swift,java}-bridge`) within Frida's GumJS runtime. This means you must now explicitly install the bridges you need by using `frida-pm install`:
+
+ ```bash
+ frida-pm install frida-java-bridge
+ ```
+ 
+However, the commands `frida` and `frida-trace` come with the Java, Objective-C, and Swift bridges pre-bundled, so you can still use them without manual installation in those contexts. You can learn more about bridges in the [Frida documentation](https://frida.re/docs/bridges/).
 
 Frida has made changes to its native APIs. While these changes may break some of your existing scripts, they encourage you to write more readable and performant code. For instance, now, `Process.enumerateModules()` returns an array of `Module` objects, allowing you to work with them directly.
 
@@ -59,10 +65,14 @@ for (const module of Process.enumerateModules()) {
 }
 ```
 
-When you need to access a specific module, you must first obtain it and then access its methods or properties:
+Another API that was removed is `Module.getSymbolByName`, which is used in many scripts. Depending on if you know which module the symbol is located in or not, you can use one of the following two alternatives:
 
 ```js
+// If you know the module
 Process.getModuleByName('libc.so').getExportByName('open')
+
+// If you don't (i.e., the old Module.getSymbolByName(null, 'open'); )
+Module.getGlobalExportByName('open');
 ```
 
 For more details, refer to the [Frida 17.0.0 Release Notes](https://frida.re/news/2025/05/17/frida-17-0-0-released/).
