@@ -54,6 +54,7 @@ Frida 17 introduces [breaking changes](https://frida.re/news/2025/05/17/frida-17
  ```bash
  frida-pm install frida-java-bridge
  ```
+
 However, the commands `frida` and `frida-trace` come with the Java, Objective-C, and Swift bridges pre-bundled, so you can still use them without manual installation in those contexts. You can learn more about bridges in the [Frida documentation](https://frida.re/docs/bridges/).
 
 Frida has made changes to its native APIs. While these changes may break some of your existing scripts, they encourage you to write more readable and performant code. For instance, now, `Process.enumerateModules()` returns an array of `Module` objects, allowing you to work with them directly.
