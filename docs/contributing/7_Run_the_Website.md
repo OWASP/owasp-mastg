@@ -2,15 +2,35 @@
 
 This guide will help you set up and run the OWASP MAS website locally on your machine. Follow the steps below to get started.
 
+## Using Docker
+
+The easiest way to run the website is by using Docker:
+
+```bash
+git clone https://github.com/OWASP/owasp-mastg.git
+cd owasp-mastg
+docker build . -t mastg
+docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -v $(pwd):/workspaces/owasp-mastg mastg
+```
+
+This will make the website available on `http://localhost:8000`. By default, interactions with the Github api are disabled, which means some dynamically retrieved content will not be available. If you want to enable the Github API, [create a personal access token](https://github.com/settings/personal-access-tokens) and export it as an environment variable. Make sure docker can access the token by using `-e GITHUB_TOKEN`:
+
+```bash
+export GITHUB_TOKEN=<TOKEN>
+docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -e GITHUB_TOKEN -v $(pwd):/workspaces/owasp-mastg mastg
+```
+
+## Without Docker
+
 > **TLDR for advanced users:**
 >
 > - Clone both MASVS and MASTG to the same directorys
 > - Set up a virtual environment
-> - `Install dependencies from `src/scripts/requirements.txt``
+> - Install dependencies from `src/scripts/requirements.txt`
 > - Add your token as an environment variable: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens)
 > - Run the website using `./run_web.sh`
 
-## Prerequisites
+### Prerequisites
 
 Before running the website, ensure you have the following installed on your system:
 
@@ -27,7 +47,7 @@ export GITHUB_TOKEN=<TOKEN>
 
 Alternatively, you can add your token inside of the `run_web.sh` script. Open the script in a code editor for more information.
 
-## Step 1: Clone the OWASP MASVS & OWASP MASTG Repositories
+### Step 1: Clone the OWASP MASVS & OWASP MASTG Repositories
 
 Run the following commands in your terminal:
 
@@ -38,7 +58,7 @@ git clone https://github.com/OWASP/owasp-mastg.git
 
 **Note:** We'll just work with the `OWASP/owasp-mastg` repo, but the `OWASP/owasp-masvs` is required for the website to run.
 
-## Step 2: Open the OWASP MASTG Repository in vscode
+### Step 2: Open the OWASP MASTG Repository in vscode
 
 Run the following commands in your terminal:
 
@@ -47,7 +67,7 @@ cd owasp-mastg
 code .
 ```
 
-## Step 3: Install Python Dependencies
+### Step 3: Install Python Dependencies
 
 It is highly recommended to use a virtual environment (venv) to manage dependencies and avoid conflicts with other Python projects. Follow these steps to set up a virtual environment and install the required dependencies.
 
@@ -75,7 +95,7 @@ The script simply runs `mkdocs serve` with some additional arguments. Open the s
 
 Access the website at [http://localhost:8000](http://localhost:8000).
 
-## Step 5: Debugging the Website
+### Step 5: Debugging the Website
 
 To debug the website:
 
