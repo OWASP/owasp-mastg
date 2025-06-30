@@ -81,7 +81,6 @@ def get_mastg_tests_dict():
 
     for file in glob.glob("docs/MASTG/tests/**/*.md", recursive=True):
         if "index.md" not in file:
-            log.warn(file)
             with open(file, 'r') as f:
                 id = ""
                 content = f.read()
@@ -105,8 +104,7 @@ def get_mastg_tests_dict():
                         frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
                         mastg_tests[id][platform].append(frontmatter)
                     else:
-                        log.warn(f"No MASVS v2 coverage for: {file}")
-                        # log.warn(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                        log.warn(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
                 except StopIteration:
                     continue
     return mastg_tests
