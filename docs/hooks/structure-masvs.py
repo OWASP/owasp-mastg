@@ -4,6 +4,7 @@ import platform
 from pathlib import Path
 import glob
 import logging
+import checklist_utils
 
 log = logging.getLogger('mkdocs')
 
@@ -52,11 +53,9 @@ def on_pre_build(config):
 
     # Determine platform-specific sed workaround (we use pure Python instead)
     def replace_in_file(file_path, old, new):
-        with open(file_path, "r", encoding="utf-8") as f:
-            content = f.read()
-        content = content.replace(old, new)
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(content)
+        path = Path(file_path)
+        content = path.read_text(encoding="utf-8").replace(old, new)
+        path.write_text(content, encoding="utf-8")
 
     # Replacement patterns
     for md_path in Path(masvs_docs_dir).rglob("*.md"):
@@ -64,3 +63,19 @@ def on_pre_build(config):
             replace_in_file(md_path, "images/", "../../../assets/MASVS/Images/")
         else:
             replace_in_file(md_path, "images/", "../../assets/MASVS/Images/")
+
+
+    # The controls pages are prettyfied with some styling
+    masvs_v2 = checklist_utils.retrieve_masvs()
+    MAS_BLUE = "499FFF"
+
+    for group in masvs_v2['groups']:
+        for control in group['controls']:
+            content = f'# {control["id"]}\n\n'
+            content += f'<p style="font-size: 2em">{control["statement"]}</p>\n\n'
+            # add html thick separation line in blue 
+            content += f'<hr style="height: 0.2em; background-color: #{MAS_BLUE}; border: 0;" />\n\n'
+            content += f'{control["description"]}\n'
+
+            with open(os.path.join('docs/MASVS/controls', f'{control["id"]}.md'), 'w') as f:
+                f.write(content)
