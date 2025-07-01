@@ -334,7 +334,6 @@ hooks:
   # Priority -49 for last-minute tag modification
   - docs/hooks/add-tags.py
   - docs/hooks/update_titles.py
-  - docs/hooks/update_git_info.py
 
   # Priority -50 for conversion of tags and cross-references
   - docs/hooks/resolve_references.py
