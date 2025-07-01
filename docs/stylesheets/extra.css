@@ -135,6 +135,15 @@ img.dark-img {
   margin-bottom: 2rem;
 }
 
+.glightbox-button-hidden {
+    display: none;
+}
+/* Hide mouse-click for images when screen is too small */
+a.no-click-image {
+  cursor: default;
+  pointer-events: none;
+}
+
 /* Wider space for pages */
 .md-grid {
   max-width: 90%;

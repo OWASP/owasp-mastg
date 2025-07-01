@@ -73,7 +73,7 @@ MAS Advocates may contribute to discussions, provide feedback, and suggest impro
 
 ### NowSecure
 
-<img src="Images/Other/nowsecure-logo.png" style="width: 50%; border-radius: 5px" />
+<img src="Images/Other/nowsecure-logo.png" style="width: 50%; border-radius: 5px" class="no-lightbox"/>
 
 **We'd like to thank [NowSecure](https://www.nowsecure.com) for its exemplary contributions since 2022, which set a blueprint for other potential contributors wanting to push the project forward.** [Read more about their journey here.](../news/posts/2025-04-09-celebrating-3-years-advocate-nowsecure.md)
 
@@ -93,7 +93,7 @@ In the past, NowSecure has also contributed to the project and has donated the @
 
 ### Guardsquare
 
-<img src="Images/Other/guardsquare-logo.png" style="width: 50%; border-radius: 5px" />
+<img src="Images/Other/guardsquare-logo.png" style="width: 50%; border-radius: 5px" class="no-lightbox"/>
 
 **We'd like to thank [Guardsquare](https://www.guardsquare.com) for its outstanding contributions to the OWASP MAS project, culminating in achieving MAS Advocate status in 2025.** [Read more about their achievement here.](../news/posts/2025-05-23-new-advocate-guardsquare.md)
 
