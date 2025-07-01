@@ -30,7 +30,6 @@
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/.venv/bin/python3",
-                "IGNORE_LAST_COMMIT_DATE": "1"
             }
         },
         {
