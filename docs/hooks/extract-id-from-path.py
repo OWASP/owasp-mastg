@@ -8,8 +8,9 @@ log = logging.getLogger('mkdocs')
 @mkdocs.plugins.event_priority(-30)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
-
-    if any(keyword in path for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-", "MASTG-BEST-", "MASWE-"]):
+    filename = path.split('/')[-1]
+    
+    if any(keyword in filename for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-", "MASTG-BEST-", "MASWE-"]):
         try:
             item_id = path.split('/')[-1].split('.')[0]
         except:
@@ -25,7 +26,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
         page.meta['component_type'] = component_type
         page.meta['icon'] = config.get('theme').get('icon').get('tag', {}).get(component_type.lower())
 
-    if "MASWE-" in path:
+    if "MASWE-" in filename:
         if not page.meta.get("id", None):
             raise Exception(f"MASWE without ID: '{path}'")
 

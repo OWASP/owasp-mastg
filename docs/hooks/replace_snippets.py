@@ -12,9 +12,10 @@ log = logging.getLogger('mkdocs')
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
+    filename = path.split('/')[-1]
 
     # Only apply the transformation if the page is a demo file
-    if "MASTG-DEMO-" in path:
+    if "MASTG-DEMO-" in filename:
         def replace_placeholder(match):
             files = match.group(1).split('#')
             if len(files) == 1:
