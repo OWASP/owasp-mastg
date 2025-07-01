@@ -23,7 +23,7 @@ def gather_metadata(directory, id_key, component_type):
                         log.error(f"Missing frontmatter ID in {file}")
                     continue
 
-                frontmatter["path"] = file.replace("./docs/", "") # os.path.relpath(file, "./docs")
+                frontmatter["path"] = os.path.relpath(file, "./docs")
 
                 metadata[frontmatter[id_key]] = frontmatter
         
