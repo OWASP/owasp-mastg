@@ -1,4 +1,5 @@
 import logging
+import os
 import mkdocs.plugins
 
 log = logging.getLogger('mkdocs')
@@ -8,13 +9,14 @@ log = logging.getLogger('mkdocs')
 @mkdocs.plugins.event_priority(-30)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
-    filename = path.split('/')[-1]
+    filename = os.path.basename(path)
     
     if any(keyword in filename for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-", "MASTG-BEST-", "MASWE-"]):
         try:
-            item_id = path.split('/')[-1].split('.')[0]
-        except:
-            raise Exception(f"Unable to extract ID from path: '{path}'")
+            # Extract the item_id by removing the file extension and handling possible extra dots in filename
+            item_id, _ = os.path.splitext(os.path.basename(path))
+        except Exception as e:
+            raise Exception(f"Unable to extract ID from path: '{path}'") from e
 
         if item_id != page.meta.get('id', item_id):
             raise Exception(f"Metadata ID doesn't match filename for {path}: \n\tMetadata: {page.meta.get('id')}")

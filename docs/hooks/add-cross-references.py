@@ -92,7 +92,7 @@ def on_pre_build(config):
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
-    filename = path.split('/')[-1]
+    filename = os.path.basename(path)
     meta = page.meta
 
     cross_references = config.cross_references

@@ -1,5 +1,6 @@
 import logging
 import re
+import os
 import mkdocs.plugins
 
 log = logging.getLogger('mkdocs')
@@ -12,7 +13,7 @@ log = logging.getLogger('mkdocs')
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
-    filename = path.split('/')[-1]
+    filename = os.path.basename(path)
 
     # Only apply the transformation if the page is a demo file
     if "MASTG-DEMO-" in filename:
