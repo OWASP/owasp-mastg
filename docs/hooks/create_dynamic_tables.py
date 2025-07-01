@@ -104,7 +104,7 @@ def get_mastg_tests_dict():
                         frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
                         mastg_tests[id][platform].append(frontmatter)
                     else:
-                        print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                        log.warn(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
                 except StopIteration:
                     continue
     return mastg_tests
@@ -189,11 +189,6 @@ def get_checklist_dict():
 
         checklist_dict[group['id']] = checklist_per_group
     return checklist_dict
-
-CHECKLIST_DICT = {}
-def on_pre_build(config):
-    global CHECKLIST_DICT
-    CHECKLIST_DICT = get_checklist_dict()
 
 def set_icons_for_web(checklist):
 
@@ -434,7 +429,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
         column_align = ("left", "center", "left", "center", "left", "center", "center", "center", "center")
 
         ID = re.compile(r"^checklists/(MASVS-\w*)\.md$").match(path).group(1)
-        checklist = CHECKLIST_DICT[ID]
+        checklist = config["dynamic_tables_checklist_dict"].get(ID)
 
         set_icons_for_web(checklist)
 
@@ -458,3 +453,4 @@ def on_page_markdown(markdown, page, config, **kwargs):
 def on_config(config):
     config["mitigations_beta"] = get_all_mitigations_beta()
     config["demos_beta"] = get_all_demos_beta()
+    config["dynamic_tables_checklist_dict"] = get_checklist_dict()
