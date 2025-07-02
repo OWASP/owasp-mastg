@@ -63,7 +63,7 @@ As you might expect you can correlate the addresses of the libraries with the me
 You can also use @MASTG-TOOL-0074 to display the same information.
 
 ```bash
-$ objection --gadget OWASP.iGoat-Swift explore
+$ objection -n OWASP.iGoat-Swift start
 
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # memory list modules
 Save the output by adding `--json modules.json` to this command
@@ -173,7 +173,7 @@ You can dump the app's process memory with @MASTG-TOOL-0074 and @MASTG-TOOL-0106
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
 ```bash
-$ objection explore
+$ objection -n Gadget start
 
 iPhone on (iPhone: 10.3.1) [usb] # memory dump all /Users/foo/memory_iOS/memory
 Dumping 768.0 KiB from base: 0x1ad200000  [####################################]  100%

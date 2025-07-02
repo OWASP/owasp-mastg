@@ -33,10 +33,10 @@ This option is useful when you are working on a specific app and want to copy fi
 First, connect to the app with Objection as explained in @MASTG-TOOL-0038. Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
 ```bash
-$ frida-ps -U | grep -i owasp
-21228  sg.vp.owasp_mobile.omtg_android
+$ frida-ps -Ua | grep -i owasp
+21228  Attack me if u can  sg.vp.owasp_mobile.omtg_android  
 
-$ objection -g sg.vp.owasp_mobile.omtg_android explore
+$ objection -n "Attack me if u can" start
 
 ...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # cd ..
 /data/user/0/sg.vp.owasp_mobile.omtg_android
@@ -56,7 +56,7 @@ Directory  ...  databases
 Readable: True  Writable: True
 ```
 
-One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
+One you have a file you want to download you can just run `filesystem download <some_file>`. This will download that file to your working directory. The same way you can upload files using `filesystem upload`.
 
 ```bash
 ...[usb] # ls
@@ -65,7 +65,7 @@ Type    ...  Name
 File    ...  sg.vp.owasp_mobile.omtg_android_preferences.xml
 
 Readable: True  Writable: True
-...[usb] # file download sg.vp.owasp_mobile.omtg_android_preferences.xml
+...[usb] # filesystem download sg.vp.owasp_mobile.omtg_android_preferences.xml
 Downloading ...
 Streaming file from device...
 Writing bytes to destination...
@@ -73,4 +73,19 @@ Successfully downloaded ... to sg.vp.owasp_mobile.omtg_android_preferences.xml
 
 ```
 
-The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of for example taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
+As per objection v1.12.0, objection does support downloading folders by using the strict syntax `filesystem download <remote folder> <local destination> --folder`. However this only applies to folders and does not allow specifying multiple individual files directly. 
+
+```bash
+...[usb] # filesystem download databases dbs --folder
+Downloading /data/user/0/sg.vp.owasp_mobile.omtg_android/databases to dbs
+Do you want to download the full directory? [Y/n]: 
+Downloading directory recursively...
+Successfully downloaded /data/user/0/sg.vp.owasp_mobile.omtg_android/databases/College to dbs/College
+Successfully downloaded /data/user/0/sg.vp.owasp_mobile.omtg_android/databases/College-journal to dbs/College-journal
+Successfully downloaded /data/user/0/sg.vp.owasp_mobile.omtg_android/databases/privateNotSoSecure to dbs/privateNotSoSecure
+Successfully downloaded /data/user/0/sg.vp.owasp_mobile.omtg_android/databases/privateNotSoSecure-journal to dbs/privateNotSoSecure-journal
+Successfully downloaded /data/user/0/sg.vp.owasp_mobile.omtg_android/databases/encrypted to dbs/encrypted
+Recursive download finished.
+
+```
+Instead of for example taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `filesystem download <some_file>`.

@@ -8,10 +8,9 @@ Objection offers several features specific to Android. You can find the [full li
 
 - Repackage applications to include the Frida gadget
 - Disable SSL pinning for popular methods
-- Access application storage to download or upload files
-- Execute custom Frida scripts
 - List the Activities, Services and Broadcast receivers
 - Start Activities
+- Detect implicit intents
 
 If you have a rooted device with frida-server installed, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, it is not always possible to root an Android device or the app may contain advanced RASP controls for root detection, so injecting a frida-gadget may be the easiest way to bypass those controls.
 
@@ -19,18 +18,27 @@ The ability to **perform advanced dynamic analysis on non-rooted devices** is on
 
 ## Using Objection on Android
 
-Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
+Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, either the foreground process `-F` or Gadget should be specified `-n Gadget`. Whereas when using frida-server, you need to specify which application you want to attach to or spawn.
 
 ```bash
 # Connecting to a patched APK
-objection explore
+objection -F explore
 
+# Using Frida-server
 # Find the correct name using frida-ps
 $ frida-ps -Ua | grep -i telegram
 30268  Telegram                               org.telegram.messenger
 
 # Connecting to the Telegram app through Frida-server
-$ objection --gadget="org.telegram.messenger" explore
+$ objection --name "Telegram" start
+# Alternatively
+$ objection --name 30268 start
+
+# Objection can also spawn the app through Frida-server using the application identifier
+$ objection --spawn --name "org.telegram.messenger"
+... [usb] resume
+# Alternatively
+$ objection --spawn --no-pause --name "org.telegram.messenger"
 ```
 
 Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
