@@ -16,7 +16,7 @@ class MastgTest(private val context: Context) {
     // Vulnerable encryption using DES (broken algorithm)
     fun vulnerableDesEncryption(data: String): String {
         try {
-            // insufficient key for DES
+            // Insufficient key for DES
             val keyBytes = ByteArray(8)
             SecureRandom().nextBytes(keyBytes)
             val keySpec = DESKeySpec(keyBytes)

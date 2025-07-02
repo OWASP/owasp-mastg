@@ -11,13 +11,13 @@ Cryptography plays an especially important role in securing the user's data - ev
 
 The goal of cryptography is to provide constant confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality involves ensuring data privacy through the use of encryption. Data integrity deals with data consistency and detection of tampering and modification of data through the use of hashing. Authenticity ensures that the data comes from a trusted source.
 
-Encryption algorithms converts plaintext data into cipher text that conceals the original content. Plaintext data can be restored from the cipher text through decryption. Encryption can be **symmetric** (encryption/decryption with same secret-key) or **asymmetric** (encryption/decryption using a public and private key pair). Symmetric encryption operations do not protect integrity unless used together with a recommended and approved cipher mode that supports an authenticated encryption function with an appropriately random **IV** (Initialization vector) fulfilling the "uniqueness" requirement from "NIST 800-38D" ([NIST, 2007](https://csrc.nist.gov/pubs/sp/800/38/d/final "NIST: Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC")).
+An encryption algorithm converts plaintext data into ciphertext, which conceals the original content. The plaintext data can be restored from the ciphertext through decryption. There are two types of encryption: **symmetric** (encryption and decryption use the same secret key) and **asymmetric** (encryption and decryption use a public and private key pair). Symmetric encryption operations do not protect data integrity unless they are used with an approved cipher mode that supports authenticated encryption with a random initialization vector (IV) that fulfills the "uniqueness" requirement [NIST SP 800-38D - "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC", 2007](https://csrc.nist.gov/pubs/sp/800/38/d/final).
 
 **Symmetric-key encryption algorithms** use the same key for both encryption and decryption. This type of encryption is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, this method requires careful key management and centralized control over key distribution.
 
 **Public-key encryption algorithms** operate with two separate keys: the public key and the private key. The public key can be distributed freely while the private key shouldn't be shared with anyone. A message encrypted with the public key can only be decrypted with the private key and vice-versa. Since asymmetric encryption is several times slower than symmetric operations, it's typically only used to encrypt small amounts of data, such as symmetric keys for bulk encryption.
 
-**Hashing** isn't a form of encryption, but it does use cryptography. Hash functions deterministically map arbitrary pieces of data into fixed-length values. It's easy to compute the hash from the input, but very difficult (i.e. infeasible) to determine the original input from the hash. Additionally, the hash will completely change when even a single bit of the input changes. Hash functions are used for password storage, integrity verification (e.g. digital signatures or document management) or file management. Hash functions don't provide an authenticity guarantee, but can be combined as cryptographic primitives to do so.
+**Hashing** isn't a form of encryption, but it does use cryptography. Hash functions map arbitrary pieces of data into fixed-length values in a deterministic way. While it's easy to compute the hash from the input, it's very difficult (i.e., infeasible) to determine the original input from the hash. Additionally, the hash changes completely when even a single bit of the input changes. Hash functions are used for storing passwords, verifying integrity (e.g., digital signatures or document management), and managing files. Although hash functions don't provide an authenticity guarantee, they can be combined as cryptographic primitives to do so.
 
 **Message Authentication Codes** (MACs) combine other cryptographic mechanisms (such as symmetric encryption or hashes) with secret keys to provide both integrity and authenticity protection. However, in order to verify a MAC, multiple entities have to share the same secret key and any of those entities can generate a valid MAC. HMACs, the most commonly used type of MAC, rely on hashing as the underlying cryptographic primitive. The full name of an HMAC algorithm usually includes the underlying hash function's type (for example, HMAC-SHA256 uses the SHA-256 hash function).
 
@@ -46,8 +46,8 @@ The names of cryptographic APIs depend on the particular mobile platform.
 Please make sure that:
 
 - Cryptographic algorithms are up to date and in-line with industry standards. This includes, but is not limited to outdated block ciphers (e.g. DES), stream ciphers (e.g. RC4), as well as hash functions (e.g. MD5) and broken random number generators like Dual_EC_DRBG (even if they are NIST certified). All of these should be marked as insecure and should not be used and removed from the application and server.
-- Key lengths are in-line with industry standards and provide protection for sufficient amount of time. A comparison of different key lengths and the protection they provide, taking into account Moore's law, is available [online](https://www.keylength.com/ "Keylength comparison").
-- Through NIST SP 800-131A on "Transitioning the Use of Cryptographic Algorithms and Key Lengths" [(NIST, 2024)](https://csrc.nist.gov/pubs/sp/800/131/a/r3/ipd "NIST: Transitioning the Use of Cryptographic Algorithms and Key Lengths"), NIST provides recommendations and guidance on how to align with future recommendations and how to transition to stronger cryptographic keys and more robust algorithms.
+- Key lengths are in line with industry standards and provide sufficient protection over a long period of time. A comparison of different key lengths and the protection they provide, taking Moore's Law into account, is available [online](https://www.keylength.com/ "Keylength comparison").
+- Through [NIST SP 800-131A - "Transitioning the Use of Cryptographic Algorithms and Key Lengths", 2024](https://csrc.nist.gov/pubs/sp/800/131/a/r3/ipd), NIST provides recommendations and guidance on aligning with future recommendations and transitioning to stronger cryptographic keys and more robust algorithms.
 - Cryptographic means are not mixed with each other: e.g. you do not sign with a public key, or try to reuse a key pair used for a signature to do encryption.
 - Cryptographic parameters are well defined within reasonable range. This includes, but is not limited to: cryptographic salt, which should be at least the same length as hash function output, reasonable choice of password derivation function and iteration count (e.g. PBKDF2, scrypt or bcrypt), IVs being random and unique, fit-for-purpose block encryption modes (e.g. ECB should not be used, except specific cases), key management being done properly (e.g. 3DES should have three independent keys) and so on.
 
@@ -58,7 +58,7 @@ Recommended algorithms:
 - Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384 or EdDSA with Edwards448.
 - Key establishment algorithms: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 
-**Please note:** The Recommendations are based on current industry perception regarding what is considered to be appropriate and are in line with NIST recommendations beyond 2030, but does not necessarily take into account quantum computing advancements. For advice on post-quantum, please see **Post-Quantum** below.
+**Please note:** The recommendations are based on the current industry perception of what is considered appropriate. They align with NIST recommendations beyond 2030 but do not necessarily take into account advancements in quantum computing. For advice on post-quantum cryptography, please see the ["Post-Quantum"](#post-quantum) section below.
 
 Additionally, you should always rely on secure hardware (if available) for storing encryption keys, performing cryptographic operations, etc.
 
@@ -67,20 +67,25 @@ For more information on algorithm choice and best practices, see the following r
 - ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://web.archive.org/web/20250305234320/https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
 - [NIST recommendations (2019)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
-- NIST advises using RSA-based key-transport schemes with a minimum modulus length of at least 2048 bits according to 800-56B Rev. 2 ([NIST, 2019](https://csrc.nist.gov/pubs/sp/800/56/b/r2/final "NIST: Recommendation for Pair-Wise Key-Establishment Using Integer Factorization Cryptography"))
-- NIST advises using ECC-based key-agreement schemes, such as Elliptic Curve Diffie-Hellman (ECDH), utilizing curves between P-224 to P-521 according to 800-56A Rev. 3 ([NIST, 2018](https://csrc.nist.gov/pubs/sp/800/56/a/r3/final "NIST: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography")).
-- RSA, ECDSA and EdDSA are approved techniques by NIST for digital signature generation according to "FIPS 186-5" ([NIST, 2023](https://csrc.nist.gov/pubs/fips/186-5/final "NIST: Digital Signature Standard (DSS)")). Keep in mind that DSA only shall be used to verify previously generated digital signatures.
-- Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters, NIST SP 800-186 [(NIST, 2023)(https://csrc.nist.gov/pubs/sp/800/186/final "NIST: Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters")]
+- [NIST SP 800-56B Revision 2 - "Recommendation for Pair-Wise Key-Establishment Using Integer Factorization Cryptography", 2019](https://csrc.nist.gov/pubs/sp/800/56/b/r2/final): NIST advises using RSA-based key-transport schemes with a minimum modulus length of at least 2048 bits.
+- [NIST SP 800-56A Revision 3 - "Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography", 2018](https://csrc.nist.gov/pubs/sp/800/56/a/r3/final): NIST advises using ECC-based key-agreement schemes, such as Elliptic Curve Diffie-Hellman (ECDH), utilizing curves from P-224 to P-521.
+- [FIPS 186-5 - "Digital Signature Standard (DSS)", 2023](https://csrc.nist.gov/pubs/fips/186-5/final): NIST approves RSA, ECDSA, and EdDSA for digital signature generation. DSA should only be used to verify previously generated signatures.
+- [NIST SP 800-186 - "Recommendations for Discrete Logarithm-Based Cryptography: Elliptic Curve Domain Parameters", 2023](https://csrc.nist.gov/pubs/sp/800/186/final): Provides recommendations for elliptic curve domain parameters used in discrete logarithm-based cryptography.
 
 ## Post-Quantum
 
 ### Public-key encryption algorithms
 
-NIST has approved CRYSTALS-Kyber as a post-quantum key encapsulation mechanism (KEM) to establish a shared secret key over a public channel. The secret can then be used with symmetric-key cryptographic algorithms to perform encryption and decryption. This according to FIPS 203 ([NIST, 2024](https://csrc.nist.gov/pubs/fips/203/final "NIST: Module-Lattice-Based Key-Encapsulation Mechanism Standard")).
+In 2024, NIST approved CRYSTALS-Kyber as a post-quantum key encapsulation mechanism (KEM) for establishing a shared secret over a public channel. This shared secret can then be used with symmetric-key algorithms for encryption and decryption.
+
+- [FIPS 203 - "Module-Lattice-Based Key-Encapsulation Mechanism Standard", 2024](https://csrc.nist.gov/pubs/fips/203/final): Specifies CRYSTALS-Kyber as the standard for post-quantum key encapsulation.
 
 ## Signatures
 
-NIST has approved [SLH-DSA](https://csrc.nist.gov/pubs/fips/205/final "NIST: Stateless Hash-Based Digital Signature Standard") (NIST, 2024) and [ML-DSA](https://csrc.nist.gov/pubs/fips/204/final "NIST: Module-Lattice-Based Digital Signature Standard") (NIST, 2024) as recommended digital signature algorithm to be used for post-quatum signature generation and verification.
+In 2024, NIST approved SLH-DSA and ML-DSA as recommended digital signature algorithms for post-quantum signature generation and verification.
+
+- [FIPS 205 - "Stateless Hash-Based Digital Signature Standard", 2024](https://csrc.nist.gov/pubs/fips/205/final): Specifies SLH-DSA for post-quantum digital signatures.
+- [FIPS 204 - "Module-Lattice-Based Digital Signature Standard", 2024](https://csrc.nist.gov/pubs/fips/204/final): Specifies ML-DSA for post-quantum digital signatures.
 
 ## Common Configuration Issues
 
@@ -113,8 +118,8 @@ Secret keys must be stored in secure device storage whenever symmetric cryptogra
 
 ### Improper Key Derivation Functions
 
-When talking about key derivation functions KDF in the context of mobile application we are usually referring to cryptographic key derivation and not password storage. This chapter mainly focus on KDF in the context of cryptographic key derivation and not KDF in the context of password storage. For general advice on password storage, please read the [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
-Key derivation functions derive bytes suitable for cryptographic operations from passwords or other data sources using a pseudo-random function (PRF)
+When discussing key derivation functions (KDFs) in the context of mobile applications, we are usually referring to cryptographic key derivation rather than password storage. This chapter focuses primarily on KDF in the context of cryptographic key derivation, rather than password storage. For general advice on password storage, please refer to the [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
+KDFs derive bytes suitable for cryptographic operations from passwords or other data sources using a pseudorandom function (PRF).
 
 Different KDFs are suitable for different tasks such as:
 

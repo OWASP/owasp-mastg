@@ -36,7 +36,7 @@ The digest (or hash) of an improper implemented or used hash function may allow 
 
 - **Inadequate Entropy During Key Generation**: Using a poor source of randomness can lead to predictable cryptographic keys. If the randomness lacks sufficient entropy, the generated keys may be easier for attackers to guess or recreate, compromising the security of the system.
 - **Insufficient Key Length**: Cryptographic keys that are too short provide inadequate security. For example, keys shorter than recommended lengths for modern algorithms may be vulnerable to brute force attacks, making them easier for attackers to break.
-- **Using Outdated, Risky or Broken Algorithms**: Relying on deprecated, risky or inherently or broken cryptographic algorithms can result in the generation of weaker keys. As these algorithms often have vulnerabilities or support shorter key lengths, they are more susceptible to modern attacks, compromising the overall security of the app.
+- **Using Outdated, Risky or Broken Algorithms**: Relying on deprecated, risky or inherently broken cryptographic algorithms can result in the generation of weaker keys. As these algorithms often have vulnerabilities or support shorter key lengths, they are more susceptible to modern attacks, compromising the overall security of the app.
 
 ## Mitigations
 
