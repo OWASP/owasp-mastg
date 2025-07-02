@@ -29,7 +29,7 @@
             "args": ["serve", "-a", "localhost:8002"],
             "console": "integratedTerminal",
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/.venv/bin/python3"
+                "PYTHONPATH": "${workspaceFolder}/.venv/bin/python3",
             }
         },
         {

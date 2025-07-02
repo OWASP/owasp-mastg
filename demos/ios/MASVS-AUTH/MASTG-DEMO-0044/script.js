@@ -12,7 +12,7 @@ const AccessControlFlags = {
   };
 
 
-Interceptor.attach(Module.getExportByName(null, 'SecAccessControlCreateWithFlags'), {
+Interceptor.attach(Module.getGlobalExportByName('SecAccessControlCreateWithFlags'), {
     /* 
         func SecAccessControlCreateWithFlags(
         _ allocator: CFAllocator?,

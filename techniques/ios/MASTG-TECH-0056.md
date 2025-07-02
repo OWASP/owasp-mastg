@@ -35,7 +35,7 @@ Install: Complete
 
 ## ipainstaller
 
-The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). Naturally, this requires a jailbroken device, as otherwise you cannot SSH into the device. After copying the file over to the device, for example via `scp` (@MASTG-TECH-0053) or [AirDrop](https://support.apple.com/en-us/119857), you can execute `ipainstaller` with the IPA's filename:
+The IPA can also be directly installed on the iOS device via the command line with @MASTG-TOOL-0138. Naturally, this requires a jailbroken device, as otherwise you cannot SSH into the device. After copying the file over to the device, for example via `scp` (@MASTG-TECH-0053) or [AirDrop](https://support.apple.com/en-us/119857), you can execute `ipainstaller` with the IPA's filename:
 
 ```bash
 ipainstaller Uncrackable.ipa

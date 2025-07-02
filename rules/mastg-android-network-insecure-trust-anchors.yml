@@ -1,0 +1,11 @@
+rules:
+  - id: mastg-android-network-insecure-trust-anchors
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      summary: Detects entries in network security config that allow user-added CAs.
+    message: The network security config allows certificates imported on the user's behalf thereby allowing connections to potentially insecure CAs
+    match:
+      any:
+        - <certificates src="user"

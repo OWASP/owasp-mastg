@@ -45,11 +45,11 @@ beta_banner = """
     [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
 """
 
-def get_mastg_v1_coverage(meta):
+def get_mastg_v1_coverage(meta, config):
     mappings = meta.get('mappings', '')
 
     if mappings:
-        mastg_v1_tests_metadata, mastg_v1_mapping = get_v1_tests_data()
+        mastg_v1_tests_metadata, mastg_v1_mapping = config["v1_tests_data"]
 
         masvs_v1_id = mappings.get('masvs-v1', '')
         if len(masvs_v1_id) > 1:
@@ -65,7 +65,7 @@ def get_mastg_v1_coverage(meta):
             mastg_v1_tests = "    No MASTG v1 tests are related to this weakness."
     return mastg_v1_tests
 
-def get_maswe_placeholder_banner(meta):
+def get_maswe_placeholder_banner(meta, config):
 
     id = meta.get('id')
 
@@ -88,7 +88,7 @@ def get_maswe_placeholder_banner(meta):
         topics_section = "    ## Relevant Topics\n\n"
         topics_section += "\n".join([f"    - {topic}" for topic in topics])
 
-    mastg_v1_tests = get_mastg_v1_coverage(meta)
+    mastg_v1_tests = get_mastg_v1_coverage(meta, config)
 
     banner = f"""
 !!! warning "Placeholder Weakness"
@@ -170,72 +170,28 @@ def get_v1_refactor_tests_banner(meta, url, title):
 """
     return banner
 
-def get_android_demo_buttons(page):
-    id = page.meta.get('id')
+def get_deprecated_tools_banner(meta):
 
-    page_uri = page.file.src_uri
+    deprecation_note = meta.get('deprecation_note', "The tool is no longer relevant or was replaced by other tools.")
 
-    artifacts_url = github_api.get_latest_successful_run("build-android-demos.yml")
-
-    demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
-
-    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
-    if not artifacts_url:
-        artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
+    deprecation_note = f"**Reason**: {deprecation_note}"
 
     banner = f"""
-<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
-<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
-<a href="https://github.com/cpholguera/MASTestApp-Android" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} APK</a>
+!!! warning "Deprecated Tool"
+
+    This tool is **deprecated** and should not be used anymore.
+
+    {deprecation_note}
+
+    **Use instead**:
+
+    - {", ".join([f"@{id}" for id in meta.get('covered_by', [])])}
 """
-    return banner
 
-def get_ios_demo_buttons(page):
-    id = page.meta.get('id')
-
-    page_uri = page.file.src_uri
-
-    artifacts_url = github_api.get_latest_successful_run("build-ios-demos.yml")
-
-    demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
-
-    # If the artifacts URL couldn't be fetched due to API issues, provide a generic URL
-    if not artifacts_url:
-        artifacts_url = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
-
-    banner = f"""
-<a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
-<a href="{demo_folder}" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-folder-open:  Open {id} Folder</a>
-<a href="https://github.com/cpholguera/MASTestApp-iOS" target='_blank' class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:fontawesome-solid-compass-drafting: Build {id} IPA</a>
-"""
-    return banner
-
-def get_demos_placeholder_banner(meta):
-    id = meta.get('id')
-    note = meta.get('note', None)
-    test = meta.get('test', None)
-
-    banner = f"""
-!!! warning "Placeholder MASTG-DEMO"
-
-    This demo hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
-    If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that demo by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
-
-    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
-
-    If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
-
-## Draft Description
-
-{note}
-
-For more details, check the associated test: @{test}
-
-"""
     return banner
 
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
-@mkdocs.plugins.event_priority(-50)
+@mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
 
@@ -245,7 +201,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
         banners.append(beta_banner)
 
     if "MASWE/" in path and page.meta.get('status') == 'placeholder':
-        banners.append(get_maswe_placeholder_banner(page.meta))
+        banners.append(get_maswe_placeholder_banner(page.meta, config))
 
     if "MASTG/tests/" in path:
         if page.meta.get('status') == 'deprecated':
@@ -255,14 +211,8 @@ def on_page_markdown(markdown, page, config, **kwargs):
         if link := config["issue_mapping"].get(page.meta.get("id")):
             banners.append(get_v1_refactor_tests_banner(page.meta, link[0], escape(link[1])))
 
-    if "MASTG/demos/android/" in path and not page.meta.get('status') == 'placeholder':
-        banners.append(get_android_demo_buttons(page))
-
-    if "MASTG/demos/ios/" in path and not page.meta.get('status') == 'placeholder':
-        banners.append(get_ios_demo_buttons(page))
-
-    if "MASTG/demos/" in path and page.meta.get('status') == 'placeholder':
-        banners.append(get_demos_placeholder_banner(page.meta))
+    if "MASTG/tools/" in path and page.meta.get('status') == 'deprecated':
+        banners.append(get_deprecated_tools_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
@@ -271,4 +221,8 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
 
 def on_config(config):
+
     config["issue_mapping"] = github_api.get_issues_for_test_refactors()
+    config["v1_tests_data"] = get_v1_tests_data()
+
+    return config
