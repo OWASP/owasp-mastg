@@ -5,7 +5,7 @@ function configureTestsTable() {
   // Check if we're on a page with a test table
   const dataTable = $('#table_tests table').get(0);
   if (!dataTable) return;
-  
+
   // Define filter types and their corresponding column indices and match criteria
   const filters = [
     {
@@ -66,7 +66,7 @@ function configureTestsTable() {
       columnIndex: 6 // P column
     }
   ];
-  
+
   // Create main filters container
   const mainFilterContainer = document.createElement('div');
   mainFilterContainer.className = 'mastg-filters-wrapper';
@@ -76,14 +76,14 @@ function configureTestsTable() {
   mainFilterContainer.style.backgroundColor = 'var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.05))';
   mainFilterContainer.style.borderRadius = '4px';
   mainFilterContainer.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
-  
+
   // Create the filter UI rows
   const filterContainer = document.createElement('div');
   filterContainer.className = 'mastg-filters';
   filterContainer.style.display = 'flex';
   filterContainer.style.flexWrap = 'wrap';
   filterContainer.style.gap = '1rem';
-  
+
   // Create a separate row for filter groups
   const filterGroupsRow = document.createElement('div');
   filterGroupsRow.style.display = 'flex';
@@ -91,36 +91,36 @@ function configureTestsTable() {
   filterGroupsRow.style.gap = '1rem';
   filterGroupsRow.style.alignItems = 'center';
   filterGroupsRow.style.width = '100%';
-  
+
   // Group filters by type for better organization
   const filterGroups = {
     status: { label: 'Status:', filters: [] },
     platform: { label: 'Platform:', filters: [] },
     profile: { label: 'Profile:', filters: [] }
   };
-  
+
   // Organize filters by group
   filters.forEach(filter => {
     filterGroups[filter.type].filters.push(filter);
   });
-  
+
   // Create the filter checkboxes grouped by type
   Object.keys(filterGroups).forEach(groupKey => {
     const group = filterGroups[groupKey];
-    
+
     const groupContainer = document.createElement('div');
     groupContainer.className = 'filter-group';
     groupContainer.style.display = 'flex';
     groupContainer.style.alignItems = 'center';
     groupContainer.style.gap = '0.5rem';
-    
+
     const groupLabel = document.createElement('span');
     groupLabel.textContent = group.label;
     groupLabel.style.fontWeight = 'bold';
     groupLabel.style.minWidth = '70px';
     groupLabel.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
     groupContainer.appendChild(groupLabel);
-    
+
     group.filters.forEach(filter => {
       const toggleLabel = document.createElement('label');
       toggleLabel.className = 'md-toggle__label';
@@ -134,7 +134,7 @@ function configureTestsTable() {
       toggleLabel.style.backgroundColor = 'var(--md-default-bg-color, white)';
       toggleLabel.style.transition = 'background-color 0.2s, border-color 0.2s';
       toggleLabel.style.color = 'var(--md-default-fg-color, rgba(0, 0, 0, 0.87))';
-      
+
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.id = filter.id;
@@ -145,20 +145,20 @@ function configureTestsTable() {
         checkbox.dataset.invertLogic = 'true';
       }
       checkbox.style.marginRight = '6px';
-      
+
       // Add hover effect
       toggleLabel.addEventListener('mouseover', function() {
         if (!checkbox.checked) {
           toggleLabel.style.backgroundColor = 'var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.05))';
         }
       });
-      
+
       toggleLabel.addEventListener('mouseout', function() {
         if (!checkbox.checked) {
           toggleLabel.style.backgroundColor = 'var(--md-default-bg-color, white)';
         }
       });
-      
+
       // Add active state styling
       checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
@@ -169,27 +169,27 @@ function configureTestsTable() {
           toggleLabel.style.borderColor = 'var(--md-default-fg-color--lightest, rgba(0, 0, 0, 0.1))';
         }
       });
-      
+
       const labelText = document.createTextNode(filter.label);
-      
+
       toggleLabel.appendChild(checkbox);
       toggleLabel.appendChild(labelText);
       groupContainer.appendChild(toggleLabel);
-      
+
       // Add event listener to checkbox
       checkbox.addEventListener('change', filterTable);
     });
-    
+
     filterGroupsRow.appendChild(groupContainer);
   });
-  
+
   // Add search field
   const searchContainer = document.createElement('div');
   searchContainer.className = 'filter-group';
   searchContainer.style.display = 'flex';
   searchContainer.style.alignItems = 'center';
   searchContainer.style.gap = '0.5rem';
-  
+
   const searchLabel = document.createElement('span');
   searchLabel.textContent = "Search:";
   searchLabel.style.fontWeight = 'bold';
@@ -244,214 +244,167 @@ function configureTestsTable() {
   // Append bottom row to filter container
   filterGroupsRow.appendChild(bottomRow);
 
-  
+
   // Add hover effect to button
   clearButton.addEventListener('mouseover', function() {
     clearButton.style.backgroundColor = 'var(--md-accent-fg-color--transparent, #e9e9e9)';
   });
-  
+
   clearButton.addEventListener('mouseout', function() {
     clearButton.style.backgroundColor = 'var(--md-default-fg-color--lightest, #f8f8f8)';
   });
-  
+
   clearButton.addEventListener('click', function() {
     const checkboxes = mainFilterContainer.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(cb => {
       cb.checked = false;
       cb.dispatchEvent(new Event('change'));
     });
+    $('#filter-search').val('');
     filterTable();
   });
-  
+
   filterContainer.appendChild(filterGroupsRow);
-  
+
   // Add filter container to main container
   mainFilterContainer.appendChild(filterContainer);
-  
-  // Add the filter container before the table
-  const tableWrapper = dataTable.closest('.dataTables_wrapper');
-  
-  // Insert the filters before the table wrapper
-  tableWrapper.parentNode.insertBefore(mainFilterContainer, tableWrapper);
-  
-  // Initialize table - hide deprecated items by default
-  setTimeout(() => {
-    // Hide deprecated items on page load
-    const rows = dataTable.querySelectorAll('tbody tr');
-    rows.forEach(function(row) {
-      const statusCell = row.querySelector('td:nth-child(8)'); // Status column
-      if (statusCell && (statusCell.textContent.includes('deprecated') || 
-                         statusCell.innerHTML.includes('status:deprecated'))) {
-        row.style.display = 'none';
-      }
-    });
-    
-    // Update the showing count
-    const info = $("#filter-info")[0]
-    if (info) {
-      const totalRows = rows.length;
-      const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none').length;
-      if (visibleRows < totalRows) {
-        info.textContent = `Showing ${visibleRows} of ${totalRows} entries (filtered)`;
+
+   // Track active filters per type
+   const activeFilterState  = {
+    status: false,
+    platform: [],
+    profile: [],
+    searchTerm: ""
+  };
+
+  $.fn.dataTable.ext.search.push(Object.assign(function (settings, rowData, dataIndex) {
+    const status = (rowData[7] || '').toLowerCase();
+    const platform = (rowData[2] || '').toLowerCase();
+
+    if (!activeFilterState.status && /deprecated/.test(status)) {
+      return false;
+    }
+
+    if (activeFilterState.platform.length > 0 &&
+        !activeFilterState.platform.some(p => platform.includes(p))) {
+      return false;
+    }
+
+    if (activeFilterState.profile.length > 0) {
+      const columnIndexes = {
+        'L1': 3,
+        'L2': 4,
+        'R':  5,
+        'P':  6
+      };
+
+      const matched = activeFilterState.profile.some(level => {
+        const cellHtml = rowData[columnIndexes[level]] || '';
+        return cellHtml.includes("profile:"+level);
+      });
+
+      if (!matched) return false;
+    }
+
+    if (activeFilterState.searchTerm.length > 0) {
+      const title = (rowData[1] || '').toLowerCase();
+      const id = (rowData[0] || '').toLowerCase();
+
+      if (!title.includes(activeFilterState.searchTerm) && !id.includes(activeFilterState.searchTerm)) {
+        return false;
       }
     }
-  }, 0);
-  
-  // Function to filter the table
+
+    return true;
+  }, { _masCustomFilter: true }));
+
+
+
+  const dtApi = $('#table_tests table').DataTable({
+    paging: false,
+    order: [],
+    dom: '<"top"if>rt<"bottom"lp><"clear">',
+    info: false,
+    search: true // This is the default value, but we can't set it to false as that disables the filter function
+  });
+
+  // Remove search field manually
+  $('.dataTables_filter').parent().remove();
+
+  // Add the filter container before the table
+  const tableWrapper = dataTable.closest('.dataTables_wrapper');
+
+  // Insert the filters before the table wrapper
+  tableWrapper.parentNode.insertBefore(mainFilterContainer, tableWrapper);
+
   function filterTable() {
-    const activeFilters = {};
-    
-    // Collect all active filters
+    const anchor = [];
     const checkboxes = mainFilterContainer.querySelectorAll('input[type="checkbox"]:checked');
 
-    // build up a new anchor for URL
-    var anchor = []
+    // Clear previous state
+    activeFilterState.status = false;
+    activeFilterState.platform = [];
+    activeFilterState.profile = [];
 
     checkboxes.forEach(checkbox => {
       const type = checkbox.dataset.type;
       const value = checkbox.dataset.value;
+      anchor.push(value.toLowerCase());
 
-      // extract filter name
-      anchor.push(checkbox.dataset.value.toLowerCase())
-      
-      if (!activeFilters[type]) {
-        activeFilters[type] = [];
+      if (type === 'status' && value.toLowerCase() === 'deprecated') {
+        activeFilterState.status = true;
+      } else if (type === 'platform') {
+        activeFilterState.platform.push(value.toLowerCase());
+      } else if (type === 'profile') {
+        activeFilterState.profile.push(value.toUpperCase()); // L1, L2, R, P
       }
-      activeFilters[type].push({
-        value: value,
-        columnIndex: parseInt(checkbox.dataset.columnIndex)
-      });
     });
 
+    activeFilterState.searchTerm = mainFilterContainer.querySelector('#filter-search').value.toLowerCase();
+
+    // Update anchor
     history.replaceState(null, null, '#' + anchor.join(';'));
 
+    // Redraw
+    dtApi.draw();
 
-    
-    // First, handle the special case of deprecated items - hide them by default
-    let showDeprecatedChecked = false;
-    const deprecatedCheckbox = mainFilterContainer.querySelector('#filter-status-deprecated');
-    if (deprecatedCheckbox && deprecatedCheckbox.checked) {
-      showDeprecatedChecked = true;
-    }
+    // Update info manually
+    const info = document.querySelector("#filter-info");
 
-    // By default, hide deprecated items if the checkbox is not checked
-    const rows = dataTable.querySelectorAll('tbody tr');
-    
-    const searchTerm = mainFilterContainer.querySelector('#filter-search').value.toLowerCase()
-
-    rows.forEach(function(row) {
-      let shouldShow = true;
-      
-      // First, check if the row is deprecated
-      const statusCell = row.querySelector('td:nth-child(8)'); // Status column
-      const isDeprecated = statusCell && (statusCell.textContent.includes('deprecated') || 
-                                         statusCell.innerHTML.includes('status:deprecated'));
-      
-      // Handle deprecated items specially:
-      // - If "Show Deprecated" is not checked, hide deprecated items
-      // - If "Show Deprecated" is checked, allow them to be shown (subject to other filters)
-      if (isDeprecated && !showDeprecatedChecked) {
-        shouldShow = false;
-      } else {
-        // Apply each regular filter type (excluding the deprecated filter which we handled separately)
-        Object.keys(activeFilters).forEach(filterType => {
-          // Skip the status filter which we handled separately
-          if (filterType === 'status') return;
-          
-          // If any filter in this type matches, we'll keep the row
-          let typeMatch = false;
-          
-          activeFilters[filterType].forEach(filter => {
-            const cell = row.querySelector(`td:nth-child(${filter.columnIndex + 1})`);
-            if (!cell) return;
-            
-            let isMatch = false;
-            
-            // Platform filter
-            if (filterType === 'platform') {
-              isMatch = cell.textContent.toLowerCase().includes(filter.value.toLowerCase()) || 
-                      cell.innerHTML.includes(`platform:${filter.value.toLowerCase()}`);
-            } 
-            // Profile filters (L1, L2, R, P)
-            else if (filterType === 'profile') {
-              // Check which profile this filter is for
-              if (filter.value === 'L1') {
-                isMatch = cell.querySelector('.mas-dot-blue');
-              } else if (filter.value === 'L2') {
-                isMatch = cell.querySelector('.mas-dot-green');
-              } else if (filter.value === 'R') {
-                isMatch = cell.querySelector('.mas-dot-orange');
-              } else if (filter.value === 'P') {
-                isMatch = cell.querySelector('.mas-dot-purple');
-              }
-            }
-            
-            if (isMatch) {
-              typeMatch = true;
-            }
-          });
-          
-          // If no filters of this type matched, hide the row
-          if (!typeMatch && activeFilters[filterType].length > 0) {
-            shouldShow = false;
-          }
-        });
-      }
-      
-      // If we have no active filters except possibly the deprecated filter, 
-      // and the deprecated filter is not checked, show all non-deprecated rows
-      if (Object.keys(activeFilters).length === 0 || 
-          (Object.keys(activeFilters).length === 1 && 'status' in activeFilters && !showDeprecatedChecked)) {
-        shouldShow = !isDeprecated || showDeprecatedChecked;
-      }
-      
-      if(searchTerm.length > 0){
-        const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-        if(title.indexOf(searchTerm) === -1){
-          shouldShow = false;
-        }
-      }
-      
-      row.style.display = shouldShow ? '' : 'none';
-    });
-    
-    // Update the "Showing X to Y of Z entries" text
-    const info = $("#filter-info")[0]
     if (info) {
-      const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none').length;
-      const totalRows = rows.length;
-      if (visibleRows < totalRows) {
-        info.textContent = `Showing ${visibleRows} of ${totalRows} entries (filtered)`;
+      const filteredCount = dtApi.rows({ filter: 'applied' }).count();
+      const totalCount = dtApi.rows().count();
+      if (filteredCount < totalCount) {
+        info.textContent = `Showing ${filteredCount} of ${totalCount} entries (filtered)`;
       } else {
-        info.textContent = `Showing 1 to ${totalRows} of ${totalRows} entries`;
+        info.textContent = `Showing 1 to ${totalCount} of ${totalCount} entries`;
       }
     }
   }
+
   $(function() {
     const hash = window.location.hash;
-    if (!hash) return;
-  
-    const mapping = {
-      "android": "#filter-platform-android",
-      "ios": "#filter-platform-ios",
-      "network": "#filter-platform-network",
-      "l1": "#filter-profile-l1",
-      "l2": "#filter-profile-l2",
-      "r": "#filter-profile-r",
-      "p": "#filter-profile-p",
+    if (hash){
+      const mapping = {
+        "android": "#filter-platform-android",
+        "ios": "#filter-platform-ios",
+        "network": "#filter-platform-network",
+        "l1": "#filter-profile-l1",
+        "l2": "#filter-profile-l2",
+        "r": "#filter-profile-r",
+        "p": "#filter-profile-p",
+      }
+
+      const items = hash.substring(1).split(';');
+
+      items.forEach(function(item) {
+        const checkbox = $(mapping[item]);
+        if (checkbox.length) {
+          checkbox.prop('checked', true).trigger('change');
+        }
+      });
     }
 
-    const items = hash.substring(1).split(';');
-  
-    items.forEach(function(item) {
-      const checkbox = $(mapping[item]);
-      if (checkbox.length) {
-        checkbox.prop('checked', true).trigger('change');
-      }
-    });
-  
-    if(items.length > 0){
-      filterTable()
-    }
+    filterTable()
   });
 };

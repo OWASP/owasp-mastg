@@ -1,0 +1,14 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ rules.mastg-android-network-checkservertrusted
+          Improper Server Certificate verification detected.
+                                                            
+           92┆ @Override // javax.net.ssl.X509TrustManager
+           93┆ public void checkServerTrusted(X509Certificate[] chain, String authType) {
+           94┆ }
+

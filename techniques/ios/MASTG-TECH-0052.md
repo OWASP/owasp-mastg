@@ -7,9 +7,9 @@ One of the most common things you do when testing an app is accessing the device
 
 ## Remote Shell
 
-In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either @MASTG-TOOL-0047 (see screenshot below) or @MASTG-TOOL-0064 installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either @MASTG-TOOL-0064 or Zebra installed. In the rest of the guide we will reference to Sileo, but the same packages should be available in Zebra.
 
-<img src="Images/Chapters/0x06b/cydia.png" width="300px" />
+<img src="Images/Tools/TOOL-0064-Sileo.png" width="400px" />
 
 In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the **Settings -> Wi-Fi** menu and tapping once on the info icon of the network you're connected to.
 
@@ -66,7 +66,7 @@ iPhone:~ mobile%
 
 ## On-device Shell App
 
-While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://chariz.com/get/newterm "NewTerm 2") via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://chariz.com/get/newterm "NewTerm 2") via Sileo for this purpose (it supports iOS 10.0 to 16.2 at the time of this writing).
 
 In addition, there are a few jailbreaks that explicitly disable incoming SSH _for security reasons_. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
 

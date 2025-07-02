@@ -1,16 +1,5 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    {% if page.meta.source %}
-    <span>Available at: </span><a href="{{ page.meta.source }}"> {{ page.meta.source }}</a>
-    <br><br>
-    {% endif %}
-
-    {% if page.meta.last_updated %}
-    <em><small style="color: darkgrey;">Last updated: {{ page.meta.last_updated }}</small></em>
-    <br><br>
-    {% endif %}
     {{ super() }}
-   
 {% endblock %}
