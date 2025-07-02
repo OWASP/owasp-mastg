@@ -7,6 +7,10 @@ platform: ios
 title: Testing Jailbreak Detection
 masvs_v1_levels:
 - R
+profiles: [R]
+status: deprecated
+covered_by: [MASTG-TEST-0240, MASTG-TEST-0241]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview

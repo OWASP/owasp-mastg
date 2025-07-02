@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-AUTH-3]
   masvs-v2: [MASVS-AUTH-1, MASVS-CODE-4]
+  cwe: [287]
 
 refs:
 - https://developers.google.com/identity/sign-in/android/backend-auth#verify-the-integrity-of-the-id-token
@@ -20,7 +21,7 @@ draft:
   - none algorithm
   - PKCE
   - implicit grant
-status: draft
+status: placeholder
 
 ---
 

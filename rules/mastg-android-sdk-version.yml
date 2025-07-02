@@ -1,0 +1,10 @@
+rules:
+  - id: mastg-android-sdk-version
+    languages:
+      - java
+    severity: WARNING
+    metadata:
+      summary: This rule scans for API that checks the version of the operating system
+    message: "[MASVS-PLATFORM] Make sure to verify that your app runs on a device with an up-to-date OS version to make sure it satisfy your security requirements"
+    patterns:
+      - pattern: Build.VERSION.SDK_INT

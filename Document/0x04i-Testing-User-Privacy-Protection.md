@@ -37,7 +37,7 @@ Like the classic triad of security protection goals: confidentiality, integrity,
     - Includes: privacy policies, user education, proper logging and auditing mechanisms, etc.
 - **Intervenability**:
     - Users should know how to correct their personal information, request its deletion, withdraw any given consent at any time, and receive instructions on how to do so.
-    - Includes: privacy settings directly in the app, single points of contact for individuals’ intervention requests (e.g. in-app chat, telephone number, e-mail), etc.
+    - Includes: privacy settings directly in the app, single points of contact for individuals' intervention requests (e.g. in-app chat, telephone number, e-mail), etc.
 
 > For more details, see Section 5.1.1 "Introduction to data protection goals" in ENISA's ["Privacy and data protection in mobile applications"](https://www.enisa.europa.eu/publications/privacy-and-data-protection-in-mobile-applications "ENISA - Privacy and data protection in mobile applications").
 

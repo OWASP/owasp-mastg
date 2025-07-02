@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-1, MASVS-STORAGE-1]
+  cwe: [287]
 
 refs:
 - https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication
@@ -27,7 +28,7 @@ draft:
   - WebAuthn/ASAuthorization
   - use of Physical Security Keys which stored the public-private key pair on a physical
     medium, such as a security card or a USB key
-status: draft
+status: placeholder
 
 ---
 

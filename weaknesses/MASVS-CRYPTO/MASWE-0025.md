@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-CRYPTO-4]
   masvs-v2: [MASVS-CRYPTO-1]
+  cwe: [327]
 
 refs:
 - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
@@ -16,7 +17,7 @@ draft:
   description: The use of weak signature such as SHA1withRSA, etc. in a security sensitive
     context should be avoided to ensure the integrity and authenticity of the data.
   topics: null
-status: draft
+status: placeholder
 
 ---
 

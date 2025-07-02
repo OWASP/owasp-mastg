@@ -5,7 +5,13 @@ platform: ios
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the @MASTG-APP-0028 IPA as explained in @MASTG-TECH-0054.
 
-You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder containing the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
+You can unzip the IPA using the standard `unzip` or any other ZIP utility.
+
+```bash
+unzip iGoat-Swift.ipa
+```
+
+Inside you'll find a `Payload` folder containing the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```bash
 $ ls -1 Payload/iGoat-Swift.app
@@ -49,7 +55,7 @@ The most relevant items are:
 - `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
 - `Frameworks/` contains the app native libraries as .dylib or .framework files.
 - `PlugIns/` may contain app extensions as .appex files (not present in the example).
-- iGoat-Swift is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
+- iGoat-Swift is the app binary containing the app's code. Its name is the same as the bundle's name minus the .app extension.
 - Various resources such as images/icons, `*.nib` files (storing the user interfaces of iOS app), localized content (`<language>.lproj`), text files, audio files, etc.
 
 ## The Info.plist File
@@ -128,7 +134,7 @@ Regular           420  None                ...  libswiftCoreFoundation.dylib
 
 Please note that this might not be the complete list of native code elements being used by the app as some can be part of the source code, meaning that they'll be compiled in the app binary and therefore cannot be found as standalone libraries or Frameworks in the `Frameworks` folder.
 
-For now this is all information you can get about the Frameworks unless you start reverse engineering them. Refer to  for more information about how to reverse engineer Frameworks.
+For now this is all information you can get about the Frameworks unless you start reverse engineering them. Refer to for more information about how to reverse engineer Frameworks.
 
 ## Other App Resources
 

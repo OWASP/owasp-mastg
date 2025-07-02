@@ -8,6 +8,8 @@ source: https://github.com/frida/frida
 
 <img src="Images/Chapters/0x04/frida_logo.png" style="width: 80%; border-radius: 5px; margin: 2em" />
 
+## Installation
+
 To install Frida locally, simply run:
 
 ```bash
@@ -15,6 +17,8 @@ pip install frida-tools
 ```
 
 Or refer to the [installation page](https://www.frida.re/docs/installation/ "Frida Installation") for more details.
+
+## Modes of Operation
 
 Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
 In contrast, Frida implements code injection by writing code directly into the process memory. When attached to a running app:
@@ -34,12 +38,46 @@ Frida offers three modes of operation:
 2. Embedded: this is the case when your device is not rooted nor jailbroken (you cannot use ptrace as an unprivileged user), you're responsible for the injection of the [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library by embedding it into your app, manually or via third-party tools such as @MASTG-TOOL-0038.
 3. Preloaded: similar to `LD_PRELOAD` or `DYLD_INSERT_LIBRARIES`. You can configure the frida-gadget to run autonomously and load a script from the filesystem (e.g. path relative to where the Gadget binary resides).
 
+## APIs
+
 Independently of the chosen mode, you can make use of the [Frida JavaScript APIs](https://www.frida.re/docs/javascript-api/ "Frida JavaScript APIs") to interact with the running process and its memory. Some of the fundamental APIs are:
 
 - [Interceptor](https://www.frida.re/docs/javascript-api/#interceptor "Interceptor"): When using the Interceptor API, Frida injects a trampoline (aka in-line hooking) at the function prologue which provokes a redirection to our custom code, executes our code, and returns to the original function. Note that while very effective for our purpose, this introduces a considerable overhead (due to the trampoline related jumping and context switching) and cannot be considered transparent as it overwrites the original code and acts similar to a debugger (putting breakpoints) and therefore can be detected in a similar manner, e.g. by applications that periodically checksum their own code.
 - [Stalker](https://www.frida.re/docs/javascript-api/#stalker "Stalker"): If your tracing requirements include transparency, performance and high granularity, Stalker should be your API of choice. When tracing code with the Stalker API, Frida leverages just-in-time dynamic recompilation (by using [Capstone](http://www.capstone-engine.org/ "Capstone")): when a thread is about to execute its next instructions, Stalker allocates some memory, copies the original code over, and interlaces the copy with your custom code for instrumentation. Finally, it executes the copy (leaving the original code untouched, and therefore avoiding any anti-debugging checks). This approach increases instrumentation performance considerably and allows for very high granularity when tracing (e.g. by tracing exclusively CALL or RET instructions). You can learn more in-depth details in [the blog post "Anatomy of a code tracer" by Frida's creator Ole](https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8 "Anatomy of a code tracer") [#vadla]. Some examples of use for Stalker are, for example [who-does-it-call](https://codeshare.frida.re/@oleavr/who-does-it-call/ "who-does-it-call") or [diff-calls](https://github.com/frida/frida-presentations/blob/master/R2Con2017/01-basics/02-diff-calls.js "diff-calls").
 - [Java](https://www.frida.re/docs/javascript-api/#java "Java"): When working on Android you can use this API to enumerate loaded classes, enumerate class loaders, create and use specific class instances, enumerate live instances of classes by scanning the heap, etc.
 - [ObjC](https://www.frida.re/docs/javascript-api/#objc "ObjC"): When working on iOS you can use this API to get a mapping of all registered classes, register or use specific class or protocol instances, enumerate live instances of classes by scanning the heap, etc.
+
+### Frida 17
+
+Frida 17 introduces [breaking changes](https://frida.re/news/2025/05/17/frida-17-0-0-released/), such as the removal of the bundled runtime bridges (`frida-{objc,swift,java}-bridge`) within Frida's GumJS runtime. This means you must now explicitly install the bridges you need by using `frida-pm install`:
+
+ ```bash
+ frida-pm install frida-java-bridge
+ ```
+
+However, the commands `frida` and `frida-trace` come with the Java, Objective-C, and Swift bridges pre-bundled, so you can still use them without manual installation in those contexts. You can learn more about bridges in the [Frida documentation](https://frida.re/docs/bridges/).
+
+Frida has made changes to its native APIs. While these changes may break some of your existing scripts, they encourage you to write more readable and performant code. For instance, now, `Process.enumerateModules()` returns an array of `Module` objects, allowing you to work with them directly.
+
+```js
+for (const module of Process.enumerateModules()) {
+  console.log(module.name);
+}
+```
+
+Another API that was removed is `Module.getSymbolByName`, which is used in many scripts. Depending on if you know which module the symbol is located in or not, you can use one of the following two alternatives:
+
+```js
+// If you know the module
+Process.getModuleByName('libc.so').getExportByName('open')
+
+// If you don't (i.e., the old Module.getSymbolByName(null, 'open'); )
+Module.getGlobalExportByName('open');
+```
+
+For more details, refer to the [Frida 17.0.0 Release Notes](https://frida.re/news/2025/05/17/frida-17-0-0-released/).
+
+## Tools
 
 Frida also provides a couple of simple tools built on top of the Frida API and available right from your terminal after installing frida-tools via pip. For instance:
 

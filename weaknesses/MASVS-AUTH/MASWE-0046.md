@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-2, MASVS-CRYPTO-2]
+  cwe: [287, 522]
 
 draft:
   description: Biometric related crypto keys should be is invalidated by default whenever
@@ -16,7 +17,7 @@ draft:
     (prev. `touchIDCurrentSet`) when setting access control (since iOS 9). This invalidates
     keychain items when a fingerprint is added or removed. See kSecAccessControlTouchIDCurrentSet,
     biometryCurrentSet.
-status: draft
+status: placeholder
 
 ---
 

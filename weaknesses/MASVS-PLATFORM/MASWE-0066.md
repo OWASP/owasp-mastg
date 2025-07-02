@@ -24,7 +24,7 @@ draft:
   - Insecure Intent Redirection
   - Insecure Implicit Intents
   - Insecure Pending Intents (Mutable, Replaying)
-status: draft
+status: placeholder
 
 ---
 

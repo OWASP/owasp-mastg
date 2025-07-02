@@ -7,6 +7,7 @@ platform: ios
 title: Testing Enforced Updating
 masvs_v1_levels:
 - L2
+profiles: [L2]
 ---
 
 ## Overview
@@ -21,4 +22,4 @@ Make sure that every entry of the application goes through the updating mechanis
 
 In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
 Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the backend will stop calls to vulnerable backends and/or whether the vulnerable app-version itself is blocked by the backend.
-Finally, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
+Lastly, try modifying the version number of an app while intercepting its traffic using a [Machine-in-the-Middle (MITM)](../../../Document/0x04f-Testing-Network-Communication.md#intercepting-network-traffic-through-mitm) proxy, and observe how the backend responds (including whether the change is recorded, for example).
