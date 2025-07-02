@@ -9,9 +9,9 @@ title: Glossary
 
 The meaning depends on the context.
 
-A "broken" cryptographic hash algorithm is a function that is denounced as "broken" because a collision attack exist that is faster to execute then a birthday attack ([Wikipedia, "2025.02.19"](https://en.wikipedia.org/wiki/Collision_attack "Collision attack")).
+A broken cryptographic hash algorithm is a function that is denounced as broken because a collision attack exist that is faster to execute then a birthday attack ([Wikipedia, "2025.02.19"](https://en.wikipedia.org/wiki/Collision_attack "Collision attack")).
 
-A cryptographic mode of operation is "broken" if it, when implemented correctly, still faces the risk from known attacks that can "break" the confidentiality of the encrypted data.
+A cryptographic mode of operation is broken if it, when implemented correctly, still faces the risk from known attacks that can break the confidentiality of the encrypted data.
 
 ### Deprecated
 
@@ -19,7 +19,7 @@ When mentioned as a cryptographic term it means a mode of operation, algorithm o
 
 ### Improper
 
-Used as a catch-all term to cover security behaviors that are either "Missing" or "Insufficient/Incorrect".
+Used as a catch-all term to cover security behaviors that are either missing or insufficient/incorrect.
 
 ### Insufficient
 
@@ -31,7 +31,7 @@ Reference to risk uses the ISO 3000 definition: Risk = "effect of uncertainty on
 
 ### Risky
 
-A "risky" cryptographic hash algorithm carries with it an effect of uncertainty on the objectives that the specific algorithm must satisfy. The algorithm is therefore said to be "risky" when used under certain circumstances, and because of that, carries with it the risk of being compromised in an attack when used improperly. The same can be considered when referring to a "risky" encryption mode of operation.
+A risky cryptographic hash algorithm carries with it an "effect of uncertainty on the objectives" that the specific algorithm must satisfy. The algorithm is therefore said to be risky when used under certain circumstances, and because of that, carries with it the risk of being compromised in an attack when used improperly. The same can be considered when referring to a risky encryption mode of operation.
 
 ### Strength
 
