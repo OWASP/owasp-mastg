@@ -12,7 +12,6 @@ weakness: MASWE-0008
 
 This test is a dynamic counterpart to @MASTG-TEST-0x52-3.
 
-
 ## Steps
 
 1. Use runtime method hooking (see @MASTG-TECH-0095) and look for uses of [`SecAccessControlCreateWithFlags`](https://developer.apple.com/documentation/security/secaccesscontrolcreatewithflags(_:_:_:_:)) and specific flags.

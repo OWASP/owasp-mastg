@@ -10,7 +10,7 @@ Choose the right location for storing the app's and the user's data. There are t
 - "Documents/"
 - "Library/
 
-Use **Documents** directory to store user-generated content and **Library** directory for app's internal data. 
+Use **Documents** directory to store user-generated content and **Library** directory for app's internal data.
 
 ## Why is this important?
 
@@ -20,4 +20,4 @@ An app can be configured to make **Documents** directory accessible to the user 
 - an attacker with a physical access to the device can copy content of `Documents` directory
 - other apps can access `Documents` directory of other apps with a [document picker interface](https://developer.apple.com/documentation/uikit/uidocumentpickerviewcontroller)
 
-**Note:**  Storing data in the correct directory doesn't mean it's secure. For L2 profile apps, it's recommended to encrypt the files before storing them, and put the encryption key into the keychain.
+**Note:** Storing data in the correct directory doesn't mean it's secure. For L2 profile apps, it's recommended to encrypt the files before storing them, and put the encryption key into the keychain.
