@@ -13,9 +13,9 @@ This section describes various ways to bypass SSL Pinning and gives guidance abo
 
 There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
 
-- Frida: Use the [frida-multiple-unpinning](https://codeshare.frida.re/@akabe1/frida-multiple-unpinning/ "Project: frida-multiple-unpinning") script.
+- Frida: Use @MASTG-TOOL-0140
 - Objection: Use the `android sslpinning disable` command.
-- Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
+- Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or the @MASTG-TOOL-0025 module.
 
 If you have a rooted device with frida-server installed, you can bypass SSL pinning by running the following @MASTG-TOOL-0038 command (see @MASTG-TECH-0004 if you're using a non-rooted device):
 

@@ -5,11 +5,12 @@ id: MASTG-TEST-0201
 apis: [Environment#getExternalStorageDirectory, Environment#getExternalStorageDirectory, Environment#getExternalFilesDir, Environment#getExternalCacheDir, FileOutputStream]
 type: [dynamic]
 weakness: MASWE-0007
+profiles: [L1, L2]
 ---
 
 ## Overview
 
-Android apps use a variety of APIs to obtain a file path and store a file. Collecting a comprehensive list of these APIs can be challenging, especially if an app uses a third-party framework, loads code at runtime, or includes native code. The most effective approach to testing applications that write to device storage is usually dynamic analysis, and specifically method tracing (@MASTG-TECH-0033).
+Android apps use a variety of [APIs to access the external storage](../../../0x05d-Testing-Data-Storage.md/#external-storage-apis). Collecting a comprehensive list of these APIs can be challenging, especially if an app uses a third-party framework, loads code at runtime, or includes native code. The most effective approach to testing applications that write to device storage is usually dynamic analysis, and specifically method tracing (@MASTG-TECH-0033).
 
 ## Steps
 
@@ -19,7 +20,7 @@ Android apps use a variety of APIs to obtain a file path and store a file. Colle
 4. Navigate to the screen of the app that you want to analyse.
 5. Close the app to stop Frida.
 
-The Frida script should log all file interactions by hooking into the relevant APIs such as `getExternalStorageDirectory`, `getExternalStoragePublicDirectory`, `getExternalFilesDir` or  `FileOutPutStream`. You could also use `open` as a catch-all for file interactions. However, this won't catch all file interactions, such as those that use the `MediaStore` API and should be done with additional filtering as it can generate a lot of noise.
+The Frida script should log all file interactions by hooking into the relevant APIs such as `getExternalStorageDirectory`, `getExternalStoragePublicDirectory`, `getExternalFilesDir` or `FileOutPutStream`. You could also use `open` as a catch-all for file interactions. However, this won't catch all file interactions, such as those that use the `MediaStore` API and should be done with additional filtering as it can generate a lot of noise.
 
 ## Observation
 

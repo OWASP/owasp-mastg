@@ -7,6 +7,10 @@ platform: android
 title: Testing the Device-Access-Security Policy
 masvs_v1_levels:
 - L2
+profiles: [L2]
+status: deprecated
+covered_by: [MASTG-TEST-0247, MASTG-TEST-0249]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
@@ -25,7 +29,7 @@ To test the device-access-security policy that the app enforces, a written copy 
 
 Check the source code for functions that implement the policy and determine whether it can be bypassed.
 
-You can implement checks on the Android device by querying  [_Settings.Secure_](https://developer.android.com/reference/android/provider/Settings.Secure.html "Settings.Secure") for system preferences. [_Device Administration API_](https://developer.android.com/guide/topics/admin/device-admin.html "Device Administration API") offers techniques for creating applications that can enforce password policies and device encryption.
+You can implement checks on the Android device by querying [_Settings.Secure_](https://developer.android.com/reference/android/provider/Settings.Secure.html "Settings.Secure") for system preferences. [_Device Administration API_](https://developer.android.com/guide/topics/admin/device-admin.html "Device Administration API") offers techniques for creating applications that can enforce password policies and device encryption.
 
 ## Dynamic Analysis
 

@@ -8,6 +8,10 @@ title: Testing Random Number Generation
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
+status: deprecated
+covered_by: ['MASTG-TEST-0204', 'MASTG-TEST-0205']
+deprecation_reason: New version available in MASTG V2
 ---
 
 ## Overview

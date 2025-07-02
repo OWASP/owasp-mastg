@@ -16,7 +16,12 @@
         "titleBar.activeBackground": "#499fff",
         "titleBar.activeForeground": "#15202b",
         "titleBar.inactiveBackground": "#499fff99",
-        "titleBar.inactiveForeground": "#15202b99"
+        "titleBar.inactiveForeground": "#15202b99",
+        "editor.selectionBackground": "#ff7cf85f",
+        "editor.findMatchBackground": "#c507bb",
+        "terminal.findMatchBackground": "#ff69b4ad",
+        "terminal.findMatchHighlightBackground": "#ff69b4ad",
+        "terminal.findMatchBorder": "#ff0000",
     },
     "peacock.color": "#499FFF",
     "cSpell.words": [
@@ -41,6 +46,7 @@
         "Ljava",
         "loadbalancer",
         "mainactivity",
+        "MASTG",
         "MASVS",
         "MITM",
         "MSTG",

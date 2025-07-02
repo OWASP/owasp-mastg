@@ -16,7 +16,7 @@ draft:
   - not restricting navigation
   - not using SafeBrowsing
   - loading URL from untrusted sources e.g. intents or deep links
-status: draft
+status: placeholder
 
 ---
 

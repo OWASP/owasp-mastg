@@ -13,7 +13,7 @@ draft:
   topics:
   - Bluetooth
   - NFC
-status: draft
+status: placeholder
 
 ---
 

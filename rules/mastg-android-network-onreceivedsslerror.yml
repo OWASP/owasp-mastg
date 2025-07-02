@@ -1,0 +1,12 @@
+rules:
+  - id: mastg-android-network-onreceivedsslerror
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for the use of onReceivedSslError and ensures it throws an exception instead of silently muting TLS errors.
+    message: Improper use of onReceivedSslError handler
+    match:
+      any:
+        - public void onReceivedSslError(...) {...}
+          

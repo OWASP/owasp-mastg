@@ -13,9 +13,14 @@ document$.subscribe(function () {
         continue; // Skip this link
       }
 
-      // Exclude links that include github.com/OWASP
-      if (link.href.includes('github.com/OWASP')) {
+      // Exclude links that include github.com/OWASP and raw.githubusercontent.com/OWASP and github.com/cpholguera
+      if (link.href.includes('github.com/OWASP') || link.href.includes('raw.githubusercontent.com/OWASP') || link.href.includes('github.com/cpholguera')) {
         continue; // Skip this link
+      }
+
+      // Exclude links that are images (have only an <img> inside)
+      if (link.children.length === 1 && link.children[0].tagName === 'IMG') {
+        continue; // Skip image-only links
       }
 
       if (link.hostname !== window.location.hostname) {

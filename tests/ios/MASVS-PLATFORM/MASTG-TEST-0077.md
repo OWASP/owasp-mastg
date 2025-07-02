@@ -8,21 +8,22 @@ title: Testing WebView Protocol Handlers
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
 
 ## Static Analysis
 
-- Testing how WebViews are loaded
+- Testing How WebViews Load Content
 - Testing WebView file access
 - Checking telephone number detection
 
-### Testing How WebViews are Loaded
+### Testing How WebViews Load Content
 
 If a WebView is loading content from the app data directory, users should not be able to change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
 
-This presents an issue especially in `UIWebView`s loading untrusted content via the deprecated methods [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617979-loadhtmlstring?language=objc "UIWebView loadHTMLString:baseURL:") or [`loadData:MIMEType:textEncodingName: baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617941-loaddata?language=objc "UIWebView loadData:MIMEType:textEncodingName:baseURL:") and setting the `baseURL` parameter to `nil` or to a `file:` or `applewebdata:` URL schemes. In this case, in order to prevent unauthorized access to local files, the best option is to set it instead to `about:blank`. However, the recommendation is to avoid the use of `UIWebView`s and switch to `WKWebView`s instead.
+This presents an issue especially in `UIWebView`s loading untrusted content via the deprecated methods [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617979-loadhtmlstring?language=objc "UIWebView loadHTMLString:baseURL:") or [`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617941-loaddata?language=objc "UIWebView loadData:MIMEType:textEncodingName:baseURL:") and setting the `baseURL` parameter to `nil` or to a `file:` or `applewebdata:` URL schemes. In this case, in order to prevent unauthorized access to local files, the best option is to set it instead to `about:blank`. However, the recommendation is to avoid the use of `UIWebView`s and switch to `WKWebView`s instead.
 
 Here's an example of a vulnerable `UIWebView` from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/UIWebViewController.swift#L219 "Where\'s My Browser? UIWebViewController.swift Line 219"):
 
@@ -73,7 +74,7 @@ do {
 } catch {}
 ```
 
-If only having the compiled binary, you can also search for these methods, e.g.:
+If only having the compiled binary, you can also search for these methods using @MASTG-TOOL-0129:
 
 ```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
@@ -94,7 +95,7 @@ wkWebView.loadFileURL(scenario1Url, allowingReadAccessTo: scenario1Url)
 
 In this case, the parameter `allowingReadAccessToURL` contains a single file "WKWebView/scenario1.html", meaning that the WebView has exclusively access to that file.
 
-In the compiled binary:
+In the compiled binary you can use @MASTG-TOOL-0129:
 
 ```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadFileURL"
@@ -153,14 +154,14 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 
 For what concerns this section we will learn about:
 
-- Checking how WebViews are loaded
+- Testing How WebViews Load Content
 - Determining WebView file access
 
-### Checking How WebViews are Loaded
+### Testing How WebViews Load Content
 
-As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of the WKWebViews is loaded, the app will do so by calling [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") and `loadHTMLString:baseURL`.
+If `WKWebView`'s "scenario 2" of the ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L196) app is loaded, the app will do so by calling [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") and `loadHTMLString:baseURL`.
 
-To quickly inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
+To quickly inspect this, you can use frida-trace and trace all `loadHTMLString` and `URLForResource:withExtension:` methods.
 
 ```bash
 $ frida-trace -U "Where's My Browser?"
