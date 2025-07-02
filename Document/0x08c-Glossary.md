@@ -15,15 +15,15 @@ An encryption mode of operation is "broken" if it, when implemented correctly, s
 
 ### Deprecated
 
-When mentioned as a cryptographic term it means a mode of operation, algorithm or cryptographic function that no longer is recommended to be used for certain cryptographic operations. The function may still be recommended for certain cryptographic operations even when deprecated.
+When mentioned as a cryptographic term it means a mode of operation, algorithm or cryptographic function that no longer is recommended to be used for certain cryptographic operations. The function may still be recommended for specific other cryptographic operations even when deprecated.
 
 ### Improper
 
-Used as a catch-all term to cover security behaviors that are either "Missing" or "Insufficient/Incorrect."
+Used as a catch-all term to cover security behaviors that are either "Missing" or "Insufficient/Incorrect".
 
 ### Insufficient
 
-According to MITRE. A general term used to describe when a security property or behavior can vary in strength on a continuous or sliding scale, instead of a discrete scale. The continuous scale may vary depending on the context and risk tolerance. For example, the requirements for randomness may vary between a random selection for a greeting message versus the generation of a military-strength key. On the other hand, a weakness that allows a buffer overflow is always incorrect - there is not a sliding scale that varies across contexts ([MITRE, "2024.07.07"](https://cwe.mitre.org/documents/glossary/index.html#Insufficient "Glossary")).
+According to MITRE: _A general term used to describe when a security property or behavior can vary in strength on a continuous or sliding scale, instead of a discrete scale. The continuous scale may vary depending on the context and risk tolerance. For example, the requirements for randomness may vary between a random selection for a greeting message versus the generation of a military-strength key. On the other hand, a weakness that allows a buffer overflow is always incorrect - there is not a sliding scale that varies across contexts_ ([MITRE, "2024.07.07"](https://cwe.mitre.org/documents/glossary/index.html#Insufficient "Glossary")).
 
 ### Risk
 
