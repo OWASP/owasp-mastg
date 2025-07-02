@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Data Stored in Private Storage - Content Comparison Test
+title: Runtime Data Storage in the App Sandbox
 id: MASTG-TEST-0x52-1
 type: [dynamic]
 weakness: MASWE-0006
