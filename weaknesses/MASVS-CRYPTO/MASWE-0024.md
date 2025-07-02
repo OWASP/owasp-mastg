@@ -17,7 +17,7 @@ refs:
 - https://web.archive.org/web/20170810051504/http://www.tcs.hut.fi/old/papers/aura/aura-csfws97.pdf
 - https://en.wikipedia.org/wiki/Replay_attack
 draft:
-  description: Improper use of MAC. E.g: allowing the user to control the input.
+  description: Improper use of MAC. E.g. allowing the user to control the input.
     may expose cryptographic vulnerabilities, affecting data integrity.
   topics: null
 status: draft
