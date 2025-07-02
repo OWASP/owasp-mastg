@@ -3,12 +3,13 @@ platform: ios
 title: References to APIs for Accessing Private Storage
 id: MASTG-TEST-0x52-2
 type: [static]
+best-practices: [MASTG-BEST-0014]
 weakness: MASWE-0006
 ---
 
 ## Overview
 
-This test case focuses on identifying APIs that stores data in Private Storage
+This test is a static counterpart to @MASTG-TEST-0x52-3.
 
 ## Steps
 
