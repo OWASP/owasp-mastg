@@ -52,5 +52,5 @@ For example, AES uses a key of exactly 16 bytes. A naive implementation might us
 ## Mitigations
 
 - **Generate random salt using CSPRNGs with high entropy seeding**: Ensuring the use of strong, cryptographically secure PRNGs called CSPRNGs with high entropy seeding is essential for robust key security.
-- **Use Recommended and Approved algorithms that are fit for purpose**: In cases where the input is user-controlled, use key derivation functions such as Argon2, scrypt, bcrypt or PBKDF2 that provides a sufficient level of computational effort. Otherwise, ensure the input is thoroughly random using a recommended CSPRNG that guarantees high entropy seeding.
+- **Use Recommended and Approved algorithms that are fit for purpose**: In cases where the input is user-controlled, use key derivation functions such as Argon2, scrypt, bcrypt or PBKDF2 that provide a sufficient level of computational effort. Otherwise, ensure the input is thoroughly random using a recommended CSPRNG that guarantees high entropy seeding.
 - **Prefer HKDF and other KDFs that were designed specifically for key derivation**: HKDF and other KDFs specifically meant for key derivation will ensure the app isn't exposed to length-extension attacks.
