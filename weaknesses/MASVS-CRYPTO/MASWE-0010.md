@@ -30,7 +30,7 @@ HKDFs or any other type of integrity based hashing algorithm like MD5, SHA-1, SH
 A similar issue happens when using deprecated, risky or broken KDF- or password hashing algorithms known to the vulnerable to various types of attacks.
 Also, cryptographic algorithms (such as symmetric encryption or some MACs) expect a secret input of a given size.
 
-For example, AES uses a key of exactly 16 bytes. A naive implementation might use a username, a user-supplied password or pin directly as an input key. Using a username, a user-supplied password or pin as an input key has the following problems:
+For example, AES uses a key of exactly 16 bytes. A naive implementation might use a username, a low entropy password or pin directly as an input key. Using a username, a low entropy password or pin as an input key has the following problems:
 
 - If the password is smaller than the key, the full key space isn't used. The remaining space is padded, often with spaces or null bytes.
 - A user-supplied password will realistically consist mostly of displayable and pronounceable characters. Therefore, only some of the possible 256 ASCII characters are used and entropy is decreased by approximately a factor of four.
@@ -43,9 +43,9 @@ For example, AES uses a key of exactly 16 bytes. A naive implementation might us
 
 ## Modes of Introduction
 
-- **Using static or predictable salt on low-entropy input**: Using user-supplied input together with a static or predictable salt makes it possible for the attacker to to pre-compute the hash value using dictionary attack, effectively disabling the protection that a salt would provide.
-- **Using user-supplied salt**: Using user-supplied salt will make it possible for an attacker to extract all derived keys through a KDF by supplying the user-supplied salt as an argument.
-- **Using non-resource intensive algorithms on low-entropy input**: Using user-supplied input together with a HKDF makes it easy for password crackers to execute a preimage attack.
+- **Using static or predictable salt on low-entropy input**: Using an enumerable pin code or low entropy password together with a static or predictable salt makes it possible for the attacker to to pre-compute the hash value using dictionary attack, effectively disabling the protection that a salt would provide.
+- **Using user-supplied salt**: Using a low entropy salt will make it possible for an attacker to extract all derived keys through a KDF by supplying the low entropy salt as an argument.
+- **Using non-resource intensive algorithms on low-entropy input**: Using an enumerable pin code or low entropy password together with a HKDF makes it easy for password crackers to execute a preimage attack.
 - **Use a hash function as a general-purpose KDF**: In scenarios where the information used during key derivation is attacker-controlled, using a integrity based hash function (e.g from the SHA family) as KDF can expose the application to brute force or length-extension attacks.
 - **Using Deprecated, Risky or Broken Algorithms**: Relying on deprecated, risky or inherently broken cryptographic algorithms can result in the generation of weaker keys. As these algorithms often have vulnerabilities or support shorter key lengths, they are more susceptible to modern attacks, compromising the overall security of the app.
 
