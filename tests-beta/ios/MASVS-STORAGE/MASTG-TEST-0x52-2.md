@@ -16,10 +16,10 @@ This test case focuses on identifying APIs that stores data in Private Storage
 
 2. Search for APIs that indicates a use of Private Storage. This API includes:
 
-    - [UserDefaults](https://developer.apple.com/documentation/foundation/userdefaults)
-    - [documentDirectory](https://developer.apple.com/documentation/foundation/filemanager/searchpathdirectory/documentdirectory)
-    - [applicationSupportDirectory](https://developer.apple.com/documentation/foundation/filemanager/searchpathdirectory/applicationsupportdirectory)
-    - [userDomainMask](https://developer.apple.com/documentation/foundation/filemanager/searchpathdomainmask/1408037-userdomainmask)
+    - [`UserDefaults`](https://developer.apple.com/documentation/foundation/userdefaults)
+    - [`documentDirectory`](https://developer.apple.com/documentation/foundation/filemanager/searchpathdirectory/documentdirectory)
+    - [`applicationSupportDirectory`](https://developer.apple.com/documentation/foundation/filemanager/searchpathdirectory/applicationsupportdirectory)
+    - [`userDomainMask`](https://developer.apple.com/documentation/foundation/filemanager/searchpathdomainmask/1408037-userdomainmask)
 
 ## Observation
 
