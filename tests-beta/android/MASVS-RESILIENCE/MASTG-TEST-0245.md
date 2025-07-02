@@ -15,7 +15,7 @@ This test checks if the app tries to detect whether the device is rooted. It doe
 
 The testing process involves analyzing the device environment to identify common indicators of root access. This includes checking for the presence of:
 
-- root management tools - e.g. Magisk, SuperSU
+- root management tools - e.g. Magisk, KernelSU
 - suspicious files or directories - e.g `/system/bin/su`, `/system/xbin/su`
 - modified system properties - e.g. `ro.debuggable`, `ro.secure`
 
