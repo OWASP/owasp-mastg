@@ -11,7 +11,7 @@ The meaning depends on the context.
 
 A "broken" cryptographic hash algorithm is a function that is denounced as "broken" because a collision attack exist that is faster to execute then a birthday attack ([Wikipedia, "2025.02.19"](https://en.wikipedia.org/wiki/Collision_attack "Collision attack")).
 
-An encryption mode of operation is "broken" if it, when implemented correctly, still faces the risk from known attacks that can "break" the confidentiality of the encrypted data.
+A cryptographic mode of operation is "broken" if it, when implemented correctly, still faces the risk from known attacks that can "break" the confidentiality of the encrypted data.
 
 ### Deprecated
 
