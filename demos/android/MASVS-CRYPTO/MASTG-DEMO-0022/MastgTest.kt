@@ -72,7 +72,7 @@ class MastgTest(private val context: Context) {
         }
     }
 
-    // Risky encryption using Blowfish (weak algorithm)
+    // Risky encryption using Blowfish (risky algorithm)
     fun vulnerableBlowfishEncryption(data: String): String {
         return try {
             // insufficient key for Blowfish (risky, small key size)
