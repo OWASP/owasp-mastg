@@ -1,14 +1,15 @@
 ---
 platform: ios
-title: Secure Policy Of Data In Private Storage
+title: References to APIs for Keychain Storage with Secure Access Policies
 id: MASTG-TEST-0x52-3
-type: [static, dynamic]
+type: [static]
+best-practices: [MASTG-BEST-0014]
 weakness: MASWE-0008
 ---
 
 ## Overview
 
-This test verifies whether the data is stored with secure policy inside the Keychain. Apple provides many policies that can enforce the user to:
+This test checks whether the app uses a secure [Access Policy](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags) to store data in the Keychain. Apple offers several policies that can, for example, require the user to:
 
 - authenticate with biometrics to access data ([kSecAccessControlBiometryAny](https://developer.apple.com/documentation/security/secaccesscontrolcreateflags/biometryany))
 - set up a password on the device to store data ([kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly](https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly))
@@ -31,4 +32,4 @@ The output should allow you to identify security policies assigned to items in t
 
 ## Evaluation
 
-The test case fails if the items in the Keychain don't satisfy your app's security requirements. For example, your app might store sensitive data that you want to keep accessible only on this device. Then, such an item in the Keychain should use `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
+The test case fails if the items in the Keychain don't satisfy your app's security requirements. For example, your app might store sensitive data that you want to keep accessible only on this device. Then, such an item in the Keychain should use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
