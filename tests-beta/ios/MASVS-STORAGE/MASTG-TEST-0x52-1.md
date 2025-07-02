@@ -4,6 +4,7 @@ title: Runtime Data Storage in the App Sandbox
 id: MASTG-TEST-0x52-1
 type: [dynamic]
 weakness: MASWE-0006
+best-practices: [MASTG-BEST-0014]
 ---
 
 ## Overview
