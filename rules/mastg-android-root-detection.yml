@@ -1,0 +1,27 @@
+rules:
+  - id: mastg-android-root-detection
+    languages: [java, kotlin]
+    severity: INFO
+    message: Root detection mechanisms have been identified in this application.
+    patterns:
+      - pattern-either:
+          - pattern: File("/system/app/Superuser.apk").exists()
+          - pattern: File("/system/xbin/su").exists()
+          - pattern: File("/system/bin/su").exists()
+          - pattern: File("/sbin/su").exists()
+          - pattern: File("/system/sd/xbin/su").exists()
+          - pattern: File("/system/bin/.ext/.su").exists()
+          - pattern: File("/system/usr/we-need-root/su-backup").exists()
+          - pattern: File("/system/xbin/mu").exists()
+          - pattern: Runtime.getRuntime().exec("which su")
+          - pattern: Runtime.getRuntime().exec(arrayOf("which", "su"))
+          - pattern: Runtime.getRuntime().exec(arrayOf("getprop", "ro.debuggable"))
+          - pattern: Runtime.getRuntime().exec(arrayOf("getprop", "ro.secure"))
+          - pattern: Runtime.getRuntime().exec(arrayOf("getprop", "ro.build.tags"))
+          - pattern: Runtime.getRuntime().exec($_)
+      - pattern-not: |
+          try {
+            Runtime.getRuntime().exec($_);
+          } catch (Exception e) {
+            $_;
+          }
