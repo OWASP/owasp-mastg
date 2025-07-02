@@ -151,24 +151,24 @@ When using a password hashing algorithm as a KDF, also ensure to choose an appro
 
 It is fundamentally impossible to produce truly random numbers on any deterministic device. Pseudo-random number generators (PRNG) compensate for this by producing a stream of pseudo-random numbers - a stream of numbers that appear as if they were randomly generated. The quality of the generated numbers varies with the type of algorithm used. Cryptographically secure PRNGs (CSPRNG) generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks (e.g. it is statistically infeasible to predict the next number produced).
 
-PRNG can be vulnerable when developers use a regular PRNG for cryptographic purposes, instead of a cryptographically-secure PRNG (["Cryptographically secure pseudorandom number generator", 2025.01.31](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator "WIkipedia: Cryptographically secure pseudorandom number generator")). All random numbers and strings which are intended to be non-guessable must be generated using a cryptographically-secure pseudo-random number generator (CSPRNG) and have at least 128 bits of entropy. Note that UUIDs do not respect this condition.
+PRNGs can be vulnerable when developers use a regular PRNG for cryptographic purposes, instead of a cryptographically secure PRNG (["Cryptographically secure pseudorandom number generator", 2025.01.31](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator "Wikipedia: Cryptographically secure pseudorandom number generator")). All random numbers and strings which are intended to be non-guessable must be generated using a cryptographically secure pseudo-random number generator (CSPRNG) and have at least 128 bits of entropy. Note that UUIDs do not meet this condition.
 
-Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS specific sections.
+Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS-specific sections.
 
 ### Weak, Risky or Broken Hashing
 
 Make sure to choose a hash function that is built for the purpose you intend it for.
-When hashes are needed for integrity checks, choose an algorithm that is sufficiently collision resistant like the integrity algorithms SHA-256, SHA-384, SHA-512, BLAKE3 and the SHA-3 family. Choosing a risky or broken algorithm may compromise the integrity and authenticity of data at rest and in transit. Also keep in mind that hash functions used for integrity checks, like the SHA series, should not be used for key derivation together with predictable input or in password hashing.
+When hashes are needed for integrity checks, choose an algorithm that is sufficiently collision resistant, such as the integrity algorithms SHA-256, SHA-384, SHA-512, BLAKE3, and the SHA-3 family. Choosing a risky or broken algorithm may compromise the integrity and authenticity of data at rest and in transit. Also keep in mind that hash functions used for integrity checks, like the SHA series, should not be used for key derivation together with predictable input or in password hashing.
 
 ### Custom Implementations of Cryptography
 
-Inventing proprietary cryptographic functions is time consuming, difficult, and likely to fail. Instead, we can use well-known algorithms that are widely regarded as secure. Mobile operating systems offer standard cryptographic APIs that implement those algorithms.
+Inventing proprietary cryptographic functions is time-consuming, difficult, and likely to fail. Instead, we can use well-known algorithms that are widely regarded as secure. Mobile operating systems offer standard cryptographic APIs that implement those algorithms.
 
 Carefully inspect all the cryptographic methods used within the source code, especially those that are directly applied to sensitive data. All cryptographic operations should use standard cryptographic APIs for Android and iOS (we'll write about those in more detail in the platform-specific chapters). Any cryptographic operations that don't invoke standard routines from known providers should be closely inspected. Pay close attention to standard algorithms that have been modified. Remember that encoding isn't the same as encryption! Always investigate further when you find bit manipulation operators like XOR (exclusive OR).
 
-At all implementations of cryptography, you need to ensure that the following always takes place:
+In all implementations of cryptography, you need to ensure that the following always takes place:
 
-- Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption or in case of error.
+- Working keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption or in case of error.
 - The inner state of a cipher should be removed from memory as soon as possible.
 
 ### Inadequate AES Configuration
@@ -177,15 +177,15 @@ Advanced Encryption Standard (AES) is the widely accepted standard for symmetric
 
 As of this writing, no efficient cryptanalytic attacks against AES have been discovered. However, implementation details and configurable parameters such as the block cipher mode leave some margin for error.
 
-#### Recommendations for Block Cipher Mode
+#### Inadequate Block Cipher Mode
 
 Block-based encryption is performed upon discrete input blocks (for example, AES has 128-bit blocks). If the plaintext is larger than the block size, the plaintext is internally split up into blocks of the given input size and encryption is performed on each block. A block cipher mode of operation (or block mode) determines if the result of encrypting the previous block impacts subsequent blocks.
 
-[ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_%28ECB%29 "Electronic Codebook (ECB)") divides the input into fixed-size blocks that are encrypted separately using the same key. If multiple divided blocks contain the same plaintext, they will be encrypted into identical ciphertext blocks which makes patterns in data easier to identify. In some situations, an attacker might also be able to replay the encrypted data.
+Avoid using the [ECB (Electronic Codebook)](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_%28ECB%29 "Electronic Codebook (ECB)") mode. ECB divides the input into fixed-size blocks that are encrypted separately using the same key. If multiple divided blocks contain the same plaintext, they will be encrypted into identical ciphertext blocks which makes patterns in data easier to identify. In some situations, an attacker might also be able to replay the encrypted data.
 
 <img src="Images/Chapters/0x07c/EncryptionMode.png" width="550px" />
 
-Verify that Cipher Block Chaining (CBC) mode is used instead of ECB. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block is unique and randomized even if blocks contain the same information. Please note that it is best to combine CBC with an HMAC and/or ensure that no errors are given such as "Padding error", "MAC error", "decryption failed" in order to be more resistant to a padding oracle attack.
+For new designs, prefer authenticated encryption with associated data (AEAD) modes such as Galois/Counter Mode (GCM) or Counter with CBC-MAC (CCM), as these provide both confidentiality and integrity. If GCM or CCM are not available, Cipher Block Chaining (CBC) mode is better than ECB, but should be combined with an HMAC and/or ensure that no errors are given such as "Padding error", "MAC error", or "decryption failed" to be more resistant to padding oracle attacks. In CBC mode, plaintext blocks are XORed with the previous ciphertext block, ensuring that each encrypted block is unique and randomized even if blocks contain the same information.
 
 When storing encrypted data, we recommend using a block mode that also protects the integrity of the stored data, such as Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation, and thus is available on all modern platforms. To protect the integrity and authenticity of the data using CBC mode, it is recommended to combine the techniques of the Counter (CTR) mode and the Cipher Block Chaining-Message Authentication Code (CBC-MAC) into what is called CCM Mode ([NIST, 2004](https://csrc.nist.gov/pubs/sp/800/38/c/upd1/final "NIST: Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality")).
 
@@ -197,11 +197,11 @@ CBC, OFB, CFB, PCBC, GCM mode require an initialization vector (IV) as an initia
 
 Pay attention to cryptographic libraries used in the code: many open source libraries provide examples in their documentations that might follow bad practices (e.g. using a hardcoded IV). A popular mistake is copy-pasting example code without changing the IV value.
 
-#### Using the same key for encryption and authentication
+#### Using the Same Key for Encryption and Authentication
 
 One common mistake is to reuse the same key for CBC encryption and CBC-MAC. Reuse of keys for different purposes is generally not recommended, but in the case of CBC-MAC the mistake can lead to a MitM attack (["CBC-MAC", 2024.10.11](https://en.wikipedia.org/wiki/CBC-MAC "Wikipedia: CBC-MAC")).
 
-#### Initialization Vectors in stateful operation modes
+#### Initialization Vectors in Stateful Operation Modes
 
 Please note that the usage of IVs is different when using CTR and GCM mode in which the initialization vector is often a counter (in CTR combined with a nonce). So here using a predictable IV with its own stateful model is exactly what is needed. In CTR you have a new nonce plus counter as an input to every new block operation. For example: for a 5120 bit long plaintext: you have 20 blocks, so you need 20 input vectors consisting of a nonce and counter. Whereas in GCM you have a single IV per cryptographic operation, which should not be repeated with the same key. See section 8 of the [documentation from NIST on GCM](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode and GMAC") for more details and recommendations of the IV.
 
@@ -219,7 +219,7 @@ Therefore it is best to consider the following, if keys are still needed at the 
 - **Keys in a Remote Server**: you can use remote Key vaults such as Amazon KMS or Azure Key Vault. For some use cases, developing an orchestration layer between the app and the remote resource might be a suitable option. For instance, a serverless function running on a Function as a Service (FaaS) system (e.g. AWS Lambda or Google Cloud Functions) which forwards requests to retrieve an API key or secret. There are other alternatives such as Amazon Cognito, Google Identity Platform or Azure Active Directory.
 - **Keys inside Secure Hardware-backed Storage**: make sure that all cryptographic actions and the key itself remain in the Trusted Execution Environment (e.g. use [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android keystore system")) or [Secure Enclave](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Storing Keys in the Secure Enclave") (e.g. use the Keychain). Refer to the [Android Data Storage](0x05d-Testing-Data-Storage.md#storing-keys-using-hardware-backed-android-keystore) and [iOS Data Storage](0x06d-Testing-Data-Storage.md#the-keychain) chapters for more information.
 - **Keys protected by Envelope Encryption**: If keys are stored outside of the TEE / SE, consider using multi-layered encryption: an _envelope encryption_ approach (see [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#encrypting-stored-keys "OWASP Cryptographic Storage Cheat Sheet: Encrypting Stored Keys"), [Google Cloud Key management guide](https://cloud.google.com/kms/docs/envelope-encryption?hl=en "Google Cloud Key management guide: Envelope encryption"), [AWS Well-Architected Framework guide](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html "AWS Well-Architected Framework")), or [a HPKE approach](https://tools.ietf.org/html/draft-irtf-cfrg-hpke-08 "Hybrid Public Key Encryption") to encrypt data encryption keys with key encryption keys.
-- **Keys in Memory**: make sure that keys live in memory for the shortest time possible and consider zeroing out and nullifying keys after successful cryptographic operations, and in case of error. For general cryptocoding guidelines, refer to [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data").
+- **Keys in Memory**: make sure that keys live in memory for the shortest time possible and consider zeroing out and nullifying keys after successful cryptographic operations, and in case of error. Note: In some languages and platforms (such as those with garbage collection or memory management optimizations), reliably zeroing memory may not be possible, as the runtime may move or copy memory or delay actual erasure. For general cryptocoding guidelines, refer to [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data").
 
 Note: given the ease of memory dumping, never share the same key among accounts and/or devices, other than public keys used for signature verification or encryption.
 
