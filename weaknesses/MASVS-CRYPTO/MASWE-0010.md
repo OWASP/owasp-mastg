@@ -26,7 +26,7 @@ Improper Key derivation functions will generate a key using a scheme or iteratio
 In cases where a user-supplied password or pin is used without a sufficiently random salt the resulting output will be identical or similar enough to allow an attacker to execute a brute force attack to find the original password/pin using the KDF as an "oracle".
 A similar issue happens when the salt is user-supplied. Consider a mobile app that generates user keys from a master key on demand during installation. Let's say that a key used in the mobile app is derived from this master key using the username or other user supplied value as salt. Such an implementation can make it possible for an attacker to retrieve the derived key by using the username or supplied user value as input.
 
-HKDFs or any other type of integrity based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 aren't designed for low-entropy inputs like in the username example above. Therefore, password crackers can fairly efficiently crack massive amounts of passwords for KDFs that aren't purposefully designed to be slow and memory-intensive. 
+HKDFs or any other type of integrity based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 aren't designed for low-entropy inputs like in the username example above. Therefore, password crackers can fairly efficiently crack massive amounts of passwords for KDFs that aren't purposefully designed to be slow and memory-intensive.
 A similar issue happens when using deprecated, risky or broken KDF- or password hashing algorithms known to the vulnerable to various types of attacks.
 Also, cryptographic algorithms (such as symmetric encryption or some MACs) expect a secret input of a given size.
 
