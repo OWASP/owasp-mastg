@@ -23,9 +23,9 @@ draft:
 status: draft
 
 ---
-Improper use of MAC by e.g by generating a MAC over a message without the timestamp can make the application susceptible for replay attacks.
+Improper use of a MAC by e.g., generating a MAC over a message without the timestamp can make the application susceptible for replay attacks.
 
-Another common issue is using HMAC with on low-entropy input with any type of general based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HMAC aren't designed for low-entropy inputs or low-entropy keys. Doing so will result in producing "weak" message digest that easily can be exploited.
+Another common issue is using an HMAC with any type of general based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HMAC aren't designed for low-entropy inputs or low-entropy keys. Doing so will result in producing "weak" message digests that easily can be exploited.
 
 A deprecated HMAC implementation may contain bugs that could compromise the authenticity of the data.
 

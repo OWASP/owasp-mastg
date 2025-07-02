@@ -45,7 +45,7 @@ The test case fails if you can find the use of "broken" hashing algorithms withi
 - MD5
 - SHA-1
 
-**Stay up-to-date**: This is a non-exhaustive list of weak, risky or broken algorithms. Make sure to check the latest standards and recommendations from organizations such as the National Institute of Standards and Technology (NIST), the German Federal Office for Information Security (BSI) or any other relevant authority in your region. When building an app that uses hashes that will be stored for a considerable long time. Make sure that you follow NIST recommendations about how to ["Transition to Post-Quantum Cryptography Standards"](https://csrc.nist.gov/pubs/ir/8547/ipd).
+**Stay up-to-date**: This is a non-exhaustive list of weak, risky or broken algorithms. Make sure to check the latest standards and recommendations from organizations such as the National Institute of Standards and Technology (NIST), the German Federal Office for Information Security (BSI) or any other relevant authority in your region. When building an app that uses hashes that will be stored for a considerable long time, be sure to follow NIST recommendations about how to ["Transition to Post-Quantum Cryptography Standards"](https://csrc.nist.gov/pubs/ir/8547/ipd).
 
 **Context Considerations**:
 

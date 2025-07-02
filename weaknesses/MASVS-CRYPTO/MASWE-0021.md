@@ -24,15 +24,15 @@ status: draft
 
 ---
 
-Choosing a deprecated, risky or broken hash algorithm, that is insufficiently collision resistant, may compromise the integrity and authenticity of data at rest and in transit by opening the application up for collision attacks.
+Choosing a deprecated, risky or broken hash algorithm, that is insufficiently collision resistant, may compromise the integrity and authenticity of data at rest and in transit by making the app vulnerable to collision attacks.
 
-when performing key derivation together with predictable input or in password hashing, the digest (or hash) of an improper implemented- or used hash function may allow and adversary to reasonably determine the original input (preimage attack), find another input that can produce the same hash (2nd preimage attack), or find multiple inputs that evaluate to the same hash (birthday attack/collision attack), given the actor can arbitrarily choose the inputs to be hashed and can do so a reasonable amount of times
+when performing key derivation together with predictable input or in password hashing, the digest (or hash) of an improper implemented or used hash function may allow an adversary to reasonably determine the original input (preimage attack), find another input that can produce the same hash (second preimage attack), or find multiple inputs that evaluate to the same hash (birthday attack/collision attack), given the actor can arbitrarily choose the inputs to be hashed and can do so a reasonable amount of times.
 
 What is regarded as "reasonable" varies by context and threat model, but in general, "reasonable" could cover any attack that is more efficient than brute force (i.e., on average, attempting half of all possible combinations). Note that some attacks might be more efficient than brute force but are still not regarded as achievable in the real world.
 
-Any algorithm that does not meet the above conditions will generally be considered risky or to "weak" for general use in hashing. When a collision attack is discovered and is found to be faster than a birthday attack, a hash function is often denounced as "broken". This is the case for MD5 and SHA-1.
+Any algorithm that does not meet the above conditions will generally be considered risky or too "weak" for general use in hashing. When a collision attack is discovered and is found to be faster than a birthday attack, a hash function is often denounced as "broken". This is the case for MD5 and SHA-1.
 
-Another common issue is using HKDF for key derivation with any type of integrity based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HKDF aren't design for low-entropy inputs. Doing so will result in producing "weak" hashes that easily can be broken.
+Another common issue is using a HKDF for key derivation with any type of integrity based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HKDF aren't designed for low-entropy inputs. Doing so will result in producing "weak" hashes that easily can be broken.
 
 ## Impact
 
@@ -42,8 +42,8 @@ Another common issue is using HKDF for key derivation with any type of integrity
 
 ## Modes of Introduction
 
-- **using a deprecated, risky or broken hashing algorithm**: E.g: MD5 and SHA-1 has been identified to be vulnerable for collision attacks that are faster than a birthday attack. Meaning that they are denounced as "broken".
-- **Using a insufficiently collision resistant hash**: Choosing a a hashing algorithm of insufficient length may result in loss of integrity or confidentiality.
+- **using a deprecated, risky or broken hashing algorithm**: E.g: MD5 and SHA-1 have been identified to be vulnerable to collision attacks that are faster than a birthday attack. This means they are denounced as "broken".
+- **Using an insufficiently collision resistant hash**: Choosing a a hashing algorithm of insufficient length may result in loss of integrity or confidentiality.
 - **Using non-resource intensive algorithms on low-entropy input**: Using a integrity based hashing algorithm to hash low-entry input like pin numbers would make brute-force or dictionary attacks trivial.
 
 ## Mitigations
