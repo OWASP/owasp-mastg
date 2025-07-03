@@ -1,0 +1,15 @@
+rules:
+  - id: mastg-android-ssl-socket-hostnameverifier
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rules scans for the usage of SSLSocket API with a HostnameVerifier.
+    message: "Detected usage of SSLSocket API with or without a HostnameVerifier"
+    match:
+      any:
+        - pattern: SSLSocketFactory.getDefault()
+        - pattern: (SSLSocketFactory) $_
+        - pattern: $SF.createSocket(...)
+        - pattern: HttpsURLConnection.getDefaultHostnameVerifier()
+        - pattern: $HNV.verify($_, $_)

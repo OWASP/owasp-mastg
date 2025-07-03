@@ -8,6 +8,7 @@ title: Testing App Permissions
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -20,9 +21,9 @@ Since iOS 10, these are the main areas which you need to inspect for permissions
 - Code Signing Entitlements File
 - Embedded Provisioning Profile File
 - Entitlements Embedded in the Compiled App Binary
-- Source Code Inspection
+- Usage of Permissions in Source Code
 
-### Review application source code
+### Purpose Strings in the Info.plist File
 
 If having the original source code, you can verify the permissions included in the `Info.plist` file:
 
@@ -32,8 +33,6 @@ If having the original source code, you can verify the permissions included in t
 You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
 
 <img src="Images/Chapters/0x06h/purpose_strings_xcode.png" width="100%" />
-
-### Review Info.plist
 
 If only having the IPA:
 
@@ -64,7 +63,7 @@ It should be suspicious that a regular solitaire game requests this kind of reso
 
 Apart from simply checking if the permissions make sense, further analysis steps might be derived from analyzing purpose strings e.g. if they are related to storage sensitive data. For example, `NSPhotoLibraryUsageDescription` can be considered as a storage permission giving access to files that are outside of the app's sandbox and might also be accessible by other apps. In this case, it should be tested that no sensitive data is being stored there (photos in this case). For other purpose strings like `NSLocationAlwaysUsageDescription`, it must be also considered if the app is storing this data securely. Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
-### Review Embedded Provisioning Profile File
+### Embedded Provisioning Profile File
 
 When you do not have the original source code, you should analyze the IPA and search inside for the _embedded provisioning profile_ that is usually located in the root app bundle folder (`Payload/<appname>.app/`) under the name `embedded.mobileprovision`.
 
@@ -76,11 +75,11 @@ security cms -D -i embedded.mobileprovision
 
 and then search for the Entitlements key region (`<key>Entitlements</key>`).
 
-### Review Entitlements Embedded in the Compiled App Binary
+### Entitlements Embedded in the Compiled App Binary
 
 If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could also be the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself (see @MASTG-TECH-0111).
 
-#### Source Code Inspection
+### Usage of Permissions in Source Code
 
 After having checked the `<appname>.entitlements` file and the `Info.plist` file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code review should be enough. However, if you don't have the original source code, verifying the use of permissions might be specially challenging as you might need to reverse engineer the app, refer to the "Dynamic Analysis" for more details on how to proceed.
 
@@ -110,7 +109,7 @@ You can use the [Apple Developer Documentation](https://developer.apple.com/docu
 
 Go through the application searching for usages of these APIs and check what happens to sensitive data that might be obtained from them. For example, it might be stored or transmitted over the network, if this is the case, proper data protection and transport security should be additionally verified.
 
-### Dynamic Analysis
+## Dynamic Analysis
 
 With help of the static analysis you should already have a list of the included permissions and app capabilities in use. However, as mentioned in "Source Code Inspection", spotting the sensitive data and APIs related to those permissions and app capabilities might be a challenging task when you don't have the original source code. Dynamic analysis can help here getting inputs to iterate onto the static analysis.
 

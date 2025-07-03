@@ -3,7 +3,7 @@ title: Obtaining Compiler-Provided Security Features
 platform: ios
 ---
 
-The iOS compiler provides several [security features that can be enabled during compilation](../../../Document/0x06i-Testing-Code-Quality-and-Build-Settings.md/#binary-protection-mechanisms). These features help protect the application from common vulnerabilities like buffer overflows and memory leaks. This technique provides guidance on how to check if these features are enabled in the compiled binary.
+The iOS compiler provides several [security features that can be enabled during compilation](../../Document/0x06i-Testing-Code-Quality-and-Build-Settings.md/#binary-protection-mechanisms). These features help protect the application from common vulnerabilities like buffer overflows and memory leaks. This technique provides guidance on how to check if these features are enabled in the compiled binary.
 
 ## @MASTG-TOOL-0073
 
@@ -12,7 +12,7 @@ In radare2, the presence of these compiler-provided security features can be che
 **Check for PIC and Canaries:** Using the `i` command, you can check if the binary has Position Independent Code (PIC) enabled (`pic`) and if it has stack canaries (`canary`).
 
 ```sh
-r2 MASTestApp                              
+r2 MASTestApp
 [0x100007408]> i~canary,pic
 canary   true
 pic      true

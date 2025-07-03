@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-CRYPTO-4]
   masvs-v2: [MASVS-CRYPTO-1]
+  cwe: [329]
 
 refs:
 - https://developer.android.com/privacy-and-security/cryptography#pbe-without-iv
@@ -20,7 +21,7 @@ draft:
   - Hardcoded IVs
   - Null IVs
   - Reused IVs
-status: draft
+status: placeholder
 
 ---
 

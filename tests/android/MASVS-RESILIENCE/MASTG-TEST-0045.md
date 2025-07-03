@@ -7,6 +7,7 @@ platform: android
 title: Testing Root Detection
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Bypassing Root Detection
@@ -31,7 +32,7 @@ Check for root detection mechanisms, including the following criteria:
 
 Develop bypass methods for the root detection mechanisms and answer the following questions:
 
-- Can the mechanisms be easily bypassed with standard tools, such as RootCloak?
+- Can the mechanisms be easily bypassed with standard tools, such as @MASTG-TOOL-0142?
 - Is static/dynamic analysis necessary to handle the root detection?
 - Do you need to write custom code?
 - How long did successfully bypassing the mechanisms take?

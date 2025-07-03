@@ -8,6 +8,7 @@ title: Testing for Sensitive Functionality Exposure Through IPC
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -162,7 +163,7 @@ smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
 }
 ```
 
-BroadcastReceivers should use the `android:permission` attribute;  otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://developer.android.com/reference/android/content/Context#sendBroadcast%28android.content.Intent,%20java.lang.String%29 "SendBroadcast"). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
+BroadcastReceivers should use the `android:permission` attribute; otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://developer.android.com/reference/android/content/Context#sendBroadcast%28android.content.Intent,%20java.lang.String%29 "SendBroadcast"). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
 
 ## Dynamic Analysis
 

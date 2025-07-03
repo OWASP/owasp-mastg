@@ -2,6 +2,9 @@
 title: Cydia
 platform: ios
 source: https://cydia.saurik.com/
+status: deprecated
+deprecation_note: Modern Jailbreaks like Dopamine and palera1n use more modern package managers like Sileo and Zebra. Cydia has not received any meaningful update since iOS 14 and is no longer relevant on modern jailbreaks.
+covered_by: [MASTG-TOOL-0064]
 ---
 
 Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
@@ -13,7 +16,7 @@ Many tools on a jailbroken device can be installed by using Cydia, which is the 
 - <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
 - <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
 
-> In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you’re trying to remove sources.
+> In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you're trying to remove sources.
 
 After adding all the suggested repositories above you can install the following useful packages from Cydia to get started:
 

@@ -14,6 +14,8 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 ## Authors
 
+<!-- markdownlint-disable search-replace -->
+
 ### Bernhard Mueller
 
 Bernhard is a cyber security specialist with a talent for hacking systems of all kinds. During more than a decade in the industry, he has published many zero-day exploits for software such as MS SQL Server, Adobe Flash Player, IBM Director, Cisco VOIP, and ModSecurity. If you can name it, he has probably broken it at least once. BlackHat USA commended his pioneering work in mobile security with a Pwnie Award for Best Research.
@@ -45,6 +47,8 @@ Jeroen is a mobile security lead responsible for quality assurance on mobile sec
 ### Vikas Gupta
 
 Vikas is an experienced cyber security researcher, with expertise in mobile security. In his career he has worked to secure applications for various industries including fintech, banks and governments. He enjoys reverse engineering, especially obfuscated native code and cryptography. He holds masters in security and mobile computing, and an OSCP certification. He is always open to share his knowledge and exchange ideas.
+
+<!-- markdownlint-disable search-replace -->
 
 <!-- \pagebreak -->
 

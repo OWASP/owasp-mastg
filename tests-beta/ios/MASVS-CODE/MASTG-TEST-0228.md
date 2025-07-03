@@ -4,6 +4,7 @@ platform: ios
 id: MASTG-TEST-0228
 type: [static]
 weakness: MASWE-0116
+profiles: [L2]
 ---
 
 ## Overview
@@ -20,8 +21,7 @@ This test case checks if the main executable is compiled with PIE.
 ## Steps
 
 1. Extract the application and identify the main binary (@MASTG-TECH-0054).
-2. Identify all shared libraries (@MASTG-TECH-0082).
-3. Run @MASTG-TECH-0118 on the main binary and grep for "pic" or the corresponding keyword used by the selected tool.
+2. Run @MASTG-TECH-0118 on the main binary and grep for "pic" or the corresponding keyword used by the selected tool.
 
 ## Observation
 

@@ -34,7 +34,7 @@ The following files are unpacked:
     - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
 - assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager) can retrieve
 - classes.dex: classes compiled in the DEX file format, that Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
-- lib: directory containing 3rd party libraries that are part of the APK
+- lib: directory containing third-party libraries that are part of the APK
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
