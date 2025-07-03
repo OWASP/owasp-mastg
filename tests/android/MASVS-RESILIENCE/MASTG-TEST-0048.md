@@ -12,7 +12,7 @@ profiles: [R]
 
 ## Effectiveness Assessment
 
-Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Xposed, Substrate for Android, RootCloak, Android SSL Trust Killer.
+Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: @MASTG-TOOL-0031, @MASTG-TOOL-0027.
 
 The app should respond in some way to the presence of those tools. For example by:
 

@@ -170,6 +170,26 @@ def get_v1_refactor_tests_banner(meta, url, title):
 """
     return banner
 
+def get_deprecated_tools_banner(meta):
+
+    deprecation_note = meta.get('deprecation_note', "The tool is no longer relevant or was replaced by other tools.")
+
+    deprecation_note = f"**Reason**: {deprecation_note}"
+
+    banner = f"""
+!!! warning "Deprecated Tool"
+
+    This tool is **deprecated** and should not be used anymore.
+
+    {deprecation_note}
+
+    **Use instead**:
+
+    - {", ".join([f"@{id}" for id in meta.get('covered_by', [])])}
+"""
+
+    return banner
+
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
@@ -190,6 +210,9 @@ def on_page_markdown(markdown, page, config, **kwargs):
             banners.append(get_tests_placeholder_banner(page.meta))
         if link := config["issue_mapping"].get(page.meta.get("id")):
             banners.append(get_v1_refactor_tests_banner(page.meta, link[0], escape(link[1])))
+
+    if "MASTG/tools/" in path and page.meta.get('status') == 'deprecated':
+        banners.append(get_deprecated_tools_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown
