@@ -10,7 +10,7 @@ test: MASTG-TEST-0207
 
 The code snippet below shows sample code which stores sensitive data using `SharedPreferences`. It stores sensitive data using `String` and `StringSet`.
 
-{{ MastgTest.kt # MastgTest_reversed.java }}
+{{ MastgTest.kt }}
 
 ### Steps
 

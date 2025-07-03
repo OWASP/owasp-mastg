@@ -22,7 +22,7 @@ As the parameter can be variable, the demo sets the ECB block mode in the follow
 2. ECB as the second of two parameters
 3. ECB as the first of two parameters
 
-{{ MastgTest.kt # MastgTest_reversed.java }}
+{{ MastgTest.kt }}
 
 ### Steps
 
