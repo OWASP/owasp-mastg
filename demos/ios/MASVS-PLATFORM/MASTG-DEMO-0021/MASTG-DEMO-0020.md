@@ -27,4 +27,4 @@ The output contains all uses of [sceneCaptureState](https://developer.apple.com/
 
 ### Evaluation
 
-The test succeeds because the app contains API that detects screen capturing. It's difficult to say whether the app actually uses this API but its presence indicates that the developer is aware of this API.
+The test succeeds because the app includes an API designed to detect screen capturing. While it's unclear whether the app actively uses this API or applies it to relevant screens, its presence suggests that the developer is aware of it.
