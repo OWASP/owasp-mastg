@@ -1,7 +1,7 @@
 ---
 title: Hiding sensitive content from the screenshots
 alias: hiding-sensitive-content-from-the-screenshots
-id: MASTG-BEST-0011
+id: MASTG-BEST-0015
 platform: ios
 ---
 

@@ -1,9 +1,9 @@
 ---
 title: Runtime Verification of Sensitive Content Exposure in Screenshots During App Backgrounding
 platform: ios
-id: MASTG-TEST-0240
+id: MASTG-TEST-0287
 type: [static]
-best-practices: [MASTG-BEST-0012]
+best-practices: [MASTG-BEST-0016]
 weakness: MASWE-0055
 ---
 
@@ -15,7 +15,7 @@ This test verifies that the app hides sensitive content from the screen when it 
 
 1. Exercise your app until you get to a screen with confidential data
 2. Move the app to the background.
-3. Use a tool such as @MASTG-TOOL-0031 to copy the screenshot taken by the system to your laptop for futher analysis
+3. Use a tool such as @MASTG-TOOL-0031 to copy the screenshot taken by the system to your laptop for further analysis
 4. Verify that the screenshots don't display any confidential data
 
 ## Observation
