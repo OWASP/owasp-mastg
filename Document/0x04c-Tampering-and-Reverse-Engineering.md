@@ -51,11 +51,9 @@ Keep in mind that modern mobile operating systems strictly enforce code signing,
 
 Code injection is a very powerful technique that allows you to explore and modify processes at runtime. Injection can be implemented in various ways, but you'll get by without knowing all the details thanks to freely available, well-documented tools that automate the process. These tools give you direct access to process memory and important structures such as live objects instantiated by the app. They come with many utility functions that are useful for resolving loaded libraries, hooking methods and native functions, and more. Process memory tampering is more difficult to detect than file patching, so it is the preferred method in most cases.
 
-Substrate, @MASTG-TOOL-0031, and @MASTG-TOOL-0027 are the most widely used hooking and code injection frameworks in the mobile industry. The three frameworks differ in design philosophy and implementation details: Substrate and Xposed focus on code injection and/or hooking, while Frida aims to be a full-blown "dynamic instrumentation framework", incorporating code injection, language bindings, and an injectable JavaScript VM and console.
+@MASTG-TOOL-0139, @MASTG-TOOL-0031, and @MASTG-TOOL-0027 are the most widely used hooking and code injection frameworks in the mobile industry. The three frameworks differ in design philosophy and implementation details: ElleKit and Xposed focus on code injection and/or hooking, while Frida aims to be a full-blown "dynamic instrumentation framework", incorporating code injection, language bindings, and an injectable JavaScript VM and console.
 
-However, you can also instrument apps with Substrate by using it to inject @MASTG-TOOL-0046, the programming environment (aka "Cycript-to-JavaScript" compiler) authored by Saurik of Cydia fame. To complicate things even more, Frida's authors also created a fork of Cycript called ["frida-cycript"](https://github.com/nowsecure/frida-cycript "Cycript fork powered by Frida"). It replaces Cycript's runtime with a Frida-based runtime called Mjølner. This enables Cycript to run on all the platforms and architectures maintained by frida-core (if you are confused at this point, don't worry). The release of frida-cycript was accompanied by a blog post by Frida's developer Ole titled "Cycript on Steroids", a title that [Saurik wasn't very fond of](https://www.reddit.com/r/ReverseEngineering/comments/50uweq/cycript_on_steroids_pumping_up_portability_and/ "Cycript on steroids: Pumping up portability and performance with Frida").
-
-We'll include examples of all three frameworks. We recommend starting with Frida because it is the most versatile of the three (for this reason, we'll also include more Frida details and examples). Notably, Frida can inject a JavaScript VM into a process on both Android and iOS, while Cycript injection with Substrate only works on iOS. Ultimately, however, you can of course achieve many of the same goals with either framework.
+We'll include examples of all three frameworks. We recommend starting with Frida because it is the most versatile of the three (for this reason, we'll also include more Frida details and examples). Notably, Frida can inject a JavaScript VM into a process on both Android and iOS, while injection with ElleKit only works on iOS and Xposed only works on Android. Ultimately, however, you can of course achieve many of the same goals with either framework.
 
 ## Static and Dynamic Binary Analysis
 
@@ -103,7 +101,7 @@ stp        x22, x21, [sp, #-0x30]!
 mov        rbp, rsp
 ```
 
-After the obfuscation we can observe that the symbol’s name is no longer meaningful as shown on the listing below.
+After the obfuscation we can observe that the symbol's name is no longer meaningful as shown on the listing below.
 
 ```assembly
 __T07DVIA_v232zNNtWKQptikYUBNBgfFVMjSkvRdhhnbyyFySbyypF:
@@ -127,11 +125,11 @@ The image shows how control flow flattening alters code. See ["Obfuscating C++ p
 
 #### Dead Code Injection
 
-This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behavior but increases the overhead of the reverse engineering process.
+This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn't affect the original program's behavior but increases the overhead of the reverse engineering process.
 
 #### String Encryption
 
-Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application’s binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
+Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application's binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
 
 #### Packing
 
@@ -190,7 +188,7 @@ In a real world situation, the functions are much more complex than the above ex
 - Complex equations generated by symbolic execution may not be solvable by SMT solvers because of their limitations.
 - Program is using system calls, library calls or network events which cannot be handled by symbolic execution.
 
-To overcome these challenges, typically, symbolic execution is combined with other techniques such as _dynamic execution_ (also called _concrete execution_) to mitigate the path explosion problem specific to classical symbolic execution. This combination of concrete (actual) and symbolic execution is referred to as _concolic execution_ (the name concolic stems from **conc**rete and symb**olic**), sometimes also called as _dynamic symbolic execution_.
+To overcome these challenges, typically, symbolic execution is combined with other techniques such as _dynamic execution_ (also called _concrete execution_) to mitigate the path explosion problem specific to classical symbolic execution. This combination of concrete (actual) and symbolic execution is referred to as _concolic execution_ (the name concolic stems from **conc**rete and symb**olic**), sometimes also called as _dynamic symbolic execution_.
 
 To visualize this, in the above example, we can obtain the value of the external variable by performing further reverse engineering or by dynamically executing the program and feeding this information into our symbolic execution analysis. This extra information will reduce the complexity of our equations and may produce more accurate analysis results. Together with improved SMT solvers and current hardware speeds, concolic execution allows to explore paths in medium-size software modules (i.e., on the order of 10 KLOC).
 

@@ -136,7 +136,7 @@ Typing `image list` gives a list of main executable and all dependent libraries.
 
 ## Debugging Release Apps
 
-In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the @MASTG-APP-0025 and solve it using a debugger.
+In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a third-party release application. We will continue using the @MASTG-APP-0025 and solve it using a debugger.
 
 In contrast to a debug build, the code compiled for a release build is optimized to achieve maximum performance and minimum binary build size. As a general best practice, most of the debug symbols are stripped for a release build, adding a layer of complexity when reverse engineering and debugging the binaries.
 

@@ -4,6 +4,7 @@ title: Inappropriate Key Sizes
 id: MASTG-TEST-0209
 type: [static, dynamic]
 weakness: MASWE-0009
+profiles: [L1, L2]
 ---
 
 ## Overview

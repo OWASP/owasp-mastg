@@ -7,6 +7,7 @@ platform: android
 title: Testing Memory for Sensitive Data
 masvs_v1_levels:
 - L2
+profiles: [L2]
 ---
 
 ## Overview
@@ -273,7 +274,7 @@ There are various ways to analyze the memory of a process, e.g. live analysis vi
 
 Whether you are using a rooted or a non-rooted device, you can dump the app's process memory with @MASTG-TOOL-0038 and @MASTG-TOOL-0106. You can find a detailed explanation of this process in @MASTG-TECH-0044, in the chapter "Tampering and Reverse Engineering on Android".
 
-After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
+After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` from @MASTG-TOOL-0129 to extract those strings.
 
 ```bash
 # using strings

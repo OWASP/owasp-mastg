@@ -13,7 +13,7 @@ draft:
     if it is received over a secure channel.
   topics:
   - network
-status: draft
+status: placeholder
 
 ---
 

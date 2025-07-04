@@ -8,6 +8,7 @@ prerequisites:
 - identify-sensitive-data
 - identify-security-relevant-contexts
 weakness: MASWE-0027
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -19,7 +20,7 @@ In general, if a PRNG is not explicitly documented as being cryptographically se
 ## Steps
 
 1. Run a static analysis (@MASTG-TECH-0014) tool on the app and look for insecure random APIs, or you can use @MASTG-TECH-0033 to detect the use of such APIs.
-2. For each of the identified API uses, check if they are used in a security relevant context. You can reverse engineer the app (@MASTG-TECH-0017) and inspect the code (@MASTG-TECH-0023) to confirm.
+2. For each of the identified API uses, check if they are used in a security relevant context. You can decompile the app (@MASTG-TECH-0017) and inspect the code (@MASTG-TECH-0023) to confirm.
 
 ## Observation
 

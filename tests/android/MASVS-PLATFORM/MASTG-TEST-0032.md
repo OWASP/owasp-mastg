@@ -8,11 +8,15 @@ title: Testing WebView Protocol Handlers
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
+status: deprecated
+covered_by: [MASTG-TEST-0250, MASTG-TEST-0251, MASTG-TEST-0252, MASTG-TEST-0253]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
 
-To test for [WebView protocol handlers](../../../Document/0x05h-Testing-Platform-Interaction.md#webview-protocol-handlers "WebView Protocol Handlers") check the app for WebView usage and evaluate whether or not the WebView should have resource access. If resource access is necessary you need to verify that it's implemented following best practices.
+To test for [WebView protocol handlers (or resource access)](../../../Document/0x05h-Testing-Platform-Interaction.md#webview-local-file-access-settings) check the app for WebView usage and evaluate whether or not the WebView should have resource access. If resource access is necessary you need to verify that it's implemented following best practices.
 
 ## Static Analysis
 

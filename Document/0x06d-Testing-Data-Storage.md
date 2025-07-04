@@ -133,9 +133,9 @@ function HookRealm() {
                 console.log('Leaving RLMRealmConfiguration.- setEncryptionKey:');
             }
         });
-        
+
     }
-       
+
 }
 ```
 
@@ -307,7 +307,7 @@ Dumping the iOS keychain...
 Created                    Accessible                      ACL    Type      Account                    Service                                                        Data
 -------------------------  ------------------------------  -----  --------  -------------------------  -------------------------------------------------------------  ------------------------------------
 2020-02-11 13:26:52 +0000  WhenUnlocked                    None   Password  keychainValue              com.highaltitudehacks.DVIAswiftv2.develop                      mysecretpass123
-```  
+```
 
 There's no iOS API that developers can use to force wipe data when an application is uninstalled. Instead, developers should take the following steps to prevent Keychain data from persisting between application installations:
 

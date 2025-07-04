@@ -14,6 +14,10 @@ refs:
 - https://developer.apple.com/app-store/review/guidelines/#5.1.2
 - https://developer.apple.com/app-store/app-privacy-details/#data-collection
 - https://support.google.com/googleplay/android-developer/answer/10787469
+- https://developer.apple.com/videos/play/wwdc2023/10060
+- https://support.google.com/googleplay/answer/11416267
+- https://www.youtube.com/watch?v=J7TM0Yy0aTQ
+- https://www.youtube.com/watch?v=4rfF3y4xchU
 status: new
 ---
 
@@ -27,16 +31,16 @@ These declarations must clearly outline what data is collected, how it is used, 
 
 ## Modes of Introduction
 
-- **Undeclared Data Collection and Purpose**: Failing to declare what data is being collected (e.g., location, contacts, identifiers) and for what purposes (e.g., analytics, personalization), leaving users unaware of how their information is used.  
+- **Undeclared Data Collection and Purpose**: Failing to declare what data is being collected (e.g., location, contacts, identifiers) and for what purposes (e.g., analytics, personalization), leaving users unaware of how their information is used.
 - **Discrepancies in Declarations vs Behavior**: Differences between privacy label declarations (such as Apple's Privacy Nutrition Labels or Google's Data Safety Section) and the app's actual behavior, including undeclared data collection, sharing with third parties not mentioned in privacy labels, or using data for purposes not disclosed, which are against both Apple and Google guidelines.
 
 ## Impact
 
-- **Violation of User Privacy**: Users may unknowingly share data without fully understanding its purpose, which can lead to unauthorized sharing, profiling, or targeted advertising.  
-- **Loss of User Trust**: Inconsistent declarations can result in users losing trust in the app, leading to negative reviews, lower user engagement, and reduced retention.  
+- **Violation of User Privacy**: Users may unknowingly share data without fully understanding its purpose, which can lead to unauthorized sharing, profiling, or targeted advertising.
+- **Loss of User Trust**: Inconsistent declarations can result in users losing trust in the app, leading to negative reviews, lower user engagement, and reduced retention.
 - **Legal and Compliance Issues**: Inaccurate or inconsistent data declarations may lead to non-compliance with regulations like GDPR or CCPA, resulting in potential fines, legal action, or removal from app stores.
 
 ## Mitigations
 
-- **Maintain Accurate Privacy Labels**: Comply with Apple's Privacy Nutrition Labels and Google's Data Safety Section requirements by providing accurate and transparent information about your data practices, including data collection and sharing with third parties.  
+- **Maintain Accurate Privacy Labels**: Comply with Apple's Privacy Nutrition Labels and Google's Data Safety Section requirements by providing accurate and transparent information about your data practices, including data collection and sharing with third parties.
 - **Ensure Consistency in Declarations vs Behavior**: Keep your data collection practices documented and up to date in privacy policies, privacy labels, and app store listings. Ensure that these documents match the app's actual behavior to avoid discrepancies that could mislead users or violate platform policies.

@@ -15,7 +15,7 @@ draft:
     config (MASVS-PLATFORM-2).
   topics:
   - check the OS version
-status: draft
+status: placeholder
 
 ---
 

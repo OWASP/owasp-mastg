@@ -7,6 +7,7 @@ platform: ios
 title: Testing for Debugging Symbols
 masvs_v1_levels:
 - R
+profiles: [R]
 covered_by: [MASTG-TEST-0219]
 status: deprecated
 deprecation_note: New version available in MASTG V2

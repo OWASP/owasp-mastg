@@ -7,6 +7,10 @@ platform: android
 title: Testing Custom Certificate Stores and Certificate Pinning
 masvs_v1_levels:
 - L2
+profiles: [L2]
+status: deprecated
+covered_by: [MASTG-TEST-0242, MASTG-TEST-0243, MASTG-TEST-0244]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
@@ -162,7 +166,7 @@ Hybrid applications based on Cordova do not support Certificate Pinning natively
    function errorCallback(message) {
      alert(message);
      if (message === "CONNECTION_NOT_SECURE") {
-       // There is likely a man in the middle attack going on, be careful!
+       // There is likely a MITM attack going on, be careful!
      } else if (message.indexOf("CONNECTION_FAILED") >- 1) {
        // There was no connection (yet). Internet may be down. Try again (a few times) after a little timeout.
      }

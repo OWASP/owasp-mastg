@@ -9,6 +9,10 @@ title: Testing Key Management
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L2]
+status: deprecated
+covered_by: [MASTG-TEST-0213, MASTG-TEST-0214]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
