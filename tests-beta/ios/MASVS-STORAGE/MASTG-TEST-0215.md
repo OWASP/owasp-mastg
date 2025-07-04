@@ -13,7 +13,7 @@ This test verifies whether your app uses `isExcludedFromBackup` API to instructs
 
 > "The `isExcludedFromBackup` resource value exists only to provide guidance to the system about which files and directories it can exclude; it's not a mechanism to guarantee those items never appear in a backup or on a restored device."
 
-In this test, we identify all locations where you use the `isExcludedFromBackup` API to expose files that might end up in the backup, even though you don’t want them to.
+In this test, we identify all locations where you use the `isExcludedFromBackup` API to expose files that might end up in the backup, even though you don't want them to.
 
 ## Steps
 
