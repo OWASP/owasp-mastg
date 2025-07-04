@@ -6,7 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CODE-1]
-  cwe: [1188]
+  cwe: [453]
 
 draft:
   description: e.g. via targetSDK on Android The app should be targeting the latest
