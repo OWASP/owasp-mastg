@@ -1,0 +1,18 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                               
+    AndroidManifest_reversed.xml
+    ❯❱ exported-implicit-custom-action
+          Exported activity with custom implicit intent action. May enable intent hijacking.
+                                                                                            
+           41┆ <activity
+           42┆     android:name="org.owasp.mastestapp.VulnerableActivity"
+           43┆     android:exported="true">
+           44┆     <intent-filter>
+           45┆         <action android:name="org.owasp.mastestapp.PROCESS_SENSITIVE_DATA"/>
+           46┆         <category android:name="android.intent.category.DEFAULT"/>
+           47┆     </intent-filter>
+           48┆ </activity>

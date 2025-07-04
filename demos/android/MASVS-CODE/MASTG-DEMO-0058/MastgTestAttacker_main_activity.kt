@@ -1,17 +1,15 @@
-package org.owasp.mastestapp
+package com.example.datainteceptor
 
 import android.app.Activity
 import android.os.Bundle
 import android.widget.TextView
 
-class VulnerableActivity : Activity() {
+class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val textView = TextView(this)
-        textView.text = "FLAG{IMPLICIT_INTENT_VULNERABILITY}"
-        textView.textSize = 20f
-
+        textView.text = "Exploit App Ready. Waiting to intercept intent..."
         setContentView(textView)
     }
 }
