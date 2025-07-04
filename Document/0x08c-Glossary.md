@@ -43,7 +43,7 @@ A mode of operation specifies how to repeatedly encrypt or decrypt a single bloc
 
 ### Risk
 
-Reference to risk uses the ISO 3000 definition: Risk = "effect of uncertainty on objectives."
+Risk refers to the ISO 3000 definition: Risk = "effect of uncertainty on objectives".
 
 ### Risky
 
