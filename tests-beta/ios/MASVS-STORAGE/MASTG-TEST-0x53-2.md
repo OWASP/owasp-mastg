@@ -4,6 +4,8 @@ title: Insertion of Sensitive Data into Logs
 id: MASTG-TEST-0x53
 type: [static]
 weakness: MASWE-0001
+prerequisites:
+- identify-sensitive-data
 ---
 
 ## Overview
@@ -22,7 +24,7 @@ The output should include the location of all logging functions. Check the decom
 
 ## Evaluation
 
-The test case fails if you can find the use of APIs such as `NSLog` or `print`. Ideally, a production app shouldn't use any logging functions at all.
+The test case fails if you can find the use of logging APIs logging any sensitive data.
 
 ### Mitigation
 

@@ -10,7 +10,7 @@ test: MASTG-TEST-0024
 
 The code snippet below shows sample code that logs a sensitive token.
 
-{{ MastgTest.swift }}
+{{ ../MASTG-DEMO-0024/MastgTest.kt }}
 
 ### Steps
 
