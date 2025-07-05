@@ -17,4 +17,4 @@ The tool provides test cases for common SSL/TLS vulnerabilities and misconfigura
 - HSTS testing (`hsts.badssl.com`)
 - Certificate transparency issues (`no-sct.badssl.com`)
 
-This makes badssl.com particularly useful for testing mobile applications' SSL/TLS certificate validation logic and ensuring they properly reject invalid certificates and handle various SSL/TLS security scenarios correctly.
+This makes badssl.com particularly useful for testing the SSL/TLS certificate validation logic of mobile applications and ensuring that they properly reject invalid certificates and handle various security scenarios correctly.
