@@ -1,0 +1,19 @@
+rules:
+  - id: mastg-android-custom-intent-filter
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      summary: The rule checks if the implicit Intent is used to start any activity without specifying the target component
+    message: "[MASVS-CODE] Activity is registered for a custom implicit intent action. This may be used to intercept sensitive intents from other apps."
+    patterns:
+      - pattern: |
+          <activity android:exported="true" android:name="$ACTIVITY">
+            <intent-filter>
+              <action android:name="$ACTION" />
+              ...
+            </intent-filter>
+          </activity>
+      - metavariable-regex:
+          metavariable: $ACTION
+          regex: ^(?!(android\.intent\.|android\.)).*$
