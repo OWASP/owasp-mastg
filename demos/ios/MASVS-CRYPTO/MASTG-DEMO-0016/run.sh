@@ -1,1 +1,2 @@
-r2 -q -i cryptokit_hash.r2 -A MASTestApp
+#!/bin/bash
+python3 cryptokit_hash.py "$@"
