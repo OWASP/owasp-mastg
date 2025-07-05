@@ -1,0 +1,7 @@
+2024-05-14 10:30:06.864  6966-6966  MASTG                   org.owasp.mastestapp                 V  key: MAS-Sensitive-Value
+2024-05-14 10:30:06.866  6966-6966  MASTG                   org.owasp.mastestapp                 I  key: MAS-Sensitive-Password
+2024-05-14 10:30:06.867  6966-6966  MASTG                   org.owasp.mastestapp                 W  test: MAS-Sensitive-Value-IV
+2024-05-14 10:30:06.867  6966-6966  MASTG                   org.owasp.mastestapp                 D  test: MAS-Sensitive-Value-IV-2
+2024-05-14 10:30:06.867  6966-6966  MASTG                   org.owasp.mastestapp                 E  test: MAS-Sensitive-Value
+2024-05-14 10:30:06.869  6966-6966  MASTG                   org.owasp.mastestapp                 E  test: MAS-Sensitive-Value
+2024-05-14 10:30:06.881  6966-6966  myLogger                org.owasp.mastestapp                 E  MAS-Sensitive-Key
