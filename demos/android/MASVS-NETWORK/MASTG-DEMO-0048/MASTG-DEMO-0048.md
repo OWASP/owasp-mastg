@@ -13,6 +13,8 @@ The following sample code demonstrates how to connect to a server that delivers 
 
 **Note:** The connection succeeds even if the app has a fully secure Network Security Configuration (NSC) in place because `SSLSocket` is not affected by it.
 
+Note that this demo uses @MASTG-TOOL-0143 (badssl.com), which provides various SSL/TLS certificate configurations for testing purposes.
+
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
 ## Steps

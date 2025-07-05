@@ -156,8 +156,6 @@ When testing an app targeting Android 7.0 (API level 24) or higher it should be 
 
 To test improper certificate verification launch a MITM attack using an interception proxy such as Burp. Try the following options:
 
-Alternatively, you can test various certificate validation scenarios by directing the app to @MASTG-TOOL-0143, which provides pre-configured subdomains with different SSL/TLS certificate issues such as self-signed, expired, wrong hostname, and untrusted certificates.
-
 - **Self-signed certificate:**
   1. In Burp, go to the **Proxy** tab and select the **Options** tab.
   2. Go to the **Proxy Listeners** section, highlight your listener, and click **Edit**.

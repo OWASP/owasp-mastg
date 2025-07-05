@@ -10,6 +10,8 @@ test: MSTG-TEST-0286
 
 This sample Kotlin code fetches <https://mitm-software.badssl.com/> using `HttpsURLConnection`, which is not normally allowed because the certificate is not trusted by the system. However, due to the Network Security Configuration that permits user-added CA certificates, the connection is allowed to proceed.
 
+Note that this demo uses @MASTG-TOOL-0143 (badssl.com), which provides various SSL/TLS certificate configurations for testing purposes.
+
 {{ MastgTest.kt # AndroidManifest.xml # AndroidManifest_reversed.xml # network_security_config.xml }}
 
 !!! note "Running the app"
