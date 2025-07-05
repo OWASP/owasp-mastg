@@ -31,6 +31,8 @@ We highly recommend supporting static analysis with the dynamic analysis. If you
 
 Our test approach is to gradually relax security of the SSL handshake negotiation and check which security mechanisms are enabled.
 
+You can also test various certificate validation scenarios by directing the app to @MASTG-TOOL-0143, which provides pre-configured subdomains with different SSL/TLS certificate issues such as self-signed, expired, wrong hostname, and untrusted certificates.
+
 1. Having Burp set up as a proxy, make sure that there is no certificate added to the trust store (**Settings** -> **General** -> **Profiles**) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tab. If you can see the traffic, it means that there is no certificate validation performed at all. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
 2. Now, install the Burp certificate, as explained in [Burp's user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that the certificate is validated against the device's trust store, but no pinning is performed.
 
