@@ -1,98 +1,79 @@
 #!/usr/bin/env python3
 
-import r2pipe
 import sys
 import os
 
+# Add utils directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '..', 'utils'))
+
+from radare2.r2_utils import (
+    init_r2, R2Context, setup_r2_environment, find_functions_by_pattern,
+    analyze_function_usage, get_function_xrefs, disassemble_before,
+    disassemble_function, print_section
+)
+
 
 def main():
-    # Get binary path from command line arguments or use default
-    if len(sys.argv) > 1:
-        binary_path = sys.argv[1]
-    else:
-        # Default to MASTestApp in the same directory
-        binary_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MASTestApp")
+    # Initialize binary path
+    binary_path = init_r2(caller_file=__file__)
     
-    if not os.path.exists(binary_path):
-        print(f"Error: Binary not found at {binary_path}")
-        sys.exit(1)
-    
-    # Open binary with r2pipe
-    r2 = r2pipe.open(binary_path)
-    
-    try:
+    # Use context manager for automatic cleanup
+    with R2Context(binary_path) as r2:
         # Set equivalent options to the r2 script
-        r2.cmd("e asm.bytes=false")
-        r2.cmd("e scr.color=false")
-        r2.cmd("e asm.var=false")
+        setup_r2_environment(r2, color=False, show_bytes=False, show_vars=False)
         
-        # Analyze the binary
-        r2.cmd("aaa")
+        # Uses of the CCCrypt function
+        print_section("Uses of the CCCrypt function:")
         
-        # Uses of the CCCrypt function (equivalent to afl~CCCrypt)
-        print("Uses of the CCCrypt function:")
-        functions = r2.cmd("afl")
-        for line in functions.split('\n'):
-            if 'CCCrypt' in line and line.strip():
-                print(line.strip())
+        # Find functions with CCCrypt pattern
+        cccrypt_functions = find_functions_by_pattern(r2, "CCCrypt")
+        for func in cccrypt_functions:
+            print(func)
         
         print()
         
-        # Find the addresses for CCCrypt functions dynamically 
+        # Analyze CCCrypt function usage
+        analysis = analyze_function_usage(r2, ["CCCrypt"])
+        
+        # Find the first used CCCrypt function
         target_addr = None
-        
-        # Search through imports by address
-        target_addrs = []
-        imports = r2.cmd("ii")
-        for line in imports.split('\n'):
-            if 'CCCrypt' in line:
-                parts = line.split()
-                if len(parts) >= 2 and parts[1] != '0x00000000':
-                    addr = parts[1]
-                    target_addrs.append(addr)
-        
-        # Now find which ones are actually called in the code
-        for addr in target_addrs:
-            if addr == '0x00000000':
-                continue
-            xrefs = r2.cmd(f"axt @ {addr}")
-            if xrefs.strip():
-                target_addr = addr
+        for func_name, data in analysis.items():
+            if data['xrefs']:  # Has cross-references (actually used)
+                target_addr = data['address']
                 break
         
-        # xrefs to CCCrypt
-        print("xrefs to CCCrypt:")
+        # Show xrefs for CCCrypt
+        print_section("xrefs to CCCrypt:")
         if target_addr:
-            xrefs = r2.cmd(f"axt @ {target_addr}")
-            print(xrefs.strip())
+            xrefs = get_function_xrefs(r2, target_addr)
+            for xref in xrefs:
+                print(xref['raw'])
         
         print()
-        print("Use of CCCrypt:")
+        print_section("Use of CCCrypt:")
         print()
         
         # Find the call site and disassemble around it
         if target_addr:
-            calls = r2.cmd(f"axt @ {target_addr}")
-            if calls.strip():
-                lines = calls.strip().split('\n')
-                for line in lines:
-                    parts = line.split()
-                    if len(parts) >= 2:
-                        try:
-                            call_addr = parts[1]  # The address where the call is made
-                            disasm = r2.cmd(f"pd-- 9 @ {call_addr}")
-                            print(disasm.strip())
-                            
-                            # Generate function.asm file 
-                            func_disasm = r2.cmd(f"pdf @ {parts[0]}")
-                            with open('function.asm', 'w') as f:
-                                f.write(func_disasm)
-                            break
-                        except:
-                            pass
-        
-    finally:
-        r2.quit()
+            xrefs = get_function_xrefs(r2, target_addr)
+            if xrefs:
+                first_xref = xrefs[0]
+                call_addr = first_xref['to']
+                func_name = first_xref['from']
+                
+                try:
+                    # Disassemble 9 instructions before the call
+                    disasm = disassemble_before(r2, call_addr, 9)
+                    if disasm:
+                        print(disasm)
+                    
+                    # Generate function.asm file 
+                    func_disasm = disassemble_function(r2, func_name)
+                    if func_disasm:
+                        with open('function.asm', 'w') as f:
+                            f.write(func_disasm)
+                except:
+                    pass
 
 
 if __name__ == "__main__":
