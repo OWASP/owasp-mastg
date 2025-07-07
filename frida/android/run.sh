@@ -2,7 +2,8 @@
 
 hookPath=$1
 hook=$(cat "$hookPath")
-decoderScript=$(cat "$(dirname "$0")"/decoder.js)
+pwd
+decoderScript=$(cat "$(dirname)"../../../../utils/frida/android_decoder.js)
 fridaScript=$(cat "$(dirname "$0")"/run.js)
 randomNumber=$RANDOM
 
