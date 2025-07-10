@@ -20,7 +20,7 @@ draft:
   description: Improper use of MAC. E.g. allowing the user to control the input.
     may expose cryptographic vulnerabilities, affecting data integrity.
   topics: null
-status: draft
+status: placeholder
 
 ---
 
