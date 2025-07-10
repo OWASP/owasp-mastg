@@ -11,11 +11,10 @@ mappings:
 refs:
 - https://developer.android.com/guide/topics/data/keyvaluebackup#RestoreVersion
 draft:
-  description: e.g. on Android via android:fullBackupContent (Android 11-) or android:dataExtractionRules
-    (Android 12+). On iOS seek for isExcludedFromBackup and check for file operations
-    that reset backup exclusion.
+  description: The app does not validate restored backup data, potentially accepting untrusted modifications alongside trusted data (CWE-349).
   topics:
-  - backups
+  - backup data validation
+  - backup data integrity
 status: placeholder
 
 ---
