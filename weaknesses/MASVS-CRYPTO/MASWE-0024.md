@@ -23,24 +23,4 @@ draft:
 status: draft
 
 ---
-Improper use of a MAC by e.g., generating a MAC over a message without the timestamp can make the application susceptible for replay attacks.
 
-Another common issue is using an HMAC with any type of general based hashing algorithm like MD5, SHA-1, SHA-2 or even SHA-3 on low-entropy input like user supplied passwords and pins. HMAC aren't designed for low-entropy inputs or low-entropy keys. Doing so will result in producing "weak" message digests that easily can be exploited.
-
-A deprecated HMAC implementation may contain bugs that could compromise the authenticity of the data.
-
-## Impact
-
-- **Loss of Integrity and authenticity**: Improper use of MAC may result in replay attacks or, in worse case, broken authentication that could compromise the integrity of a system.
-- **Loss of Confidentiality**: Using MAC for other purposes than authentication may lead to a complete loss of confidentiality.
-
-## Modes of Introduction
-
-- **Not including a timestamp**: Creating a MAC for message authentication without using a proper timestamp that can be validated for the possibility of replay-attacks.
-- **Using a MAC with low-entropy keys**: Using low-entropy inputs or low-entropy keys as input to a HMAC.
-
-## Mitigations
-
-- **Use MAC with a timestamp**: Generate the MAC over a message with the timestamp included. This should protect the application against replay attacks within a reasonable amount of time. Reasonable, meaning a time frame that is short enough to prevent an attacker from sending an identical message and long enough to allow the message to be sent and digested.
-- **Do not use HMAC together with a low-entropy key**: Ensure the keys used are generated using cryptographically secure PRNGs (CSPRNG) generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks.
-- **Do not use deprecated HMAC implementations**: Deprecated HMAC implementations could contain errors that allow for collision attacks. Therefore, only use recommended libraries and functions.
