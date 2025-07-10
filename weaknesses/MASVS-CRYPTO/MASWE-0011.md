@@ -16,7 +16,7 @@ draft:
     It is especially important for long-lived keys such as asymmetric keys.
   topics:
   - long-lived keys (cryptoperiods as per NIST.SP.800-57pt1r5)
-status: draft
+status: placeholder
 
 ---
 

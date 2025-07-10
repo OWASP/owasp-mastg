@@ -3,22 +3,25 @@ set -euo pipefail
 
 mkdir -p docs/MASTG
 mkdir -p docs/MASWE
+mkdir -p docs/assets/Images
 
-directories=("tests" "techniques" "tools" "apps" "tests-beta" "demos" "rules" "utils" "best-practices")
+directories=("tests" "techniques" "tools" "apps" "demos" "rules" "utils" "best-practices")
 
 for dir in "${directories[@]}"; do
     rm -rf "docs/MASTG/$dir"
     cp -r "$dir" docs/MASTG/ || { echo "Failed to copy $dir"; exit 1; }
 done
 
+cp -r tests-beta/** docs/MASTG/tests/ || { echo "Failed to copy tests"; exit 1; }
+
 cp -r weaknesses/** docs/MASWE/ || { echo "Failed to copy weaknesses"; exit 1; }
 
 cp -r Document/0x0*.md docs/MASTG
 cp -r Document/index.md docs/MASTG
-cp docs/MASTG/0x08b-Reference-Apps.md docs/MASTG/apps/index.md
-cp docs/MASTG/0x08a-Testing-Tools.md docs/MASTG/tools/index.md
 
-cp -r Document/Images/ docs/assets/Images/
+
+cp -r Document/Images/* docs/assets/Images/
+
 
 if [[ "$(uname)" == "Darwin" ]]; then
     SED="gsed"

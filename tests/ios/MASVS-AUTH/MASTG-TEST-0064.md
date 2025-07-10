@@ -5,9 +5,13 @@ masvs_v1_id:
 masvs_v2_id:
 - MASVS-AUTH-2
 platform: ios
-title: Testing Local Authentication
+title: Testing Biometric Authentication
 masvs_v1_levels:
 - L2
+profiles: [L2]
+status: deprecated
+covered_by: [MASTG-TEST-0266, MASTG-TEST-0267, MASTG-TEST-0268, MASTG-TEST-0269, MASTG-TEST-0270, MASTG-TEST-0271]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview

@@ -69,6 +69,16 @@ RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.ap
 ...
 ```
 
+The `list_bundles` command lists all of the application's bundles **that are not related to frameworks**. The output contains the executable name, bundle id, version of the library and path to the library.
+
+```bash
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
+Executable    Bundle                                       Version  Path
+------------  -----------------------------------------  ---------  -------------------------------------------
+DVIA-v2       com.highaltitudehacks.DVIAswiftv2.develop          2  ...-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
+CoreGlyphs    com.apple.CoreGlyphs                               1  ...m/Library/CoreServices/CoreGlyphs.bundle
+```
+
 ## @MASTG-TOOL-0039
 
 The `Process.enumerateModules()` function in Frida's REPL allows enumeration of modules loaded into memory during runtime.

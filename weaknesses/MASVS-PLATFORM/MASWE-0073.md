@@ -16,7 +16,7 @@ draft:
   - Since WebResourceResponse may serve attacker‑controlled HTML/JS, it enables XSS when content isn’t properly sanitized (CWE-79).
   - If an app exposes arbitrary files via XHR in the WebView context, it may be leaking private data (CWE-200).
   - Data or files from a protected internal sphere (such as app-private storage) are exposed to a less trusted sphere, like WebView's JavaScript context or external websites (CWE-669).
-status: draft
+status: placeholder
 
 ---
 

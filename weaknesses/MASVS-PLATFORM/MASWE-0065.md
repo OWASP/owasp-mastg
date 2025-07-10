@@ -25,7 +25,7 @@ draft:
   - FLAG_GRANT_PERSISTABLE
   - content URIs
   - file URIs
-status: draft
+status: placeholder
 
 ---
 

@@ -15,7 +15,7 @@ draft:
   description: via addJavascriptInterface
   topics:
   - addJavascriptInterface
-status: draft
+status: placeholder
 
 ---
 

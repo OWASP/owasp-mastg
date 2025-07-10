@@ -13,7 +13,7 @@ draft:
   topics:
   - (ab)using the clipboard
   - using localhost server
-status: draft
+status: placeholder
 
 ---
 

@@ -15,7 +15,7 @@ draft:
   - data (items) being shared
   - custom activities
   - excluded activity types
-status: draft
+status: placeholder
 
 ---
 

@@ -14,14 +14,14 @@ You can follow and reach out to the OWASP MAS team in many ways.
 - Stay always up-to-date by following us on Twitter.
 - Join our Slack community
 
-If you'd like to contribute, take a look at our [Contributions page](contributing.md) or reach out to the project leaders Carlos or Sven.
+If you'd like to contribute, take a look at our [Contributions page](contributing/index.md) or reach out to the project leaders Carlos or Sven.
 
 [:material-github:](https://github.com/OWASP/owasp-mastg/discussions)
 [:simple-bluesky:](https://bsky.app/profile/owasp-mas.bsky.social)
 [:simple-mastodon:](https://infosec.exchange/@OWASP_MAS)
 [:material-slack:](https://owasp.slack.com/archives/C1M6ZVC6S)
 
-> [Request an invitation](https://join.slack.com/t/owasp/shared_invite/zt-30tg8azbk-F_bBrBLhIB~BAavbs0aJQA) to join our Slack channel `#project-mobile-app-security`
+> [Request an invitation](https://join.slack.com/t/owasp/shared_invite/zt-36ppepxs2-ncLn77RK_Ybg_wX5CJsGig) to join our Slack channel `#project-mobile-app-security`
 
 <br>
 
