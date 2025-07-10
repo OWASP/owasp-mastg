@@ -11,7 +11,7 @@ mappings:
 
 draft:
   description: e.g. use of URL Custom Schemes, unverified AppLinks/Universal Links,
-    not validating URLs
+    not validating URLs. Deep Link parameters offers a wide range of possibilities. A malformed URI or parameter value, if not sanitized, may trigger an injection in different points of the application. For example, CWE-939 prevents the exploit of the URI checking the source and CWE-917 prevents the exploit of the URI checking the content.
   topics:
   - URL Custom Schemes
   - AppLinks
