@@ -12,7 +12,6 @@ mappings:
 refs:
 - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
-- https://cwe.mitre.org/data/definitions/328.html
 - https://en.wikipedia.org/wiki/Collision_attack
 - https://csrc.nist.gov/pubs/ir/8547/ipd
 draft:
@@ -20,7 +19,7 @@ draft:
     sensitive context may compromise data integrity and authenticity.
   topics:
   - Broken hashing algorithms (e.g. MD5, SHA1, etc.)
-status: draft
+status: placeholder
 
 ---
 
