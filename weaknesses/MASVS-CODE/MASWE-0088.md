@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CODE-4]
+  cwe: [502]
   android-risks: 
   - https://developer.android.com/privacy-and-security/risks/unsafe-deserialization
 draft:
