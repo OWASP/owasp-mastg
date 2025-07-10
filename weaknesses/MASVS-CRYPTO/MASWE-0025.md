@@ -17,7 +17,7 @@ refs:
 draft:
   description: The use of algorithms with insufficient strength for signatures such as SHA1withRSA, etc. in a security-sensitive context should be avoided to ensure the integrity and authenticity of the data.
   topics: null
-status: draft
+status: placeholder
 
 ---
 
