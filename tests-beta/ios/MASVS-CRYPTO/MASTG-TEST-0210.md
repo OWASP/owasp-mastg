@@ -43,7 +43,7 @@ The test case fails if you can find the use of weak encryption algorithms within
 - RC4
 - Blowfish
 
-This applies to Apple-provided APIs (e.g., CommonCrypto), third-party libraries (e.g., OpenSSL, Libsodium) and any custom implementations of cryptographic routines that replicate insecure algorithms (e.g., DES in C code) or use insecure configurations (e.g., ECB mode, short key sizes) 
+This applies to Apple-provided APIs (e.g., CommonCrypto), third-party libraries (e.g., OpenSSL, Libsodium) and any custom implementations of cryptographic routines that replicate insecure algorithms (e.g., [DES in C code](https://github.com/tarequeh/DES/blob/master/des.c)) or use insecure configurations (e.g., ECB mode, short key sizes).
 
 **Stay up-to-date**: This is a non-exhaustive list of weak algorithms. Make sure to check the latest standards and recommendations from organizations such as the National Institute of Standards and Technology (NIST), the German Federal Office for Information Security (BSI) or any other relevant authority in your region.
 
