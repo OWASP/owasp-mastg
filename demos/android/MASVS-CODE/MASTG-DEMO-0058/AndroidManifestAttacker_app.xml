@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.datainteceptor">
+
+    <application android:label="AttackerApp">
+
+        <!-- Default launcher activity -->
+        <activity android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Interceptor activity to catch implicit intent -->
+        <activity android:name=".InterceptorActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.owasp.mastestapp.PROCESS_SENSITIVE_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
