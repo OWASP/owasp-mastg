@@ -7,11 +7,12 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-6]
   masvs-v2: [MASVS-RESILIENCE-2]
+  cwe: [693]
 
 draft:
-  description: e.g. memory tampering detection
-  topics: null
+  description: The app's code doesn’t implement effective techniques to verify the integrity of its own code at runtime (CWE-693).
+  topics: 
+  - memory tampering detection
 status: placeholder
 
 ---
-
