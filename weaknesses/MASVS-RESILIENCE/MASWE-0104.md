@@ -7,15 +7,12 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-CODE-1]
   masvs-v2: [MASVS-RESILIENCE-2]
-  cwe: [353]
+  cwe: [347]
 
 refs:
 - https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format
 draft:
-  description: Potentially relevant for apps in alternative app stores (not Google
-    PlayStore or Apple AppStore). Also, e.g. Android V1 signing scheme only or iOS
-    CodeDirectory v less than 20400. Also, e.g. App Signature or Binaries, native
-    libraries including e.g. AppAttest
+  description: The app's code doesn’t implement effective techniques to verify the integrity of its own code (CWE-347), potentially relevant for apps in alternative app stores (not Google PlayStore or Apple AppStore). Also, e.g. Android V1 signing scheme only or iOS CodeDirectory v less than 20400. Also, e.g. App Signature or Binaries, native libraries including e.g. AppAttest.
   topics:
   - App Signature or Binaries check on runtime
   - native libraries including e.g. AppAttest
