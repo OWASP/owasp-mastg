@@ -35,7 +35,7 @@ This highlights the importance of implementing certificate pinning **alongside o
 
 - **Improper Configuration of Pinning Libraries**: Misconfiguring libraries like TrustKit, OkHttp's `CertificatePinner`, Volley, or AFNetworking's `SSLPinningMode`, leading to ineffective pinning.
 - **Dynamic Pinning without Security**: Retrieving pins dynamically over insecure channels without proper validation, making it easy for attackers to supply malicious pins.
-- **Weak Validation Logic**: Custom pinning implementations that do not correctly validate the certificate chain or public key. For example, accepting any certificate that chains to a trusted root CA instead of a specific certificate or public key.
+- **Improper Validation Logic**: Custom pinning implementations that do not correctly validate the certificate chain or public key. For example, accepting any certificate that chains to a trusted root CA instead of a specific certificate or public key.
 - **Lack of Backup Pins**: Not including backup pins to prevent connectivity issues if the primary pin is no longer valid.
 
 ## Mitigations

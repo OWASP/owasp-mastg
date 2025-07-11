@@ -1,5 +1,5 @@
 ---
-title: Weak Signature
+title: Signatures Created by Deprecated, Risky or Broken Algorithms
 id: MASWE-0025
 alias: weak-signatures
 platform: [android, ios]
@@ -13,9 +13,9 @@ refs:
 - https://developer.android.com/privacy-and-security/cryptography#deprecated-functionality
 - https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
 - https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf
+- https://csrc.nist.gov/pubs/ir/8547/ipd
 draft:
-  description: The use of weak signature such as SHA1withRSA, etc. in a security sensitive
-    context should be avoided to ensure the integrity and authenticity of the data.
+  description: The use of algorithms with insufficient strength for signatures such as SHA1withRSA, etc. in a security-sensitive context should be avoided to ensure the integrity and authenticity of the data.
   topics: null
 status: placeholder
 
