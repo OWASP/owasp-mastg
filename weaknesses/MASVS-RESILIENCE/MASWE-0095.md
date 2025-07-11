@@ -10,7 +10,7 @@ mappings:
   cwe: [489, 912]
 
 draft:
-  description: backdoors, hidden settings to e.g. disable TLS verification
+  description: The app contains leftover debugging logic or test code (CWE-489) that was not removed before release, which can disable critical protections like TLS certificate validation. It may also include hidden settings or functions that allow bypassing security controls (CWE-912), making the app vulnerable to manipulation.
   topics:
   - backdoors
   - hidden settings to e.g. disable TLS verification
