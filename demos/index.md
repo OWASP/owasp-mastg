@@ -1,7 +1,6 @@
 ---
 hide: toc
-title: MASTG Demos (v2 Beta)
-status: new
+title: MASTG Demos
 ---
 
 ??? info "About the MASTG Demos"
@@ -45,13 +44,13 @@ status: new
     Please read this disclaimer carefully as it contains essential information regarding the use of the Mobile Application Security Testing Guide (MASTG).
 
     - **Scope and Purpose of MASTG Artifacts**: Each new release of the MASTG will include a collection of testing resources such as Static Application Security Testing (SAST) rules, Dynamic Application Security Testing (DAST) scripts, and other relevant artifacts. However, it's crucial to understand that these resources are not intended to provide a comprehensive solution for all your security testing needs.
-    
+
     - **Baseline**: The resources provided in the MASTG serve as a baseline or starting point. They are designed to be used as references and learning tools in the field of mobile application security. While they offer valuable insights and guidelines, they should be used as a foundation upon which you can build and tailor your own specific automation and security testing processes.
-    
+
     - **No Guarantee of Complete Coverage**: The OWASP Mobile Application Security (MAS) project, the entity behind the MASTG, explicitly does not assume responsibility or guarantee that the provided code and resources will identify all possible vulnerabilities in mobile applications. Security testing is a complex and evolving field, and the effectiveness of any set of tools or rules varies depending on numerous factors, including the specific context of the application being tested, the experience of the tester, and the changing landscape of security threats.
-    
+
     - **Potential for False Positives and Negatives**: Users of the MASTG should be aware that the testing resources might generate a significant number of false positives (incorrectly identifying non-issues as vulnerabilities) and false negatives (failing to detect actual vulnerabilities). It is essential to approach the results with a critical and informed mindset, and supplement automated testing with manual review and analysis.
-    
+
     - **Continuous Learning and Adaptation**: The field of mobile application security is continuously evolving. As such, the MASTG resources should be seen as a living body of knowledge, subject to updates and improvements. Users are encouraged to stay informed about the latest security trends and techniques and to actively contribute to the evolution of these resources.
-    
+
     By using the MASTG, you acknowledge and agree to these limitations. It's recommended to combine the use of MASTG resources with other security practices and tools to achieve a more comprehensive and effective security testing strategy for your mobile applications.

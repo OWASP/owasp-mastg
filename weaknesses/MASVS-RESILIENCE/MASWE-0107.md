@@ -13,7 +13,6 @@ draft:
   description: The app's code doesn’t implement effective techniques to verify the integrity of its own code at runtime (CWE-693).
   topics: 
   - memory tampering detection
-status: draft
+status: placeholder
 
 ---
-

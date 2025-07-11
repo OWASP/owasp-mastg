@@ -6,6 +6,7 @@ platform: [android]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-PLATFORM-1, MASVS-STORAGE-2]
+  cwe: [927, 940]
 
 refs:
 - https://support.google.com/faqs/answer/9267555?hl=en
@@ -24,7 +25,7 @@ draft:
   - Insecure Intent Redirection
   - Insecure Implicit Intents
   - Insecure Pending Intents (Mutable, Replaying)
-status: draft
+status: placeholder
 
 ---
 

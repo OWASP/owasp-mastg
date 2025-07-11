@@ -6,13 +6,14 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-CODE-4]
+  cwe: [494]
 
 draft:
   description: e.g. when using dlopen, DexClassLoader, etc.
   topics:
   - dlopen
   - DexClassLoader
-status: draft
+status: placeholder
 
 ---
 

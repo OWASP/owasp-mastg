@@ -18,5 +18,5 @@ draft:
     - NFC
     - USB
     - Wi-Fi P2P
-status: draft
+status: placeholder
 ---

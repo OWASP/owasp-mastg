@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-PLATFORM-2, MASVS-CODE-4]
+  cwe: [79]
 
 refs:
 - https://hackerone.com/reports/532836
@@ -17,7 +18,7 @@ draft:
     to steal potentially sensitive information, change appearance of a web page, perform
     phishing and drive-by-download attacks.
   topics: null
-status: draft
+status: placeholder
 
 ---
 

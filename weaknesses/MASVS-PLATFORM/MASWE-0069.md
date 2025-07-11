@@ -7,6 +7,9 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-PLATFORM-6]
   masvs-v2: [MASVS-PLATFORM-2, MASVS-STORAGE-2]
+  cwe: [200, 22]
+  android-risks:
+  - https://developer.android.com/privacy-and-security/risks/webview-unsafe-file-inclusion
 
 draft:
   description: use of setAllowFileAccessFromFileURLs. Mitigations include setAllowFileAccess(false),
@@ -15,7 +18,7 @@ draft:
   - universal file access
   - restrict content access
   - handlers e.g. file:// vs content://
-status: draft
+status: placeholder
 
 ---
 

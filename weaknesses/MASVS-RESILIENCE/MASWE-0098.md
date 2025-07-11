@@ -13,7 +13,7 @@ draft:
   topics:
   - detection in place for "cloned" apps or virtualized environments
   - Effectiveness Assessment (e.g. bypassing the detection)
-status: draft
+status: placeholder
 
 ---
 

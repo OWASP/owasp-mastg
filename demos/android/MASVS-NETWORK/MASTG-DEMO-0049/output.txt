@@ -1,0 +1,18 @@
+                   
+                   
+┌─────────────────┐
+│ 5 Code Findings │
+└─────────────────┘
+                           
+    MastgTest_reversed.java
+     ❱ rules.mastg-android-ssl-socket-hostnameverifier
+           42┆ SocketFactory socketFactory = SSLSocketFactory.getDefault();
+            ⋮┆----------------------------------------
+           44┆ SSLSocketFactory sslSocketFactory = (SSLSocketFactory) socketFactory;
+            ⋮┆----------------------------------------
+           45┆ Socket createSocket = sslSocketFactory.createSocket("wrong.host.badssl.com", 443);
+            ⋮┆----------------------------------------
+           49┆ hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
+            ⋮┆----------------------------------------
+           61┆ if (!hostnameVerifier.verify("wrong.host.badssl.com", session)) {
+

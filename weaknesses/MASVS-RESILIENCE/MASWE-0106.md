@@ -12,7 +12,7 @@ draft:
   description: The app's code doesn’t implement effective techniques to verify if it is downloaded from an official store and therefore not relying on security and other assurances provided by the store (CWE-693).
   topics:
   - checking the app's signature or package name
-status: draft
+status: placeholder
 
 ---
 

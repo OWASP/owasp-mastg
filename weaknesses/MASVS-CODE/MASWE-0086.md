@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-CODE-4]
+  cwe: [89]
 
 refs:
 - https://developer.android.com/topic/security/risks/sql-injection
@@ -14,7 +15,7 @@ draft:
     queries)
   topics:
   - not using prepared statements
-status: draft
+status: placeholder
 
 ---
 

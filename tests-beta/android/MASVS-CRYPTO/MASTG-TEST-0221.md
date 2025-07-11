@@ -5,6 +5,7 @@ id: MASTG-TEST-0221
 type: [static, dynamic]
 weakness: MASWE-0020
 best-practices: [MASTG-BEST-0009]
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -34,4 +35,4 @@ The output should contain a list of locations where insecure symmetric encryptio
 
 ## Evaluation
 
-The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#Identifying-Insecure-and/or-Deprecated-Cryptographic-Algorithms) encryption algorithms being used.
+The test case fails if you can find [insecure or deprecated](../../../Document/0x04g-Testing-Cryptography.md#identifying-insecure-andor-deprecated-cryptographic-algorithms) encryption algorithms being used.

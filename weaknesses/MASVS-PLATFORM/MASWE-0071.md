@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-PLATFORM-2, MASVS-CODE-4]
+  cwe: [601]
 
 draft:
   description: WebView objects shouldn't load URLs from untrusted sources. Also, your
@@ -16,7 +17,7 @@ draft:
   - not restricting navigation
   - not using SafeBrowsing
   - loading URL from untrusted sources e.g. intents or deep links
-status: draft
+status: placeholder
 
 ---
 

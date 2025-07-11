@@ -13,7 +13,7 @@ draft:
   description: The app contains debugging symbols, which can be exploited by attackers to understand the app's behavior (CWE-497). The app's debugging symbols are considered sensitive information (CWE-540) and should not be present in production builds.
   topics:
   - debugging symbols not removed
-status: draft
+status: placeholder
 
 ---
 

@@ -7,7 +7,7 @@ If the [React Native](https://facebook.github.io/react-native "React Native") fr
 
 At installation time, the application archive is unpacked into the folder `/private/var/containers/Bundle/Application/[GUID]/[APP].app` from iOS 10 onward, so the main JavaScript application file can be modified at this location.
 
-To identify the exact location of the application folder, you can use the tool [ipainstaller](https://cydia.saurik.com/package/com.slugrail.ipainstaller/ "ipainstaller"):
+To identify the exact location of the application folder, you can use @MASTG-TOOL-0138:
 
 1. Use the command `ipainstaller -l` to list the applications installed on the device. Get the name of the target application from the output list.
 2. Use the command `ipainstaller -i [APP_NAME]` to display information about the target application, including the installation and data folder locations.

@@ -15,7 +15,7 @@ draft:
   - data/resource obfuscated/encrypted
   - binaries encrypted/packed
   - obfuscation/encryption used without integrity validation (CWE-649)
-status: draft
+status: placeholder
 
 ---
 

@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-CODE-4]
+  cwe: [924]
 
 draft:
   description: When data is received from external interfaces (e.g. Bluetooth, NFC,
@@ -13,7 +14,7 @@ draft:
   topics:
   - Bluetooth
   - NFC
-status: draft
+status: placeholder
 
 ---
 

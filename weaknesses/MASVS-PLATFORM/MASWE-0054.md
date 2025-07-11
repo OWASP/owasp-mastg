@@ -13,7 +13,7 @@ draft:
     or tapjacking wire transfer UI.
   topics:
   - NotificationListenerService
-status: draft
+status: placeholder
 
 ---
 

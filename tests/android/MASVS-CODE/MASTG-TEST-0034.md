@@ -8,6 +8,7 @@ title: Testing Object Persistence
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -24,8 +25,6 @@ For high-risk applications that focus on availability, we recommend that you use
 
 - the attacker could find the method's signature via the String-based argument
 - the attacker might be able to manipulate the reflection-based steps to execute business logic.
-
-See the chapter "[Android Anti-Reversing Defenses](../../../Document/0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)" for more details.
 
 ## Static Analysis
 
@@ -113,4 +112,4 @@ Make sure that appropriate security measures are taken when sensitive informatio
 There are several ways to perform dynamic analysis:
 
 1. For the actual persistence: Use the techniques described in the data storage chapter.
-2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
+2. For reflection-based approaches: Use @MASTG-TOOL-0001 to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).

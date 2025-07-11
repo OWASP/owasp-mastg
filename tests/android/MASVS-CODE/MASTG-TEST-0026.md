@@ -8,6 +8,7 @@ title: Testing Implicit Intents
 masvs_v1_levels:
 - L1
 - L2
+profiles: [L1, L2]
 ---
 
 ## Overview
@@ -32,7 +33,7 @@ The app uses `startActivityForResult` instead of `startActivity`, indicating tha
 
 In this example we're going to see how an attacker can read arbitrary files from within the app's internal storage `/data/data/<appname>` due to the improper validation of the return value of the intent.
 
-The `performAction` method in the following example reads the implicit intents return value, which can be an attacker provided URI and hands it to `getFileItemFromUri`. This method copies the file to a temp folder, which is usual if this file is displayed internally. But if the app stores the URI provided file in an external temp directory e.g by calling `getExternalCacheDir` or `getExternalFilesDir` an attacker can read this file if he sets the permission `android.permission.READ_EXTERNAL_STORAGE`.
+The `performAction` method in the following example reads the implicit intents return value, which can be an attacker provided URI and hands it to `getFileItemFromUri`. This method copies the file to a temp folder, which is usual if this file is displayed internally. But if the app stores the URI provided file in an external temp directory e.g by calling `getExternalCacheDir` or `getExternalFilesDir` an attacker can read this file after setting the permission `android.permission.READ_EXTERNAL_STORAGE`.
 
 ```java
 private void performAction(Action action){

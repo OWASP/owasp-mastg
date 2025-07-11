@@ -13,6 +13,6 @@ draft:
   description: The app's code doesn’t implement effective RASP techniques to detect if it is running in a compromised environment (CWE-693), e.g. Runtime Application Self-Protection, detection triggering different responses.
   topics:
   - detection triggering different responses
-status: draft
+status: placeholder
 
 ---

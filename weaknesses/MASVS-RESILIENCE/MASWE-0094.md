@@ -14,8 +14,9 @@ draft:
   topics:
   - non-production URLs
   - code flows
-  - verbose logging
-status: draft
+  - verbose logging (e.g., using logging utilities)
+  - enabled testing utilities (e.g., StrictMode)
+status: placeholder
 
 ---
 

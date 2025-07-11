@@ -13,7 +13,7 @@ draft:
   description: The app's code doesn’t implement effective anti-deobfuscation techniques to protect against reverse engineering (CWE-693)
   topics:
   - anti-deobfuscation techniques
-status: draft
+status: placeholder
 
 ---
 
