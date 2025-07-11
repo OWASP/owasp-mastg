@@ -10,7 +10,7 @@ mappings:
   cwe: [693]
 
 draft:
-  description: e.g. Frida, Xposed, Cydia Substrate, etc.
+  description: The app's code doesn’t implement effective techniques to detect if it is being analyzed by dynamic analysis tools (CWE-693), e.g. Frida, Xposed, Cydia Substrate, etc.
   topics:
   - frida detection
   - xposed detection

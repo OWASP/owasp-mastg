@@ -7,11 +7,10 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-9]
   masvs-v2: [MASVS-RESILIENCE-3]
-  cwe: [657]
+  cwe: [693]
 
 draft:
-  description: e.g. polymorphic obfuscation, method-inlining, insertion of opaque
-    predicates, instruction substitution, and instruction block chopping.
+  description: The app's code doesn’t implement effective obfuscation techniques to protect against reverse engineering (CWE-693), e.g. polymorphic obfuscation, method-inlining, insertion of opaque predicates, instruction substitution, and instruction block chopping.
   topics:
   - polymorphic obfuscation
   - method-inlining

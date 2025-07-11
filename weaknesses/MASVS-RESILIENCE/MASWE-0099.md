@@ -7,11 +7,10 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-5]
   masvs-v2: [MASVS-RESILIENCE-1]
-  cwe: [358]
+  cwe: [693]
 
 draft:
-  description: e.g. identifying features and limitations available for commonly used
-    emulation solutions
+  description: The app's code doesn’t implement effective techniques to detect if it is running in an emulator (CWE-693), e.g. identifying features and limitations available for commonly used emulation solutions
   topics:
   - detection in place
   - Effectiveness Assessment (e.g. bypassing the detection)

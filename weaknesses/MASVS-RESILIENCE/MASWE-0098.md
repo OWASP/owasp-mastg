@@ -6,12 +6,12 @@ platform: [android, ios]
 profiles: [R]
 mappings:
   masvs-v2: [MASVS-RESILIENCE-1]
-  cwe: [358]
+  cwe: [693]
 
 draft:
-  description: runs as a so-called "clone app"
+  description: The app's code doesn’t implement effective techniques to detect if it is running in a virtualized environment (CWE-693), e.g. checking for known virtualization software or anomalies in the environment.
   topics:
-  - detection in place
+  - detection in place for "cloned" apps or virtualized environments
   - Effectiveness Assessment (e.g. bypassing the detection)
 status: draft
 

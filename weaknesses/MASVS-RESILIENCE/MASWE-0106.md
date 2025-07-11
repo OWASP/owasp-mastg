@@ -6,11 +6,12 @@ platform: [android, ios]
 profiles: [R]
 mappings:
   masvs-v2: [MASVS-RESILIENCE-2]
-  cwe: [353]
+  cwe: [693]
 
 draft:
-  description: Google PlayStore or Apple AppStore
-  topics: null
+  description: The app's code doesn’t implement effective techniques to verify if it is downloaded from an official store and therefore not relying on security and other assurances provided by the store (CWE-693).
+  topics:
+  - checking the app's signature or package name
 status: draft
 
 ---
