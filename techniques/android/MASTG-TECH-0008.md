@@ -8,7 +8,7 @@ Once you have installed the app, there is further information to explore, where 
 When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of the app.
 
 ```bash
-$ objection -g sg.vp.owasp_mobile.omtg_android explore
+$ objection -n "Attack me if u can" start
 
 ...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # env
 
