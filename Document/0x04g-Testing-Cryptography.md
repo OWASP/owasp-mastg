@@ -177,7 +177,7 @@ Advanced Encryption Standard (AES) is the widely accepted standard for symmetric
 
 As of this writing, no efficient cryptanalytic attacks against AES have been discovered. However, implementation details and configurable parameters such as the block cipher mode leave some margin for error.
 
-#### Inadequate Block Cipher Mode
+#### Broken Block Cipher Modes
 
 Block-based encryption is performed upon discrete input blocks (for example, AES has 128-bit blocks). If the plaintext is larger than the block size, the plaintext is internally split up into blocks of the given input size and encryption is performed on each block. A block cipher mode of operation (or block mode) determines if the result of encrypting the previous block impacts subsequent blocks.
 
