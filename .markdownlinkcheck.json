@@ -1,7 +1,5 @@
 {
-    "ignorePatterns": [
-        "https://pure.tugraz.at/ws/portalfiles/portal/23858147/main.pdf"
-    ],
+    "ignorePatterns": [ ],
     "httpHeaders": [{
         "urls": [
             "https://", "http://"         
