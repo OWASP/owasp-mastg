@@ -24,7 +24,6 @@ status: new
 In cryptography, the security strength is heavily influenced by the methods used to generate cryptographic keys. One critical aspect is the key size, also known as the key length, which is measured in bits and must comply with the latest security best practices. Encryption algorithms that use insufficient key sizes are vulnerable to attack, while longer keys typically result in more complex encryption.
 
 However, even with a sufficiently large key size, the security of the encryption can be compromised if the key generation process is flawed. Failing to use strong, cryptographically secure pseudorandom number generators (CSPRNGs) with sufficient entropy can generate predictable keys that are easier for attackers to guess or reproduce and that are susceptible to repetitive patterns.
-The digest (or hash) of an improper implemented or used hash function may allow an adversary to reasonably determine the original input (preimage attack), find another input that can produce the same hash (2nd preimage attack), or find multiple inputs that evaluate to the same hash (birthday attack).
 
 ## Impact
 
