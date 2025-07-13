@@ -171,7 +171,7 @@ In all implementations of cryptography, you need to ensure that the following al
 - Working keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption or in case of error.
 - The inner state of a cipher should be removed from memory as soon as possible.
 
-### Inadequate AES Configuration
+### Improper Encryption
 
 Advanced Encryption Standard (AES) is the widely accepted standard for symmetric encryption in mobile apps. It's an iterative block cipher that is based on a series of linked mathematical operations. AES performs a variable number of rounds on the input, each of which involve substitution and permutation of the bytes in the input block. Each round uses a 128-bit round key which is derived from the original AES key.
 
