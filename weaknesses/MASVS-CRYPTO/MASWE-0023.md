@@ -1,7 +1,7 @@
 ---
-title: Predictable Padding
+title: Risky Padding
 id: MASWE-0023
-alias: weak-padding
+alias: risky-padding
 platform: [android, ios]
 profiles: [L1, L2]
 mappings:

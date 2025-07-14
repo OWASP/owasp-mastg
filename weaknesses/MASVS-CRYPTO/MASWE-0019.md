@@ -1,6 +1,5 @@
 ---
-title: Deprecated, Risky, or Broken Cryptography Implementations
-
+title: Risky Cryptography Implementations
 id: MASWE-0019
 alias: potentially-weak-crypto-impl
 platform: [android, ios]
@@ -30,7 +29,7 @@ refs:
 
 ## Overview
 
-Deprecated, risky, or noncompliant cryptographic implementations, such as those that do not meet established security standards such as FIPS 140-2/3 (Federal Information Processing Standards), may use algorithms that have not been sufficiently tested or that lack certification, may not follow best practices for secure key management, or may include custom cryptographic solutions that haven't undergone rigorous peer review or formal validation.
+Risky or noncompliant cryptographic implementations, such as those that do not meet established security standards such as FIPS 140-2/3 (Federal Information Processing Standards), may use algorithms that have not been sufficiently tested or that lack certification, may not follow best practices for secure key management, or may include custom cryptographic solutions that haven't undergone rigorous peer review or formal validation.
 
 ## Impact
 
@@ -38,7 +37,7 @@ Custom cryptographic implementations created without following established stand
 
 The impact associated with such defects can be very broad and difficult to predict or measure:
 
-- **Data breaches**: Deprecated, risky, or broken encryption can lead to unauthorized access to sensitive data, resulting in data breaches.
+- **Data breaches**: Risky cryptography implementations can lead to unauthorized access to sensitive data, resulting in data breaches.
 - **Compromised confidentiality, integrity, and authenticity**: The core principles of cryptography (confidentiality, integrity, and authenticity) are compromised. Attackers can decrypt, manipulate, or impersonate legitimate users or systems.
 
 ## Modes of Introduction
