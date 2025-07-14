@@ -1,10 +1,10 @@
 rules:
-  - id: weak_key_size
+  - id: mastg-android-key-generation-with-insufficient-key-length
     severity: WARNING
     languages:
       - java
     metadata:
-      summary: This rule looks for methods that create a weak key size in encryption algorithms.
+      summary: This rule looks for methods that create keys with insufficient length in encryption algorithms.
     message: "[MASVS-CRYPTO] Make sure that the key size is according to security best practices"
     pattern-either:
       - pattern: |

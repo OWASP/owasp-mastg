@@ -1,7 +1,7 @@
 ---
-title: Cryptographically Weak Pseudo-Random Number Generator (PRNG)
+title: Improper Random Number Generation
 id: MASWE-0027
-alias: insecure-random
+alias: improper-random-number-generation
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]
 mappings:
@@ -21,7 +21,7 @@ status: new
 
 ## Overview
 
-A [pseudorandom number generator (PRNG)](https://en.wikipedia.org/wiki/Pseudorandom_number_generator) algorithm generates sequences based on a seed that may be predictable. Common implementations are not cryptographically secure. For example, they typically use a linear congruential formula, allowing an attacker to predict future outputs, given enough observed outputs. Therefore, it is not suitable for security-critical applications or protecting sensitive data.
+A [pseudorandom number generator (PRNG)](https://en.wikipedia.org/wiki/Pseudorandom_number_generator) algorithm generates sequences based on a seed with insufficient entropy that may be predictable. Common implementations are not cryptographically secure. For example, they typically use a linear congruential formula, allowing an attacker to predict future outputs, given enough observed outputs. Therefore, it is not suitable for security-critical applications or protecting sensitive data.
 
 ## Impact
 
@@ -29,7 +29,7 @@ A [pseudorandom number generator (PRNG)](https://en.wikipedia.org/wiki/Pseudoran
 
 ## Modes of Introduction
 
-- **Insecure Random APIs**: The app may use many existing APIs to generate random numbers insecurely.
+- **Risky Random APIs**: The app may use many existing APIs to generate random numbers with insufficient entropy.
 - **Non-random Sources**: The app may use custom methods to create "supposedly random" values, using non-random sources such as the current time.
 
 ## Mitigations

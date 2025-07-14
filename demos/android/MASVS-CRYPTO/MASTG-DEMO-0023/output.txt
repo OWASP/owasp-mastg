@@ -5,9 +5,9 @@
 └─────────────────┘
                            
     MastgTest_reversed.java
-    ❯❱ rules.weak-encryption-modes
-          [MASVS-CRYPTO-1] Weak encryption modes found in use.
-                                                              
+    ❯❱ rules.mastg-android-broken-encryption-modes
+          [MASVS-CRYPTO-1] Broken encryption modes found in use.
+                                                                
            36┆ Cipher cipher = Cipher.getInstance("AES");
             ⋮┆----------------------------------------
            55┆ Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
