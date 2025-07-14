@@ -127,16 +127,19 @@ Ensure that passwords aren't directly passed into an encryption function. Instea
 
 ### Improper Random Number Generation
 
-It is fundamentally impossible to produce truly random numbers on any deterministic device. Pseudo-random number generators (PRNG) compensate for this by producing a stream of pseudo-random numbers - a stream of numbers that appear as if they were randomly generated. The quality of the generated numbers varies with the type of algorithm used. Cryptographically secure PRNGs (CSPRNG) generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks (e.g. it is statistically infeasible to predict the next number produced).
+A common weakness in mobile apps is the improper use of random number generators. Regular Pseudo-Random Number Generators (PRNGs), while sufficient for general use, are not designed for cryptographic purposes. When used to generate keys, tokens, or other security-critical values, they can make systems vulnerable to prediction and attack.
 
-PRNGs can be vulnerable when developers use a regular PRNG for cryptographic purposes, instead of a cryptographically secure PRNG (["Cryptographically secure pseudorandom number generator", 2025.01.31](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator "Wikipedia: Cryptographically secure pseudorandom number generator")). All random numbers and strings which are intended to be non-guessable must be generated using a cryptographically secure pseudo-random number generator (CSPRNG) and have at least 128 bits of entropy. Note that UUIDs do not meet this condition.
+The root issue is that deterministic devices cannot produce true randomness. PRNGs simulate randomness using algorithms, but without sufficient entropy and algorithmic strength, the output can be predictable. For example, UUIDs may appear random but do not provide enough entropy for secure use.
 
-Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS-specific sections.
+The correct approach is to use a [**Cryptographically Secure Pseudo-Random Number Generator (CSPRNG)**](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator). CSPRNGs are designed to resist statistical analysis and prediction, making them suitable for generating non-guessable values. All security-sensitive values must be generated using a CSPRNG with at least 128 bits of entropy.
 
 ### Improper Hashing
 
-Make sure to choose a hash function that is built for the purpose you intend it for.
-When hashes are needed for integrity checks, choose an algorithm that is sufficiently collision resistant, such as the integrity algorithms SHA-256, SHA-384, SHA-512, BLAKE3, and the SHA-3 family. Choosing a risky or broken algorithm may compromise the integrity and authenticity of data at rest and in transit. Also keep in mind that hash functions used for integrity checks, like the SHA series, should not be used for key derivation together with predictable input or in password hashing.
+Using the wrong hash function for a given purpose can compromise both security and data integrity. Each hash function is designed with specific use cases in mind, and applying it incorrectly introduces risk.
+
+For integrity checks, choose a hash function that offers strong collision resistance. Algorithms such as SHA-256, SHA-384, SHA-512, BLAKE3, and the SHA-3 family are appropriate for verifying data integrity and authenticity. Avoid broken algorithms like MD5 or SHA-1, as they are vulnerable to collision attacks.
+
+Do not use general-purpose hash functions like SHA-2 or SHA-3 for password hashing or key derivation, especially with predictable input.
 
 ### Custom Implementations of Cryptography
 
