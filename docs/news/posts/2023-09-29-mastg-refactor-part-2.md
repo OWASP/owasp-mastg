@@ -16,7 +16,7 @@ The primary focus of this new refactor is the reorganization of the MASTG conten
 
 - **Tests**:
     - Website: [Tests](https://mas.owasp.org/MASTG/tests/) section.
-    - GitHub: [`tests/` folder](https://github.com/OWASP/owasp-mastg/tree/master/tests).
+    - GitHub: [`tests/` folder](https://github.com/OWASP/mastg/tree/master/tests).
     - Identified by IDs in the format `MASTG-TEST-XXXX`.
     - Includes all tests originally in:
         - 0x05d/0x06d-Testing-Data-Storage.md
@@ -30,7 +30,7 @@ The primary focus of this new refactor is the reorganization of the MASTG conten
 
 - **Techniques**:
     - Website: [Techniques](https://mas.owasp.org/MASTG/techniques/) section.
-    - GitHub: [`techniques/` folder](https://github.com/OWASP/owasp-mastg/tree/master/techniques).
+    - GitHub: [`techniques/` folder](https://github.com/OWASP/mastg/tree/master/techniques).
     - Identified by IDs in the format `MASTG-TECH-XXXX`.
     - Includes all techniques originally in:
         - 0x05b/0x06b-Basic-Security_Testing.md
@@ -38,14 +38,14 @@ The primary focus of this new refactor is the reorganization of the MASTG conten
 
 - **Tools**:
     - Website: [Tools](https://mas.owasp.org/MASTG/tools/) section.
-    - GitHub: [`tools/` folder](https://github.com/OWASP/owasp-mastg/tree/master/tools).
+    - GitHub: [`tools/` folder](https://github.com/OWASP/mastg/tree/master/tools).
     - Identified by IDs in the format `MASTG-TOOL-XXXX`.
     - Includes all tools from:
         - 0x08a-Testing-Tools.md
 
 - **Apps**:
     - Website: [Apps](https://mas.owasp.org/MASTG/apps/) section.
-    - GitHub: [`apps/` folder](https://github.com/OWASP/owasp-mastg/tree/master/apps).
+    - GitHub: [`apps/` folder](https://github.com/OWASP/mastg/tree/master/apps).
     - Identified by IDs in the format `MASTG-APP-XXXX`.
     - Includes all apps from:
         - 0x08b-Reference-Apps.md

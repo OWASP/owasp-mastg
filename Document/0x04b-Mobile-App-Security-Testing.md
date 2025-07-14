@@ -80,7 +80,7 @@ Stored Cross-Site Scripting (XSS) can be an issue if the app includes WebViews, 
 
 ### Penetration Testing (a.k.a. Pentesting)
 
-The classic approach involves all-around security testing of the app's final or near-final build, e.g., the build that's available at the end of the development process. For testing at the end of the development process, we recommend the [Mobile App Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "OWASP MASVS") and the associated checklist as baseline for testing. A typical security test is structured as follows:
+The classic approach involves all-around security testing of the app's final or near-final build, e.g., the build that's available at the end of the development process. For testing at the end of the development process, we recommend the [Mobile App Security Verification Standard (MASVS)](https://github.com/OWASP/masvs "OWASP MASVS") and the associated checklist as baseline for testing. A typical security test is structured as follows:
 
 - **Preparation** - defining the scope of security testing, including identifying applicable security controls, the organization's testing goals, and sensitive data. More generally, preparation includes all synchronization with the client as well as legally protecting the tester (who is often a third party). Remember, attacking a system without written authorization is illegal in many parts of the world!
 - **Intelligence Gathering** - analyzing the **environmental** and **architectural** context of the app to gain a general contextual understanding.
@@ -139,7 +139,7 @@ When developing a mobile application, it's crucial to accurately identify and ha
 
 Properly distinguishing security-relevant contexts helps in minimizing false positives during security testing. False positives can divert attention from real issues and waste valuable resources. Here are some common scenarios:
 
-- **Random Number Generation**: Using weak random number generators can be a serious security flaw in contexts like authentication or encryption key generation. However, not all uses of random numbers are security-sensitive. For instance, using a less robust random number generator for non-security purposes like shuffling a list of items in a game is generally acceptable.
+- **Random Number Generation**: Using predictable random number generators can be a serious security flaw in contexts like authentication or encryption key generation. However, not all uses of random numbers are security-sensitive. For instance, using a less robust random number generator for non-security purposes like shuffling a list of items in a game is generally acceptable.
 
 - **Hashing**: Hashing is often used in security for storing passwords or ensuring data integrity. However, hashing a non-sensitive value, like a device's screen resolution for analytics, isn't a security concern.
 

@@ -16,7 +16,7 @@ You can follow and reach out to the OWASP MAS team in many ways.
 
 If you'd like to contribute, take a look at our [Contributions page](contributing/index.md) or reach out to the project leaders Carlos or Sven.
 
-[:material-github:](https://github.com/OWASP/owasp-mastg/discussions)
+[:material-github:](https://github.com/OWASP/mastg/discussions)
 [:simple-bluesky:](https://bsky.app/profile/owasp-mas.bsky.social)
 [:simple-mastodon:](https://infosec.exchange/@OWASP_MAS)
 [:material-slack:](https://owasp.slack.com/archives/C1M6ZVC6S)

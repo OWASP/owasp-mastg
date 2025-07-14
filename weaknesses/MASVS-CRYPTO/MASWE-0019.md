@@ -1,5 +1,5 @@
 ---
-title: Potentially Weak Cryptography Implementations
+title: Risky Cryptography Implementations
 id: MASWE-0019
 alias: potentially-weak-crypto-impl
 platform: [android, ios]
@@ -12,9 +12,9 @@ mappings:
 
 refs: 
  - https://book.hacktricks.xyz/crypto-and-stego/cryptographic-algorithms
- - https://www.researchgate.net/publication/290181523_Evaluation_of_Cryptography_Usage_in_Android_Applications
+ - https://eudl.eu/pdf/10.4108/eai.3-12-2015.2262471
  - https://www.scitepress.org/papers/2014/50563/50563.pdf
- - https://pure.tugraz.at/ws/portalfiles/portal/23858147
+ - https://pure.tugraz.at/ws/portalfiles/portal/23858147/main.pdf
  - https://github.com/Wind-River/crypto-detector
  - https://github.com/Rami114/cryptoscan/
  - https://github.com/IAIK/CryptoSlice
@@ -29,7 +29,7 @@ refs:
 
 ## Overview
 
-Outdated, weak, or noncompliant cryptographic implementations, such as those that do not meet established security standards such as FIPS 140-2/3 (Federal Information Processing Standards), may use algorithms that have not been sufficiently tested or that lack certification, may not follow best practices for secure key management, or may include custom cryptographic solutions that haven't undergone rigorous peer review or formal validation.
+Risky or noncompliant cryptographic implementations, such as those that do not meet established security standards such as FIPS 140-2/3 (Federal Information Processing Standards), may use algorithms that have not been sufficiently tested or that lack certification, may not follow best practices for secure key management, or may include custom cryptographic solutions that haven't undergone rigorous peer review or formal validation.
 
 ## Impact
 
@@ -37,7 +37,7 @@ Custom cryptographic implementations created without following established stand
 
 The impact associated with such defects can be very broad and difficult to predict or measure:
 
-- **Data breaches**: Weak encryption can lead to unauthorized access to sensitive data, resulting in data breaches.
+- **Data breaches**: Risky cryptography implementations can lead to unauthorized access to sensitive data, resulting in data breaches.
 - **Compromised confidentiality, integrity, and authenticity**: The core principles of cryptography (confidentiality, integrity, and authenticity) are compromised. Attackers can decrypt, manipulate, or impersonate legitimate users or systems.
 
 ## Modes of Introduction

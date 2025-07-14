@@ -27,7 +27,7 @@ keywords:
   - "mobile pentesting"
 license: "CC-BY-SA-4.0"
 message: "If you use the MASTG, please cite it using these metadata."
-repository-code: "https://github.com/OWASP/owasp-mastg/"
+repository-code: "https://github.com/OWASP/mastg/"
 title: "OWASP Mobile Application Security Testing Guide"
 version: "1.5.0"
 ...

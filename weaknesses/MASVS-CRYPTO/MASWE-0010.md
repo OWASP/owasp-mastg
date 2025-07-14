@@ -1,5 +1,5 @@
 ---
-title: Weak Cryptographic Key Derivation
+title: Improper Cryptographic Key Derivation
 id: MASWE-0010
 alias: weak-crypto-key-derivation
 platform: [android, ios]
@@ -14,7 +14,7 @@ refs:
 draft:
   description: e.g. PBKDF2 with insufficient iterations, lack of salt, etc.
   topics:
-  - weak sources
+  - sources with insufficient entropy
   - lack of salt encryption when doing PBKDF2
 status: placeholder
 

@@ -40,7 +40,7 @@ Apps that do not properly validate TLS certificates during secure communication 
 - **Accepting Self-Signed Certificates**: Applications accept self-signed or untrusted certificates without proper validation against trusted Certificate Authorities (CAs).
 - **Ignoring Hostname Verification**: Failing to verify that the certificate's hostname matches the server's hostname allows attackers to present valid certificates for other domains.
 - **Using Insecure Custom Trust Managers**: Implementing custom certificate validation logic that is incomplete, incorrect, or insecure.
-- **Inadequate Error Handling**: Proceeding with connections even when certificate validation errors occur, without alerting the user or terminating the connection.
+- **Incorrect Error Handling**: Proceeding with connections even when certificate validation errors occur, without alerting the user or terminating the connection.
 - **Trusting All Certificates**: Configuring the application to trust all certificates by default, without any validation.
 
 ## Mitigations

@@ -4,7 +4,7 @@ date: 2024-01-18
 authors: [carlos, sven]
 ---
 
-We are thrilled to announce the release of the new version of the [OWASP Mobile Application Security Verification Standard (MASVS) v2.1.0](https://github.com/OWASP/owasp-masvs/releases/tag/v2.1.0) including the new MASVS-PRIVACY category and CycloneDX support.
+We are thrilled to announce the release of the new version of the [OWASP Mobile Application Security Verification Standard (MASVS) v2.1.0](https://github.com/OWASP/masvs/releases/tag/v2.1.0) including the new MASVS-PRIVACY category and CycloneDX support.
 
 <!-- more -->
 

@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-CODE-5]
   masvs-v2: [MASVS-CODE-3]
+  cwe: [1395, 1357]
   android-core-app-quality: [SC-N3, PS-T4]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/insecure-library
