@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ -d "../owasp-masvs/" ] ; then
-    MASVS_DIR=../owasp-masvs
-elif [ -d "./owasp-masvs/" ] ; then
-    MASVS_DIR=./owasp-masvs
+if [ -d "../masvs/" ] ; then
+    MASVS_DIR=../masvs
+elif [ -d "./masvs/" ] ; then
+    MASVS_DIR=./masvs
 else
-    echo "Error: Please clone owasp-masvs to same directory as owasp-mastg: cd .. && git clone https://github.com/OWASP/owasp-masvs.git"
+    echo "Error: Please clone owasp-masvs to same directory as owasp-mastg: cd .. && git clone https://github.com/OWASP/masvs.git"
     exit 1
 fi
 

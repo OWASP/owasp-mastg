@@ -11,12 +11,12 @@ The MAS project is an open source effort and we welcome all kinds of contributio
 **Help us improve & join our community:**
 
 - 🐞 [Report an error (typos, grammar)](1_How_Can_You_Contribute.md#create-issues) or [fix it on a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request).
-- 💬 Give feedback ([MASTG](https://github.com/OWASP/mastg/discussions/categories/general)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/general)).
-- 🙏 Ask questions ([MASTG](https://github.com/OWASP/mastg/discussions/categories/q-a)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/q-a)).
+- 💬 Give feedback ([MASTG](https://github.com/OWASP/mastg/discussions/categories/general)/[MASVS](https://github.com/OWASP/masvs/discussions/categories/general)).
+- 🙏 Ask questions ([MASTG](https://github.com/OWASP/mastg/discussions/categories/q-a)/[MASVS](https://github.com/OWASP/masvs/discussions/categories/q-a)).
 
 **Contribute with content:**
 
-- 💡 Propose ideas or suggest improvements ([MASTG](https://github.com/OWASP/mastg/discussions/categories/ideas)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/ideas)). If it qualifies we'll promote it to an Issue.
+- 💡 Propose ideas or suggest improvements ([MASTG](https://github.com/OWASP/mastg/discussions/categories/ideas)/[MASVS](https://github.com/OWASP/masvs/discussions/categories/ideas)). If it qualifies we'll promote it to an Issue.
 - 📄 [Create a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
 Before you start contributing, please check our pages ["How Can You Contribute?"](1_How_Can_You_Contribute.md) and ["Getting Started"](2_Getting_Started.md). If you have any doubts [please contact us](../contact.md).
@@ -50,7 +50,7 @@ Our goal is to be vendor-neutral and to serve as a trusted learning resource, wh
 
 ## Our Contributors
 
-All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](../MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
+All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](../MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/masvs/graphs/contributors).
 
 **Update March 2023: We're creating a new concept for contributions that aligns with the new MASTG v2 workflows. Stay tuned...**
 
@@ -71,7 +71,7 @@ _Coming soon..._
 
 ### OWASP MASVS V1
 
-The latest version of the MASVS v1 including all translations is available here: <https://github.com/OWASP/owasp-masvs/releases/tag/v1.5.0>
+The latest version of the MASVS v1 including all translations is available here: <https://github.com/OWASP/masvs/releases/tag/v1.5.0>
 
 | Project Lead | Lead Author | Contributors and Reviewers |
 | ------- | --- | ----------------- |

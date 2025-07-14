@@ -37,11 +37,11 @@ export GITHUB_TOKEN=<TOKEN>
 Run the following commands in your terminal:
 
 ```bash
-git clone https://github.com/OWASP/owasp-masvs.git
+git clone https://github.com/OWASP/masvs.git
 git clone https://github.com/OWASP/mastg.git
 ```
 
-**Note:** We'll just work with the `OWASP/mastg` repo, but the `OWASP/owasp-masvs` is required for the website to run.
+**Note:** We'll just work with the `OWASP/mastg` repo, but the `OWASP/masvs` is required for the website to run.
 
 ## Step 2: Open the OWASP MASTG Repository in vscode
 

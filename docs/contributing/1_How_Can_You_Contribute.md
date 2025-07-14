@@ -22,7 +22,7 @@ Our GitHub [Discussions](https://github.com/OWASP/mastg/discussions) are the fir
 
 ## 🎯 Create Issues
 
-Before creating a PR, first create an [Issue](https://github.com/OWASP/owasp-masvs/issues "MASVS Issues") to be discussed for missing requirements, content or errors.
+Before creating a PR, first create an [Issue](https://github.com/OWASP/masvs/issues "MASVS Issues") to be discussed for missing requirements, content or errors.
 
 - To avoid multiple people duplicating effort on the same issue, project leaders will assign it to only a few that will own it.
 - Explain what you think is missing in the issue, including references (if available) and suggest where it could be added.
@@ -38,7 +38,7 @@ You can contribute with content or corrections by opening a Pull Request (PR).
 
 ## ✅ Become a Reviewer
 
-You can [Review Pull Requests (PRs)](https://github.com/OWASP/owasp-masvs/pulls) and also gain contributions. If you are a fluent speaker in any of the different languages that the MASVS is available in, feel free to give feedback on any of the submitted PRs.
+You can [Review Pull Requests (PRs)](https://github.com/OWASP/masvs/pulls) and also gain contributions. If you are a fluent speaker in any of the different languages that the MASVS is available in, feel free to give feedback on any of the submitted PRs.
 
 After your PR or issue has been submitted, we will review it as quickly as possible which typically only takes a few days. If you think we have forgotten about it, feel free to give us a nudge after 7 days have passed.
 

@@ -45,14 +45,14 @@ jobs:
       run: echo ${{env.MASTG_COMMIT}}
     
     - name: Get Latest MASVS Release Tag
-      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
+      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Confirm MASVS Release Tag
       run: echo ${{env.MASVS_VERSION}}
 
     - uses: actions/checkout@v4
       with:
-        repository: "OWASP/owasp-masvs.git"
+        repository: "OWASP/masvs.git"
         ref: ${{env.MASVS_VERSION}}
         fetch-depth: 1
         path: owasp-masvs

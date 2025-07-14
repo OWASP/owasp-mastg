@@ -112,7 +112,7 @@ def get_mastg_tests_dict():
 def retrieve_masvs(version="latest"):
     global MASVS
     try:
-        url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
+        url = f"https://github.com/OWASP/masvs/releases/{version}/download/OWASP_MASVS.yaml"
         response = requests.get(url)
         content = response.content
     except Exception as e:

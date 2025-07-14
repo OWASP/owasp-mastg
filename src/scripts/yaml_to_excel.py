@@ -253,7 +253,7 @@ def create_about_sheet(wb):
     url = "https://mas.owasp.org/MASVS/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
-    ws.cell(row=row, column=first_col+2).value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
+    ws.cell(row=row, column=first_col+2).value = f'=HYPERLINK("https://github.com/OWASP/masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
     ws.cell(row=row, column=first_col+2).style = "text"
 
     row = row + 2
