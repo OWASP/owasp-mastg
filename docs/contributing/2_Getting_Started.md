@@ -19,7 +19,7 @@ Normally, contributors should follow the whole flow. But sometimes it's clear wh
 If you just have an **specific question** you can post it to (you need a [GitHub Account](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account)):
 
 - <https://github.com/OWASP/owasp-masvs/discussions/categories/q-a>
-- <https://github.com/OWASP/owasp-mastg/discussions/categories/q-a>
+- <https://github.com/OWASP/mastg/discussions/categories/q-a>
 
 "GitHub Discussions" are re-posted to [our Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/).
 

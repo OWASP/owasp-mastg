@@ -4,7 +4,7 @@ date: 2020-03-17
 authors: [sven]
 ---
 
-A new version of the OWASP Mobile Application Security Standard (MASVS) was released! The MASVS establishes baseline security requirements for mobile apps and summarizes them in one standard. With this new release we achieved a significant alignment and coverage with existing mobile security documents from ENISA, older NIST documents, OWASP Mobile top 10, and others. The new version 1.2 is available in Github Releases: <https://github.com/OWASP/owasp-masvs/releases/tag/v1.2>. For more details please look into our Release Notes for Version 1.2 and Version 1.2-RC <https://github.com/OWASP/owasp-mastg/releases/tag/v1.2>.
+A new version of the OWASP Mobile Application Security Standard (MASVS) was released! The MASVS establishes baseline security requirements for mobile apps and summarizes them in one standard. With this new release we achieved a significant alignment and coverage with existing mobile security documents from ENISA, older NIST documents, OWASP Mobile top 10, and others. The new version 1.2 is available in Github Releases: <https://github.com/OWASP/owasp-masvs/releases/tag/v1.2>. For more details please look into our Release Notes for Version 1.2 and Version 1.2-RC <https://github.com/OWASP/mastg/releases/tag/v1.2>.
 
 <!-- more -->
 

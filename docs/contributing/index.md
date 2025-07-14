@@ -1,8 +1,8 @@
 # Contributing to the MAS Project
 
-_First of all,_ [⭐ Give us a Star in GitHub](https://github.com/OWASP/owasp-mastg)!
+_First of all,_ [⭐ Give us a Star in GitHub](https://github.com/OWASP/mastg)!
 
-<a href="https://github.com/OWASP/owasp-mastg"><img src="../../assets/starring.png" width="300px"/></a>
+<a href="https://github.com/OWASP/mastg"><img src="../../assets/starring.png" width="300px"/></a>
 
 <br>
 
@@ -11,12 +11,12 @@ The MAS project is an open source effort and we welcome all kinds of contributio
 **Help us improve & join our community:**
 
 - 🐞 [Report an error (typos, grammar)](1_How_Can_You_Contribute.md#create-issues) or [fix it on a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request).
-- 💬 Give feedback ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/general)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/general)).
-- 🙏 Ask questions ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/q-a)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/q-a)).
+- 💬 Give feedback ([MASTG](https://github.com/OWASP/mastg/discussions/categories/general)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/general)).
+- 🙏 Ask questions ([MASTG](https://github.com/OWASP/mastg/discussions/categories/q-a)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/q-a)).
 
 **Contribute with content:**
 
-- 💡 Propose ideas or suggest improvements ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/ideas)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/ideas)). If it qualifies we'll promote it to an Issue.
+- 💡 Propose ideas or suggest improvements ([MASTG](https://github.com/OWASP/mastg/discussions/categories/ideas)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/ideas)). If it qualifies we'll promote it to an Issue.
 - 📄 [Create a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
 Before you start contributing, please check our pages ["How Can You Contribute?"](1_How_Can_You_Contribute.md) and ["Getting Started"](2_Getting_Started.md). If you have any doubts [please contact us](../contact.md).
@@ -28,7 +28,7 @@ Although we greatly appreciate any and all contributions to the project, there a
 - **No advertisement**: The OWASP mobile Security Project cannot be used as a platform for advertisement of commercial tools, companies or individuals. Technical content such as the implementation of certain techniques or tests should be written with free and open-source tools in mind. Commercial tools are typically not accepted, but might be referenced in some specific cases.
 - **No unnecessary self-promotion of tools or blog posts**: If you have a relation with one of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
 
-Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](../contact.md) in case of doubt.
+Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/mastg/blob/master/.github/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](../contact.md) in case of doubt.
 
 ## Tool Inclusion Disclaimer for Contributors
 
@@ -50,7 +50,7 @@ Our goal is to be vendor-neutral and to serve as a trusted learning resource, wh
 
 ## Our Contributors
 
-All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](../MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
+All of our contributors are listed in GitHub repos. See [OWASP MASTG Authors & Co-Authors](../MASTG/0x02a-Frontispiece.md#authors), [MASTG Contributors](https://github.com/OWASP/mastg/graphs/contributors) and [MASVS Contributors](https://github.com/OWASP/owasp-masvs/graphs/contributors).
 
 **Update March 2023: We're creating a new concept for contributions that aligns with the new MASTG v2 workflows. Stay tuned...**
 
@@ -98,9 +98,9 @@ The latest version of the MASVS v1 including all translations is available here:
 
 ### OWASP MASTG V1
 
-The latest version of the MASTG v1 is available here: <https://github.com/OWASP/owasp-mastg/releases/tag/v1.5.0>
+The latest version of the MASTG v1 is available here: <https://github.com/OWASP/mastg/releases/tag/v1.5.0>
 
-**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mastg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mastg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
+**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/mastg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/mastg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
 
 - **Reviewers**: Reviewers have consistently provided useful feedback through GitHub issues and pull request comments.
 - **Top Contributors**: Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.

@@ -10,7 +10,7 @@ times change, our project evolves and being able to hear you and discuss with yo
 
 `TL;DR: we deprecate Slack in favor of GitHub Discussions as our primary communication channel.`
 
-<https://github.com/OWASP/owasp-mastg/discussions/>
+<https://github.com/OWASP/mastg/discussions/>
 <https://github.com/OWASP/owasp-masvs/discussions/>
 
 <!-- more -->

@@ -18,7 +18,7 @@ flowchart LR
 
 ## 💬 Participate in Discussions
 
-Our GitHub [Discussions](https://github.com/OWASP/owasp-mastg/discussions) are the first place to go to ask questions, give feedback, and propose new ideas. If your proposal qualifies for the MASTG/MASVS, we'll convert it into an "Issue" (the discussion might take a while).
+Our GitHub [Discussions](https://github.com/OWASP/mastg/discussions) are the first place to go to ask questions, give feedback, and propose new ideas. If your proposal qualifies for the MASTG/MASVS, we'll convert it into an "Issue" (the discussion might take a while).
 
 ## 🎯 Create Issues
 

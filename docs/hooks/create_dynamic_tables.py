@@ -58,7 +58,7 @@ def get_all_weaknessess():
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
             elif status == 'placeholder':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{weaknesses_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{weaknesses_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
@@ -222,11 +222,11 @@ def set_icons_for_web(checklist):
             if status == 'new':
                 row['Status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
             elif status == 'placeholder':
-                row['Status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em;">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                row['Status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em;">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 row['Status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             elif status == 'update-pending':
-                row['Status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em;">update-pending</span></a><span style="display: none;">status:update-pending</span>'
+                row['Status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em;">update-pending</span></a><span style="display: none;">status:update-pending</span>'
 
 def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
 
@@ -270,7 +270,7 @@ def get_mastg_components_dict(name):
                         frontmatter['status'] = frontmatter.get('status', 'update-pending')
                         if frontmatter['status'] == 'update-pending':
                             # add github link to the issue tracker
-                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em">update-pending</span></a><span style="display: none;">status:update-pending</span>'
+                            frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em">update-pending</span></a><span style="display: none;">status:update-pending</span>'
                         elif frontmatter['status'] == 'deprecated':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
                     elif "MASTG-TEST-02" in component_id:
@@ -278,7 +278,7 @@ def get_mastg_components_dict(name):
                         if frontmatter['status'] == 'new':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
                         elif frontmatter['status'] == 'placeholder':
-                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                            frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
                         elif frontmatter['status'] == 'deprecated':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
 
@@ -307,7 +307,7 @@ def get_all_demos_beta():
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
             elif status == 'placeholder':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{demo_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{demo_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
 
