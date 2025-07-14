@@ -7,7 +7,7 @@ def get_android_demo_buttons(page, artifacts_url):
 
     page_uri = page.file.src_uri
 
-    demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
+    demo_folder = page_uri.replace("MASTG/demos/android/", "https://github.com/OWASP/mastg/blob/master/demos/android/").replace(f"/{id}.md", "/")
 
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} APK</a>
@@ -23,7 +23,7 @@ def get_ios_demo_buttons(page, artifacts_url):
 
     page_uri = page.file.src_uri
 
-    demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/owasp-mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
+    demo_folder = page_uri.replace("MASTG/demos/ios/", "https://github.com/OWASP/mastg/blob/master/demos/ios/").replace(f"/{id}.md", "/")
 
     banner = f"""
 <a href="{artifacts_url}" class="md-button md-button--primary" style="margin: 5px; min-width: 12em;">:material-download:  Download {id} IPA</a>
@@ -44,7 +44,7 @@ def get_demos_placeholder_banner(meta):
     This demo hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that demo by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
 
-    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+    <a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
 
     If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
 
@@ -78,8 +78,8 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
 def on_config(config):
 
-    fallback_ios = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-ios-demos.yml"
-    fallback_android = "https://github.com/OWASP/owasp-mastg/actions/workflows/build-android-demos.yml"
+    fallback_ios = "https://github.com/OWASP/mastg/actions/workflows/build-ios-demos.yml"
+    fallback_android = "https://github.com/OWASP/mastg/actions/workflows/build-android-demos.yml"
 
     config["artifacts_url_ios"], better_fallback_ios = github_api.get_latest_successful_run("build-ios-demos.yml")
     config["artifacts_url_android"], better_fallback_android = github_api.get_latest_successful_run("build-android-demos.yml")

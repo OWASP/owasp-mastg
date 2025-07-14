@@ -4,7 +4,7 @@ date: 2017-01-31
 authors: [sven]
 ---
 
-The Mobile App Security Verification Standard (MASVS) has undergone a major revision, including a re-design of the security model and verification levels. We also revised many security requirements to address the multitude of [issues raised on GitHub](https://github.com/OWASP/owasp-masvs/issues?q=is%3Aissue%20). The result is MASVS v0.9.2, which is now [available for download](https://github.com/OWASP/owasp-masvs/releases/tag/0.9.2) in PDF format.
+The Mobile App Security Verification Standard (MASVS) has undergone a major revision, including a re-design of the security model and verification levels. We also revised many security requirements to address the multitude of [issues raised on GitHub](https://github.com/OWASP/masvs/issues?q=is%3Aissue%20). The result is MASVS v0.9.2, which is now [available for download](https://github.com/OWASP/masvs/releases/tag/0.9.2) in PDF format.
 
 <!-- more -->
 

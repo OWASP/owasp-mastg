@@ -6,7 +6,7 @@ import re, json
 log = logging.getLogger(f"mkdocs.plugins.{__name__}")
 log.setLevel(logging.INFO)
 
-GITHUB_REPO = "OWASP/owasp-mastg"
+GITHUB_REPO = "OWASP/mastg"
 
 # GitHub API Token for Authentication
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
