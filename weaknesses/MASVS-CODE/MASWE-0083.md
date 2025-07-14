@@ -7,6 +7,7 @@ profiles: [L1, L2]
 mappings:
   masvs-v1: [MSTG-PLATFORM-2]
   masvs-v2: [MASVS-CODE-4, MASVS-PLATFORM-3]
+  cwe: [345, 348]
 
 draft:
   description: e.g. text fields, QR codes, URLs, pasteboard, etc.

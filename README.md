@@ -3,13 +3,13 @@
 # OWASP Mobile Application Security Testing Guide (MASTG)
 
 [![OWASP Flagship](https://img.shields.io/badge/owasp-flagship%20project-48A646.svg)](https://owasp.org/projects/)
-[![Creative Commons License](https://img.shields.io/github/license/OWASP/owasp-mastg)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
+[![Creative Commons License](https://img.shields.io/github/license/OWASP/mastg)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
 
-[![Document Build](https://github.com/OWASP/owasp-mastg/workflows/Documents%20Build/badge.svg)](https://github.com/OWASP/owasp-mastg/actions?query=workflow%3A%22Document+Build%22)
-[![Markdown Linter](https://github.com/OWASP/owasp-mastg/workflows/Markdown%20Linter/badge.svg)](https://github.com/OWASP/owasp-mastg/actions?query=workflow%3A%22Markdown+Linter%22)
-[![URL Checker](https://github.com/OWASP/owasp-mastg/workflows/URL%20Checker/badge.svg)](https://github.com/OWASP/owasp-mastg/actions?query=workflow%3A%22URL+Checker%22)
+[![Document Build](https://github.com/OWASP/mastg/workflows/Documents%20Build/badge.svg)](https://github.com/OWASP/mastg/actions?query=workflow%3A%22Document+Build%22)
+[![Markdown Linter](https://github.com/OWASP/mastg/workflows/Markdown%20Linter/badge.svg)](https://github.com/OWASP/mastg/actions?query=workflow%3A%22Markdown+Linter%22)
+[![URL Checker](https://github.com/OWASP/mastg/workflows/URL%20Checker/badge.svg)](https://github.com/OWASP/mastg/actions?query=workflow%3A%22URL+Checker%22)
 
-This is the official GitHub Repository of the OWASP Mobile Application Security Testing Guide (MASTG). The MASTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
+This is the official GitHub Repository of the OWASP Mobile Application Security Testing Guide (MASTG). The MASTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/masvs "MASVS").
 
 <br>
 
@@ -22,7 +22,7 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 <br>
 
 - 🌐 [Access the MASTG Web](https://mas.owasp.org/MASTG/)
-- ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/owasp-mastg/releases/latest)
+- ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/mastg/releases/latest)
 - ⚡ [Contribute!](https://mas.owasp.org/contributing)
 - 💥 [Play with our Crackmes](https://mas.owasp.org/crackmes)
 

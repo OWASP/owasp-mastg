@@ -28,8 +28,8 @@ def get_edit_url(src_path, edit_url_mastg, edit_url_masvs):
 
 def on_pre_page(page, config, files):
     try:
-        edit_url_mastg = "https://github.com/OWASP/owasp-mastg/edit/master/"
-        edit_url_masvs = "https://github.com/OWASP/owasp-masvs/edit/master/"
+        edit_url_mastg = "https://github.com/OWASP/mastg/edit/master/"
+        edit_url_masvs = "https://github.com/OWASP/masvs/edit/master/"
     except KeyError:
         return page
 

@@ -9,7 +9,7 @@ MASVS = None
 
 def retrieve_masvs(version="latest"):
     global MASVS
-    url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
+    url = f"https://github.com/OWASP/masvs/releases/{version}/download/OWASP_MASVS.yaml"
     response = requests.get(url)
     content = response.content
     MASVS = yaml.safe_load(content)

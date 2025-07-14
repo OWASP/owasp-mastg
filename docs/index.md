@@ -90,7 +90,7 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 <div style="display: flex; flex-direction: column; align-items: center; gap: 1em; min-width: 300px;">
 <a href="MASTG/0x02c-Acknowledgements/#our-mas-advocates">
-<img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/nowsecure-logo.png" style="width: 250px;" />
+<img src="https://raw.githubusercontent.com/OWASP/mastg/master/Document/Images/Other/nowsecure-logo.png" style="width: 250px;" />
 </a>
 <a href="MASTG/0x02c-Acknowledgements/#our-mas-advocates">
 <img src="assets/guardsquare-logo.png" style="width: 250px; border-radius: 5px;" />
