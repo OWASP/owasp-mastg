@@ -5,9 +5,9 @@
 └─────────────────┘
                            
     MastgTest_reversed.java
-    ❯❱ rules.risky-encryption-modes
-          [MASVS-CRYPTO-1] Risky or broken encryption modes found in use.
-                                                              
+    ❯❱ rules.mastg-android-broken-encryption-modes
+          [MASVS-CRYPTO-1] Broken encryption modes found in use.
+                                                                
            36┆ Cipher cipher = Cipher.getInstance("AES");
             ⋮┆----------------------------------------
            55┆ Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
@@ -19,3 +19,4 @@
           118┆ Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
             ⋮┆----------------------------------------
           141┆ Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+
