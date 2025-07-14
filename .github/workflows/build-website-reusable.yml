@@ -33,9 +33,7 @@ jobs:
           fetch-depth: 1
           path: masvs/
       - name: Generate MASVS yaml
-        run: |
-          source ${{ steps.venv.outputs.venv-path }}/bin/activate
-          python3 ./masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./masvs/Document -c ./masvs/controls
+        run: python3 ./masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./masvs/Document -c ./masvs/controls
       - name: Populate MASVS Categories Markdown Files
         run: python3 ./masvs/tools/populate_masvs_categories_md.py -d ./masvs/Document -w
       - run: ./src/scripts/structure_masvs.sh
