@@ -16,14 +16,14 @@ class MastgTest(private val context: Context) {
     // Vulnerable encryption using DES (broken algorithm)
     fun vulnerableDesEncryption(data: String): String {
         try {
-            // Insufficient key for DES
+            // Insufficient key length for DES
             val keyBytes = ByteArray(8)
             SecureRandom().nextBytes(keyBytes)
             val keySpec = DESKeySpec(keyBytes)
             val keyFactory = SecretKeyFactory.getInstance("DES")
             val secretKey: Key = keyFactory.generateSecret(keySpec)
 
-            // Risky encryption algorithm (DES)
+            // Broken encryption algorithm (DES)
             val cipher = Cipher.getInstance("DES")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
@@ -44,7 +44,7 @@ class MastgTest(private val context: Context) {
             val keyFactory = SecretKeyFactory.getInstance("DESede")
             val secretKey: Key = keyFactory.generateSecret(keySpec)
 
-            // Risky encryption algorithm (3DES)
+            // Broken encryption algorithm (3DES)
             val cipher = Cipher.getInstance("DESede")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
@@ -72,15 +72,15 @@ class MastgTest(private val context: Context) {
         }
     }
 
-    // Risky encryption using Blowfish (risky algorithm)
+    // Encryption using Blowfish (broken algorithm)
     fun vulnerableBlowfishEncryption(data: String): String {
         return try {
-            // insufficient key for Blowfish (risky, small key size)
+            // Insufficient key length for Blowfish
             val keyBytes = ByteArray(8) // Only 8 bytes (64-bit key) - not secure
             SecureRandom().nextBytes(keyBytes)
             val secretKey: SecretKey = SecretKeySpec(keyBytes, "Blowfish")
 
-            // Risky encryption algorithm (Blowfish)
+            // Broken encryption algorithm (Blowfish)
             val cipher = Cipher.getInstance("Blowfish")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
@@ -98,13 +98,13 @@ class MastgTest(private val context: Context) {
         // Encrypt with broken DES
         val desEncryptedString = vulnerableDesEncryption(sensitiveString)
 
-        // Encrypt with risky 3DES
+        // Broken with risky 3DES
         val tripleDesEncryptedString = vulnerable3DesEncryption(sensitiveString)
 
-        // Encrypt with deprecated RC4
+        // Encrypt with broken RC4
         val rc4EncryptedString = vulnerableRc4Encryption(sensitiveString)
 
-        // Encrypt with risky Blowfish
+        // Encrypt with broken Blowfish
         val blowfishEncryptedString = vulnerableBlowfishEncryption(sensitiveString)
 
         // Returning the encrypted results

@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Uses of Risky or Broken Hashing Algorithms in CommonCrypto with r2
+title: Uses of Broken Hashing Algorithms in CommonCrypto with r2
 code: [swift]
 id: MASTG-DEMO-0015
 test: MASTG-TEST-0211

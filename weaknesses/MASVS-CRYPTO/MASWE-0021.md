@@ -1,7 +1,7 @@
 ---
-title: Deprecated, Risky or Broken Hashing
+title: Improper Hashing
 id: MASWE-0021
-alias: weak-hashing
+alias: improper-hashing
 platform: [android, ios]
 profiles: [L1, L2]
 mappings:

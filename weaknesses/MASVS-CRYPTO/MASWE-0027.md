@@ -1,7 +1,7 @@
 ---
-title: Cryptographically Predictable Pseudo-Random Number Generator (PRNG)
+title: Improper Random Number Generation
 id: MASWE-0027
-alias: insecure-random
+alias: improper-random-number-generation
 platform: ["android", "ios"]
 profiles: ["L1", "L2"]
 mappings:

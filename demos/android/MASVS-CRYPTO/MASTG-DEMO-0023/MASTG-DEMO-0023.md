@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Uses of Risky or Broken Encryption Modes in Cipher with semgrep
+title: Uses of Broken Encryption Modes in Cipher with semgrep
 id: MASTG-DEMO-0023
 code: [kotlin]
 test: MASTG-TEST-0232
@@ -8,7 +8,7 @@ test: MASTG-TEST-0232
 
 ### Sample
 
-The code snippet below shows sample code contains use of risky or broken encryption modes.
+The code snippet below shows sample code contains use of broken encryption modes.
 
 {{ MastgTest.kt # MastgTest_reversed.java }}
 
@@ -16,13 +16,13 @@ The code snippet below shows sample code contains use of risky or broken encrypt
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-risky-encryption-modes.yaml }}
+{{ ../../../../rules/mastg-android-broken-encryption-modes.yaml }}
 
 {{ run.sh }}
 
 ### Observation
 
-The rule has identified six instances in the code file where risky or broken encryption modes are used. The specified line numbers can be located in the reverse-engineered code for further investigation and remediation.
+The rule has identified six instances in the code file where broken encryption modes are used. The specified line numbers can be located in the reverse-engineered code for further investigation and remediation.
 
 {{ output.txt }}
 

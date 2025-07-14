@@ -74,7 +74,7 @@ For more information on algorithm choice and best practices, see the following r
 
 ## Post-Quantum
 
-### Public-key encryption algorithms
+### Public-Key Encryption Algorithms
 
 In 2024, NIST approved CRYSTALS-Kyber as a post-quantum key encapsulation mechanism (KEM) for establishing a shared secret over a public channel. This shared secret can then be used with symmetric-key algorithms for encryption and decryption.
 
