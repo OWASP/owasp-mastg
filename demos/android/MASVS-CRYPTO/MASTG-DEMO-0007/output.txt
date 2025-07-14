@@ -5,8 +5,8 @@
 └─────────────────┘
                             
     MastgTest_reversed.java 
-       rules.mastg-android-insecure-random-use                                              
-          [MASVS-CRYPTO-1] The application makes use of an insecure random number generator.
+       rules.mastg-android-random-apis-insufficient-entropy                                              
+          [MASVS-CRYPTO-1] The application makes use of random number generators with insufficient entropy.
                                                                                             
            22┆ double random1 = new Random().nextDouble();
             ⋮┆----------------------------------------

@@ -1,5 +1,5 @@
 rules:
-  - id: mastg-android-insufficient-key-length
+  - id: mastg-android-key-generation-with-insufficient-key-length
     severity: WARNING
     languages:
       - java
