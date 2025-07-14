@@ -14,7 +14,8 @@ This test is the dynamic counterpart to @MASTG-TEST-0270.
 
 ## Steps
 
-1. Use runtime method hooking (see @MASTG-TECH-0095) and look for uses of [`SecAccessControlCreateWithFlags`](https://developer.apple.com/documentation/security/secaccesscontrolcreatewithflags(_:_:_:_:)) and specific flags.
+1. Use runtime method hooking (see @MASTG-TECH-0095) and look for uses of [`SecAccessControlCreateWithFlags`](https://developer.apple.com/documentat![1752498728428](https://github.com/user-attachments/assets/8d36a143-dae8-4c58-82f8-6d925b963bdb)
+ion/security/secaccesscontrolcreatewithflags(_:_:_:_:)) and specific flags.
 
 ## Observation
 
