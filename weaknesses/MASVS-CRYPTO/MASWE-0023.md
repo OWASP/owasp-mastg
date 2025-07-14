@@ -40,7 +40,7 @@ However, simply using a padding scheme susceptible to padding oracle attacks doe
 
 ## Modes of Introduction
 
-- **Unauthenticated Padding for Symmetric Encryption**:  Using padding schemes like PKCS#7 without authenticating the ciphertext (e.g., with HMAC) allows padding oracle attacks in modes like AES-CBC.
+- **Unauthenticated Padding for Symmetric Encryption**: Using padding schemes like PKCS#7 without authenticating the ciphertext (e.g., with HMAC) allows padding oracle attacks in modes like AES-CBC.
 - **Risky Padding in Asymmetric Encryption**: Using schemes like PKCS#1 v1.5 for RSA encryption without strict, uniform handling of invalid ciphertext enables oracle attacks.
 - **Exposure of Cryptographic Errors**: Revealing detailed error messages or timing variations during decryption can leak information exploitable by attackers.
 
