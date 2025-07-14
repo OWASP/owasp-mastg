@@ -31,7 +31,7 @@ jobs:
         with:
           repository: "OWASP/masvs"
           fetch-depth: 1
-          path: owasp-masvs/
+          path: masvs/
       - name: Generate MASVS yaml
         run: python3 ./masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./masvs/Document -c ./masvs/controls
       - name: Populate MASVS Categories Markdown Files

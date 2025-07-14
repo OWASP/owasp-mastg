@@ -55,7 +55,7 @@ For this you need an IDE or text editor and git on your machine. We recommend us
 
     ```bash
     $ git clone https://github.com/<your_github_user>/masvs.git
-    $ cd owasp-masvs/
+    $ cd masvs/
     $ git remote add upstream git@github.com:OWASP/masvs.git
     ```
 
