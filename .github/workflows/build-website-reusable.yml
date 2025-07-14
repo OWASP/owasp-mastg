@@ -22,12 +22,12 @@ jobs:
           cache-dependency-path: src/scripts/requirements.txt
           install-cmd: pip install -r src/scripts/requirements.txt
 
-      - name: Debug installed packages
+      - name: Debug venv packages
         run: |
-          echo "pip location: $(which pip)"
-          pip --version
-          pip freeze
-
+          echo "VENV path: $VIRTUAL_ENV"
+          $VIRTUAL_ENV/bin/pip --version
+          echo "Installed in venv:"  
+          $VIRTUAL_ENV/bin/pip freeze
 
       - run: bash -x ./src/scripts/structure_mastg.sh
 
