@@ -14,7 +14,7 @@ def on_config(config):
             folder_path = os.path.join(base_dir, subfolder)
             for root, _, files in os.walk(folder_path):
                 for file in files:
-                    if "index.md" in file:
+                    if "index.md" in file.lower() or "readme.md" in file.lower():
                         continue
                     if file.endswith('.md'):
                         relative_path = os.path.relpath(os.path.join(root, file), "docs")
