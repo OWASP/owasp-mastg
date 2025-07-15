@@ -7,17 +7,17 @@ This guide will help you set up and run the OWASP MAS website locally on your ma
 The easiest way to run the website is by using Docker:
 
 ```bash
-git clone https://github.com/OWASP/owasp-mastg.git
-cd owasp-mastg
+git clone https://github.com/OWASP/mastg.git
+cd mastg
 docker build . -t mastg
-docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -v $(pwd):/workspaces/owasp-mastg mastg
+docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -v $(pwd):/workspaces/mastg mastg
 ```
 
 This will make the website available on `http://localhost:8000`. By default, interactions with the Github api are disabled, which means some dynamically retrieved content will not be available. If you want to enable the Github API, [create a personal access token](https://github.com/settings/personal-access-tokens) and export it as an environment variable. Make sure docker can access the token by using `-e GITHUB_TOKEN`:
 
 ```bash
 export GITHUB_TOKEN=<TOKEN>
-docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -e GITHUB_TOKEN -v $(pwd):/workspaces/owasp-mastg mastg
+docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -e GITHUB_TOKEN -v $(pwd):/workspaces/mastg mastg
 ```
 
 ## Without Docker
