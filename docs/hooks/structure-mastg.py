@@ -54,7 +54,6 @@ def on_pre_build(config):
 
     # Sed-like replacements
     def replace_in_file(file_path, old, new):
-        print(file_path)
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
         content = content.replace(old, new)
