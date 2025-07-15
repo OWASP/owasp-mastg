@@ -21,4 +21,5 @@ WORKDIR /workspaces/mastg
 EXPOSE 8000
 
 # Start the container with a shell
-CMD ["sh", "-c", "mkdocs serve -a 0.0.0.0:8000 -w ./techniques/ -w ./tools/ -w ./apps/ -w ./demos/ -w ./rules/ -w ./utils/ -w ./best-practices/"]
+# Specific -w (watch) folders are added as otherwise MkDocs will not watch for changes in these directories as they are outside of the docs root
+CMD ["sh", "-c", "mkdocs serve -a 0.0.0.0:8000 -w ./techniques/ -w ./tools/ -w ./apps/ -w ./demos/ -w ./rules/ -w ./utils/ -w ./best-practices/ -w ./tests/ -w ./weaknesses/"]
