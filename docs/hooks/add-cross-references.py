@@ -7,29 +7,34 @@ import glob
 log = logging.getLogger('mkdocs')
 
 
-def gather_metadata(directory, id_key):
+def gather_metadata(directory, id_key, component_type):
     metadata = {}
-    for file in glob.glob(f"./docs/{directory}/**/*.md", recursive=True):
-        if file.endswith("index.md"):
-            continue
-
-        with open(file, 'r') as f:
-            content = f.read()
-            frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-
-            if not id_key in frontmatter:
-                if "MASTG-TEST-02" in file:
-                    log.error(f"Missing frontmatter ID in {file}")
+    for file in glob.glob(f"./docs/{directory}/**/MASTG-{component_type}-*.md", recursive=True):
+        try:
+            if file.endswith("index.md"):
                 continue
 
-            frontmatter["path"] = file.replace("./docs/", "") # os.path.relpath(file, "./docs")
+            with open(file, 'r') as f:
+                content = f.read()
+                frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
 
-            metadata[frontmatter[id_key]] = frontmatter
+                # Required because MASTG v1 tests don't have the id_key and MASTG v2 tests MUST have it
+                if not id_key in frontmatter:
+                    if "MASTG-TEST-02" in file:
+                        log.error(f"Missing frontmatter ID in {file}")
+                    continue
+
+                frontmatter["path"] = os.path.relpath(file, "./docs")
+
+                metadata[frontmatter[id_key]] = frontmatter
+        
+        except Exception as e:
+            raise Exception(f"Missing frontmatter in {file}: {e}")
     return metadata
 
 def generate_cross_references():
-    tests = gather_metadata("MASTG/tests", "id")
-    demos = gather_metadata("MASTG/demos", "id")
+    tests = gather_metadata("MASTG/tests", "id", "TEST")
+    demos = gather_metadata("MASTG/demos", "id", "DEMO")
 
     cross_references = {
         "weaknesses": {},
@@ -88,11 +93,12 @@ def on_pre_build(config):
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
+    filename = os.path.basename(path)
     meta = page.meta
 
     cross_references = config.cross_references
 
-    if "MASWE-" in path:
+    if "MASWE-" in filename:
         weakness_id = meta.get('id')
 
         # Add Tests section to weaknesses as buttons
@@ -108,7 +114,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
                     tests_section += f"[{get_platform_icon(test['platform'])} {test['id']}: {test['title']}]({relPath}){{: .mas-test-button}} "
                 markdown += f"\n\n{tests_section}"
 
-    if "MASTG-TEST-" in path:
+    if "MASTG-TEST-" in filename:
 
         # Add best_practices section to tests as a bullet point list with IDs, links are resolved in a separate hook
         # ORIGIN: Test metadata
@@ -139,7 +145,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
                 markdown += f"\n\n{demos_section}"
 
-    if "MASTG-BEST" in path:
+    if "MASTG-BEST" in filename:
         best_practice_id = meta.get('id')
 
         # Add Tests section to best_practices as buttons
