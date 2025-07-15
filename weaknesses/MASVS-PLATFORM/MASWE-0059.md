@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L1, L2]
 mappings:
   masvs-v2: [MASVS-PLATFORM-1, MASVS-STORAGE-2]
+  cwe: [287, 668, 200]
 
 draft:
   description: e.g. (ab)using the clipboard or using localhost server for IPC

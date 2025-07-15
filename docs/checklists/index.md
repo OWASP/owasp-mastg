@@ -18,6 +18,6 @@ The OWASP Mobile Application Security Checklist contains links to the MASTG test
 
 <br>
 
-<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-mastg/releases/latest/download/OWASP_MAS_Checklist.xlsx';"> Download the MAS Checklist</button>
+<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/mastg/releases/latest/download/OWASP_MAS_Checklist.xlsx';"> Download the MAS Checklist</button>
 
 <br>

@@ -1,5 +1,5 @@
 ---
-title: Weak Cryptographic Key Generation
+title: Improper Cryptographic Key Generation
 id: MASWE-0009
 alias: weak-crypto-key-generation
 platform: [android, ios]
@@ -17,26 +17,25 @@ refs:
 - https://developer.android.com/reference/javax/crypto/KeyGenerator
 
 status: new
-
 ---
 
 ## Overview
 
 In cryptography, the security strength is heavily influenced by the methods used to generate cryptographic keys. One critical aspect is the key size, also known as the key length, which is measured in bits and must comply with the latest security best practices. Encryption algorithms that use insufficient key sizes are vulnerable to attack, while longer keys typically result in more complex encryption.
 
-However, even with an appropriately sized key, the security of the encryption can be compromised if the key generation process itself is flawed. For example a weak pseudorandom number generator (PRNG) can undermine cryptographic security by generating predictable or low-entropy keys. This reduces the effectiveness of the key length and makes it easier for attackers to guess or reproduce keys. Weak PRNGs can also produce repetitive patterns, leading to further vulnerabilities. Ensuring the use of strong, cryptographically secure PRNGs with high entropy seeding is essential for robust key security.
+However, even with a sufficiently large key size, the security of the encryption can be compromised if the key generation process is flawed. Failing to use strong, cryptographically secure pseudorandom number generators (CSPRNGs) with sufficient entropy can generate predictable keys that are easier for attackers to guess or reproduce and that are susceptible to repetitive patterns.
 
 ## Impact
 
-- **Risk of Brute-Force Attacks**: Weak key generation, whether due to shorter key length or predictable random number generator (PRNG) inputs, increases the risk of brute-force attacks. Attackers can more easily guess or systematically try possible keys until they find the correct one.
-- **Loss of Confidentiality**: Encryption relies on strong keys to maintain the confidentiality of sensitive data. Weak keys can allow attackers to decrypt and access confidential information, leading to unauthorized disclosure and potential data breaches.
-- **Loss of Integrity**: Weak key generation can compromise data integrity, allowing attackers to exploit vulnerabilities and potentially alter or tamper with the information without detection.
+- **Risk of Brute-Force Attacks**: Improper key generation, whether due to shorter key length or predictable random number generator (PRNG) inputs, increases the risk of brute-force attacks. Attackers can more easily guess or systematically try possible keys until they find the correct one.
+- **Loss of Confidentiality**: Encryption relies on strong keys to maintain the confidentiality of sensitive data. Seed values with insufficient entropy can allow attackers to decrypt and access confidential information, leading to unauthorized disclosure and potential data breaches.
+- **Loss of Integrity**: Improper key generation can compromise data integrity, allowing attackers to exploit vulnerabilities and potentially alter or tamper with the information without detection.
 
 ## Modes of Introduction
 
-- **Inadequate Entropy During Key Generation**: Using a poor source of randomness can lead to predictable cryptographic keys. If the randomness lacks sufficient entropy, the generated keys may be easier for attackers to guess or recreate, compromising the security of the system.
+- **Insufficient Entropy**: Using a source of randomness with insufficient entropy can lead to predictable cryptographic keys.
 - **Insufficient Key Length**: Cryptographic keys that are too short provide inadequate security. For example, keys shorter than recommended lengths for modern algorithms may be vulnerable to brute force attacks, making them easier for attackers to break.
-- **Using Outdated or Weak Algorithms**: Relying on deprecated or inherently weak cryptographic algorithms can result in the generation of weaker keys. As these algorithms often have vulnerabilities or support shorter key lengths, they are more susceptible to modern attacks, compromising the overall security of the app.
+- **Using Risky or Broken Algorithms**: Relying on deprecated, risky or inherently broken cryptographic algorithms can result in the generation of weaker keys. As these algorithms often have vulnerabilities or support shorter key lengths, they are more susceptible to modern attacks, compromising the overall security of the app.
 
 ## Mitigations
 

@@ -9,6 +9,7 @@ mappings:
   masvs-v2: [MASVS-RESILIENCE-4]
   android-risks:
   - https://developer.android.com/privacy-and-security/risks/android-debuggable
+  cwe: [489]
 
 refs:
 - https://developer.android.com/guide/topics/manifest/application-element

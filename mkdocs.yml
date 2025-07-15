@@ -1,6 +1,6 @@
 site_name: OWASP Mobile Application Security
-repo_url: https://github.com/OWASP/owasp-mastg
-repo_name: OWASP/owasp-mastg
+repo_url: https://github.com/OWASP/mastg
+repo_name: OWASP/mastg
 # use_directory_urls: false # only set for mkdocs build
 
 # https://www.mkdocs.org/user-guide/configuration/#validation
@@ -187,12 +187,12 @@ nav:
 
 copyright: |
   <div style="float: left; padding-right: 1em;">
-    <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
+    <a href="https://www.owasp.org"><img src="https://github.com/OWASP/mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
   </div>
   <span style="font-size: smaller">
     &#169; OWASP Foundation 2025. This work is licensed under 
     <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
-  </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span> <span style="font-size: smaller">This website uses cookies to analyze our traffic and only share that information with our analytics partners. <a href="https://github.com/OWASP/owasp-mastg/blob/master/about_cookies.md">Learn more</a>.</span>
+  </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span> <span style="font-size: smaller">This website uses cookies to analyze our traffic and only share that information with our analytics partners. <a href="https://github.com/OWASP/mastg/blob/master/about_cookies.md">Learn more</a>.</span>
   <div style="color: #6a6868; font-size: smaller"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website and covers designed by Carlos Holguera.</i></div>
 
 theme:
@@ -343,7 +343,6 @@ hooks:
   # Priority -49 for last-minute tag modification
   - docs/hooks/add-tags.py
   - docs/hooks/update_titles.py
-  - docs/hooks/update_git_info.py
 
   # Priority -50 for conversion of tags and cross-references
   - docs/hooks/resolve_references.py
@@ -361,7 +360,7 @@ extra:
     - icon: fontawesome/brands/mastodon 
       link: https://infosec.exchange/@OWASP_MAS
     - icon: fontawesome/brands/github
-      link: https://github.com/OWASP/owasp-mastg/discussions
+      link: https://github.com/OWASP/mastg/discussions
     # - icon: fontawesome/solid/paper-plane
     #   link: mailto:carlos.holguera@owasp.org
     #   name: Carlos Holguera

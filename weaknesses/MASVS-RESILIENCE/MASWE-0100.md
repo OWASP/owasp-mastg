@@ -7,6 +7,7 @@ profiles: [R]
 mappings:
   masvs-v1: [MSTG-RESILIENCE-10]
   masvs-v2: [MASVS-RESILIENCE-1]
+  cwe: [693]
 
 refs:
 - https://developer.android.com/google/play/integrity
@@ -19,7 +20,7 @@ refs:
 - https://github.com/firebase/firebase-ios-sdk/blob/v8.15.0/FirebaseAppCheck/Sources/AppAttestProvider/DCAppAttestService%2BFIRAppAttestService.h 
 - https://blog.restlesslabs.com/john/ios-app-attest
 draft:
-  description: e.g. Gooogle Play Integrity API, iOS DeviceCheck API
+  description: The app doesn't use App Attestation APIs, such as Google Play Integrity API, iOS DeviceCheck API,so the backend cannot ensure requests originate from a genuine app binary (CWE-693). This exposes the app to tampering, fraud, replay attacks, and unauthorized use of premium features.
   topics:
   - detection in place
   - Effectiveness Assessment (e.g. bypassing the detection)
