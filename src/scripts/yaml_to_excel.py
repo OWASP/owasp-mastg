@@ -340,6 +340,7 @@ def main():
 
     generate_spreadsheet(args.outputfile)
 
+    print(f"Output file: {args.outputfile}")
 
 if __name__ == "__main__":
     main()

@@ -21,6 +21,5 @@ WORKDIR /workspaces/mastg
 EXPOSE 8000
 
 # Start the container with a shell
-CMD ["bash"]
-
-# If running manually: docker run -it --rm -p 8000:8000 -v $(pwd):/workspaces/mastg mastg
+# Specific -w (watch) folders are added as otherwise MkDocs will not watch for changes in these directories as they are outside of the docs root
+CMD ["sh", "-c", "mkdocs serve -a 0.0.0.0:8000 -w ./techniques/ -w ./tools/ -w ./apps/ -w ./demos/ -w ./rules/ -w ./utils/ -w ./best-practices/ -w ./tests/ -w ./weaknesses/"]
