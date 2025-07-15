@@ -22,6 +22,13 @@ jobs:
           cache-dependency-path: src/scripts/requirements.txt
           install-cmd: pip install -r src/scripts/requirements.txt
 
+      - uses: actions/checkout@v4
+        with:
+          repository: "OWASP/maswe"
+          fetch-depth: 1
+          path: maswe/
+      - run: bash -x ./src/scripts/structure_maswe.sh
+
       - run: bash -x ./src/scripts/structure_mastg.sh
 
       - name: Get Latest MASVS Release Tag
