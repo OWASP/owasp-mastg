@@ -13,11 +13,11 @@ def on_pre_build(config):
     masvs_docs_dir = docs_dir / "MASVS"
     masvs_images_dir = docs_dir / "assets" / "MASVS" / "Images"
 
-    masvs_candidates = [Path("../owasp-masvs"), Path("./owasp-masvs")]
+    masvs_candidates = [Path("../masvs"), Path("./masvs")]
     masvs_dir = next((p for p in masvs_candidates if p.is_dir()), None)
 
     if not masvs_dir:
-        raise Exception("Error: Please clone owasp-masvs to same directory as owasp-mastg: cd .. && git clone https://github.com/OWASP/owasp-masvs.git")
+        raise Exception("Error: Please clone the masvs to same parent directory as mastg: cd .. && git clone https://github.com/OWASP/masvs.git")
 
     log.info(f"Using MASVS directory: {masvs_dir}")
 
