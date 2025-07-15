@@ -18,6 +18,7 @@ def gather_metadata(directory, id_key, component_type):
                 content = f.read()
                 frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
 
+                # Required because MASTG v1 tests don't have the id_key and MASTG v2 tests MUST have it
                 if not id_key in frontmatter:
                     if "MASTG-TEST-02" in file:
                         log.error(f"Missing frontmatter ID in {file}")
