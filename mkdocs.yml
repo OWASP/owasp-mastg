@@ -269,10 +269,6 @@ extra_javascript:
   - javascripts/navigation.js
   - javascripts/tags.js
 plugins:
-  - redirects:
-      redirect_maps:
-        # There are many more redirects generated in hooks/add_redirects.py
-        MASTG/index.md: MASTG/tests/index.md
   - search
   - awesome-pages
   # - privacy
