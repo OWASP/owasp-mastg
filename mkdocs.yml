@@ -269,6 +269,10 @@ extra_javascript:
   - javascripts/navigation.js
   - javascripts/tags.js
 plugins:
+  - redirects:
+      redirect_maps:
+        # Redirects are generated in hooks/add_redirects.py
+        # But the plugin itself needs to be activated, even though it's empty
   - search
   - awesome-pages
   # - privacy
