@@ -63,7 +63,7 @@ git clone https://github.com/OWASP/mastg.git
 Run the following commands in your terminal:
 
 ```bash
-cd owasp-mastg
+cd mastg
 code .
 ```
 
