@@ -4,9 +4,6 @@ import platform
 
 from mkdocs.plugins import BasePlugin
 from pathlib import Path
-
-
-
 def on_pre_build(config):
     docs_dir = Path("docs")
     mastg_dir = docs_dir / "MASTG"
