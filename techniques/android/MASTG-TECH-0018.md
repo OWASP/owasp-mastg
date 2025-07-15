@@ -15,7 +15,7 @@ It is worth highlighting that analyzing disassembled native code is much more ch
 In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MASTG repository. Installing and running it in an emulator or Android device is optional.
 
 ```bash
-wget https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+wget https://github.com/OWASP/mastg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 ```
 
 > This app is not exactly spectacular, all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support, which is just enough to show the basic principles of JNI calls.

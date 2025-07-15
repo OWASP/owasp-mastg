@@ -30,7 +30,7 @@ jobs:
 
     - name: Set MASTG_VERSION to env 
       # run: echo "MASTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
-      run: echo "MASTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-mastg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
+      run: echo "MASTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/mastg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Set DEV VERSION if it's not a tag
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
@@ -45,14 +45,14 @@ jobs:
       run: echo ${{env.MASTG_COMMIT}}
     
     - name: Get Latest MASVS Release Tag
-      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
+      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Confirm MASVS Release Tag
       run: echo ${{env.MASVS_VERSION}}
 
     - uses: actions/checkout@v4
       with:
-        repository: "OWASP/owasp-masvs.git"
+        repository: "OWASP/masvs.git"
         ref: ${{env.MASVS_VERSION}}
         fetch-depth: 1
         path: owasp-masvs

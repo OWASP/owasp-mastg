@@ -18,8 +18,8 @@ Normally, contributors should follow the whole flow. But sometimes it's clear wh
 
 If you just have an **specific question** you can post it to (you need a [GitHub Account](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account)):
 
-- <https://github.com/OWASP/owasp-masvs/discussions/categories/q-a>
-- <https://github.com/OWASP/owasp-mastg/discussions/categories/q-a>
+- <https://github.com/OWASP/masvs/discussions/categories/q-a>
+- <https://github.com/OWASP/mastg/discussions/categories/q-a>
 
 "GitHub Discussions" are re-posted to [our Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/).
 
@@ -54,9 +54,9 @@ For this you need an IDE or text editor and git on your machine. We recommend us
 2. [Clone your fork repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#about-cloning-a-repository) and [add the remote upstream repo](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#remotes-and-forks), e.g. for owasp-masvs:
 
     ```bash
-    $ git clone https://github.com/<your_github_user>/owasp-masvs.git
-    $ cd owasp-masvs/
-    $ git remote add upstream git@github.com:OWASP/owasp-masvs.git
+    $ git clone https://github.com/<your_github_user>/masvs.git
+    $ cd masvs/
+    $ git remote add upstream git@github.com:OWASP/masvs.git
     ```
 
 3. Create a branch.

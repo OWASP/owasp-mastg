@@ -103,7 +103,7 @@ Keeping up-to-date and patched component is one of security principles. The same
 
 #### Older Android versions
 
-For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Conscrypt library is a good choice in this situation to keep the cryptography consistent across the different API levels and avoid having to import [Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java") which is a heavier library.
+For some applications that support older versions of Android (e.g., only used on versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Conscrypt library is a good choice in this situation to keep the cryptography consistent across the different API levels and avoid having to import [Bouncy Castle](https://www.bouncycastle.org/documentation/documentation-java/ "Bouncy Castle in Java") which is a heavier library.
 
 [Conscrypt for Android](https://github.com/google/conscrypt#android "Conscrypt - A Java Security Provider") can be imported this way:
 
@@ -210,7 +210,7 @@ KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 This sample creates the RSA key pair with a key size of 4096-bit (i.e. modulus size). Elliptic Curve (EC) keys can also be generated in a similar way. However as of Android 11 (API level 30), [AndroidKeyStore does not support encryption or decryption with EC keys](https://developer.android.com/guide/topics/security/cryptography#SupportedCipher). They can only be used for signatures.
 
-A symmetric encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDF2). This cryptographic protocol is designed to generate cryptographic keys, which can be used for cryptography purpose. Input parameters for the algorithm are adjusted according to [weak key generation function](0x04g-Testing-Cryptography.md#weak-key-generation-functions) section. The code listing below illustrates how to generate a strong encryption key based on a password.
+A symmetric encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDF2). This cryptographic protocol is designed to generate cryptographic keys, which can be used for cryptography purpose. Input parameters for the algorithm are adjusted according to [improper key generation function](0x04g-Testing-Cryptography.md#improper-key-derivation-functions) section. The code listing below illustrates how to generate a strong encryption key based on a password.
 
 ```java
 public static SecretKey generateStrongAESKey(char[] password, int keyLength)

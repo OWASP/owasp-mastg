@@ -1,15 +1,16 @@
-
-
+                   
+                   
 ┌─────────────────┐
 │ 2 Code Findings │
 └─────────────────┘
-
+                           
     MastgTest_reversed.java
-    ❯❱ weak_key_size
-          Cryptographic implementations with insufficient key length are being used.
-
+    ❯❱ rules.mastg-android-key-generation-with-insufficient-key-length
+          [MASVS-CRYPTO] Make sure that the key size is according to security best practices
+                                                                                            
            27┆ KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
            28┆ generator.initialize(1024, new SecureRandom());
             ⋮┆----------------------------------------
            31┆ KeyGenerator keyGen1 = KeyGenerator.getInstance("AES");
            32┆ keyGen1.init(128);
+
