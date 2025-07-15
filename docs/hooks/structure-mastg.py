@@ -54,6 +54,7 @@ def on_pre_build(config):
 
     # Sed-like replacements
     def replace_in_file(file_path, old, new):
+        print(file_path)
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
         content = content.replace(old, new)
@@ -61,7 +62,8 @@ def on_pre_build(config):
             f.write(content)
 
     def find_md_files(base_dir):
-        return [p for p in Path(base_dir).rglob("*.md")]
+        # Get all md files but strip out md files in node_modules or anything inside hidden directories
+        return [p for p in Path(base_dir).rglob("*.md") if not "/node_modules/" in str(p) and not "/." in str(p)]
 
     def batch_replace(filepaths, replacements):
         for file in filepaths:
