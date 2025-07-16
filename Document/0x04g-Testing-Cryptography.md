@@ -149,6 +149,8 @@ When using a password hashing algorithm as a KDF, also ensure to choose an appro
 
 ### Improper Random Number Generation
 
+A common weakness in mobile apps is the improper use of random number generators. Regular Pseudo-Random Number Generators (PRNGs), while sufficient for general use, are not designed for cryptographic purposes. When used to generate keys, tokens, or other security-critical values, they can make systems vulnerable to prediction and attack.
+
 It is fundamentally impossible to produce truly random numbers on any deterministic device. Pseudo-random number generators (PRNG) compensate for this by producing a stream of pseudo-random numbers - a stream of numbers that appear as if they were randomly generated. The quality of the generated numbers varies with the type of algorithm used. Cryptographically secure PRNGs (CSPRNG) generate random numbers that pass statistical randomness tests, and are resilient against prediction attacks (e.g. it is statistically infeasible to predict the next number produced).
 
 PRNGs can be vulnerable when developers use a regular PRNG for cryptographic purposes, instead of a cryptographically secure PRNG (["Cryptographically secure pseudorandom number generator", 2025.01.31](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator "Wikipedia: Cryptographically secure pseudorandom number generator")). All random numbers and strings which are intended to be non-guessable must be generated using a cryptographically secure pseudo-random number generator (CSPRNG) and have at least 128 bits of entropy. Note that UUIDs do not meet this condition.
