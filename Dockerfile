@@ -11,8 +11,9 @@ RUN apt-get update && \
 COPY src/scripts/requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-# Clone the OWASP MASVS as required by the website build
+# Clone the OWASP MASVS and MASWE as required by the website build
 RUN git clone --depth 1 https://github.com/OWASP/masvs.git /workspaces/masvs
+RUN git clone --depth 1 https://github.com/OWASP/maswe.git /workspaces/maswe
 
 # Set the working directory this way to be compatible with devcontainers and also run independently
 WORKDIR /workspaces/mastg
@@ -22,4 +23,4 @@ EXPOSE 8000
 
 # Start the container with a shell
 # Specific -w (watch) folders are added as otherwise MkDocs will not watch for changes in these directories as they are outside of the docs root
-CMD ["sh", "-c", "mkdocs serve -a 0.0.0.0:8000 -w ./techniques/ -w ./tools/ -w ./apps/ -w ./demos/ -w ./rules/ -w ./utils/ -w ./best-practices/ -w ./tests/ -w ./weaknesses/"]
+CMD ["sh", "-c", "mkdocs serve -a 0.0.0.0:8000 -w ./techniques/ -w ./tools/ -w ./apps/ -w ./demos/ -w ./rules/ -w ./utils/ -w ./best-practices/ -w ./tests/"]
