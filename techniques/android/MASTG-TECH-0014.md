@@ -17,7 +17,7 @@ grep 'android:minSdkVersion' AndroidManifest.xml
 
 This command searches for the `android:minSdkVersion` attribute within the manifest file. Ensuring a higher `minSdkVersion` can reduce security risks, as older versions of Android may not include the latest security features and fixes.
 
-## Example: Using semgrep for Identifying Weak Cryptography
+## Example: Using semgrep for Identifying Seeds With Insufficient Entropy
 
 semgrep is a more advanced tool that can be used for pattern matching in code. It's particularly useful for identifying complex coding patterns that might lead to security vulnerabilities. For example, to find instances where a deterministic seed is used with the `SecureRandom` class (which can compromise the randomness and thus the security), you can use a semgrep rule like:
 

@@ -23,6 +23,6 @@ Click the button to make your donation directly in the official OWASP website:
 
 If your donation is above USD 500 you may opt-in for a [Donation Package](packages.md) by registering it. We will then, together with the OWASP Foundation, verify and process it.
 
-<a href="https://github.com/OWASP/owasp-mastg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation" class="md-button md-button--primary" style="margin: 5px;">:material-check-all: Register your Donation</a>
+<a href="https://github.com/OWASP/mastg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation" class="md-button md-button--primary" style="margin: 5px;">:material-check-all: Register your Donation</a>
 
 <br><br><br>

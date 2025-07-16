@@ -13,7 +13,7 @@ The following commands summarize how to patch and start dynamic analysis using o
 
 ```bash
 # Download the Uncrackable APK
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
+$ wget https://raw.githubusercontent.com/OWASP/mastg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 # Patch the APK with the Frida Gadget
 $ objection patchapk --source UnCrackable-Level1.apk
 # Install the patched APK on the android phone

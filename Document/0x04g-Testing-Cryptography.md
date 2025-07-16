@@ -74,7 +74,7 @@ For more information on algorithm choice and best practices, see the following r
 
 ## Post-Quantum
 
-### Public-key encryption algorithms
+### Public-Key Encryption Algorithms
 
 In 2024, NIST approved CRYSTALS-Kyber as a post-quantum key encapsulation mechanism (KEM) for establishing a shared secret over a public channel. This shared secret can then be used with symmetric-key algorithms for encryption and decryption.
 
@@ -153,12 +153,15 @@ It is fundamentally impossible to produce truly random numbers on any determinis
 
 PRNGs can be vulnerable when developers use a regular PRNG for cryptographic purposes, instead of a cryptographically secure PRNG (["Cryptographically secure pseudorandom number generator", 2025.01.31](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator "Wikipedia: Cryptographically secure pseudorandom number generator")). All random numbers and strings which are intended to be non-guessable must be generated using a cryptographically secure pseudo-random number generator (CSPRNG) and have at least 128 bits of entropy. Note that UUIDs do not meet this condition.
 
-Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS-specific sections.
+Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS-
 
 ### Improper Hashing
 
-Make sure to choose a hash function that is built for the purpose you intend it for.
-When hashes are needed for integrity checks, choose an algorithm that is sufficiently collision resistant, such as the integrity algorithms SHA-256, SHA-384, SHA-512, BLAKE3, and the SHA-3 family. Choosing a risky or broken algorithm may compromise the integrity and authenticity of data at rest and in transit. Also keep in mind that hash functions used for integrity checks, like the SHA series, should not be used for key derivation together with predictable input or in password hashing.
+Using the wrong hash function for a given purpose can compromise both security and data integrity. Each hash function is designed with specific use cases in mind, and applying it incorrectly introduces risk.
+
+For integrity checks, choose a hash function that offers strong collision resistance. Algorithms such as SHA-256, SHA-384, SHA-512, BLAKE3, and the SHA-3 family are appropriate for verifying data integrity and authenticity. Avoid broken algorithms like MD5 or SHA-1, as they are vulnerable to collision attacks.
+
+Do not use general-purpose hash functions like SHA-2 or SHA-3 for password hashing or key derivation, especially with predictable input.
 
 ### Custom Implementations of Cryptography
 

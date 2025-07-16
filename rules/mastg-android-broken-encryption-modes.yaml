@@ -1,0 +1,13 @@
+rules:
+  - id: mastg-android-broken-encryption-modes
+    languages:
+      - java
+    severity: WARNING
+    metadata:
+      summary: This rule looks for broken encryption modes.
+    message: "[MASVS-CRYPTO-1] Broken encryption modes found in use."
+    pattern-either:
+      - pattern: Cipher.getInstance("AES")
+      - pattern-regex: Cipher\.getInstance\("?[A-Za-z0-9]+/ECB(/[A-Za-z0-9]+)?"?\)
+
+      
