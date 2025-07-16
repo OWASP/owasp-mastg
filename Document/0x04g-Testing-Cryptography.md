@@ -155,7 +155,7 @@ It is fundamentally impossible to produce truly random numbers on any determinis
 
 PRNGs can be vulnerable when developers use a regular PRNG for cryptographic purposes, instead of a cryptographically secure PRNG (["Cryptographically secure pseudorandom number generator", 2025.01.31](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator "Wikipedia: Cryptographically secure pseudorandom number generator")). All random numbers and strings which are intended to be non-guessable must be generated using a cryptographically secure pseudo-random number generator (CSPRNG) and have at least 128 bits of entropy. Note that UUIDs do not meet this condition.
 
-Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness. We'll introduce the available APIs in the Android and iOS-
+Mobile SDKs offer standard implementations of PRNG algorithms that produce numbers with sufficient artificial randomness.
 
 ### Improper Hashing
 
