@@ -9,7 +9,9 @@
 [![Markdown Linter](https://github.com/OWASP/mastg/workflows/Markdown%20Linter/badge.svg)](https://github.com/OWASP/mastg/actions?query=workflow%3A%22Markdown+Linter%22)
 [![URL Checker](https://github.com/OWASP/mastg/workflows/URL%20Checker/badge.svg)](https://github.com/OWASP/mastg/actions?query=workflow%3A%22URL+Checker%22)
 
-This is the official GitHub Repository of the **OWASP Mobile Application Security Testing Guide (MASTG)**. The MASTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the [OWASP Mobile Security Weakness Enumeration (MASWE)](https://github.com/OWASP/maswe "MASWE") weaknesses, which are in alignment with the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/masvs "MASVS").
+The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the [OWASP Mobile Security Weakness Enumeration (MASWE)](https://github.com/OWASP/maswe "MASWE") weaknesses, which are in alignment with the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/masvs "MASVS").
+
+> [OWASP MAS](https://mas.owasp.org): [OWASP MASVS](https://mas.owasp.org/MASVS) ➡ [OWASP MASWE](https://mas.owasp.org/MASWE) ➡ [OWASP MASTG](https://mas.owasp.org/MASTG)
 
 <br>
 
@@ -25,6 +27,7 @@ This is the official GitHub Repository of the **OWASP Mobile Application Securit
 - ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/mastg/releases/latest)
 - ⚡ [Contribute!](https://mas.owasp.org/contributing)
 - 💥 [Play with our Crackmes](https://mas.owasp.org/crackmes)
+- 📞 [Contact Us](https://mas.owasp.org/contact)
 
 <br>
 
@@ -48,11 +51,5 @@ MAS Advocates are industry adopters of the OWASP MASVS, MASWE and MASTG who have
 <img src="Document/Images/Other/nowsecure-logo.png" width="200px;" />
 <img src="Document/Images/Other/guardsquare-logo.png" width="200px;" />
 </a>
-
-<br><br>
-
-## Connect with Us
-
-<a href="https://mas.owasp.org/contact">Contact details of project leaders.</a>
 
 <br>
