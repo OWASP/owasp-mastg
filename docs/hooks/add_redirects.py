@@ -19,6 +19,7 @@ def on_config(config):
                     if file.endswith('.md'):
                         relative_path = os.path.relpath(os.path.join(root, file), "docs")
                         redirects_dict[file] = relative_path.replace(os.sep, "/")
+                        print("Adding redirect for:", file, " to:", relative_path.replace(os.sep, "/"))
 
     # Ensure the 'redirects' plugin is present
     plugin = config['plugins'].get("redirects")

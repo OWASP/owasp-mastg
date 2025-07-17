@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./src/scripts/structure_maswe.sh
+# ./src/scripts/structure_maswe.sh
 
 # By default, serve on localhost port 8000
 mkdocs serve -a localhost:8000

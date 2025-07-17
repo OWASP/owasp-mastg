@@ -104,7 +104,8 @@ def get_mastg_tests_dict():
                         frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
                         mastg_tests[id][platform].append(frontmatter)
                     else:
-                        log.warn(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                        print(file)
+                        log.warning(f"No MASVS v2 coverage for: {frontmatter['title']}")
                 except StopIteration:
                     continue
     return mastg_tests
