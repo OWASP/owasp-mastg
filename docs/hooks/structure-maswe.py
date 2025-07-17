@@ -1,10 +1,6 @@
-import os
-import shutil
-import platform
 from pathlib import Path
-import glob
+import shutil
 import logging
-import checklist_utils
 
 log = logging.getLogger('mkdocs')
 
@@ -23,8 +19,6 @@ def on_pre_build(config):
     # Clean MASWE dir
     if maswe_docs_dir.exists():
         shutil.rmtree(maswe_docs_dir)
-
-    # maswe_docs_dir.mkdir(parents=True, exist_ok=True)
 
     # Copy over the entire weaknesses directory
     shutil.copytree(maswe_dir / "weaknesses", maswe_docs_dir)

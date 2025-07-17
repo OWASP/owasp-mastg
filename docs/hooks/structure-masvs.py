@@ -1,8 +1,6 @@
+from pathlib import Path
 import os
 import shutil
-import platform
-from pathlib import Path
-import glob
 import logging
 import checklist_utils
 
