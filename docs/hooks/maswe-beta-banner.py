@@ -190,6 +190,29 @@ def get_deprecated_tools_banner(meta):
 
     return banner
 
+def get_maswe_deprecated_banner(meta, config):
+    id = meta.get('id')
+    deprecation_note = meta.get('deprecation_note', "The weakness is no longer relevant or was replaced by other weaknesses.")
+    covered_by = meta.get('covered_by', [])
+
+    if covered_by:
+        covered_by_section = "\n".join([f"    - @{weakness}" for weakness in covered_by])
+    else:
+        covered_by_section = "    No weaknesses are covering this weakness."
+
+    mastg_v1_tests = get_mastg_v1_coverage(meta, config)
+
+    banner = f"""
+!!! danger "Deprecated Weakness"
+
+    This weakness is **deprecated** and should not be used anymore. **Reason**: {deprecation_note}
+
+    Please check the following MASTG v2 weaknesses that cover this v1 weakness:
+
+{covered_by_section}
+"""
+    return banner
+
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
@@ -200,8 +223,11 @@ def on_page_markdown(markdown, page, config, **kwargs):
     if any(substring in path for substring in ["MASWE/"]):
         banners.append(beta_banner)
 
-    if "MASWE/" in path and page.meta.get('status') == 'placeholder':
-        banners.append(get_maswe_placeholder_banner(page.meta, config))
+    if "MASWE/" in path:
+        if page.meta.get('status') == 'deprecated':
+            banners.append(get_maswe_deprecated_banner(page.meta, config))
+        if page.meta.get('status') == 'placeholder':
+            banners.append(get_maswe_placeholder_banner(page.meta, config))
 
     if "MASTG/tests/" in path:
         if page.meta.get('status') == 'deprecated':
