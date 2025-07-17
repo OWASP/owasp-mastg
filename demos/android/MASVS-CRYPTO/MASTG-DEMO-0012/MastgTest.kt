@@ -14,16 +14,16 @@ class MastgTest (private val context: Context){
     fun mastgTest(): String {
 
         val generator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA)
-        generator.initialize(1024, SecureRandom()) // for 1025 bit RSA Key
+        generator.initialize(1024, SecureRandom())
         val keypair = generator.genKeyPair()
         Log.d("Keypair generated RSA", Base64.encodeToString(keypair.public.encoded, Base64.DEFAULT))
 
         val keyGen1 = KeyGenerator.getInstance("AES")
-        keyGen1.init(128) // for 128 bit AES key
+        keyGen1.init(128)
         val secretKey1: SecretKey = keyGen1.generateKey()
 
         val keyGen2 = KeyGenerator.getInstance("AES")
-        keyGen2.init(256) // for 256 bit AES key
+        keyGen2.init(256)
         val secretKey2: SecretKey = keyGen2.generateKey()
 
         return "Generated RSA Key:\n " + Base64.encodeToString(keypair.public.encoded, Base64.DEFAULT)+"Generated AES Key1\n "+ Base64.encodeToString(secretKey1.encoded, Base64.DEFAULT)+ "Generated AES Key2\n "+ Base64.encodeToString(secretKey2.encoded, Base64.DEFAULT);

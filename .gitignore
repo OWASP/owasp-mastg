@@ -16,6 +16,7 @@ logs
 *.epub
 docs/talks.md
 owasp-masvs
+weaknesses
 __pycache__
 venv/
 playground/

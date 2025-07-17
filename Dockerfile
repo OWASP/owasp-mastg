@@ -12,15 +12,14 @@ COPY src/scripts/requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
 # Clone the OWASP MASVS as required by the website build
-RUN git clone --depth 1 https://github.com/OWASP/owasp-masvs.git /workspaces/owasp-masvs
+RUN git clone --depth 1 https://github.com/OWASP/masvs.git /workspaces/masvs
 
 # Set the working directory this way to be compatible with devcontainers and also run independently
-WORKDIR /workspaces/owasp-mastg
+WORKDIR /workspaces/mastg
 
 # Expose port 8000
 EXPOSE 8000
 
 # Start the container with a shell
-CMD ["bash"]
-
-# If running manually: docker run -it --rm -p 8000:8000 -v $(pwd):/workspaces/owasp-mastg mastg
+# Specific -w (watch) folders are added as otherwise MkDocs will not watch for changes in these directories as they are outside of the docs root
+CMD ["sh", "-c", "mkdocs serve -a 0.0.0.0:8000 -w ./techniques/ -w ./tools/ -w ./apps/ -w ./demos/ -w ./rules/ -w ./utils/ -w ./best-practices/ -w ./tests/ -w ./weaknesses/"]

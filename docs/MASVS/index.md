@@ -7,7 +7,7 @@ hide:
 
 <img src="../assets/masvs_cover.png" align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" >
 
-<a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
+<a href="https://github.com/OWASP/masvs/">:material-github: GitHub Repo</a>
 
 The **OWASP MASVS (Mobile Application Security Verification Standard)** is the industry standard for mobile app security. It can be used by mobile software architects and developers seeking to develop secure mobile applications, as well as security testers to ensure completeness and consistency of test results.
 
@@ -15,7 +15,7 @@ To complement the MASVS, the OWASP MAS project also provides the [OWASP Mobile A
 
 <br>
 
-<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS.pdf';"> Download the MASVS</button>
+<button class="mas-button" onclick="window.location.href='https://github.com/OWASP/masvs/releases/latest/download/OWASP_MASVS.pdf';"> Download the MASVS</button>
 
 <br>
 
