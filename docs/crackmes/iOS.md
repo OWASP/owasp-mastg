@@ -4,7 +4,7 @@
 
 A secret string is hidden somewhere in this binary. Find a way to extract it. The app will give you a hint when started.
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/iOS/Level_01/UnCrackable-Level1.ipa" class="mas-chip">Download</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/iOS/Level_01/UnCrackable-Level1.ipa" class="mas-chip">Download</a>
 
 ??? info "Installation"
     Open the "Device" window in Xcode and drag the IPA file into the list below "Installed Apps".
@@ -27,13 +27,13 @@ This app holds a secret inside - and this time it won't be tampered with!
 
 Hint: it is related to alcoholic beverages.
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/iOS/Level_02/UnCrackable-Level2.ipa" class="mas-chip">Download</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/iOS/Level_02/UnCrackable-Level2.ipa" class="mas-chip">Download</a>
 
 ??? info "Installation"
     Open the "Device" window in Xcode and drag the IPA file into the list below "Installed Apps".
 
     Note 1: The IPA is signed with an Enterprise distribution certificate. You'll need to install the provisioning profile and trust the developer to run the app the "normal" way. Alternatively, re-sign the app with your own certificate, or run it on a jailbroken device (you'll want to do one of those anyway to crack it).
-    
+
     Note 2: Due to its anti-tampering mechanisms the app won't run correctly if the main executable is modified and/or re-signed.
 
 ??? danger "SPOILER (Solutions)"

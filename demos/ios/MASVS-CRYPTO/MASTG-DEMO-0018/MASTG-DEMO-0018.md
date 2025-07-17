@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Uses of Insecure Encryption Algorithms in CommonCrypto with r2
+title: Uses of Broken Encryption Algorithms in CommonCrypto with r2
 code: [swift]
 id: MASTG-DEMO-0018
 test: MASTG-TEST-0210
@@ -52,7 +52,7 @@ There you will also find the `alg` and the `op`:
 /*!
     @enum        CCAlgorithm
     @abstract    Encryption algorithms implemented by this module.
-    
+
     @constant    kCCAlgorithmAES128    Advanced Encryption Standard, 128-bit block
     @constant    kCCAlgorithmDES        Data Encryption Standard
     @constant    kCCAlgorithm3DES    Triple-DES, three key, EDE configuration
@@ -61,24 +61,24 @@ There you will also find the `alg` and the `op`:
 */
 enum {
     kCCAlgorithmAES128 = 0,
-    kCCAlgorithmDES,        
-    kCCAlgorithm3DES,        
-    kCCAlgorithmCAST,        
+    kCCAlgorithmDES,
+    kCCAlgorithm3DES,
+    kCCAlgorithmCAST,
     kCCAlgorithmRC4,
-    kCCAlgorithmRC2        
+    kCCAlgorithmRC2
 };
 typedef uint32_t CCAlgorithm;
 
 /*!
     @enum        CCOperation
     @abstract    Operations that an CCCryptor can perform.
-    
+
     @constant    kCCEncrypt    Symmetric encryption.
     @constant    kCCDecrypt    Symmetric decryption.
 */
 enum {
-    kCCEncrypt = 0,    
-    kCCDecrypt,        
+    kCCEncrypt = 0,
+    kCCDecrypt,
 };
 ```
 

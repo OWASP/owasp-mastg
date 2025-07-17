@@ -14,42 +14,6 @@ on:
       - 'Document/**.md'
 
 jobs:
-  Generate-MASTG-Documents:
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-
-    - uses: actions/setup-python@v5
-      with:
-        python-version: 3.x
-    - name: Install dependencies
-      run: pip install -r src/scripts/requirements.txt
-
-    - name: Set MASTG_VERSION to env 
-      run: echo "MASTG_VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mastg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
-
-    - name: Set DEV MASTG_VERSION if it's not a tag
-      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      run: echo "MASTG_VERSION=${{env.MASTG_VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-    - name: Get Latest MASVS Release Tag
-      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
-
-    - name: Assemble Chapters
-      run: python3 src/scripts/assemble_chapters_for_pdf.py
-
-    - name: Generate English PDF
-      run: ./src/pandocker/pandoc_makedocs.sh Document ${{env.MASTG_VERSION}} ${{env.MASVS_VERSION}}
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: OWASP_MASTG
-        path: OWASP_MASTG*
-  
   Generate-Checklists:
     runs-on: ubuntu-latest
     steps:
@@ -66,7 +30,7 @@ jobs:
 
     - name: Set MASTG_VERSION to env 
       # run: echo "MASTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
-      run: echo "MASTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-mastg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
+      run: echo "MASTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/mastg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Set DEV VERSION if it's not a tag
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
@@ -81,14 +45,14 @@ jobs:
       run: echo ${{env.MASTG_COMMIT}}
     
     - name: Get Latest MASVS Release Tag
-      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
+      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Confirm MASVS Release Tag
       run: echo ${{env.MASVS_VERSION}}
 
     - uses: actions/checkout@v4
       with:
-        repository: "OWASP/owasp-masvs.git"
+        repository: "OWASP/masvs.git"
         ref: ${{env.MASVS_VERSION}}
         fetch-depth: 1
         path: owasp-masvs
@@ -115,12 +79,10 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: [Generate-MASTG-Documents, Generate-Checklists]
+    needs: [Generate-Checklists]
     if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
     steps:
       - uses: actions/download-artifact@v4
-      - name: List Downloaded document (sampling of download-artifact)
-        run: ls -l OWASP_MASTG*
 
       - name: print working directory
         run: pwd 
@@ -135,8 +97,6 @@ jobs:
           generate_release_notes: true
           discussion_category_name: Announcements
           files: |
-            OWASP_MASTG/OWASP_MASTG.pdf
-            OWASP_MASTG/OWASP_MASTG.epub
             Checklists/*.xlsx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -14,6 +14,8 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 ## Authors
 
+<!-- markdownlint-disable search-replace -->
+
 ### Bernhard Mueller
 
 Bernhard is a cyber security specialist with a talent for hacking systems of all kinds. During more than a decade in the industry, he has published many zero-day exploits for software such as MS SQL Server, Adobe Flash Player, IBM Director, Cisco VOIP, and ModSecurity. If you can name it, he has probably broken it at least once. BlackHat USA commended his pioneering work in mobile security with a Pwnie Award for Best Research.
@@ -46,23 +48,25 @@ Jeroen is a mobile security lead responsible for quality assurance on mobile sec
 
 Vikas is an experienced cyber security researcher, with expertise in mobile security. In his career he has worked to secure applications for various industries including fintech, banks and governments. He enjoys reverse engineering, especially obfuscated native code and cryptography. He holds masters in security and mobile computing, and an OSCP certification. He is always open to share his knowledge and exchange ideas.
 
+<!-- markdownlint-disable search-replace -->
+
 <!-- \pagebreak -->
 
 ## Changelog
 
 All our Changelogs are available online at the OWASP MASTG GitHub repository, see the Releases page:
 
-<https://github.com/OWASP/owasp-mastg/releases>
+<https://github.com/OWASP/mastg/releases>
 
 ## Disclaimer
 
 Please consult the laws in your country before executing any tests against mobile apps by utilizing the MASTG materials. Refrain from violating the laws with anything described in the MASTG.
 
-Our [Code of Conduct] has further details: <https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md>
+Our [Code of Conduct](https://github.com/OWASP/mastg/blob/master/.github/CODE_OF_CONDUCT.md) has further details.
 
 OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions, please connect with us: <https://mas.owasp.org/contact>
 
-If you find any inconsistencies or typos please open an issue in the OWASP MASTG Github Repo: <https://github.com/OWASP/owasp-mastg>
+If you find any inconsistencies or typos please open an issue in the OWASP MASTG Github Repo: <https://github.com/OWASP/mastg>
 
 ## Copyright and License
 

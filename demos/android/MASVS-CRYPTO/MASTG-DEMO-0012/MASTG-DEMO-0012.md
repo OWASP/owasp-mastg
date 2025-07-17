@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Weak Cryptographic Key Generation
+title: Cryptographic Key Generation With Insufficient Key Length
 code: [java]
 id: MASTG-DEMO-0012
 test: MASTG-TEST-0208
@@ -14,7 +14,7 @@ test: MASTG-TEST-0208
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-weak-key-generation.yml }}
+{{ ../../../../rules/mastg-android-key-generation-with-insufficient-key-length.yml }}
 
 {{ run.sh }}
 
@@ -26,4 +26,4 @@ The rule has identified some instances in the code file where cryptographic keys
 
 ### Evaluation
 
-The test fails because the key size of the RSA key is set to `1024` bits, and the size of the AES key is set to `128`, which is considered weak in both cases.
+The test fails because the key size of the RSA key is set to `1024` bits, and the size of the AES key is set to `128`, which is considered insufficient in both cases.

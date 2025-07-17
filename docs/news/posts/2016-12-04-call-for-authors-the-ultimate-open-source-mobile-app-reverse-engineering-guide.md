@@ -25,6 +25,6 @@ All of this is unpaid, volunteer work. However, depending on your contribution, 
 
 ### Where do I sign up?
 
-First of all, have a look at the existing RE chapters outline. You'll probably immediately have ideas on how you can contribute. If that's the case, read the [Contribution Guide](https://github.com/OWASP/owasp-mastg/blob/master/.github/CONTRIBUTING.md) first.
+First of all, have a look at the existing RE chapters outline. You'll probably immediately have ideas on how you can contribute. If that's the case, read the [Contribution Guide](https://github.com/OWASP/mastg/blob/master/.github/CONTRIBUTING.md) first.
 
 Then contact [Bernhard Mueller](https://github.com/muellerberndt) - ideally directly on the OWASP Mobile Security Project Slack Channel, where you'll find all the other project members. You can sign up for an account here.

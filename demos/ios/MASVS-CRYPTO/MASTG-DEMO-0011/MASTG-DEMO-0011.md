@@ -1,12 +1,14 @@
 ---
 platform: ios
-title: Uses of Weak Key Size in SecKeyCreateRandomKey with r2
+title: Uses of Insufficient Key Size in SecKeyCreateRandomKey with r2
 code: [swift]
 id: MASTG-DEMO-0011
 test: MASTG-TEST-0209
 ---
 
 ### Sample
+
+The following sample demonstrates the use of `SecKeyCreateRandomKey` to generate an RSA key pair with a 1024-bit key size. The key pair is then used to sign and verify a message.
 
 {{ MastgTest.swift }}
 
@@ -35,4 +37,4 @@ In the output we can see how the `kSecAttrKeySizeInBits` attribute is set to `10
 
 {{ evaluation.txt }}
 
-The test fails because the key size is set to `1024` bits, which is considered weak for RSA encryption. The key size should be increased to `2048` bits or higher to provide adequate security against modern cryptographic attacks.
+The test fails because the key size is set to `1024` bits, which is considered insufficient for RSA encryption. The key size should be increased to `2048` bits or higher to provide adequate security against modern cryptographic attacks.

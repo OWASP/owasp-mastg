@@ -31,62 +31,7 @@ $ rafind2 -ZS service AndroidManifest.xml
 $ rafind2 -ZS receiver AndroidManifest.xml
 ```
 
-Or use `rabin2` to get information about a binary file:
-
-```bash
-$ rabin2 -I UnCrackable-Level1/classes.dex
-arch     dalvik
-baddr    0x0
-binsz    5528
-bintype  class
-bits     32
-canary   false
-retguard false
-class    035
-crypto   false
-endian   little
-havecode true
-laddr    0x0
-lang     dalvik
-linenum  false
-lsyms    false
-machine  Dalvik VM
-maxopsz  16
-minopsz  1
-nx       false
-os       linux
-pcalign  0
-pic      false
-relocs   false
-sanitiz  false
-static   true
-stripped false
-subsys   java
-va       true
-sha1  12-5508c  b7fafe72cb521450c4470043caa332da61d1bec7
-adler32  12-5528c  00000000
-```
-
-Type `rabin2 -h` to see all options:
-
-```bash
-$ rabin2 -h
-Usage: rabin2 [-AcdeEghHiIjlLMqrRsSUvVxzZ] [-@ at] [-a arch] [-b bits] [-B addr]
-              [-C F:C:D] [-f str] [-m addr] [-n str] [-N m:M] [-P[-P] pdb]
-              [-o str] [-O str] [-k query] [-D lang symname] file
- -@ [addr]       show section, symbol or import at addr
- -A              list sub-binaries and their arch-bits pairs
- -a [arch]       set arch (x86, arm, .. or <arch>_<bits>)
- -b [bits]       set bits (32, 64 ...)
- -B [addr]       override base address (pie bins)
- -c              list classes
- -cc             list classes in header format
- -H              header fields
- -i              imports (symbols imported from libraries)
- -I              binary info
- -j              output in json
- ...
-```
+Or use @MASTG-TOOL-0129 to get information about a binary file.
 
 Use the main `r2` utility to access the **r2 shell**. You can load DEX binaries just like any other binary:
 

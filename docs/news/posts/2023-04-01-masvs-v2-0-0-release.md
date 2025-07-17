@@ -4,7 +4,7 @@ date: 2023-04-01
 authors: [carlos, sven]
 ---
 
-We are thrilled to announce the release of the new version of the [OWASP Mobile Application Security Verification Standard (MASVS) v2.0.0](https://github.com/OWASP/owasp-masvs/releases/tag/v2.0.0). With this update, we have set out to achieve several key objectives to ensure that MASVS remains a leading industry standard for mobile application security.
+We are thrilled to announce the release of the new version of the [OWASP Mobile Application Security Verification Standard (MASVS) v2.0.0](https://github.com/OWASP/masvs/releases/tag/v2.0.0). With this update, we have set out to achieve several key objectives to ensure that MASVS remains a leading industry standard for mobile application security.
 
 <!-- more -->
 
@@ -32,11 +32,13 @@ The MASTG, in its current version v1.5.0, currently still supports the MASVS v1.
 
 ### Special Thanks
 
-We thank everyone that has participated in the MASVS Refactoring. You can access all Discussion and documents for the refactoring [here](https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring).
+We thank everyone that has participated in the MASVS Refactoring. You can access all Discussion and documents for the refactoring [here](https://github.com/OWASP/masvs/discussions/categories/big-masvs-refactoring).
 
 You'll notice that we have one **new author in the MASVS: Jeroen Beckers**
 
+<!-- markdownlint-disable search-replace -->
 > Jeroen is a mobile security lead responsible for quality assurance on mobile security projects and for R&D on all things mobile. Ever since his master's thesis on Android security, Jeroen has been interested in mobile devices and their (in)security. He loves sharing his knowledge with other people, as is demonstrated by his many talks & trainings at colleges, universities, clients and conferences.
+<!-- markdownlint-disable search-replace -->
 
 💙 Special thanks to our [MAS Advocate](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements/#mas-advocates), [NowSecure](https://www.nowsecure.com/), who has once again demonstrated their commitment to the project by continuously supporting it with time/dedicated resources as well as feedback, data and content contributions.
 

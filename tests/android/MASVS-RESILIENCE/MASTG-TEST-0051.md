@@ -7,6 +7,7 @@ platform: android
 title: Testing Obfuscation
 masvs_v1_levels:
 - R
+profiles: [R]
 ---
 
 ## Overview
@@ -65,9 +66,9 @@ You can use @MASTG-TOOL-0009 to detect if the app has been obfuscated.
 Example using the @MASTG-APP-0015:
 
 ```sh
-apkid owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk
+apkid mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk
 [+] APKiD 2.1.2 :: from RedNaga :: rednaga.io
-[*] owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk!classes.dex
+[*] mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk!classes.dex
  |-> anti_vm : Build.TAGS check, possible ro.secure check
  |-> compiler : r8
  |-> obfuscator : unreadable field names, unreadable method names

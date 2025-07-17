@@ -1,5 +1,6 @@
 import logging
 import re
+import os
 import mkdocs.plugins
 
 log = logging.getLogger('mkdocs')
@@ -9,12 +10,13 @@ log = logging.getLogger('mkdocs')
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#tabbed
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#snippets
 
-@mkdocs.plugins.event_priority(-50)
+@mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, **kwargs):
     path = page.file.src_uri
+    filename = os.path.basename(path)
 
     # Only apply the transformation if the page is a demo file
-    if "MASTG-DEMO-" in path:
+    if "MASTG-DEMO-" in filename:
         def replace_placeholder(match):
             files = match.group(1).split('#')
             if len(files) == 1:

@@ -253,7 +253,7 @@ def create_about_sheet(wb):
     url = "https://mas.owasp.org/MASVS/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
-    ws.cell(row=row, column=first_col+2).value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
+    ws.cell(row=row, column=first_col+2).value = f'=HYPERLINK("https://github.com/OWASP/masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
     ws.cell(row=row, column=first_col+2).style = "text"
 
     row = row + 2
@@ -266,7 +266,7 @@ def create_about_sheet(wb):
     url = "https://mas.owasp.org/MASTG/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
-    ws.cell(row=row, column=first_col+2).value = f'=HYPERLINK("https://github.com/OWASP/owasp-mastg/releases/tag/{MASTGVERSION}", "OWASP MASTG {MASTGVERSION} (commit: {MASTGCOMMIT})")'
+    ws.cell(row=row, column=first_col+2).value = f'=HYPERLINK("https://github.com/OWASP/mastg/releases/tag/{MASTGVERSION}", "OWASP MASTG {MASTGVERSION} (commit: {MASTGCOMMIT})")'
     ws.cell(row=row, column=first_col+2).style = "text"
 
 
@@ -281,7 +281,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mastg/discussions/categories/ideas"
+    url = "https://github.com/OWASP/mastg/discussions/categories/ideas"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -295,7 +295,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mastg/blob/master/License.md"
+    url = "https://github.com/OWASP/mastg/blob/master/License.md"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     # padding
@@ -340,6 +340,7 @@ def main():
 
     generate_spreadsheet(args.outputfile)
 
+    print(f"Output file: {args.outputfile}")
 
 if __name__ == "__main__":
     main()

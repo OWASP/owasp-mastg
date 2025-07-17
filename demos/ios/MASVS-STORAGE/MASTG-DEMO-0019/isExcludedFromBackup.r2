@@ -1,27 +1,26 @@
-e asm.bytes = false
+e asm.bytes=false
 e scr.color=false
 e asm.var=false
 
-!printf "Uses of isExcludedFromBackup:\n"
+?e Uses of isExcludedFromBackup:
 afl~isExcludedFromBackup
 
-!printf "\n"
+?e
 
-!printf "xrefs to isExcludedFromBackup:\n"
+?e xrefs to isExcludedFromBackup:
 axt @ 0x10000cc28
 
-!printf "\n"
-!printf "Use of isExcludedFromBackup:\n"
+?e
+?e Use of isExcludedFromBackup:
 
 pd-- 5 @ 0x100004594
 
-!printf "\n"
-!print "Search for secret.txt"
+?e
+?e Search for secret.txt:
 / secret.txt
 
-!printf "\n"
-!printf "Use of the string secret.txt:\n"
+?e
+?e Use of the string secret.txt:
 pd-- 5 @ 0x10000443c
-
 
 pdf @ 0x100004594 > function.asm

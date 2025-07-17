@@ -13,7 +13,10 @@
             "pattern": "https://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html"
         },
         {
-            "pattern": "http://127.0.0.1:8000"
+            "pattern": "^http://127.0.0.1"
+        },
+        {
+            "pattern": "^http://localhost"
         },
         {
             "pattern": "https://haveibeenpwned.com"
@@ -47,6 +50,9 @@
         },
         {
             "pattern": "^https://support.virustotal.com"
+        },
+        {
+            "pattern": "^https://research.kudelskisecurity.com"
         },
         {
             "pattern": "^https://www.europeanpaymentscouncil.eu"
@@ -94,7 +100,13 @@
             "pattern": "^https://linkedin.com/in/"
         },
         {
+            "pattern": "^https://chromium.googlesource.com/"
+        },
+        {
             "pattern": "^https://github.com/sushi2k/MSTG-MASVS-Internal"
+        },
+        {
+            "pattern": "^https://fidoalliance.org/"
         },
         {
             "pattern": "^/MASVS/"
@@ -107,6 +119,12 @@
         },
         {
             "pattern": "^/checklists/"
+        },
+        {
+            "pattern": "https://techbeacon.com/evolution-devops-new-thinking-gene-kim"
+        },
+        {
+            "pattern": "https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/"
         }
         
     ],

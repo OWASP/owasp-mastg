@@ -1,0 +1,129 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.5",
+    "serialNumber": "urn:uuid:54c73891-97b0-40be-90a1-a432ffc62330",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2024-10-20T17:34:54Z",
+        "tools": {
+            "components": [
+                {
+                    "group": "@cyclonedx",
+                    "name": "cdxgen",
+                    "version": "10.10.5",
+                    "purl": "pkg:npm/%40cyclonedx/cdxgen@10.10.5",
+                    "type": "application",
+                    "bom-ref": "pkg:npm/@cyclonedx/cdxgen@10.10.5",
+                    "author": "OWASP Foundation",
+                    "publisher": "OWASP Foundation"
+                }
+            ]
+        },
+        "authors": [
+            {
+                "name": "OWASP Foundation"
+            }
+        ],
+        "lifecycles": [
+            {
+                "phase": "build"
+            }
+        ],
+        "component": {
+            "group": "",
+            "name": "MASTestApp-iOS-MASWE-0076",
+            "version": "latest",
+            "type": "application",
+            "bom-ref": "pkg:swift/MASTestApp-iOS-MASWE-0076@latest",
+            "purl": "pkg:swift/MASTestApp-iOS-MASWE-0076@latest"
+        },
+        "properties": [
+            {
+                "name": "cdx:bom:componentTypes",
+                "value": "github\\nswift"
+            },
+            {
+                "name": "cdx:bom:componentNamespaces",
+                "value": "actions\\ngithub.com/apple"
+            }
+        ]
+    },
+    "components": [
+        {
+            "group": "actions",
+            "name": "checkout",
+            "version": "v4",
+            "purl": "pkg:github/actions/checkout@v4",
+            "type": "application",
+            "bom-ref": "pkg:github/actions/checkout@v4"
+        },
+        {
+            "group": "github.com/apple",
+            "name": "swift-nio",
+            "version": "1.4.0",
+            "purl": "pkg:swift/github.com/apple/swift-nio@1.4.0",
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/apple/swift-nio.git"
+                }
+            ],
+            "type": "library",
+            "bom-ref": "pkg:swift/github.com/apple/swift-nio@1.4.0",
+            "evidence": {
+                "identity": {
+                    "field": "purl",
+                    "confidence": 1,
+                    "methods": [
+                        {
+                            "technique": "manifest-analysis",
+                            "confidence": 1,
+                            "value": "/Users/sushi2k/Documents/mastg-apps/MASTestApp-iOS-MASWE-0076/MASTestApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+                        }
+                    ]
+                }
+            },
+            "properties": [
+                {
+                    "name": "SrcFile",
+                    "value": "/Users/sushi2k/Documents/mastg-apps/MASTestApp-iOS-MASWE-0076/MASTestApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+                }
+            ]
+        },
+        {
+            "group": "github.com/apple",
+            "name": "swift-nio-zlib-support",
+            "version": "1.0.0",
+            "purl": "pkg:swift/github.com/apple/swift-nio-zlib-support@1.0.0",
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/apple/swift-nio-zlib-support.git"
+                }
+            ],
+            "type": "library",
+            "bom-ref": "pkg:swift/github.com/apple/swift-nio-zlib-support@1.0.0",
+            "evidence": {
+                "identity": {
+                    "field": "purl",
+                    "confidence": 1,
+                    "methods": [
+                        {
+                            "technique": "manifest-analysis",
+                            "confidence": 1,
+                            "value": "/Users/sushi2k/Documents/mastg-apps/MASTestApp-iOS-MASWE-0076/MASTestApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+                        }
+                    ]
+                }
+            },
+            "properties": [
+                {
+                    "name": "SrcFile",
+                    "value": "/Users/sushi2k/Documents/mastg-apps/MASTestApp-iOS-MASWE-0076/MASTestApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+                }
+            ]
+        }
+    ],
+    "services": [],
+    "dependencies": []
+}

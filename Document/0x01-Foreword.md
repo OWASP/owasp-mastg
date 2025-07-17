@@ -4,7 +4,7 @@ Welcome to the OWASP Mobile Application Security Testing Guide. Feel free to exp
 
 If you have feedback or suggestions, or want to contribute, create an issue on GitHub or ping us on Slack. See the README for instructions:
 
-<https://www.github.com/OWASP/owasp-mastg/>
+<https://www.github.com/OWASP/mastg/>
 
 **squirrel (noun plural): Any arboreal sciurine rodent of the genus Sciurus, such as S. vulgaris (red squirrel) or S. carolinensis (grey squirrel), having a bushy tail and feeding on nuts, seeds, etc.**
 
