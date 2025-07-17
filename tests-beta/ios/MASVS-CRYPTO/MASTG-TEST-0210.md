@@ -20,7 +20,7 @@ To test for the use of weak encryption algorithms in iOS apps, we need to focus 
     - `kCCAlgorithmRC2`
     - `kCCAlgorithmBlowfish`
 
-- **CryptoKit**: This library does not support weak encryption algorithms. It only supports secure **symmetric algorithms** including `AES.GCM` and `ChaChaPoly`.
+- **CryptoKit**: This library does not support weak encryption algorithms. It only supports secure **symmetric algorithms** including AES-GCM and ChaChaPoly.
 - **Third-party libraries**: Applications may include cryptographic functions through third-party libraries such as OpenSSL, BoringSSL, Libsodium, or even custom cryptographic implementations. These may support or expose weak encryption algorithms like DES, 3DES, RC2, RC4, or Blowfish.
 
 Note: the **Security** framework only supports asymmetric algorithms and is therefore out of scope for this test (see [note about symmetric keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys#2863931)).
