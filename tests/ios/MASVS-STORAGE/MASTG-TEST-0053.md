@@ -9,6 +9,8 @@ masvs_v1_levels:
 - L1
 - L2
 profiles: [L1, L2]
+status: deprecated
+overed_by: [MASTG-TEST-0x53-1, MASTG-TEST-0x53-2]
 ---
 
 ## Overview
