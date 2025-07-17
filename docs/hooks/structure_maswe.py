@@ -1,4 +1,5 @@
 from pathlib import Path
+from structure_mastg import find_md_files, batch_replace
 import shutil
 import logging
 
@@ -23,3 +24,7 @@ def on_pre_build(config):
     # Copy over the entire weaknesses directory
     shutil.copytree(maswe_dir / "weaknesses", maswe_docs_dir)
 
+    # MASWE fixes
+    batch_replace(find_md_files(maswe_dir), [
+        ("Document/", "MASTG/")
+    ])

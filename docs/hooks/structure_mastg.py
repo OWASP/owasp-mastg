@@ -2,14 +2,29 @@ import shutil
 
 from pathlib import Path
 
+# Sed-like replacements
+def replace_in_file(file_path, old, new):
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    content = content.replace(old, new)
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+def find_md_files(base_dir):
+    # Get all md files but strip out md files in node_modules or anything inside hidden directories
+    return [p for p in Path(base_dir).rglob("*.md") if not "/node_modules/" in str(p) and not "/." in str(p)]
+
+def batch_replace(filepaths, replacements):
+    for file in filepaths:
+        for old, new in replacements:
+            replace_in_file(file, old, new)
+
 def on_pre_build(config):
     docs_dir = Path("docs")
     mastg_dir = docs_dir / "MASTG"
-    maswe_dir = docs_dir / "MASWE"
     images_dir = docs_dir / "assets" / "Images"
 
     mastg_dir.mkdir(parents=True, exist_ok=True)
-    maswe_dir.mkdir(parents=True, exist_ok=True)
     images_dir.mkdir(parents=True, exist_ok=True)
 
     directories = ["tests", "techniques", "tools", "apps", "demos", "rules", "utils", "best-practices"]
@@ -28,14 +43,6 @@ def on_pre_build(config):
             dest_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(file, dest_path)
 
-    # Copy MASWE
-    for file in Path("weaknesses").rglob("*"):
-        if file.is_file():
-            rel_path = file.relative_to("weaknesses")
-            dest_path = maswe_dir / rel_path
-            dest_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(file, dest_path)
-
     # Copy top-level .md files
     for mdfile in Path("Document").glob("0x0*.md"):
         shutil.copy(mdfile, mastg_dir / mdfile.name)
@@ -49,23 +56,6 @@ def on_pre_build(config):
             dest_path = images_dir / rel_path
             dest_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(file, dest_path)
-
-    # Sed-like replacements
-    def replace_in_file(file_path, old, new):
-        with open(file_path, "r", encoding="utf-8") as f:
-            content = f.read()
-        content = content.replace(old, new)
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(content)
-
-    def find_md_files(base_dir):
-        # Get all md files but strip out md files in node_modules or anything inside hidden directories
-        return [p for p in Path(base_dir).rglob("*.md") if not "/node_modules/" in str(p) and not "/." in str(p)]
-
-    def batch_replace(filepaths, replacements):
-        for file in filepaths:
-            for old, new in replacements:
-                replace_in_file(file, old, new)
 
     # Specific subdir replacements
     rel_paths = {
@@ -83,9 +73,4 @@ def on_pre_build(config):
     batch_replace(find_md_files(mastg_dir), [
         ("src=\"Images/", "src=\"../../../assets/Images/"),
         ("Document/", "")
-    ])
-
-    # MASWE fixes
-    batch_replace(find_md_files(maswe_dir), [
-        ("Document/", "MASTG/")
     ])
