@@ -1,6 +1,9 @@
 import os
+import mkdocs.plugins
 
-def on_config(config):
+# Lower priority so it runs after the restructure scripts
+@mkdocs.plugins.event_priority(-10)
+def on_pre_build(config):
     folders = [
         {"base": "docs/MASTG", "subfolders": ["tools", "apps", "techniques", "tests", "rules", "demos", "best-practices"]},
         {"base": "docs/MASWE", "subfolders": [""]}
@@ -29,4 +32,3 @@ def on_config(config):
         elif plugin.name == 'redirects':
             plugin.config['redirect_maps'] = redirects_dict
 
-    return config

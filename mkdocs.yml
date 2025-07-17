@@ -318,14 +318,14 @@ markdown_extensions:
 
 hooks:
   
+  # Config update: add_redirects updates the mkdocs-redirects plugin config.
+  # This runs after pre-build because otherwise not all files are present yet
+  - docs/hooks/add_redirects.py
+
   # Pre-build: restructure files
   - docs/hooks/structure-masvs.py
   - docs/hooks/structure-mastg.py
   - docs/hooks/structure-maswe.py
-
-  # Config update: add_redirects updates the mkdocs-redirects plugin config.
-  # This runs after pre-build because otherwise not all files are present yet
-  - docs/hooks/add_redirects.py
 
   # General
   - docs/hooks/edit_button_uri.py
