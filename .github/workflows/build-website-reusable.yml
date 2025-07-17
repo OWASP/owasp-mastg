@@ -27,7 +27,6 @@ jobs:
           repository: "OWASP/maswe"
           fetch-depth: 1
           path: maswe/
-      - run: bash -x ./src/scripts/structure_maswe.sh
 
       - name: Get Latest MASVS Release Tag
         run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
