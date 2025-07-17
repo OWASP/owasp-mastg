@@ -92,7 +92,7 @@ You can access the simulator shell by running:
 xcrun simctl spawn booted /bin/sh
 ```
 
-However, it isn't very useful. The iOS Simulator is a stripped-down environment, meaning it doesn’t include many standard UNIX utilities like `ls`, `bash`, `sudo`, or `su`.
+However, it isn't very useful. The iOS Simulator is a stripped-down environment, meaning it doesn't include many standard UNIX utilities like `ls`, `bash`, `sudo`, or `su`.
 
 While `ls` is missing, you can still navigate manually:
 
