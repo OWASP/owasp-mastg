@@ -89,7 +89,7 @@ def on_post_page(output, page, config):
     # Transform URLs for MASWE tags to a more purposeful format.
     # Matches URLs like '/tags/#tag:MASWE-<number>' and replaces them with '/MASWE/<category>/MASWE-<number>',
     # where <category> is determined from the 'hook_add_tags_maswe_data' mapping in the config.
-    output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}"' , output)
+    output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/{x.group(1)}"' , output)
     output = re.sub(r'/tags/#tag:test"', '/MASTG/tests/"' , output)
     output = re.sub(r'/tags/#tag:maswe"', '/MASWE/"' , output)
     output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
@@ -102,7 +102,7 @@ def on_post_page(output, page, config):
     output = re.sub(r'/tags/#tag:l2"', '/MASTG/tests/#l2"' , output)
     output = re.sub(r'/tags/#tag:r"', '/MASTG/tests/#r"' , output)
     output = re.sub(r'/tags/#tag:p"', '/MASTG/tests/#p"' , output)
-    output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/MASTG/tests/{config["hook_add_tags_test_data"].get(x.group(1).upper())}/{x.group(1).upper()}"' , output)
+    output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/{x.group(1).upper()}' , output)
     
     path = page.file.src_uri
     # Some context-specific changes
