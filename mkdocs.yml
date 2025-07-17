@@ -323,9 +323,9 @@ hooks:
   - docs/hooks/add_redirects.py
 
   # Pre-build: restructure files
-  - docs/hooks/structure-masvs.py
-  - docs/hooks/structure-mastg.py
-  - docs/hooks/structure-maswe.py
+  - docs/hooks/structure_masvs.py
+  - docs/hooks/structure_mastg.py
+  - docs/hooks/structure_maswe.py
 
   # General
   - docs/hooks/edit_button_uri.py
