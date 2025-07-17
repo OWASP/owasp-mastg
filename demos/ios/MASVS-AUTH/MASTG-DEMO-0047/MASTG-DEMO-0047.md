@@ -28,4 +28,4 @@ This sample code demonstrates an insecure way of storing a token in the Keychain
 
 ### Evaluation
 
-The test fails because the output shows references to biometric verification that uses LocalAuthentication API and the Keychain API but does not require user presence. 
+The test fails because the output shows references to biometric verification that uses LocalAuthentication API and the Keychain API but does not require user presence.
