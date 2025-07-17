@@ -1,1 +1,1 @@
-NO_COLOR=true semgrep -c ../../../../rules/mastg-android-weak-encryption-modes.yaml ./MastgTest_reversed.java --text > output.txt
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-broken-encryption-modes.yaml ./MastgTest_reversed.java --text > output.txt

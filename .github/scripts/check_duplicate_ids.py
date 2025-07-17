@@ -14,7 +14,6 @@ FOLDERS_TO_CHECK = [
     "tests-beta",
     "tools",
     "techniques",
-    "weaknesses"
 ]
 
 # Regex patterns for different file types
@@ -23,14 +22,8 @@ ID_PATTERNS = {
     "demos": r"MASTG-DEMO-(\d{4})",
     "techniques": r"MASTG-TECH-(\d{4})",
     "tools": r"MASTG-TOOL-(\d{4})",
-    "weaknesses": r"MASWE-(\d{4})",
     "apps": r"MASTG-APP-(\d{4})",
     "tests-beta": r"MASTG-TEST-(\d{4})"
-}
-
-# Special handling for patterns that don't match folder names
-FOLDER_TO_PATTERN = {
-    "weaknesses": ["weaknesses"] 
 }
 
 def find_next_available_id(prefix, existing_ids):
@@ -84,11 +77,6 @@ def main():
             if key in folder:
                 prefix_match = key
                 break
-            # Check special mappings
-            for pattern_folder, patterns in FOLDER_TO_PATTERN.items():
-                if folder in patterns and key == pattern_folder:
-                    prefix_match = key
-                    break
         
         if not prefix_match:
             print(f"Warning: No pattern match found for folder: {folder}")
@@ -112,12 +100,7 @@ def main():
                 file_id = match.group(0)  # Full match like MASTG-BEST-0001
                 id_number = match.group(1)  # Just the number part (0001)
                 
-                # For MASWE files, the prefix is just "MASWE"
-                if "MASWE" in file_id:
-                    id_prefix = "MASWE"
-                else:
-                    # For other files, split by dash and take first two parts
-                    id_prefix = "-".join(file_id.split("-")[:2])
+                id_prefix = "-".join(file_id.split("-")[:2])
                 
                 # Record the ID and its associated path
                 existing_ids_by_prefix[id_prefix].append(id_number)
@@ -147,10 +130,6 @@ def main():
             if key in filepath:
                 prefix_match = key
                 break
-        
-        # Special case for MASWE files in weaknesses folder
-        if "weaknesses" in filepath and not prefix_match:
-            prefix_match = "weaknesses"
                 
         if not prefix_match:
             print(f"Warning: No pattern match found for file: {filepath}")
@@ -170,12 +149,7 @@ def main():
         file_id = match.group(0)  # Full match like MASTG-BEST-0001
         id_number = match.group(1)  # Just the number part (0001)
         
-        # For MASWE files, the prefix is just "MASWE"
-        if "MASWE" in file_id:
-            id_prefix = "MASWE"
-        else:
-            # For other files, split by dash and take first two parts
-            id_prefix = "-".join(file_id.split("-")[:2])
+        id_prefix = "-".join(file_id.split("-")[:2])
         
         print(f"Found ID: {file_id} with prefix: {id_prefix} in new file: {filepath}")
         

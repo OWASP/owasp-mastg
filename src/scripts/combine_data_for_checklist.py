@@ -9,7 +9,7 @@ MASVS = None
 
 def retrieve_masvs(version="latest"):
     global MASVS
-    url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
+    url = f"https://github.com/OWASP/masvs/releases/{version}/download/OWASP_MASVS.yaml"
     response = requests.get(url)
     content = response.content
     MASVS = yaml.safe_load(content)
@@ -58,14 +58,17 @@ def get_mastg_tests_dict():
 
     mastg_tests = {}
 
-    for file in glob.glob("docs/MASTG/tests/**/*.md", recursive=True):
+    for file in glob.glob("tests/**/*.md", recursive=True):
+        if file == "tests/index.md":
+            continue
         with open(file, 'r') as f:
             id = ""
             content = f.read()
             platform = get_platform(file)
             try:
+                
                 frontmatter = next(yaml.load_all(content, Loader=yaml.FullLoader))
-                masvs_v2_id = frontmatter['masvs_v2_id']
+                masvs_v2_id = frontmatter.get('masvs_v2_id')
                 frontmatter['path'] = os.path.relpath(file, "docs/MASTG")
                 if masvs_v2_id:
                     id = masvs_v2_id[0] 

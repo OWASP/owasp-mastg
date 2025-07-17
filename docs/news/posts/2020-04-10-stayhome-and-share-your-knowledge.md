@@ -16,7 +16,7 @@ If you can close 5 issues that we marked with the tag #StayHome we will sent you
 
 If you are interested, do the following:
 
-1. Go through the open issues in our Github repo with the tag [#StayHome](https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+label%3AStayHome).
+1. Go through the open issues in our Github repo with the tag [#StayHome](https://github.com/OWASP/mastg/issues?q=is%3Aissue+is%3Aopen+label%3AStayHome).
 
 2. Make a comment on the issue that you would like to take care of, which will be assigned on a first come first serve basis. For any clarifications you can ping either Carlos or Sven in OWASP Slack. If you don't have an account yet, please check here on how to register.
 

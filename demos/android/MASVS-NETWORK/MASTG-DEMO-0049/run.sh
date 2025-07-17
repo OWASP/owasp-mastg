@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-ssl-socket-hostnameverifier.yml ./MastgTest_reversed.java > output.txt

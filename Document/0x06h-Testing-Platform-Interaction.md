@@ -107,7 +107,7 @@ The `Codable`s can easily be encoded / decoded into various representations: `NS
 
 #### JSON and Codable
 
-There are various ways to encode and decode JSON within iOS by using different 3rd party libraries:
+There are various ways to encode and decode JSON within iOS by using different third-party libraries:
 
 - [Mantle](https://github.com/Mantle/Mantle "Mantle")
 - [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel")
@@ -267,23 +267,9 @@ This should be sufficient for an app analysis and therefore, `SFSafariViewContro
 
 #### Safari Web Inspector
 
-Enabling Safari web inspection on iOS allows you to inspect the contents of a WebView remotely from a macOS device. By default, you can view the contents of any page loaded into the Safari app because the Safari app has the `get-task-allowed` entitlement. Applications installed from the App store will however not have this entitlement, and so cannot be attached to. On jailbroken devices, this entitlement can be added to any application by installing the [Inspectorplus tweak from the BigBoss repo](http://cydia.saurik.com/package/li.oldman.inspectorplus/ "inspectorplus").
+Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html) on iOS allows you to remotely [inspect the contents of a WebView from a macOS device](https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios). This is particularly useful in applications that expose native APIs using a JavaScript bridge, such as hybrid applications.
 
-Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html) is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
-
-To activate the web inspection you have to follow these steps:
-
-1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on _Web Inspector_.
-2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable _Show Develop menu in menu bar_.
-3. Connect your iOS device to the macOS device and unlock it: the iOS device name should appear in the _Develop_ menu.
-4. (If not yet trusted) On macOS's Safari, go to the _Develop_ menu, click on the iOS device name, then on "Use for Development" and enable trust.
-
-To open the web inspector and debug a WebView:
-
-1. In iOS, open the app and navigate to the screen that should contain a WebView.
-2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView based context. Click on it to open the Web Inspector.
-
-Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
+The Safari Web Inspector requires apps to have the `get-task-allowed` entitlement. The Safari app has this entitlement by default, so you can view the contents of any page loaded into it. However, applications installed from the App Store will not have this entitlement and cannot be attached. On jailbroken devices, you can add this entitlement to any application by installing @MASTG-TOOL-0137. Then, you can attach Safari on your host to examine the contents of the WebView (see @MASTG-TECH-0139).
 
 #### Native Functionality Exposed Through WebViews
 
@@ -569,23 +555,18 @@ In addition:
 - No long-running background tasks are allowed but uploads or downloads can be initiated.
 - App extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
 
-#### UIPasteboard
+#### Pasteboard
 
-When typing data into input fields, the clipboard can be used to copy in data. The clipboard is accessible system-wide and is therefore shared by apps. This sharing can be misused by malicious apps to get sensitive data that has been stored in the clipboard.
+Using the [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard) API, apps can access the iOS pasteboard, allowing them to share data either within the app or across apps. However, the system-wide nature of the general pasteboard raises privacy and security concerns, especially when sensitive data is copied programmatically without user interaction.
 
-When using an app you should be aware that other apps might be reading the clipboard continuously, as the [Facebook app](https://www.thedailybeast.com/facebook-is-spying-on-your-clipboard "Facebook Is Spying On Your Clipboard") did. Before iOS 9, a malicious app might monitor the pasteboard in the background while periodically retrieving `[UIPasteboard generalPasteboard].string`. As of iOS 9, pasteboard content is accessible to apps in the foreground only, which reduces the attack surface of password sniffing from the clipboard dramatically. Still, copy-pasting passwords is a security risk you should be aware of, but also cannot be solved by an app.
+There are two types of pasteboards:
 
-- Preventing pasting into input fields of an app, does not prevent that a user will copy sensitive information anyway. Since the information has already been copied before the user notices that it's not possible to paste it in, a malicious app has already sniffed the clipboard.
-- If pasting is disabled on password fields users might even choose weaker passwords that they can remember and they cannot use password managers anymore, which would contradict the original intention of making the app more secure.
+- **General pasteboard (`UIPasteboard.general`)**: Shared across all foreground apps and, with [Universal Clipboard](https://support.apple.com/en-us/102430), potentially across Apple devices. It is persistent by default across device restarts and app reinstalls unless cleared. As of iOS 16, the general pasteboard requires user interaction for access.
+- **Custom or Named Pasteboards (`UIPasteboard(name:create:)` and `UIPasteboard.withUniqueName()`)**: These are [private pasteboards](https://developer.apple.com/library/archive/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/UsingCopy%2CCut%2CandPasteOperations/UsingCopy%2CCut%2CandPasteOperations.html) that are app- or team-specific, i.e., restricted to the app that created them or other apps from the same team ID. They are non-persistent by default since iOS 10 (deleted upon app termination and system reboot). Apple discourages the use of persistent custom pasteboards and recommends [using App Groups](https://developer.apple.com/documentation/Xcode/configuring-app-groups) for sharing data between apps of the same developer.
 
-The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboard "UIPasteboard") enables sharing data within an app, and from an app to other apps. There are two kinds of pasteboards:
+The iOS pasteboard API has gone through multiple changes which can impact both the user's privacy and security:
 
-- **systemwide general pasteboard**: for sharing data with any app. Persistent by default across device restarts and app uninstalls (since iOS 10).
-- **custom / named pasteboards**: for sharing data with another app (having the same team ID as the app to share from) or with the app itself (they are only available in the process that creates them). Non-persistent by default (since iOS 10), that is, they exist only until the owning (creating) app quits.
-
-**Security Considerations:**
-
-- Users cannot grant or deny permission for apps to read the pasteboard.
-- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the _malicious_ app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
-- [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used.
-- Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data.
+- Since iOS 9, access to the pasteboard has been restricted to apps running in the foreground, which significantly reduces the risk of passive clipboard sniffing. However, if sensitive data remains on the pasteboard and a malicious app is brought to the foreground later (or an app widget that remains in the foreground whenever the user is on the screen where it's located), the app can access that data without the user's consent or knowledge. See the [example attack](https://www.thedailybeast.com/facebook-is-spying-on-your-clipboard).
+- Since iOS 10, Universal Clipboard is enabled by default and, when a user signs into iCloud, automatically syncs the general pasteboard content across the user's nearby Apple devices using the same iCloud account. Developers can choose to disable this by restricting the contents of the general pasteboard to the local device using `UIPasteboard.localOnly`. Additionally, they may set expiration times for pasteboard items using `UIPasteboard.expirationDate`.
+- Since iOS 14, **the system notifies the user** when an app reads general pasteboard content that was written by a different app without user intent. The system determines user intent based on user interactions, such as tapping a system-provided button or selecting **Paste** from the contextual menu.
+- Since iOS 16, the system prompts users with a paste confirmation dialog whenever an app accesses pasteboard content. Therefore, any access to the general pasteboard must be explicitly triggered by user interaction. Apps can also use [`UIPasteControl`](https://developer.apple.com/documentation/uikit/uipastecontrol) to handle paste actions by presenting a special "paste" button whenever they detect compatible data. This isn't necessarily better or more secure; it's an improvement to the user experience. It avoids prompting the user every time, but the user still needs to click, so access occurs only in response to user interaction.

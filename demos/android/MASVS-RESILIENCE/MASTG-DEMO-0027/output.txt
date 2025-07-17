@@ -1,27 +1,25 @@
 
-[*] KeyguardManager.isDeviceSecure() called
+
+[*] KeyguardManager.isDeviceSecure() called - RESULT: false
 
 
 Backtrace:
 android.app.KeyguardManager.isDeviceSecure(Native Method)
 org.owasp.mastestapp.MastgTest.isDeviceSecure(MastgTest.kt:24)
 org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:10)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:93)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:91)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke-k-4lQ0M(Clickable.kt:987)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke(Clickable.kt:981)
-androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)
-Result: false
+org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$9$lambda$8(MainActivity.kt:53)
+org.owasp.mastestapp.MainActivityKt.$r8$lambda$PhzGLzmkS_ibruOfiTT32AhzWl4(Unknown Source:0)
+org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+java.lang.Thread.run(Thread.java:1012)
 
-[*] BiometricManager.canAuthenticate(15) called with BIOMETRIC_ERROR_NONE_ENROLLED - No biometrics enrolled.
 
+[*] BiometricManager.canAuthenticate called with: BIOMETRIC_STRONG (15) - RESULT: BIOMETRIC_ERROR_NONE_ENROLLED (11)
 
 Backtrace:
 android.hardware.biometrics.BiometricManager.canAuthenticate(Native Method)
 org.owasp.mastestapp.MastgTest.checkStrongBiometricStatus(MastgTest.kt:38)
 org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:11)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:93)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:91)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke-k-4lQ0M(Clickable.kt:987)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke(Clickable.kt:981)
-androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)
+org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$9$lambda$8(MainActivity.kt:53)
+org.owasp.mastestapp.MainActivityKt.$r8$lambda$PhzGLzmkS_ibruOfiTT32AhzWl4(Unknown Source:0)
+org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+java.lang.Thread.run(Thread.java:1012)

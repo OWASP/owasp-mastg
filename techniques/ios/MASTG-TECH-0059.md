@@ -11,7 +11,7 @@ On iOS, system applications can be found in the `/Applications` directory while 
 
 In order to easily obtain the installation directory information for user-installed apps you can follow the following methods:
 
-Connect to the terminal on the device and run the command `ipainstaller` ([IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console")) to install @MASTG-APP-0028 as follows:
+Connect to the terminal on the device and use @MASTG-TOOL-0138 to install @MASTG-APP-0028 as follows:
 
 ```bash
 iPhone:~ root# ipainstaller -l

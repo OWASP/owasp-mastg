@@ -1,4 +1,3 @@
-
 [*] open called to open a file from external storage at: /storage/emulated/0/Android/data/org.owasp.mastestapp/files/secret.txt
 
 Backtrace:
@@ -12,25 +11,23 @@ java.io.FileOutputStream.<init>(FileOutputStream.java:236)
 java.io.FileOutputStream.<init>(FileOutputStream.java:186)
 org.owasp.mastestapp.MastgTest.mastgTestApi(MastgTest.kt:26)
 org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:16)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:93)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:91)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke-k-4lQ0M(Clickable.kt:987)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke(Clickable.kt:981)
-androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)
+org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$9$lambda$8(MainActivity.kt:53)
+org.owasp.mastestapp.MainActivityKt.$r8$lambda$PhzGLzmkS_ibruOfiTT32AhzWl4(Unknown Source:0)
+org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+java.lang.Thread.run(Thread.java:1012)
 
 [*] ContentResolver.insert called with ContentValues:
-	_display_name: secretFile55.txt
-	mime_type: text/plain
-	relative_path: Download
+        _display_name: secretFile59.txt
+        mime_type: text/plain
+        relative_path: Download
 
-[*] ContentResolver.insert returned URI: content://media/external/downloads/1000000108
+[*] ContentResolver.insert returned URI: content://media/external/downloads/1000000143
 
 Backtrace:
 android.content.ContentResolver.insert(Native Method)
 org.owasp.mastestapp.MastgTest.mastgTestMediaStore(MastgTest.kt:44)
 org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:17)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:93)
-org.owasp.mastestapp.MainActivityKt$MyScreenContent$1$1$1.invoke(MainActivity.kt:91)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke-k-4lQ0M(Clickable.kt:987)
-androidx.compose.foundation.ClickablePointerInputNode$pointerInput$3.invoke(Clickable.kt:981)
-androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)
+org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$9$lambda$8(MainActivity.kt:53)
+org.owasp.mastestapp.MainActivityKt.$r8$lambda$PhzGLzmkS_ibruOfiTT32AhzWl4(Unknown Source:0)
+org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+java.lang.Thread.run(Thread.java:1012)

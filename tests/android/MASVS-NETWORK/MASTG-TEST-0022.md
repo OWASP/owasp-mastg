@@ -7,6 +7,7 @@ platform: android
 title: Testing Custom Certificate Stores and Certificate Pinning
 masvs_v1_levels:
 - L2
+profiles: [L2]
 status: deprecated
 covered_by: [MASTG-TEST-0242, MASTG-TEST-0243, MASTG-TEST-0244]
 deprecation_note: New version available in MASTG V2
@@ -131,7 +132,7 @@ Normally a function is created to check the certificate(s) and return the boolea
 
 In this particular example we are pinning the intermediate CA of the certificate chain. The output of the HTTP response will be available in the system logs.
 
-Sample Xamarin app with the previous example can be obtained on the [MASTG repository](https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk "Xamarin app with certificate pinning")
+Sample Xamarin app with the previous example can be obtained on the [MASTG repository](https://github.com/OWASP/mastg/raw/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk "Xamarin app with certificate pinning")
 
 After decompressing the APK file, use a .NET decompiler like dotPeak, ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 

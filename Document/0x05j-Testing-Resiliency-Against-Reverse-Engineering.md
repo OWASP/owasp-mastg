@@ -691,7 +691,7 @@ Another way to provide integrity is to sign the byte array you obtained and add 
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
+You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as ElleKit and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
 
 For instance, in its default configuration on a rooted device, Frida runs on the device as frida-server. When you explicitly attach to a target app (e.g. via frida-trace or the Frida REPL), Frida injects a frida-agent into the memory of the app. Therefore, you may expect to find it there after attaching to the app (and not before). If you check `/proc/<pid>/maps` you'll find the frida-agent as frida-agent-64.so:
 
@@ -724,7 +724,7 @@ Looking at these two _traces_ that Frida _lefts behind_, you might already imagi
 | **Checking For Ports Responding To D-Bus Auth** | `frida-server` uses the D-Bus protocol to communicate, so you can expect it to respond to D-Bus AUTH. Send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself. | This is a fairly robust method of detecting `frida-server`, but Frida offers alternative modes of operation that don't require frida-server. |
 | **Scanning Process Memory for Known Artifacts** | Scan the memory for artifacts found in Frida's libraries, e.g. the string "LIBFRIDA" present in all versions of frida-gadget and frida-agent. For example, use `Runtime.getRuntime().exec` and iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version) searching for the string. | This method is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added and if multiple artifacts are being scanned. However, the chosen artifacts might be patched in the Frida binaries. Find the source code on [Berdhard Mueller's GitHub](https://github.com/muellerberndt/frida-detection-demo/blob/master/AntiFrida/app/src/main/cpp/native-lib.cpp "frida-detection-demo"). |
 
-Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would help detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. Further, the app can try to make it harder to detect the implemented protection mechanisms by using various obfuscation techniques. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
+Please remember that this table is far from exhaustive. We could start talking about detecting [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication) and [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would help with detecting ElleKit or Frida's Interceptor. Many more techniques exist, and each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. Further, the app can try to make it harder to detect the implemented protection mechanisms by using various obfuscation techniques. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
 
 > It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
@@ -787,35 +787,36 @@ There's some overlap with the category "detecting reverse engineering tools and 
 
 #### Detecting Tampering with the Java Runtime
 
-This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
+Hooking frameworks such as @MASTG-TOOL-0027 will inject themselves into the Android Runtime and leave different traces while doing so. These traces can be detected, as shown by this code snippet from the [XPosedDetector](https://github.com/vvb2060/XposedDetector/) project.
 
-```java
-try {
-  throw new Exception();
+```cpp
+static jclass findXposedBridge(C_JNIEnv *env, jobject classLoader) {
+    return findLoadedClass(env, classLoader, "de/robv/android/xposed/XposedBridge"_iobfs.c_str());
 }
-catch(Exception e) {
-  int zygoteInitCallCount = 0;
-  for(StackTraceElement stackTraceElement : e.getStackTrace()) {
-    if(stackTraceElement.getClassName().equals("com.android.internal.os.ZygoteInit")) {
-      zygoteInitCallCount++;
-      if(zygoteInitCallCount == 2) {
-        Log.wtf("HookDetection", "Substrate is active on the device.");
-      }
+void doAntiXposed(C_JNIEnv *env, jobject object, intptr_t hash) {
+    if (!add(hash)) {
+        debug(env, "checked classLoader %s", object);
+        return;
     }
-    if(stackTraceElement.getClassName().equals("com.saurik.substrate.MS$2") &&
-        stackTraceElement.getMethodName().equals("invoked")) {
-      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Substrate.");
+#ifdef DEBUG
+    LOGI("doAntiXposed, classLoader: %p, hash: %zx", object, hash);
+#endif
+    jclass classXposedBridge = findXposedBridge(env, object);
+    if (classXposedBridge == nullptr) {
+        return;
     }
-    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
-        stackTraceElement.getMethodName().equals("main")) {
-      Log.wtf("HookDetection", "Xposed is active on the device.");
+    if (xposed_status == NO_XPOSED) {
+        xposed_status = FOUND_XPOSED;
     }
-    if(stackTraceElement.getClassName().equals("de.robv.android.xposed.XposedBridge") &&
-        stackTraceElement.getMethodName().equals("handleHookedMethod")) {
-      Log.wtf("HookDetection", "A method on the stack trace has been hooked using Xposed.");
+    disableXposedBridge(env, classXposedBridge);
+    if (clearHooks(env, object)) {
+#ifdef DEBUG
+        LOGI("hooks cleared");
+#endif
+        if (xposed_status < ANTIED_XPOSED) {
+            xposed_status = ANTIED_XPOSED;
+        }
     }
-
-  }
 }
 ```
 

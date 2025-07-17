@@ -1,4 +1,5 @@
 .DS_Store
+.cache
 ~*
 node_modules
 *.out
@@ -15,6 +16,7 @@ logs
 *.epub
 docs/talks.md
 owasp-masvs
+weaknesses
 __pycache__
 venv/
 playground/
@@ -32,3 +34,6 @@ cross_references.yaml
 drafts/
 Payload/
 .vscode/settings.json
+site/
+.cache/
+references.json
