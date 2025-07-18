@@ -3,6 +3,7 @@ platform: ios
 title: References to APIs for Accessing Private Storage
 id: MASTG-TEST-0x52-2
 type: [static]
+profiles: [L1]
 best-practices: [MASTG-BEST-0014]
 weakness: MASWE-0006
 ---
