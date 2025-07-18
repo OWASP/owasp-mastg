@@ -8,10 +8,26 @@ repo_name: OWASP/mastg
 validation:
   nav:
     absolute_links: ignore
+  links:
+    absolute_links: ignore
+
+watch:
+  - techniques
+  - tests
+  - tests-beta
+  - tools
+  - apps
+  - demos
+  - rules
+  - utils
+  - best-practices
+  - docs/contributing
+  - docs/donate
+  - docs/news
 
 nav:
   - Home: index.md
-  - "MASWE (Beta)": 
+  - "MASWE (Beta)":
     - MASWE/index.md
     - MASVS-STORAGE:
       - ... | flat | MASWE/MASVS-STORAGE/*.md
@@ -39,7 +55,7 @@ nav:
         - ... | flat | MASTG/0x04*.md
       - Android Security Testing:
         - ... | flat | MASTG/0x05*.md
-      - iOS Security Testing: 
+      - iOS Security Testing:
         - ... | flat | MASTG/0x06*.md
       - Best Practices:
         - MASTG/best-practices/index.md
@@ -164,14 +180,14 @@ nav:
   - "MAS Checklist":
      - checklists/index.md
      - MASVS-STORAGE: checklists/MASVS-STORAGE.md
-     - MASVS-CRYPTO: checklists/MASVS-CRYPTO.md 
+     - MASVS-CRYPTO: checklists/MASVS-CRYPTO.md
      - MASVS-AUTH: checklists/MASVS-AUTH.md
      - MASVS-NETWORK: checklists/MASVS-NETWORK.md
      - MASVS-PLATFORM: checklists/MASVS-PLATFORM.md
      - MASVS-CODE: checklists/MASVS-CODE.md
      - MASVS-RESILIENCE: checklists/MASVS-RESILIENCE.md
      - MASVS-PRIVACY: checklists/MASVS-PRIVACY.md
-  - "MAS Crackmes": 
+  - "MAS Crackmes":
       - crackmes/index.md
       - ... | flat | crackmes/*.md
   - News:
@@ -190,7 +206,7 @@ copyright: |
     <a href="https://www.owasp.org"><img src="https://github.com/OWASP/mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
   </div>
   <span style="font-size: smaller">
-    &#169; OWASP Foundation 2025. This work is licensed under 
+    &#169; OWASP Foundation 2025. This work is licensed under
     <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
   </span><br><span style="font-size: smaller">OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span> <span style="font-size: smaller">This website uses cookies to analyze our traffic and only share that information with our analytics partners. <a href="https://github.com/OWASP/mastg/blob/master/about_cookies.md">Learn more</a>.</span>
   <div style="color: #6a6868; font-size: smaller"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website and covers designed by Carlos Holguera.</i></div>
@@ -247,10 +263,10 @@ theme:
     - content.action.edit
 
   palette:
-    # - primary: #499FFF 
+    # - primary: #499FFF
     - scheme: default
       toggle:
-        icon: material/weather-night 
+        icon: material/weather-night
         name: Switch to dark mode
     - scheme: slate
       toggle:
@@ -317,15 +333,12 @@ markdown_extensions:
           case: lower
 
 hooks:
-  
   # Config update: add_redirects updates the mkdocs-redirects plugin config.
   # This runs after pre-build because otherwise not all files are present yet
   - docs/hooks/add_redirects.py
 
-  # Pre-build: restructure files
-  - docs/hooks/structure_maswe.py
-  - docs/hooks/structure_masvs.py
-  - docs/hooks/structure_mastg.py
+  # Pre-build: copy external repos
+  - docs/hooks/combine-repos.py
 
   # General
   - docs/hooks/edit_button_uri.py
@@ -335,7 +348,7 @@ hooks:
 
   # Adding demo buttons at -30 before replace_snippets at -40
   - docs/hooks/add-demo-buttons.py
-  
+
   # Priority -40 for adding content
   - docs/hooks/add-tool-gh-preview.py
   - docs/hooks/add-checklists-banner.py
@@ -351,6 +364,9 @@ hooks:
   # Priority -50 for conversion of tags and cross-references
   - docs/hooks/resolve_references.py
 
+  # Modify watch folder settings to remove docs/
+  - docs/hooks/fix-serve-watch.py
+
 extra:
   generator: false # removed but recreated in copyright above
   analytics:
@@ -359,9 +375,9 @@ extra:
   social:
     - icon: fontawesome/brands/slack
       link: https://owasp.slack.com/archives/C1M6ZVC6S
-    - icon: fontawesome/brands/bluesky 
+    - icon: fontawesome/brands/bluesky
       link: https://bsky.app/profile/owasp-mas.bsky.social
-    - icon: fontawesome/brands/mastodon 
+    - icon: fontawesome/brands/mastodon
       link: https://infosec.exchange/@OWASP_MAS
     - icon: fontawesome/brands/github
       link: https://github.com/OWASP/mastg/discussions
