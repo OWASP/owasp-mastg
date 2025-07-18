@@ -25,7 +25,7 @@ This test checks whether the app obtains a path to Shared Storage, which may be 
 
 ## Observation
 
-The output should contain a list locations from where the app writes data to Private Storage
+The output should contain a list locations from where the app writes data to Shared Storage, and the state of  `UIFileSharingEnabled` and `LSSupportsOpeningDocumentsInPlace` flags.
 
 ## Evaluation
 

@@ -1,16 +1,16 @@
 ---
 platform: ios
-title: References to APIs for Accessing Private Storage
+title: References to APIs for Storing Unencrypted Data in Private Storage
 id: MASTG-TEST-0x52-2
 type: [static]
-profiles: [L1]
+profiles: [L2]
 best-practices: [MASTG-BEST-0014]
 weakness: MASWE-0006
 ---
 
 ## Overview
 
-This test is a static counterpart to @MASTG-TEST-0x52-3.
+This test checks whether the app obtains a path to Private Storage, which may be used to store unencrypted data. It identifies all code locations that could potentially write unencrypted data to Private Storage.
 
 ## Steps
 

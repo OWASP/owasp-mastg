@@ -3,6 +3,7 @@ platform: ios
 title: References to APIs for Keychain Storage with Secure Access Policies
 id: MASTG-TEST-0x52-3
 type: [static]
+profiles: [L2]
 best-practices: [MASTG-BEST-0014]
 weakness: MASWE-0008
 ---
