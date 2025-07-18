@@ -36,3 +36,11 @@ Mobile platforms allow users and third-party tools to record screens, which can 
 - **Third-party apps with a permission to access the whole storage**: Third-party apps may access screenshots saved in storage after they are taken by the user or a tool.
 - **External tools may record the screen**: Tools such as [scrcpy](https://github.com/Genymobile/scrcpy) and [QuickTime](https://support.apple.com/guide/quicktime-player/welcome/mac) can record the device's screen via a USB connection.
 - **Backgrounding the app**: When an app enters the background state, the system may capture a screenshot of the app's current view to display in the app switcher. These screenshots are stored on the file system and could potentially be accessed or stolen by malicious actors.
+
+## Mitigations
+
+- **Prevent taking a screenshot with `FLAG_SECURE` API**: On Android, use [`FLAG_SECURE`](https://developer.android.com/security/fraud-prevention/activities#flag_secure) to block taking a screenshot. 
+
+- **Mark sensitive UI elements with secure flags to exclude from screenshots**: Depending on the platform, you can use mark the UI elements to be hidden on the screenshot. On iOS, you can use [`isSecureTextEntry`](https://developer.apple.com/documentation/uikit/uitextinputtraits/issecuretextentry). On Android, you can use e.g. [`textPassword`](https://developer.android.com/reference/android/widget/TextView#attr_android:inputType:~:text=_SUGGESTIONS.-,textPassword,-81)
+
+- **Detect taking a screenshot with `DETECT_SCREEN_CAPTURE` or `sceneCaptureState` API**: Use [`FLAG_SECURE`](https://developer.android.com/security/fraud-prevention/activities#flag_secure) or [`sceneCaptureState`](https://developer.apple.com/documentation/uikit/uitraitcollection/scenecapturestate) depending on the platform you use.
