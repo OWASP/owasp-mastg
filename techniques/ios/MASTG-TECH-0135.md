@@ -10,7 +10,7 @@ This technique can typically be used to bypass biometric authentication in apps 
 If you have a jailbroken device with frida-server installed, you can bypass biometric authentication by running @MASTG-TOOL-0038 with the `ios ui biometrics_bypass` command:
 
 ```bash
-objection -g MASTestApp explore
+objection -n "MASTestApp" start
 ios ui biometrics_bypass
 ```
 
