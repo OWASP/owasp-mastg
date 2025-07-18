@@ -9,16 +9,16 @@ profiles: [L1, L2]
 
 ## Overview
 
-In Android, the Serializable interface enables the conversion of object data into a byte stream for storage or transmission. However, deserializing objects from untrusted sources without proper validation can lead to the creation of unwanted or malicious objects.Attackers may take advantage of this by crafting inputs that alter application behavior, resulting in security vulnerabilities like arbitrary code execution, privilege escalation, or denial of service.
+Insecure Deserialization is a vulnerability that occurs when an application deserializes untrusted data without sufficient validation. In Android, data can be passed between components via Intent objects. If an application receives a serialized object within an Intent and deserializes it using an unsafe method like `ObjectInputStream.readObject()`, it becomes vulnerable. A malicious application could send a specially crafted Intent containing a serialized object. When the vulnerable app deserializes this object, it can lead to arbitrary code execution, data tampering, or denial of service. In this testcase, it allows for privilege escalation by overwriting the current user's state.
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for uses of the `import java.io.Serializable` and `implements Serializable`.
+1. Run a static analysis tool such as @MASTG-TOOL-0110 on the codebase for usages of `readObject()`.
 
 ## Observation
 
-The output file shows usages of the object Deserialization using `import java.io.Serializable` and `implements Serializable` in the code.
+The output file shows usages of the object Deserialization using `readObject()` in the code.
 
 ## Evaluation
 
-The test fails if the `import java.io.Serializable` and `implements Serializable` was found in the code.
+The test fails due to the application deserializing data from an untrusted `Intent` extra through the insecure `ObjectInputStream.readObject()` method. A malicious application can create a serialized `AdminUser` object, transmit it via an Intent, and have it deserialized by the processIntent method. This action would overwrite the current user and provide the attacker with administrative privileges within the application.

@@ -1,44 +1,74 @@
 package org.owasp.mastestapp
 
-import android.content.Context
+import android.content.Intent
 import android.util.Log
+import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
 import java.io.Serializable
+import java.util.Base64
 
-class MastgTest(private val context: Context) {
 
-    // Serializable class (normally would contain business logic)
-    class UserData(val username: String, val isAdmin: Boolean) : Serializable
+object UserManager {
+
+    var currentUser: MastgTest.BaseUser = MastgTest.BaseUser("Standard User")
+}
+
+class MastgTest {
+
+    open class BaseUser(val username: String) : Serializable {
+        companion object {
+            private const val serialVersionUID = 100L
+        }
+    }
+
+    class AdminUser(username: String) : BaseUser(username) {
+
+        var isAdmin: Boolean = false
+
+        companion object {
+            private const val serialVersionUID = 200L
+        }
+    }
 
     fun mastgTest(): String {
-        val fileName = "userdata.ser"
-        val sensitiveString = "Hello from the OWASP MASTG Test app."
+        val user = UserManager.currentUser
+        val status = if (user is AdminUser && user.isAdmin) {
+            "PRIVILEGED ADMIN!"
+        } else {
+            "(Not an Admin)"
+        }
 
-        try {
-            // Step 1: Serialize UserData object
-            val user = UserData("alice", false)
-            val fileOutput = context.openFileOutput(fileName, Context.MODE_PRIVATE)
-            val objectOutput = ObjectOutputStream(fileOutput)
-            objectOutput.writeObject(user)
-            objectOutput.close()
-            fileOutput.close()
-            Log.d("MASTG-TEST", "UserData object serialized")
+        val resultString = "Current User: ${user.username}\n" +
+                "Status: $status\n\n" +
+                "Vulnerability: Unwanted Object Deserialization is active.\n" +
+                "The app will deserialize any 'BaseUser' subclass from the 'payload_b64' extra, " +
+                "overwriting the current user state."
 
-            // Step 2: Deserialize the object (simulate untrusted input later)
-            val fileInput = context.openFileInput(fileName)
-            val objectInput = ObjectInputStream(fileInput)
-            val deserializedUser = objectInput.readObject() as UserData
-            objectInput.close()
-            fileInput.close()
-            Log.d("MASTG-TEST", "Deserialized username: ${deserializedUser.username}")
-            Log.d("MASTG-TEST", "Is Admin: ${deserializedUser.isAdmin}")
+        Log.d("MASTG-TEST", resultString)
+        return resultString
+    }
 
-            return "Deserialized user: ${deserializedUser.username}, isAdmin=${deserializedUser.isAdmin}"
+    fun processIntent(intent: Intent) {
+        if (intent.hasExtra("payload_b64")) {
+            val b64Payload = intent.getStringExtra("payload_b64")
+            Log.d("VULN_APP", "Received a base64 payload. Deserializing user object...")
 
-        } catch (e: Exception) {
-            Log.e("MASTG-TEST", "Deserialization error: ${e.message}")
-            return "Error during deserialization: ${e.message}"
+            try {
+                val serializedPayload = Base64.getDecoder().decode(b64Payload)
+                val ois = ObjectInputStream(ByteArrayInputStream(serializedPayload))
+                val untrustedObject = ois.readObject()
+                ois.close()
+
+                if (untrustedObject is BaseUser) {
+                    UserManager.currentUser = untrustedObject
+                    Log.i("VULN_APP", "User state overwritten with deserialized object!")
+                } else {
+                    Log.w("VULN_APP", "Deserialized object was not a user. State unchanged.")
+                }
+
+            } catch (e: Exception) {
+                Log.e("VULN_APP", "Failed to deserialize payload", e)
+            }
         }
     }
 }

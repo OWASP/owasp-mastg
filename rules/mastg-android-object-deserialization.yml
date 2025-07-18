@@ -8,5 +8,6 @@ rules:
     message: "[MASVS-CODE-4] The application make use of Object deserialization in the code."
     patterns:
     - pattern-either:
-      - pattern: import java.io.Serializable
-      - pattern: class $CLASS implements Serializable
+        - pattern:
+            $VAR = new java.io.ObjectInputStream(...);
+            $OBJ = $VAR.readObject();
