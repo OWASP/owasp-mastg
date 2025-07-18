@@ -22,10 +22,9 @@ This test checks whether the app obtains a path to Shared Storage, which may be 
 
 3. Check `Info.plist` file for `UIFileSharingEnabled` and `LSSupportsOpeningDocumentsInPlace` flags
 
-
 ## Observation
 
-The output should contain a list locations from where the app writes data to Shared Storage, and the state of  `UIFileSharingEnabled` and `LSSupportsOpeningDocumentsInPlace` flags.
+The output should contain a list locations from where the app writes data to Shared Storage, and the state of `UIFileSharingEnabled` and `LSSupportsOpeningDocumentsInPlace` flags.
 
 ## Evaluation
 
