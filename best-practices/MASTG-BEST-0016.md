@@ -9,39 +9,38 @@ Ensure that the app hides sensitive content, such as credit card details and pas
 
 Depending on the user interface, there are several ways to overlay the screen content:
 
-1. SwiftUI Interface
+- SwiftUI Interface
 
 ```swift
-    @Environment(\.scenePhase) private var scenePhase
-    @State private var showPrivacyScreen = false
-    var body: some Scene {
-      WindowGroup {
-        ZStack {
-          ContentView()
-          if showPrivacyScreen {
-            Image("overlayImage")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .transition(.opacity)
-            }
-          }
-       }
-       .onChange(of: scenePhase) { newPhase in
-          switch newPhase {
-          case .background, .inactive:
-              showPrivacyScreen = true
-          case .active:
-                showPrivacyScreen = false
-              
-          default:
-              break
-          }
+@Environment(\.scenePhase) private var scenePhase
+@State private var showPrivacyScreen = false
+var body: some Scene {
+    WindowGroup {
+    ZStack {
+        ContentView()
+        if showPrivacyScreen {
+        Image("overlayImage")
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
+            .transition(.opacity)
+        }
         }
     }
+    .onChange(of: scenePhase) { newPhase in
+        switch newPhase {
+        case .background, .inactive:
+            showPrivacyScreen = true
+        case .active:
+            showPrivacyScreen = false
+        default:
+            break
+        }
+    }
+}
 ```
 
-2. Scene Delegate Interface
+- Scene Delegate Interface
 
 ```swift
 
@@ -75,7 +74,7 @@ private func removePrivacyView() {
 
 ```
 
-3. App Delegate Interface
+- App Delegate Interface
 
 ```swift
 
