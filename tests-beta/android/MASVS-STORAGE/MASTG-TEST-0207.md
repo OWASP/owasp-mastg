@@ -1,6 +1,6 @@
 ---
 platform: android
-title: Data Stored in the App Sandbox at Runtime
+title: Runtime Storage of Unencrypted Data in the App Sandbox
 id: MASTG-TEST-0207
 type: [dynamic, filesystem]
 prerequisites:
