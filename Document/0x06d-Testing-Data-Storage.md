@@ -166,21 +166,6 @@ The screenshots are stored inside apps' container at
 
 The system takes the screenshot after [applicationDidEnterBackground](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/applicationdidenterbackground(_:)) completes, so it's common to display an overlay over the content of the screen. Below you can find sample code that displays an image from app's assets foremost the screen. When an apps comes back to foreground, [applicationWillEnterForeground](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/applicationwillenterforeground(_:)).
 
-```swift
-private var backgroundImage: UIImageView?
-
-func applicationDidEnterBackground(_ application: UIApplication) {
-    let myBanner = UIImageView(image: #imageLiteral(resourceName: "overlayImage"))
-    myBanner.frame = UIScreen.main.bounds
-    backgroundImage = myBanner
-    window?.addSubview(myBanner)
-}
-
-func applicationWillEnterForeground(_ application: UIApplication) {
-    backgroundImage?.removeFromSuperview()
-}
-```
-
 You can find more information in [Prepare your UI for the app snapshot](https://developer.apple.com/documentation/uikit/preparing-your-ui-to-run-in-the-background#Prepare-your-UI-for-the-app-snapshot).
 
 #### Keyboard Cache
