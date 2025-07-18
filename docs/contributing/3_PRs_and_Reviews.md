@@ -41,7 +41,7 @@ Next, you can request a review as described in the next section.
 
 [:simple-github: Request a review](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review) from one of our maintainers or contributors. You can do this by clicking on the "Reviewers" section in the right sidebar of the PR page and selecting the user(s) you want to review your PR.
 
-If due to missing rights you cannot request a review, please write a comment on the PR mentioning us (`@cpholguera`, `@sushi2k` or `@TheDauntless`) and we will assign a reviewer for you.
+If you do not have the correct permissions to request a review, please write a comment on the PR mentioning us (`@cpholguera`, `@sushi2k` or `@TheDauntless`) and we will assign a reviewer for you.
 
 Once a review is requested, it will be reviewed by one of our maintainers or contributors. They will check your changes and provide feedback.
 
