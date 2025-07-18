@@ -1,6 +1,6 @@
 # How Can You Contribute?
 
-You can directly contribute to the MASVS or MASTG in many different ways! First, go ahead and create a GitHub account for free on the [GitHub homepage](https://github.com/).
+You can directly contribute to the MASVS, MASWE, or MASTG in many different ways!
 
 ## Contribution Flow
 
@@ -16,50 +16,11 @@ flowchart LR
     G -->|No| I[Close]
 ```
 
-## 💬 Participate in Discussions
+Typically, contributors should follow the entire process. However, sometimes it's clear what's needed, so we create an issue or open a PR directly. We recommend starting with a discussion to save you from the hassle of writing and submitting content that does not qualify, which would result in it being rejected after the work is done.
 
-Our GitHub [Discussions](https://github.com/OWASP/mastg/discussions) are the first place to go to ask questions, give feedback, and propose new ideas. If your proposal qualifies for the MASTG/MASVS, we'll convert it into an "Issue" (the discussion might take a while).
-
-## 🎯 Create Issues
-
-Before creating a PR, first create an [Issue](https://github.com/OWASP/masvs/issues "MASVS Issues") to be discussed for missing requirements, content or errors.
-
-- To avoid multiple people duplicating effort on the same issue, project leaders will assign it to only a few that will own it.
-- Explain what you think is missing in the issue, including references (if available) and suggest where it could be added.
-
-## 📝 Open a Pull Request
-
-You can contribute with content or corrections by opening a Pull Request (PR).
-
-- Your PR may be merged after review.
-- Be sure to follow our [style guide](5_Style_Guide.md) when writing content.
-
-> Learn how to open a PR [here](3_PRs_and_Reviews.md#how-to-open-a-pr).
-
-## ✅ Become a Reviewer
-
-You can [Review Pull Requests (PRs)](https://github.com/OWASP/masvs/pulls) and also gain contributions. If you are a fluent speaker in any of the different languages that the MASVS is available in, feel free to give feedback on any of the submitted PRs.
-
-After your PR or issue has been submitted, we will review it as quickly as possible which typically only takes a few days. If you think we have forgotten about it, feel free to give us a nudge after 7 days have passed.
-
-> Learn how to review a PR [here](3_PRs_and_Reviews.md#how-to-review-a-pr).
-
-## 🔎 Proof-reading
-
-If you do proof-reading, these are the things we're looking for:
-
-- Content [cohesion & coherence](https://writing.chalmers.se/chalmers-writing-guide/writing-a-text/coherence-cohesion/)
-    - is there a good linkage of ideas?
-    - does the paragraph make sense?
-    - does it make sense with the next one? Think that hundreds of people have written in here, often without considering the surroundings of the text they were including.
-- Reducing the content to a minimum (people tend to be very verbose/wordy) and in such a document we need clear and short/concise statements
-- Optimize for _scannability_ (maybe instead of a big paragraph it would be better to have a bullet point list).
-- Any passive voice sentences? Convert to active voice.
-- Does each paragraph focus on a single topic?
-- Are key points stated at the start of each section?
-- Are commas, parentheses, colons, em-dashes, and semicolons used properly?
-
-Refer to Google Technical Writing trainings for more info:
-
-- [Google Technical Writing One](https://developers.google.com/tech-writing/one)
-- [Google Technical Writing Two](https://developers.google.com/tech-writing/two)
+| How to contribute                                       | Description                                                                   | MASVS                                                     | MASWE                                                     | MASTG                                                     |
+| -------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+| [:simple-livechat: Participate in Discussions](3_PRs_and_Reviews.md#how-to-participate-in-discussions) | Ask questions, give feedback, or propose ideas.  | [Discussions](https://github.com/OWASP/masvs/discussions) | [Discussions](https://github.com/OWASP/maswe/discussions) | [Discussions](https://github.com/OWASP/mastg/discussions) |
+| [:simple-target: Create Issues](3_PRs_and_Reviews.md#how-to-create-issues)                          | Report concrete actionable things such as missing content, errors, or improvements.     | [Issues](https://github.com/OWASP/masvs/issues)           | [Issues](https://github.com/OWASP/maswe/issues)           | [Issues](https://github.com/OWASP/mastg/issues)           |
+| [:material-source-pull: Open Pull Requests](3_PRs_and_Reviews.md#how-to-open-a-pr)                  | Submit new content, updates or fixes. | [Pull Requests](https://github.com/OWASP/masvs/pulls)           | [Pull Requests](https://github.com/OWASP/maswe/pulls)           | [Pull Requests](https://github.com/OWASP/mastg/pulls)           |
+| [:material-eye-check: Review Pull Requests](3_PRs_and_Reviews.md#how-to-review-a-pr)                  | Review technical content or fix typos.                              | [Pull Requests](https://github.com/OWASP/masvs/pulls)           | [Pull Requests](https://github.com/OWASP/maswe/pulls)           | [Pull Requests](https://github.com/OWASP/mastg/pulls)           |

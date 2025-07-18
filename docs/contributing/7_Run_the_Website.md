@@ -24,7 +24,7 @@ docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -e GITHUB_TOK
 
 > **TLDR for advanced users:**
 >
-> - Clone both MASVS and MASTG to the same directories
+> - Clone the MASTG, MASVS and MASWE repos
 > - Set up a virtual environment
 > - Install dependencies from `src/scripts/requirements.txt`
 > - Add your token as an environment variable: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens)
@@ -47,16 +47,17 @@ export GITHUB_TOKEN=<TOKEN>
 
 Alternatively, you can add your token inside of the `run_web.sh` script. Open the script in a code editor for more information.
 
-### Step 1: Clone the OWASP MASVS & OWASP MASTG Repositories
+### Step 1: Clone the OWASP MAS Repositories
 
 Run the following commands in your terminal:
 
 ```bash
-git clone https://github.com/OWASP/masvs.git
 git clone https://github.com/OWASP/mastg.git
+git clone https://github.com/OWASP/masvs.git
+git clone https://github.com/OWASP/maswe.git
 ```
 
-**Note:** We'll just work with the `OWASP/mastg` repo, but the `OWASP/masvs` is required for the website to run.
+**Note:** We'll just work with the `OWASP/mastg` repo, but the `OWASP/masvs` and `OWASP/maswe` are required for the website to run.
 
 ### Step 2: Open the OWASP MASTG Repository in vscode
 
@@ -69,7 +70,7 @@ code .
 
 ### Step 3: Install Python Dependencies
 
-It is highly recommended to use a virtual environment (venv) to manage dependencies and avoid conflicts with other Python projects. Follow these steps to set up a virtual environment and install the required dependencies.
+It is highly recommended to use a virtual environment (venv) to manage dependencies and avoid conflicts with other Python projects.
 
 Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) (Press `⌘+Shift+P` on macOS or `Ctrl+Shift+P` on Windows/Linux)
 
@@ -83,7 +84,7 @@ Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/u
    - Press `⌘+j` to open the terminal
    - Run `pip install -r src/scripts/requirements.txt`
 
-## Step 4: Run the Website
+### Step 4: Run the Website
 
 Run the following command in the terminal:
 
