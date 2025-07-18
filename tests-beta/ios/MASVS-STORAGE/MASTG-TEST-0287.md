@@ -3,6 +3,7 @@ title: Runtime Verification of Sensitive Content Exposure in Screenshots During 
 platform: ios
 id: MASTG-TEST-0287
 type: [static]
+profiles: [L2]
 best-practices: [MASTG-BEST-0016]
 weakness: MASWE-0055
 ---
