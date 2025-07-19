@@ -1,0 +1,11 @@
+rules:
+  - id: mastg-android-network-hostname-verification
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for the use of HostnameVerifier in the app
+    message: Improper server hostname verification detected
+    match:
+      any:
+        - new HostnameVerifier() {...}

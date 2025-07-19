@@ -1,0 +1,3 @@
+/data/user/0/org.owasp.mastestapp/files/secret.txt
+/data/user/0/org.owasp.mastestapp/files/backup_excluded_secret.txt
+/data/user/0/org.owasp.mastestapp/files/profileInstalled

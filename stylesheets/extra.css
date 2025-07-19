@@ -1,0 +1,529 @@
+:root {
+  --md-primary-fg-color: #499FFF;
+  --mas-blue: #499FFF;
+  --mas-gradient: linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
+  --md-status--deprecated: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M8%200a8%208%200%201%201%200%2016A8%208%200%200%201%208%200M3.965%2013.096a6.5%206.5%200%200%200%209.131-9.131ZM1.5%208a6.47%206.47%200%200%200%201.404%204.035l9.131-9.131A6.499%206.499%200%200%200%201.5%208%22/%3E%3C/svg%3E');
+
+  --tag-color-masvs-storage:     #DF5C8D;
+  --tag-color-masvs-crypto:      #F65928;
+  --tag-color-masvs-auth:        #F09236;
+  --tag-color-masvs-network:     #F2C200;
+  --tag-color-masvs-platform:    #4FB991;
+  --tag-color-masvs-code:        #5FACD3;
+  --tag-color-masvs-resilience:  #317CC0;
+  --tag-color-masvs-privacy:     #8B5F9E;
+
+  --tag-color-android:           #3DDC84;
+  --tag-color-ios:               #007AFF;
+  --tag-color-network:           #5E568E;
+
+  --tag-color-l1:                #33CCCC;
+  --tag-color-l2:                #99CC00;
+  --tag-color-r:                 #FF9900;
+  --tag-color-p:                 #9933CC;
+
+  --tag-color-test:              #499fffff;
+  --tag-color-tech:              #ff44aad5;
+  --tag-color-tool:              #595959ff;
+  --tag-color-demo:              #9900ffff;
+  --tag-color-app:               #8e7cc3d1;
+  --tag-color-best:              #087a21ff;
+  --tag-color-maswe:             linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
+}
+
+
+/* Default: hide both */
+img.light-img,
+img.dark-img {
+  display: none;
+}
+
+/* Show light image only in light mode */
+[data-md-color-scheme="default"] img.light-img,
+[data-md-color-scheme="light"] img.light-img {
+  display: block;
+}
+
+/* Show dark image only in dark mode */
+[data-md-color-scheme="slate"] img.dark-img,
+[data-md-color-scheme="dark"] img.dark-img {
+  display: block;
+}
+
+.floating-right {
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+  height: 120px; /* Adjust as needed */
+}
+
+.md-tag {
+  text-transform: uppercase;
+}
+
+/* Individual MASVS categories using variables */
+.md-tag--masvs-storage,   .masvs-link--masvs-storage   { background-color: var(--tag-color-masvs-storage) !important; color: white !important; }
+.md-tag--masvs-crypto,    .masvs-link--masvs-crypto    { background-color: var(--tag-color-masvs-crypto) !important; color: white !important; }
+.md-tag--masvs-auth,      .masvs-link--masvs-auth      { background-color: var(--tag-color-masvs-auth) !important; color: white !important; }
+.md-tag--masvs-network,   .masvs-link--masvs-network   { background-color: var(--tag-color-masvs-network) !important; color: white !important; }
+.md-tag--masvs-platform,  .masvs-link--masvs-platform  { background-color: var(--tag-color-masvs-platform) !important; color: white !important; }
+.md-tag--masvs-code,      .masvs-link--masvs-code      { background-color: var(--tag-color-masvs-code) !important; color: white !important; }
+.md-tag--masvs-resilience,.masvs-link--masvs-resilience{ background-color: var(--tag-color-masvs-resilience) !important; color: white !important; }
+.md-tag--masvs-privacy,   .masvs-link--masvs-privacy   { background-color: var(--tag-color-masvs-privacy) !important; color: white !important; }
+
+.md-tag--android,         .masvs-link--android         { background-color: var(--tag-color-android) !important; color: white !important; }
+.md-tag--ios,             .masvs-link--ios             { background-color: var(--tag-color-ios) !important; color: white !important; }
+.md-tag--network,         .masvs-link--network         { background-color: var(--tag-color-network) !important; color: white !important; }
+.md-tag--test,            .masvs-link--test            { background-color: var(--tag-color-test) !important; color: white !important; }
+.md-tag--tech,            .masvs-link--tech            { background-color: var(--tag-color-tech) !important; color: white !important; }
+.md-tag--tool,            .masvs-link--tool            { background-color: var(--tag-color-tool) !important; color: white !important; }
+.md-tag--demo,            .masvs-link--demo            { background-color: var(--tag-color-demo) !important; color: white !important; }
+.md-tag--app,             .masvs-link--app             { background-color: var(--tag-color-app) !important; color: white !important; }
+.md-tag--best,            .masvs-link--best            { background-color: var(--tag-color-best) !important; color: white !important; }
+.md-tag--maswe,           .masvs-link--maswe           { background: var(--tag-color-maswe) !important; color: white !important; }
+
+.md-tag--l1,              .masvs-link--l1              { background-color: var(--tag-color-l1) !important; color: white !important; }
+.md-tag--l2,              .masvs-link--l2              { background-color: var(--tag-color-l2) !important; color: white !important; }
+.md-tag--r,               .masvs-link--r               { background-color: var(--tag-color-r) !important; color: white !important; }
+.md-tag--p,               .masvs-link--p               { background-color: var(--tag-color-p) !important; color: white !important; }
+
+
+
+/* Normal tags should always have white icons */
+.md-typeset .md-tag-icon[href]::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+.md-tag-icon::before {
+  background-color: var(--md-accent-bg-color) !important;
+}
+
+/* Inactive tags should have grey icons */
+.md-typeset .md-tag-inactive[href]::before {
+  /* background-color: var(--md-accent-bg-color) !important; */
+  background-color: var(--md-default-fg-color--lighter) !important;
+}
+.md-tag-inactive::before {
+  background-color: var(--md-default-fg-color--lighter) !important;
+}
+
+/* Inactive tags should have grey text */
+.md-tag-inactive {
+  color: var(--md-default-fg-color--lighter) !important;
+}
+
+
+/* Shared tag/link styling */
+.masvs-link[class*="--masvs-"] {
+  color: white !important;
+  font-weight: bold;
+  margin: 0.5em 0.5em 0.5em 0.2em;
+  border-radius: 5px;
+  padding: 0.3em;
+}
+
+/* Wider space for pages */
+.md-grid {
+  max-width: 90%;
+}
+
+.md-sidebar--primary {
+  margin-right: 4em;
+}
+
+.md-sidebar--secondary {
+  margin-left: 4em;
+}
+
+/* Maximum space for tables */
+.md-typeset__table {
+  width: 100%;
+}
+
+.md-typeset__table table:not([class]) {
+  display: table
+}
+
+.md-header {
+  background: var(--mas-gradient);
+}
+
+.md-tabs {
+  background: var(--mas-gradient);
+}
+
+@keyframes pump {
+  0%, 40%, 80%, 100% {
+    transform: scale(1);
+  }
+  20%, 60% {
+    transform: scale(1.15);
+  }
+}
+
+.mas-chip {
+  border: solid 1px var(--md-primary-fg-color);
+  outline:none;
+  text-decoration:none;
+  border-radius: 1.2em;
+  min-width: 5.5em;
+  max-height: 1.6em;
+  padding-left: 0.5em;
+  padding-right: 0.4em;
+}
+
+.masvs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 0.7em 0;
+}
+
+.masvs-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 0.6em;
+
+}
+
+.masvs-chips-title {
+  color: darkgrey;
+  font-size: small;
+  margin: 0 0.5em;
+}
+
+.mas-blue-chip {
+  background-color: #499FFF;
+  color: #fff !important;
+  cursor: default;
+}
+
+.masvs-v1-chip {
+  background-color: #828282;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.masvs-v2-chip {
+  background-color: #499FFF;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+.masvs-v2-chip:hover {
+  background-color: #72b3fe;
+  color: #fff !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mas-dot-blue {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #33CCCC;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mas-dot-green {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #99CC00;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mas-dot-orange {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #FF9900;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mas-dot-purple {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: #9933CC;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.md-footer__inner:not([hidden]){
+  display: none;
+}
+
+.mas-blue-hue {
+  filter: sepia(100%) hue-rotate(190deg) saturate(500%);
+}
+
+.mas-mini-app {
+  border-radius: 5px;
+}
+
+.mas-app-row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1em;
+}
+
+.mas-apps-container {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  margin-left: 20px;
+}
+
+.mas-flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+@media (max-width: 800px) {
+  .mas-flex-container {
+    flex-direction: column;
+  }
+}
+
+.pump {
+  animation: pump 1000ms ease-out;
+}
+
+.grow:hover { transform: scale(1.05); transition: 0.2s;}
+
+.mas-button {
+  text-decoration: none;
+  position: relative;
+  border: none;
+  font-size: 1em;
+  font-weight: bold;
+  font-family: inherit;
+  color: #fff;
+  min-width: 15em;
+  height: 3em;
+  line-height: 2em;
+  text-align: center;
+  background: var(--mas-gradient);
+  background-size: 300%;
+  border-radius: 8px;
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.mas-button:hover {
+  animation: ani 8s linear infinite;
+  border: none;
+}
+
+@keyframes ani {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 400%;
+  }
+}
+
+.mas-button:before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  background: var(--mas-gradient);
+  background-size: 400%;
+  border-radius: 8px;
+  transition: 1s;
+}
+
+.mas-button:hover::before {
+  filter: blur(20px);
+}
+
+.mas-button:active {
+  background: var(--mas-gradient);
+}
+
+.mas-test-button,
+.mas-demo-button {
+  background-color: var(--mas-blue); /* Adjust this value for .mas-demo-button if needed */
+  color: white !important;
+  line-height: 1em !important;
+  margin: 1em 0;
+  border-radius: .3rem;
+  display: block;
+  padding: .8rem;
+  transition: background-color .25s;
+  min-width: 100%;
+  text-align: left;
+  cursor: pointer; /* Add this line to show the pointer cursor */
+}
+
+.mas-demo-button {
+  background-color: #9900ff; /* Adjusted to match the hex value format */
+}
+
+.mas-test-button:hover {
+  background-color: #2e7fd5; 
+}
+
+.mas-demo-button:hover {
+  background-color: #aa33ff;
+}
+
+/* Default DataTables styling for light mode */
+table.dataTable {
+  background-color: white;
+  color: #3a3a3a;
+  border-bottom: 1px solid #ccc !important;
+}
+
+table.dataTable th {
+  border-bottom: 1px solid #ccc !important;
+}
+
+/* Dark mode DataTables styling */
+[data-md-color-scheme="slate"] table.dataTable,
+[data-md-color-scheme="dark"] table.dataTable {
+  background-color: var(--md-default-bg-color);
+  color: white;
+}
+
+[data-md-color-scheme="slate"] table.dataTable th,
+[data-md-color-scheme="dark"] table.dataTable th {
+  background-color: var(--md-default-bg-color);
+  color: white;
+}
+
+[data-md-color-scheme="slate"] table.dataTable td,
+[data-md-color-scheme="dark"] table.dataTable td {
+  background-color: var(--md-default-bg-color);
+  color: white;
+}
+
+/* Adjusting pagination buttons and other elements */
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_paginate .paginate_button,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: white !important;
+}
+
+/* Adjust  .dataTables_info */
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_info,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_info {
+  color: white;
+}
+
+/* add margin to dataTables_filter and dataTables_info independent of color scheme */
+
+.dataTables_filter {
+  margin: 1em 0 2em 0;
+}
+
+.dataTables_info {
+  margin: 1em 0 2em 0;
+  padding-top: 0px !important;
+  color: #aaaaaa !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 10px !important;
+  margin-left: 10px !important;
+}
+
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_filter input,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_filter input {
+  background-color: #3a3a3a;
+  color: white;
+  border: 1px solid #555;
+}
+
+
+[data-md-color-scheme="slate"] .dataTables_wrapper .dataTables_filter label,
+[data-md-color-scheme="dark"] .dataTables_wrapper .dataTables_filter label {
+  color: white;
+}
+
+.md-typeset details.info, .md-typeset .admonition.info,
+.md-typeset details.info:focus-within, .md-typeset .admonition.info:focus-within {
+
+  border: .2rem solid #00b8d41a;
+  box-shadow: none;
+}
+
+.md-typeset details.warning ,.md-typeset .admonition.warning,
+.md-typeset details.warning:focus-within, .md-typeset .admonition.warning:focus-within {
+  border: .2rem solid #ff91001a;
+  box-shadow: none;
+}
+
+.md-typeset details.tip ,.md-typeset .admonition.tip,
+.md-typeset details.tip:focus-within, .md-typeset .admonition.tip:focus-within {
+  border: .2rem solid #00bfa51a;
+  box-shadow: none;
+}
+
+.md-typeset details.danger ,.md-typeset .admonition.danger,
+.md-typeset details.danger:focus-within, .md-typeset .admonition.danger:focus-within {
+  border: .2rem solid #ff17441a;
+  box-shadow: none;
+}
+
+.md-typeset details.example ,.md-typeset .admonition.example,
+.md-typeset details.example:focus-within, .md-typeset .admonition.example:focus-within {
+  border: .2rem solid #7c4dff1a;
+  box-shadow: none;
+}
+
+.md-typeset details.note ,.md-typeset .admonition.note,
+.md-typeset details.note:focus-within, .md-typeset .admonition.note:focus-within {
+  border: .2rem solid #448aff1a;
+  box-shadow: none;
+}
+
+.md-typeset details.abstract ,.md-typeset .admonition.abstract,
+.md-typeset details.abstract:focus-within, .md-typeset .admonition.abstract:focus-within {
+  border: .2rem solid #00b0ff1a;
+  box-shadow: none;
+}
+
+.md-typeset details.success ,.md-typeset .admonition.success,
+.md-typeset details.success:focus-within, .md-typeset .admonition.success:focus-within {
+  border: .2rem solid #00c8531a;
+  box-shadow: none;
+}
+
+.md-typeset details.question ,.md-typeset .admonition.question,
+.md-typeset details.question:focus-within, .md-typeset .admonition.question:focus-within {
+  border: .2rem solid #64dd171a;
+  box-shadow: none;
+}
+
+.md-typeset details.failure ,.md-typeset .admonition.failure,
+.md-typeset details.failure:focus-within, .md-typeset .admonition.failure:focus-within {
+  border: .2rem solid #FF52521a;
+  box-shadow: none;
+}
+
+.md-typeset details.bug ,.md-typeset .admonition.bug,
+.md-typeset details.bug:focus-within, .md-typeset .admonition.bug:focus-within {
+  border: .2rem solid #f500571a;
+  box-shadow: none;
+}
+
+.md-typeset details.quote ,.md-typeset .admonition.quote,
+.md-typeset details.quote:focus-within, .md-typeset .admonition.quote:focus-within {
+  border: .2rem solid #9e9e9e1a;
+  box-shadow: none;
+}
+
+.md-typeset details ,.md-typeset .admonition,
+.md-typeset details:focus-within, .md-typeset .admonition:focus-within {
+  border: .2rem solid #448aff1a;
+  box-shadow: none;
+}
+

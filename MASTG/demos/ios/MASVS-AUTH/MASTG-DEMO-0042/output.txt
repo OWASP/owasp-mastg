@@ -1,0 +1,13 @@
+
+LAContext.canEvaluatePolicy(0x1) called with .deviceOwnerAuthenticationWithBiometrics (0x1)
+
+
+Backtrace:
+0x10095c35c MASTestApp!specialized static MastgTest.mastgTest(completion:)
+0x10095d4b4 MASTestApp!closure #1 in closure #1 in closure #1 in ContentView.body.getter
+0x19f6cbc54 SwiftUI!partial apply for closure #1 in closure #2 in ContextMenuBridge.contextMenuInteraction(_:willPerformPreviewActionForMenuWith:animator:)
+0x19f5d86d0 SwiftUI!partial apply for specialized thunk for @callee_guaranteed () -> (@out A, @error @owned Error)
+0x19fca57c4 SwiftUI!specialized static MainActor.assumeIsolated<A>(_:file:line:)
+0x19fc721a8 SwiftUI!ButtonAction.callAsFunction()
+0x19f154c2c SwiftUI!partial apply for implicit closure #2 in implicit closure #1 in PlatformItemListButtonStyle.makeBody(configuration:)
+0x19f6813b4 SwiftUI!ButtonBehavior.ended()

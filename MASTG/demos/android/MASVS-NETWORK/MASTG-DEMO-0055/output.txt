@@ -1,0 +1,18 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ rules.mastg-android-network-hostname-verification
+          Improper server hostname verification detected
+                                                        
+           69┆ connection.setHostnameVerifier(new HostnameVerifier() { // from class:
+               org.owasp.mastestapp.MastgTest$$ExternalSyntheticLambda0              
+           70┆     @Override // javax.net.ssl.HostnameVerifier
+           71┆     public final boolean verify(String str, SSLSession sSLSession) {
+           72┆         return MastgTest.fetchUrl$lambda$1(str, sSLSession);
+           73┆     }
+           74┆ });
+

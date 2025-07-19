@@ -1,0 +1,1 @@
+NO_COLOR=true semgrep -c ../../../../rules/mastg-android-random-apis-insufficient-entropy.yml ./MastgTest_reversed.java --text > output.txt

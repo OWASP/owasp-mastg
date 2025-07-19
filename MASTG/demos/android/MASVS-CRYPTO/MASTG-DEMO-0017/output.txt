@@ -1,0 +1,18 @@
+                      
+                   
+┌─────────────────┐
+│ 3 Code Findings │
+└─────────────────┘
+                                          
+    MastgTest_reversed.java
+   ❯❯❱ hardcoded-crypto-key-test
+          Hardcoded cryptographic keys are found in use.
+                                                        
+           24┆ byte[] keyBytes = {108, 97, 107, 100, 115, 108, 106, 107, 97, 108, 107, 106, 108, 107, 108,
+               115};                                                                                      
+           25┆ Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+           26┆ SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
+            ⋮┆----------------------------------------
+           26┆ SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
+            ⋮┆----------------------------------------
+           30┆ SecretKeySpec badSecretKeySpec = new SecretKeySpec(bytes, "AES");                

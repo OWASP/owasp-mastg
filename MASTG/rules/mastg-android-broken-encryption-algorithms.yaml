@@ -1,0 +1,9 @@
+rules:
+  - id: mastg-android-broken-encryption-algorithms
+    languages:
+      - java
+    severity: WARNING
+    metadata:
+      summary: This rule looks for broken encryption algorithms.
+    message: "[MASVS-CRYPTO-1] Broken encryption algorithms found in use."
+    pattern-regex: Cipher\.getInstance\("?(DES|DESede|RC4|Blowfish)(/[A-Za-z0-9]+(/[A-Za-z0-9]+)?)?"?\)

@@ -1,0 +1,12 @@
+rules:
+  - id: mastg-android-network-checkservertrusted
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: This rule looks for the use of checkServerTrusted and ensures it throws an exception instead of silently muting invalid server certificates
+    message: Improper Server Certificate verification detected.
+    match:
+        any:
+        - public void checkServerTrusted (...) { ... }
+          
