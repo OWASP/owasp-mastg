@@ -211,8 +211,6 @@ def set_icons_for_web(checklist):
 
             test_id = row['MASTG-TEST-ID']
 
-            row['MASTG-TEST-ID'] = f'<span style="display:inline-block; border-radius:2.4em; background:#499fffff; color: white; padding:0.2em 0.8em; font-size:75%;">{row["MASTG-TEST-ID"]}</span><span style="display: none;">{row["MASTG-TEST-ID"]}</span>'
-
             # Process status field for test rows
             status = row.get('Status')
             if status == 'new':
