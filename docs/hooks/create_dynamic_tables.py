@@ -104,7 +104,7 @@ def get_mastg_tests_dict():
                         frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
                         mastg_tests[id][platform].append(frontmatter)
                     else:
-                        log.warn(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                        log.warning(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
                 except StopIteration:
                     continue
     return mastg_tests
@@ -131,6 +131,7 @@ def get_masvs_groups():
     for group in MASVS['groups']:
         group_id = group['id']
         groups[group_id] = {'id': group_id, 'title': group['title']}
+        groups[group_id]['controls'] = [{"id" : control["id"], "statement": control["statement"]} for control in group["controls"]]
     return groups
 
 def add_control_row(checklist, control):
@@ -209,8 +210,6 @@ def set_icons_for_web(checklist):
             row['P'] = get_level_icon('P', row['P'])
 
             test_id = row['MASTG-TEST-ID']
-
-            row['MASTG-TEST-ID'] = f'<span style="display:inline-block; border-radius:2.4em; background:#499fffff; color: white; padding:0.2em 0.8em; font-size:75%;">{row["MASTG-TEST-ID"]}</span><span style="display: none;">{row["MASTG-TEST-ID"]}</span>'
 
             # Process status field for test rows
             status = row.get('Status')
@@ -446,6 +445,17 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
         return append_to_page(markdown, content)
 
+    elif match := re.compile(r"MASVS/\d{2}-(MASVS-.*)\.md").match(path):
+
+        column_titles = {'id': 'ID', 'title': 'Control'}
+        masvs_controls = config["masvs_groups"][match.group(1)]['controls']
+        for control in masvs_controls:
+            control['id'] = f'[{control["id"]}](/MASVS/controls/{control["id"]})'
+
+        table = list_of_dicts_to_md_table(masvs_controls, column_titles)
+        page_with_table = append_to_page(markdown, table)
+        return page_with_table
+
 
     return markdown
 
@@ -454,3 +464,5 @@ def on_config(config):
     config["mitigations_beta"] = get_all_mitigations_beta()
     config["demos_beta"] = get_all_demos_beta()
     config["dynamic_tables_checklist_dict"] = get_checklist_dict()
+    
+    config["masvs_groups"] = get_masvs_groups()

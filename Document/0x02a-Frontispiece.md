@@ -8,7 +8,7 @@ The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MASTG-Adoption.md).
 
-<a href="0x02b-MASVS-MASTG-Adoption.md">
+<a href="/MASTG/0x02b-MASVS-MASTG-Adoption">
 <img src="Images/Other/trusted-by-logos.png"/>
 </a>
 
