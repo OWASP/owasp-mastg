@@ -131,6 +131,7 @@ def get_masvs_groups():
     for group in MASVS['groups']:
         group_id = group['id']
         groups[group_id] = {'id': group_id, 'title': group['title']}
+        groups[group_id]['controls'] = [{"id" : control["id"], "statement": control["statement"]} for control in group["controls"]]
     return groups
 
 def add_control_row(checklist, control):
@@ -446,6 +447,17 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
         return append_to_page(markdown, content)
 
+    elif match := re.compile(r"MASVS/\d{2}-(MASVS-.*)\.md").match(path):
+
+        column_titles = {'id': 'ID', 'title': 'Control'}
+        masvs_controls = config["masvs_groups"][match.group(1)]['controls']
+        for control in masvs_controls:
+            control['id'] = f'[{control["id"]}](/MASVS/controls/{control["id"]})'
+
+        table = list_of_dicts_to_md_table(masvs_controls, column_titles)
+        page_with_table = append_to_page(markdown, table)
+        return page_with_table
+
 
     return markdown
 
@@ -454,3 +466,5 @@ def on_config(config):
     config["mitigations_beta"] = get_all_mitigations_beta()
     config["demos_beta"] = get_all_demos_beta()
     config["dynamic_tables_checklist_dict"] = get_checklist_dict()
+    
+    config["masvs_groups"] = get_masvs_groups()

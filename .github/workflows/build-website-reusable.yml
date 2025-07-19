@@ -38,9 +38,7 @@ jobs:
           path: masvs/
       - name: Generate MASVS yaml
         run: python3 ./masvs/tools/generate_masvs_yaml.py -v ${{env.MASVS_VERSION}} -i ./masvs/Document -c ./masvs/controls
-      - name: Populate MASVS Categories Markdown Files
-        run: python3 ./masvs/tools/populate_masvs_categories_md.py -d ./masvs/Document -w
-      
+
       - name: Build website (no deploy)
         if: ${{ !inputs.deploy }}
         run: mkdocs build --clean --verbose
