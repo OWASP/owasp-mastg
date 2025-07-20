@@ -30,4 +30,3 @@ According to the [Android Developers Documentation](https://developer.android.co
 The use of implicit intents can lead to multiple security risks, e.g. if the calling app processes the return value of the implicit intent without proper verification or if the intent contains sensitive data, it can be accidentally leaked to unauthorized third-parties.
 
 You can refer to this [blog post](https://blog.oversecured.com/Interception-of-Android-implicit-intents/ "Interception of Android implicit intents"), [this article](https://wiki.sei.cmu.edu/confluence/display/android/DRD03-J.+Do+not+broadcast+sensitive+information+using+an+implicit+intent "DRD03-J. Do not broadcast sensitive information using an implicit intent") and [CWE-927](https://cwe.mitre.org/data/definitions/927.html "CWE-927: Use of Implicit Intent for Sensitive Communication") for more information about the mentioned problem, concrete attack scenarios and recommendations.
-

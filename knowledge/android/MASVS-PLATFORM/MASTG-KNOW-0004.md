@@ -2,7 +2,7 @@
 masvs_category: MASVS-PLATFORM
 platform: android
 id: MASTG-KNOW-0004
-title: Sensitive Functionality Exposure Through IPC
+title: Inter-Process Communication (IPC) Mechanisms
 ---
 
 During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
