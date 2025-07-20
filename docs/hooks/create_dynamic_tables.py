@@ -284,6 +284,7 @@ def get_mastg_components_dict(name):
 def get_all_demos_beta():
 
     demos = []
+    print_tree_recursive("docs/MASTG/demos")
     print("--DEBUG-- get_all_demos_beta:")
     for file in glob.glob("docs/MASTG/demos/**/MASTG-DEMO-*.md", recursive=True):
         print("--DEBUG-- get_all_demos_beta:", file)
@@ -470,3 +471,23 @@ def on_config(config):
     config["dynamic_tables_checklist_dict"] = get_checklist_dict()
     
     config["masvs_groups"] = get_masvs_groups()
+    
+import os
+
+def print_tree_recursive(start_path, prefix=""):
+    basename = os.path.basename(start_path.rstrip(os.sep))
+    print(f"{prefix}├── {basename}/")
+    prefix += "│   "
+    try:
+        entries = sorted(os.listdir(start_path))
+    except PermissionError:
+        print(f"{prefix}└── [Permission Denied]")
+        return
+
+    for i, entry in enumerate(entries):
+        path = os.path.join(start_path, entry)
+        connector = "└── " if i == len(entries) - 1 else "├── "
+        if os.path.isdir(path):
+            print_tree_recursive(path, prefix + ("    " if i == len(entries) - 1 else "│   "))
+        else:
+            print(f"{prefix}{connector}{entry}")
