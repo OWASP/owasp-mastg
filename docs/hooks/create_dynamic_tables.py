@@ -104,7 +104,7 @@ def get_mastg_tests_dict():
                         frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
                         mastg_tests[id][platform].append(frontmatter)
                     else:
-                        log.warning(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                        log.warning(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter.get('masvs_v1_id'), 'N/A'})")
                 except StopIteration:
                     continue
     return mastg_tests
@@ -460,9 +460,10 @@ def on_page_markdown(markdown, page, config, **kwargs):
     return markdown
 
 
-def on_config(config):
+# Lower priority because it needs to run after collecting docs/MASTG, docs/MASWE, and docs/MASVS in combine-repos.py
+@mkdocs.plugins.event_priority(-10)
+def on_pre_build(config):
     config["mitigations_beta"] = get_all_mitigations_beta()
     config["demos_beta"] = get_all_demos_beta()
     config["dynamic_tables_checklist_dict"] = get_checklist_dict()
-    
     config["masvs_groups"] = get_masvs_groups()
