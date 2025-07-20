@@ -284,8 +284,9 @@ def get_mastg_components_dict(name):
 def get_all_demos_beta():
 
     demos = []
-
+    print("--DEBUG-- get_all_demos_beta:")
     for file in glob.glob("docs/MASTG/demos/**/MASTG-DEMO-*.md", recursive=True):
+        print("--DEBUG-- get_all_demos_beta:", file)
         with open(file, 'r') as f:
             content = f.read()
 
@@ -361,6 +362,8 @@ def on_page_markdown(markdown, page, config, **kwargs):
         return append_to_page(markdown, list_of_dicts_to_md_table(demos_beta_columns_reordered, column_titles))
 
     elif path.endswith("best-practices/index.md"):
+        
+        
         # mitigations/index.md
 
         column_titles = {'id': 'ID', 'title': 'Title', 'platform': "Platform"}
@@ -463,6 +466,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
 def on_config(config):
     config["mitigations_beta"] = get_all_mitigations_beta()
     config["demos_beta"] = get_all_demos_beta()
+    print("--DEBUG-- Demos_beta:", config["demos_beta"])
     config["dynamic_tables_checklist_dict"] = get_checklist_dict()
     
     config["masvs_groups"] = get_masvs_groups()
