@@ -50,7 +50,7 @@ Apps that target modern API levels, went through the following changes:
     - The `Crypto` security provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") lists all network security changes.
 
-### General Recommendations
+**General Recommendations:**
 
 The following list of recommendations should be considered during app examination:
 
