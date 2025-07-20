@@ -7,7 +7,7 @@ platform: android
 
 ## Overview
 
-### General Disclaimer
+**General Disclaimer:**
 
 The **lack of any of these measures does not cause a vulnerability** - instead, they are meant to increase the app's resilience against reverse engineering and specific client-side attacks.
 
