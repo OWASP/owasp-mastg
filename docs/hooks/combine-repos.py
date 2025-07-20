@@ -89,6 +89,7 @@ def structure_mastg(docs_dir):
         dest = mastg_dir / d
         shutil.rmtree(dest, ignore_errors=True)
         shutil.copytree(d, dest)
+        log.debug(f"---debug--- Copied {d} to {dest}")
 
     # Copy beta tests
     for file in Path("tests-beta").rglob("*"):
