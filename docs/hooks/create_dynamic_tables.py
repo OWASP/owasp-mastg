@@ -4,6 +4,7 @@ import os
 import glob
 import mkdocs
 from pathlib import Path
+import mkdocs.plugins
 import yaml
 import re
 import logging
@@ -332,8 +333,8 @@ def get_all_mitigations_beta():
 def reorder_dict_keys(original_dict, key_order):
     return {key: original_dict.get(key, "N/A") for key in key_order}
 
-# Higher priority, so that tables are parsed by the other hooks too
-@mkdocs.plugins.event_priority(-40)
+# Lower priority than combine repos because it needs to run after the MASTG/MASWE/MASVS components have been copied
+@mkdocs.plugins.event_priority(-10)
 def on_page_markdown(markdown, page, config, **kwargs):
 
     path = page.file.src_uri
@@ -463,8 +464,9 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     return markdown
 
+@mkdocs.plugins.event_priority(-49)
 
-def on_config(config):
+def on_pre_build(config):
     config["mitigations_beta"] = get_all_mitigations_beta()
     config["demos_beta"] = get_all_demos_beta()
     print("--DEBUG-- Demos_beta:", config["demos_beta"])
