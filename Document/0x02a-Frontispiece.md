@@ -8,7 +8,7 @@ The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MASTG-Adoption.md).
 
-<a href="0x02b-MASVS-MASTG-Adoption.md">
+<a href="/MASTG/0x02b-MASVS-MASTG-Adoption">
 <img src="Images/Other/trusted-by-logos.png"/>
 </a>
 
@@ -56,17 +56,17 @@ Vikas is an experienced cyber security researcher, with expertise in mobile secu
 
 All our Changelogs are available online at the OWASP MASTG GitHub repository, see the Releases page:
 
-<https://github.com/OWASP/owasp-mastg/releases>
+<https://github.com/OWASP/mastg/releases>
 
 ## Disclaimer
 
 Please consult the laws in your country before executing any tests against mobile apps by utilizing the MASTG materials. Refrain from violating the laws with anything described in the MASTG.
 
-Our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/.github/CODE_OF_CONDUCT.md) has further details.
+Our [Code of Conduct](https://github.com/OWASP/mastg/blob/master/.github/CODE_OF_CONDUCT.md) has further details.
 
 OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions, please connect with us: <https://mas.owasp.org/contact>
 
-If you find any inconsistencies or typos please open an issue in the OWASP MASTG Github Repo: <https://github.com/OWASP/owasp-mastg>
+If you find any inconsistencies or typos please open an issue in the OWASP MASTG Github Repo: <https://github.com/OWASP/mastg>
 
 ## Copyright and License
 

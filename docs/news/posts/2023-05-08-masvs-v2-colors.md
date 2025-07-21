@@ -60,4 +60,4 @@ For the upcoming of the MASTG version we will progressively split the MASTG test
 
 <br>
 
-We hope you like the new colors and the changes we've made to the website. We're looking forward to your feedback! Please use our GitHub Discussions to post any [questions](https://github.com/OWASP/owasp-mastg/discussions/categories/q-a) or [ideas](https://github.com/OWASP/owasp-mastg/discussions/categories/ideas) you might have. If you see something wrong please let us know by [opening a bug issue](https://github.com/OWASP/owasp-mastg/issues/new?assignees=&labels=%F0%9F%90%9B%20bug).
+We hope you like the new colors and the changes we've made to the website. We're looking forward to your feedback! Please use our GitHub Discussions to post any [questions](https://github.com/OWASP/mastg/discussions/categories/q-a) or [ideas](https://github.com/OWASP/mastg/discussions/categories/ideas) you might have. If you see something wrong please let us know by [opening a bug issue](https://github.com/OWASP/mastg/issues/new?assignees=&labels=%F0%9F%90%9B%20bug).

@@ -10,10 +10,23 @@ The following rules are meant to ensure consistency of the MASTG:
     
     We recommend you to take these free Google courses when writing or reviewing content for the MAS project:
 
-    - [Technical Writing One](https://developers.google.com/tech-writing/one)
-    - [Technical Writing Two](https://developers.google.com/tech-writing/two)
+    - [Google Technical Writing One](https://developers.google.com/tech-writing/one)
+    - [Google Technical Writing Two](https://developers.google.com/tech-writing/two)
 
 ## 1. How to Write Content
+
+### Basic Principles
+
+Ensure content has [cohesion and coherence](https://writing.chalmers.se/chalmers-writing-guide/writing-a-text/coherence-cohesion/):
+
+- Link ideas clearly and logically.
+- Make sure each paragraph makes sense on its own and fits with the ones before and after it.
+- Trim unnecessary words. Use clear, concise language instead of long or wordy sentences.
+- Structure content for easy scanning. Use bullet points instead of dense paragraphs when possible.
+- Convert passive voice to active voice wherever appropriate.
+- Keep each paragraph focused on a single topic or idea.
+- Start each section with the key point to guide the reader.
+- Use punctuation marks correctly, including commas, parentheses, colons, em dashes, and semicolons.
 
 ### Amount of Content
 

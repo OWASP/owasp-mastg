@@ -5,9 +5,9 @@
 └─────────────────┘
                            
     MastgTest_reversed.java
-    ❯❱ rules.weak-encryption-algorithms
-          [MASVS-CRYPTO-1] Weak encryption algorithms found in use.
-                                                                   
+    ❯❱ rules.mastg-android-broken-encryption-algorithms
+          [MASVS-CRYPTO-1] Broken encryption algorithms found in use.
+                                                                     
            39┆ Cipher cipher = Cipher.getInstance("DES");
             ⋮┆----------------------------------------
            62┆ Cipher cipher = Cipher.getInstance("DESede");

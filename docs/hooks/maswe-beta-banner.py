@@ -42,7 +42,7 @@ beta_banner = """
 ??? example "Content in BETA"
     This content is in **beta** and still under active development, so it is subject to change any time (e.g. structure, IDs, content, URLs, etc.).
 
-    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
+    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
 """
 
 def get_mastg_v1_coverage(meta, config):
@@ -96,7 +96,7 @@ def get_maswe_placeholder_banner(meta, config):
     This weakness hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that weakness by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?usp=sharing).
 
-    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+    <a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
 
     ## Initial Description or Hints
 
@@ -123,7 +123,7 @@ def get_tests_placeholder_banner(meta):
     This test hasn't been created yet and it's a **placeholder**. But you can check its status or start working on it yourself.
     If the issue has not yet been assigned, you can request to be assigned to it and submit a PR with the new content for that test by following our [guidelines](https://docs.google.com/document/d/1EMsVdfrDBAu0gmjWAUEs60q-fWaOmDB5oecY9d9pOlg/edit?pli=1&tab=t.0#heading=h.j1tiymiuocrm).
 
-    <a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
+    <a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+{id}" target="_blank">:material-github: Check our GitHub Issues for {id}</a>
 
     If an issue doesn't exist yet, please create one and assign it to yourself or request to be assigned to it.
 
@@ -166,7 +166,7 @@ def get_v1_refactor_tests_banner(meta, url, title):
 
     Help us out by submitting a PR for: <a href='{url}'>{title}</a>
 
-    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
+    [:fontawesome-regular-paper-plane: Send Feedback](https://github.com/OWASP/mastg/discussions/categories/maswe-mastg-v2-beta-feedback)
 """
     return banner
 
@@ -190,6 +190,29 @@ def get_deprecated_tools_banner(meta):
 
     return banner
 
+def get_maswe_deprecated_banner(meta, config):
+    id = meta.get('id')
+    deprecation_note = meta.get('deprecation_note', "The weakness is no longer relevant or was replaced by other weaknesses.")
+    covered_by = meta.get('covered_by', [])
+
+    if covered_by:
+        covered_by_section = "\n".join([f"    - @{weakness}" for weakness in covered_by])
+    else:
+        covered_by_section = "    No weaknesses are covering this weakness."
+
+    mastg_v1_tests = get_mastg_v1_coverage(meta, config)
+
+    banner = f"""
+!!! danger "Deprecated Weakness"
+
+    This weakness is **deprecated** and should not be used anymore. **Reason**: {deprecation_note}
+
+    Please check the following MASTG v2 weaknesses that cover this v1 weakness:
+
+{covered_by_section}
+"""
+    return banner
+
 # https://www.mkdocs.org/dev-guide/plugins/#on_page_markdown
 @mkdocs.plugins.event_priority(-40)
 def on_page_markdown(markdown, page, config, **kwargs):
@@ -200,8 +223,11 @@ def on_page_markdown(markdown, page, config, **kwargs):
     if any(substring in path for substring in ["MASWE/"]):
         banners.append(beta_banner)
 
-    if "MASWE/" in path and page.meta.get('status') == 'placeholder':
-        banners.append(get_maswe_placeholder_banner(page.meta, config))
+    if "MASWE/" in path:
+        if page.meta.get('status') == 'deprecated':
+            banners.append(get_maswe_deprecated_banner(page.meta, config))
+        if page.meta.get('status') == 'placeholder':
+            banners.append(get_maswe_placeholder_banner(page.meta, config))
 
     if "MASTG/tests/" in path:
         if page.meta.get('status') == 'deprecated':

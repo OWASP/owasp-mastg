@@ -87,9 +87,8 @@ def on_post_page(output, page, config):
 
     # By default, tags link to the main tags page. These substitutions make the tag links more useful
     # Transform URLs for MASWE tags to a more purposeful format.
-    # Matches URLs like '/tags/#tag:MASWE-<number>' and replaces them with '/MASWE/<category>/MASWE-<number>',
-    # where <category> is determined from the 'hook_add_tags_maswe_data' mapping in the config.
-    output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/MASWE/{config["hook_add_tags_maswe_data"].get(x.group(1))}/{x.group(1)}"' , output)
+    # Matches URLs like '/tags/#tag:MASWE-<number>' and replaces them with '/MASWE-<number>'
+    output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/{x.group(1)}"' , output)
     output = re.sub(r'/tags/#tag:test"', '/MASTG/tests/"' , output)
     output = re.sub(r'/tags/#tag:maswe"', '/MASWE/"' , output)
     output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
@@ -102,7 +101,7 @@ def on_post_page(output, page, config):
     output = re.sub(r'/tags/#tag:l2"', '/MASTG/tests/#l2"' , output)
     output = re.sub(r'/tags/#tag:r"', '/MASTG/tests/#r"' , output)
     output = re.sub(r'/tags/#tag:p"', '/MASTG/tests/#p"' , output)
-    output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/MASTG/tests/{config["hook_add_tags_test_data"].get(x.group(1).upper())}/{x.group(1).upper()}"' , output)
+    output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/{x.group(1).upper()}"', output)
     
     path = page.file.src_uri
     # Some context-specific changes
@@ -134,31 +133,4 @@ def on_post_page(output, page, config):
 
     return output
 
-def get_maswe_data():
-
-    data = {}
-    # Each test has an ID which is the filename
-    for file in glob.glob("docs/MASWE/**/MASWE-*.md", recursive=True):
-        path_parts = os.path.split(file)
-        id = os.path.splitext(path_parts[1])[0]
-        masvs_category = os.path.split(path_parts[0])[1]
-        data[id] = masvs_category
-
-    return data
-
-
-def get_test_data():
-    data = {}
-    # Each test has an ID which is the filename
-    for file in glob.glob("docs/MASTG/tests/**/MASTG-TEST-*.md", recursive=True):
-        path_parts = file.split('/')
-        id = os.path.splitext(path_parts[-1])[0]
-        masvs_category = f"{path_parts[-3]}/{path_parts[-2]}"
-        data[id] = masvs_category
-    return data
-
-def on_config(config):
-
-    config["hook_add_tags_maswe_data"] = get_maswe_data()
-    config["hook_add_tags_test_data"] = get_test_data()
 
