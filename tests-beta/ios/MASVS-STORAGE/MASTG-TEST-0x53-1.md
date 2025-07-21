@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Insertion of Sensitive Data into Logs
-id: MASTG-TEST-0x53
+id: MASTG-TEST-0x53-1
 type: [dynamic]
 weakness: MASWE-0001
 ---
@@ -15,7 +15,7 @@ In this test, we will use dynamic analysis to verify what data is logged to the 
 ## Steps
 
 1. Install the app
-2. Start recording the logs
+2. Start recording the logs with @MASTG-TECH-0060
 3. Run the app
 4. Navigate to the screen of the mobile app you want to analyse the log output from
 5. Close the app

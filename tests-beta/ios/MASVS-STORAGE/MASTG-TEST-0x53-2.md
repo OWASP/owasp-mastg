@@ -1,7 +1,7 @@
 ---
 platform: ios
 title: Insertion of Sensitive Data into Logs
-id: MASTG-TEST-0x53
+id: MASTG-TEST-0x53-2
 type: [static]
 weakness: MASWE-0001
 ---
