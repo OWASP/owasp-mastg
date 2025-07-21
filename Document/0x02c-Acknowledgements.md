@@ -10,7 +10,7 @@ All of our contributors are listed in the Contributing section of the OWASP MAS 
 
 Being a "MAS Advocate" is the highest status that companies can achieve in the OWASP MAS project, acknowledging that they've gone above and beyond, **continuously supporting the project with time/dedicated resources with clear/high impact**.
 
-To achieve this status, you'll need to demonstrate that you **make consistent high-impact contributions** to the project. The baseline or **the minimum meaningful monthly contribution** the following:
+To achieve this status, you'll need to demonstrate that you **make consistent high-impact contributions** to the project. The **minimum meaningful monthly contribution** is the following:
 
 - **1 substantial PR**, which includes a full set of Weakness+Tests+Demos
     - Alternatively, as this is currently a priority, several PRs focused on porting v1->v2 tests (equivalent effort to the above, must include at least one demo per test).

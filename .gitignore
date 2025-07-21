@@ -23,8 +23,7 @@ playground/
 __handlers__
 *.apk
 risks2/
-docs/MASVS/**/
-docs/MASVS/*-*.md
+docs/MASVS
 docs/MASTG
 docs/MASWE
 docs/assets/Images
