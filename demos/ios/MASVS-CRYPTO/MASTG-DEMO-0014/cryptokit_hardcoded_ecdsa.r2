@@ -1,18 +1,18 @@
-e asm.bytes = false
+e asm.bytes=false
 e scr.color=false
 e asm.var=false
 
-!printf "Uses of CryptoKit.P256.Signing.PrivateKey:\n"
+?e Uses of CryptoKit.P256.Signing.PrivateKey:
 afl~CryptoKit.P256.Signing.PrivateKey
 
-!printf "\n"
+?e
 
-!printf "xrefs to CryptoKit.P256.Signing.PrivateKey.rawRepresentation:\n"
+?e xrefs to CryptoKit.P256.Signing.PrivateKey.rawRepresentation:
 axt @ 0x100007388
 
-!printf "\n"
+?e
 
-!printf "Use of CryptoKit.P256.Signing.PrivateKey.rawRepresentation:\n"
+?e Use of CryptoKit.P256.Signing.PrivateKey.rawRepresentation:
 
 pd-- 9 @ 0x1000048d4
 

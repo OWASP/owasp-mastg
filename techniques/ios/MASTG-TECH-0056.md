@@ -3,49 +3,42 @@ title: Installing Apps
 platform: ios
 ---
 
-When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified "AppSync"), a package available in the Cydia store. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
+When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification, which is explained in @MASTG-TECH-0092.
+
+**Disabling Signature Verification (optional)**: On a jailbroken device, you can bypass the signature verification requirement using @MASTG-TOOL-0127, which hooks the appropriate system daemon and disables signature verification for any installations you do with the tools listed below while it's enabled.
 
 Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
 
-> Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not possible to install apps.
-
 ## Sideloadly
 
-[Sideloadly](https://sideloadly.io/ "Sideloadly") allows you to obtain a valid signature for a given IPA file and then install it to a connected iOS device. In addition to signing and installing an IPA file, Sideloadly also allows you to inject tweaks, change the App or Bundle name or make other limited modifications to the IPA metadata. Sideloadly is available on both macOS and Windows.
+@MASTG-TOOL-0118 is a GUI tool that can automate all required steps for you. It requires valid Apple developer credentials, as it will obtain a valid signature from Apple servers.
 
-!!! warning "Do not use your personal Apple account"
-    To sign an IPA file, you will need a valid iOS developer account, either free or paid. Both types come with certain restrictions, as explained on the Sideloadly website. We recommend creating a dedicated developer account for signing test applications, and **not** using your personal Apple account.
+Simply connect your device via USB, enter your Apple ID and drag-and-drop the IPA file onto SideLoadly. Click start to automatically sign and install the given IPA.
+
+<img src="Images/Techniques/0056-Sideloadly.png" width="400px" />
 
 ## libimobiledevice
 
-On Linux and also macOS, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. This allows you to install apps over a USB connection by executing ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+On Linux and also macOS, you can alternatively use @MASTG-TOOL-0126. This allows you to install apps over a USB connection by executing `ideviceinstaller`. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
-The package for libimobiledevice will be available in your Linux package manager. On macOS you can install libimobiledevice via brew:
-
-```bash
-brew install libimobiledevice
-brew install ideviceinstaller
-```
-
-After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`. Let's install and debug the @MASTG-APP-0028 app with the following commands:
+Let's install the @MASTG-APP-0028 app with the following command:
 
 ```bash
-# The following command will show detailed information about the iOS device connected via USB.
-$ ideviceinfo
-# The following command will install the IPA to your iOS device.
-$ ideviceinstaller -i iGoat-Swift_v1.0-frida-codesigned.ipa
+$ ideviceinstaller -i Uncrackable.ipa
 ...
 Install: Complete
-# The following command will start the app in debug mode, by providing the bundle name. The bundle name can be found in the previous command after "Installing".
-$ idevicedebug -d run OWASP.iGoat-Swift
 ```
+
+## Filza
+
+@MASTG-TOOL-0128 allows you to install an IPA file which is already located on your device. You can use either `scp` (@MASTG-TECH-0053) or [AirDrop](https://support.apple.com/en-us/119857) to copy the IPA file to your device, after which you can simply navigate to the IPA file on your file system and click the `Install` button in the top right corner.
 
 ## ipainstaller
 
-The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute ipainstaller with the IPA's filename:
+The IPA can also be directly installed on the iOS device via the command line with @MASTG-TOOL-0138. Naturally, this requires a jailbroken device, as otherwise you cannot SSH into the device. After copying the file over to the device, for example via `scp` (@MASTG-TECH-0053) or [AirDrop](https://support.apple.com/en-us/119857), you can execute `ipainstaller` with the IPA's filename:
 
 ```bash
-ipainstaller App_name.ipa
+ipainstaller Uncrackable.ipa
 ```
 
 ## ios-deploy
@@ -53,19 +46,39 @@ ipainstaller App_name.ipa
 On macOS you can also use the @MASTG-TOOL-0054 tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
-unzip Name.ipa
-ios-deploy --bundle 'Payload/Name.app' -W -d -v
+unzip UnCrackable.ipa
+ios-deploy --bundle 'Payload/UnCrackable Level 1.app' -W -v
 ```
 
-After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the app again.
+## xcrun
+
+After installing @MASTG-TOOL-0071, you can execute the following command to install a signed IPA:
 
 ```bash
-ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
+# Get the correct device id
+$ xcrun devicectl list devices
+Devices:
+Name                 Hostname                                     Identifier                             State                Model
+------------------   ------------------------------------------   ------------------------------------   ------------------   ------------------------------
+Foobar               00008101-00FF28803FF9001E.coredevice.local   ABD1F3D8-7BC1-52CD-8DB6-9BFD794CE862   available (paired)   iPhone 14 Pro Max (iPhone15,3)
+
+$ xcrun devicectl device install app --device 00008101-00FF28803FF9001E ~/signed.ipa
+11:59:04  Acquired tunnel connection to device.
+11:59:04  Enabling developer disk image services.
+11:59:04  Acquired usage assertion.
+4%... 12%... 28%... 30%... 31%... 32%... 33%... 35%... 36%... 37%... 39%... 40%... 42%... 43%... 45%... 49%... 51%... 52%... 54%... 55%... 57%... 59%... 60%... 62%... 66%... 68%... 72%... 76%... 80%... 84%... 88%... 92%... 96%... Complete!
+App installed:
+• bundleID: org.mas.myapp
+• installationURL: file:///private/var/containers/Bundle/Application/DFC99D25-FC36-462E-91D2-18CDE717ED21/UnCrackable%20Level%201.app/
+• launchServicesIdentifier: unknown
+• databaseUUID: DA52A5EB-5D39-4628-810E-8F42A5561CDF
+• databaseSequenceNumber: 1516
+• options:
 ```
 
 ## Xcode
 
-It is also possible to use the Xcode IDE to install iOS apps by doing the following steps:
+It is also possible to use the Xcode IDE to install iOS apps by executing the following steps:
 
 1. Start Xcode
 2. Select **Window/Devices and Simulators**
@@ -87,20 +100,11 @@ Sometimes an application can require to be used on an iPad device. If you only h
   </array>
 
 </dict>
-</plist>  
+</plist>
 ```
 
-It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
+Note that changing this value will break the original signature, so you must re-sign the IPA (@MASTG-TECH-0092) to install it on a device that does not have signature validation disabled.
 
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
-
-One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your host computer or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
-
-- Which files are included in the package?
-- Which Frameworks does the app use?
-- Which capabilities does the app require?
-- Which permissions does the app request to the user and for what reason?
-- Does the app allow any unsecured connections?
-- Does the app create any new files when being installed?

@@ -15,7 +15,7 @@ draft:
     that reset backup exclusion.
   topics:
   - backups
-status: draft
+status: placeholder
 
 ---
 

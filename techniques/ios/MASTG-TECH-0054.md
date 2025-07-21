@@ -47,7 +47,7 @@ Load command 12
       cryptid 1
 ```
 
-Or with radare2:
+Or with @MASTG-TOOL-0129:
 
 ```bash
 rabin2 -I Payload/Telegram X.app/Telegram X | grep crypto
@@ -78,7 +78,7 @@ You can dump the selected app, for example Telegram, by running `python dump.py 
 
 After a couple of seconds, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using @MASTG-TOOL-0054 `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
-You can verify that the app binary is now unencrypted:
+You can use @MASTG-TOOL-0129 to verify that the app binary is now unencrypted:
 
 ```bash
 rabin2 -I Payload/Telegram X.app/Telegram X | grep crypto

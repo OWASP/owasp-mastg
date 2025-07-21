@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-2]
+  cwe: [288, 287]
 
 refs:
 - https://developer.android.com/training/sign-in/biometric-auth#allow-fallback
@@ -17,7 +18,7 @@ draft:
   topics:
   - DEVICE_CREDENTIAL on Android
   - LAPolicy.deviceOwnerAuthentication on iOS
-status: draft
+status: placeholder
 
 ---
 

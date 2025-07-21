@@ -1,4 +1,5 @@
 .DS_Store
+.cache
 ~*
 node_modules
 *.out
@@ -26,7 +27,12 @@ docs/MASVS/*-*.md
 docs/MASTG
 docs/MASWE
 docs/assets/Images
+docs/assets/MASVS/Images
 OWASP_MASVS.yaml
 cross_references.yaml
 drafts/
 Payload/
+.vscode/settings.json
+site/
+.cache/
+references.json

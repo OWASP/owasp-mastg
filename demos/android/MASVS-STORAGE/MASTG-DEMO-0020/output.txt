@@ -1,2 +1,10 @@
-/data/user/0/org.owasp.mastestapp/files/profileInstalled
-/data/user/0/org.owasp.mastestapp/files/secret.txt
+adbd is already running as root
+Backup Manager now enabled
+Package org.owasp.mastestapp with result: Success
+/data/app/~~Es7NACiEKrtQIzZpqtLPzw==/org.owasp.mastestapp-GvkjkmAqRCTmzufVHw8YNg==/base.apk: 1 file pulled, 0 skipped. 165.5 MB/s (25924184 bytes in 0.149s)
+Success
+Success
+Selected transport com.google.android.gms/.backup.BackupTransportService (formerly com.android.localtransport/.LocalTransport)
+Done
+/data/user/0/org.owasp.mastestapp/files/profileInstalled: 1 file pulled, 0 skipped. 0.0 MB/s (24 bytes in 0.001s)
+/data/user/0/org.owasp.mastestapp/files/secret.txt: 1 file pulled, 0 skipped. 0.0 MB/s (15 bytes in 0.001s)

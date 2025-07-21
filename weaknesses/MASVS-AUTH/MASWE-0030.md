@@ -6,6 +6,7 @@ platform: [android, ios]
 profiles: [L2]
 mappings:
   masvs-v2: [MASVS-AUTH-3]
+  cwe: [285, 287]
 
 refs:
 - https://developers.google.com/identity/sign-in/android/disconnect
@@ -20,7 +21,7 @@ draft:
   - ASVS V3.3 Session Logout and Timeout Requirements
   - NIST 800-63
   - etc.
-status: draft
+status: placeholder
 
 ---
 

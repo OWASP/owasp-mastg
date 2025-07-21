@@ -4,6 +4,7 @@ title: Weak Encryption Algorithms
 id: MASTG-TEST-0210
 type: [static, dynamic]
 weakness: MASWE-0020
+profiles: [L1, L2]
 ---
 
 ## Overview

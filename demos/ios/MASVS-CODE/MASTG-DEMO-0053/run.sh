@@ -1,0 +1,1 @@
+cdxgen -o sbom.json
