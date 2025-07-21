@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-RESILIENCE
 platform: android
-id: MASTG-KNOW-0005
 title: Detection of Reverse Engineering Tools
 ---
 

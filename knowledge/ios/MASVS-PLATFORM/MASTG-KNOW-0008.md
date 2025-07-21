@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-PLATFORM
 platform: ios
-id: MASTG-KNOW-0008
 title: UIActivity Sharing
 ---
 

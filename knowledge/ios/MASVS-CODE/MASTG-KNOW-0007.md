@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-CODE
 platform: ios
-id: MASTG-KNOW-0007
 title: Debugging Code and Error Logging
 ---
 

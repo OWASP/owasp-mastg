@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-AUTH
 platform: android
-id: MASTG-KNOW-0002
 title: Biometric Authentication
 ---
 

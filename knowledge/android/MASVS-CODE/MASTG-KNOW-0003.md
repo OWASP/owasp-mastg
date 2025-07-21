@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-CODE
 platform: android
-id: MASTG-KNOW-0003
 title: Memory Corruption Bugs
 ---
 

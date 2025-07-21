@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: ios
-id: MASTG-KNOW-0002
 title: Server Trust Evaluation
 ---
 

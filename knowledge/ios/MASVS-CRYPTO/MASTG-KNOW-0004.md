@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-CRYPTO
 platform: ios
-id: MASTG-KNOW-0004
 title: Key Management
 ---
 

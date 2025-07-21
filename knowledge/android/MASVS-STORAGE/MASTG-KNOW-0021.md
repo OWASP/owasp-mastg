@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-STORAGE
 platform: android
-id: MASTG-KNOW-0021
 title: User Interface Components
 ---
 

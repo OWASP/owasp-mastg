@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-PLATFORM
 platform: ios
-id: MASTG-KNOW-0004
 title: App Permissions
 ---
 

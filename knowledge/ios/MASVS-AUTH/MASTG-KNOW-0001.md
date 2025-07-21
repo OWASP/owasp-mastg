@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-AUTH
 platform: ios
-id: MASTG-KNOW-0001
 title: Local Authentication Framework
 ---
 

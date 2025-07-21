@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: android
-id: MASTG-KNOW-0001
 title: Android Network Security Configuration
 ---
 

@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-AUTH
 platform: android
-id: MASTG-KNOW-0003
 title: FingerprintManager
 deprecated_since: 28
 available_since: 23

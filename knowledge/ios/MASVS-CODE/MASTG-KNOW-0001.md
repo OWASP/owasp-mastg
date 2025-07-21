@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-CODE
 platform: ios
-id: MASTG-KNOW-0001
 title: App Signing
 ---
 

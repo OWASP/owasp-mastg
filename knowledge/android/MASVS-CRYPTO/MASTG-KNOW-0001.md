@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-CRYPTO
 platform: android
-id: MASTG-KNOW-0001
 title: Security Provider
 ---
 

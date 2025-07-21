@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-RESILIENCE
 platform: android
-id: MASTG-KNOW-0004
 title: File Integrity Checks
 ---
 

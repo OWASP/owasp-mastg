@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-STORAGE
 platform: android
-id: MASTG-KNOW-0013
 title: BouncyCastle KeyStore
 deprecated_since: 31
 status: deprecated

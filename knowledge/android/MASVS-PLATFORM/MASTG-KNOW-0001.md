@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-PLATFORM
 platform: android
-id: MASTG-KNOW-0001
 title: App Permissions
 ---
 

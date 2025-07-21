@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-CRYPTO
 platform: android
-id: MASTG-KNOW-0003
 title: Random number generation
 ---
 

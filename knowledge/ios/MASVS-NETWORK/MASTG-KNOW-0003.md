@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: ios
-id: MASTG-KNOW-0003
 title: iOS Network APIs
 ---
 

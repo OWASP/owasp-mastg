@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-STORAGE
 platform: android
-id: MASTG-KNOW-0020
 title: Third-party Services Embedded in the App
 ---
 

@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-PLATFORM
 platform: ios
-id: MASTG-KNOW-0002
 title: Object Serialization
 ---
 

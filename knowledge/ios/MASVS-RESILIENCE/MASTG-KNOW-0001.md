@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-RESILIENCE
 platform: ios
-id: MASTG-KNOW-0001
 title: Jailbreak Detection
 ---
 

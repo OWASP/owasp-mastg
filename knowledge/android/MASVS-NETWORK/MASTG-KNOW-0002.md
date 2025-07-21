@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: android
-id: MASTG-KNOW-0002
 title: Certificate Pinning
 ---
 

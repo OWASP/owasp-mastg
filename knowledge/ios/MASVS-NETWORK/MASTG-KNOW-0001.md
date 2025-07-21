@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-NETWORK
 platform: ios
-id: MASTG-KNOW-0001
 title: iOS App Transport Security
 ---
 

@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-PLATFORM
 platform: ios
-id: MASTG-KNOW-0005
 title: Inter-Process Communication (IPC)
 ---
 

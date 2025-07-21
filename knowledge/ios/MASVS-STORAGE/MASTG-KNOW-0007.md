@@ -1,7 +1,6 @@
 ---
 masvs_category: MASVS-STORAGE
 platform: ios
-id: MASTG-KNOW-0004
 title: User Interface Components
 ---
 
