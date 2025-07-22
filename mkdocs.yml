@@ -60,6 +60,42 @@ nav:
       - Best Practices:
         - MASTG/best-practices/index.md
         - ... | flat | MASTG/best-practices/*.md
+      - Knowledge:
+        - MASTG/knowledge/index.md
+        - Android:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/knowledge/android/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/knowledge/android/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/knowledge/android/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/knowledge/android/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/knowledge/android/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/knowledge/android/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/knowledge/android/MASVS-RESILIENCE/*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/knowledge/android/MASVS-PRIVACY/*.md
+        - iOS:
+          - MASVS-STORAGE:
+            - ... | flat | MASTG/knowledge/ios/MASVS-STORAGE/*.md
+          - MASVS-CRYPTO:
+            - ... | flat | MASTG/knowledge/ios/MASVS-CRYPTO/*.md
+          - MASVS-AUTH:
+            - ... | flat | MASTG/knowledge/ios/MASVS-AUTH/*.md
+          - MASVS-NETWORK:
+            - ... | flat | MASTG/knowledge/ios/MASVS-NETWORK/*.md
+          - MASVS-PLATFORM:
+            - ... | flat | MASTG/knowledge/ios/MASVS-PLATFORM/*.md
+          - MASVS-CODE:
+            - ... | flat | MASTG/knowledge/ios/MASVS-CODE/*.md
+          - MASVS-RESILIENCE:
+            - ... | flat | MASTG/knowledge/ios/MASVS-RESILIENCE/*.md
+          - MASVS-PRIVACY:
+            - ... | flat | MASTG/knowledge/ios/MASVS-PRIVACY/*.md
       - Tests:
         - MASTG/tests/index.md
         - Android:
@@ -231,6 +267,7 @@ theme:
       deprecated: octicons/circle-slash-16
       new: material/alert-decagram
       tool: octicons/tools-24
+      know: material/book-open-blank-variant-outline
       test: octicons/codescan-checkmark-24
       app: octicons/code-square-24
       demo: material/flask-outline
@@ -399,6 +436,7 @@ extra:
     update-pending: update-pending
     deprecated: deprecated
     new: new
+    know: know
     tool: tool
     test: test
     app: app

@@ -83,7 +83,7 @@ def structure_mastg(docs_dir):
     mastg_dir.mkdir(parents=True, exist_ok=True)
     images_dir.mkdir(parents=True, exist_ok=True)
 
-    directories = ["tests", "techniques", "tools", "apps", "demos", "rules", "utils", "best-practices"]
+    directories = ["knowledge", "tests", "techniques", "tools", "apps", "demos", "rules", "utils", "best-practices"]
 
     for d in directories:
         dest = mastg_dir / d
@@ -109,6 +109,7 @@ def structure_mastg(docs_dir):
 
     # Specific subdir replacements
     rel_paths = {
+        "knowledge": "../../../../../assets/Images/",
         "tests": "../../../../../assets/Images/",
         "techniques": "../../../../../assets/Images/",
         "tools": "../../../../../assets/Images/",

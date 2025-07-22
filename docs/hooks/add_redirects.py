@@ -5,7 +5,7 @@ import mkdocs.plugins
 @mkdocs.plugins.event_priority(-10)
 def on_pre_build(config):
     folders = [
-        {"base": "docs/MASTG", "subfolders": ["tools", "apps", "techniques", "tests", "rules", "demos", "best-practices"]},
+        {"base": "docs/MASTG", "subfolders": ["knowledge", "tools", "apps", "techniques", "tests", "rules", "demos", "best-practices"]},
         {"base": "docs/MASWE", "subfolders": [""]}
     ]
 
