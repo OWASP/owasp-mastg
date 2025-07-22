@@ -5,6 +5,8 @@ title: FingerprintManager
 deprecated_since: 28
 available_since: 23
 status: deprecated
+deprecation_note: "The FingerprintManager class is deprecated in Android 9 (API level 28) and should not be used for new applications. Instead, use the BiometricPrompt API or the Biometric library for Android."
+covered_by: [MASTG-KNOW-0001]
 ---
 
 Android 6.0 (API level 23) introduced public APIs for authenticating users via fingerprint, but is deprecated in Android 9 (API level 28). Access to the fingerprint hardware is provided through the [`FingerprintManager`](https://developer.android.com/reference/android/hardware/fingerprint/ "FingerprintManager") class. An app can request fingerprint authentication by instantiating a `FingerprintManager` object and calling its `authenticate` method. The caller registers callback methods to handle possible outcomes of the authentication process (i.e. success, failure, or error). Note that this method doesn't constitute strong proof that fingerprint authentication has actually been performed - for example, the authentication step could be patched out by an attacker, or the "success" callback could be overloaded using dynamic instrumentation.
