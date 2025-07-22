@@ -6,6 +6,7 @@ type: [static]
 weakness: MASWE-0001
 prerequisites:
 - identify-sensitive-data
+best-practices: [MASTG-BEST-0016]
 ---
 
 ## Overview

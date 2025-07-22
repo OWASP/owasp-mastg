@@ -23,6 +23,8 @@ To save the console output to a text file, go to the top right side of the Conso
 ## Using @MASTG-TOOL-0126
 
 1. Connect your device to your host computer
-2. Run`idevicesyslog` in your terminal
+2. Run`idevicesyslog` in your terminal. The output contains a lot of device specific logs, so you might want to filter out the output with `| grep YOUR_APP_NAME`
 
-<img src="Images/Chapters/0x06b/open_device_console.png" width="100%" />
+<img src="Images/Chapters/0x06b/idevicesyslog-screen.png" width="100%" />
+
+> Note that `idevicesyslog` might not log all types of logs. E.g [debug](https://developer.apple.com/documentation/os/oslogtype/debug) and [info](https://developer.apple.com/documentation/os/oslogtype/info) logs might now be logged.

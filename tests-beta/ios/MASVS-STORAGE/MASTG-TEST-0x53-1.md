@@ -6,6 +6,7 @@ type: [dynamic]
 weakness: MASWE-0001
 prerequisites:
 - identify-sensitive-data
+best-practices: [MASTG-BEST-0016]
 ---
 
 ## Overview
@@ -33,4 +34,3 @@ The output should contain all logged data.
 ## Evaluation
 
 The test case fails if you can find sensitive data inside the output.
-
