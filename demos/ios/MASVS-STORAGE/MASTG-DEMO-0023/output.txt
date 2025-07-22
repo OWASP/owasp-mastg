@@ -1,9 +1,12 @@
 [connected]
-Nov  5 13:29:17 MASTestApp(UIKitCore)[7234] <Notice>: Sending UIEvent type: 0; subtype: 0; to window: <UIWindow: 0x10690cc10>; contextId: 0x8FE81D3D
-Nov  5 13:29:17 MASTestApp(libswiftFoundation.dylib)[7234] <Notice>: Leaking TOKEN=123 from NSLog
-Nov  5 13:29:17 SpringBoard(UIKitCore)[378] <Notice>: Evaluating dispatch of UIEvent: 0x280f21a40; type: 0; subtype: 0; backing type: 11; shouldSend: 1
-Nov  5 13:29:17 SpringBoard(UIKitCore)[378] <Notice>: Sending UIEvent type: 0; subtype: 0; to windows: 1
-Nov  5 13:29:17 SpringBoard(UIKitCore)[378] <Notice>: Sending UIEvent type: 0; subtype: 0; to window: <_UISystemGestureWindow: 0x102f076f0>;
-Nov  5 13:29:18 symptomsd(SymptomEvaluator)[458] <Notice>: Data Usage for online-auth-agent on flow 144852 - 
-Nov  5 13:29:18 symptomsd(SymptomEvaluator)[458] <Notice>: NBSM: TCP metrics iteration:5603 since 30.00 secs
-Nov  5 13:29:18 symptomsd(SymptomEvaluator)[458] <Notice>: NBSM: TCP progress metrics score: 0, problem ratio: 0.00 (baseline: 0.00)
+Jul 21 15:43:40 SpringBoard(UIKitCore)[68215] <Notice>: Evaluating dispatch of UIEvent: 0xb2c761340; type: 0; subtype: 0; backing type: 11; shouldSend: 1; ignoreInteractionEvents: 0, systemGestureStateChange: 0
+Jul 21 15:43:40 SpringBoard(UIKitCore)[68215] <Notice>: Sending UIEvent type: 0; subtype: 0; to windows: 1
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Evaluating dispatch of UIEvent: 0x101958ee0; type: 0; subtype: 0; backing type: 11; shouldSend: 1; ignoreInteractionEvents: 0, systemGestureStateChange: 0
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to windows: 1
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to window: <UIWindow: 0x100fb4df0>; contextId: 0xF342DF71
+Jul 21 15:43:40 SpringBoard(SpringBoard)[68215] <Notice>: Focused scene identity did change to: (null)
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to windows: 1
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to window: <UIWindow: 0x100fb4df0>; contextId: 0xF342DF71
+Jul 21 15:43:40 MASTestApp(Foundation)[94322] <Notice>: NSLog: Leaking TOKEN=123 from NSLog
+Jul 21 15:43:40 MASTestApp[94322] <Error>: logger.warning: Leaking TOKEN=123
+Jul 21 15:43:40 MASTestApp[94322] <Error>: logger.error: Leaking TOKEN=123
