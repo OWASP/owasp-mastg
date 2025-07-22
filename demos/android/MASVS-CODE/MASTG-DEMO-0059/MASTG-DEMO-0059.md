@@ -4,6 +4,7 @@ title: Implicit intent to trigger internal app components
 id: MASTG-DEMO-0059
 code: [kotlin]
 test: MASTG-TEST-0287
+profiles: [L1, L2]
 ---
 
 ### Sample

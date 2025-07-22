@@ -4,6 +4,7 @@ platform: android
 id: MASTG-TEST-0287
 type: [static]
 weakness: MASWE-0083
+profiles: [L1, L2]
 ---
 
 ## Overview

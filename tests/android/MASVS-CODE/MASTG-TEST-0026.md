@@ -9,6 +9,9 @@ masvs_v1_levels:
 - L1
 - L2
 profiles: [L1, L2]
+status: deprecated
+covered_by: [MASTG-TEST-0287,MASTG-TEST-0286]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
@@ -145,3 +148,5 @@ public class EvilContentActivity extends Activity{
 ## Dynamic Analysis
 
 A convenient way to dynamically test for implicit intents, especially to identify potentially leaked sensitive data, is to use Frida or frida-trace and hook the `startActivityForResult` and `onActivityResult` methods and inspect the provided intents and the data they contain.
+
+

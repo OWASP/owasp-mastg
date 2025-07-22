@@ -4,6 +4,7 @@ title: Implicit Intent Hijacking with same custom intent filter
 id: MASTG-DEMO-0058
 code: [kotlin]
 test: MASTG-TEST-0286
+profiles: [L1, L2]
 ---
 
 ### Sample
