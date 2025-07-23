@@ -9,288 +9,71 @@ platform: android
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password or biometric characteristics such as face or fingerprint, which is verified by referencing local data. Generally, this is done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
-As stated before in chapter ["Mobile App Authentication Architectures"](0x04e-Testing-Authentication-and-Session-Management.md): The tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
+As stated in chapter ["Mobile App Authentication Architectures"](0x04e-Testing-Authentication-and-Session-Management.md), authentication should always be enforced by a remote endpoint if possible. If local authentication is required, it should be linked to the system's KeyStore, since attackers can bypass local authentication if this is not the case.
 
-On Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
+There are two ways of implementing local authentication:
 
-### Confirm Credential Flow
+- **Event-based:** The application simply checks if the user can authenticate themselves, via either a biometric prompt or a device credentials prompt. After successful authentication, the application launches a specific functionality or shows additional data.
+- **Result-based:** The application unlocks a cryptographic key which is protected by either biometrics or device credentials. The cryptographic key is securely stored in a HSM and cannot be used without the user (re)authenticating themselves. The unlocked key is then used to decrypt or sign sensitive data.
 
-The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to the device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked the device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise the device needs to be unlocked again.
+The first implementation, event-based, is inherently insecure for multiple reasons:
 
-Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
+- Somewhere in the application there will be an if/else that distinguishes between a successful or a failed authentication attempt. By tampering with the application at runtime, it is possible to convince the application that the authentication attempt was successful.
+- After a legitimate successful authentication, the application will either present sensitive information to the user, or it will allow the user to perform a specific action. This means that either some data is stored locally which is not properly protected, or some functionality is not properly protected and can be triggered even without proper user authentication.
 
-### Biometric Authentication Flow
+The second implementation, result-based, is considered secure because:
 
-Biometric authentication is a convenient mechanism for authentication, but also introduces an additional attack surface when using it. The Android developer documentation gives an interesting overview and indicators for [measuring biometric unlock security](https://source.android.com/security/biometric/measure#strong-weak-unlocks "Measuring Biometric Unlock Security").
+- The unlocked key will be used to either decrypt sensitive information, or to unlock some sort of session token which can be used to trigger specific functionalities. Without unlocking the key, the data is not available and the functionality cannot be triggered.
 
-The Android platform offers three different classes for biometric authentication:
+Over the years, Android has introduced many different APIs for dealing with lockscreens, credentials, fingerprints and biometrics:
 
-- Android 10 (API level 29) and higher: `BiometricManager`
-- Android 9 (API level 28) and higher: `BiometricPrompt`
-- Android 6.0 (API level 23) and higher: `FingerprintManager` (deprecated in Android 9 (API level 28))
+- KeyguardManager: Can authenticate the user, but only event-based. This is considered insecure.
+- FingerprintManager: Deprecated in Android 9 (API level 28) in favor of BiometricPrompt.
+- BiometricPrompt: Can authenticate the user, both event-based and result-based. This is considered secure if correctly implemented via result-based.
+- BiometricManager: Can be used to verify if the device supports biometric authentication. This cannot be used to authenticate the user in any way.
 
-<img src="Images/Chapters/0x05f/biometricprompt-architecture.png" width="100%" />
+### Biometric Authentication
 
-The class [`BiometricManager`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricManager "BiometricManager") can be used to verify if biometric hardware is available on the device and if it's configured by the user. If that's the case, the class [`BiometricPrompt`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricPrompt "BiometricPrompt") can be used to show a system-provided biometric dialog.
+The class [`BiometricManager`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricManager "BiometricManager") can be used to verify if biometric hardware is available on the device and if it is configured by the user. This class does not offer any real security, as it only allows the application to check if biometric authentication is supported or not.
 
-The `BiometricPrompt` class is a significant improvement, as it allows to have a consistent UI for biometric authentication on Android and also supports more sensors than just fingerprint.
+If biometric authentication is supported, the [`BiometricPrompt`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricPrompt "BiometricPrompt") class can be used to show a system-provided biometric authentication dialog.
 
-This is different to the `FingerprintManager` class which only supports fingerprint sensors and provides no UI, forcing developers to build their own fingerprint UI.
+A detailed overview and explanation of the Biometric API on Android was published on the [Android Developer Blog](https://android-developers.googleblog.com/2019/10/one-biometric-api-over-all-android.html "One Biometric API Over all Android").
 
-A very detailed overview and explanation of the Biometric API on Android was published on the [Android Developer Blog](https://android-developers.googleblog.com/2019/10/one-biometric-api-over-all-android.html "One Biometric API Over all Android").
+To correctly implement local authentication, the following steps need to be followed:
 
-### FingerprintManager (deprecated in Android 9 (API level 28))
+- The app creates a key in the KeyStore with `setUserAuthenticationRequired` and `setInvalidatedByBiometricEnrollment` set to true. Additionally, `setUserAuthenticationValidityDurationSeconds` should be set to -1.
+- This key is used to encrypt information that is authenticating the user (e.g. session information or authentication token).
+- A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the `authenticate` method and the `CryptoObject`.
+- After successful authentication, the released `CryptoObject` is used to decrypt the previously encrypted information.
+- This solution cannot be bypassed, even on rooted devices, as the key from the KeyStore can only be used after successful biometric authentication.
 
-Android 6.0 (API level 23) introduced public APIs for authenticating users via fingerprint, but is deprecated in Android 9 (API level 28). Access to the fingerprint hardware is provided through the [`FingerprintManager`](https://developer.android.com/reference/android/hardware/fingerprint/ "FingerprintManager") class. An app can request fingerprint authentication by instantiating a `FingerprintManager` object and calling its `authenticate` method. The caller registers callback methods to handle possible outcomes of the authentication process (i.e. success, failure, or error). Note that this method doesn't constitute strong proof that fingerprint authentication has actually been performed - for example, the authentication step could be patched out by an attacker, or the "success" callback could be overloaded using dynamic instrumentation.
-
-You can achieve better security by using the fingerprint API in conjunction with the Android `KeyGenerator` class. With this approach, a symmetric key is stored in the Android KeyStore and unlocked with the user's fingerprint. For example, to enable user access to a remote service, an AES key is created which encrypts the authentication token. By calling `setUserAuthenticationRequired(true)` when creating the key, it is ensured that the user must re-authenticate to retrieve it. The encrypted authentication token can then be saved directly on the device (e.g. via Shared Preferences). This design is a relatively safe way to ensure the user actually entered an authorized fingerprint.
-
-An even more secure option is using asymmetric cryptography. Here, the mobile app creates an asymmetric key pair in the KeyStore and enrolls the public key on the server backend. Later transactions are then signed with the private key and verified by the server using the public key.
-
-### Biometric Library
+### Biometric Compatibility Library
 
 Android provides a library called [Biometric](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") which offers a compatibility version of the `BiometricPrompt` and `BiometricManager` APIs, as implemented in Android 10, with full feature support back to Android 6.0 (API 23).
 
 You can find a reference implementation and instructions on how to [show a biometric authentication dialog](https://developer.android.com/training/sign-in/biometric-auth "Show a biometric authentication dialog") in the Android developer documentation.
 
-There are two `authenticate` methods available in the `BiometricPrompt` class. One of them expects a [`CryptoObject`](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt.CryptoObject.html "CryptoObject"), which adds an additional layer of security for the biometric authentication.
+There are two `authenticate` methods available in the `BiometricPrompt` class. One of them expects a [`CryptoObject`](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt.CryptoObject.html "CryptoObject"), which allows you to perform result-based biometric authentication.
 
-The authentication flow would be as follows when using CryptoObject:
+### Biometric Authentication VS Device Credentials
 
-- The app creates a key in the KeyStore with `setUserAuthenticationRequired` and `setInvalidatedByBiometricEnrollment` set to true. Additionally, `setUserAuthenticationValidityDurationSeconds` should be set to -1.
-- This key is used to encrypt information that is authenticating the user (e.g. session information or authentication token).
-- A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the `authenticate` method and the `CryptoObject`.
-- This solution cannot be bypassed, even on rooted devices, as the key from the KeyStore can only be used after successful biometric authentication.
+When creating the key in the KeyStore, it is possible to specify which authentication methods are allowed to unlock the key. This can be done by calling `setUserAuthenticationType` which accepts the following arguments:
 
-If `CryptoObject` is not used as part of the authenticate method, it can be bypassed by using Frida. See the "Dynamic Instrumentation" section for more details.
+- KeyProperties.AUTH_BIOMETRIC_STRONG: Biometric only (face, fingerprint, iris)
+- KeyProperties.AUTH_DEVICE_CREDENTIAL: Device credentials only (PIN, pattern, password)
+- KeyProperties.AUTH_BIOMETRIC_STRONG | KeyProperties.AUTH_DEVICE_CREDENTIAL: Either biometric or device credential
 
-Developers can use several [validation classes](https://source.android.com/security/biometric#validation "Validation of Biometric Auth") offered by Android to test the implementation of biometric authentication in their app.
+Generally speaking, biometrics are more secure than device credentials as they cannot be copied from the legitimate user. Through shoulder-surfing, it is possible to obtain the device credentials from a user without their cooperation. On the other hand, in certain circumstances a PIN or password may offer more security, since a user can be physically forced to authenticate via biometrics.
 
-### FingerprintManager
+### Remove Authentication Protected by Local Authentication
 
-> This section describes how to implement biometric authentication by using the `FingerprintManager` class. Please keep in mind that this class is deprecated and the [Biometric library](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") should be used instead as a best practice. This section is just for reference, in case you come across such an implementation and need to analyze it.
+Local authentication is often added on top of an existing backend authentication flow (e.g. username + password). A common mistake is to encrypt the user's password with a biometrics-protected key so that local authentication can be used to unlock the password and authenticate to the backend.
 
-Begin by searching for `FingerprintManager.authenticate` calls. The first parameter passed to this method should be a `CryptoObject` instance which is a [wrapper class for crypto objects](https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.CryptoObject.html "FingerprintManager.CryptoObject") supported by FingerprintManager. Should the parameter be set to `null`, this means the fingerprint authorization is purely event-bound, likely creating a security issue.
+This is undesirable and unnecessary. The user's password should only be known by them, and should not be stored anywhere on the device. A better approach is to obtain a device-specific authentication token and protect this with local authentication. This way it is not possible for an attacker to extract the password from the application and use it on different services.
 
-The creation of the key used to initialize the cipher wrapper can be traced back to the `CryptoObject`. Verify the key was both created using the `KeyGenerator` class in addition to `setUserAuthenticationRequired(true)` being called during creation of the `KeyGenParameterSpec` object (see code samples below).
+### Invalidation Upon New Biometric Enrollment
 
-Make sure to verify the authentication logic. For the authentication to be successful, the remote endpoint **must** require the client to present the secret retrieved from the KeyStore, a value derived from the secret, or a value signed with the client private key (see above).
+Android 7.0 (API level 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to `true` (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving the key even if they are able to enroll an additional fingerprint.
 
-Safely implementing fingerprint authentication requires following a few simple principles, starting by first checking if that type of authentication is even available. On the most basic front, the device must run Android 6.0 or higher (API 23+). Four other prerequisites must also be verified:
-
-- The permission must be requested in the Android Manifest:
-
-    ```xml
-    <uses-permission
-        android:name="android.permission.USE_FINGERPRINT" />
-    ```
-
-- Fingerprint hardware must be available:
-
-    ```java
-    FingerprintManager fingerprintManager = (FingerprintManager)
-                    context.getSystemService(Context.FINGERPRINT_SERVICE);
-    fingerprintManager.isHardwareDetected();
-    ```
-
-- The user must have a protected lock screen:
-
-    ```java
-    KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-    keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
-    ```
-
-- At least one finger should be registered:
-
-    ```java
-    fingerprintManager.hasEnrolledFingerprints();
-    ```
-
-- The application should have permission to ask for a user fingerprint:
-
-    ```java
-    context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
-    ```
-
-If any of the above checks fail, the option for fingerprint authentication should not be offered.
-
-It is important to remember that not every Android device offers hardware-backed key storage. The `KeyInfo` class can be used to find out whether the key resides inside secure hardware such as a Trusted Execution Environment (TEE) or Secure Element (SE).
-
-```java
-SecretKeyFactory factory = SecretKeyFactory.getInstance(getEncryptionKey().getAlgorithm(), ANDROID_KEYSTORE);
-KeyInfo secetkeyInfo = (KeyInfo) factory.getKeySpec(yourencryptionkeyhere, KeyInfo.class);
-secetkeyInfo.isInsideSecureHardware()
-```
-
-On certain systems, it is possible to enforce the policy for biometric authentication through hardware as well. This is checked by:
-
-```java
-keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
-```
-
-The following describes how to do fingerprint authentication using a symmetric key pair.
-
-Fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
-
-```java
-generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
-
-generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
-        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-        .setUserAuthenticationRequired(true)
-        .build()
-);
-
-generator.generateKey();
-```
-
-To perform encryption or decryption with the protected key, create a `Cipher` object and initialize it with the key alias.
-
-```java
-SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
-
-if (mode == Cipher.ENCRYPT_MODE) {
-    cipher.init(mode, keyspec);
-```
-
-Keep in mind, a new key cannot be used immediately - it has to be authenticated through the `FingerprintManager` first. This involves wrapping the `Cipher` object into `FingerprintManager.CryptoObject` which is passed to `FingerprintManager.authenticate` before it will be recognized.
-
-```java
-cryptoObject = new FingerprintManager.CryptoObject(cipher);
-fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
-```
-
-The callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called when the authentication succeeds. The authenticated `CryptoObject` can then be retrieved from the result.
-
-```java
-public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-    cipher = result.getCryptoObject().getCipher();
-
-    //(... do something with the authenticated cipher object ...)
-}
-```
-
-The following describes how to do fingerprint authentication using an asymmetric key pair.
-
-To implement fingerprint authentication using asymmetric cryptography, first create a signing key using the `KeyPairGenerator` class, and enroll the public key with the server. You can then authenticate pieces of data by signing them on the client and verifying the signature on the server. A detailed example for authenticating to remote servers using the fingerprint API can be found in the [Android Developers Blog](https://android-developers.googleblog.com/2015/10/new-in-android-samples-authenticating.html "Authenticating to remote servers using the Fingerprint API").
-
-A key pair is generated as follows:
-
-```java
-KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore");
-keyPairGenerator.initialize(
-        new KeyGenParameterSpec.Builder(MY_KEY,
-                KeyProperties.PURPOSE_SIGN)
-                .setDigests(KeyProperties.DIGEST_SHA256)
-                .setAlgorithmParameterSpec(new ECGenParameterSpec("secp256r1"))
-                .setUserAuthenticationRequired(true)
-                .build());
-keyPairGenerator.generateKeyPair();
-```
-
-To use the key for signing, you need to instantiate a CryptoObject and authenticate it through `FingerprintManager`.
-
-```java
-Signature.getInstance("SHA256withECDSA");
-KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-keyStore.load(null);
-PrivateKey key = (PrivateKey) keyStore.getKey(MY_KEY, null);
-signature.initSign(key);
-CryptoObject cryptoObject = new FingerprintManager.CryptoObject(signature);
-
-CancellationSignal cancellationSignal = new CancellationSignal();
-FingerprintManager fingerprintManager =
-        context.getSystemService(FingerprintManager.class);
-fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
-```
-
-You can now sign the contents of a byte array `inputBytes` as follows.
-
-```java
-Signature signature = cryptoObject.getSignature();
-signature.update(inputBytes);
-byte[] signed = signature.sign();
-```
-
-- Note that in cases where transactions are signed, a random nonce should be generated and added to the signed data. Otherwise, an attacker could replay the transaction.
-- To implement authentication using symmetric fingerprint authentication, use a challenge-response protocol.
-
-### Additional Security Features
-
-Android 7.0 (API level 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to `true` (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving they key even if they are able to enroll an additional fingerprint.
-
-Android 8.0 (API level 26) adds two additional error codes:
-
-- `FINGERPRINT_ERROR_LOCKOUT_PERMANENT`: The user has tried too many times to unlock their device using the fingerprint reader.
-- `FINGERPRINT_ERROR_VENDOR`: A vendor-specific fingerprint reader error occurred.
-
-### Implementing biometric authentication
-
-Reassure that the lock screen is set:
-
-```java
-KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-if (!mKeyguardManager.isKeyguardSecure()) {
-    // Show a message that the user hasn't set up a lock screen.
-}
-```
-
-- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked the device in the last X seconds, or the device needs to be unlocked again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
-
-    ```java
-    try {
-        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-        keyStore.load(null);
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(
-                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-
-        // Set the alias of the entry in Android KeyStore where the key will appear
-        // and the constrains (purposes) in the constructor of the Builder
-        keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_NAME,
-                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                .setUserAuthenticationRequired(true)
-                        // Require that the user has unlocked in the last 30 seconds
-                .setUserAuthenticationValidityDurationSeconds(30)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .build());
-        keyGenerator.generateKey();
-    } catch (NoSuchAlgorithmException | NoSuchProviderException
-            | InvalidAlgorithmParameterException | KeyStoreException
-            | CertificateException | IOException e) {
-        throw new RuntimeException("Failed to create a symmetric key", e);
-    }
-    ```
-
-- Set up the lock screen to confirm:
-
-    ```java
-    private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
-    Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
-    if (intent != null) {
-        startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
-    }
-    ```
-
-- Use the key after lock screen:
-
-    ```java
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
-            // Challenge completed, proceed with using cipher
-            if (resultCode == RESULT_OK) {
-                //use the key for the actual authentication flow
-            } else {
-                // The user canceled or didn’t complete the lock screen
-                // operation. Go to error/cancellation flow.
-            }
-        }
-    }
-    ```
-
-### Third party SDKs
-
-Make sure that fingerprint authentication and/or other types of biometric authentication are exclusively based on the Android SDK and its APIs. If this is not the case, ensure that the alternative SDK has been properly vetted for any weaknesses. Make sure that the SDK is backed by the TEE/SE which unlocks a (cryptographic) secret based on the biometric authentication. This secret should not be unlocked by anything else, but a valid biometric entry. That way, it should never be the case that the fingerprint logic can be bypassed.
+When a new fingerprint is enrolled, all previously protected keys are invalidated, which means the application needs to foresee a fallback authentication method to allow the user to enable biometric authentication again.
