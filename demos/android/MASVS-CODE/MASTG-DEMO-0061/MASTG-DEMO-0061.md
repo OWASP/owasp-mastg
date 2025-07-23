@@ -1,9 +1,9 @@
 ---
 platform: android
 title: Object Deserialization Using Serializable with semgrep
-id: MASTG-DEMO-0041
+id: MASTG-DEMO-0061
 code: [kotlin]
-test: MASTG-TEST-0282
+test: MASTG-TEST-0287
 profiles: [L1, L2]
 ---
 
