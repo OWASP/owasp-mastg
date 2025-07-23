@@ -1,5 +1,6 @@
 package org.owasp.mastestapp
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import java.io.ByteArrayInputStream
@@ -8,21 +9,18 @@ import java.io.Serializable
 import java.util.Base64
 
 
-object UserManager {
-
-    var currentUser: MastgTest.BaseUser = MastgTest.BaseUser("Standard User")
-}
-
-class MastgTest {
+class MastgTest(private val context: Context) {
 
     open class BaseUser(val username: String) : Serializable {
         companion object {
+            // Different UID to distinguish from the Admin subclass
             private const val serialVersionUID = 100L
         }
     }
 
-    class AdminUser(username: String) : BaseUser(username) {
 
+    class AdminUser(username: String) : BaseUser(username) {
+     
         var isAdmin: Boolean = false
 
         companion object {
@@ -30,6 +28,13 @@ class MastgTest {
         }
     }
 
+   
+    object UserManager {
+       
+        var currentUser: BaseUser = BaseUser("Standard User")
+    }
+
+   
     fun mastgTest(): String {
         val user = UserManager.currentUser
         val status = if (user is AdminUser && user.isAdmin) {
@@ -48,6 +53,7 @@ class MastgTest {
         return resultString
     }
 
+
     fun processIntent(intent: Intent) {
         if (intent.hasExtra("payload_b64")) {
             val b64Payload = intent.getStringExtra("payload_b64")
@@ -56,6 +62,7 @@ class MastgTest {
             try {
                 val serializedPayload = Base64.getDecoder().decode(b64Payload)
                 val ois = ObjectInputStream(ByteArrayInputStream(serializedPayload))
+
                 val untrustedObject = ois.readObject()
                 ois.close()
 
