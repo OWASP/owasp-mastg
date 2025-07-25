@@ -161,6 +161,13 @@ Carefully review all UI components that either show such information or take it 
 
 Manufacturers want to provide device users with an aesthetically pleasing effect when an application is started or exited, so they introduced the concept of saving a screenshot when the application goes into the background. This feature can pose a security risk because screenshots (which may display sensitive information such as an email or corporate documents) are written to local storage, where they can be recovered by a rogue application with a sandbox bypass exploit or someone who steals the device.
 
+The screenshots are stored inside apps' container at
+`/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`. They are overwritten every time the app enters the background state.
+
+The system takes the screenshot after [applicationDidEnterBackground](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/applicationdidenterbackground(_:)) completes, so it's common to display an overlay over the content of the screen. Below you can find sample code that displays an image from app's assets foremost the screen. When an apps comes back to foreground, [applicationWillEnterForeground](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/applicationwillenterforeground(_:)).
+
+You can find more information in [Prepare your UI for the app snapshot](https://developer.apple.com/documentation/uikit/preparing-your-ui-to-run-in-the-background#Prepare-your-UI-for-the-app-snapshot).
+
 #### Keyboard Cache
 
 Several options, such as autocorrect and spell check, are available to users to simplify keyboard input and are cached by default in `.dat` files in `/private/var/mobile/Library/Keyboard/` and its subdirectories.

@@ -8,6 +8,9 @@ title: Finding Sensitive Information in Auto-Generated Screenshots
 masvs_v1_levels:
 - L2
 profiles: [L2]
+status: deprecated
+covered_by: [MASTG-TEST-0289, MASTG-TEST-0216]
+deprecation_note: New version available in MASTG V2
 ---
 
 ## Overview
