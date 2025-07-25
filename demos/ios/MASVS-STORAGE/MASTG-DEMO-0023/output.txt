@@ -1,0 +1,12 @@
+[connected]
+Jul 21 15:43:40 SpringBoard(UIKitCore)[68215] <Notice>: Evaluating dispatch of UIEvent: 0xb2c761340; type: 0; subtype: 0; backing type: 11; shouldSend: 1; ignoreInteractionEvents: 0, systemGestureStateChange: 0
+Jul 21 15:43:40 SpringBoard(UIKitCore)[68215] <Notice>: Sending UIEvent type: 0; subtype: 0; to windows: 1
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Evaluating dispatch of UIEvent: 0x101958ee0; type: 0; subtype: 0; backing type: 11; shouldSend: 1; ignoreInteractionEvents: 0, systemGestureStateChange: 0
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to windows: 1
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to window: <UIWindow: 0x100fb4df0>; contextId: 0xF342DF71
+Jul 21 15:43:40 SpringBoard(SpringBoard)[68215] <Notice>: Focused scene identity did change to: (null)
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to windows: 1
+Jul 21 15:43:40 MASTestApp(UIKitCore)[94322] <Notice>: Sending UIEvent type: 0; subtype: 0; to window: <UIWindow: 0x100fb4df0>; contextId: 0xF342DF71
+Jul 21 15:43:40 MASTestApp(Foundation)[94322] <Notice>: NSLog: Leaking TOKEN=123 from NSLog
+Jul 21 15:43:40 MASTestApp[94322] <Error>: logger.warning: Leaking TOKEN=123
+Jul 21 15:43:40 MASTestApp[94322] <Error>: logger.error: Leaking TOKEN=123
