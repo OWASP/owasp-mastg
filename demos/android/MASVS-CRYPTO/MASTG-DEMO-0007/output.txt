@@ -3,14 +3,15 @@
 ┌─────────────────┐
 │ 3 Code Findings │
 └─────────────────┘
-                            
-    MastgTest_reversed.java 
-       rules.mastg-android-insecure-random-use                                              
-          [MASVS-CRYPTO-1] The application makes use of an insecure random number generator.
-                                                                                            
+                           
+    MastgTest_reversed.java
+    ❯❱ rules.mastg-android-random-apis-insufficient-entropy
+          [MASVS-CRYPTO-1] The application makes use of random number generators with insufficient entropy.
+                                                                                                           
            22┆ double random1 = new Random().nextDouble();
             ⋮┆----------------------------------------
            23┆ double random2 = 1 + Math.random();
             ⋮┆----------------------------------------
-           27┆  ... random.nextInt("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".length()))); ... [0m
-            [shortened a long line from output, adjust with --max-chars-per-line]
+           27┆ password.append("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(ran
+               dom.nextInt("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".length())));  
+

@@ -58,7 +58,7 @@ def get_all_weaknessess():
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
             elif status == 'placeholder':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{weaknesses_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{weaknesses_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             frontmatter['platform'] = "".join([get_platform_icon(platform) for platform in frontmatter['platform']])
@@ -104,7 +104,7 @@ def get_mastg_tests_dict():
                         frontmatter['MASTG-TEST-ID'] = MASTG_TEST_ID
                         mastg_tests[id][platform].append(frontmatter)
                     else:
-                        print(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter['masvs_v1_id']})")
+                        log.warning(f"No MASVS v2 coverage for: {frontmatter['title']} (was {frontmatter.get('masvs_v1_id'), 'N/A'})")
                 except StopIteration:
                     continue
     return mastg_tests
@@ -112,7 +112,7 @@ def get_mastg_tests_dict():
 def retrieve_masvs(version="latest"):
     global MASVS
     try:
-        url = f"https://github.com/OWASP/owasp-masvs/releases/{version}/download/OWASP_MASVS.yaml"
+        url = f"https://github.com/OWASP/masvs/releases/{version}/download/OWASP_MASVS.yaml"
         response = requests.get(url)
         content = response.content
     except Exception as e:
@@ -131,6 +131,7 @@ def get_masvs_groups():
     for group in MASVS['groups']:
         group_id = group['id']
         groups[group_id] = {'id': group_id, 'title': group['title']}
+        groups[group_id]['controls'] = [{"id" : control["id"], "statement": control["statement"]} for control in group["controls"]]
     return groups
 
 def add_control_row(checklist, control):
@@ -190,11 +191,6 @@ def get_checklist_dict():
         checklist_dict[group['id']] = checklist_per_group
     return checklist_dict
 
-CHECKLIST_DICT = {}
-def on_pre_build(config):
-    global CHECKLIST_DICT
-    CHECKLIST_DICT = get_checklist_dict()
-
 def set_icons_for_web(checklist):
 
     for row in checklist:
@@ -215,18 +211,16 @@ def set_icons_for_web(checklist):
 
             test_id = row['MASTG-TEST-ID']
 
-            row['MASTG-TEST-ID'] = f'<span style="display:inline-block; border-radius:2.4em; background:#499fffff; color: white; padding:0.2em 0.8em; font-size:75%;">{row["MASTG-TEST-ID"]}</span><span style="display: none;">{row["MASTG-TEST-ID"]}</span>'
-
             # Process status field for test rows
             status = row.get('Status')
             if status == 'new':
                 row['Status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
             elif status == 'placeholder':
-                row['Status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em;">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                row['Status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em;">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 row['Status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
             elif status == 'update-pending':
-                row['Status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em;">update-pending</span></a><span style="display: none;">status:update-pending</span>'
+                row['Status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{test_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em;">update-pending</span></a><span style="display: none;">status:update-pending</span>'
 
 def list_of_dicts_to_md_table(data, column_titles=None, column_align=None):
 
@@ -270,7 +264,7 @@ def get_mastg_components_dict(name):
                         frontmatter['status'] = frontmatter.get('status', 'update-pending')
                         if frontmatter['status'] == 'update-pending':
                             # add github link to the issue tracker
-                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em">update-pending</span></a><span style="display: none;">status:update-pending</span>'
+                            frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--update-pending" style="min-width: 4em">update-pending</span></a><span style="display: none;">status:update-pending</span>'
                         elif frontmatter['status'] == 'deprecated':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
                     elif "MASTG-TEST-02" in component_id:
@@ -278,7 +272,7 @@ def get_mastg_components_dict(name):
                         if frontmatter['status'] == 'new':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
                         elif frontmatter['status'] == 'placeholder':
-                            frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                            frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{component_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
                         elif frontmatter['status'] == 'deprecated':
                             frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
 
@@ -307,7 +301,7 @@ def get_all_demos_beta():
             if status == 'new':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--new">new</span><span style="display: none;">status:new</span>'
             elif status == 'placeholder':
-                frontmatter['status'] = f'<a href="https://github.com/OWASP/owasp-mastg/issues?q=is%3Aopen+in%3Atitle+%22{demo_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
+                frontmatter['status'] = f'<a href="https://github.com/OWASP/mastg/issues?q=is%3Aopen+in%3Atitle+%22{demo_id}%22" target="_blank"><span class="md-tag md-tag-icon md-tag--placeholder" style="min-width: 4em">placeholder</span></a><span style="display: none;">status:placeholder</span>'
             elif status == 'deprecated':
                 frontmatter['status'] = '<span class="md-tag md-tag-icon md-tag--deprecated">deprecated</span><span style="display: none;">status:deprecated</span>'
 
@@ -434,7 +428,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
         column_align = ("left", "center", "left", "center", "left", "center", "center", "center", "center")
 
         ID = re.compile(r"^checklists/(MASVS-\w*)\.md$").match(path).group(1)
-        checklist = CHECKLIST_DICT[ID]
+        checklist = config["dynamic_tables_checklist_dict"].get(ID)
 
         set_icons_for_web(checklist)
 
@@ -451,10 +445,25 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
         return append_to_page(markdown, content)
 
+    elif match := re.compile(r"MASVS/\d{2}-(MASVS-.*)\.md").match(path):
+
+        column_titles = {'id': 'ID', 'title': 'Control'}
+        masvs_controls = config["masvs_groups"][match.group(1)]['controls']
+        for control in masvs_controls:
+            control['id'] = f'[{control["id"]}](/MASVS/controls/{control["id"]})'
+
+        table = list_of_dicts_to_md_table(masvs_controls, column_titles)
+        page_with_table = append_to_page(markdown, table)
+        return page_with_table
+
 
     return markdown
 
 
-def on_config(config):
+# Lower priority because it needs to run after collecting docs/MASTG, docs/MASWE, and docs/MASVS in combine-repos.py
+@mkdocs.plugins.event_priority(-10)
+def on_pre_build(config):
     config["mitigations_beta"] = get_all_mitigations_beta()
     config["demos_beta"] = get_all_demos_beta()
+    config["dynamic_tables_checklist_dict"] = get_checklist_dict()
+    config["masvs_groups"] = get_masvs_groups()

@@ -4,7 +4,7 @@
 
 A secret string is hidden somewhere in this app. Find a way to extract it.
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk" class="mas-chip">Download</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk" class="mas-chip">Download</a>
 
 ??? info "Installation"
     This app is compatible with Android 4.4 and up.
@@ -32,7 +32,7 @@ By [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller")
 
 This app holds a secret inside. May include traces of native code.
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/Android/Level_02/UnCrackable-Level2.apk" class="mas-chip">Download</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/Android/Level_02/UnCrackable-Level2.apk" class="mas-chip">Download</a>
 
 ??? info "Installation"
     This app is compatible with Android 4.4 and up.
@@ -57,7 +57,7 @@ By [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller"). Spec
 
 The crackme from hell! A secret string is hidden somewhere in this app. Find a way to extract it.
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/Android/Level_03/UnCrackable-Level3.apk" class="mas-chip">Download</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/Android/Level_03/UnCrackable-Level3.apk" class="mas-chip">Download</a>
 
 ??? info "Installation"
     This app is compatible with Android 4.4 and up.
@@ -87,9 +87,9 @@ Hint: Run the APK in a non-tampered device to play a bit with the app.
 
 **Versions:**
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/Android/Level_04/r2pay-v0.9.apk" class="mas-chip">Download v0.9</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/Android/Level_04/r2pay-v0.9.apk" class="mas-chip">Download v0.9</a>
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/Android/Level_04/r2pay-v1.0.apk" class="mas-chip">Download v1.0</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/Android/Level_04/r2pay-v1.0.apk" class="mas-chip">Download v1.0</a>
 
 - `v0.9` - Release for OWASP MAS: Source code is available and the compilation has been softened in many ways to make the challenge easier and more enjoyable for newcomers.
 - `v1.0` - Release for R2con CTF 2020: No source code is available and many extra protections are in place.
@@ -113,7 +113,7 @@ Created and maintained by [Eduardo Novella](https://github.com/enovella "Eduardo
 
 A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available! Generate a valid serial key that is accepted by this app.
 
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/Android/License_01/validate" class="mas-chip">Download</a>
+<a href="https://github.com/OWASP/mastg/raw/master/Crackmes/Android/License_01/validate" class="mas-chip">Download</a>
 
 ??? info "Installation"
     Copy the binary to your Android device and run using the shell.
