@@ -3,69 +3,42 @@ title: Checking if Native Libraries Contain Debugging Information
 platform: android
 ---
 
+## Overview
 
-Native libraries in Android are typically written in C or C++ using the NDK and compiled into ELF `.so` files, which are stored in the `lib/` directory of the APK. These libraries may contain important functions, including those exposed through the Java Native Interface (JNI). **Debug symbols** in these binaries provide details such as function names, source file references, and variable names. This information is crucial for reverse engineering, vulnerability analysis, and understanding the binary's behavior.
+Native libraries in Android are typically written in C or C++ using the NDK and compiled into ELF `.so` files, which reside in the `lib/` directory of the APK. These libraries often expose functionality through the Java Native Interface (JNI). **Debug symbols** in these binaries provide details like function names, variable names, and source file mappings, which are useful for reverse engineering, debugging, and security analysis.
 
-In production builds, debug symbols are usually stripped to reduce file size and make analysis more difficult. However, if symbols are retained, or if you are analyzing a debug build or internal release, you can extract them using the tools described below.
+When compiling and linking programs, symbols represent functions or variables. In ELF (Executable and Linkable Format) files, symbols have different roles:
 
-According to the ["Tool Interface Standards (TIS) Executable and Linking Format (ELF 1.2)"](https://refspecs.linuxfoundation.org/elf/elf.pdf) official specification, ELF files can contain various sections that hold debugging information. The most relevant sections for debugging symbols include:
+- **Local symbols**: Only visible inside the file where they're defined. Used internally. Not accessible from other files.
+- **Global symbols**: Visible to other files. Used to share functions or variables across different object files.
+- **Weak symbols**: Like global symbols, but lower priority. A strong (non-weak) symbol overrides a weak one if both exist.
 
-- **Symbol Table (`.symtab`)**: An object file's symbol table holds information needed to locate and relocate a program's symbolic definitions and references.
-- **String Table (`.strtab`)**: An object file's string table holds the names of the symbols defined in the file.
+In production builds, debug symbols are usually stripped to reduce binary size and limit information disclosure. However, debug or internal builds may retain symbols either within the binary or in separate companion files.
 
-The ["DWARF Debugging Information Format"](https://dwarfstd.org/doc/DWARF5.pdf) official specification defines a series of debugging information entries (DIEs) that may be present in binaries as sections. They include, for example:
+ELF binaries can include various resources related to debugging.
 
-- **Compilation Unit (`.debug_info`)**: Contains the high-level structure of the source code, including file names, function definitions, and variable scopes.
-- **Line Number Information (`.debug_line`)**: Maps source code lines to machine code instructions, allowing debuggers to correlate execution with source code.
-- **String Table (`.debug_str`)**: Contains strings used in the debugging information, such as function names and variable names.
-- **Location Lists (`.debug_loc`)**: Provides information about the locations of variables and other data in memory, which is essential for debugging.
+### Symbol Tables and DWARF Sections
 
-If these sections are missing, the binary is considered stripped.
+The [ELF](https://refspecs.linuxfoundation.org/elf/elf.pdf) format defines several sections related to symbols:
 
-@MASTG-TOOL-0028 can be used to detect this. It maps low-level ELF and DWARF constructs into high-level indicators, making it easier to assess the debug state of a binary at a glance:
+- **`.symtab`**: The full symbol table used at link time, often removed in production binaries.
+- **`.dynsym`**: The dynamic symbol table, used for runtime linking. It is always present in shared objects.
 
-- The **`i~stripped,linenum,lsyms`** command summarizes this:
-    - `stripped false` if `.symtab`, `.strtab`, or any `.debug_*` sections are present.
-    - `linenum true` if `.debug_line` is present and parsed.
-    - `lsyms true` if `.symtab` exists and includes local symbols.
-- The **`iS`** command lists ELF sections. You can filter for relevant debug and symbol sections using `iS~debug,strtab,symtab`. Their presence means debug data is available.
+[DWARF](https://dwarfstd.org/doc/DWARF5.pdf) is the standard debug format for ELF binaries. Key sections include:
 
-**Checking the Binaries' Info for Debugging Information:**
+- **`.debug_info`**: Contains the main debugging information, including types, function definitions, and scopes.
+- **`.debug_line`**: Maps machine code to source code line numbers.
+- **`.debug_str`**: Stores strings used by DWARF entries.
+- **`.debug_loc`, `.debug_ranges`, `.debug_abbrev`, etc.**: Support detailed debug metadata.
 
-To check if a binary is stripped, you can use @MASTG-TOOL-0028 and run the following command:
+Additionally, some toolchains use zlib [compression](https://www.linker-aliens.org/blogs/ali/entry/elf_section_compression/) for DWARF data to reduce binary size (for example [clang](https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-gz) and [gcc](https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html#index-gz) support this using the `-gz` option). These sections are typically named using a `.z` prefix (e.g.,`.zdebug_info`, `.zdebug_line`, `.zdebug_str`, etc.) and contain the same information as their uncompressed counterparts. Some analysis tools that do not support these may incorrectly report the binary as stripped.
 
-```bash
-[0x00000e3c]> i~stripped,linenum,lsyms
-linenum  false
-lsyms    false
-stripped true
-```
+To check for the presence of these sections in a binary, you can use @MASTG-TOOL-0121 (with the option `-x`) or @MASTG-TOOL-0028 (`iS` command) and other tools like `readelf`.
 
-In this example, `stripped` is `true`, indicating that debug symbols are not present. `linenum` being `false` means line number information is also missing.
-
-For a binary with debug symbols, the output might look like:
+For example, using radare2:
 
 ```sh
-[0x0003e360]> i~stripped,linenum,lsyms
-linenum  true
-lsyms    true
-stripped false
-```
-
-**Checking Sections for Debugging Information:**
-
-If sections such as `.symtab`, `.strtab`, or `.debug_*` are missing, the binary has been stripped.
-
-Example output for a stripped binary:
-
-```bash
-[0x00000e3c]> iS~debug,strtab,symtab
-```
-
-Example output for a binary with debug symbols:
-
-```sh
-[0x0003e360]> iS~debug,strtab,symtab
+[0x0003e360]> iS~debug,symtab
 23  0x000c418c      0x60 0x00000000      0x60 ---- 0x0   PROGBITS    .debug_aranges
 24  0x000c41ec  0x14d85c 0x00000000  0x14d85c ---- 0x0   PROGBITS    .debug_info
 25  0x00211a48    0xa14f 0x00000000    0xa14f ---- 0x0   PROGBITS    .debug_abbrev
@@ -74,7 +47,32 @@ Example output for a binary with debug symbols:
 28  0x002f54a4  0x172883 0x00000000  0x172883 ---- 0x0   PROGBITS    .debug_loc
 29  0x00467d27      0x20 0x00000000      0x20 ---- 0x0   PROGBITS    .debug_macinfo
 30  0x00467d47   0x602d0 0x00000000   0x602d0 ---- 0x0   PROGBITS    .debug_ranges
-31  0x0051b12a     0x167 0x00000000     0x167 ---- 0x0   STRTAB      .shstrtab
 32  0x004c8018   0x27510 0x00000000   0x27510 ---- 0x0   SYMTAB      .symtab
-33  0x004ef528   0x2bc02 0x00000000   0x2bc02 ---- 0x0   STRTAB      .strtab
 ```
+
+**IMPORTANT**: The presence of this sections does not necessarily mean that the binary hasn't been stripped. Some toolchains may include these sections even in stripped binaries, but they will be empty or contain minimal information. In the end, **what matters is whether the symbols are actually present**. See @MASTG-TECH-0141 for more details on how to extract and analyze debugging symbols.
+
+### External Debug Symbol Files
+
+The [Android Developers documentation](https://developer.android.com/build/include-native-symbols) explains that native libraries in release builds are stripped by default. To enable symbolicated native crash reports, you must generate a separate debug symbols file—typically located at `<variant>/native-debug-symbols.zip`—and upload it to the Google Play Console. This ZIP archive contains full **unstripped `.so` files** with embedded DWARF debug information. The DWARF data is not split into separate files (such as `.dwo`) but remains inside each `.so`.
+
+> This symbolication process is analogous to uploading a `mapping.txt` file to [deobfuscate stack traces](https://support.google.com/googleplay/android-developer/answer/9848633) for ProGuard or R8 obfuscated Java/Kotlin code.
+
+In contrast, iOS uses an approach **similar in spirit** to [split DWARF](https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-gsplit-dwarf), familiar from Linux toolchains. According to the [Apple Developer documentation](https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information), enabling the `DWARF with dSYM File` option in Xcode generates separate debug symbol files (`.dSYM`) for release builds. These can be uploaded to Apple's symbol servers for crash report symbolication.
+
+## Checking the Binaries' Info for Debugging Information
+
+To check if a binary is stripped, you can use @MASTG-TOOL-0028 and run the following command:
+
+```sh
+[0x0003e360]> i~stripped,linenum,lsyms
+linenum  true
+lsyms    true
+stripped false
+```
+
+In this example:
+
+- `stripped` is `false`, indicating that debug symbols are present.
+- `linenum` is `true`, meaning line number information is also available.
+- `lsyms` is `true`, indicating that local symbols are present.
