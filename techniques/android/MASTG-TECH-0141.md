@@ -5,11 +5,6 @@ platform: android
 
 If a binary is not stripped, you can extract debugging symbols from native libraries using standard ELF inspection tools. These symbols can provide insights into the functions and variables used in the binary, which is useful for reverse engineering and vulnerability analysis.
 
-If debug symbols are stripped:
-
-- You'll only see exported (dynamic) symbols from `.dynsym`, but not local or static symbols from `.symtab`, which are typically stripped in production builds.
-- No information such as function arguments, line numbers, or local variables will be available.
-
 ## radare2
 
 Using @MASTG-TOOL-0028, you can list imported and exported symbols parsed from ELF symbol tables with the command `is`:
@@ -30,8 +25,6 @@ nth paddr      vaddr      bind   type   size lib name                           
 ...
 ```
 
-Note that the output includes virtual and physical addresses, symbol binding (`GLOBAL` or `LOCAL`), type (`FUNC` or `OBJECT`), and name.
-
 If you're interested in JNI symbols, you can filter the output with `~JNI`.
 
 Alternatively, you can use @MASTG-TOOL-0129 to [obtain the symbols](https://book.rada.re/tools/rabin2/symbols.html) by running `rabin2 -s libnative-lib.so | grep JNI`.
@@ -51,7 +44,7 @@ SYMBOL TABLE:
 In this case, the output shows that there are no symbols available, indicating that the binary is stripped.
 
 ```sh
-objdump --syms libunstripped.so | head
+objdump --syms libunstripped.so
 
 libunstripped.so: file format elf32-littlearm
 
@@ -63,25 +56,6 @@ SYMBOL TABLE:
 000315e4 l       .text  00000000 $d.1
 00031614 l       .text  00000000 $d.3
 ...
-```
-
-You can use `objdump -x` to display all section headers. If only `.dynsym` appears and `.symtab` is absent, the binary has been stripped of debug symbols.
-
-Example of a stripped binary:
-
-```sh
-objdump -x libnative-lib.so | grep '\.symtab\|\.dynsym'
-
-  2 .dynsym                00000370 00000158 
-```
-
-Example of a binary with debug symbols:
-
-```sh
-objdump -x libunstripped.so | grep -E 'strtab|symtab'
- 34 .symtab                00079ac0 00000000
- 35 .strtab                00034c42 00000000
- 36 .shstrtab              00000194 00000000
 ```
 
 ## nm
