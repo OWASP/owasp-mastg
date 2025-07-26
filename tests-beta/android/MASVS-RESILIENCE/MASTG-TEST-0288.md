@@ -16,7 +16,7 @@ This test checks whether the app includes debugging symbols in its native binari
 ## Steps
 
 1. Run a static analysis (@MASTG-TECH-0140) to retrieve any debugging information present in the native libraries.
-2. Optionally, use @MASTG-TECH-0141 to obtain debugging symbols from the native libraries.
+2. Use @MASTG-TECH-0141 to obtain debugging symbols from the native libraries.
 
 ## Observation
 
@@ -34,6 +34,4 @@ The test **fails** if debugging information is present in any native binary. Thi
   stripped false
   ```
 
-- ELF sections such as `.symtab`, `.strtab`, or any `.debug_*` DWARF sections (e.g. `.debug_info`, `.debug_line`, `.debug_str`) are present.
-
-- Actual debugging symbols (e.g. symbol names, source references) were successfully extracted.
+- Actual debugging symbols were successfully extracted.
