@@ -28,6 +28,7 @@
   --tag-color-demo:              #9900ffff;
   --tag-color-app:               #8e7cc3d1;
   --tag-color-best:              #087a21ff;
+  --tag-color-know:              rgb(20, 46, 195);
   --tag-color-maswe:             linear-gradient(315deg, #499fff 0%, #02d6a9 100%);
 }
 
@@ -80,6 +81,7 @@ img.dark-img {
 .md-tag--demo,            .masvs-link--demo            { background-color: var(--tag-color-demo) !important; color: white !important; }
 .md-tag--app,             .masvs-link--app             { background-color: var(--tag-color-app) !important; color: white !important; }
 .md-tag--best,            .masvs-link--best            { background-color: var(--tag-color-best) !important; color: white !important; }
+.md-tag--know,            .masvs-link--know            { background-color: var(--tag-color-know) !important; color: white !important; }
 .md-tag--maswe,           .masvs-link--maswe           { background: var(--tag-color-maswe) !important; color: white !important; }
 
 .md-tag--l1,              .masvs-link--l1              { background-color: var(--tag-color-l1) !important; color: white !important; }
