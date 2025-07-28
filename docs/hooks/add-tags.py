@@ -86,7 +86,7 @@ def on_post_page(output, page, config):
     # Transform URLs for MASWE tags to a more purposeful format.
     # Matches URLs like '/tags/#tag:MASWE-<number>' and replaces them with '/MASWE-<number>'
     output = re.sub(r'/tags/#tag:(MASWE-\d+)"', lambda x: f'/{x.group(1)}"' , output)
-    output = re.sub(r'/tags/#tag:knowledge"', '/MASTG/knowledge/"' , output)
+    output = re.sub(r'/tags/#tag:know"', '/MASTG/knowledge/"' , output)
     output = re.sub(r'/tags/#tag:test"', '/MASTG/tests/"' , output)
     output = re.sub(r'/tags/#tag:maswe"', '/MASWE/"' , output)
     output = re.sub(r'/tags/#tag:demo"', '/MASTG/demos/"' , output)
