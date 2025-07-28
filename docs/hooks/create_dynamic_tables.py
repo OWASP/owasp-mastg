@@ -338,15 +338,14 @@ def on_page_markdown(markdown, page, config, **kwargs):
     metadata = page.meta
 
     if path.startswith("MASTG/0x05") or path.startswith("MASTG/0x06"):
-        
         column_titles = {'id': 'ID', 'title': 'Name', 'platform': "Platform"}
-
+        header = "## Knowledge Articles\n\n"
         knowledge = get_mastg_components_dict("docs/MASTG/knowledge")
 
         knowledge_filtered = [know for know in knowledge if f'platform:{metadata.get("platform")}' in know.get('platform') and know.get('masvs_category') == metadata.get('masvs_category')]
         if knowledge_filtered:
             knowledge_of_type = [reorder_dict_keys(know, column_titles.keys()) for know in knowledge_filtered]
-            return append_to_page(markdown, list_of_dicts_to_md_table(knowledge_of_type, column_titles))
+            return append_to_page(markdown, header + list_of_dicts_to_md_table(knowledge_of_type, column_titles))
 
 
     if path.endswith("knowledge/index.md"):
