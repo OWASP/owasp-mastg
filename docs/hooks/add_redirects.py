@@ -1,12 +1,14 @@
 import os
 import mkdocs.plugins
+from pathlib import Path
 
 # Lower priority so it runs after the restructure scripts
 @mkdocs.plugins.event_priority(-10)
 def on_pre_build(config):
     folders = [
         {"base": "docs/MASTG", "subfolders": ["knowledge", "tools", "apps", "techniques", "tests", "rules", "demos", "best-practices"]},
-        {"base": "docs/MASWE", "subfolders": [""]}
+        {"base": "docs/MASWE", "subfolders": [""]},
+        {"base": "docs/MASVS", "subfolders": ["controls"]}
     ]
 
     redirects_dict = {}
@@ -22,6 +24,31 @@ def on_pre_build(config):
                     if file.endswith('.md'):
                         relative_path = os.path.relpath(os.path.join(root, file), "docs")
                         redirects_dict[file] = relative_path.replace(os.sep, "/")
+                        print(f"Adding redirect for {file} to {redirects_dict[file]}")
+
+    # Some hardcoding for MASVS as they have id prefixes
+
+    masvs_dir = Path("docs/MASVS")
+    if not masvs_dir.exists():
+        raise FileNotFoundError(f"The directory {masvs_dir} does not exist.")
+        # print all files in docs/MASVS/
+    for file in masvs_dir.glob("*.md"):
+        # print out full path for each file
+        print(f"Found MASVS file: {file.resolve()}")
+
+    mapping = {
+        "MASVS-STORAGE.md": "05-MASVS-STORAGE.md",
+        "MASVS-CRYPTO.md": "06-MASVS-CRYPTO.md",
+        "MASVS-AUTH.md": "07-MASVS-AUTH.md",
+        "MASVS-NETWORK.md": "08-MASVS-NETWORK.md",
+        "MASVS-PLATFORM.md": "09-MASVS-PLATFORM.md",
+        "MASVS-CODE.md": "10-MASVS-CODE.md",
+        "MASVS-RESILIENCE.md": "11-MASVS-RESILIENCE.md",
+        "MASVS-PRIVACY.md": "12-MASVS-PRIVACY.md",
+    }
+    # loop over mappings and add a redirect for each key-value pair:
+    for key, value in mapping.items():
+        redirects_dict[key] = f"MASVS/{value}"
 
     # Ensure the 'redirects' plugin is present
     plugin = config['plugins'].get("redirects")

@@ -1,8 +1,5 @@
 import logging
 import mkdocs.plugins
-import yaml
-import glob
-import os
 import re
 
 log = logging.getLogger('mkdocs')
@@ -103,27 +100,8 @@ def on_post_page(output, page, config):
     output = re.sub(r'/tags/#tag:r"', '/MASTG/tests/#r"' , output)
     output = re.sub(r'/tags/#tag:p"', '/MASTG/tests/#p"' , output)
     output = re.sub(r'/tags/#tag:(MASTG-TEST-\d+)"', lambda x: f'/{x.group(1).upper()}"', output)
-    
-    path = page.file.src_uri
-    # Some context-specific changes
-    if "MASTG/0x" in path:
-        # These are the MASTG testing pages
-        # TODO - Temp hack until after MASVS page restructure
-        mapping = {
-            "MASVS-STORAGE": "/MASVS/05-MASVS-STORAGE/",
-            "MASVS-CRYPTO": "/MASVS/06-MASVS-CRYPTO/",
-            "MASVS-AUTH": "/MASVS/07-MASVS-AUTH/",
-            "MASVS-NETWORK": "/MASVS/08-MASVS-NETWORK/",
-            "MASVS-PLATFORM": "/MASVS/09-MASVS-PLATFORM/",
-            "MASVS-CODE": "/MASVS/10-MASVS-CODE/",
-            "MASVS-RESILIENCE": "/MASVS/11-MASVS-RESILIENCE/",
-            "MASVS-PRIVACY": "/MASVS/12-MASVS-PRIVACY/",
-        }
-        output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'{mapping.get(x.group(1).upper())}"' , output)
-    else:
-        output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/MASVS/controls/{x.group(1).upper()}"' , output)
-    
-    
+    output = re.sub(r'/tags/#tag:(masvs-[^"]*)"', lambda x: f'/{x.group(1).upper()}"' , output)
+
     # TODO - These are disabled currently, as multiple pages have android/ios labels and they shouldn't always to go the tests page
     # output = re.sub(r'/tags/#tag:android"', '/MASTG/tests/#android"' , output)
     # output = re.sub(r'/tags/#tag:ios"', '/MASTG/tests/#ios"' , output)
