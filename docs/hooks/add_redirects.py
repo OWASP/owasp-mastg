@@ -24,18 +24,8 @@ def on_pre_build(config):
                     if file.endswith('.md'):
                         relative_path = os.path.relpath(os.path.join(root, file), "docs")
                         redirects_dict[file] = relative_path.replace(os.sep, "/")
-                        print(f"Adding redirect for {file} to {redirects_dict[file]}")
 
     # Some hardcoding for MASVS as they have id prefixes
-
-    masvs_dir = Path("docs/MASVS")
-    if not masvs_dir.exists():
-        raise FileNotFoundError(f"The directory {masvs_dir} does not exist.")
-        # print all files in docs/MASVS/
-    for file in masvs_dir.glob("*.md"):
-        # print out full path for each file
-        print(f"Found MASVS file: {file.resolve()}")
-
     mapping = {
         "MASVS-STORAGE.md": "05-MASVS-STORAGE.md",
         "MASVS-CRYPTO.md": "06-MASVS-CRYPTO.md",
