@@ -18,12 +18,6 @@ public KeyGenParameterSpec.Builder setBlockModes (String... blockModes)
 
 Even though the Android KeyStore won't allow encryption using these keys, decryption is still allowed for legacy use.
 
-As the parameter can be variable, the demo sets the ECB block mode in the following ways:
-
-1. ECB as a single parameter
-2. ECB as the second of two parameters
-3. ECB as the first of two parameters
-
 {{ MastgTest.kt }}
 
 ### Steps
