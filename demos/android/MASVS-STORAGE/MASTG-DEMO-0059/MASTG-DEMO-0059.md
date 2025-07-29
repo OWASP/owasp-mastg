@@ -27,9 +27,9 @@ The script will use @MASTG-TOOL-0031 to intercept the methods defined in `hooks.
 
 It will intercept calls to the methods and capture the stacktrace, the decoded parameters the methods is calls with and its decoded return value.
 
-All information will be written as JSON to `output.txt`.
+All information will be written as JSON to `output.json`.
 
-{{ output.txt }}
+{{ output.json }}
 
 ### Evaluation
 

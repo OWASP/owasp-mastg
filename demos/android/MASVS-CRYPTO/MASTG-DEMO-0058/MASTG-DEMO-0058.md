@@ -39,22 +39,19 @@ The script will use @MASTG-TOOL-0031 to intercept the methods defined in `hooks.
 
 It will intercept calls to the methods and capture the stacktrace, the decoded parameters the methods is calls with and its decoded return value.
 
-All information will be written as JSON to `output.txt`.
+All information will be written as JSON to `output.json`.
 
-{{ output.txt }}
+{{ output.json }}
 
 ### Evaluation
 
 The method `setBlockModes` has now been called three times with ECB as one of the block modes.
 
-You can also evaluate the output automatically using tools like `jq`:
-
-```bash
-➜  MASTG-DEMO-0058 git:(DEMO-KeyGenParamSpec) ✗ jq  -s '.[0]|(.class == "android.security.keystore.KeyGenParameterSpec$Builder" and .method == "setBlockModes" and (.inputParameters[0].value | contains(["ECB"])))' output.txt
-
-true
-```
-
 The test fails, as key used with these `KeyGenParameterSpec` can now be used used to insecurely encrypt data.
 
+You can automatically evaluate the output using tools like `jq` as demonstrated in `evaluation.sh`.
+
+{{ evaluate.sh }}
+
 See @MASTG-TEST-0232 for more information.
+
