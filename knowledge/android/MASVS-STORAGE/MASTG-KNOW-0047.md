@@ -21,7 +21,7 @@ Storing a Key - from most secure to least secure:
 
 ## Storing Keys Using Hardware-backed Android KeyStore
 
-You can use the [hardware-backed Android KeyStore](#hardware-backed-android-keystore) if the device is running Android 7.0 (API level 24) and above with available hardware component (Trusted Execution Environment (TEE) or a Secure Element (SE)). You can even verify that the keys are hardware-backed by using the guidelines provided for [the secure implementation of Key Attestation](#key-attestation). If a hardware component is not available and/or support for Android 6.0 (API level 23) and below is required, then you might want to store your keys on a remote server and make them available after authentication.
+You can use the hardware-backed Android KeyStore (@MASTG-KNOW-0043) if the device is running Android 7.0 (API level 24) and above with available hardware component (Trusted Execution Environment (TEE) or a Secure Element (SE)). You can even verify that the keys are hardware-backed by using the guidelines provided for the secure implementation of Key Attestation (@MASTG-KNOW-0044). If a hardware component is not available and/or support for Android 6.0 (API level 23) and below is required, then you might want to store your keys on a remote server and make them available after authentication.
 
 ## Storing Keys on the Server
 

@@ -11,9 +11,9 @@ In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we in
 
 We can identify key components of cryptography system on Android:
 
-- [Security Provider](0x05e-Testing-Cryptography.md#security-provider)
-- KeyStore - see the section [KeyStore](0x05d-Testing-Data-Storage.md#keystore) in the "Testing Data Storage" chapter
-- KeyChain - see the section [KeyChain](0x05d-Testing-Data-Storage.md#keychain) in the "Testing Data Storage" chapter
+- @MASTG-KNOW-0011
+- @MASTG-KNOW-0043
+- @MASTG-KNOW-0048
 
 Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers") that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages. In addition, there are Android specific packages `android.security.*` and `android.security.keystore.*`.
 
@@ -29,14 +29,14 @@ KeyStore and KeyChain provide APIs for storing and using keys (behind the scene,
 
 These phases are managed by the Keystore/KeyChain system. However how the system works depends on how the application developer implemented it. For the analysis process you should focus on functions which are used by the application developer. You should identify and verify the following functions:
 
-- [Key generation](0x05e-Testing-Cryptography.md#key-generation)
-- [Random number generation](0x05e-Testing-Cryptography.md#random-number-generation)
+- @MASTG-KNOW-0012
+- @MASTG-KNOW-0013
 - Key rotation
 
 Apps that target modern API levels, went through the following changes:
 
 - For Android 7.0 (API level 24) and above [the Android Developer blog shows that](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security provider Crypto deprecated in Android N"):
-    - It is recommended to stop specifying a security provider. Instead, always use a patched [security provider](#security-provider).
+    - It is recommended to stop specifying a security provider. Instead, always use a patched @MASTG-KNOW-0011.
     - The support for the `Crypto` provider has dropped and the provider is deprecated. The same applies to its `SHA1PRNG` for secure random.
 - For Android 8.1 (API level 27) and above the [Developer Documentation](https://developer.android.com/about/versions/oreo/android-8.1 "Cryptography updates") shows that:
     - Conscrypt, known as `AndroidOpenSSL`, is preferred above using Bouncy Castle and it has new implementations: `AlgorithmParameters:GCM` , `KeyGenerator:AES`, `KeyGenerator:DESEDE`, `KeyGenerator:HMACMD5`, `KeyGenerator:HMACSHA1`, `KeyGenerator:HMACSHA224`, `KeyGenerator:HMACSHA256`, `KeyGenerator:HMACSHA384`, `KeyGenerator:HMACSHA512`, `SecretKeyFactory:DESEDE`, and `Signature:NONEWITHECDSA`.

@@ -116,5 +116,5 @@ Note: if the app also encrypts files, make sure that it encrypts and then calcul
 
 **Bypass:**
 
-1. Retrieve the data from the device, as described in the ["Device Binding"](#device-binding) section.
+1. Retrieve the data from the device, as described in @MASTG-KNOW-0090.
 2. Alter the retrieved data and return it to storage.

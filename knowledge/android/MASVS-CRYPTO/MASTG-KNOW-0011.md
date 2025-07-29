@@ -4,9 +4,14 @@ platform: android
 title: Security Provider
 ---
 
-Android relies on the `java.security.Provider` class to implement Java Security services. These providers are crucial to ensure secure network communications and secure other functionalities which depend on cryptography.
+Android relies on a [security provider](https://developer.android.com/privacy-and-security/security-gms-provider "Update your security provider to protect against SSL exploits") via the `java.security.Provider` class to implement Java Security services and provide SSL/TLS-based connections. These providers are crucial to ensure secure network communications and secure other functionalities which depend on cryptography. The list of security providers included in Android varies between versions of Android and the OEM-specific builds.
 
-The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide a good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
+The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities. Thus, Android applications should not only choose the correct algorithms and provide a good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
+
+To avoid known vulnerabilities, developers need to make sure that the application will install a proper security provider.
+Since July 11, 2016, Google [has been rejecting Play Store application submissions](https://support.google.com/faqs/answer/6376725?hl=en "How to address OpenSSL vulnerabilities in your apps") (both new applications and updates) that use vulnerable versions of OpenSSL.
+
+## Listing the Available Security Providers
 
 You can list the set of existing security providers using following code:
 
@@ -37,7 +42,7 @@ provider: HarmonyJSSE 1.0(Harmony JSSE Provider)
 provider: AndroidKeyStore 1.0(Android KeyStore security provider)
 ```
 
-## Updating security provider
+## Updating the Security Provider
 
 Keeping up-to-date and patched component is one of security principles. The same applies to `provider`. Application should check if used security provider is up-to-date and if not, [update it](https://developer.android.com/training/articles/security-gms-provider "Updating security provider").
 
