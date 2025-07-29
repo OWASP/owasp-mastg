@@ -9,7 +9,6 @@ on:
       - 'tests-beta/**'
       - 'tools/**'
       - 'techniques/**'
-      - 'weaknesses/**'
 
 jobs:
   check-duplicates:
@@ -37,7 +36,7 @@ jobs:
           git fetch origin $BASE_REF
           
           # Create a file with the list of new files in this PR
-          git diff --name-status --diff-filter=A origin/$BASE_REF..HEAD | grep -E "^A\s+(apps/|best-practices/|demos/|tests-beta/|tools/|techniques/|weaknesses/)" | cut -f2 > new_files_in_pr.txt || echo "No new files matching the pattern"
+          git diff --name-status --diff-filter=A origin/$BASE_REF..HEAD | grep -E "^A\s+(apps/|best-practices/|demos/|tests-beta/|tools/|techniques/)" | cut -f2 > new_files_in_pr.txt || echo "No new files matching the pattern"
           
           echo "New files in PR:"
           cat new_files_in_pr.txt
@@ -62,11 +61,6 @@ jobs:
             const formatDuplicateMessage = (duplicate, isReviewComment = true) => {
               // Extract the ID prefix for a more specific message
               let idType = duplicate.file_id.split('-').slice(0, 2).join('-');
-              
-              // Special case for MASWE which only has one segment
-              if (duplicate.file_id.startsWith('MASWE')) {
-                idType = 'MASWE';
-              }
               
               // Choose the appropriate header style based on comment type
               const headerPrefix = isReviewComment ? '###' : '##';

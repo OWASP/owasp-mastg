@@ -2,15 +2,35 @@
 
 This guide will help you set up and run the OWASP MAS website locally on your machine. Follow the steps below to get started.
 
+## Using Docker
+
+The easiest way to run the website is by using Docker:
+
+```bash
+git clone https://github.com/OWASP/mastg.git
+cd mastg
+docker build . -t mastg
+docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -v $(pwd):/workspaces/mastg mastg
+```
+
+This will make the website available on `http://localhost:8000`. By default, interactions with the Github api are disabled, which means some dynamically retrieved content will not be available. If you want to enable the Github API, [create a personal access token](https://github.com/settings/personal-access-tokens) and export it as an environment variable. Make sure docker can access the token by using `-e GITHUB_TOKEN`:
+
+```bash
+export GITHUB_TOKEN=<TOKEN>
+docker run --name mastg -it --rm -p 8000:8000 -u $(id -u):$(id -g) -e GITHUB_TOKEN -v $(pwd):/workspaces/mastg mastg
+```
+
+## Without Docker
+
 > **TLDR for advanced users:**
 >
-> - Setup a virtual environment
+> - Clone the MASTG, MASVS and MASWE repos
+> - Set up a virtual environment
 > - Install dependencies from `src/scripts/requirements.txt`
-> - Install `brew install gnu-sed` (on macOS)
-> - In your .zshrc, add: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens) and `alias sed='gsed'`
+> - Add your token as an environment variable: [`export GITHUB_TOKEN=<TOKEN>`](https://github.com/settings/personal-access-tokens)
 > - Run the website using `./run_web.sh`
 
-## Prerequisites
+### Prerequisites
 
 Before running the website, ensure you have the following installed on your system:
 
@@ -18,13 +38,6 @@ Before running the website, ensure you have the following installed on your syst
 - pip (Python package manager)
 - Git
 - Visual Studio Code (vscode)
-- Gnu sed (gsed; e.g. `brew install gnu-sed` on macOS)
-
-Add an alias for `gsed` (e.g. in your .zshrc file):
-
-```bash
-alias sed='gsed'
-```
 
 [Create a personal access token](https://github.com/settings/personal-access-tokens) on Github and export this token as environment variable (e.g. in your .zshrc file):
 
@@ -32,29 +45,32 @@ alias sed='gsed'
 export GITHUB_TOKEN=<TOKEN>
 ```
 
-## Step 1: Clone the OWASP MASVS & OWASP MASTG Repositories
+Alternatively, you can add your token inside of the `run_web.sh` script. Open the script in a code editor for more information.
+
+### Step 1: Clone the OWASP MAS Repositories
 
 Run the following commands in your terminal:
 
 ```bash
-git clone https://github.com/OWASP/owasp-masvs.git
-git clone https://github.com/OWASP/owasp-mastg.git
+git clone https://github.com/OWASP/mastg.git
+git clone https://github.com/OWASP/masvs.git
+git clone https://github.com/OWASP/maswe.git
 ```
 
-**Note:** We'll just work with the `OWASP/owasp-mastg` repo, but the `OWASP/owasp-masvs` is required for the website to run.
+**Note:** We'll just work with the `OWASP/mastg` repo, but the `OWASP/masvs` and `OWASP/maswe` are required for the website to run.
 
-## Step 2: Open the OWASP MASTG Repository in vscode
+### Step 2: Open the OWASP MASTG Repository in vscode
 
 Run the following commands in your terminal:
 
 ```bash
-cd owasp-mastg
+cd mastg
 code .
 ```
 
-## Step 3: Install Python Dependencies
+### Step 3: Install Python Dependencies
 
-It is highly recommended to use a virtual environment (venv) to manage dependencies and avoid conflicts with other Python projects. Follow these steps to set up a virtual environment and install the required dependencies.
+It is highly recommended to use a virtual environment (venv) to manage dependencies and avoid conflicts with other Python projects.
 
 Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) (Press `⌘+Shift+P` on macOS or `Ctrl+Shift+P` on Windows/Linux)
 
@@ -68,7 +84,7 @@ Use vscode's [`Command Palette`](https://code.visualstudio.com/docs/getstarted/u
    - Press `⌘+j` to open the terminal
    - Run `pip install -r src/scripts/requirements.txt`
 
-## Step 4: Run the Website
+### Step 4: Run the Website
 
 Run the following command in the terminal:
 
@@ -76,9 +92,11 @@ Run the following command in the terminal:
 ./run_web.sh
 ```
 
+The script simply runs `mkdocs serve` with some additional arguments. Open the script in a code editor for more information.
+
 Access the website at [http://localhost:8000](http://localhost:8000).
 
-## Step 5: Debugging the Website
+### Step 5: Debugging the Website
 
 To debug the website:
 

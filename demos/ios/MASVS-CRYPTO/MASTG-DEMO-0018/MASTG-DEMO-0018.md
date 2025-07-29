@@ -1,6 +1,6 @@
 ---
 platform: ios
-title: Uses of Insecure Encryption Algorithms in CommonCrypto with r2
+title: Uses of Broken Encryption Algorithms in CommonCrypto with r2
 code: [swift]
 id: MASTG-DEMO-0018
 test: MASTG-TEST-0210

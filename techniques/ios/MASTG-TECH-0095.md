@@ -64,7 +64,7 @@ script.load()
 sys.stdin.read()
 ```
 
-Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (as explained in the section "Monitoring System Logs" from the chapter "iOS Basic Security Testing"). Try opening a new URL in Safari, e.g. <https://github.com/OWASP/owasp-mastg>; you should see Frida's output in the logs as well as in your terminal.
+Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (as explained in the section "Monitoring System Logs" from the chapter "iOS Basic Security Testing"). Try opening a new URL in Safari, e.g. <https://github.com/OWASP/mastg>; you should see Frida's output in the logs as well as in your terminal.
 
 <img src="Images/Chapters/0x06c/frida-xcode-log.png" width="100%" />
 

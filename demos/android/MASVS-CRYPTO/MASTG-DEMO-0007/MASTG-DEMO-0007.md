@@ -14,7 +14,7 @@ test: MASTG-TEST-0204
 
 Let's run our @MASTG-TOOL-0110 rule against the sample code.
 
-{{ ../../../../rules/mastg-android-insecure-random-use.yml }}
+{{ ../../../../rules/mastg-android-random-apis-insufficient-entropy.yml }}
 
 {{ run.sh }}
 
