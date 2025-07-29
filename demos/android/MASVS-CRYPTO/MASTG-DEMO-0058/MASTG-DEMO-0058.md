@@ -10,11 +10,13 @@ test: MASTG-TEST-0232
 
 The code snippet below shows sample code which uses insecure ECB block modes with `KeyGenParameterSpec`.
 
-The method used to configure the block mode is:
+The code below generates symmetric encryption keys meant to be stored in the Android KeyStore, but it does so using the ECB block mode, which is considered broken due to practical known-plaintext attacks and is disallowed by NIST for data encryption. The method used to set the block modes is [`KeyGenParameterSpec.Builder#setBlockModes(...)`](https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder#setBlockModes(java.lang.String[])):
 
 ```kotlin
 public KeyGenParameterSpec.Builder setBlockModes (String... blockModes)
 ```
+
+Even though the Android KeyStore won't allow encryption using these keys, decryption is still allowed for legacy use.
 
 As the parameter can be variable, the demo sets the ECB block mode in the following ways:
 
