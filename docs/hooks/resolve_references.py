@@ -8,7 +8,7 @@ from functools import lru_cache
 
 log = logging.getLogger('mkdocs')
 
-mapping = {"TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}, "DEMO": {}, "BEST": {}}
+mapping = {"KNOW":{}, "TECH":{}, "TOOL":{}, "TEST": {}, "APP": {}, "MASWE": {}, "MASVS": {}, "DEMO": {}, "BEST": {}}
 
 @mkdocs.plugins.event_priority(-50)
 def on_page_markdown(markdown, page, config, **kwargs):
@@ -17,7 +17,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
     icons = config.get('resolve_ref_icons')
     icons_for_text = config.get('resolve_ref_icons_for_text')
 
-    pageRefs = {"TECH": [], "TOOL": [], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": [], "BEST": []}
+    pageRefs = {"KNOW": [], "TECH": [], "TOOL": [], "TEST": [], "APP": [], "MASWE": [], "MASVS": [], "DEMO": [], "BEST": []}
 
     def replaceReference(match):
         refType = match.group(2)
@@ -57,7 +57,7 @@ def on_page_markdown(markdown, page, config, **kwargs):
         return f"_[{icon}{mapping[refType][match]['title']}](/{match.group(1)} \"{refType}\")_"
 
 
-    updated_markdown = re.sub(r'@(MASTG-(TECH|TOOL|TEST|APP|DEMO|BEST)-\d{3,})', replaceReference, markdown)
+    updated_markdown = re.sub(r'@(MASTG-(KNOW|TECH|TOOL|TEST|APP|DEMO|BEST)-\d{3,})', replaceReference, markdown)
     updated_markdown = re.sub(r'@(MASWE-\d{3,})', replaceReferenceMASWE, updated_markdown)
     updated_markdown = re.sub(r'@(MASVS-\w+)', replaceReferenceMASVS, updated_markdown)
 
