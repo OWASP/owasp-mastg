@@ -10,8 +10,8 @@ log = logging.getLogger('mkdocs')
 def on_page_markdown(markdown, page, config, **kwargs):
     path = page.file.src_uri
     filename = os.path.basename(path)
-    
-    if any(keyword in filename for keyword in ["MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-", "MASTG-BEST-", "MASWE-"]):
+
+    if any(keyword in filename for keyword in ["MASTG-KNOW-", "MASTG-TEST-", "MASTG-TOOL-", "MASTG-TECH-", "MASTG-APP-", "MASTG-DEMO-", "MASTG-BEST-", "MASWE-"]):
         try:
             # Extract the item_id by removing the file extension and handling possible extra dots in filename
             item_id, _ = os.path.splitext(os.path.basename(path))

@@ -190,6 +190,23 @@ def get_deprecated_tools_banner(meta):
 
     return banner
 
+def get_deprecated_knowledge_banner(meta):
+    deprecation_note = meta.get('deprecation_note', "The knowledge article is no longer relevant or was replaced by other knowledge articles.")
+
+    deprecation_note = f"**Reason**: {deprecation_note}"
+
+    banner = f"""
+!!! warning "Deprecated"
+
+    {deprecation_note}
+
+    **Use instead**:
+
+    - {", ".join([f"@{id}" for id in meta.get('covered_by', [])])}
+"""
+
+    return banner
+
 def get_maswe_deprecated_banner(meta, config):
     id = meta.get('id')
     deprecation_note = meta.get('deprecation_note', "The weakness is no longer relevant or was replaced by other weaknesses.")
@@ -239,6 +256,9 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
     if "MASTG/tools/" in path and page.meta.get('status') == 'deprecated':
         banners.append(get_deprecated_tools_banner(page.meta))
+
+    if "MASTG/knowledge/" in path and page.meta.get('status') == 'deprecated':
+        banners.append(get_deprecated_knowledge_banner(page.meta))
 
     if banners:
         markdown = "\n\n".join(banners) + "\n\n" + markdown

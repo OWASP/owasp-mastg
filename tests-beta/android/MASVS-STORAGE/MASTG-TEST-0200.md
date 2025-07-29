@@ -9,7 +9,7 @@ profiles: [L1, L2]
 
 ## Overview
 
-The goal of this test is to retrieve the files written to the [external storage](../../../0x05d-Testing-Data-Storage.md/#external-storage) and inspect them regardless of the APIs used to write them. It uses a simple approach based on file retrieval from the device storage (@MASTG-TECH-0002) before and after the app is exercised to identify the files created during the app's execution and to check if they contain sensitive data.
+The goal of this test is to retrieve the files written to the external storage (@MASTG-KNOW-0042) and inspect them regardless of the APIs used to write them. It uses a simple approach based on file retrieval from the device storage (@MASTG-TECH-0002) before and after the app is exercised to identify the files created during the app's execution and to check if they contain sensitive data.
 
 ## Steps
 
