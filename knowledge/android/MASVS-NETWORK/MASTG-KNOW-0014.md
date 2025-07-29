@@ -78,4 +78,3 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
     </trust-anchors>
 </base-config>
 ```
-
