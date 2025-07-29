@@ -1,0 +1,10 @@
+rules:
+  - id: mastg-android-debuggable-flag
+    severity: WARNING
+    languages:
+      - xml
+    metadata:
+      summary: This rule inspects the AndroidManifest.xml for the debuggable flag.
+    message: "[MASVS-RESILIENCE-4] debuggable detected as $ARG."
+    patterns:
+      - pattern: 'android:debuggable="$ARG"

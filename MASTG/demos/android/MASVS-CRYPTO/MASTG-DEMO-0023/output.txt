@@ -1,0 +1,22 @@
+                   
+                   
+┌─────────────────┐
+│ 6 Code Findings │
+└─────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ rules.mastg-android-broken-encryption-modes
+          [MASVS-CRYPTO-1] Broken encryption modes found in use.
+                                                                
+           36┆ Cipher cipher = Cipher.getInstance("AES");
+            ⋮┆----------------------------------------
+           55┆ Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+            ⋮┆----------------------------------------
+           76┆ Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            ⋮┆----------------------------------------
+           95┆ Cipher cipher = Cipher.getInstance("AES/ECB/ISO10126Padding");
+            ⋮┆----------------------------------------
+          118┆ Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            ⋮┆----------------------------------------
+          141┆ Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+

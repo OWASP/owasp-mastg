@@ -1,0 +1,17 @@
+                   
+                   
+┌─────────────────┐
+│ 3 Code Findings │
+└─────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱ rules.mastg-android-random-apis-insufficient-entropy
+          [MASVS-CRYPTO-1] The application makes use of random number generators with insufficient entropy.
+                                                                                                           
+           22┆ double random1 = new Random().nextDouble();
+            ⋮┆----------------------------------------
+           23┆ double random2 = 1 + Math.random();
+            ⋮┆----------------------------------------
+           27┆ password.append("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(ran
+               dom.nextInt("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".length())));  
+

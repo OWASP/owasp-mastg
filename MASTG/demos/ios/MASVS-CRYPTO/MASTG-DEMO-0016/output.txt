@@ -1,0 +1,35 @@
+Uses of CryptoKit.Insecure functions:
+0x100007274    1     12 sym.imp.CryptoKit.Insecure.SHA1Digest.
+0x100007280    1     12 sym.imp.CryptoKit.Insecure.MD5.
+0x10000728c    1     12 sym.imp.CryptoKit.Insecure.SHA1.
+0x100007298    1     12 sym.imp.CryptoKit.Insecure.MD5Digest.
+
+xrefs to CryptoKit.Insecure.MD5:
+sym.func.10000469c 0x1000046d8 [CALL:--x] bl sym.imp.CryptoKit.Insecure.MD5.
+
+xrefs to CryptoKit.Insecure.SHA1:
+sym.func.1000041d8 0x100004214 [CALL:--x] bl sym.imp.CryptoKit.Insecure.SHA1.
+
+Use of MD5:
+│           0x1000046c4      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
+│           0x1000046c8      08d141f9       ldr x8, reloc.__stack_chk_guard ; 0x10000c3a0
+│           0x1000046cc      080140f9       ldr x8, [x8]
+│           0x1000046d0      a8831af8       stur x8, [x29, -0x58]
+│           0x1000046d4      000080d2       mov x0, 0
+│           0x1000046d8      ea0a0094       bl sym CryptoKit.Insecure.MD5. ; sym.imp.CryptoKit.Insecure.MD5.
+│           0x1000046dc      f70300aa       mov x23, x0
+│           0x1000046e0      54000090       adrp x20, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
+│           0x1000046e4      947241f9       ldr x20, reloc.CryptoKit.Insecure.MD5. ; 0x10000c2e0
+│           0x1000046e8      16805ff8       ldur x22, [x0, -8]
+
+Use of SHA1:
+│           0x100004200      48000090       adrp x8, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
+│           0x100004204      08d141f9       ldr x8, reloc.__stack_chk_guard ; 0x10000c3a0
+│           0x100004208      080140f9       ldr x8, [x8]
+│           0x10000420c      a8831af8       stur x8, [x29, -0x58]
+│           0x100004210      000080d2       mov x0, 0
+│           0x100004214      1e0c0094       bl sym CryptoKit.Insecure.SHA1. ; sym.imp.CryptoKit.Insecure.SHA1.
+│           0x100004218      f70300aa       mov x23, x0
+│           0x10000421c      54000090       adrp x20, reloc.Foundation.__DataStorage._bytes.allocator__UnsafeMutableRawPointer______ ; 0x10000c000
+│           0x100004220      947a41f9       ldr x20, reloc.CryptoKit.Insecure.SHA1. ; 0x10000c2f0
+│           0x100004224      16805ff8       ldur x22, [x0, -8]

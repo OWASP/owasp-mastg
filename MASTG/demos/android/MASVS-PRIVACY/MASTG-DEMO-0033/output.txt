@@ -1,0 +1,18 @@
+                   
+                   
+┌─────────────────┐
+│ 4 Code Findings │
+└─────────────────┘
+                                
+    AndroidManifest_reversed.xml
+    ❯❱ rules.detect-dangerous-android-permissions
+          Dangerous Android permission found:
+                                             
+            3┆ <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            ⋮┆----------------------------------------
+            4┆ <uses-permission android:name="android.permission.READ_CONTACTS"/>
+            ⋮┆----------------------------------------
+            5┆ <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+            ⋮┆----------------------------------------
+            6┆ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
