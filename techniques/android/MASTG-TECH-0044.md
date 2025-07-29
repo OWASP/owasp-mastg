@@ -74,7 +74,7 @@ As you might expect you can correlate the addresses of the libraries with the me
 You can also use objection to display the same information.
 
 ```bash
-$ objection --gadget sg.vantagepoint.helloworldjni explore
+$ objection -s -p -n sg.vantagepoint.helloworldjni start
 
 sg.vantagepoint.helloworldjni on (google: 8.1.0) [usb] # memory list modules
 Save the output by adding `--json modules.json` to this command
@@ -189,7 +189,7 @@ You can dump the app's process memory with @MASTG-TOOL-0038 and @MASTG-TOOL-0106
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
 ```bash
-$ objection --gadget sg.vantagepoint.helloworldjni explore
+$ objection --name sg.vantagepoint.helloworldjni start
 
 sg.vantagepoint.helloworldjni on (google: 8.1.0) [usb] # memory dump all /Users/foo/memory_Android/memory
 

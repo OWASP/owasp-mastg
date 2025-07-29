@@ -45,10 +45,10 @@ org.owasp.MSTG on (iPhone: 10.3.3) [usb] # cd /var/mobile/Containers/Data/Applic
 /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
 ```
 
-With the command `file download <filename>` you can download a file from the iOS device to your host computer and can analyze it afterwards.
+With the command `filesystem download <filename>` you can download a file from the iOS device to your host computer and can analyze it afterwards.
 
 ```bash
-org.owasp.MSTG on (iPhone: 10.3.3) [usb] # file download .com.apple.mobile_container_manager.metadata.plist
+org.owasp.MSTG on (iPhone: 10.3.3) [usb] # filesystem download .com.apple.mobile_container_manager.metadata.plist
 Downloading /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 Streaming file from device...
 Writing bytes to destination...
