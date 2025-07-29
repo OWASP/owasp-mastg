@@ -1,0 +1,12 @@
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                           
+    MastgTest_reversed.java
+     ❱ rules.mastg-android-root-detection
+          Root detection mechanisms have been identified in this application.
+                                                                             
+           65┆ Process process = Runtime.getRuntime().exec(new String[]{"which", "su"});
+
