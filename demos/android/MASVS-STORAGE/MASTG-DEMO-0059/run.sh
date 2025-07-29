@@ -1,2 +1,2 @@
 #!/bin/bash
-../../../../frida/android/run.sh ./hooks.js
+../../../../utils/frida/android/run.sh ./hooks.js
