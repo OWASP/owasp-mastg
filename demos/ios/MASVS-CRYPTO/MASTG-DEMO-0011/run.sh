@@ -1,1 +1,2 @@
-r2 -q -i security_keysize.r2 -A MASTestApp
+#!/bin/bash
+python3 security_keysize.py "$@"

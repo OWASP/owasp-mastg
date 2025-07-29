@@ -1,1 +1,2 @@
-r2 -q -i cchash.r2 -A MASTestApp
+#!/bin/bash
+python3 cchash.py "$@"

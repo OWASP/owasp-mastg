@@ -1,2 +1,2 @@
 #!/bin/bash
-r2 -q -i jailbreak_detection.r2 -A MASTestApp > output.asm
+python3 jailbreak_detection.py "$@"
