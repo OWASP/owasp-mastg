@@ -5,7 +5,7 @@ platform: android
 
 ## Overview
 
-Native libraries in Android are typically written in C or C++ using the NDK and compiled into ELF `.so` files, which reside in the `lib/` directory of the APK. These libraries often expose functionality through the Java Native Interface (JNI). **Debug symbols** in these binaries provide details like function names, variable names, and source file mappings, which are useful for reverse engineering, debugging, and security analysis.
+On Android, native libraries are usually developed in C or C++ with the NDK and compiled into ELF shared objects with a .so extension, which reside in the `lib/` directory of the APK. These libraries often expose functionality to be used from Dalvik through the Java Native Interface (JNI). **Debug symbols** in these binaries provide details like function names, variable names, and source file mappings, which are useful for reverse engineering, debugging, and security analysis.
 
 When compiling and linking programs, symbols represent functions or variables. In ELF (Executable and Linkable Format) files, symbols have different roles:
 
@@ -13,18 +13,19 @@ When compiling and linking programs, symbols represent functions or variables. I
 - **Global symbols**: Visible to other files. Used to share functions or variables across different object files.
 - **Weak symbols**: Like global symbols, but lower priority. A strong (non-weak) symbol overrides a weak one if both exist.
 
-In production builds, debug symbols are usually stripped to reduce binary size and limit information disclosure. However, debug or internal builds may retain symbols either within the binary or in separate companion files.
+In production builds, debug information must be stripped to reduce binary size and limit information disclosure. However, debug or internal builds may retain symbols either within the binary or in separate companion files.
 
-ELF binaries can include various resources related to debugging.
+Symbol visibility is often mishandled, leading to unintended external exposure of symbols and requiring manual inspection.
+
 
 ### Symbol Tables and DWARF Sections
 
-The [ELF](https://refspecs.linuxfoundation.org/elf/elf.pdf) format defines several sections related to symbols:
+The [ELF](https://refspecs.linuxfoundation.org/elf/elf.pdf) format defines which sections must be used to store symbol information:
 
-- **`.symtab`**: The full symbol table used at link time, often removed in production binaries.
+- **`.symtab`**: The full symbol table used at link time, often removed in production binaries (`DT_SYMTAB` dtag).
 - **`.dynsym`**: The dynamic symbol table, used for runtime linking. It is always present in shared objects.
 
-[DWARF](https://dwarfstd.org/doc/DWARF5.pdf) is the standard debug format for ELF binaries. Key sections include:
+[DWARF](https://dwarfstd.org/doc/DWARF5.pdf) is the standard debug format used in ELF binaries (but it is also used in other UNIX-based systems like for MACH-O binaries in the Apple ecosystem). Key sections include:
 
 - **`.debug_info`**: Contains the main debugging information, including types, function definitions, and scopes.
 - **`.debug_line`**: Maps machine code to source code line numbers.
@@ -38,7 +39,7 @@ To check for the presence of these sections in a binary, you can use @MASTG-TOOL
 For example, using radare2:
 
 ```sh
-[0x0003e360]> iS~debug,symtab
+[0x0003e360]> iS~debug,symtab,SYMTAB
 23  0x000c418c      0x60 0x00000000      0x60 ---- 0x0   PROGBITS    .debug_aranges
 24  0x000c41ec  0x14d85c 0x00000000  0x14d85c ---- 0x0   PROGBITS    .debug_info
 25  0x00211a48    0xa14f 0x00000000    0xa14f ---- 0x0   PROGBITS    .debug_abbrev
@@ -50,7 +51,7 @@ For example, using radare2:
 32  0x004c8018   0x27510 0x00000000   0x27510 ---- 0x0   SYMTAB      .symtab
 ```
 
-**IMPORTANT**: The presence of this sections does not necessarily mean that the binary hasn't been stripped. Some toolchains may include these sections even in stripped binaries, but they will be empty or contain minimal information. In the end, **what matters is whether the symbols are actually present**. See @MASTG-TECH-0141 for more details on how to extract and analyze debugging symbols.
+**IMPORTANT**: The presence of these sections doesn't necessarily indicate that the binary hasn't been stripped. Some toolchains may retain these sections even in stripped binaries, but they are often empty or contain minimal information. Ultimately, what matters is **whether the symbols themselves are still present**. See @MASTG-TECH-0141 for more details on how to extract and analyze debugging symbols.
 
 ### External Debug Symbol Files
 
