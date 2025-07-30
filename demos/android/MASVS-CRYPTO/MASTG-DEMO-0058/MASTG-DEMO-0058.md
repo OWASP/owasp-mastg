@@ -30,11 +30,7 @@ Even though the Android KeyStore won't allow encryption using these keys, decryp
 
 ### Observation
 
-The script will use @MASTG-TOOL-0031 to intercept the methods defined in `hooks.js`.
-
-It will intercept calls to the methods and capture the stacktrace, the decoded parameters the methods is calls with and its decoded return value.
-
-All information will be written as JSON to `output.json`.
+The output shows all instances of block modes mode that were found at runtime. A backtrace is also provided to help identify the location in the code.
 
 {{ output.json }}
 
