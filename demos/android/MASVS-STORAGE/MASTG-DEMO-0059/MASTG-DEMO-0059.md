@@ -14,10 +14,11 @@ The code snippet below shows sample code which stores sensitive data using `Shar
 
 ### Steps
 
-1. Make sure a mobile phone is attached to your computer with a @MASTG-TOOL-0031 server running on it.
-1. Run the script `run.sh`.
-1. Run the DEMO on Android while the script is running.
-1. Terminate @MASTG-TOOL-0031 by typing `exit` into its shell.
+1. Install the app on a device (@MASTG-TECH-0005)
+2. Make sure you have @MASTG-TOOL-0001 installed on your machine and the frida-server running on the device
+3. Run `run.sh` to spawn the app with Frida
+4. Click the **Start** button
+5. Stop the script by pressing `Ctrl+C` and/or `q` to quit the Frida CLI
 
 {{ hooks.js # run.sh }}
 
