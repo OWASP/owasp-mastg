@@ -17,7 +17,6 @@ In production builds, debug information must be stripped to reduce binary size a
 
 Symbol visibility is often mishandled, leading to unintended external exposure of symbols and requiring manual inspection.
 
-
 ### Symbol Tables and DWARF Sections
 
 The [ELF](https://refspecs.linuxfoundation.org/elf/elf.pdf) format defines which sections must be used to store symbol information:
