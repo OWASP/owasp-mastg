@@ -27,7 +27,7 @@ Even though the Android KeyStore won't allow encryption using these keys, decryp
 1. Run the DEMO on Android while the script is running.
 1. Terminate @MASTG-TOOL-0031 by typing `exit` into its shell.
 
-{{ run.sh # hooks.js }}
+{{ hooks.js # run.sh }}
 
 ### Observation
 

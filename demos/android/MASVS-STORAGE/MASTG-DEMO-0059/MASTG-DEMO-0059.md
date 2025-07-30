@@ -19,7 +19,7 @@ The code snippet below shows sample code which stores sensitive data using `Shar
 1. Run the DEMO on Android while the script is running.
 1. Terminate @MASTG-TOOL-0031 by typing `exit` into its shell.
 
-{{ run.sh # hooks.js }}
+{{ hooks.js # run.sh }}
 
 ### Observation
 
