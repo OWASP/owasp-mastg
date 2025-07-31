@@ -13,8 +13,9 @@ import androidx.core.content.edit
 class MastgTest(private val context: Context) {
     private val awsKey = "AKIAIOSFODNN7EXAMPLE"
     private val githubToken = "ghp_1234567890abcdefghijklmnOPQRSTUV"
-    private val preSharedKeys = hashSetOf("MIIEvAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBALfX7kbfFv3pc3JjOHQ=",
-                                            "gJXS9EwpuzK8U1TOgfplwfKEVngCE2D5FNBQWvNmuHHbigmTCabsA=")
+    private val preSharedKeys = hashSetOf(
+        "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBALfX7kbfFv3pc3JjOHQ=",
+        "gJXS9EwpuzK8U1TOgfplwfKEVngCE2D5FNBQWvNmuHHbigmTCabsA=")
     private val keyAlias = "mastgKey"
 
     private fun getOrCreateSecretKey(): SecretKey {
@@ -50,18 +51,22 @@ class MastgTest(private val context: Context) {
 
     fun mastgTest(): String {
         return try {
+            var returnStatus = ""
             val sharedPref = context.getSharedPreferences(
                 "MasSharedPref_Sensitive_Data",
                 Context.MODE_PRIVATE
             )
             sharedPref.edit {
-                val encryptedAwsKey = encrypt(awsKey)
-                putString("EncryptedAWSKey", encryptedAwsKey)
-                putString("GitHubToken", encrypt(githubToken))
-                putStringSet("preSharedKeys", preSharedKeys)
-            }
+                putString("UnencryptedGitHubToken", githubToken)
+                returnStatus += "[FAIL]: Stored sensitive data (Github Token) using putString.\n\n"
 
-            "Sensitive data has been written and deleted in the sandbox."
+                putString("EncryptedGitHubToken", encrypt(awsKey))
+                returnStatus += "[OK]: Stored encrypted sensitive data (AWS key) using putString.\n\n"
+
+                putStringSet("UnencryptedPreSharedKeys", preSharedKeys)
+                returnStatus += "[FAIL]: Stored unencrypted binary keys using putStringSet.\n\n"
+            }
+            returnStatus
         } catch (e: Exception) {
             "Error during MastgTest: ${e.message ?: "Unknown error"}"
         }
