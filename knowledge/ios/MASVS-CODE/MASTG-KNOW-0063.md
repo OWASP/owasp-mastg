@@ -1,9 +1,13 @@
 ---
 masvs_category: MASVS-CODE
 platform: ios
-title: Debugging Symbols
+title: Debugging Information and Debug Symbols
 ---
 
-As a good practice, as little explanatory information as possible should be provided with a compiled binary. The presence of additional metadata such as debug symbols might provide valuable information about the code, e.g. function names leaking information about what a function does. This metadata is not required to execute the binary and thus it is safe to discard it for the release build, which can be done by using proper compiler configurations. As a tester you should inspect all binaries delivered with the app and ensure that no debugging symbols are present (at least those revealing any valuable information about the code).
+When an iOS application is compiled, the compiler generates debug symbols for each binary in the app, including the main executable, frameworks, and extensions. These symbols include class names, global variables, and method and function names, which are mapped to specific source files and line numbers. As a tester, you should examine all binaries included with the app and verify that no meaningful debug symbols are present.
 
-When an iOS application is compiled, the compiler generates a list of debug symbols for each binary file in an app (the main app executable, frameworks, and app extensions). These symbols include class names, global variables, and method and function names which are mapped to specific files and line numbers where they're defined. [Debug builds](https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information "Building Your App to Include Debugging Information") of an app place the debug symbols in a compiled binary by default, while release builds of an app place them in a companion _Debug Symbol file_ (dSYM) to reduce the size of the distributed app.
+[Debug builds](https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information "Building Your App to Include Debugging Information") include these symbols in the compiled binary by default. In contrast, release builds configured with the [Debug Information Format](https://developer.apple.com/documentation/xcode/build-settings-reference#Debug-Information-Format) set to `DWARF with dSYM File` generate separate _Debug Symbol files_ (dSYM), reducing the size of the distributed app.
+
+This approach is similar to [split DWARF](https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-gsplit-dwarf), common in Linux toolchains. The dSYM files can be uploaded to Apple's symbol servers for [crash report symbolication](https://developer.apple.com/documentation/xcode/adding-identifiable-symbol-names-to-a-crash-report).
+
+As a best practice, only the metadata required for execution should be included in a compiled binary. Debug symbols and other non-essential metadata can expose internal implementation details, such as function names that indicate their purpose. This information is unnecessary for running the app and should be stripped from release builds using appropriate compiler settings.
