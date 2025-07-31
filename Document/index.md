@@ -18,6 +18,7 @@ The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensi
 Start exploring the MASTG:
 
 <!-- markdownlint-disable search-replace -->
+<a href="/MASTG/knowledge/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:material-book-open-blank-variant-outline:  Knowledge</a>
 <a href="/MASTG/tests/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:octicons-codescan-checkmark-24:  Tests</a>
 <a href="/MASTG/techniques/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:material-magic-staff:  Techniques</a>
 <a href="/MASTG/demos/" class="md-button md-button--primary" style="margin: 5px; min-width: 12em; text-align: center;">:material-flask-outline:  Demos</a>

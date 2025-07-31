@@ -9,6 +9,9 @@ masvs_v1_levels:
 - L1
 - L2
 profiles: [L1, L2]
+status: deprecated
+covered_by: []
+deprecation_note: Having JavaScript enabled is not considered a vulnerability by itself, but it can lead to security issues in combination with other weaknesses, such as local file access in WebViews, which are covered by other tests in the MASTG v2. This test is therefore not considered a standalone test anymore.
 ---
 
 ## Overview

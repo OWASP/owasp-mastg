@@ -10,14 +10,14 @@ The MAS project is an open source effort and we welcome all kinds of contributio
 
 **Help us improve & join our community:**
 
-- 🐞 [Report an error (typos, grammar)](1_How_Can_You_Contribute.md#create-issues) or [fix it on a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request).
+- 🐞 [Report an error (typos, grammar)](3_PRs_and_Reviews.md#how-to-create-issues) or [fix it on a Pull Request](3_PRs_and_Reviews.md#how-to-open-a-pr).
 - 💬 Give feedback ([MASTG](https://github.com/OWASP/mastg/discussions/categories/general)/[MASVS](https://github.com/OWASP/masvs/discussions/categories/general)).
 - 🙏 Ask questions ([MASTG](https://github.com/OWASP/mastg/discussions/categories/q-a)/[MASVS](https://github.com/OWASP/masvs/discussions/categories/q-a)).
 
 **Contribute with content:**
 
 - 💡 Propose ideas or suggest improvements ([MASTG](https://github.com/OWASP/mastg/discussions/categories/ideas)/[MASVS](https://github.com/OWASP/masvs/discussions/categories/ideas)). If it qualifies we'll promote it to an Issue.
-- 📄 [Create a Pull Request](1_How_Can_You_Contribute.md#open-a-pull-request) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
+- 📄 [Create a Pull Request](3_PRs_and_Reviews.md#how-to-open-a-pr) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
 Before you start contributing, please check our pages ["How Can You Contribute?"](1_How_Can_You_Contribute.md) and ["Getting Started"](2_Getting_Started.md). If you have any doubts [please contact us](../contact.md).
 
