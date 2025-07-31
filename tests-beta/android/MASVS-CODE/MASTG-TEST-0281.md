@@ -9,16 +9,16 @@ profiles: [L1, L2]
 
 ## Overview
 
-Android offers `SharedPreferences` for saving key-value pairs of basic data types and strings. When you store structured data like JSON or HTML using `putString()` and `getString()` without adequate validation, it can result in security vulnerabilities such as tampering or injection. This becomes especially dangerous if the stored data is subsequently trusted and utilized directly by the application.
+Data stored in Android's `SharedPreference`s can be tampered with on a rooted device. If an application reads this data without verifying its integrity (e.g., with an HMAC signature), it can lead to security vulnerabilities. This test checks if the application properly validates data read from local storage.
 
 ## Steps
 
-1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for uses of the `putString` and `getString`.
+1. Run a static analysis tool such as @MASTG-TOOL-0110 on the code and look for patterns where data is read from `SharedPreferences` without a corresponding integrity check.
 
 ## Observation
 
-The output file shows usages of the input validation using `putString` and `getString` in the code.
+The static analysis tool identifies code where `SharedPreferences` data is loaded without an integrity check.
 
 ## Evaluation
 
-The test fails if the `putString()` and `getString()` was found in the code.
+The test fails if the application reads data from `SharedPreferences` without verifying its integrity using a mechanism like HMAC.

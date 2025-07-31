@@ -4,9 +4,8 @@ rules:
     languages:
       - java
     metadata:
-      summary: This rule looks for use of Local Storage for Input Validation.
-    message: "[MASVS-CODE-4] The application make use of input validation in the code."
+      summary: Detects SharedPreferences usage without an integrity check.
+    message: "[MASVS-CODE-4] The application reads data from SharedPreferences without an integrity check (like HMAC). This data could be tampered with by an attacker on a rooted device, leading to privilege escalation or other vulnerabilities."
     patterns:
-      - pattern-either:
-          - pattern: $EDITOR.putString($KEY, $VALUE)
-          - pattern: $PREF.getString($KEY, $DEFAULT)
+      - pattern: new SecureSharedPreferences($CONTEXT, false)
+
