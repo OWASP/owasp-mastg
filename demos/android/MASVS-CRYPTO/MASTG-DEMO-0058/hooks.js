@@ -5,7 +5,15 @@ var target = {
     {
       class: "android.security.keystore.KeyGenParameterSpec$Builder",
       methods: [
-        "setBlockModes"
+        "setBlockModes",
+        "setRandomizedEncryptionRequired"
+      ]
+    },
+    {
+      class: "android.security.keystore.KeyProtection$Builder",
+      methods: [
+        "setBlockModes",
+        "setRandomizedEncryptionRequired",
       ]
     }
   ]
