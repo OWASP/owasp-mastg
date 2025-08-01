@@ -1,0 +1,122 @@
+{
+  "id": "523e8eb7-e155-4792-bdae-6c2a728c87ac",
+  "category": "CRYPTO",
+  "time": "2025-08-01T09:00:07.277Z",
+  "class": "android.security.keystore.KeyProtection$Builder",
+  "method": "setBlockModes",
+  "stackTrace": [
+    "android.security.keystore.KeyProtection$Builder.setBlockModes(Native Method)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:41)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$7(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$JVJO2MsmWvFAgk27L17N1ocLpI0(Unknown Source:0)",
+    "org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke-k-4lQ0M(Clickable.kt:639)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke(Clickable.kt:633)",
+    "androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)"
+  ],
+  "inputParameters": [
+    {
+      "type": "[Ljava.lang.String;",
+      "value": [
+        "ECB"
+      ]
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "android.security.keystore.KeyProtection$Builder",
+      "value": "<instance: android.security.keystore.KeyProtection$Builder>"
+    }
+  ]
+}
+{
+  "id": "a162bca9-454e-4d48-a737-0ac6e73983c7",
+  "category": "CRYPTO",
+  "time": "2025-08-01T09:00:07.288Z",
+  "class": "android.security.keystore.KeyProtection$Builder",
+  "method": "setBlockModes",
+  "stackTrace": [
+    "android.security.keystore.KeyProtection$Builder.setBlockModes(Native Method)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:65)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$7(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$JVJO2MsmWvFAgk27L17N1ocLpI0(Unknown Source:0)",
+    "org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke-k-4lQ0M(Clickable.kt:639)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke(Clickable.kt:633)",
+    "androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)"
+  ],
+  "inputParameters": [
+    {
+      "type": "[Ljava.lang.String;",
+      "value": [
+        "ECB"
+      ]
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "android.security.keystore.KeyProtection$Builder",
+      "value": "<instance: android.security.keystore.KeyProtection$Builder>"
+    }
+  ]
+}
+{
+  "id": "8dd8050c-dbc0-4662-804a-8bfb2151ca34",
+  "category": "CRYPTO",
+  "time": "2025-08-01T09:00:07.291Z",
+  "class": "android.security.keystore.KeyProtection$Builder",
+  "method": "setRandomizedEncryptionRequired",
+  "stackTrace": [
+    "android.security.keystore.KeyProtection$Builder.setRandomizedEncryptionRequired(Native Method)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:67)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$7(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$JVJO2MsmWvFAgk27L17N1ocLpI0(Unknown Source:0)",
+    "org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke-k-4lQ0M(Clickable.kt:639)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke(Clickable.kt:633)",
+    "androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)"
+  ],
+  "inputParameters": [
+    {
+      "type": "boolean",
+      "value": false
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "android.security.keystore.KeyProtection$Builder",
+      "value": "<instance: android.security.keystore.KeyProtection$Builder>"
+    }
+  ]
+}
+{
+  "id": "394de339-b6c6-485e-babc-672ff5df315f",
+  "category": "CRYPTO",
+  "time": "2025-08-01T09:00:07.300Z",
+  "class": "android.security.keystore.KeyGenParameterSpec$Builder",
+  "method": "setBlockModes",
+  "stackTrace": [
+    "android.security.keystore.KeyGenParameterSpec$Builder.setBlockModes(Native Method)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:90)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$7(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$JVJO2MsmWvFAgk27L17N1ocLpI0(Unknown Source:0)",
+    "org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke-k-4lQ0M(Clickable.kt:639)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke(Clickable.kt:633)",
+    "androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)"
+  ],
+  "inputParameters": [
+    {
+      "type": "[Ljava.lang.String;",
+      "value": [
+        "ECB"
+      ]
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "android.security.keystore.KeyGenParameterSpec$Builder",
+      "value": "<instance: android.security.keystore.KeyGenParameterSpec$Builder>"
+    }
+  ]
+}

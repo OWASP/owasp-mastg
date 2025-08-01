@@ -1,0 +1,99 @@
+{
+  "id": "d99b2426-952c-4efe-bca1-de049c0bc6ca",
+  "category": "STORAGE",
+  "time": "2025-08-01T08:58:47.784Z",
+  "class": "android.app.SharedPreferencesImpl$EditorImpl",
+  "method": "putString",
+  "stackTrace": [
+    "android.app.SharedPreferencesImpl$EditorImpl.putString(Native Method)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:60)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$7(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$JVJO2MsmWvFAgk27L17N1ocLpI0(Unknown Source:0)",
+    "org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke-k-4lQ0M(Clickable.kt:639)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke(Clickable.kt:633)",
+    "androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)"
+  ],
+  "inputParameters": [
+    {
+      "type": "java.lang.String",
+      "value": "UnencryptedGitHubToken"
+    },
+    {
+      "type": "java.lang.String",
+      "value": "ghp_1234567890abcdefghijklmnOPQRSTUV"
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "android.content.SharedPreferences$Editor",
+      "value": "<instance: android.content.SharedPreferences$Editor, $className: android.app.SharedPreferencesImpl$EditorImpl>"
+    }
+  ]
+}
+{
+  "id": "9a35b8ea-5e35-4872-b486-95cebcf82abc",
+  "category": "STORAGE",
+  "time": "2025-08-01T08:58:47.794Z",
+  "class": "android.app.SharedPreferencesImpl$EditorImpl",
+  "method": "putString",
+  "stackTrace": [
+    "android.app.SharedPreferencesImpl$EditorImpl.putString(Native Method)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:63)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$7(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$JVJO2MsmWvFAgk27L17N1ocLpI0(Unknown Source:0)",
+    "org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke-k-4lQ0M(Clickable.kt:639)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke(Clickable.kt:633)",
+    "androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)"
+  ],
+  "inputParameters": [
+    {
+      "type": "java.lang.String",
+      "value": "EncryptedGitHubToken"
+    },
+    {
+      "type": "java.lang.String",
+      "value": "2yyvH9Du4GO77nnQ6Gqn+5b+yvzTApZW+Tkeuxrp4kPCMrhQ25HqFnCbK04Pce1N\n"
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "android.content.SharedPreferences$Editor",
+      "value": "<instance: android.content.SharedPreferences$Editor, $className: android.app.SharedPreferencesImpl$EditorImpl>"
+    }
+  ]
+}
+{
+  "id": "133f6b49-62c3-45aa-9738-62d6b698f28d",
+  "category": "STORAGE",
+  "time": "2025-08-01T08:58:47.797Z",
+  "class": "android.app.SharedPreferencesImpl$EditorImpl",
+  "method": "putStringSet",
+  "stackTrace": [
+    "android.app.SharedPreferencesImpl$EditorImpl.putStringSet(Native Method)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:66)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$7(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$JVJO2MsmWvFAgk27L17N1ocLpI0(Unknown Source:0)",
+    "org.owasp.mastestapp.MainActivityKt$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke-k-4lQ0M(Clickable.kt:639)",
+    "androidx.compose.foundation.ClickableNode$clickPointerInput$3.invoke(Clickable.kt:633)",
+    "androidx.compose.foundation.gestures.TapGestureDetectorKt$detectTapAndPress$2$1.invokeSuspend(TapGestureDetector.kt:255)"
+  ],
+  "inputParameters": [
+    {
+      "type": "java.lang.String",
+      "value": "UnencryptedPreSharedKeys"
+    },
+    {
+      "type": "java.util.Set",
+      "value": "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBALfX7kbfFv3pc3JjOHQ=,gJXS9EwpuzK8U1TOgfplwfKEVngCE2D5FNBQWvNmuHHbigmTCabsA="
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "android.content.SharedPreferences$Editor",
+      "value": "<instance: android.content.SharedPreferences$Editor, $className: android.app.SharedPreferencesImpl$EditorImpl>"
+    }
+  ]
+}
