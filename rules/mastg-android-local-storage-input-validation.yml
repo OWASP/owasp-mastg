@@ -1,0 +1,11 @@
+rules:
+  - id: mastg-android-local-storage-input-validation
+    severity: WARNING
+    languages:
+      - java
+    metadata:
+      summary: Detects SharedPreferences usage without an integrity check.
+    message: "[MASVS-CODE-4] The application reads data from SharedPreferences without an integrity check (like HMAC). This data could be tampered with by an attacker on a rooted device, leading to privilege escalation or other vulnerabilities."
+    patterns:
+      - pattern: new SecureSharedPreferences($CONTEXT, false)
+

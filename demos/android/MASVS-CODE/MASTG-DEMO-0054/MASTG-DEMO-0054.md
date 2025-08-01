@@ -17,13 +17,13 @@ The code snippet demonstrates an insecure use of `SharedPreferences` where data 
 
 Let's run @MASTG-TOOL-0110 rules against the sample code.
 
-{{ ../../../../rules/mastg-android-local-storage-for-input-validation.yml }}
+{{ ../../../../rules/mastg-android-local-storage-input-validation.yml }}
 
 {{ run.sh }}
 
 ### Observation
 
-The output file correctly identifies the vulnerable pattern where data is loaded without being validated. 
+The output file correctly identifies the vulnerable pattern where data is loaded without being validated.
 
 {{ output.txt }}
 
