@@ -14,7 +14,10 @@ The code below generates symmetric encryption keys meant to be stored in the And
 public KeyGenParameterSpec.Builder setBlockModes (String... blockModes)
 ```
 
-Even though the Android KeyStore won't allow encryption using these keys, decryption is still allowed for legacy use.
+Current versions of Android prohibit the usage of keys with for ECB in some cases. For example, it is not possible to use the key to encrypt data by the default. Nevertheless, there are some case, where ECB can still be used:
+
+- Decrypt data
+- Encrypt data with a key given `setRandomizedEncryptionRequired` is set to `false`
 
 {{ MastgTest.kt }}
 
