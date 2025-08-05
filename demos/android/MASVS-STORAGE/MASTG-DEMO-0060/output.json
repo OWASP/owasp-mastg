@@ -1,0 +1,58 @@
+{
+  "id": "418e8d44-57b1-45bc-bbd8-0d0e42a587b2",
+  "category": "STORAGE",
+  "time": "2025-07-19T15:52:04.880Z",
+  "class": "com.google.crypto.tink.subtle.Base64",
+  "method": "encode",
+  "stackTrace": [
+    "com.google.crypto.tink.subtle.Base64.encode(Native Method)",
+    "androidx.security.crypto.EncryptedSharedPreferences.encryptKey(EncryptedSharedPreferences.java:614)",
+    "androidx.security.crypto.EncryptedSharedPreferences.encryptKeyValuePair(EncryptedSharedPreferences.java:647)",
+    "androidx.security.crypto.EncryptedSharedPreferences$Editor.putEncryptedObject(EncryptedSharedPreferences.java:391)",
+    "androidx.security.crypto.EncryptedSharedPreferences$Editor.putString(EncryptedSharedPreferences.java:258)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:32)",
+    "org.owasp.mastestapp.MainActivityKt.MainScreen$lambda$9$lambda$8(MainActivity.kt:53)",
+    "org.owasp.mastestapp.MainActivityKt.$r8$lambda$PhzGLzmkS_ibruOfiTT32AhzWl4(Unknown Source:0)"
+  ],
+  "inputParameters": [
+    {
+      "type": "[B",
+      "value": "0x0142f73f1e394b3336915ed6c4f013e82ffea42faa09d1673be72353fd82bf9bd565ae05..."
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "java.lang.String",
+      "value": "AUL3Px45SzM2kV7WxPAT6C/+pC+qCdFnO+cjU/2Cv5vVZa4F"
+    }
+  ]
+}
+{
+  "id": "f331b615-6153-4fc1-a0d8-288793212497",
+  "category": "STORAGE",
+  "time": "2025-07-19T15:52:04.878Z",
+  "class": "javax.crypto.Cipher",
+  "method": "doFinal",
+  "stackTrace": [
+    "javax.crypto.Cipher.doFinal(Native Method)",
+    "com.google.crypto.tink.subtle.AesSiv.encryptDeterministically(AesSiv.java:124)",
+    "com.google.crypto.tink.daead.DeterministicAeadWrapper$WrappedDeterministicAead.encryptDeterministically(DeterministicAeadWrapper.java:78)",
+    "androidx.security.crypto.EncryptedSharedPreferences.encryptKey(EncryptedSharedPreferences.java:611)",
+    "androidx.security.crypto.EncryptedSharedPreferences.encryptKeyValuePair(EncryptedSharedPreferences.java:647)",
+    "androidx.security.crypto.EncryptedSharedPreferences$Editor.putEncryptedObject(EncryptedSharedPreferences.java:391)",
+    "androidx.security.crypto.EncryptedSharedPreferences$Editor.putString(EncryptedSharedPreferences.java:258)",
+    "org.owasp.mastestapp.MastgTest.mastgTest(MastgTest.kt:32)"
+  ],
+  "inputParameters": [
+    {
+      "type": "[B",
+      "value": "EncryptedAWSKey"
+    }
+  ],
+  "returnValue": [
+    {
+      "type": "[B",
+      "value": "0x09d1673be72353fd82bf9bd565ae05..."
+    }
+  ]
+}
