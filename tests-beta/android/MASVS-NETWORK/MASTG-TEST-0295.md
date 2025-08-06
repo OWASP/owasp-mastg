@@ -1,5 +1,5 @@
 ---
-title: Insecure or Missing Security Provider Update (Static)
+title: GMS Security Provider Not Updated
 platform: android
 id: MASTG-TEST-0295
 type: [static]
