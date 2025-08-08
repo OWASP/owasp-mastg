@@ -1,0 +1,18 @@
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                           
+    MastgTest_reversed.java
+    ❯❱rules.mastg-android-local-storage-input-validation
+          [MASVS-CODE-4] The application reads data from SharedPreferences without
+          an integrity check (like HMAC). This data could be tampered with by an  
+          attacker on a rooted device, leading to privilege escalation or other   
+          vulnerabilities.                                                        
+                                                                                  
+           23┆ SecureSharedPreferences insecurePrefs = new  
+               SecureSharedPreferences(this.context, false);
+            ⋮┆----------------------------------------
+           35┆ SecureSharedPreferences insecurePrefs2 = new 
+               SecureSharedPreferences(this.context, false);
