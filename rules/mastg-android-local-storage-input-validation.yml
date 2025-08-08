@@ -1,5 +1,5 @@
 rules:
-  - id: mastg-android-local-storage-for-input-validation
+  - id: mastg-android-local-storage-input-validation
     severity: WARNING
     languages:
       - java

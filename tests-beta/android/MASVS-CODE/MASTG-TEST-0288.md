@@ -1,7 +1,7 @@
 ---
 title: Use of Local Storage for Input Validation
 platform: android
-id: MASTG-TEST-0281
+id: MASTG-TEST-0288
 type: [static]
 weakness: MASWE-0082
 profiles: [L1, L2]
@@ -17,8 +17,8 @@ Data stored in Android's `SharedPreference`s can be tampered with on a rooted de
 
 ## Observation
 
-The static analysis tool identifies code where `SharedPreferences` data is loaded without an integrity check.
+The output identifies code where `SharedPreferences` data is loaded without an integrity check.
 
 ## Evaluation
 
-The test fails if the application reads data from `SharedPreferences` without verifying its integrity using a mechanism like HMAC.
+The test fails if the application reads data from `SharedPreferences` without verifying its integrity using a mechanism like `HMAC`.
